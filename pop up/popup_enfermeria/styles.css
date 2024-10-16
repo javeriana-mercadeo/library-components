@@ -1,0 +1,203 @@
+.modal.fade {
+  z-index: -1;
+}
+
+.modal.fade.show {
+  z-index: 1050;
+
+  .modal-content {
+    max-width: 800px;
+    background: linear-gradient(90deg, #1ba3d6 0%, #0074a3 100%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 100;
+    line-height: normal;
+    overflow: hidden;
+    position: relative;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 0 auto;
+  }
+
+  .background-image {
+    background-image: url(https://www.javeriana.edu.co/recursosdb/1372208/5640014/background.png);
+    background-size: cover;
+    height: 100%;
+    position: absolute;
+    right: -190px;
+    top: 90px;
+    width: 74.5%;
+    z-index: 1;
+  }
+
+  .overlay-image {
+    bottom: 0px;
+    position: absolute;
+    right: -60px;
+    width: 61%;
+    z-index: 2;
+  }
+
+  .modal-body {
+    padding-right: 46px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .container-info {
+    padding: 0px;
+    width: 55%;
+  }
+
+  .modal-header {
+    border: none;
+    height: auto;
+  }
+
+  .modal-title {
+    font-size: 30px;
+    line-height: normal;
+    padding-right: 40px;
+    white-space: normal;
+  }
+
+  .yellow {
+    color: #ffcd00;
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .divider {
+    background: #fff;
+    height: 2px;
+    margin-left: 16px;
+    width: 30px;
+  }
+
+  .subtitle {
+    background: #fff;
+    border-radius: 0px 25px 25px 0px;
+    color: #1ba3d6;
+    margin-bottom: 12px;
+    margin-left: -38px;
+    padding: 4px 28px;
+    width: 185px;
+  }
+
+  .subtitle h6 {
+    font-size: 14px;
+    margin: 0px;
+  }
+
+  li {
+    margin: 12px -28px;
+  }
+
+  ul.custom-list {
+    list-style-position: outside;
+    list-style-type: disc;
+  }
+
+  ul.custom-list li {
+    font-size: 14px;
+  }
+
+  ul.custom-list li::marker {
+    font-size: 8px;
+  }
+
+  a {
+    color: #fff;
+  }
+
+  @media (max-width: 1024px) {
+    .background-image {
+      right: -120px;
+      top: 60px;
+      width: 70%;
+    }
+
+    .overlay-image {
+      right: -40px;
+      width: 60%;
+    }
+
+    .container-info {
+      width: 60%;
+    }
+
+    .modal-title {
+      font-size: 24px;
+    }
+
+    .yellow {
+      font-size: 20px;
+    }
+
+    .subtitle {
+      width: 150px;
+    }
+
+    ul.custom-list li {
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .background-image {
+      display: none;
+    }
+
+    .overlay-image {
+      right: -30px;
+      width: 50%;
+    }
+
+    .container-info {
+      padding: 15px;
+      width: 100%;
+    }
+
+    .modal-body {
+      padding-right: 0;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .yellow {
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .divider {
+      margin-left: auto;
+      margin-right: auto;
+      width: 20px;
+    }
+
+    .subtitle {
+      margin-left: 0;
+      padding: 6px 0;
+      text-align: center;
+      width: 100%;
+    }
+
+    ul.custom-list {
+      padding: 0;
+    }
+
+    ul.custom-list li {
+      font-size: 12px;
+      margin: 8px 0;
+      text-align: center;
+    }
+
+    ul span {
+      display: block;
+      text-align: center;
+    }
+  }
+}
