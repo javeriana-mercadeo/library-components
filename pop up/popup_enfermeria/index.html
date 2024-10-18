@@ -10,7 +10,7 @@
 
   <body>
     <div
-      class="modal fade"
+      class="modal fade show"
       id="benefitModal"
       tabindex="-1"
       role="dialog"
@@ -22,44 +22,75 @@
         <div class="modal-content">
           <div class="background-image"></div>
           <div class="container-info">
+            <button id="btn-close" class="btn btn-close">X</button>
             <div class="modal-header">
-              <p class="modal-title" id="benefitModalLabel">
-                Beneficio económico del <strong id="discountRate">50%</strong> de la matrícula en la<br />
-                carrera de Enfermería
-              </p>
+              <div class="modal-title" id="benefitModalLabel">
+                <lfr-editable id="text-1" type="rich-text"> Beneficio económico exclusivo del</lfr-editable>
+                <strong id="discountRate">
+                  <lfr-editable id="text-2" type="rich-text">50%</lfr-editable>
+                </strong>
+                <strong>
+                  <lfr-editable id="text-2-3" type="rich-text">de la matrícula</lfr-editable>
+                </strong>
+                <lfr-editable id="text=3" type="rich-text">en la carrera de Enfermería</lfr-editable>
+              </div>
             </div>
             <div class="divider"></div>
             <div class="modal-body">
-              <p class="yellow">Inscríbete ahora: ¡<span class="dias"></span>!</p>
-              <p>
-                Estudia Enfermería en la Universidad Javeriana de Bogotá y postúlate para obtener un
-                <strong>beneficio económico exclusivo del 50%</strong> sobre el valor de la matrícula, desde el primer
-                semestre del 2025 y durante los 8 semestres de la carrera.
-              </p>
+              <div class="paragraph">
+                <lfr-editable id="text-5" type="rich-text">
+                  Estudia en la Javeriana Bogotá y postúlate para obtener un
+                  <strong>beneficio económico del 50%</strong> sobre el valor de la matrícula, desde el primer semestre
+                  del 2025 y durante los 8 semestres de la carrera.
+                </lfr-editable>
+              </div>
               <div class="subtitle">
-                <h6>Más información:</h6>
+                <h6><lfr-editable id="text-6" type="rich-text"> Más información: </lfr-editable></h6>
               </div>
               <ul class="custom-list">
                 <li>
-                  Correo:
-                  <a href="mailto:dircarreraenfermeria@javeriana.edu.co">dircarreraenfermeria@javeriana.edu.co</a>
+                  <lfr-editable id="text-7" type="rich-text"> Correo: </lfr-editable>
+                  <a href="mailto:dircarreraenfermeria@javeriana.edu.co">
+                    <lfr-editable id="mail-1" type="rich-text"> dircarreraenfermeria@javeriana.edu.co </lfr-editable>
+                  </a>
                 </li>
-                <li>Número de teléfono: (57-601) 320 8320 - <br />Ext. 2678 - 2658 - 2655</li>
-                <span>*Aplican Términos y Condiciones: Beca Ingresa 50%*</span>
+
                 <li>
-                  Inversión: <span class="inversionDiscount"></span> para el primer semestre del 2025. <br />(Aprovecha
-                  este valor hasta el 31 de octubre de 2024.<br />
-                  Después, se harán incrementos graduales).
+                  <lfr-editable id="text-8" type="rich-text">
+                    Número de teléfono: (57-601) 320 8320 - <br />Ext. 2678 - 2658 - 2655
+                  </lfr-editable>
                 </li>
-                <li>Días restantes: <span class="dias"></span></li>
+
+                <span>
+                  <lfr-editable id="text-9" type="rich-text">
+                    *Aplican Términos y Condiciones: Beca Ingresa 50%*
+                  </lfr-editable>
+                </span>
+
+                <li>
+                  <lfr-editable id="text-10" type="rich-text"> Inversión: </lfr-editable>
+                  <span class="inversionDiscount">[INFORMACIÓN DINÁMICA]</span>
+                  <lfr-editable id="text-11" type="rich-text">
+                    para el primer semestre del 2025. <br />(Aprovecha este valor hasta el 31 de octubre de 2024.<br />
+                    Después, se harán incrementos graduales).
+                  </lfr-editable>
+                </li>
+
+                <li>
+                  <lfr-editable id="text-12" type="rich-text"> Días restantes: </lfr-editable>
+                  <span class="dias">[INFORMACIÓN DINÁMICA]</span>
+                </li>
               </ul>
             </div>
           </div>
-          <img src="https://www.javeriana.edu.co/recursosdb/1372208/5640014/overlay.png" class="overlay-image" />
+          <lfr-editable id="image-modal" class="image" type="image">
+            <img src="https://www.javeriana.edu.co/recursosdb/1372208/5640014/overlay.png" class="overlay-image" />
+          </lfr-editable>
         </div>
       </div>
     </div>
 
+    <!-- Recursos tomados de la landing -->
     <span class="fecha-cierre">30 de diciembre del 2024</span>
     <span id="inversion">$16.003.000 / Semestre.</span>
     <span id="contacto"></span>

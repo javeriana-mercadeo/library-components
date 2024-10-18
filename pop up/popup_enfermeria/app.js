@@ -1,4 +1,7 @@
 // --- Lógica principal --- //
+/* $("#benefitModal").modal("hide");
+$("#benefitModal").removeClass("show"); */
+
 document.addEventListener("dataRendered", () => {
   // Elementos
   const elements = {
