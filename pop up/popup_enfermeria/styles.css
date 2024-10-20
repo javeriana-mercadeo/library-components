@@ -128,7 +128,7 @@
   }
 
   .subtitle h6 {
-    font-size: 14px;
+    font-size: 13px;
     margin: 0px;
   }
 
@@ -139,11 +139,11 @@
   ul.custom-list {
     list-style-position: outside;
     list-style-type: disc;
-    margin: 0px;
+    margin: -15px 0px;
   }
 
   ul.custom-list li, ul.custom-list span {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   ul.custom-list li::marker {
@@ -248,18 +248,18 @@
     }
 
     ul.custom-list {
-      padding: 0;
+      padding: 0px 55px 0px 0px;
     }
 
     ul.custom-list li {
       font-size: 12px;
       margin: 8px 0;
-      text-align: center;
+      text-align: left;
     }
 
     ul span {
       display: block;
-      text-align: center;
+      text-align: left;
     }
   }
 }
