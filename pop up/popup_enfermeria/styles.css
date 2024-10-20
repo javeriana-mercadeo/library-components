@@ -14,35 +14,35 @@
   }
 
   .modal-content {
-    max-width: 800px;
     background: linear-gradient(90deg, #1ba3d6 0%, #0074a3 100%);
+    border-radius: 15px;
     color: #fff;
     font-size: 14px;
     font-weight: 100;
     line-height: normal;
-    overflow: hidden;
-    position: relative;
-    border-radius: 15px;
-    padding: 0;
     margin: 0 auto;
+    max-width: 800px;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
   }
 
   .btn-close {
-    display: flex;
     align-items: center;
-    justify-content: center;
     background: #fff;
     border: none;
     border-radius: 50%;
     color: #1ba3d6;
+    display: flex;
     font-size: 20px;
     height: 30px;
+    justify-content: center;
     line-height: 30px;
     position: absolute;
     right: 10px;
     top: 10px;
     width: 30px;
-    z-index: 4;
+    z-index: 1051;
   }
 
   .background-image {
@@ -65,15 +65,15 @@
   }
 
   .modal-body {
-    position: relative;
-    z-index: 3;
+    align-items: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     gap: 20px;
-    padding: 2rem;
+    justify-content: center;
+    padding: 1.5rem;
     padding-right: 46px;
+    position: relative;
+    z-index: 3;
   }
 
   .container-info {
@@ -84,11 +84,11 @@
   .modal-header {
     border: none;
     height: auto;
-    padding: 2rem;
+    padding: 1.5rem;
   }
 
   .modal-title {
-    font-size: 30px;
+    font-size: 28px;
     line-height: normal;
     padding-right: 40px;
     white-space: normal;
@@ -120,9 +120,10 @@
     background: #fff;
     border-radius: 0px 25px 25px 0px;
     color: #1ba3d6;
-    margin-bottom: 12px;
+    left: -116px;
     margin-left: -38px;
     padding: 4px 28px;
+    position: relative;
     width: 185px;
   }
 
@@ -138,9 +139,10 @@
   ul.custom-list {
     list-style-position: outside;
     list-style-type: disc;
+    margin: 0px;
   }
 
-  ul.custom-list li {
+  ul.custom-list li, ul.custom-list span {
     font-size: 14px;
   }
 
@@ -195,8 +197,8 @@
     }
 
     .divider {
-      width: 70%;
       margin: 0 auto;
+      width: 70%;
     }
 
     .modal-body {
@@ -204,8 +206,8 @@
     }
 
     .modal-content {
-      max-width: 100%;
       border-radius: 0;
+      max-width: 100%;
     }
 
     .paragraph {
@@ -214,10 +216,10 @@
     }
 
     .subtitle {
+      border-radius: 50px;
       margin: 0;
       padding: 6px 5px;
       text-align: center;
-      border-radius: 50px;
       width: 100%;
     }
 
@@ -263,10 +265,10 @@
 }
 
 .has-edit-mode-menu .modal.fade.show {
-  position: initial;
-  z-index: 1050;
   display: block;
   opacity: 1;
+  position: initial;
+  z-index: 1050;
 
   .modal-dialog {
     position: initial;
