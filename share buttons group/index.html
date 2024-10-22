@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="center menu">
+            <div id="myMenu"></div>
+        </div>
+
+        <!--  <script>
+            // Función para copiar enlace
+            document.getElementById("copyLink").addEventListener("click", function () {
+                const link = window.location.href;
+                navigator.clipboard
+                    .writeText(link)
+                    .then(function () {
+                        alert("¡Enlace copiado al portapapeles! Puedes pegarlo en Instagram.");
+                    })
+                    .catch(function (error) {
+                        console.error("Error al copiar el enlace:", error);
+                    });
+            });
+
+            // Función para Web Share API
+            document.getElementById("shareButton").addEventListener("click", async () => {
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: "Mi Página Web",
+                            text: "¡Mira esta increíble página!",
+                            url: window.location.href,
+                        });
+                        console.log("Contenido compartido con éxito");
+                    } catch (error) {
+                        console.error("Error al compartir:", error);
+                    }
+                } else {
+                    alert("La funcionalidad de compartir no es compatible con tu dispositivo.");
+                }
+            });
+        </script> -->
+
+        <!-- jQuery debe ser cargado antes que jQuery UI -->
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/1.0.0/anime.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+        <script type="module">
+            const currentUrl = window.location.href;
+
+            let timeOut;
+            const listSocial = [
+                {
+                    type: "button",
+                    id: "btnOpen",
+                    icon: "share-social",
+                    url: "",
+                    backgroundColor: "#fff",
+                },
+                {
+                    type: "link",
+                    icon: "logo-facebook",
+                    url: "https://www.facebook.com/sharer/sharer.php?u=" + currentUrl,
+                    backgroundColor: "#1877F2", // Azul Facebook
+                },
+                {
+                    type: "link",
+                    icon: "logo-twitter",
+                    url: "https://twitter.com/intent/tweet?text=Visita%20esta%20página&url=" + currentUrl,
+                    backgroundColor: "#1DA1F2", // Azul Twitter
+                },
+                {
+                    type: "link",
+                    icon: "logo-instagram",
+                    url: "https://www.instagram.com/unijaveriana/",
+                    backgroundColor: "#C13584", // Rosa Instagram
+                },
+                {
+                    type: "link",
+                    icon: "logo-linkedin",
+                    url: "https://www.linkedin.com/sharing/share-offsite/?url=" + currentUrl,
+                    backgroundColor: "#0077B5", // Azul LinkedIn
+                },
+                {
+                    type: "link",
+                    icon: "logo-whatsapp",
+                    url: "https://api.whatsapp.com/send?text=Visita%20esta%20página%20" + currentUrl,
+                    backgroundColor: "#25D366", // Verde WhatsApp
+                },
+                {
+                    type: "button",
+                    id: "btnCopy",
+                    icon: "copy",
+                    url: "",
+                    backgroundColor: "#FFC107", // Color adicional
+                },
+                {
+                    type: "button",
+                    id: "btnShare",
+                    icon: "share",
+                    backgroundColor: "#4CAF50", // Color adicional
+                },
+            ];
+
+            class Item {
+                constructor(type, id, icon, url, backgroundColor) {
+                    // Crear un elemento <button> o <a> según el tipo
+                    this.$element = $(document.createElement("div"));
+                    this.$element.addClass("item");
+                    let item;
+                    if (type === "button") {
+                        item = $(document.createElement("button")); // Crear un botón como objeto jQuery
+                        item.attr("id", id); // Asignar el id
+                    } else {
+                        item = $(document.createElement("a")); // Crear un enlace como objeto jQuery
+                        item.attr("href", url);
+                        item.attr("target", "_blank");
+                    }
+
+                    // Asignar clases al elemento
+                    item.addClass("icon-button");
+                    this.$element.append(item); // Agregar el botón o enlace al elemento
+
+                    // Establecer el color de fondo original
+                    const originalColor = "#fff";
+                    const span = $(document.createElement("span"));
+                    span.css("background-color", originalColor);
+                    item.append(span);
+
+                    // Crear un icono <ion-icon> y un <span> para el texto
+                    const $icon = $(document.createElement("ion-icon"));
+                    $icon.attr("name", icon); // Asignar el nombre del icono
+                    item.append($icon); // Agregar el icono al elemento
+
+                    // Cambiar el color de fondo al hacer hover
+                    span.on("mouseenter", () => {
+                        $icon.css("color", originalColor);
+                        span.css("background-color", backgroundColor);
+                    });
+
+                    span.on("mouseleave", () => {
+                        $icon.css("color", backgroundColor);
+                        span.css("background-color", originalColor);
+                    });
+
+                    // Inicializar referencias para la lista de elementos
+                    this.prev = null;
+                    this.next = null;
+                    this.isMoving = false;
+
+                    // Manejo del movimiento del ratón sobre el elemento
+                    let element = this; // Guardar referencia a 'this'
+                    this.$element.on("mousemove", function () {
+                        clearTimeout(timeOut); // Limpiar el timeout anterior
+                        timeOut = setTimeout(function () {
+                            if (element.next && element.isMoving) {
+                                element.next.moveTo(element); // Mover al siguiente elemento si está en movimiento
+                            }
+                        }, 10); // Esperar 10 ms antes de ejecutar el movimiento
+                    });
+                }
+
+                moveTo(item) {
+                    anime({
+                        targets: this.$element[0],
+                        left: item.$element.css("left"),
+                        top: item.$element.css("top"),
+                        duration: 700,
+                        elasticity: 500,
+                    });
+                    if (this.next) {
+                        this.next.moveTo(item);
+                    }
+                }
+
+                updatePosition() {
+                    anime({
+                        targets: this.$element[0],
+                        left: this.prev.$element.css("left"),
+                        top: this.prev.$element.css("top"),
+                        duration: 80,
+                    });
+
+                    if (this.next) {
+                        this.next.updatePosition();
+                    }
+                }
+            }
+
+            class Menu {
+                constructor(menu) {
+                    this.$element = $(menu);
+                    this.size = 0;
+                    this.first = null;
+                    this.last = null;
+                    this.timeOut = null;
+                    this.hasMoved = false;
+                    this.status = "closed";
+                }
+
+                add(item) {
+                    let menu = this;
+                    if (this.first == null) {
+                        this.first = item;
+                        this.last = item;
+                        this.first.$element.on("mouseup", function () {
+                            if (menu.first.isMoving) {
+                                menu.first.isMoving = false;
+                            } else {
+                                menu.click();
+                            }
+                        });
+                        item.$element.draggable(
+                            {
+                                start: function () {
+                                    menu.close();
+                                    item.isMoving = true;
+                                },
+                            },
+                            {
+                                drag: function () {
+                                    if (item.next) {
+                                        item.next.updatePosition();
+                                    }
+                                },
+                            },
+                            {
+                                stop: function () {
+                                    item.isMoving = false;
+                                    item.next.moveTo(item);
+                                },
+                            }
+                        );
+                    } else {
+                        this.last.next = item;
+                        item.prev = this.last;
+                        this.last = item;
+                    }
+                    this.$element.after(item.$element);
+                }
+
+                open() {
+                    this.status = "open";
+                    let current = this.first.next;
+                    let iterator = 1;
+                    let head = this.first;
+                    let sens = head.$element.css("left") < head.$element.css("right") ? 1 : -1;
+                    while (current != null) {
+                        anime({
+                            targets: current.$element[0],
+                            left: parseInt(head.$element.css("left"), 10) + sens * (iterator * 60),
+                            top: head.$element.css("top"),
+                            duration: 500,
+                        });
+                        iterator++;
+                        current = current.next;
+                    }
+                }
+
+                close() {
+                    this.status = "closed";
+                    let current = this.first.next;
+                    let head = this.first;
+                    let iterator = 1;
+                    while (current != null) {
+                        anime({
+                            targets: current.$element[0],
+                            left: head.$element.css("left"),
+                            top: head.$element.css("top"),
+                            duration: 500,
+                        });
+                        iterator++;
+                        current = current.next;
+                    }
+                }
+
+                click() {
+                    if (this.status == "closed") {
+                        this.open();
+                    } else {
+                        this.close();
+                    }
+                }
+            }
+
+            let menu = new Menu("#myMenu");
+            listSocial.forEach((element) => {
+                let item = new Item(element.type, element.id, element.icon, element.url, element.backgroundColor);
+                menu.add(item);
+            });
+
+            $(document)
+                .delay(50)
+                .queue(function (next) {
+                    menu.open();
+                    next();
+                    $(document)
+                        .delay(1000)
+                        .queue(function (next) {
+                            menu.close();
+                            next();
+                        });
+                });
+        </script>
+    </body>
+</html>

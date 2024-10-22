@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" />
+    </head>
+    <body>
+        <i class="fas fa-info-circle"></i>
+        <div class="center menu">
+            <div id="myMenu"></div>
+        </div>
+        <div class="center title">
+            <h2>Drag the menu where you want!</h2>
+        </div>
+
+        <a href="https://twitter.com/minimalmonkey" class="icon-button twitter"
+            ><i class="icon-twitter"></i><span></span
+        ></a>
+        <a href="https://facebook.com" class="icon-button facebook"><i class="icon-facebook"></i><span></span></a>
+        <a href="https://plus.google.com" class="icon-button google-plus"
+            ><i class="icon-google-plus"></i><span></span
+        ></a>
+
+        <!-- Agregar los botones con iconos de Font Awesome -->
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://tu-pagina.com" target="_blank">
+            <i class="fa fa-facebook"></i> Compartir en Facebook
+        </a>
+
+        <a
+            href="https://twitter.com/intent/tweet?text=Visita%20esta%20página&url=https://tu-pagina.com"
+            target="_blank"
+        >
+            <i class="fa fa-twitter"></i> Compartir en Twitter
+        </a>
+
+        <a href="https://api.whatsapp.com/send?text=Visita%20esta%20página%20https://tu-pagina.com" target="_blank">
+            <i class="fa fa-whatsapp"></i> Compartir en WhatsApp
+        </a>
+
+        <!-- Instagram (Copiar enlace) -->
+        <button id="copyLink"><i class="fab fa-instagram"></i> Copiar enlace para Instagram</button>
+
+        <!-- Botón para compartir con la API Web Share (móviles) -->
+        <button id="shareButton"><i class="fas fa-share"></i> Compartir esta página</button>
+
+        <!-- Script para copiar enlace y Web Share API -->
+        <script>
+            // Función para copiar enlace
+            document.getElementById("copyLink").addEventListener("click", function () {
+                const link = window.location.href;
+                navigator.clipboard
+                    .writeText(link)
+                    .then(function () {
+                        alert("¡Enlace copiado al portapapeles! Puedes pegarlo en Instagram.");
+                    })
+                    .catch(function (error) {
+                        console.error("Error al copiar el enlace:", error);
+                    });
+            });
+
+            // Función para Web Share API
+            document.getElementById("shareButton").addEventListener("click", async () => {
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: "Mi Página Web",
+                            text: "¡Mira esta increíble página!",
+                            url: window.location.href,
+                        });
+                        console.log("Contenido compartido con éxito");
+                    } catch (error) {
+                        console.error("Error al compartir:", error);
+                    }
+                } else {
+                    alert("La funcionalidad de compartir no es compatible con tu dispositivo.");
+                }
+            });
+        </script>
+
+        <!-- jQuery debe ser cargado antes que jQuery UI -->
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/1.0.0/anime.js"></script>
+
+        <script type="module">
+            const currentUrl = window.location.href;
+
+            let timeOut;
+            const listSocial = [
+                {
+                    icon: "share",
+                    url: "",
+                    backgroundColor: "#fff",
+                },
+                {
+                    icon: "facebook",
+                    url: "https://www.facebook.com/sharer/sharer.php?u=" + currentUrl,
+                    backgroundColor: "#FF5C5C",
+                },
+                {
+                    icon: "x",
+                    url: "https://twitter.com/intent/tweet?text=Visita%20esta%20página&url=" + currentUrl,
+                    backgroundColor: "#5CD1FF",
+                },
+                {
+                    icon: "instagram",
+                    url: "https://www.instagram.com/unijaveriana/",
+                    backgroundColor: "#FFF15C",
+                },
+                {
+                    icon: "linkedin",
+                    url: "https://www.linkedin.com/sharing/share-offsite/?url=" + currentUrl,
+                    backgroundColor: "#64F592",
+                },
+                {
+                    icon: "whatsapp",
+                    url: "https://api.whatsapp.com/send?text=Visita%20esta%20página%20" + currentUrl,
+                    backgroundColor: "#64F592",
+                },
+            ];
+
+            class Item {
+                constructor(icon, backgroundColor) {
+                    this.$element = $(document.createElement("div"));
+                    this.icon = icon;
+                    this.$element.addClass("item");
+                    this.$element.css("background-color", backgroundColor);
+                    let i = document.createElement("i");
+                    $(i).addClass("icon-" + icon);
+                    this.$element.append(i);
+                    this.prev = null;
+                    this.next = null;
+                    this.isMoving = false;
+                    let element = this;
+                    this.$element.on("mousemove", function () {
+                        clearTimeout(timeOut);
+                        timeOut = setTimeout(function () {
+                            if (element.next && element.isMoving) {
+                                element.next.moveTo(element);
+                            }
+                        }, 10);
+                    });
+                }
+
+                moveTo(item) {
+                    anime({
+                        targets: this.$element[0],
+                        left: item.$element.css("left"),
+                        top: item.$element.css("top"),
+                        duration: 700,
+                        elasticity: 500,
+                    });
+                    if (this.next) {
+                        this.next.moveTo(item);
+                    }
+                }
+
+                updatePosition() {
+                    anime({
+                        targets: this.$element[0],
+                        left: this.prev.$element.css("left"),
+                        top: this.prev.$element.css("top"),
+                        duration: 80,
+                    });
+
+                    if (this.next) {
+                        this.next.updatePosition();
+                    }
+                }
+            }
+
+            class Menu {
+                constructor(menu) {
+                    this.$element = $(menu);
+                    this.size = 0;
+                    this.first = null;
+                    this.last = null;
+                    this.timeOut = null;
+                    this.hasMoved = false;
+                    this.status = "closed";
+                }
+
+                add(item) {
+                    let menu = this;
+                    if (this.first == null) {
+                        this.first = item;
+                        this.last = item;
+                        this.first.$element.on("mouseup", function () {
+                            if (menu.first.isMoving) {
+                                menu.first.isMoving = false;
+                            } else {
+                                menu.click();
+                            }
+                        });
+                        item.$element.draggable(
+                            {
+                                start: function () {
+                                    menu.close();
+                                    item.isMoving = true;
+                                },
+                            },
+                            {
+                                drag: function () {
+                                    if (item.next) {
+                                        item.next.updatePosition();
+                                    }
+                                },
+                            },
+                            {
+                                stop: function () {
+                                    item.isMoving = false;
+                                    item.next.moveTo(item);
+                                },
+                            }
+                        );
+                    } else {
+                        this.last.next = item;
+                        item.prev = this.last;
+                        this.last = item;
+                    }
+                    this.$element.after(item.$element);
+                }
+
+                open() {
+                    this.status = "open";
+                    let current = this.first.next;
+                    let iterator = 1;
+                    let head = this.first;
+                    let sens = head.$element.css("left") < head.$element.css("right") ? 1 : -1;
+                    while (current != null) {
+                        anime({
+                            targets: current.$element[0],
+                            left: parseInt(head.$element.css("left"), 10) + sens * (iterator * 50),
+                            top: head.$element.css("top"),
+                            duration: 500,
+                        });
+                        iterator++;
+                        current = current.next;
+                    }
+                }
+
+                close() {
+                    this.status = "closed";
+                    let current = this.first.next;
+                    let head = this.first;
+                    let iterator = 1;
+                    while (current != null) {
+                        anime({
+                            targets: current.$element[0],
+                            left: head.$element.css("left"),
+                            top: head.$element.css("top"),
+                            duration: 500,
+                        });
+                        iterator++;
+                        current = current.next;
+                    }
+                }
+
+                click() {
+                    if (this.status == "closed") {
+                        this.open();
+                    } else {
+                        this.close();
+                    }
+                }
+            }
+
+            let menu = new Menu("#myMenu");
+            listSocial.forEach((element) => {
+                let item = new Item(element.icon, element.backgroundColor);
+                menu.add(item);
+            });
+
+            $(document)
+                .delay(50)
+                .queue(function (next) {
+                    menu.open();
+                    next();
+                    $(document)
+                        .delay(1000)
+                        .queue(function (next) {
+                            menu.close();
+                            next();
+                        });
+                });
+        </script>
+    </body>
+</html>
