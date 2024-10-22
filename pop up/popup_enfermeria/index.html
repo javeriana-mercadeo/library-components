@@ -1,98 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Popup Beneficio Enfermería</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Popup Beneficio Enfermería</title>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
+    <body>
+        <div
+            class="modal fade"
+            id="benefitModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="benefitModalLabel"
+            aria-hidden="true"
+            style="display: block"
+        >
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="background-image"></div>
+                    <button id="btn-close" class="btn-close">X</button>
+                    <div class="container-info">
+                        <div class="modal-header">
+                            <div class="modal-title" id="benefitModalLabel">
+                                <lfr-editable id="text-1" type="rich-text">
+                                    Beneficio económico exclusivo del</lfr-editable
+                                >
+                                <strong id="discountRate">
+                                    <lfr-editable id="text-2" type="rich-text">50%</lfr-editable>
+                                </strong>
+                                <strong>
+                                    <lfr-editable id="text-2-3" type="rich-text">de la matrícula</lfr-editable>
+                                </strong>
+                                <lfr-editable id="text=3" type="rich-text">en la carrera de Enfermería</lfr-editable>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="modal-body">
+                            <div class="paragraph">
+                                <lfr-editable id="text-5" type="rich-text">
+                                    Estudia en la Javeriana Bogotá y postúlate para obtener un
+                                    <strong>beneficio económico del 50%</strong> sobre el valor de la matrícula, desde
+                                    el primer semestre del 2025 y durante los 8 semestres de la carrera.
+                                </lfr-editable>
+                            </div>
+                            <div class="subtitle">
+                                <h6><lfr-editable id="text-6" type="rich-text"> Información: </lfr-editable></h6>
+                            </div>
+                            <ul class="custom-list">
+                                <li>
+                                    <div class="text-list">
+                                        <lfr-editable id="text-7" type="rich-text"> Correo: </lfr-editable>
+                                        <a href="mailto:dircarreraenfermeria@javeriana.edu.co">
+                                            <lfr-editable id="mail-1" type="rich-text">
+                                                dircarreraenfermeria@javeriana.edu.co
+                                            </lfr-editable>
+                                        </a>
+                                    </div>
+                                </li>
 
-<body>
-  <div class="modal fade show" id="benefitModal" tabindex="-1" role="dialog" aria-labelledby="benefitModalLabel"
-    aria-hidden="true" style="display: block">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="background-image"></div>
-        <button id="btn-close" class="btn-close" aria-label="Close">X</button>
-        <div class="container-info">
-          <div class="modal-header">
-            <div class="modal-title" id="benefitModalLabel">
-              <lfr-editable id="text-1" type="rich-text"> Beneficio económico exclusivo del</lfr-editable>
-              <strong id="discountRate">
-                <lfr-editable id="text-2" type="rich-text">50%</lfr-editable>
-              </strong>
-              <strong>
-                <lfr-editable id="text-2-3" type="rich-text">de la matrícula</lfr-editable>
-              </strong>
-              <lfr-editable id="text=3" type="rich-text">en la carrera de Enfermería</lfr-editable>
+                                <li>
+                                    <div class="text-list">
+                                        <lfr-editable id="text-8" type="rich-text">
+                                            Teléfono: (57-601) 320 8320 - Ext. 2678 - 2658 - 2655
+                                        </lfr-editable>
+                                    </div>
+                                </li>
+
+                                <span>
+                                    <lfr-editable id="text-9" type="rich-text">
+                                        *Aplican Términos y Condiciones: Beca Ingresa 50%*
+                                    </lfr-editable>
+                                </span>
+
+                                <li>
+                                    <div class="text-list">
+                                        <lfr-editable id="text-10" type="rich-text">Inversión: </lfr-editable>
+                                        <span class="inversionDiscount">[INFORMACIÓN DINÁMICA]</span>
+                                        <lfr-editable id="text-11" type="rich-text">
+                                            para el primer semestre del 2025. (Aprovecha este valor hasta el 31 de
+                                            octubre de 2024. Luego, se harán incrementos graduales).
+                                        </lfr-editable>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="text-list">
+                                        <lfr-editable id="text-12" type="rich-text"> Días restantes: </lfr-editable>
+                                        <span class="dias">[INFORMACIÓN DINÁMICA]</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <lfr-editable id="image-modal" class="image" type="image">
+                        <img
+                            src="https://www.javeriana.edu.co/recursosdb/1372208/5640014/overlay.png"
+                            class="overlay-image"
+                        />
+                    </lfr-editable>
+                </div>
             </div>
-          </div>
-          <div class="divider"></div>
-          <div class="modal-body">
-            <div class="paragraph">
-              <lfr-editable id="text-5" type="rich-text">
-                Estudia en la Javeriana Bogotá y postúlate para obtener un
-                <strong>beneficio económico del 50%</strong> sobre el valor de la matrícula, desde el primer semestre
-                del 2025 y durante los 8 semestres de la carrera.
-              </lfr-editable>
-            </div>
-            <div class="subtitle">
-              <h6><lfr-editable id="text-6" type="rich-text"> Más información: </lfr-editable></h6>
-            </div>
-            <ul class="custom-list">
-              <li>
-                <lfr-editable id="text-7" type="rich-text"> Correo: </lfr-editable>
-                <a href="mailto:dircarreraenfermeria@javeriana.edu.co">
-                  <lfr-editable id="mail-1" type="rich-text"> dircarreraenfermeria@javeriana.edu.co </lfr-editable>
-                </a>
-              </li>
-
-              <li>
-                <lfr-editable id="text-8" type="rich-text">
-                  Número de teléfono: (57-601) 320 8320 - <br />Ext. 2678 - 2658 - 2655
-                </lfr-editable>
-              </li>
-
-              <span>
-                <lfr-editable id="text-9" type="rich-text">
-                  *Aplican Términos y Condiciones: Beca Ingresa 50%*
-                </lfr-editable>
-              </span>
-
-              <li>
-                <lfr-editable id="text-10" type="rich-text"> Inversión: </lfr-editable>
-                <span class="inversionDiscount">[INFORMACIÓN DINÁMICA]</span>
-                <lfr-editable id="text-11" type="rich-text">
-                  para el primer semestre del 2025. <br />(Aprovecha este valor hasta el 31 de octubre de 2024.<br />
-                  Después, se harán incrementos graduales).
-                </lfr-editable>
-              </li>
-
-              <li>
-                <lfr-editable id="text-12" type="rich-text"> Días restantes: </lfr-editable>
-                <span class="dias">[INFORMACIÓN DINÁMICA]</span>
-              </li>
-            </ul>
-          </div>
         </div>
-        <lfr-editable id="image-modal" class="image" type="image">
-          <img src="https://www.javeriana.edu.co/recursosdb/1372208/5640014/overlay.png" class="overlay-image" />
-        </lfr-editable>
-      </div>
-    </div>
-  </div>
 
-  <!-- Recursos tomados de la landing -->
-  <span class="fecha-cierre">30 de diciembre del 2024</span>
-  <span id="inversion">$16.003.000 / Semestre.</span>
-  <span id="contacto"></span>
+        <!-- Recursos tomados de la landing -->
+        <span class="fecha-cierre">30 de diciembre del 2024</span>
+        <span id="inversion">$16.003.000 / Semestre.</span>
+        <span id="contacto"></span>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-  <script src="./app.js"></script>
-</body>
-
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <script src="./app.js"></script>
+    </body>
 </html>
