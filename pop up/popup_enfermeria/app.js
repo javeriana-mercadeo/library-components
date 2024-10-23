@@ -3,6 +3,7 @@ $(document).ready(() => {
     // Lógica para la administración del contenido desde Liferay
     const isEditMode = document.querySelectorAll(".has-edit-mode-menu");
 
+    // Mostrar el modal si se está en modo de edición
     if (isEditMode) $("#benefitModal").modal("show");
 
     // Tener el modal cerrado por defecto
@@ -27,7 +28,6 @@ document.addEventListener("dataRendered", () => {
 
     if (validateElements(elements)) {
         renderModalDiscount(elements);
-
         $("#benefitModal").modal("show");
     }
 });
@@ -63,9 +63,13 @@ function renderModalDiscount(elements) {
     // investmentModals.forEach((item) => (item.textContent = investment.textContent));
     // discountModals.forEach((item) => (item.textContent = `$${investmentDiscount.discount.toLocaleString()}*`));
     // totalModals.forEach((item) => (item.textContent = `$${investmentDiscount.total.toLocaleString()}*`));
-    investmentModals.forEach((item) => (item.textContent = investment.textContent));
-    discountModals.forEach((item) => (item.textContent = `$${investment.textContent.toLocaleString()}*`));
-    totalModals.forEach((item) => (item.textContent = `$${investment.textContent.toLocaleString()}*`));
+    investmentModals.forEach((item) => (item.textContent = convertStringToPrice(investment.textContent)));
+    discountModals.forEach(
+        (item) => (item.textContent = `$${convertStringToPrice(investment.textContent).toLocaleString()}`)
+    );
+    totalModals.forEach(
+        (item) => (item.textContent = `$${convertStringToPrice(investment.textContent).toLocaleString()}`)
+    );
 }
 
 // Validar si los elementos existen
