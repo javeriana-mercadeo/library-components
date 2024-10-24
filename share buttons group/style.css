@@ -1,34 +1,31 @@
-.center {
-  position: absolute;
-  margin: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+.center-menu {
+  position: fixed;
+  top: 142px;
+  left: 60px;
+  width: 38px;
+  height: 38px;
+  z-index: 1000;
 }
-.center.menu {
-  width: 48px;
-  height: 48px;
-}
-.center .item {
+.center-menu .item {
   cursor: pointer;
   overflow: hidden;
   position: absolute;
-  left: calc(-50vw + 50px);
-  top: calc(-50vh + 80px);
+  left: 0;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 48px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
   background-color: white;
   border-radius: 50%;
   border: 1px solid #3b5998;
   margin: 0;
   padding: 0;
 }
-.center .item span {
+.center-menu .item span {
   border-radius: 0;
   display: block;
   height: 0;
@@ -39,61 +36,45 @@
   transition: all 0.3s;
   width: 0;
 }
-.center .item:hover span {
+.center-menu .item:hover span {
   width: 3.6rem;
   height: 3.6rem;
   border-radius: 3.6rem;
   margin: -1.8rem;
 }
-.center .item .icon-button {
+.center-menu .item .icon-button {
   text-decoration: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: white;
   border-radius: 50%;
   border: none;
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
-.center .item .icon-button:hover span {
+.center-menu .item .icon-button:hover span {
   width: 3.6rem;
   height: 3.6rem;
   border-radius: 3.6rem;
   margin: -1.8rem;
 }
-.center .item .icon-button ion-icon {
+.center-menu .item .icon-button:focus, .center-menu .item .icon-button:focus-visible, .center-menu .item .icon-button:active {
+  outline: none;
+}
+.center-menu .item .icon-button i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
   width: 100%;
   height: 100%;
-  padding: 12px;
+  padding: 10px;
+  z-index: 1;
   transition: all 0.3s;
-}
-.center .item .icon-button ion-icon.icon-twitter {
-  color: #4099ff;
-}
-.center .item .icon-button ion-icon.icon-twitter:hover {
-  color: white;
-}
-.center .item .icon-button ion-icon.icon-facebook {
-  color: #3b5998;
-}
-.center .item .icon-button ion-icon.icon-facebook:hover {
-  color: white;
-}
-.center .item .icon-button ion-icon.icon-google-plus {
-  color: #db5a3c;
-}
-.center .item .icon-button ion-icon.icon-google-plus:hover {
-  color: white;
-}
-.center .item .icon-button.twitter span {
-  background-color: #4099ff;
-}
-.center .item .icon-button.facebook span {
-  background-color: #3b5998;
-}
-.center .item .icon-button.google-plus span {
-  background-color: #db5a3c;
 }
 
 /*# sourceMappingURL=style.css.map */

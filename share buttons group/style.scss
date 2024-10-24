@@ -1,26 +1,22 @@
-$itemSize: 48px;
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+$itemSize: 38px;
 
 // Wrapper
-.center {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    &.menu {
-        width: $itemSize;
-        height: $itemSize;
-    }
+.center-menu {
+    position: fixed;
+    top: 142px;
+    left: 60px;
+    width: $itemSize;
+    height: $itemSize;
+    z-index: 1000;
 
     // Item
     .item {
         cursor: pointer;
         overflow: hidden;
         position: absolute;
-        left: calc(-50vw + 50px);
-        top: calc(-50vh + 80px);
+        left: 0;
+        top: 0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -61,10 +57,13 @@ $itemSize: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: white;
             border-radius: 50%;
             border: none;
             width: 100%;
             height: 100%;
+            margin: 0;
+            padding: 0;
 
             &:hover span {
                 width: 3.6rem;
@@ -73,53 +72,24 @@ $itemSize: 48px;
                 margin: -1.8rem;
             }
 
+            &:focus,
+            &:focus-visible,
+            &:active {
+                outline: none;
+            }
+
             // Icons styles
-            ion-icon {
+            i {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: $itemSize / 2;
                 width: 100%;
                 height: 100%;
-                padding: 12px;
+                padding: 10px;
+                z-index: 1;
 
                 transition: all 0.3s;
-
-                &.icon-twitter {
-                    color: #4099ff;
-
-                    // Hover state
-                    &:hover {
-                        color: white;
-                    }
-                }
-
-                &.icon-facebook {
-                    color: #3b5998;
-
-                    // Hover state
-                    &:hover {
-                        color: white;
-                    }
-                }
-
-                &.icon-google-plus {
-                    color: #db5a3c;
-
-                    // Hover state
-                    &:hover {
-                        color: white;
-                    }
-                }
-            }
-
-            // Specific button colors
-            &.twitter span {
-                background-color: #4099ff;
-            }
-
-            &.facebook span {
-                background-color: #3b5998;
-            }
-
-            &.google-plus span {
-                background-color: #db5a3c;
             }
         }
     }
