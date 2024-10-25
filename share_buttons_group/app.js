@@ -117,8 +117,6 @@ class Item {
     }
 
     moveTo(item) {
-        console.log(this.$element[0]);
-
         anime({
             targets: this.$element[0],
             left: item.$element.css("left"),
