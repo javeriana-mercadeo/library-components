@@ -18,13 +18,25 @@ $red-color: #c24d5e;
 .has-edit-mode-menu {
     #modalAlert,
     #buttonModalAlert {
+        display: block;
+        opacity: 1;
+        position: initial;
+        z-index: 1050;
+    }
+
+    .modal-backdrop.fade.show {
         display: none;
+        position: initial;
+        width: 0;
+        height: 0;
+        opacity: 0;
     }
 
     .modal.fade.show {
         display: block;
-        position: initial;
         opacity: 1;
+        position: initial;
+        z-index: 1050;
 
         .modal-dialog {
             position: initial !important;
@@ -77,10 +89,6 @@ $red-color: #c24d5e;
     overflow-y: auto !important;
     z-index: 9999;
     padding: 0;
-
-    .has-edit-mode-menu & {
-        display: none;
-    }
 }
 
 .modal-box {

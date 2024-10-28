@@ -5,12 +5,23 @@
 
 .has-edit-mode-menu #modalAlert,
 .has-edit-mode-menu #buttonModalAlert {
+  display: block;
+  opacity: 1;
+  position: initial;
+  z-index: 1050;
+}
+.has-edit-mode-menu .modal-backdrop.fade.show {
   display: none;
+  position: initial;
+  width: 0;
+  height: 0;
+  opacity: 0;
 }
 .has-edit-mode-menu .modal.fade.show {
   display: block;
-  position: initial;
   opacity: 1;
+  position: initial;
+  z-index: 1050;
 }
 .has-edit-mode-menu .modal.fade.show .modal-dialog {
   position: initial !important;
@@ -55,9 +66,6 @@
   overflow-y: auto !important;
   z-index: 9999;
   padding: 0;
-}
-.has-edit-mode-menu #modalAlert {
-  display: none;
 }
 
 .modal-box {
