@@ -10,6 +10,11 @@ $itemSize: 38px;
     height: $itemSize;
     z-index: 1000;
 
+    @media (max-width: 768px) {
+        top: 100px;
+        left: 20px;
+    }
+
     // Item
     .item {
         cursor: pointer;

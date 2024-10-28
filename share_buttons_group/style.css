@@ -7,6 +7,12 @@
   height: 38px;
   z-index: 1000;
 }
+@media (max-width: 768px) {
+  .center-menu {
+    top: 100px;
+    left: 20px;
+  }
+}
 .center-menu .item {
   cursor: pointer;
   overflow: hidden;
