@@ -1,0 +1,34 @@
+.btn_icon {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    background-color: #fff; // Color de fondo azul claro
+    border-radius: 10px;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: #e3f2fd;
+        color: #fff;
+
+        lfr-editable {
+            margin-top: 30px;
+        }
+    }
+
+    .icon {
+        font-size: 20px;
+        font-weight: bolder;
+        color: #f6bd30; // Color amarillo para el ícono
+        margin-right: 10px;
+    }
+
+    .text {
+        margin: 0;
+        color: #0d47a1; // Color del texto
+        font-size: 16px;
+        font-weight: 500;
+    }
+}

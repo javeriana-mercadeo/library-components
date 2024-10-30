@@ -1,0 +1,40 @@
+.blog_acordion.accordion {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  padding-left: 3rem;
+}
+.blog_acordion.accordion .accordion-item {
+  border: none;
+  border-bottom: 1px solid #4d4d4d;
+}
+.blog_acordion.accordion .accordion-item:not(.collapsed) {
+  background-color: #fff;
+}
+.blog_acordion.accordion .accordion-item .accordion-header button {
+  gap: 2rem;
+  font-family: "Gotham-Book";
+  font-size: 1.6rem;
+  border-radius: 2rem;
+  padding: 2rem;
+}
+.blog_acordion.accordion .accordion-item .accordion-header button:focus {
+  border: none;
+  box-shadow: none;
+}
+.blog_acordion.accordion .accordion-item .accordion-header button::after {
+  display: none;
+}
+.blog_acordion.accordion .accordion-item .accordion-header button img {
+  width: 2.4rem;
+}
+.blog_acordion.accordion .accordion-item .accordion-body {
+  font-family: "Gotham-Book";
+  font-size: 1.6rem;
+}
+.blog_acordion.accordion .accordion-item .accordion-body span {
+  font-family: "Gotham-Bold";
+  color: #db801f;
+}
+
+/*# sourceMappingURL=style.css.map */
