@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 240px;
+  max-width: 255px;
   background-color: #edeeef;
   border-radius: 20px;
   overflow: hidden;
@@ -17,7 +17,7 @@
 .card_blog figure {
   position: relative;
   width: 100%;
-  height: 260px;
+  height: 230px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -35,24 +35,36 @@
   width: 100%;
   height: 100%;
 }
-.card_blog figure a {
+.card_blog figure .link {
   position: absolute;
   bottom: 0;
   right: 0;
   text-decoration: none;
   font-size: 16px;
   color: #edeeef;
+  width: auto;
+  height: auto;
   background-color: #0066c8;
   border: 1px solid #0066c8;
   border-radius: 20px 0 20px 0;
   padding: 10px 30px;
   transition: all 0.3s;
 }
-.card_blog figure a:hover {
+.card_blog figure .link:hover {
   background-color: #edeeef;
   color: #0066c8;
   border: 1px solid #0066c8;
   transition: all 0.3s;
+}
+.card_blog figure .link a {
+  text-decoration: none;
+  color: #edeeef;
+  width: 100%;
+  height: 100%;
+}
+.card_blog figure .link a:hover {
+  text-decoration: none;
+  color: #0066c8;
 }
 .card_blog .container-text {
   padding: 20px;
@@ -60,12 +72,12 @@
 }
 .card_blog .container-text .title {
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   color: #666666;
   margin-bottom: 15px;
 }
 .card_blog .container-text .text {
-  font-size: 15px;
+  font-size: 14px;
   color: #666666;
 }
 
