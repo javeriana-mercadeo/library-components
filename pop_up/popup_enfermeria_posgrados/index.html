@@ -11,46 +11,80 @@
 
 <body>
   <!-- Popup Estructura -->
-  <div class="modal fade" id="promoModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <!-- Fondo con degradado y imagen -->
-        <div class="background-overlay"></div>
-        <div class="background-image" style="background-image: url('./assets/background-1.png');"></div>
-
-        <!-- Botón de cierre -->
-        <button type="button" class="close-button" data-dismiss="modal" aria-label="Close">X</button>
-
-        <!-- Contenido del Popup -->
-        <div class="content-wrapper">
-          <div class="content-info">
-            <div class="title">Estudia desde donde quieras nuestra
-              <div class="highlight">Maestría en Seguridad y Salud en el Trabajo.</div>
+  <div class="promo-modal">
+    <div class="modal fade" id="promoModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="background-overlay"></div>
+          <div
+            class="background-image"
+            style="background-image: url('https://www.javeriana.edu.co/documents/1372208/14433764/background-1.png/8eab57b1-d3c5-28e2-7511-4daac35ddd1d?t=1732579474644');"
+          ></div>
+  
+          <button id="btn-close" type="button" class="close-button" data-dismiss="modal" aria-label="Close">X</button>
+  
+          <div class="content-wrapper">
+            <div class="content-info">
+              <div class="title">
+                <lfr-editable id="popupTitle" type="risk-text">
+                  Estudia desde donde quieras nuestra
+                </lfr-editable>
+                <div class="highlight-modal">
+                  <lfr-editable id="popupHighlight" type="risk-text">
+                    Maestría en Seguridad y Salud en el Trabajo.
+                  </lfr-editable>
+                </div>
+              </div>
+  
+              <div class="description">
+                <lfr-editable id="popupDescription1" type="risk-text">
+                  Con nueva modalidad presencial mediada por tecnología (remoto sincrónico).
+                </lfr-editable>
+              </div>
+              <div class="description">
+                <lfr-editable id="popupDescription2" type="risk-text">
+                  Si estás fuera de Bogotá, cursa nuestra Maestría de forma
+                  <span class="bold">remota y alcanza un nuevo nivel profesional.</span>
+                </lfr-editable>
+              </div>
+  
+              <div class="benefits">
+                <div class="title">
+                  <lfr-editable id="popupBenefitsTitle" type="risk-text">
+                    Además, cuentas con estos beneficios:
+                  </lfr-editable>
+                </div>
+                <ul>
+                  <li>
+                    <lfr-editable id="popupBenefit1" type="risk-text">
+                      Formación de alta calidad desde cualquier lugar.
+                    </lfr-editable>
+                  </li>
+                  <li>
+                    <lfr-editable id="popupBenefit2" type="risk-text">
+                      Flexibilidad para adaptarse a tus necesidades.
+                    </lfr-editable>
+                  </li>
+                  <li>
+                    <lfr-editable id="popupBenefit3" type="risk-text">
+                      Oportunidad de crecimiento profesional.
+                    </lfr-editable>
+                  </li>
+                </ul>
+              </div>
+  
+              <div class="footer-text">
+                <lfr-editable id="popupFooterText" type="risk-text">
+                  SNIES 106575 Res. de Registro Calificado 24571 del 18 de diciembre de 2023. Vigencia 7 años.
+                </lfr-editable>
+              </div>
             </div>
-            <div class="description">
-              Con nueva modalidad presencial mediada por tecnología (remoto sincrónico).
+  
+            <div class="content-button">
+              <lfr-editable id="popupButtonText" type="risk-text">
+                <button class="cta-button">Regístrate aquí</button>
+              </lfr-editable>
             </div>
-            <div class="description">
-              Si estás fuera de Bogotá, cursa nuestra Maestría de forma <div class="bold">remota y alcanza un nuevo
-                nivel
-                profesional.</div>
-            </div>
-
-            <div class="benefits">
-              <div class="title">Además, cuentas con estos beneficios:</div>
-              <ul>
-                <li>Formación de alta calidad desde cualquier lugar.</li>
-                <li>Flexibilidad para adaptarse a tus necesidades.</li>
-                <li>Oportunidad de crecimiento profesional.</li>
-              </ul>
-            </div>
-
-            <div class="footer-text">SNIES 106575 Res. de Registro Calificado 24571 del 18 de diciembre de 2023.
-              Vigencia 7 años.</div>
-          </div>
-
-          <div class="content-button">
-            <button class="cta-button">Regístrate aquí</button>
           </div>
         </div>
       </div>

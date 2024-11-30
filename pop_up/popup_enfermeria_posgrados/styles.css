@@ -1,15 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-
-.modal-content {
+.promo-modal .modal-content {
     background-color: transparent;
     border: none;
     border-radius: 10px;
     overflow: hidden;
     padding: 20px;
+    margin: 0 auto;
+    max-width: 800px;
+    overflow: hidden;
+    padding: 0;
     position: relative;
 }
 
-.background-overlay {
+.promo-modal .background-overlay {
     background: linear-gradient(90deg, #008ec3 0%, #6dc4e4 70%, rgb(254 254 254 / 0%) 100%);
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
     height: 100%;
@@ -20,7 +23,7 @@
     z-index: 1;
 }
 
-.background-image {
+.promo-modal .background-image {
     background-size: cover;
     height: 100%;
     left: 150px;
@@ -30,11 +33,11 @@
     z-index: 0;
 }
 
-.content-wrapper {
+.promo-modal .content-wrapper {
     display: flex;
 }
 
-.content-info {
+.promo-modal .content-info {
     color: #fff;
     padding: 20px;
     position: relative;
@@ -42,32 +45,25 @@
     z-index: 2;
 }
 
-.title {
+.promo-modal .title {
     font-size: 1.8em;
     line-height: 32px;
 }
 
-.highlight {
-    color: #FFCC00;
+.promo-modal .highlight-modal {
+    color: #ffcc00;
     font-weight: bold;
     line-height: 32px;
-    background:transparent;
 }
 
-.description {
+.promo-modal .description {
     font-size: 1.1em;
     line-height: 20px;
     margin-top: 10px;
 }
 
-.bold {
-    display: inline;
-    font-weight: bold;
-    line-height: 20px;
-}
-
-.benefits .title {
-    background-color: #FFCC00;
+.promo-modal .benefits .title {
+    background-color: #ffcc00;
     border-radius: 0px 12px 12px 0px;
     color: #017daa;
     font-size: 1.1em;
@@ -77,47 +73,38 @@
     padding: 0px 40px;
 }
 
-.benefits ul {
-    padding: 10px 10px;
-}
-
-.benefits ul li {
-    margin-top: 0px;
-}
-
-.content-button {
+.promo-modal .content-button {
     align-items: flex-end;
     display: flex;
     justify-content: center;
     padding-bottom: 40px;
     width: 45%;
+    position: relative;
 }
 
-.cta-button {
-    background-color: #FFCC00;
+.promo-modal .cta-button {
+    background-color: #ffcc00;
     border: none;
     border-radius: 5px;
     color: #fff;
     cursor: pointer;
-    display: inline-block;
     font-size: 1.6em;
     font-weight: bold;
-    margin-top: 20px;
     padding: 5px 35px;
-    text-align: center;
-    z-index: 1;
+    position: relative;
+    z-index: 2;
 }
 
 .footer-text {
     color: #fff;
     font-size: 9px;
-    margin-bottom: -30px;
-    margin-left: -25px;
     margin-top: 30px;
+    margin-bottom: 0px;
+    margin-left: 0px;
 }
 
-.close-button {
-    background: #FFCC00;
+.promo-modal .close-button {
+    background: #ffcc00;
     border: none;
     border-radius: 50%;
     color: #fff;
@@ -126,96 +113,38 @@
     height: 30px;
     position: absolute;
     right: 10px;
-    text-align: center;
     top: 10px;
     width: 30px;
     z-index: 2;
 }
 
+/* Media queries */
 @media (max-width: 768px) {
-    .modal-dialog {
-        max-width: 95%;
-    }
-
-    .content-wrapper {
-        align-items: center; 
+    .promo-modal .content-wrapper {
         flex-direction: column;
     }
 
-    .content-info,
-    .content-button {
-        margin-top: 12px;
+    .promo-modal .content-info,
+    .promo-modal .content-button {
         width: 100%;
     }
 
-    .background-image {
-        background-attachment: fixed;
-        background-position: center;
-        background-size: cover;
-        width: 100%;
-    
-    }
-
-    .background-overlay {
+    .promo-modal .background-overlay {
         width: 100%;
     }
 
-    .content-info {
-        padding: 10px;
-    }
-
-    .title {
-        font-size: 1.5em;
-    }
-
-    .description {
-        font-size: 1em;
-        line-height: 1.4;
-    }
-
-    .cta-button {
-        font-size: 1.4em;
-        padding: 10px 20px;
+    .promo-modal .background-image {
+        left: 0px;
+        width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    .modal-dialog {
-        max-width: 95%;
-    }
-
-    .content-wrapper {
-        padding: 10px;
-    }
-
-    .title {
+    .promo-modal .title {
         font-size: 1.3em;
-        line-height: 1.2;
     }
 
-    .description {
+    .promo-modal .description {
         font-size: 0.9em;
-    }
-
-    .benefits .title {
-        font-size: 1em;
-        margin-left: -20px;
-        padding: 0 20px;
-    }
-
-    .footer-text {
-        font-size: 8px;
-        margin-left: 0;
-    }
-
-    .cta-button {
-        font-size: 1.2em;
-        padding: 8px 16px;
-    }
-
-    .close-button {
-        font-size: 1em;
-        height: 25px;
-        width: 25px;
     }
 }
