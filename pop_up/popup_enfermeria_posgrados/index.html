@@ -1,100 +1,126 @@
 <!DOCTYPE html>
 <html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Popup Promocional</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Popup Promocional</title>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
+    <body>
+        <!-- Popup Estructura -->
+        <div class="promo-modal">
+            <div class="modal fade" id="promoModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="background-overlay"></div>
 
-<body>
-  <!-- Popup Estructura -->
-  <div class="promo-modal">
-    <div class="modal fade" id="promoModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="background-overlay"></div>
-          <div
-            class="background-image"
-            style="background-image: url('https://www.javeriana.edu.co/documents/1372208/14433764/background-1.png/8eab57b1-d3c5-28e2-7511-4daac35ddd1d?t=1732579474644');"
-          ></div>
-  
-          <button id="btn-close" type="button" class="close-button" data-dismiss="modal" aria-label="Close">X</button>
-  
-          <div class="content-wrapper">
-            <div class="content-info">
-              <div class="title">
-                <lfr-editable id="popupTitle" type="risk-text">
-                  Estudia desde donde quieras nuestra
-                </lfr-editable>
-                <div class="highlight-modal">
-                  <lfr-editable id="popupHighlight" type="risk-text">
-                    Maestría en Seguridad y Salud en el Trabajo.
-                  </lfr-editable>
+                        <lfr-editable id="image-banner" class="background-image" type="image">
+                            <img src="https://www.javeriana.edu.co/recursosdb/1372208/14433764/background-1.png" />
+                        </lfr-editable>
+
+                        <button
+                            id="promoModal-btn-close"
+                            type="button"
+                            class="close-button"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            X
+                        </button>
+
+                        <div class="content-wrapper">
+                            <div class="content-info">
+                                <div class="title">
+                                    <lfr-editable id="popupTitle" type="rich-text">
+                                        Estudia desde donde quieras nuestra
+                                    </lfr-editable>
+                                    <div class="highlight-modal">
+                                        <lfr-editable id="popupHighlight" type="rich-text">
+                                            Maestría en Seguridad y Salud en el Trabajo.
+                                        </lfr-editable>
+                                    </div>
+                                </div>
+
+                                <div class="description">
+                                    <lfr-editable id="popupDescription1" type="rich-text">
+                                        Con nueva modalidad presencial mediada por tecnología (remoto sincrónico).
+                                    </lfr-editable>
+                                </div>
+                                <div class="description">
+                                    <lfr-editable id="popupDescription2" type="rich-text">
+                                        Si estás fuera de Bogotá, cursa nuestra Maestría de forma
+                                        <span class="bold">remota y alcanza un nuevo nivel profesional.</span>
+                                    </lfr-editable>
+                                </div>
+
+                                <div class="benefits">
+                                    <div class="title">
+                                        <lfr-editable id="popupBenefitsTitle" type="rich-text">
+                                            Además, cuentas con estos beneficios:
+                                        </lfr-editable>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <lfr-editable id="popupBenefit1" type="rich-text">
+                                                Formación de alta calidad desde cualquier lugar.
+                                            </lfr-editable>
+                                        </li>
+                                        <li>
+                                            <lfr-editable id="popupBenefit2" type="rich-text">
+                                                Flexibilidad para adaptarse a tus necesidades.
+                                            </lfr-editable>
+                                        </li>
+                                        <li>
+                                            <lfr-editable id="popupBenefit3" type="rich-text">
+                                                Oportunidad de crecimiento profesional.
+                                            </lfr-editable>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="footer-text">
+                                    <lfr-editable id="popupFooterText" type="rich-text">
+                                        SNIES 106575 Res. de Registro Calificado 24571 del 18 de diciembre de 2023.
+                                        Vigencia 7 años.
+                                    </lfr-editable>
+                                </div>
+                            </div>
+
+                            <div class="content-button">
+                                <button class="cta-button">
+                                    <lfr-editable id="popupButtonText" type="link">
+                                        <a href="">Regístrate aquí</a>
+                                    </lfr-editable>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-  
-              <div class="description">
-                <lfr-editable id="popupDescription1" type="risk-text">
-                  Con nueva modalidad presencial mediada por tecnología (remoto sincrónico).
-                </lfr-editable>
-              </div>
-              <div class="description">
-                <lfr-editable id="popupDescription2" type="risk-text">
-                  Si estás fuera de Bogotá, cursa nuestra Maestría de forma
-                  <span class="bold">remota y alcanza un nuevo nivel profesional.</span>
-                </lfr-editable>
-              </div>
-  
-              <div class="benefits">
-                <div class="title">
-                  <lfr-editable id="popupBenefitsTitle" type="risk-text">
-                    Además, cuentas con estos beneficios:
-                  </lfr-editable>
-                </div>
-                <ul>
-                  <li>
-                    <lfr-editable id="popupBenefit1" type="risk-text">
-                      Formación de alta calidad desde cualquier lugar.
-                    </lfr-editable>
-                  </li>
-                  <li>
-                    <lfr-editable id="popupBenefit2" type="risk-text">
-                      Flexibilidad para adaptarse a tus necesidades.
-                    </lfr-editable>
-                  </li>
-                  <li>
-                    <lfr-editable id="popupBenefit3" type="risk-text">
-                      Oportunidad de crecimiento profesional.
-                    </lfr-editable>
-                  </li>
-                </ul>
-              </div>
-  
-              <div class="footer-text">
-                <lfr-editable id="popupFooterText" type="risk-text">
-                  SNIES 106575 Res. de Registro Calificado 24571 del 18 de diciembre de 2023. Vigencia 7 años.
-                </lfr-editable>
-              </div>
             </div>
-  
-            <div class="content-button">
-              <lfr-editable id="popupButtonText" type="risk-text">
-                <button class="cta-button">Regístrate aquí</button>
-              </lfr-editable>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-  <script src="./app.js"></script>
-</body>
-
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"
+        ></script>
+        <script src="./app.js"></script>
+    </body>
 </html>
