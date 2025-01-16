@@ -1,144 +1,18 @@
-:root {
-  /* * Colores institucionales (por defecto) */
+/* Error: ("default": #026fc1, "1000": #f0f8ff, "900": #e0effe, "800": #bae0fd, "700": #7dc8fc, "600": #38acf8, "500": #0e91e9, "400": #026fc1, "300": #035ba1, "200": #074e85, "100": #0c416e, "0": #082949) isn't a valid CSS value.
+ *     ,
+ * 355 |             --#{$color-name}: #{$color-value};
+ *     |                                 ^^^^^^^^^^^^
+ *     '
+ *   style.scss 355:33  generate-theme()
+ *   style.scss 374:5   root stylesheet */
 
-  /* --- START - Primary Color --- */
-  --color-default-primary: #2c5697;
-  --color-default-primary-50: #f3f6fc;
-  --color-default-primary-100: #e7edf7;
-  --color-default-primary-200: #c9d7ee;
-  --color-default-primary-300: #99b6e0;
-  --color-default-primary-400: #6290ce;
-  --color-default-primary-500: #3e72b9;
-  --color-default-primary-600: var(--color-default-primary);
-  --color-default-primary-700: #26477e;
-  --color-default-primary-800: #233e69;
-  --color-default-primary-900: #223658;
-  --color-default-primary-950: #16223b;
-
-  --color-rgb-default-primary: rgb(44, 86, 151);
-
-  /* --- START - Secondary Color --- */
-  --color-default-secondary: #f8cd00;
-  --color-default-secondary-50: #ffffe7;
-  --color-default-secondary-100: #ffffc1;
-  --color-default-secondary-200: #fffb86;
-  --color-default-secondary-300: #fff141;
-  --color-default-secondary-400: #ffe20d;
-  --color-default-secondary-500: var(--color-default-secondary);
-  --color-default-secondary-600: #d19b00;
-  --color-default-secondary-700: #a66e02;
-  --color-default-secondary-800: #89560a;
-  --color-default-secondary-900: #74460f;
-  --color-default-secondary-950: #442404;
-
-  --color-rgb-default-secondary: rgb(248, 205, 0);
-
-  /* --- START - Neutral --- */
-  --color-neutral: #ffffff;
-
-  --color-neutral-50: var(--color-neutral);
-  --color-neutral-100: #efefef;
-  --color-neutral-200: #dcdcdc;
-  --color-neutral-300: #bdbdbd;
-  --color-neutral-400: #989898;
-  --color-neutral-500: #7c7c7c;
-  --color-neutral-600: #656565;
-  --color-neutral-700: #525252;
-  --color-neutral-800: #464646;
-  --color-neutral-900: #3d3d3d;
-  --color-neutral-950: #292929;
-
-  --color-rgb-neutral: rgb(255, 255, 255);
-
-  /* --- START - Neutral Variant --- */
-
-  --color-neutral-variant: #96937f;
-  --color-neutral-variant-50: #f4f3f1;
-  --color-neutral-variant-100: #e7e5e0;
-  --color-neutral-variant-200: #d1cfc5;
-  --color-neutral-variant-300: #b4b2a2;
-  --color-neutral-variant-400: var(--color-neutral-variant);
-  --color-neutral-variant-500: #7d7b65;
-  --color-neutral-variant-600: #615f4f;
-  --color-neutral-variant-700: #4c4b3f;
-  --color-neutral-variant-800: #3f3e35;
-  --color-neutral-variant-900: #373630;
-  --color-neutral-variant-950: #1c1b17;
-
-  --color-rgb-neutral-variant: rgb(150, 147, 127);
-
-  /* --- START - Success --- */
-
-  --color-success: #36b377;
-  --color-success-50: #f3fff9;
-  --color-success-100: #deffef;
-  --color-success-200: #b9f9da;
-  --color-success-300: #9ae9c3;
-  --color-success-400: #79d2a7;
-  --color-success-500: var(--color-success);
-  --color-success-600: #289a64;
-  --color-success-700: #1a784b;
-  --color-success-800: #0e5b36;
-  --color-success-900: #073a22;
-  --color-success-950: #032616;
-
-  --color-rgb-success: rgb(54, 179, 119);
-
-  /* --- START - color-Danger --- */
-  --color-danger: #ff1200;
-  --color-danger-50: #fff1f0;
-  --color-danger-100: #ffc5c0;
-  --color-danger-200: #ffa099;
-  --color-danger-300: #ff796f;
-  --color-danger-400: #ff5245;
-  --color-danger-500: var(--color-danger);
-  --color-danger-600: #d40f00;
-  --color-danger-700: #aa0c00;
-  --color-danger-800: #800900;
-  --color-danger-900: #550600;
-  --color-danger-950: #2b0300;
-
-  --color-rgb-danger: rgb(255, 18, 0);
-
-  /* --- START - Warning --- */
-  --color-warning: #f2bf2e;
-  --color-warning-50: #fffaed;
-  --color-warning-100: #fff3d2;
-  --color-warning-200: #ffe6a3;
-  --color-warning-300: #ffd76a;
-  --color-warning-400: var(--color-warning);
-  --color-warning-500: #d49d00;
-  --color-warning-600: #b48500;
-  --color-warning-700: #8c6800;
-  --color-warning-800: #644a00;
-  --color-warning-900: #443200;
-  --color-warning-950: #2d2100;
-
-  --color-rgb-warning: rgb(242, 191, 46);
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: (\"default\": #026fc1, \"1000\": #f0f8ff, \"900\": #e0effe, \"800\": #bae0fd, \"700\": #7dc8fc, \"600\": #38acf8, \"500\": #0e91e9, \"400\": #026fc1, \"300\": #035ba1, \"200\": #074e85, \"100\": #0c416e, \"0\": #082949) isn't a valid CSS value.\a     \2577 \a 355 \2502              --#{$color-name}: #{$color-value};\d\a     \2502                                  ^^^^^^^^^^^^\a     \2575 \a   style.scss 355:33  generate-theme()\a   style.scss 374:5   root stylesheet";
 }
-
-:root[data-theme="arquitectura-y-diseno"] {
-  --color-primary: #d1345b; /* Color 1 de la facultad */
-  --color-secondary: #f96f8e; /* Color 2 de la facultad */
-  --color-tertiary: var(--color-default-tertiary); /* Faltante, usa el institucional */
-  --color-quaternary: var(--color-default-quaternary);
-  --color-quinary: var(--color-default-quinary);
-}
-
-:root[data-theme="artes"] {
-  --color-primary: #6a0dad;
-  --color-secondary: #9c4dcc;
-  --color-tertiary: var(--color-default-tertiary);
-  --color-quaternary: var(--color-default-quaternary);
-  --color-quinary: var(--color-default-quinary);
-}
-
-:root[data-theme="ciencias"] {
-  --color-primary: #4caf50; /* Color 1 de la facultad */
-  --color-secondary: #81c784; /* Color 2 de la facultad */
-  --color-tertiary: #a5d6a7; /* Color 3 de la facultad */
-  --color-quaternary: var(--color-default-quaternary);
-  --color-quinary: var(--color-default-quinary);
-}
-
-/* Continúa con los temas para cada facultad, asegurando siempre 5 colores */
