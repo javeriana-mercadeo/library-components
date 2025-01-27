@@ -1,0 +1,85 @@
+@use 'variables'as *;
+@use 'mixins'as *;
+
+.why-javeriana {
+  padding: $spacing-lg;
+  text-align: center;
+
+  &__title {
+    font-size: $font-size-h2;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-md;
+    color: $color-text;
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-lg;
+
+    @media (max-width: $breakpoint-md) {
+      flex-direction: column;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    text-align: left;
+
+    @media (max-width: $breakpoint-md) {
+      text-align: center;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    margin-bottom: $spacing-md;
+  }
+
+  .ph {
+    font-size: 2rem;
+    color: $primary-color;
+  }
+
+  &__subtitle {
+    font-size: $font-size-h3;
+    font-weight: $font-weight-bold;
+    color: $color-text;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__text {
+    font-size: $font-size-p;
+    color: $color-muted-text;
+  }
+
+  &__image {
+    flex: 1;
+
+    img {
+      max-width: 100%;
+      border-radius: $border-radius-lg;
+    }
+  }
+}
+
+.why-javeriana__text {
+  max-height: 3rem;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+
+  &.expanded {
+    max-height: none;
+  }
+}
+
+.why-javeriana__toggle {
+  background: none;
+  border: none;
+  color: $primary-color;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+}

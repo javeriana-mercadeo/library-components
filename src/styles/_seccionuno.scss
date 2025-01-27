@@ -1,0 +1,132 @@
+@use 'variables'as *;
+@use 'mixins'as *;
+
+.program-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  padding: 2rem 5rem;
+  gap: 2rem;
+
+  &__content {
+    flex: 1 1 50%;
+    max-width: 600px;
+  }
+
+  &__title_facultad {
+    @include text-style($font-size-small, $font-weight-bold, $letter-spacing-normal, $line-height-base);
+    color: $primary-color;
+  }
+
+  &__title {
+    @include text-style($font-size-h1, $font-weight-bold, $letter-spacing-normal, $line-height-heading);
+    color: $color-text;
+  }
+
+  .highlight {
+    color: $primary-color;
+  }
+
+  &__snies {
+    @include text-style($font-size-small, $font-weight-regular, $letter-spacing-normal, $line-height-base);
+    color: $gray-600;
+  }
+
+  &__description {
+    font-size: 1rem;
+    color: $color-muted-text;
+    margin-bottom: 1rem;
+  }
+
+  &__image {
+    flex: 1 1 40%;
+    display: flex;
+    justify-content: end;
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  .program-details-row {
+    display: flex;
+
+    &__item {
+      display: flex;
+      align-items: flex-start;
+      gap: $spacing-md;
+    }
+
+    &__icon_container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: $primary-color;
+    }
+
+    .ph {
+      color: $text-light;
+      font-size: 22px;
+    }
+  }
+
+  .program-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-lg;
+    padding: $spacing-md 0;
+
+    &__item {
+      display: flex;
+      align-items: flex-start;
+      gap: $spacing-md;
+    }
+
+    &__icon_container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: $primary-color;
+    }
+
+    .ph {
+      color: $text-light;
+      font-size: 22px;
+    }
+
+    &__label {
+      font-size: $font-size-small;
+      color: $gray-700;
+    }
+
+    &__value {
+      font-size: $font-size-p;
+      font-weight: $font-weight-bold;
+      color: $color-text;
+    }
+
+    &__note {
+      font-size: $font-size-small;
+      color: $gray-500;
+      margin-top: 12px;
+    }
+  }
+
+  @media (max-width: $breakpoint-md) {
+    flex-direction: column;
+    text-align: center;
+
+    &__content,
+    &__image {
+      flex: 1 1 100%;
+    }
+  }
+}

@@ -1,52 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="./src/styles/style.css" />
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous" />
-  </head>
-  <body id="body">
-    <!-- Header -->
-    <header id="header"></header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./styles/main.css" />
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+</head>
 
-    <!-- Primera sección | Banner más formulario -->
-    <section id="banner"></section>
+<body id="body">
+  <!-- Header -->
+  <header class="header">
+    <div class="header__logo">
+      <img src="./assets/images/logo.svg" alt="Logo" class="header__logo-image">
+    </div>
+    <nav class="header__nav">
+      <ul class="header__nav-list">
+        <li><a href="#" class="header__nav-link">Sobre el Programa</a></li>
+        <li><a href="#" class="header__nav-link">Proceso de Inscripción</a></li>
+        <li><a href="#" class="header__nav-link">Centro de Ayuda</a></li>
+      </ul>
+    </nav>
+    <div class="header__cta">
+      <button class="button--secondary">Recibe más Información</button>
+      <button class="button--primary">Inscríbete Ahora!</button>
+    </div>
+    <button class="header__menu-toggle" id="menu-toggle">&#9776;</button>
+    <div class="header__mobile-menu" id="mobile-menu">
+      <ul class="header__mobile-menu-list">
+        <li><a href="#" class="header__mobile-menu-list-link">Sobre el Programa</a></li>
+        <li><a href="#" class="header__mobile-menu-list-link">Proceso de Inscripción</a></li>
+        <li><a href="#" class="header__mobile-menu-list-link">Centro de Ayuda</a></li>
+      </ul>
+      <ul class="header__mobile-menu-cta">
+        <li><a href="#" class="header__mobile-menu-cta-link">Escríbenos por WhatsApp</a></li>
+        <li><a href="#" class="header__mobile-menu-cta-link">Recibe más Información</a></li>
+        <li><a href="#" class="header__mobile-menu-cta-link">Inscríbete Ahora!</a></li>
+      </ul>
+    </div>
+  </header>
 
-    <!-- Segunda sección | Razones para estudiar en la Javeriana -->
-    <section id="programs"></section>
+  <!-- Sección dos -->
+  <section class="program-info">
+    <div class="program-info__content">
+      <p class="program-info__title_facultad">Facultad de Ingeniería</p>
+      <h2 class="program-info__title">Estudia <span class="highlight">Ingeniería Civil</span> y Crea Soluciones que
+        impactan el Futuro.</h2>
+      <p class="program-info__snies">SNIES 959 </p>
+      <p class="program-info__description">
+        Nuestra carrera de Ingeniería Civil forma <strong>líderes en construcción sostenible</strong>. Nuestros
+        estudiantes se
+        especializan en áreas como edificación, infraestructura vial e hidrotecnia, desarrollando proyectos que
+        transforman la sociedad con responsabilidad y conciencia ambiental.
+      </p>
+      <section class="program-details">
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-graduation-cap"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Título</span>
+            <p class="program-details__value"><strong>Ingeniería Civil</strong></p>
+          </div>
+        </div>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-student"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Nivel Académico</span>
+            <p class="program-details__value"><strong>Pregrado</strong></p>
+          </div>
+        </div>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-calendar-dots"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Duración</span>
+            <p class="program-details__value"><strong>Ocho (8) semestres.</strong></p>
+          </div>
+        </div>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-sun"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Modalidad</span>
+            <p class="program-details__value"><strong>Presencial / Diurna</strong></p>
+          </div>
+        </div>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-piggy-bank"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Inversión Semestre</span>
+            <p class="program-details__value"><strong>$18,059,000 Semestral*</strong></p>
+          </div>
+        </div>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-sun"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Costo Inscripción</span>
+            <p class="program-details__value"><strong>$150.000</strong></p>
+          </div>
+        </div>
+      </section>
+      <section class="program-details-row">
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-money"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Fechas de cierre de inscripciones</span><br>
+            <strong>Segundo semestre 2025:</strong> 30 de enero de 2025<br>
+            <strong>Primer semestre 2026:</strong> 30 de junio de 2025<br>
+            <strong>Segundo semestre 2026:</strong> 30 de enero de 2026
+          </div>
+        </div>
+      </section>
+      <p class="program-details__note">
+        *<strong>Aspirantes 2025:</strong> Precio especial hasta el 08 de noviembre de 2024. Después aplicará el costo
+        2025.
+      </p>
+    </div>
+    <div class="program-info__image">
+      <img src="./assets/images/program-image.png" alt="Ingeniería Civil">
+    </div>
+  </section>
 
-    <!-- Tercera sección | Financiación -->
-    <section id="finance"></section>
+  <!-- Sección dos -->
+  <section class="subjects-carousel">
+    <h2 class="subjects-carousel__title">Materias por Semestre</h2>
+    <button class="button button--primary">Descargar Plan de Estudios</button>
+    <div class="subjects-carousel__wrapper">
+      <div class="subjects-carousel__track">
+        <div class="subjects-carousel__item">
+          <div class="card">
+            <span class="card__label">Text</span>
+            <h3 class="card__title">Heading</h3>
+            <ul class="card__list">
+              <li>✔ Item Text</li>
+              <li>✔ Item Text</li>
+              <li>✔ Item Text</li>
+              <li>✔ Item Text</li>
+              <li>✔ Item Text</li>
+              <li>✔ Item Text</li>
+            </ul>
+            <p class="card__credits"><strong>19 Créditos</strong></p>
+          </div>
+        </div>
+        <div class="subjects-carousel__item">
+          <div class="card">
+            <span class="card__label">Text</span>
+            <h3 class="card__title">Heading</h3>
+            <ul class="card__list">
+              <li>✔ Item Text</li>
+              <li>✔ Item Text</li>
+              <li>✔ Item Text</li>
+              <li>✔ Item Text</li>
+              <li>✔ Item Text</li>
+              <li>✔ Item Text</li>
+            </ul>
+            <p class="card__credits"><strong>19 Créditos</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="subjects-carousel__btn subjects-carousel__btn--prev">&#10094;</button>
+    <button class="subjects-carousel__btn subjects-carousel__btn--next">&#10095;</button>
+  </section>
 
-    <!-- Cuarta sección | Pasos para inscribirte -->
-    <section id="graduates"></section>
+  <!-- Sección tres -->
+  <section class="program-profile">
+    <h2 class="program-profile__title">Este programa es para ti si...</h2>
+    <div class="program-profile__container">
+      <div class="program-profile__card">
+        <img src="./assets/images/perfil-ingreso.png" alt="Perfil de Ingreso" class="program-profile__image">
+        <div class="program-profile__content">
+          <h3 class="program-profile__subtitle">Perfil de Ingreso</h3>
+          <p class="program-profile__text">
+            La carrera de Ingeniería Civil es ideal si te interesa resolver problemas en diseño,
+            construcción y operación de infraestructura. Requiere habilidades en matemáticas,
+            lectura, comunicación verbal y trabajo en equipo.
+          </p>
+        </div>
+      </div>
+      <div class="program-profile__card">
+        <img src="./assets/images/perfil-egreso.png" alt="Perfil de Egreso" class="program-profile__image">
+        <div class="program-profile__content">
+          <h3 class="program-profile__subtitle">Perfil de Egreso</h3>
+          <p class="program-profile__text">
+            Los egresados de Ingeniería Civil son analíticos, éticos y comprometidos con el marco social,
+            económico y ambiental. Lideran y colaboran en equipos interdisciplinarios para lograr
+            los objetivos de empresas y organizaciones.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Cuarta sección | Pasos para inscribirte -->
-    <section id="inscription"></section>
+  <!-- Seccion cuatro -->
+  <section class="why-javeriana">
+    <h2 class="why-javeriana__title">¿Por qué elegir la Javeriana?</h2>
+    <div class="why-javeriana__container">
+      <div class="why-javeriana__content">
+        <div class="why-javeriana__item">
+          <i class="ph ph-graduation-cap"></i>
+          <div>
+            <h3 class="why-javeriana__subtitle">Doble titulación</h3>
+            <p class="why-javeriana__text">
+              Doble titulación con el Politécnico de Torino (Italia), donde podrás adelantar
+              asignaturas de posgrado antes de terminar la carrera.
+            </p>
+          </div>
+        </div>
+        <div class="why-javeriana__item">
+          <i class="ph ph-certificate"></i>
+          <div>
+            <h3 class="why-javeriana__subtitle">Acreditación nacional</h3>
+            <p class="why-javeriana__text">
+              Acreditados con Alta Calidad por el Ministerio de Educación, destacando
+              la excelencia y calidad de nuestro programa educativo.
+            </p>
+          </div>
+        </div>
+        <div class="why-javeriana__item">
+          <i class="ph ph-books"></i>
+          <div>
+            <h3 class="why-javeriana__subtitle">Múltiple programa</h3>
+            <p class="why-javeriana__text">
+              Tendrás la posibilidad de hacer dos o más carreras simultáneamente,
+              de acuerdo con tus intereses profesionales.
+            </p>
+          </div>
+        </div>
+        <div class="why-javeriana__item">
+          <i class="ph ph-user-circle"></i>
+          <div>
+            <h3 class="why-javeriana__subtitle">Consejería Académica</h3>
+            <p class="why-javeriana__text">
+              Te acompañamos con apoyo académico y personal, guiados por un profesor
+              que ofrece estrategias personalizadas para tu bienestar integral.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="why-javeriana__image">
+        <img src="./assets/images/why-javeriana.png" alt="Estudiantes en laboratorio">
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer id="footer"></footer>
+  <script>
+    // Header
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('header__mobile-menu--open');
+      document.dispatchEvent(new CustomEvent('menuToggled', { detail: { open: mobileMenu.classList.contains('header__mobile-menu--open') } }));
+    });
 
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"></script>
+    // Sección dos
+    document.addEventListener("DOMContentLoaded", function () {
+      const track = document.querySelector(".subjects-carousel__track");
+      const prevBtn = document.querySelector(".subjects-carousel__btn--prev");
+      const nextBtn = document.querySelector(".subjects-carousel__btn--next");
+      const items = document.querySelectorAll(".subjects-carousel__item");
+      const itemWidth = items[0].offsetWidth + 16;
+      let index = 0;
 
-    <script src="./src/scripts/main.js"></script>
-  </body>
+      function updateCarousel() {
+        track.style.transform = `translateX(-${index * itemWidth}px)`;
+      }
+
+      nextBtn.addEventListener("click", () => {
+        if (index < items.length - 1) {
+          index++;
+          updateCarousel();
+        }
+      });
+
+      prevBtn.addEventListener("click", () => {
+        if (index > 0) {
+          index--;
+          updateCarousel();
+        }
+      });
+    });
+
+    // Seccion cuatro
+    document.querySelectorAll('.why-javeriana__item').forEach(item => {
+      const text = item.querySelector('.why-javeriana__text');
+      const toggle = document.createElement('button');
+      toggle.textContent = 'Leer Más +';
+      toggle.classList.add('why-javeriana__toggle');
+
+      toggle.addEventListener('click', () => {
+        text.classList.toggle('expanded');
+        toggle.textContent = text.classList.contains('expanded') ? 'Leer Menos −' : 'Leer Más +';
+      });
+
+      item.appendChild(toggle);
+    });
+  </script>
+</body>
+
 </html>

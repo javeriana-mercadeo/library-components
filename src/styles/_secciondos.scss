@@ -1,0 +1,46 @@
+@use 'variables'as *;
+@use 'mixins'as *;
+
+.subjects-carousel {
+  text-align: center;
+  position: relative;
+  padding: 2rem 0;
+
+  &__wrapper {
+    overflow: hidden;
+    width: 100%;
+    margin: auto;
+  }
+
+  &__track {
+    display: flex;
+    gap: $spacing-md;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &__item {
+    min-width: 300px;
+    flex: 0 0 auto;
+  }
+
+  &__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: $primary-color;
+    color: $text-light;
+    border: none;
+    padding: $spacing-sm $spacing-md;
+    cursor: pointer;
+    border-radius: $border-radius-md;
+    font-size: 1.5rem;
+
+    &--prev {
+      left: 10px;
+    }
+
+    &--next {
+      right: 10px;
+    }
+  }
+}
