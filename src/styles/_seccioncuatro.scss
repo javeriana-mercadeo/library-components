@@ -1,85 +1,68 @@
-@use 'variables'as *;
+@use 'variables' as *;
 @use 'mixins'as *;
 
 .why-javeriana {
   padding: $spacing-lg;
+  margin: $spacing-lg;
   text-align: center;
 
   &__title {
     font-size: $font-size-h2;
     font-weight: $font-weight-bold;
-    margin-bottom: $spacing-md;
+    margin-bottom: $spacing-lg;
     color: $color-text;
   }
 
   &__container {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
     gap: $spacing-lg;
+    margin-top: $spacing-lg;
 
-    @media (max-width: $breakpoint-md) {
+    @media (max-width: $breakpoint-lg) {
       flex-direction: column;
     }
   }
 
-  &__content {
+  &__column {
     flex: 1;
-    text-align: left;
-
-    @media (max-width: $breakpoint-md) {
-      text-align: center;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
   }
 
   &__item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: $spacing-md;
-    margin-bottom: $spacing-md;
-  }
+    text-align: left;
 
-  .ph {
-    font-size: 2rem;
-    color: $primary-color;
-  }
+    i {
+      font-size: 2rem;
+      color: $text-dark;
+    }
 
-  &__subtitle {
-    font-size: $font-size-h3;
-    font-weight: $font-weight-bold;
-    color: $color-text;
-    margin-bottom: $spacing-sm;
-  }
+    &__subtitle {
+      @include text-style($font-size-p, $font-weight-bold, $letter-spacing-normal, $line-height-base);
+      margin-bottom: $spacing-sm;
+      color: $gray-200;
+    }
 
-  &__text {
-    font-size: $font-size-p;
-    color: $color-muted-text;
+    &__text {
+      @include text-style($font-size-small, $font-weight-bold, $letter-spacing-normal, $line-height-base);
+      color: $gray-400;
+    }
   }
 
   &__image {
     flex: 1;
+    text-align: center;
 
     img {
       max-width: 100%;
-      border-radius: $border-radius-lg;
+      height: auto;
+      border-radius: $border-radius-md;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
   }
-}
-
-.why-javeriana__text {
-  max-height: 3rem;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-
-  &.expanded {
-    max-height: none;
-  }
-}
-
-.why-javeriana__toggle {
-  background: none;
-  border: none;
-  color: $primary-color;
-  font-weight: $font-weight-bold;
-  cursor: pointer;
 }

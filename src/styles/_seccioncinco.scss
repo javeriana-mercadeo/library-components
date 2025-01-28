@@ -1,0 +1,47 @@
+@use 'variables' as *;
+@use 'mixins'as *;
+
+.recognitions {
+    background-color: $color-background;
+    text-align: center;
+    width: 100%;
+
+    &__container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: $spacing-lg;
+
+        @media (max-width: $breakpoint-lg) {
+            flex-wrap: wrap;
+            gap: $spacing-md;
+        }
+
+        @media (max-width: $breakpoint-md) {
+            flex-direction: column;
+            gap: $spacing-md;
+        }
+    }
+
+    &__item {
+        flex: 1;
+        max-width: 200px;
+        text-align: center;
+
+        @media (max-width: $breakpoint-md) {
+            max-width: 100%;
+        }
+    }
+
+    &__image {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: $spacing-sm;
+    }
+
+    &__text {
+        font-size: $font-size-small;
+        color: $color-muted-text;
+        line-height: $line-height-base;
+    }
+}

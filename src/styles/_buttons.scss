@@ -19,6 +19,14 @@
     }
   }
 
+  &--outline {
+    @include button-style(transparent, $primary-color, $primary-color);
+
+    &:hover {
+     color: $secondary-color;
+    }
+  }
+
   &--disabled {
     @include button-style($disabled-color, $color-muted-text);
     cursor: not-allowed;

@@ -1,0 +1,81 @@
+@use 'variables'as *;
+@use 'mixins'as *;
+
+.expert-teachers {
+  background-color: $primary-color;
+  color: $text-light;
+  text-align: center;
+  padding: 4rem 3rem;
+
+  &__title {
+    font-size: $font-size-h2;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__description {
+    font-size: $font-size-p;
+    margin-bottom: $spacing-md;
+  }
+
+  &__buttons {
+    margin-bottom: $spacing-lg;
+
+    .button {
+      margin: 0 $spacing-sm;
+
+      &:hover {
+        background-color: $secondary-color-hover;
+      }
+    }
+  }
+
+  &__grid {
+    display: flex;
+    gap: $spacing-md;
+    flex-direction: row;
+    justify-content: center;
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.teacher-card {
+  color: $color-text;
+  overflow: hidden;
+  text-align: left;
+  padding: $spacing-md;
+  width: 190px;
+
+  &__image {
+    width: 175px;
+    height: auto;
+    margin-bottom: $spacing-sm;
+    border-radius: $border-radius-sm;
+  }
+
+  &__name {
+    font-size: $font-size-p;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-sm;
+    color: $text-light;
+  }
+
+  &__title {
+    font-size: $font-size-small;
+    margin-bottom: $spacing-sm;
+    color: $text-light;
+  }
+
+  &__link {
+    font-size: $font-size-small;
+    text-decoration: none;
+    font-weight: $font-weight-regular;
+    color: $text-light;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

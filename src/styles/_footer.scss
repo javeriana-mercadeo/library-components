@@ -1,0 +1,142 @@
+@use 'variables'as *;
+@use 'mixins'as *;
+
+.footer {
+  background-color: $gray-100;
+  color: $text-light;
+  padding: $spacing-lg;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $spacing-lg;
+    width: 90%;
+    margin: 0 auto;
+
+    @media (max-width: $breakpoint-md) {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  &__left,
+  &__middle,
+  &__right {
+    flex: 1;
+
+    @media (max-width: $breakpoint-md) {
+      width: 100%;
+    }
+  }
+
+  &__logo {
+    max-width: 150px;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__title {
+    font-size: $font-size-h3;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__info {
+    font-size: $font-size-small;
+    color: $gray-700;
+  }
+
+  &__video {
+    position: relative;
+    width: 242px;
+    margin: 0 auto;
+
+    @media (max-width: $breakpoint-md) {
+      max-width: 100%;
+    }
+  }
+
+  &__container_contact {
+    border-bottom: 1px solid $gray-600;
+    padding-bottom: $spacing-sm;
+  }
+
+  &__contact {
+    font-size: $font-size-small;
+    margin-bottom: $spacing-md;
+  }
+
+  &__contact_title {
+    color: $gray-600;
+    font-size: $font-size-xs;
+  }
+
+  &__social {
+    & p {
+      font-size: $font-size-small;
+      margin-bottom: $spacing-sm;
+    }
+
+    &__icons {
+      display: flex;
+      gap: $spacing-md;
+
+      .ph {
+        color: $text-light;
+        font-size: 12px;
+      }
+
+      a {
+        color: $text-light;
+        font-size: 1.5rem;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+
+  &__bottom {
+    text-align: center;
+    margin-top: $spacing-lg;
+    font-size: $font-size-small;
+    color: $gray-700;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: $text-light;
+
+    @media (max-width: $breakpoint-md) {
+      flex-direction: column;
+    }
+
+    &__vigilada {
+      display: flex;
+      flex-direction: row !important;
+      gap: $spacing-md;
+    }
+
+    &__info {
+      font-size: $font-size-small;
+      color: $text-light;
+    }
+
+    &__links {
+      color: $text-light;
+      margin-top: $spacing-sm;
+
+      a {
+        color: $text-light;
+        margin: 0 $spacing-sm;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
