@@ -1,47 +1,75 @@
-@use 'variables' as *;
+@use 'variables'as *;
 @use 'mixins'as *;
 
 .recognitions {
-    background-color: $color-background;
-    text-align: center;
-    width: 100%;
+  text-align: center;
+  padding: $spacing-lg;
 
-    &__container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: $spacing-lg;
+  &__title {
+    font-size: $font-size-h2;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-lg;
+    color: $color-text;
+  }
 
-        @media (max-width: $breakpoint-lg) {
-            flex-wrap: wrap;
-            gap: $spacing-md;
-        }
+  &__wrapper {
+    position: relative;
+    overflow: hidden;
+  }
 
-        @media (max-width: $breakpoint-md) {
-            flex-direction: column;
-            gap: $spacing-md;
-        }
+  &__container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); // Cuatro columnas en desktop
+    gap: $spacing-md;
+
+    @media (max-width: $breakpoint-md) {
+      display: flex;
+      gap: $spacing-sm;
+      overflow-x: scroll; // Carrusel deslizable en mobile
+      scroll-snap-type: x mandatory; // Suavidad en el scroll
+    }
+  }
+
+  &__item {
+    flex: 0 0 80%; // Para mobile: cada ítem ocupa el 80% del ancho
+    scroll-snap-align: center; // Centrar cada ítem al deslizar
+
+    @media (min-width: $breakpoint-md) {
+      flex: unset;
     }
 
-    &__item {
-        flex: 1;
-        max-width: 200px;
-        text-align: center;
-
-        @media (max-width: $breakpoint-md) {
-            max-width: 100%;
-        }
-    }
-
-    &__image {
-        max-width: 100%;
-        height: auto;
-        margin-bottom: $spacing-sm;
+    img {
+      max-width: 100%;
+      margin-bottom: $spacing-sm;
     }
 
     &__text {
-        font-size: $font-size-small;
-        color: $color-muted-text;
-        line-height: $line-height-base;
+      font-size: $font-size-small;
+      color: $color-muted-text;
     }
+  }
+
+  &__btn {
+    display: none; // Botones solo se muestran en mobile
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: $primary-color;
+    cursor: pointer;
+
+    &--prev {
+      left: $spacing-sm;
+    }
+
+    &--next {
+      right: $spacing-sm;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      display: block;
+    }
+  }
 }

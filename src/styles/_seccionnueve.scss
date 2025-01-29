@@ -3,20 +3,26 @@
 
 .featured-projects {
   text-align: center;
-  padding: $spacing-lg;
+  padding: $spacing-lg 0px;
   background-color: $color-background;
+
+  @media (max-width: $breakpoint-md) {
+    text-align: left;
+  }
 
   &__title {
     font-size: $font-size-h2;
     font-weight: $font-weight-bold;
     margin-bottom: $spacing-sm;
     color: $color-text;
+    padding-left: $spacing-md;
   }
 
   &__description {
     font-size: $font-size-p;
     margin-bottom: $spacing-lg;
     color: $color-muted-text;
+    padding-left: $spacing-md;
   }
 
   &__grid {

@@ -1,12 +1,11 @@
 @use 'variables'as *;
 @use 'sass:color';
 
-// Header
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: $spacing-md;
+  padding: $spacing-sm $spacing-xl;
   background-color: $gray-1100;
   position: relative;
 
@@ -25,6 +24,10 @@
       font-weight: $font-weight-bold;
       color: $color-text;
     }
+  }
+
+  @media (max-width: $breakpoint-lg) {
+    padding: $spacing-sm;
   }
 
   &__nav {
@@ -62,82 +65,58 @@
     @media (max-width: $breakpoint-lg) {
       display: none;
     }
-
-    .button {
-
-      &--primary,
-      &--secondary {
-        padding: $spacing-sm $spacing-md;
-        border-radius: $border-radius-sm;
-        font-weight: $font-weight-bold;
-        cursor: pointer;
-        transition: background-color 0.3s;
-
-        &:hover {
-          background-color: $primary-color-hover;
-        }
-      }
-
-      &--primary {
-        background-color: $primary-color;
-        color: $text-light;
-      }
-
-      &--secondary {
-        background-color: $gray-800;
-        color: $text-light;
-      }
-    }
   }
 
-  &__menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    font-size: $font-size-h3;
-    color: $color-text;
-    cursor: pointer;
+  .header {
+    &__menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: $font-size-h3;
+      color: $color-text;
+      cursor: pointer;
 
-    @media (max-width: $breakpoint-lg) {
-      display: block;
-    }
-  }
-
-  &__mobile-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: $gray-1200;
-    border-top: 1px solid $color-border;
-    padding: $spacing-md;
-
-    @media (max-width: $breakpoint-lg) {
-      display: flex;
-      flex-direction: column;
-    }
-
-    &-list,
-    &-cta {
-      list-style: none;
-      padding: 0;
-      margin: $spacing-sm 0;
-
-      &-link {
+      @media (max-width: $breakpoint-lg) {
         display: block;
-        text-decoration: none;
-        font-size: $font-size-p;
-        color: $color-text;
-        padding: $spacing-sm 0;
-        border-bottom: 1px solid $color-border;
+      }
+    }
 
-        &:last-child {
-          border-bottom: none;
-        }
+    &__mobile-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: $gray-1200;
+      border-top: 1px solid $color-border;
+      padding: $spacing-sm;
+      flex-direction: column;
 
-        &:hover {
-          color: $primary-color-hover;
+      &.active {
+        display: flex;
+      }
+
+      &-list,
+      &-cta {
+        list-style: none;
+        padding: 0;
+        margin: $spacing-sm 0;
+
+        &-link {
+          display: block;
+          text-decoration: none;
+          font-size: $font-size-p;
+          color: $color-text;
+          padding: $spacing-sm 0;
+          border-bottom: 1px solid $color-border;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          &:hover {
+            color: $primary-color-hover;
+          }
         }
       }
     }

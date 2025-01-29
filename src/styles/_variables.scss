@@ -29,13 +29,14 @@ $text-light: #ffffff;
 $text-dark: #212529;
 
 // Tipografía
-$font-family-primary: 'Raleway', sans-serif;
+$font-family-primary: 'Raleway',
+sans-serif;
 
 // Tamaños de fuente
-$font-size-h1: 3rem; // Heading 1
-$font-size-h2: 2.5rem; // Heading 2
-$font-size-h3: 2rem; // Heading 3
-$font-size-p: 1rem; // Párrafos
+$font-size-h1: clamp(1.8rem, 5vw, 3rem);
+$font-size-h2: clamp(1.5rem, 4vw, 2.5rem);
+$font-size-h3: clamp(1.3rem, 3vw, 2rem);
+$font-size-p: clamp(0.875rem, 2vw, 1rem);
 $font-size-small: 0.875rem; // Tamaño pequeño
 $font-size-xs: 0.6rem; // Tamaño pequeño xs
 
@@ -55,6 +56,7 @@ $letter-spacing-wide: 0.05em;
 $spacing-sm: 8px;
 $spacing-md: 16px;
 $spacing-lg: 24px;
+$spacing-xl: 38px;
 
 // Redondeos
 $border-radius-sm: 4px;

@@ -28,7 +28,7 @@
     </nav>
     <div class="header__cta">
       <button class="button--secondary">Recibe más Información</button>
-      <button class="button--primary">Inscríbete Ahora!</button>
+      <button class="button--primary">¡Inscríbete Ahora!</button>
     </div>
     <button class="header__menu-toggle" id="menu-toggle">&#9776;</button>
     <div class="header__mobile-menu" id="mobile-menu">
@@ -146,7 +146,8 @@
         <div class="subjects-carousel__item">
           <div class="card">
             <span class="card__label">Text</span>
-            <h3 class="card__title">Heading</h3>
+            <p class="card__title">Heading</p>
+            <div class="card__divider"></div>
             <ul class="card__list">
               <li>✔ Item Text</li>
               <li>✔ Item Text</li>
@@ -155,13 +156,15 @@
               <li>✔ Item Text</li>
               <li>✔ Item Text</li>
             </ul>
+            <div class="card__divider"></div>
             <p class="card__credits"><strong>19</strong> Créditos</p>
           </div>
         </div>
         <div class="subjects-carousel__item">
           <div class="card">
             <span class="card__label">Text</span>
-            <h3 class="card__title">Heading</h3>
+            <p class="card__title">Heading</p>
+            <div class="card__divider"></div>
             <ul class="card__list">
               <li>✔ Item Text</li>
               <li>✔ Item Text</li>
@@ -170,6 +173,7 @@
               <li>✔ Item Text</li>
               <li>✔ Item Text</li>
             </ul>
+            <div class="card__divider"></div>
             <p class="card__credits"><strong>19</strong> Créditos</p>
           </div>
         </div>
@@ -294,24 +298,28 @@
 
   <!-- Seccion cinco -->
   <section class="recognitions">
-    <div class="recognitions__container">
-      <div class="recognitions__item">
-        <img src="./assets/images/alta-calidad.png" alt="Acreditación de Alta Calidad" class="recognitions__image">
-        <p class="recognitions__text">Acreditación Institucional de Alta Calidad por 10 años (2020)</p>
+    <div class="recognitions__wrapper">
+      <button class="recognitions__btn recognitions__btn--prev">&#10094;</button>
+      <div class="recognitions__container">
+        <div class="recognitions__item">
+          <img src="./assets/images/alta-calidad.png" alt="Acreditación de Alta Calidad" class="recognitions__image">
+          <p class="recognitions__text">Acreditación Institucional de Alta Calidad por 10 años (2020)</p>
+        </div>
+        <div class="recognitions__item">
+          <img src="./assets/images/qs-ranking.png" alt="QS World University Rankings" class="recognitions__image">
+          <p class="recognitions__text">3ª en empleabilidad de nuestros graduados</p>
+        </div>
+        <div class="recognitions__item">
+          <img src="./assets/images/merco.png" alt="Merco" class="recognitions__image">
+          <p class="recognitions__text">1º en el sector educativo de Colombia (2023).</p>
+        </div>
+        <div class="recognitions__item">
+          <img src="./assets/images/impact-rankings.png" alt="Times Higher Education Impact Rankings"
+            class="recognitions__image">
+          <p class="recognitions__text">1er en Colombia por nuestro compromiso con los ODS (2023).</p>
+        </div>
       </div>
-      <div class="recognitions__item">
-        <img src="./assets/images/qs-ranking.png" alt="QS World University Rankings" class="recognitions__image">
-        <p class="recognitions__text">3ª en empleabilidad de nuestros graduados</p>
-      </div>
-      <div class="recognitions__item">
-        <img src="./assets/images/merco.png" alt="Merco" class="recognitions__image">
-        <p class="recognitions__text">1º en el sector educativo de Colombia (2023).</p>
-      </div>
-      <div class="recognitions__item">
-        <img src="./assets/images/impact-rankings.png" alt="Times Higher Education Impact Rankings"
-          class="recognitions__image">
-        <p class="recognitions__text">1er en Colombia por nuestro compromiso con los ODS (2023).</p>
-      </div>
+      <button class="recognitions__btn recognitions__btn--next">&#10095;</button>
     </div>
   </section>
 
@@ -327,39 +335,42 @@
       <button class="button button--secondary" data-category="asociado">Asociado</button>
       <button class="button button--secondary" data-category="asistente">Asistente</button>
     </div>
-    <div class="expert-teachers__grid" id="teacher-grid">
-      <!-- Tarjetas de docentes -->
-      <div class="teacher-card" data-category="titular">
-        <img src="./assets/images/docente1.png" alt="Alfonso Mariano Ramos" class="teacher-card__image">
-        <h3 class="teacher-card__name">Alfonso Mariano Ramos</h3>
-        <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
-        <a href="#" class="teacher-card__link">Ver Perfil</a>
+    <div class="expert-teachers__wrapper">
+      <button class="expert-teachers__btn expert-teachers__btn--prev">&#10094;</button>
+      <div class="expert-teachers__grid" id="teacher-grid">
+        <div class="teacher-card" data-category="titular">
+          <img src="./assets/images/docente1.png" alt="Alfonso Mariano Ramos" class="teacher-card__image">
+          <h3 class="teacher-card__name">Alfonso Mariano Ramos</h3>
+          <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
+          <a href="#" class="teacher-card__link">Ver Perfil</a>
+        </div>
+        <div class="teacher-card" data-category="titular">
+          <img src="./assets/images/docente1.png" alt="Andrés Eduardo Torres Abello" class="teacher-card__image">
+          <h3 class="teacher-card__name">Andrés Eduardo Torres Abello</h3>
+          <p class="teacher-card__title">Ph.D. Hidrología Urbana, INSA Lyon, Francia</p>
+          <a href="#" class="teacher-card__link">Ver Perfil</a>
+        </div>
+        <div class="teacher-card" data-category="titular">
+          <img src="./assets/images/docente1.png" alt="Daniel Mauricio Ruiz Valencia" class="teacher-card__image">
+          <h3 class="teacher-card__name">Daniel Mauricio Ruiz Valencia</h3>
+          <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
+          <a href="#" class="teacher-card__link">Ver Perfil</a>
+        </div>
+        <!-- Tarjetas adicionales con otras categorías -->
+        <div class="teacher-card" data-category="asociado">
+          <img src="./assets/images/docente1.png" alt="Jaime Andrés Lara" class="teacher-card__image">
+          <h3 class="teacher-card__name">Jaime Andrés Lara</h3>
+          <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
+          <a href="#" class="teacher-card__link">Ver Perfil</a>
+        </div>
+        <div class="teacher-card" data-category="asistente">
+          <img src="./assets/images/docente1.png" alt="Nelson Obregón Neira" class="teacher-card__image">
+          <h3 class="teacher-card__name">Nelson Obregón Neira</h3>
+          <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
+          <a href="#" class="teacher-card__link">Ver Perfil</a>
+        </div>
       </div>
-      <div class="teacher-card" data-category="titular">
-        <img src="./assets/images/docente1.png" alt="Andrés Eduardo Torres Abello" class="teacher-card__image">
-        <h3 class="teacher-card__name">Andrés Eduardo Torres Abello</h3>
-        <p class="teacher-card__title">Ph.D. Hidrología Urbana, INSA Lyon, Francia</p>
-        <a href="#" class="teacher-card__link">Ver Perfil</a>
-      </div>
-      <div class="teacher-card" data-category="titular">
-        <img src="./assets/images/docente1.png" alt="Daniel Mauricio Ruiz Valencia" class="teacher-card__image">
-        <h3 class="teacher-card__name">Daniel Mauricio Ruiz Valencia</h3>
-        <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
-        <a href="#" class="teacher-card__link">Ver Perfil</a>
-      </div>
-      <!-- Tarjetas adicionales con otras categorías -->
-      <div class="teacher-card" data-category="asociado">
-        <img src="./assets/images/docente1.png" alt="Jaime Andrés Lara" class="teacher-card__image">
-        <h3 class="teacher-card__name">Jaime Andrés Lara</h3>
-        <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
-        <a href="#" class="teacher-card__link">Ver Perfil</a>
-      </div>
-      <div class="teacher-card" data-category="asistente">
-        <img src="./assets/images/docente1.png" alt="Nelson Obregón Neira" class="teacher-card__image">
-        <h3 class="teacher-card__name">Nelson Obregón Neira</h3>
-        <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
-        <a href="#" class="teacher-card__link">Ver Perfil</a>
-      </div>
+      <button class="expert-teachers__btn expert-teachers__btn--next">&#10095;</button>
     </div>
   </section>
 
@@ -585,6 +596,7 @@
         </div>
       </div>
     </div>
+    <div class="footer__divider"></div>
     <div class="footer__bottom">
       <div class="footer__vigilada">
         <img src="./assets/images/vigilada.png" alt="Logo" class="footer__logo">
@@ -603,10 +615,20 @@
 
   <script>
     // Header
-    document.getElementById('menu-toggle').addEventListener('click', function () {
-      const mobileMenu = document.getElementById('mobile-menu');
-      mobileMenu.classList.toggle('header__mobile-menu--open');
-      document.dispatchEvent(new CustomEvent('menuToggled', { detail: { open: mobileMenu.classList.contains('header__mobile-menu--open') } }));
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuToggle = document.getElementById("menu-toggle");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      menuToggle.addEventListener("click", function () {
+        mobileMenu.classList.toggle("active");
+      });
+
+      // Cerrar menú al hacer clic en un enlace
+      document.querySelectorAll(".header__mobile-menu-list-link, .header__mobile-menu-cta-link").forEach(link => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.remove("active");
+        });
+      });
     });
 
     // Sección dos
@@ -638,25 +660,58 @@
     });
 
     // Seccion cuatro
-    document.querySelectorAll('.why-javeriana__item').forEach(item => {
-      const text = item.querySelector('.why-javeriana__text');
-      const toggle = document.createElement('button');
-      toggle.textContent = 'Leer Más +';
-      toggle.classList.add('why-javeriana__toggle');
+    document.addEventListener("DOMContentLoaded", function () {
+      function handleToggleButtons() {
+        const isMobile = window.innerWidth <= 768;
 
-      toggle.addEventListener('click', () => {
-        text.classList.toggle('expanded');
-        toggle.textContent = text.classList.contains('expanded') ? 'Leer Menos −' : 'Leer Más +';
-      });
+        document.querySelectorAll('.why-javeriana__item').forEach(item => {
+          const text = item.querySelector('.why-javeriana__text');
+          let toggle = item.querySelector('.why-javeriana__toggle');
 
-      item.appendChild(toggle);
+          if (isMobile) {
+            // Si es mobile, asegurarse de que el texto esté truncado por defecto
+            text.classList.remove("expanded");
+
+            if (!toggle) {
+              toggle = document.createElement('button');
+              toggle.textContent = 'Leer Más +';
+              toggle.classList.add('why-javeriana__toggle');
+
+              toggle.addEventListener('click', () => {
+                text.classList.toggle('expanded');
+                toggle.textContent = text.classList.contains('expanded') ? 'Leer Menos −' : 'Leer Más +';
+              });
+
+              item.appendChild(toggle);
+            }
+          } else {
+            // En desktop, asegurarse de que el texto esté completamente visible y eliminar el botón
+            text.classList.add("expanded");
+            if (toggle) {
+              toggle.remove();
+            }
+          }
+        });
+      }
+
+      // Ejecutar cuando la página cargue
+      handleToggleButtons();
+
+      // Ejecutar cuando se redimensiona la pantalla (para cambios responsive)
+      window.addEventListener('resize', handleToggleButtons);
     });
 
     // Seccion seis
     document.addEventListener("DOMContentLoaded", () => {
       const buttons = document.querySelectorAll(".button--secondary");
       const teacherCards = document.querySelectorAll(".teacher-card");
+      const grid = document.querySelector(".expert-teachers__grid");
+      const prevBtn = document.querySelector(".expert-teachers__btn--prev");
+      const nextBtn = document.querySelector(".expert-teachers__btn--next");
 
+      let scrollAmount = 0;
+
+      // Filtrado por categoría
       buttons.forEach(button => {
         button.addEventListener("click", () => {
           const category = button.getAttribute("data-category");
@@ -673,11 +728,35 @@
           // Resaltar el botón activo
           buttons.forEach(btn => btn.classList.remove("active"));
           button.classList.add("active");
+
+          // Reiniciar scroll del carrusel al cambiar de categoría
+          scrollAmount = 0;
+          grid.scrollTo({
+            left: scrollAmount,
+            behavior: "smooth",
+          });
         });
       });
 
       // Mostrar la primera categoría por defecto
       buttons[0].click();
+
+      // Carrusel deslizable en mobile
+      function scrollGrid(direction) {
+        const scrollWidth = grid.offsetWidth * 0.8; // Desplazamiento igual al 80% del ancho visible
+        if (direction === "next") {
+          scrollAmount += scrollWidth;
+        } else {
+          scrollAmount -= scrollWidth;
+        }
+        grid.scrollTo({
+          left: scrollAmount,
+          behavior: "smooth",
+        });
+      }
+
+      prevBtn.addEventListener("click", () => scrollGrid("prev"));
+      nextBtn.addEventListener("click", () => scrollGrid("next"));
     });
 
     // Seccion siete
@@ -688,27 +767,40 @@
       const items = document.querySelectorAll(".experience-carousel__item");
 
       let currentIndex = 0;
+      let isMobile = window.innerWidth <= 768;
 
       function updateCarousel() {
-        const width = items[0].offsetWidth;
-        track.style.transform = `translateX(-${currentIndex * width}px)`;
+        if (!isMobile) {
+          const width = items[0].offsetWidth;
+          track.style.transform = `translateX(-${currentIndex * width}px)`;
+        }
+      }
+
+      function checkScreenSize() {
+        isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+          track.style.transform = "none";
+        } else {
+          updateCarousel();
+        }
       }
 
       nextBtn.addEventListener("click", () => {
-        if (currentIndex < items.length - 1) {
+        if (!isMobile && currentIndex < items.length - 1) {
           currentIndex++;
           updateCarousel();
         }
       });
 
       prevBtn.addEventListener("click", () => {
-        if (currentIndex > 0) {
+        if (!isMobile && currentIndex > 0) {
           currentIndex--;
           updateCarousel();
         }
       });
 
-      window.addEventListener("resize", updateCarousel);
+      window.addEventListener("resize", checkScreenSize);
+      checkScreenSize();
     });
 
     // Seccion diez
@@ -719,27 +811,42 @@
       const items = document.querySelectorAll(".related-programs__item");
 
       let currentIndex = 0;
+      let isMobile = window.innerWidth <= 768;
 
       function updateCarousel() {
-        const width = items[0].offsetWidth + 16; // Ancho más espacio entre ítems
-        track.style.transform = `translateX(-${currentIndex * width}px)`;
+        if (!isMobile) {
+          const width = items[0].offsetWidth + 16; // Ancho más el gap
+          track.style.transform = `translateX(-${currentIndex * width}px)`;
+        } else {
+          track.style.transform = "none"; // Desactivar transformación en mobile
+        }
+      }
+
+      function checkScreenSize() {
+        isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+          track.style.transform = "none"; // Habilitar scroll táctil en mobile
+        } else {
+          updateCarousel(); // Mantener lógica de carrusel en desktop
+        }
       }
 
       nextBtn.addEventListener("click", () => {
-        if (currentIndex < items.length - 2) { // Ajuste para evitar que el último item se desplace fuera de la vista
+        if (!isMobile && currentIndex < items.length - 2) {
           currentIndex++;
           updateCarousel();
         }
       });
 
       prevBtn.addEventListener("click", () => {
-        if (currentIndex > 0) {
+        if (!isMobile && currentIndex > 0) {
           currentIndex--;
           updateCarousel();
         }
       });
 
-      window.addEventListener("resize", updateCarousel);
+      window.addEventListener("resize", checkScreenSize);
+      checkScreenSize();
     });
 
     // Seccion once

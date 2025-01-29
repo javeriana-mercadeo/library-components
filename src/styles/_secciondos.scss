@@ -4,16 +4,16 @@
 .subjects-carousel {
   text-align: center;
   position: relative;
-  padding: 2rem 0;
+  padding: $spacing-md;
 
   &__title {
-    margin-bottom: $spacing-md;
+    margin-bottom: $spacing-sm;
   }
 
   &__wrapper {
     overflow: hidden;
     width: 90%;
-    margin: $spacing-lg;
+    margin: $spacing-md;
   }
 
   &__track {
@@ -29,27 +29,43 @@
 
   .card {
     border: 1px solid $gray-900;
-    border-radius: 8px;
-    padding: 24px;
+    border-radius: $border-radius-md;
+    padding: $spacing-md;
+    text-align: left;
+
+    &__title {
+      margin-top: $spacing-md;
+      font-weight: $font-weight-bold;
+    }
+
+    &__divider {
+      border-bottom: 1px solid $gray-900;
+    }
 
     &__label {
       @include text-style($font-size-small, $font-weight-bold, $letter-spacing-normal, $line-height-base);
       background-color: $primary-color;
-      border-radius: 8px;
+      border-radius: $border-radius-lg;
       color: $text-light;
-      padding: 4px 8px;
+      padding: $spacing-sm $spacing-lg;
     }
 
     &__credits {
       @include text-style($font-size-p, $font-weight-regular, $letter-spacing-normal, $line-height-base);
-      color: $gray-800;
+      color: $gray-500;
+      margin-top: $spacing-sm;
+      margin-bottom: 0px;
     }
   }
 
+  ul {
+    padding: 0px $spacing-sm;
+  }
+
   li {
-    list-style: none;
-    margin-bottom: 12px;
     color: $gray-500;
+    list-style: none;
+    margin-bottom: $spacing-sm;
   }
 
   &__btn {
@@ -62,7 +78,7 @@
     padding: $spacing-sm $spacing-md;
     cursor: pointer;
     border-radius: $border-radius-md;
-    font-size: 1.5rem;
+    font-size: $font-size-p;
 
     &--prev {
       left: 10px;

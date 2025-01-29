@@ -6,6 +6,11 @@
   padding: $spacing-lg;
   background-color: $color-background;
 
+  @media (max-width: $breakpoint-md) {
+    padding: 0px $spacing-sm;
+    text-align: left;
+  }
+
   &__title {
     font-size: $font-size-h2;
     font-weight: $font-weight-bold;
@@ -22,6 +27,10 @@
   &__wrapper {
     position: relative;
     overflow: hidden;
+
+    @media (max-width: $breakpoint-md) {
+      padding: 0 $spacing-sm;
+    }
   }
 
   &__track {
@@ -29,6 +38,13 @@
     gap: $spacing-md;
     transition: transform 0.5s ease-in-out;
     justify-content: center;
+
+    @media (max-width: $breakpoint-md) {
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      justify-content: flex-start;
+    }
   }
 
   &__item {
@@ -38,9 +54,16 @@
     border-radius: $border-radius-md;
     overflow: hidden;
     text-align: left;
+    scroll-snap-align: center;
 
     @media (max-width: $breakpoint-md) {
-      width: 90%;
+      flex: 0 0 80%;
+    }
+
+    &>img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 
@@ -51,13 +74,6 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(180deg, rgba(2, 111, 193, 0) 19.88%, #026FC1 84.25%);
-  }
-
-  &__image {
-    width: auto;
-    height: 100%;
-    display: block;
-    object-fit: cover;
   }
 
   &__content {
@@ -108,6 +124,10 @@
 
     &--next {
       right: $spacing-sm;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      display: none;
     }
   }
 }

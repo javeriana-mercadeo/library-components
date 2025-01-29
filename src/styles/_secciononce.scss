@@ -6,6 +6,11 @@
   padding: $spacing-lg;
   background-color: $color-background;
 
+  @media (max-width: $breakpoint-md) {
+    padding: 0px $spacing-sm;
+    text-align: left;
+  }
+
   &__title {
     font-size: $font-size-h2;
     font-weight: $font-weight-bold;

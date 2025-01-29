@@ -5,7 +5,11 @@
   background-color: $primary-color;
   color: $text-light;
   text-align: center;
-  padding: 4rem 3rem;
+  padding: $spacing-md;
+
+  @media (max-width: $breakpoint-md) {
+    text-align: left;
+  }
 
   &__title {
     font-size: $font-size-h2;
@@ -29,53 +33,92 @@
     }
   }
 
+  &__wrapper {
+    position: relative;
+    overflow: hidden;
+
+    @media (max-width: $breakpoint-md) {
+      padding: 0 $spacing-sm;
+    }
+  }
+
   &__grid {
     display: flex;
     gap: $spacing-md;
     flex-direction: row;
     justify-content: center;
+    transition: transform 0.5s ease-in-out;
 
     @media (max-width: $breakpoint-md) {
-      grid-template-columns: 1fr;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+    }
+
+    .teacher-card {
+      flex: 0 0 80%;
+      scroll-snap-align: center;
+      color: $color-text;
+      text-align: left;
+      padding: $spacing-md;
+      width: 190px;
+
+      @media (min-width: $breakpoint-md) {
+        flex: unset;
+      }
+
+      img {
+        max-width: 100%;
+        border-radius: $border-radius-sm;
+        margin-bottom: $spacing-sm;
+      }
+
+      h3 {
+        font-size: $font-size-p;
+        font-weight: $font-weight-bold;
+        margin-bottom: $spacing-sm;
+        color: $text-light;
+      }
+
+      p {
+        font-size: $font-size-small;
+        margin-bottom: $spacing-sm;
+        color: $text-light;
+      }
+
+      a {
+        font-size: $font-size-small;
+        text-decoration: none;
+        font-weight: $font-weight-regular;
+        color: $text-light;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
-}
 
-.teacher-card {
-  color: $color-text;
-  overflow: hidden;
-  text-align: left;
-  padding: $spacing-md;
-  width: 190px;
+  &__btn {
+    display: none;
 
-  &__image {
-    width: 175px;
-    height: auto;
-    margin-bottom: $spacing-sm;
-    border-radius: $border-radius-sm;
-  }
+    @media (max-width: $breakpoint-md) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: $text-light;
+      cursor: pointer;
 
-  &__name {
-    font-size: $font-size-p;
-    font-weight: $font-weight-bold;
-    margin-bottom: $spacing-sm;
-    color: $text-light;
-  }
+      &--prev {
+        left: 0;
+      }
 
-  &__title {
-    font-size: $font-size-small;
-    margin-bottom: $spacing-sm;
-    color: $text-light;
-  }
-
-  &__link {
-    font-size: $font-size-small;
-    text-decoration: none;
-    font-weight: $font-weight-regular;
-    color: $text-light;
-
-    &:hover {
-      text-decoration: underline;
+      &--next {
+        right: 0;
+      }
     }
   }
 }

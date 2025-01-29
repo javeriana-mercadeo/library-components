@@ -15,7 +15,8 @@
     @include button-style($secondary-color, $primary-color);
 
     &:hover {
-      background-color: $secondary-color-hover;
+      background-color: $primary-color;
+      color: $text-light;
     }
   }
 
