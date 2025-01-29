@@ -1,0 +1,134 @@
+@import './autoload.scss';
+// @import "./tailwind.scss";
+
+/************ Default Css ************/
+
+::selection {
+  background-color: $primary-color-600;
+  color: $dark-color;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-family;
+  font-weight: $font-weight-medium;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 75px;
+  height: 100%;
+  min-height: auto;
+
+  body {
+    position: relative;
+
+    overflow-x: hidden;
+    min-height: 100vh;
+    height: 100%;
+    font-family: $font-family !important;
+    font-weight: 400;
+
+    background: $contrast-gradient-light;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    #root {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+
+      min-height: 100%;
+      width: 100%;
+      height: 100%;
+
+      border-radius: 10px;
+
+      & > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 100vh;
+        width: 100%;
+        height: 100%;
+
+        main {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+  }
+
+  p,
+  a,
+  li,
+  button,
+  ul {
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  button {
+    border: 0;
+    background-color: transparent;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+  }
+
+  /* * Scroll personalizado */
+  body::-webkit-scrollbar {
+    width: 7px;
+    background-color: $dark-color-900;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: $primary-color-600;
+    border-radius: 5px;
+    height: 40%;
+  }
+}
+
+@include responsive {
+  html body {
+    background-attachment: scroll;
+  }
+}

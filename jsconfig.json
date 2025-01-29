@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@library/*": ["src/ui/library/*"],
+      "@library-global/*": ["src/ui/library/_global/*"],
+      "@documentation/*": ["src/ui/doc/*"],
+      "@constants/*": ["./src/constants/*"]
+    }
+  }
+}
