@@ -1,4 +1,14 @@
-@use 'variables'as *;
+@use 'variables' as *;
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
 
 body {
   font-family: $font-family-primary;
@@ -9,7 +19,6 @@ body {
   color: $color-text;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 h1 {
@@ -31,4 +40,45 @@ p {
 
 small {
   font-size: $font-size-small;
+}
+
+.container {
+  max-width: min(95vw, $breakpoint-xxl);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.responsive-element {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: $breakpoint-xxl) {
+  .container {
+    margin: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .container {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
 }

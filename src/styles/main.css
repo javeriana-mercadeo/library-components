@@ -1,3 +1,13 @@
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
 body {
   font-family: "Raleway", sans-serif;
   font-size: clamp(0.875rem, 2vw, 1rem);
@@ -7,7 +17,6 @@ body {
   color: #101215;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 h1 {
@@ -31,6 +40,44 @@ small {
   font-size: 0.875rem;
 }
 
+.container {
+  max-width: min(95vw, 1800px);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.responsive-element {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 1800px) {
+  .container {
+    margin: 0;
+    max-width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .container {
+    margin: 0;
+    max-width: 100%;
+  }
+  body {
+    overflow-x: hidden;
+  }
+}
 .button--primary {
   background-color: #026FC1;
   color: #ffffff;
@@ -237,7 +284,6 @@ small {
 
 .program-info {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
   gap: 16px;
@@ -493,6 +539,7 @@ small {
   padding: 24px;
   margin: 24px;
   text-align: center;
+  margin: 0 auto;
 }
 .why-javeriana__title {
   font-size: clamp(1.5rem, 4vw, 2.5rem);
