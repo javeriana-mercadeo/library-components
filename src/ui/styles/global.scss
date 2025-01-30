@@ -1,11 +1,10 @@
-@import './autoload.scss';
-// @import "./tailwind.scss";
+@use './typography.scss';
 
 /************ Default Css ************/
 
 ::selection {
-  background-color: $primary-color-600;
-  color: $dark-color;
+  background-color: var(--primary-color-600);
+  color: var(--dark-color);
 }
 
 * {
@@ -35,7 +34,7 @@ html {
     font-family: $font-family !important;
     font-weight: 400;
 
-    background: $contrast-gradient-light;
+    background: (--contrast-gradient-light);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
@@ -117,11 +116,11 @@ html {
   /* * Scroll personalizado */
   body::-webkit-scrollbar {
     width: 7px;
-    background-color: $dark-color-900;
+    background-color: var(--dark-color-900);
   }
 
   body::-webkit-scrollbar-thumb {
-    background-color: $primary-color-600;
+    background-color: var(--primary-color-600);
     border-radius: 5px;
     height: 40%;
   }

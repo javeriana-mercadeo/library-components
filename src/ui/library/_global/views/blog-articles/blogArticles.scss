@@ -1,105 +1,43 @@
 .blog {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   background-color: var(--light);
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
   overflow: hidden;
-
-  padding-top: 8rem;
-
-  .blog_background {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    padding: 20rem 4rem;
-    padding-bottom: 32rem;
-
-    z-index: 1;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.432);
-      -webkit-backdrop-filter: blur(4px);
-      backdrop-filter: blur(0px);
-      z-index: -1;
-    }
-
-    h1 {
-      font-family: 'Gotham-Bold';
-      font-size: 8.5rem;
-      color: var(--light);
-    }
-  }
 
   .blog_container {
     position: relative;
-    top: -8rem;
 
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
 
     width: 100%;
     background-color: var(--light);
-    padding: 5rem 4rem;
-    border-radius: 6rem 6rem 0 0;
+    border-radius: 60px 60px 0 0;
     z-index: 2;
-  }
-
-  .btn_return {
-    position: fixed;
-    bottom: -11rem;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background-color: #db801f;
-    border-radius: 50%;
-    padding: 1rem 10rem;
-    padding-bottom: 12rem;
-    z-index: 10;
-    transition: 0.2s;
-
-    img {
-      width: 3rem;
-    }
-
-    &:hover {
-      bottom: -10.3rem;
-      transition: 0.2s;
-    }
   }
 }
 
 @media (max-width: 800px) {
   .blog {
     .blog_background {
-      padding: 10rem 4rem;
-      padding-bottom: 15rem;
+      padding: 100px 40px;
+      padding-bottom: 150px;
 
       h1 {
-        font-size: 4rem;
+        font-size: 40px;
       }
     }
 
     .blog_container {
-      border-radius: 4rem 4rem 0 0;
+      border-radius: 40px 40px 0 0;
     }
   }
 }
@@ -109,26 +47,30 @@
   bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 20px;
 
-  max-width: 28rem;
+  max-width: 280px;
   background-color: #edeeef;
-  border-radius: 2rem;
+  border: 1px solid transparent;
+  border-radius: 20px;
   overflow: hidden;
+  transition: ease 0.3s;
 
   &:hover {
-    bottom: 2px;
+    border: 1px solid #0066c8;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+    transition: ease 0.3s;
   }
 
   figure {
     position: relative;
 
     width: 100%;
-    height: 40rem;
+    height: 270px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    border-radius: 0 0 2rem 0;
+    border-radius: 0 0 20px 0;
 
     margin: 0;
 
@@ -139,36 +81,40 @@
 
       font-family: 'Gotham-Book';
 
-      font-size: 1.6rem;
-      color: var(--light);
+      font-size: 16px;
+      color: #edeeef;
       background-color: #0066c8;
       border: 1px solid #0066c8;
 
-      border-radius: 2rem 0 2rem 0;
-      padding: 1rem 3rem;
+      border-radius: 20px 0 20px 0;
+      padding: 10px 30px;
+
+      transition: ease 0.3s;
 
       &:hover {
-        background-color: var(--light);
+        background-color: #edeeef;
         color: #0066c8;
         border: 1px solid #0066c8;
+        transition: ease 0.3s;
       }
     }
   }
 
   div {
-    padding: 2rem;
+    padding: 20px;
     padding-top: 0;
 
     h2 {
       font-family: 'Gotham-Bold';
-      font-size: 1.8rem;
+      font-size: 18px;
+      font-weight: bold;
       color: #666666;
-      margin-bottom: 1.5rem;
+      margin-bottom: 15px;
     }
 
     p {
       font-family: 'Gotham-Book';
-      font-size: 1.5rem;
+      font-size: 15px;
       color: #666666;
     }
   }

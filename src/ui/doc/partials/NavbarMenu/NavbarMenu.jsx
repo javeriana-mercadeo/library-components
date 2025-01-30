@@ -11,6 +11,8 @@ import {
   Button
 } from '@heroui/react'
 
+import logo from '../../../../assets/icon.svg'
+
 export const AcmeLogo = () => {
   return (
     <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
@@ -45,8 +47,10 @@ const NavbarMenu = () => {
       <NavbarContent>
         <NavbarMenuToggle aria-label={isMenuOpen ? 'Close menu' : 'Open menu'} className="sm:hidden" />
         <NavbarBrand>
-          <AcmeLogo />
-          <p className="font-bold text-inherit">ACME</p>
+          <figure className="flex items-center gap-2">
+            <img alt="ACME" className="h-8 w-8" src={logo} />
+            <p className="font-bold text-inherit"> Biblioteca de componentes</p>
+          </figure>
         </NavbarBrand>
       </NavbarContent>
 
@@ -65,16 +69,6 @@ const NavbarMenu = () => {
           <Link color="foreground" href="#">
             Integrations
           </Link>
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
-          </Button>
         </NavbarItem>
       </NavbarContent>
       <NavbarMenuHero>

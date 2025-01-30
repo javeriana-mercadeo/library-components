@@ -1,1 +1,8 @@
-@import './_tailwind.css';
+@use './vars.scss';
+@use './functions.scss';
+@use './mixins.scss';
+@use './typography.scss';
+@use './colors.scss';
+@use './theme-colors.scss';
+
+@use './global.scss';
