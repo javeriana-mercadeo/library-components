@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 
-import NavMenu from '../partials/NavMenu/NavMenu.jsx'
+import NavMenu from '../partials/NavbarMenu/NavbarMenu.jsx'
 
 const General = () => {
   return (

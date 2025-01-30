@@ -1,21 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import ReactDOMServer from 'react-dom/server'
 import html2canvas from 'html2canvas'
 import JSZip from 'jszip'
 import prettier from 'prettier/standalone'
 import parserHtml from 'prettier/plugins/html'
-
-const MyReactComponent = () => {
-  return (
-    <>
-      <div className="card">
-        <h2>Frontend Radio</h2>
-        <p>12 Tracks</p>
-        <img src="https://via.placeholder.com/300" alt="Frontend Radio" />
-      </div>
-    </>
-  )
-}
 
 const formatHTML = async html => {
   return await prettier.format(html, {
@@ -35,14 +24,16 @@ const formatHTML = async html => {
   })
 }
 
-const ViewCodeCard = () => {
+const ViewCodeCard = ({ children }) => {
   const [formattedHTML, setFormattedHTML] = useState('')
   const [activeTab, setActiveTab] = useState('preview')
   const previewRef = useRef(null)
 
   useEffect(() => {
+    console.log('MyReactComponent:', children)
+
     async function fetchFormattedHTML() {
-      const componentHTML = ReactDOMServer.renderToStaticMarkup(<MyReactComponent />)
+      const componentHTML = ReactDOMServer.renderToStaticMarkup(children)
       try {
         const formatted = await formatHTML(componentHTML)
         setFormattedHTML(formatted)
@@ -127,7 +118,7 @@ const ViewCodeCard = () => {
       <div className="content">
         {activeTab === 'preview' ? (
           <div className="preview" ref={previewRef}>
-            <MyReactComponent />
+            {children}
           </div>
         ) : (
           <div className="code-section">
@@ -196,6 +187,10 @@ const ViewCodeCard = () => {
       `}</style>
     </div>
   )
+}
+
+ViewCodeCard.propTypes = {
+  children: PropTypes.element.isRequired
 }
 
 export default ViewCodeCard

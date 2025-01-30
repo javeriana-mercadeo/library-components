@@ -70,7 +70,6 @@ export default [
       'import/no-amd': 'error',
       'import/no-cycle': ['error', { ignoreExternal: true }],
       'import/no-duplicates': 'error',
-      'import/no-extraneous-dependencies': ['error'],
       'import/no-mutable-exports': 'error',
       'import/no-named-as-default': 'error',
       'import/no-named-as-default-member': 'error',
