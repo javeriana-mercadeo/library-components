@@ -7,6 +7,9 @@ import Routes from './routes/Routes.jsx'
 
 // Tailwind CSS
 import './ui/styles/_tailwind.css'
+// Code Highlighting
+import 'prismjs/themes/prism-tomorrow.css'
+
 // General Styles
 /* import './ui/styles/_main.scss' */
 

@@ -1,17 +1,23 @@
-import CardBlog from './components/CardBlog.jsx'
-import dataBlogs from './data.json'
+import { useEffect } from 'react'
 
-import './blogArticles.scss'
+import CardBlog from './components/CardBlog.jsx'
+import blogArticlesScript from './BlogArticlesScript.js'
+import { data } from './data.json'
+import './blogArticlesStyle.scss'
 
 const BlogArticles = () => {
+  useEffect(() => {
+    blogArticlesScript()
+  }, [])
+
   return (
-    <main className="blog">
-      <section className="blog_container">
-        {dataBlogs.map(data => (
+    <section className="blog">
+      <div className="blog_container">
+        {data.map(data => (
           <CardBlog key={data.id} data={data} />
         ))}
-      </section>
-    </main>
+      </div>
+    </section>
   )
 }
 

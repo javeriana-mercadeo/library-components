@@ -1,49 +1,12 @@
 .showcase-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  
   width: 100%;
   max-width: 1640px;
-  background: #121212;
-  color: white;
   border-radius: 10px;
-
-  padding: 20px;
   margin: auto;
-}
-
-.tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.tabs button {
-  padding: 10px 20px;
-  background: #333;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.tabs .active {
-  border-bottom: 2px solid white;
-}
-
-.content {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.export-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: #0078d4;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.export-btn:hover {
-  background: #005bb5;
 }

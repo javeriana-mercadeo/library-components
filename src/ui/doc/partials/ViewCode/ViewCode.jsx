@@ -1,129 +1,130 @@
 import { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import html2canvas from 'html2canvas'
-import JSZip from 'jszip'
+import { Button, Tabs, Tab, Card, CardBody, Snippet } from '@heroui/react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
+import handleZipExport from './utils/handleZipExport.js'
 import useFormatHTML from './hooks/useFormatHTML.jsx'
+import useFormatCSS from './hooks/useFormatCSS.jsx'
+import useFormatJS from './hooks/useFormatJS.jsx'
 
 import './viewCode.scss'
-import useFormatCSS from './hooks/useFormatCSS.jsx'
 
-const ViewCodeCard = ({ children, css, js }) => {
-  const [htmlFormat, setHtmlFormat] = useState()
-  const cssFormat = useFormatCSS(css)
-  const [jsFormat, setJsFormat] = useState()
+const ViewCodeCard = ({ children, sass, jsFn, info }) => {
+  const [html, setHtml] = useState()
+  const htmlFormat = useFormatHTML(children)
+
+  const [css, setCss] = useState()
+  const cssFormat = useFormatCSS(sass)
+
+  const [js, setJs] = useState()
+  const jsFormat = useFormatJS(jsFn)
+
   const [activeTab, setActiveTab] = useState('preview')
   const previewRef = useRef(null)
 
   useEffect(() => {
-    console.log('MyReactComponent:', children)
-    setHtmlFormat(children)
-  }, [])
+    setHtml(htmlFormat)
+    setCss(cssFormat)
+    setJs(jsFormat)
+  }, [htmlFormat, cssFormat, jsFormat])
 
-  /*  // Función para convertir el componente de React a HTML, CSS y JS
-  const convertReactToVanilla = () => {
-    // Extraer estilos del componente (simulación básica)
-    const extractedCSS = `.card {
-      background: #111;
-      padding: 20px;
-      border-radius: 10px;
-      color: white;
-      text-align: center;
-      width: 300px;
-    }
-    .card img {
-      border-radius: 10px;
-      width: 100%;
-    }`
-
-    const vanillaJS = `console.log("Frontend Radio Component Loaded");`
-
-    return { html: formattedHTML, css: extractedCSS, js: vanillaJS }
-  }
-
-  const { html, css, js } = convertReactToVanilla() */
-
-  const handleExport = async () => {
-    const zip = new JSZip()
-
-    // Capturar la imagen de previsualización
-    const canvas = await html2canvas(previewRef.current)
-    canvas.toBlob(blob => {
-      zip.file('preview.png', blob)
-    })
-
-    // Agregar archivos HTML, CSS, JS al ZIP
-    zip.file('index.html', htmlFormat)
-    zip.file('styles.css', cssFormat)
-    zip.file('script.js', jsFormat)
-    zip.file(
-      'liferay-config.json',
-      JSON.stringify(
-        {
-          name: 'Frontend Radio Component',
-          version: '1.0.0',
-          description: 'A music preview component for Liferay'
-        },
-        null,
-        2
-      )
-    )
-
-    // Descargar el ZIP
-    zip.generateAsync({ type: 'blob' }).then(content => {
-      const link = document.createElement('a')
-      link.href = URL.createObjectURL(content)
-      link.download = 'frontend-radio-component.zip'
-      link.click()
-    })
-  }
+  const codeElements = [
+    { type: 'html', code: html },
+    { type: 'css', code: css },
+    { type: 'javascript', code: js }
+  ]
 
   return (
     <>
-      <div className="showcase-container">
-        <h2>With Image</h2>
-        <div className="tabs">
-          <button className={activeTab === 'preview' ? 'active' : ''} onClick={() => setActiveTab('preview')}>
-            Preview
-          </button>
-          <button className={activeTab === 'code' ? 'active' : ''} onClick={() => setActiveTab('code')}>
-            Code
-          </button>
+      <div className="showcase-container relative">
+        <div className="flex gap-2 flex-wrap absolute top-0 right-0 z-10">
+          <Button radius="full" onPress={() => setActiveTab('preview')}>
+            <i className="ph ph-eye"></i>
+          </Button>
+          <Button radius="full" onPress={() => setActiveTab('code')}>
+            <i className="ph ph-code"></i>
+          </Button>
+          {activeTab === 'preview' ? (
+            <Button radius="full" onPress={() => handleZipExport(info, html, css, js, previewRef)}>
+              <i className="ph ph-download-simple"></i>
+            </Button>
+          ) : null}
+          <div className="flex w-full flex-col ">
+            {activeTab === 'preview' ? (
+              <Button
+                radius="full"
+                startContent={<i className="ph ph-download-simple"></i>}
+                onPress={() => handleZipExport(info, html, css, js, previewRef)}>
+                Liferay
+              </Button>
+            ) : null}
+
+            <Tabs aria-label="Options" color="primary" className=" bg-">
+              <Tab
+                key="view"
+                title={
+                  <div className="flex items-center gap-2 space-x-2">
+                    <i className="ph ph-eye"></i>
+                    <span>Vista previa</span>
+                  </div>
+                }
+                onChange={() => setActiveTab('preview')}
+              />
+              <Tab
+                key="code"
+                title={
+                  <div className="flex items-center gap-2 space-x-2">
+                    <i className="ph ph-code"></i>
+                    <span>Código</span>
+                  </div>
+                }
+                onChange={() => setActiveTab('code')}
+              />
+            </Tabs>
+          </div>
         </div>
 
-        <div className="content">
+        <div className="content w-full">
           {activeTab === 'preview' ? (
             <div className="preview" ref={previewRef}>
               {children}
             </div>
           ) : (
-            <div className="code-section">
-              <h3>HTML</h3>
-              <pre>
-                <code>{html}</code>
-              </pre>
-              <h3>CSS</h3>
-              <pre>
-                <code>{css}</code>
-              </pre>
-              <h3>JS</h3>
-              <pre>
-                <code>{js}</code>
-              </pre>
+            <div className="code-section w-full p-4 flex flex-col">
+              <div className="flex w-full flex-col py-4">
+                <Tabs aria-label="Options">
+                  {codeElements.map(element => (
+                    <Tab key={element.type} title={element.type}>
+                      <Card className="w-full">
+                        <CardBody className="">
+                          <Snippet variant="bordered symbol" codeString={element.code} symbol=""></Snippet>
+                          <SyntaxHighlighter
+                            className="w-full overflow-hidden scroll-m-0 rounded-xs"
+                            language={element.type}
+                            style={materialLight}>
+                            {element.code}
+                          </SyntaxHighlighter>
+                        </CardBody>
+                      </Card>
+                    </Tab>
+                  ))}
+                </Tabs>
+              </div>
             </div>
           )}
         </div>
-
-        <button className="export-btn" onClick={handleExport}>
-          Export for Liferay
-        </button>
       </div>
     </>
   )
 }
 
 ViewCodeCard.propTypes = {
-  children: PropTypes.element.isRequired
+  children: PropTypes.node.isRequired,
+  sass: PropTypes.string.isRequired,
+  jsFn: PropTypes.func.isRequired,
+  info: PropTypes.object.isRequired
 }
 
 export default ViewCodeCard
