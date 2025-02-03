@@ -1,0 +1,94 @@
+@use 'sass:map';
+@use './base' as *;
+
+$arquitectura-diseno: (
+  'arquitectura-diseno': (
+    'primary': (
+      'default': map.get($color-base, 'primary'),
+      '1000': #f0f8ff,
+      '900': #e0effe,
+      '800': #bae0fd,
+      '700': #7dc8fc,
+      '600': #38acf8,
+      '500': #0e91e9,
+      '400': map.get($color-base, 'primary'),
+      '300': #035ba1,
+      '200': #074e85,
+      '100': #0c416e,
+      '0': #082949
+    ),
+    'secondary': (
+      'default': map.get($color-base, 'secondary'),
+      '1000': #eff9ff,
+      '900': #def2ff,
+      '800': #b6e7ff,
+      '700': #76d5ff,
+      '600': #2ec0ff,
+      '500': map.get($color-base, 'secondary'),
+      '400': #0086d2,
+      '300': #006aaa,
+      '200': #005b8c,
+      '100': #074b73,
+      '0': #04304d
+    ),
+    'tertiary': (
+      'default': map.get($color-base, 'tertiary'),
+      '1000': #f2fbf2,
+      '900': #e1f7e1,
+      '800': #c4eec4,
+      '700': #96df96,
+      '600': map.get($color-base, 'tertiary-dark'),
+      '500': map.get($color-base, 'tertiary'),
+      '400': #2b8e2d,
+      '300': #257026,
+      '200': #225923,
+      '100': #1d4a1f,
+      '0': #0b280d
+    )
+  ),
+  // --- Arquitectura y diseño --- //
+  'arquitectura-diseno-dark': (
+      'primary': (
+        'default': map.get($color-base, 'primary'),
+        '1000': #f0f8ff,
+        '900': #e0effe,
+        '800': #bae0fd,
+        '700': #7dc8fc,
+        '600': #38acf8,
+        '500': #0e91e9,
+        '400': map.get($color-base, 'primary'),
+        '300': #035ba1,
+        '200': #074e85,
+        '100': #0c416e,
+        '0': #082949
+      ),
+      'secondary': (
+        'default': map.get($color-base, 'secondary'),
+        '1000': #eff9ff,
+        '900': #def2ff,
+        '800': #b6e7ff,
+        '700': #76d5ff,
+        '600': #2ec0ff,
+        '500': map.get($color-base, 'secondary'),
+        '400': #0086d2,
+        '300': #006aaa,
+        '200': #005b8c,
+        '100': #074b73,
+        '0': #04304d
+      ),
+      'tertiary': (
+        'default': map.get($color-base, 'tertiary'),
+        '1000': #f2fbf2,
+        '900': #e1f7e1,
+        '800': #c4eec4,
+        '700': #96df96,
+        '600': map.get($color-base, 'tertiary-dark'),
+        '500': map.get($color-base, 'tertiary'),
+        '400': #2b8e2d,
+        '300': #257026,
+        '200': #225923,
+        '100': #1d4a1f,
+        '0': #0b280d
+      )
+    )
+);

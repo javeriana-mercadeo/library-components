@@ -5,21 +5,18 @@ import { BrowserRouter } from 'react-router-dom'
 import GeneralContext from './models/context/GeneralContext.jsx'
 import Routes from './routes/Routes.jsx'
 
-// Tailwind CSS
+// Estilos con Tailwind CSS
 import './ui/styles/_tailwind.css'
-// Code Highlighting
+// Estilos del código con Highlighting
 import 'prismjs/themes/prism-tomorrow.css'
-
-// General Styles
-/* import './ui/styles/_main.scss' */
+// Estilos generales Styles
+import './ui/styles/global.scss'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <GeneralContext>
-        <div className="text-foreground bg-background">
-          <Routes />
-        </div>
+        <Routes />
       </GeneralContext>
     </BrowserRouter>
   </StrictMode>

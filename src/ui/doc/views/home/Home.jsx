@@ -1,13 +1,15 @@
-import ViewCodeCard from '@documentation/partials/ViewCode/ViewCode.jsx'
-import BlogArticles from '@library-global/views/blog-articles/BlogArticles.jsx'
-import BlogArticlesStyles from '@library-global/views/blog-articles/blogArticlesStyle.scss?raw'
-import BlogArticlesScripts from '@library-global/views/blog-articles/BlogArticlesScript.js'
-import { info } from '@library-global/views/blog-articles/data.json'
+// Doc
+import ViewCodeCard from '@documentation/components/ViewCode/ViewCode.jsx'
+// Library
+import BlogArticles from '@library/_institutional/views/blog-articles/Blog.component.jsx'
+import blogStyles from '@library-institutional/views/blog-articles/blog.style..scss?raw'
+import blogScript from '@library/_institutional/views/blog-articles/blog.scripts.js'
+import info from '@library-institutional/views/blog-articles/info.component.json'
 
 const Home = () => {
   return (
     <>
-      <ViewCodeCard sass={BlogArticlesStyles} jsFn={BlogArticlesScripts} info={info}>
+      <ViewCodeCard sass={blogStyles} jsFn={blogScript} info={info}>
         <BlogArticles />
       </ViewCodeCard>
     </>

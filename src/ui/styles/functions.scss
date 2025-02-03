@@ -1,4 +1,0 @@
-// Medidas relativas | Recurso adicional para pasar de px a rem
-@function rem($pixels) {
-  @return #{calc($pixels / $base-font-size)}rem;
-}

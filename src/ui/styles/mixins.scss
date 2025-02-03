@@ -1,6 +1,0 @@
-// Responsive
-@mixin responsive {
-  @media (min-width: $brack_point) {
-    @content;
-  }
-}

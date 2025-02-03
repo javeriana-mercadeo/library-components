@@ -1,14 +1,16 @@
 import { Outlet } from 'react-router-dom'
 
-import NavMenu from '../partials/NavbarMenu/NavbarMenu.jsx'
+import NavMenu from '../components/NavbarMenu/NavbarMenu.jsx'
+import Footer from '../components/footer/Footer.jsx'
 
 const General = () => {
   return (
     <>
       <NavMenu />
-      <main className="container mx-auto">
+      <main>
         <Outlet />
       </main>
+      <Footer />
     </>
   )
 }

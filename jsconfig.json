@@ -3,7 +3,7 @@
     "baseUrl": "./",
     "paths": {
       "@library/*": ["src/ui/library/*"],
-      "@library-global/*": ["src/ui/library/_global/*"],
+      "@library-institutional/*": ["src/ui/library/_institutional/*"],
       "@documentation/*": ["src/ui/doc/*"],
       "@constants/*": ["./src/constants/*"]
     }

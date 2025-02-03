@@ -1,0 +1,26 @@
+@use './vars' as *;
+
+// Responsive
+@mixin responsive {
+  @media (min-width: $break_point) {
+    @content;
+  }
+}
+
+@mixin generate-vars($name, $colors) {
+  :root {
+    @each $color-value, $value in $colors {
+      --#{$name}-#{$color-value}: #{$value};
+    }
+  }
+}
+
+@mixin generate-theme($name, $colors) {
+  :root[data-theme='#{$name}'] {
+    @each $color-name, $color-value in $colors {
+      @each $color-value-name, $color-value in $color-value {
+        --#{$color-name}-#{$color-value-name}: #{$color-value};
+      }
+    }
+  }
+}

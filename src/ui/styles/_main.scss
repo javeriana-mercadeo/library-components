@@ -1,8 +1,5 @@
-@use './vars.scss';
-@use './functions.scss';
-@use './mixins.scss';
-@use './typography.scss';
-@use './colors.scss';
-@use './theme-colors.scss';
-
-@use './global.scss';
+@forward './vars.scss';
+@forward './functions.scss';
+@forward './mixins.scss';
+@forward './typography.scss';
+@forward './theme.scss';

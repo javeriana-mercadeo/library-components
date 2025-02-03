@@ -1,0 +1,12 @@
+@use 'sass:map';
+@use './colors/colors' as *;
+@use './mixins' as *;
+
+// Generar variables de colores
+@each $name, $colors in $colors-map {
+  @include generate-vars($name, $colors);
+}
+
+@each $name, $colors in $colors-theme {
+  @include generate-theme($name, $colors);
+}
