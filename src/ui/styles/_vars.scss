@@ -14,3 +14,19 @@ $border-radius: 15px;
 
 // transition
 $transition: 0.3s;
+
+// Mapa de escalas de luminosidad
+$lightness-steps: (
+  100: 98%,
+  200: 95%,
+  300: 85%,
+  400: 75%,
+  500: 65%,
+  600: 55%,
+  700: 45%,
+  800: 35%,
+  900: 25%,
+  1000: 15%,
+  1100: 10%
+);
+

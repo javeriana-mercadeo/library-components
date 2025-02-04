@@ -1,172 +1,124 @@
 @use 'sass:map';
 @use './base' as *;
-@use './arquitectura-diseno' as *;
-@use './artes' as *;
-@use './ciencias' as *;
+@use '../mixins' as *;
+@use '../functions' as *;
+
+$color-base: (
+  'primary': #026fc1,
+  'primary-dark': #0285d1,
+  'secondary': #029be1,
+  'tertiary': #359c36,
+  'tertiary-dark': #5dc85e,
+  'neutral': #ffffff,
+  'neutral-variant': #96937f,
+  'success': #36b377,
+  'warning': #f2bf2e,
+  'danger': #ff1200,
+  // arquitectura y diseño
+  'ad-primary': #653383,
+  'ad-secondary': #00559a,
+  // artes
+  'a-primary': #6f45e9,
+  'a-secondary': #ff4b78,
+  'a-tertiary': #2c5595,
+  //ciencias
+  'c-primary': #008aa2,
+  'c-secondary': #f6bd30,
+  // ciencias economicas y administrativas
+  'cea-primary': #4a7ed8,
+  'cea-secondary': #371f75,
+  'cea-tertiary': #ff4e30,
+  // ciencias juridicas
+  'cj-primary': #f6bd30,
+  'cj-secondary': #2c5595,
+  'cj-tertiary': #c6c6c6,
+  // ciencias políticas y relaciones internacionales
+  'cpri-primary': #f6bd30,
+  'cpri-secondary': #008874,
+  // ciencias sociales
+  'cs-primary': #003d7a,
+  'cs-secondary': #73d9fc,
+  'cs-tertiary': #3e2580,
+  // comunicación y lenguaje
+  'cl-primary': #8048a9,
+  'cl-secondary': #73d9fc,
+  'cl-tertiary': #2c5595,
+  // derecho canónico
+  'dc-primary': #f6bd30,
+  'dc-secondary': #2c5595,
+  'dc-tertiary': #f2f2f2,
+  // educación
+  'e-primary': #a1bfff,
+  'e-secondary': #2a2a68,
+  'e-tertiary': #f47abd,
+  // enfermería
+  'en-primary': #ffcd00,
+  'en-secondary': #018ab9,
+  // estudios ambientales y rurales
+  'ear-primary': #abc80e,
+  'ear-secondary': #2dcad1,
+  'ear-tertiary': #029be2,
+  // filosofía
+  'f-primary': #004c8f,
+  'f-secondary': #c08300,
+  'f-tertiary': #f2f2f2,
+  // ingeniería
+  'i-primary': #026fc1,
+  'i-secondary': #029be1,
+  'i-tertiary': #339e36,
+  // instituto pensar
+  'ip-primary': #00b3ab,
+  'ip-secondary': #ff6b17,
+  // instituto salud pública
+  'isp-primary': #a74731,
+  'isp-secondary': #c28069,
+  // medicina
+  'm-primary': #f6bd30,
+  'm-secondary': #2b9cd2,
+  // odontología
+  'o-primary': #00c7dc,
+  'o-secondary': #32abbf,
+  // psicología
+  'p-primary': #f6bd30,
+  'p-secondary': #029be1,
+  // teología
+  't-primary': #c08300,
+  't-secondary': #004c8f
+);
 
 $colors-map: (
-  'primary': (
-    'default': map.get($color-base, 'primary'),
-    '1000': #f0f8ff,
-    '900': #e0effe,
-    '800': #bae0fd,
-    '700': #7dc8fc,
-    '600': #38acf8,
-    '500': #0e91e9,
-    '400': map.get($color-base, 'primary'),
-    '300': #035ba1,
-    '200': #074e85,
-    '100': #0c416e,
-    '0': #082949
-  ),
-  'secondary': (
-    'default': map.get($color-base, 'secondary'),
-    '1000': #eff9ff,
-    '900': #def2ff,
-    '800': #b6e7ff,
-    '700': #76d5ff,
-    '600': #2ec0ff,
-    '500': map.get($color-base, 'secondary'),
-    '400': #0086d2,
-    '300': #006aaa,
-    '200': #005b8c,
-    '100': #074b73,
-    '0': #04304d
-  ),
-  'tertiary': (
-    'default': map.get($color-base, 'tertiary'),
-    '1000': #f2fbf2,
-    '900': #e1f7e1,
-    '800': #c4eec4,
-    '700': #96df96,
-    '600': map.get($color-base, 'tertiary-dark'),
-    '500': map.get($color-base, 'tertiary'),
-    '400': #2b8e2d,
-    '300': #257026,
-    '200': #225923,
-    '100': #1d4a1f,
-    '0': #0b280d
-  ),
-  'neutral': (
-    'default': map.get($color-base, 'neutral'),
-    '1000': map.get($color-base, 'neutral'),
-    '900': #c7d1db,
-    '800': #b6c2cf,
-    '700': #9fadbc,
-    '600': #8c9bab,
-    '500': #596773,
-    '400': #454f59,
-    '300': #2c333a,
-    '200': #2f3233,
-    '100': #242627,
-    '0': #151717
-  ),
-  'neutral-variant': (
-    'default': map.get($color-base, 'neutral-variant'),
-    '1000': #f4f3f1,
-    '900': #e7e5e0,
-    '800': #d1cfc5,
-    '700': #b4b2a2,
-    '600': map.get($color-base, 'neutral-variant'),
-    '500': #7d7b65,
-    '400': #615f4f,
-    '300': #4c4b3f,
-    '200': #3f3e35,
-    '100': #373630,
-    '0': #1c1b17
-  ),
-  'success': (
-    'default': map.get($color-base, 'success'),
-    '1000': #f3fff9,
-    '900': #deffef,
-    '800': #b9f9da,
-    '700': #9ae9c3,
-    '600': #79d2a7,
-    '500': map.get($color-base, 'success'),
-    '400': #289a64,
-    '300': #1a784b,
-    '200': #0e5b36,
-    '100': #073a22,
-    '0': #032616
-  ),
-  'danger': (
-    'default': map.get($color-base, 'danger'),
-    '1000': #fff1f0,
-    '900': #ffdfdd,
-    '800': #ffc4c0,
-    '700': #ff9c94,
-    '600': #ff6357,
-    '500': #ff3323,
-    '400': map.get($color-base, 'danger'),
-    '300': #d70f00,
-    '200': #b10f03,
-    '100': #92140a,
-    '0': #500600
-  ),
-  'warning': (
-    'default': map.get($color-base, 'warning'),
-    '1000': #fffaed,
-    '900': #fff3d2,
-    '800': #ffe6a3,
-    '700': #ffd76a,
-    '600': map.get($color-base, 'warning'),
-    '500': #d49d00,
-    '400': #b48500,
-    '300': #8c6800,
-    '200': #644a00,
-    '100': #443200,
-    '0': #2d2100
-  )
+  'primary': generate-color-scale(map.get($color-base, 'primary')),
+  'secondary': generate-color-scale(map.get($color-base, 'secondary')),
+  'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
+  'neutral': generate-color-scale(map.get($color-base, 'neutral')),
+  'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+  'success': generate-color-scale(map.get($color-base, 'success')),
+  'warning': generate-color-scale(map.get($color-base, 'warning')),
+  'danger': generate-color-scale(map.get($color-base, 'danger'))
 );
 
 $colors-theme: (
-  // --- Modo Oscuro --- //
   'dark': (
-      'primary': (
-        'default': map.get($color-base, 'primary-dark'),
-        '1000': #f0f9ff,
-        '900': #e0f1fe,
-        '800': #bae4fd,
-        '700': #7dd0fc,
-        '600': #38b8f8,
-        '500': #0e9fe9,
-        '400': map.get($color-base, 'primary-dark'),
-        '300': #0365a1,
-        '200': #075685,
-        '100': #0c476e,
-        '0': #082d49
-      ),
-      'secondary': (
-        'default': map.get($color-base, 'secondary'),
-        '1000': #eff9ff,
-        '900': #def2ff,
-        '800': #b6e7ff,
-        '700': #76d5ff,
-        '600': #2ec0ff,
-        '500': map.get($color-base, 'secondary'),
-        '400': #0086d2,
-        '300': #006aaa,
-        '200': #005b8c,
-        '100': #074b73,
-        '0': #04304d
-      ),
-      'tertiary': (
-        'default': map.get($color-base, 'tertiary-dark'),
-        '1000': #f2fbf2,
-        '900': #e1f7e1,
-        '800': #c4eec4,
-        '700': #96df96,
-        '600': map.get($color-base, 'tertiary-dark'),
-        '500': map.get($color-base, 'tertiary'),
-        '400': #2b8e2d,
-        '300': #257026,
-        '200': #225923,
-        '100': #1d4a1f,
-        '0': #0b280d
-      )
-    )
+    'primary': generate-color-scale(map.get($color-base, 'primary-dark'), true),
+    'secondary': generate-color-scale(map.get($color-base, 'secondary'), true),
+    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
+    'neutral': generate-color-scale(map.get($color-base, 'neutral'), true),
+    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'success': generate-color-scale(map.get($color-base, 'success'), true),
+    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
+    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
+  ),
+  'arquitectura-diseno': (
+    'primary': generate-color-scale(#653383, true),
+    'secondary': generate-color-scale(#00559a, true)
+  ),
+  'arquitectura-diseno-dark': (
+    'primary': generate-color-scale(#653383, true),
+    'secondary': generate-color-scale(#00559a, true)
+  )
 );
 
-$colors-theme: map.merge($colors-theme, $arquitectura-diseno);
-$colors-theme: map.merge($colors-theme, $artes);
-$colors-theme: map.merge($colors-theme, $ciencias);
+// Generar variables de colores
+@each $name, $colors in $colors-map {
+  @include generate-vars($name, $colors);
+}

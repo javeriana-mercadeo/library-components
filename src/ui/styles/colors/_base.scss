@@ -1,3 +1,7 @@
+@use 'sass:map';
+@use '../mixins' as *;
+@use '../functions' as *;
+
 $color-base: (
   'primary': #026fc1,
   'primary-dark': #0285d1,
