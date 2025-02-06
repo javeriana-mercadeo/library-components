@@ -15,9 +15,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@library': path.resolve(__dirname, './src/ui/library'),
-      '@library-institutional': path.resolve(__dirname, './src/ui/library/_institutional'),
+      '@library_institutional': path.resolve(__dirname, './src/ui/library/_institutional'),
       '@documentation': path.resolve(__dirname, './src/ui/doc'),
-      '@constants': path.resolve(__dirname, './src/constants')
+      '@constants': path.resolve(__dirname, './src/constants'),
+      '@style': path.resolve(__dirname, './src/ui/styles')
     }
   }
 })

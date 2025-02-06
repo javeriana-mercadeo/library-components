@@ -1,5 +1,5 @@
 @use 'sass:map';
-@use './colors/colors' as *;
+@use './colors' as *;
 @use './mixins' as *;
 
 // Generar variables de colores
@@ -7,6 +7,7 @@
   @include generate-vars($name, $colors);
 }
 
+// Generar temas de colores
 @each $name, $colors in $colors-theme {
   @include generate-theme($name, $colors);
 }

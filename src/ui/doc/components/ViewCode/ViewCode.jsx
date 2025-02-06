@@ -26,7 +26,7 @@ const ViewCodeCard = ({ children, sass, jsFn, info }) => {
   return (
     <>
       <Divider />
-      <div className="showcase-container relative">
+      <div className="relative w-full pt-5">
         {/* Controls */}
         <div className="flex gap-2 flex-wrap absolute top-0 right-2 z-10 bg-white p-1 border border-gray-200 rounded-full">
           <Tabs radius="full" aria-label="Opciones" color="primary" selectedKey={activeTab} onSelectionChange={setActiveTab}>

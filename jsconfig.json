@@ -3,9 +3,10 @@
     "baseUrl": "./",
     "paths": {
       "@library/*": ["src/ui/library/*"],
-      "@library-institutional/*": ["src/ui/library/_institutional/*"],
+      "@library_institutional/*": ["src/ui/library/_institutional/*"],
       "@documentation/*": ["src/ui/doc/*"],
-      "@constants/*": ["./src/constants/*"]
+      "@constants/*": ["./src/constants/*"],
+      "@style": ["./src/ui/styles/*"]
     }
   }
 }

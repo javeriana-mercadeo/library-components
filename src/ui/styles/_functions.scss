@@ -18,7 +18,7 @@
 }
 
 // Función para invertir solo los valores de un mapa
-@function invert-map($input-map) {
+@function invert-color-map($input-map) {
   $reversed-map: ();
   $keys: map.keys($input-map);
   $values: map.values($input-map);
@@ -46,7 +46,7 @@
   $color-scale: map.set($color-scale, '', $base-color);
 
   @if $inverted {
-    $lightness-steps: invert-map($lightness-steps);
+    $lightness-steps: invert-color-map($lightness-steps);
     @each $step, $light in $lightness-steps {
       $hsl-color: hsl($hue, $saturation, $light);
       $color-value: hsl-to-rgb($hsl-color);
