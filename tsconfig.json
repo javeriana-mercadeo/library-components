@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es2015",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"],
+      "@components/*": ["./app/_components/*"],
+      "@library/*": ["./library/*"],
+      "@styles/*": ["./styles/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "library/_institutional/views/blog-articles/blog.jsx",
+    "library/_institutional/components/contain/imgBackground.jsx",
+    "library/_institutional/components/contain/title.jsx",
+    "library/_institutional/components/contain/image.jsx",
+    "library/_institutional/components/contain/caption.jsx",
+    "library/_institutional/components/contain/paragraph.jsx",
+    "library/_institutional/components/cards/cardArticleHorizontal.jsx"
+  ],
+  "exclude": ["node_modules"]
+}
