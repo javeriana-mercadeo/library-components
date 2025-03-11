@@ -1,6 +1,8 @@
-import '@/styles/global.scss'
 import '@/styles/_tailwind.css'
-import { Metadata, Viewport } from 'next'
+import '@/styles/global.scss'
+//import '@/styles/liferayStyles.css'
+
+import { Metadata } from 'next'
 import { Providers } from './providers'
 import { siteConfig } from '@/config/site'
 
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning lang="en" className="light">
       <head>
         {/* <!-- Flowbite CSS --> */}
         <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
@@ -34,11 +36,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </Providers>
 
+        {/* <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            document
+              .querySelectorAll("link.lfr-css-file")
+              .forEach((link) => link.remove());
+          });
+        </script> */}
+
         {/* <!-- Iconos Phosphor --> */}
         <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
         {/* <!-- Tailwind css --> */}
-        <script src="https://www.javeriana.edu.co/planestudio/pages/libraries/tailwindcss/tailwindcss.js"></script>
+        {/* <script src="https://www.javeriana.edu.co/planestudio/pages/libraries/tailwindcss/tailwindcss.js"></script> */}
 
         {/* <!-- Flowbite --> */}
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>

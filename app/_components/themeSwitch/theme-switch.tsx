@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Select, SelectItem } from '@heroui/react'
 import { useTheme } from 'next-themes'
 import { useIsSSR } from '@react-aria/ssr'
@@ -8,9 +9,12 @@ export const ThemeSwitch = () => {
   const { theme, setTheme } = useTheme()
   const isSSR = useIsSSR()
 
+  useEffect(() => {
+    setTheme('light')
+  }, [])
+
   const themes = [
-    { key: 'default', label: 'Automático' },
-    { key: '', label: 'Institucional' },
+    { key: 'light', label: 'Institucional' },
     { key: 'dark', label: '(Oscuro) Institucional' },
     { key: 'arquitectura-diseno', label: 'Arquitectura y Diseño' },
     { key: 'arquitectura-diseno-dark', label: '(Oscuro) Arquitectura y Diseño' },
@@ -62,10 +66,9 @@ export const ThemeSwitch = () => {
   return (
     <div className="flex items-center gap-2">
       <Select
-        selectedKeys={isSSR ? 'light' : theme}
+        selectedKeys={new Set([isSSR ? 'light' : theme || 'light'])}
         onSelectionChange={handleSelectionChange}
-        className="w-[200px] max-w-xs m-0! p-0"
-        label="Selecciona un tema"
+        className="w-[200px] max-w-xs"
         labelPlacement="outside"
         placeholder="Elige un tema"
         selectorIcon={<i className="ph ph-check-circle"></i>}>
