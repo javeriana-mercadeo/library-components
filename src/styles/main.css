@@ -391,12 +391,29 @@ img, video, iframe {
 }
 @media (max-width: 768px) {
   .program-info {
+    display: flex;
     flex-direction: column;
     text-align: left;
     padding: 16px;
   }
   .program-info__content, .program-info__image {
     width: 100%;
+  }
+  .program-info .program-info-facultad {
+    background-color: #026FC1;
+    order: 2;
+  }
+  .program-info .program-info__image {
+    background-color: #212529;
+    order: 1;
+  }
+  .program-info .program-details {
+    background-color: aqua;
+    order: 3;
+  }
+  .program-info .program-details-row {
+    background-color: red;
+    order: 4;
   }
 }
 
