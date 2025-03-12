@@ -1,9 +1,9 @@
 'use client'
 
-import Title from '@library/_institutional/components/contain/title'
-import Paragraph from '@library/_institutional/components/contain/paragraph'
-import ImgBackground from '@library/_institutional/components/contain/imgBackground'
-import Container from '@library/_institutional/components/container/Container'
+import Title from '@library/_general/components/contain/title'
+import Paragraph from '@library/_general/components/contain/paragraph'
+import ImgBackground from '@library/_general/components/contain/imgBackground'
+import Container from '@library/_general/components/container/Container'
 
 import './styles.scss'
 import info from './info.json'
@@ -12,6 +12,7 @@ function BlogHeader() {
   return (
     <article className="blog-header">
       <ImgBackground id={info.name} img="https://www.javeriana.edu.co/recursosdb/d/info-prg/background-png" />
+
       <Container className="blog-header-container">
         <div className="blog-header-content">
           <i className="ph ph-file-image"></i>

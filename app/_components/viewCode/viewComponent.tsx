@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import ReactDOMServer from 'react-dom/server'
 import { Button, Tabs, Tab, Card, CardBody, Snippet, Divider } from '@heroui/react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { a11yDark } from 'react-syntax-highlighter/dist/cjs/styles/prism'
@@ -16,6 +17,7 @@ export default function ViewComponent({ path, children }: { path: string; childr
   const [htmlContent, setHtmlContent] = useState<string>('')
   const [cssContent, setCssContent] = useState<string>('')
   const [jsContent, setJsContent] = useState<string>('')
+  const [scriptContent, setScriptContent] = useState<string>('')
 
   useEffect(() => {
     async function loadComponent() {
@@ -25,13 +27,9 @@ export default function ViewComponent({ path, children }: { path: string; childr
 
         if (info) setInfo(info)
         if (css) setCssContent(await prettierFormat(css, 'css'))
-        if (js) {
-          setJsContent(await prettierFormat(js, 'js'))
+        if (js) setJsContent(await prettierFormat(js, 'js'))
 
-          const script = document.createElement('script')
-          script.textContent = js
-          document.body.appendChild(script)
-        }
+        setScriptContent(js)
       } catch (error) {
         console.error('Error cargando el componente:', error)
       }
@@ -41,10 +39,11 @@ export default function ViewComponent({ path, children }: { path: string; childr
   }, [path])
 
   useEffect(() => {
+    if (!children) return
+
     async function formatHtml() {
-      if (containerRef.current) {
-        const htmlFormat = await prettierFormat(containerRef.current.innerHTML, 'html')
-        setHtmlContent(htmlFormat)
+      if (children) {
+        setHtmlContent(await prettierFormat(ReactDOMServer.renderToString(children), 'html'))
       }
     }
 
@@ -60,6 +59,8 @@ export default function ViewComponent({ path, children }: { path: string; childr
 
   return (
     <>
+      {scriptContent && <script dangerouslySetInnerHTML={{ __html: scriptContent }} />}
+
       <Divider />
       <div className="relative w-full ">
         {/* Controles */}

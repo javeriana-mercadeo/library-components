@@ -6,6 +6,7 @@ const handleZipExport = async (info, htmlFormat, cssFormat, jsFormat, previewRef
 
   // Capturar la imagen de previsualización usando html2canvas directamente
   const canvas = await html2canvas(previewRef.current)
+
   canvas.toBlob(blob => {
     // Crear una carpeta dentro del ZIP, por ejemplo 'assets'
     const assetsFolder = zip.folder(info.name)

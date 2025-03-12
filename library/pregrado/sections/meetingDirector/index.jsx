@@ -1,5 +1,5 @@
-import Caption from '@library/_institutional/components/contain/caption'
-import BtnLink from '@library/_institutional/components/buttons/btnLink'
+import Caption from '@library/_general/components/contain/caption'
+import BtnLink from '@/library/_general/components/buttons/btnLink'
 
 import './styles.scss'
 

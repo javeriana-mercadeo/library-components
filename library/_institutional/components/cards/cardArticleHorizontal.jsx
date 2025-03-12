@@ -1,4 +1,4 @@
-import BtnLink from '@library/_institutional/components/buttons/btnLink'
+import BtnLink from '@/library/_general/components/buttons/btnLink'
 import Image from 'next/image'
 import PropTypes from 'prop-types'
 

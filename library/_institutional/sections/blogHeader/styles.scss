@@ -1,5 +1,6 @@
 @use '../../../../styles/mixins' as *;
-@use '../../components/contain/imgBackground.scss' as *;
+@use '../../../../styles/functions' as *;
+@use '../../../_general/components/contain/imgBackground.scss' as *;
 
 .blog-header {
   position: relative;
@@ -15,7 +16,7 @@
 
   padding: 40px 40px;
   padding-top: 80px;
-  padding-bottom: 70px;
+  padding-bottom: rem(70px);
 
   z-index: 1;
 

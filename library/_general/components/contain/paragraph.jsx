@@ -9,6 +9,7 @@ const Paragraph = ({ children, className, id }) => {
     </lfr-editable>
   )
 }
+
 Paragraph.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,

@@ -29,7 +29,8 @@ const prettierFormat = async (code, type) => {
     bracketSameLine: true,
     proseWrap: 'always',
     quoteProps: 'as-needed',
-    printWidth: 80
+    printWidth: 100,
+    htmlWhitespaceSensitivity: 'ignore'
   })
 }
 
