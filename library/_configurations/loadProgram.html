@@ -1,0 +1,41 @@
+<script>
+  const codProgram = '${configuration.codeProgram}' // Data tomada de Liferay
+  let statusPage = {} // Variable global para guar el estado de los componentes
+</script>
+<div id="codProgramlabelDisplay" class="btn element-edit-liferay">Código de programa:</div>
+
+<script>
+  const nameEvent = 'data_load-program'
+  const URL_API_JAVERIANA = 'https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals'
+
+  const loadDataProgram = async (URL, codPrg) => {
+    try {
+      statusPage = { ...statusPage, loadDataProgram: '🟡 Cargando información del programa: ', codigo: codProgram }
+
+      const response = await fetch(`${URL}/filterprograma?codprograma=${codPrg}`)
+
+      if (!response.ok) throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`)
+
+      const res = await response.json()
+      const { programa } = res
+
+      statusPage = { ...statusPage, loadDataProgram: '🟢 Datos del programa cargados correctamente: ', programa }
+
+      const event = new CustomEvent(nameEvent, { detail: { dataProgram: res } })
+      document.dispatchEvent(event)
+    } catch (error) {
+      console.error('❌ Error al cargar la información del programa: ', error)
+    }
+  }
+
+  ;(async () => {
+    try {
+      document.getElementById('codProgramlabelDisplay').textContent = `Código de programa: ${codProgram}`
+
+      if (!codProgram) throw new Error('Código de programa no definido')
+      await loadDataProgram(URL_API_JAVERIANA, codProgram)
+    } catch (error) {
+      console.error('Error al llamar el servicio de loadDataProgram', error)
+    }
+  })()
+</script>
