@@ -1,4 +1,4 @@
-import ViewComponent from '@components/viewCode/viewComponent'
+import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 import BlogHeader from '@library/_institutional/sections/blogHeader'
 import BlogFeatured from '@library/_institutional/sections/blogFeatured'
 
