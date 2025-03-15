@@ -283,14 +283,39 @@ img, video, iframe {
 }
 
 .program-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "content image" "content image" "content image";
+  column-gap: 66px;
+  row-gap: 16px;
   padding: 16px 38px;
+  justify-items: start;
+  align-items: end;
+  padding-top: 80px;
+  min-height: 100%;
 }
 .program-info__content {
-  width: 50%;
+  grid-area: content;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.program-info__image {
+  grid-area: image;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  align-self: stretch;
+}
+.program-info__image img {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  flex-grow: 1;
 }
 .program-info__title_facultad {
   font-size: 0.875rem;
@@ -299,6 +324,7 @@ img, video, iframe {
   line-height: 1.5;
   font-family: "Raleway", sans-serif;
   color: #026FC1;
+  padding-top: 35px;
 }
 .program-info__title {
   font-size: clamp(1.8rem, 5vw, 3rem);
@@ -307,6 +333,7 @@ img, video, iframe {
   line-height: 1.2;
   font-family: "Raleway", sans-serif;
   color: #101215;
+  margin-top: 0;
 }
 .program-info .highlight {
   color: #026FC1;
@@ -324,20 +351,12 @@ img, video, iframe {
   color: #454f59;
   margin-bottom: 1rem;
 }
-.program-info__image img {
-  max-width: 100%;
-  height: auto;
-}
-.program-info .program-details-row {
-  display: flex;
-  text-align: left;
-}
-.program-info .program-details-row__item {
+.program-info__item {
   display: flex;
   align-items: flex-start;
   gap: 16px;
 }
-.program-info .program-details-row__icon_container {
+.program-info__icon_container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -346,13 +365,19 @@ img, video, iframe {
   border-radius: 50%;
   background-color: #026FC1;
 }
-.program-info .program-details-row .ph {
+.program-info .inscripcion {
+  color: #026FC1;
+  padding-left: 55px;
+  cursor: pointer;
+}
+.program-info .ph {
   color: #ffffff;
   font-size: 22px;
 }
 .program-info .program-details {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
   padding: 16px 0;
   text-align: left;
@@ -366,8 +391,8 @@ img, video, iframe {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background-color: #026FC1;
 }
@@ -389,7 +414,13 @@ img, video, iframe {
   color: #596773;
   margin-top: 12px;
 }
-@media (max-width: 768px) {
+.program-info .program-details__item:last-child {
+  grid-column: span 2;
+}
+.program-info .content-button {
+  display: none;
+}
+@media (max-width: 1200px) {
   .program-info {
     display: flex;
     flex-direction: column;
@@ -400,20 +431,43 @@ img, video, iframe {
     width: 100%;
   }
   .program-info .program-info-facultad {
-    background-color: #026FC1;
     order: 2;
+    text-align: left;
+  }
+  .program-info .inscripcion-container .inscripcion {
+    padding-left: 0px;
+  }
+  .program-info .program-info__title {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: normal;
+    line-height: 1.2;
+    font-family: "Raleway", sans-serif;
+    color: #101215;
+    margin-top: 0;
+    text-align: left;
+  }
+  .program-info .highlight {
+    display: inline;
+    white-space: nowrap;
   }
   .program-info .program-info__image {
     background-color: #212529;
-    order: 1;
+    order: 2;
+    height: 50vw;
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: 0;
   }
   .program-info .program-details {
-    background-color: aqua;
-    order: 3;
+    order: 4;
+    display: flex;
+    flex-direction: column;
   }
   .program-info .program-details-row {
-    background-color: red;
-    order: 4;
+    order: 5;
   }
 }
 
