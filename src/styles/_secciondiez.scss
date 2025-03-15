@@ -1,0 +1,133 @@
+@use 'variables'as *;
+@use 'mixins'as *;
+
+.related-programs {
+  text-align: center;
+  padding: $spacing-lg;
+  background-color: $color-background;
+
+  @media (max-width: $breakpoint-md) {
+    padding: 0px $spacing-sm;
+    text-align: left;
+  }
+
+  &__title {
+    font-size: $font-size-h2;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-sm;
+    color: $color-text;
+  }
+
+  &__description {
+    font-size: $font-size-p;
+    margin-bottom: $spacing-lg;
+    color: $color-muted-text;
+  }
+
+  &__wrapper {
+    position: relative;
+    overflow: hidden;
+
+    @media (max-width: $breakpoint-md) {
+      padding: 0 $spacing-sm;
+    }
+  }
+
+  &__track {
+    display: flex;
+    gap: $spacing-md;
+    transition: transform 0.5s ease-in-out;
+    justify-content: center;
+
+    @media (max-width: $breakpoint-md) {
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      justify-content: flex-start;
+    }
+  }
+
+  &__item {
+    position: relative;
+    width: 270px;
+    height: 380px;
+    border-radius: $border-radius-md;
+    overflow: hidden;
+    text-align: left;
+    scroll-snap-align: center;
+
+    @media (max-width: $breakpoint-md) {
+      flex: 0 0 80%;
+    }
+
+    &>img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(2, 111, 193, 0) 19.88%, #026FC1 84.25%);
+  }
+
+  &__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: $spacing-md;
+    color: $text-light;
+    z-index: 2;
+  }
+
+  &__name {
+    font-size: $font-size-p;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__faculty {
+    font-size: $font-size-small;
+    color: $text-light;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__link {
+    font-size: $font-size-small;
+    color: $text-light;
+    text-decoration: none;
+    font-weight: $font-weight-bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: $primary-color;
+    cursor: pointer;
+
+    &--prev {
+      left: $spacing-sm;
+    }
+
+    &--next {
+      right: $spacing-sm;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      display: none;
+    }
+  }
+}

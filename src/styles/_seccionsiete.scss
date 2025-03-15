@@ -1,0 +1,137 @@
+@use 'variables'as *;
+@use 'mixins'as *;
+
+.experience-carousel {
+  text-align: center;
+  padding: $spacing-lg;
+  background-color: $color-background;
+
+  @media (max-width: $breakpoint-md) {
+    text-align: left;
+  }
+
+  &__title {
+    font-size: $font-size-h2;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-sm;
+    color: $color-text;
+  }
+
+  &__description {
+    font-size: $font-size-p;
+    margin-bottom: $spacing-lg;
+    color: $color-muted-text;
+  }
+
+  &__wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  &__track {
+    display: flex;
+    gap: $spacing-md;
+    transition: transform 0.5s ease-in-out;
+    justify-content: center;
+
+    @media (max-width: $breakpoint-md) {
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      justify-content: unset;
+      scroll-behavior: smooth;
+    }
+  }
+
+  &__item {
+    gap: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 270px;
+    scroll-snap-align: center;
+
+    @media (max-width: $breakpoint-md) {
+      flex: 0 0 80%;
+    }
+
+    &>img {
+      max-width: 100%;
+      border-radius: $border-radius-md;
+    }
+
+    .experience-carousel__video-play {
+      position: absolute;
+      font-size: 2rem;
+      color: $primary-color;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      padding: $spacing-sm;
+      cursor: pointer;
+    }
+  }
+
+  &__text-card {
+    background-color: $primary-color;
+    color: $text-light;
+    padding: $spacing-md;
+    border-radius: $border-radius-lg;
+    text-align: left;
+    height: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+
+    &__text {
+      margin-bottom: $spacing-sm;
+      font-size: $font-size-p;
+    }
+
+    &__author {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: $spacing-sm;
+
+      &-img {
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      &-name {
+        font-size: $font-size-p;
+        font-weight: $font-weight-bold;
+      }
+
+      &-title {
+        font-size: $font-size-small;
+        color: $color-muted-text;
+      }
+    }
+  }
+
+  &__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: $primary-color;
+    cursor: pointer;
+
+    &--prev {
+      left: $spacing-sm;
+    }
+
+    &--next {
+      right: $spacing-sm;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      display: none;
+    }
+  }
+}

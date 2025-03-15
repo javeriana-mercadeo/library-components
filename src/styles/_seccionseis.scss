@@ -1,0 +1,124 @@
+@use 'variables'as *;
+@use 'mixins'as *;
+
+.expert-teachers {
+  background-color: $primary-color;
+  color: $text-light;
+  text-align: center;
+  padding: $spacing-md;
+
+  @media (max-width: $breakpoint-md) {
+    text-align: left;
+  }
+
+  &__title {
+    font-size: $font-size-h2;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__description {
+    font-size: $font-size-p;
+    margin-bottom: $spacing-md;
+  }
+
+  &__buttons {
+    margin-bottom: $spacing-lg;
+
+    .button {
+      margin: 0 $spacing-sm;
+
+      &:hover {
+        background-color: $secondary-color-hover;
+      }
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+    overflow: hidden;
+
+    @media (max-width: $breakpoint-md) {
+      padding: 0 $spacing-sm;
+    }
+  }
+
+  &__grid {
+    display: flex;
+    gap: $spacing-md;
+    flex-direction: row;
+    justify-content: center;
+    transition: transform 0.5s ease-in-out;
+
+    @media (max-width: $breakpoint-md) {
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+    }
+
+    .teacher-card {
+      flex: 0 0 80%;
+      scroll-snap-align: center;
+      color: $color-text;
+      text-align: left;
+      padding: $spacing-md;
+      width: 190px;
+
+      @media (min-width: $breakpoint-md) {
+        flex: unset;
+      }
+
+      img {
+        max-width: 100%;
+        border-radius: $border-radius-sm;
+        margin-bottom: $spacing-sm;
+      }
+
+      h3 {
+        font-size: $font-size-p;
+        font-weight: $font-weight-bold;
+        margin-bottom: $spacing-sm;
+        color: $text-light;
+      }
+
+      p {
+        font-size: $font-size-small;
+        margin-bottom: $spacing-sm;
+        color: $text-light;
+      }
+
+      a {
+        font-size: $font-size-small;
+        text-decoration: none;
+        font-weight: $font-weight-regular;
+        color: $text-light;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  &__btn {
+    display: none;
+
+    @media (max-width: $breakpoint-md) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: $text-light;
+      cursor: pointer;
+
+      &--prev {
+        left: 0;
+      }
+
+      &--next {
+        right: 0;
+      }
+    }
+  }
+}
