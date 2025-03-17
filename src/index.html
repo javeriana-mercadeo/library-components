@@ -149,13 +149,15 @@
   <!-- Sección dos -->
   <section class="container subjects-carousel">
     <h2 class="subjects-carousel__title">Materias por Semestre</h2>
-    <button class="button button--outline">Descargar Plan de Estudios</button>
+    <p>El plan de estudios profundiza en asignaturas en las áreas de:
+      edificaciones, infraestructura vial e hidrotecnia.</p>
+    <button class="button button--outline" >Descargar Plan de Estudios  <i class="\n ph ph-download"></i></button>
     <div class="subjects-carousel__wrapper">
       <div class="subjects-carousel__track">
         <div class="subjects-carousel__item">
           <div class="card">
-            <span class="card__label">Text</span>
-            <p class="card__title">Heading</p>
+            <span class="card__label">Año 1</span>
+            <p class="card__title">Semestre 1</p>
             <div class="card__divider"></div>
             <ul class="card__list">
               <li>✔ Item Text</li>
@@ -166,13 +168,13 @@
               <li>✔ Item Text</li>
             </ul>
             <div class="card__divider"></div>
-            <p class="card__credits"><strong>19</strong> Créditos</p>
+            <p class="card__credits"><strong>17</strong> Créditos</p>
           </div>
         </div>
         <div class="subjects-carousel__item">
           <div class="card">
-            <span class="card__label">Text</span>
-            <p class="card__title">Heading</p>
+            <span class="card__label">Año 2</span>
+            <p class="card__title">Semestre 2</p>
             <div class="card__divider"></div>
             <ul class="card__list">
               <li>✔ Item Text</li>
@@ -193,32 +195,158 @@
   </section>
 
   <!-- Sección tres -->
-  <section class="container program-profile">
+  <section class="program-profile">
     <h2 class="program-profile__title">Este programa es para ti si...</h2>
-    <div class="program-profile__container">
-      <div class="program-profile__card">
-        <img src="./assets/images/perfil-ingreso.png" alt="Perfil de Ingreso" class="program-profile__image">
-        <div class="program-profile__content">
-          <h3 class="program-profile__subtitle">Perfil de Ingreso</h3>
-          <p class="program-profile__text">
-            La carrera de Ingeniería Civil es ideal si te interesa resolver problemas en diseño,
-            construcción y operación de infraestructura. Requiere habilidades en matemáticas,
-            lectura, comunicación verbal y trabajo en equipo.
-          </p>
-        </div>
+  
+    <div class="program-profile__accordion">
+      <!-- 🔹 Botones del acordeón -->
+      <div class="program-profile__buttons">
+        <button type="button" class="program-profile__accordion-button" data-content="content-1">
+          <span>Perfil de Ingreso</span>
+        </button>
+  
+        <button type="button" class="program-profile__accordion-button" data-content="content-2">
+          <span>Perfil de Egreso</span>
+        </button>
+  
+        <button type="button" class="program-profile__accordion-button" data-content="content-3">
+          <span>Diferenciales</span>
+        </button>
       </div>
-      <div class="program-profile__card">
-        <img src="./assets/images/perfil-egreso.png" alt="Perfil de Egreso" class="program-profile__image">
-        <div class="program-profile__content">
-          <h3 class="program-profile__subtitle">Perfil de Egreso</h3>
-          <p class="program-profile__text">
-            Los egresados de Ingeniería Civil son analíticos, éticos y comprometidos con el marco social,
-            económico y ambiental. Lideran y colaboran en equipos interdisciplinarios para lograr
-            los objetivos de empresas y organizaciones.
-          </p>
+  
+      <!-- 🔹 Contenido del acordeón (inicialmente oculto) -->
+      <div id="content-1" class="program-profile__content-item hidden">
+        <div class="program-profile__image_content">
+          <img src="./assets/images/perfil-ingreso.png" alt="Perfil de Ingreso" class="program-profile__image">
+        </div>
+        <div class="p-content">
+          <p>
+            Esperamos que los aspirantes al programa de Ingeniería Civil de la Universidad Javeriana tengan interés en diseñar,
+            construir y gestionar proyectos de infraestructura que transformen la sociedad de manera sostenible.
+          </p><br>
+          <h3><strong>Tu carrera es Ingeniería Civil si:</strong></h3>
+          <div class="program-profile__list">
+            <div class="program-profile__item">
+              <div class="program-profile__icon-container">
+                <i class="ph ph-check-circle"></i>
+              </div>
+              <p class="program-profile__text">
+                Te apasiona la solución de problemas en el diseño, construcción y operación de infraestructura civil.
+              </p>
+            </div>
+            <div class="program-profile__item">
+              <div class="program-profile__icon-container">
+                <i class="ph ph-check-circle"></i>
+              </div>
+              <p class="program-profile__text">
+                Tienes habilidades en matemáticas, análisis y resolución de problemas.
+              </p>
+            </div>
+            <div class="program-profile__item">
+              <div class="program-profile__icon-container">
+                <i class="ph ph-check-circle"></i>
+              </div>
+              <p class="program-profile__text">
+                Te interesa la sostenibilidad y el impacto ambiental de las construcciones.
+              </p>
+            </div>
+            <div class="program-profile__item">
+              <div class="program-profile__icon-container">
+                <i class="ph ph-check-circle"></i>
+              </div>
+              <p class="program-profile__text">
+                Disfrutas el trabajo en equipo en proyectos multidisciplinarios.
+              </p>
+            </div>
+          </div>
+        </div>
+        </div>
+       
+  
+      <div id="content-2" class="program-profile__content-item hidden">
+        <div class="program-profile__image_content">
+          <img src="./assets/images/perfil-egreso.png" alt="Perfil de Egreso" class="program-profile__image">
+        </div>
+        <div class="p-content">
+        <p>
+          Los egresados de Ingeniería Civil de la Universidad Javeriana son profesionales capacitados para diseñar, construir y gestionar proyectos de infraestructura con un enfoque sostenible y ético.
+        </p><br>
+        <h3><strong>Los egresados de Ingeniería Civil:</strong></h3>
+        <div class="program-profile__list">
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Aplican conocimientos técnicos para resolver problemas en todas las etapas del ciclo de vida de proyectos de infraestructura civil.
+            </p>
+          </div>
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Integran factores sociales, económicos y ambientales en la toma de decisiones.
+            </p>
+          </div>
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Ejercen su profesión con responsabilidad ética y compromiso con el desarrollo sostenible.
+            </p>
+          </div>
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Demuestran liderazgo y trabajan en equipos interdisciplinarios de manera colaborativa y efectiva.
+            </p>
+          </div>
         </div>
       </div>
     </div>
+  
+      <div id="content-3" class="program-profile__content-item hidden">
+        <div class="program-profile__image_content">
+          <img src="./assets/images/perfil-ingreso.png" alt="Perfil de Ingreso" class="program-profile__image">
+        </div>
+        <div class="p-content">
+        <p>
+          La carrera de Ingeniería Civil en la Universidad Javeriana se distingue por su enfoque innovador y compromiso con la sostenibilidad.
+        </p><br>
+        <h3><strong>Diferenciales del programa:</strong></h3>
+        <div class="program-profile__list">
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Uso de tecnología avanzada y herramientas digitales para la planificación y ejecución de proyectos.
+            </p>
+          </div>
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Formación interdisciplinaria con enfoque en soluciones innovadoras.
+            </p>
+          </div>
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Compromiso con la sostenibilidad y el desarrollo social.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   </section>
 
   <!-- Seccion cuatro -->
@@ -231,8 +359,7 @@
           <div>
             <p class="why-javeriana__subtitle">Doble titulación</p>
             <p class="why-javeriana__text">
-              Doble titulación con el Politécnico de Torino (Italia), donde podrás adelantar asignaturas de posgrado
-              antes de terminar la carrera.
+              Tendrás la posibilidad de obtener la doble titulación con alguna de estas universidades de Italia y Francia: Politécnico de Turín, Politécnico de Milán, Politécnico de Toulouse – ENSEEIHT y Paris Tech.
             </p>
           </div>
         </div>
@@ -284,7 +411,7 @@
         <div class="why-javeriana__item">
           <i class="ph ph-lightbulb"></i>
           <div>
-            <p class="why-javeriana__subtitle">Experiencia directa</p>
+            <p class="why-javeriana__subtitle">Experiencia directa</p><br>
             <p class="why-javeriana__text">
               Aprende a través de experiencias prácticas y formación personalizada, enfocada en tus intereses y
               desarrollo individual.
@@ -334,16 +461,11 @@
 
   <!-- Seccion seis -->
   <section class="container expert-teachers">
-    <h2 class="expert-teachers__title">Docentes Expertos</h2>
+    <h2 class="expert-teachers__title">¿Por qué elegir la Javeriana?</h2>
     <p class="expert-teachers__description">
-      Docentes expertos con experiencia práctica y académica, comprometidos con la excelencia e innovación en Ingeniería
-      Civil.
+      Conoce otros programas que complementan tus intereses y expanden tus oportunidades académicas y profesionales.
     </p>
-    <div class="expert-teachers__buttons">
-      <button class="button button--secondary" data-category="titular">Titular</button>
-      <button class="button button--secondary" data-category="asociado">Asociado</button>
-      <button class="button button--secondary" data-category="asistente">Asistente</button>
-    </div>
+    
     <div class="expert-teachers__wrapper">
       <button class="expert-teachers__btn expert-teachers__btn--prev">&#10094;</button>
       <div class="expert-teachers__grid" id="teacher-grid">
@@ -668,105 +790,61 @@
       });
     });
 
-    // Seccion cuatro
-    document.addEventListener("DOMContentLoaded", function () {
-      function handleToggleButtons() {
-        const isMobile = window.innerWidth <= 768;
-
-        document.querySelectorAll('.why-javeriana__item').forEach(item => {
-          const text = item.querySelector('.why-javeriana__text');
-          let toggle = item.querySelector('.why-javeriana__toggle');
-
-          if (isMobile) {
-            // Si es mobile, asegurarse de que el texto esté truncado por defecto
-            text.classList.remove("expanded");
-
-            if (!toggle) {
-              toggle = document.createElement('button');
-              toggle.textContent = 'Leer Más +';
-              toggle.classList.add('why-javeriana__toggle');
-
-              toggle.addEventListener('click', () => {
-                text.classList.toggle('expanded');
-                toggle.textContent = text.classList.contains('expanded') ? 'Leer Menos −' : 'Leer Más +';
-              });
-
-              item.appendChild(toggle);
-            }
-          } else {
-            // En desktop, asegurarse de que el texto esté completamente visible y eliminar el botón
-            text.classList.add("expanded");
-            if (toggle) {
-              toggle.remove();
-            }
-          }
-        });
-      }
-
-      // Ejecutar cuando la página cargue
-      handleToggleButtons();
-
-      // Ejecutar cuando se redimensiona la pantalla (para cambios responsive)
-      window.addEventListener('resize', handleToggleButtons);
-    });
-
+    
     // Seccion seis
     document.addEventListener("DOMContentLoaded", () => {
-      const buttons = document.querySelectorAll(".button--secondary");
-      const teacherCards = document.querySelectorAll(".teacher-card");
-      const grid = document.querySelector(".expert-teachers__grid");
-      const prevBtn = document.querySelector(".expert-teachers__btn--prev");
-      const nextBtn = document.querySelector(".expert-teachers__btn--next");
+  const teacherGrid = document.querySelector(".expert-teachers__grid");
+  const teacherCards = document.querySelectorAll(".teacher-card");
+  const prevBtn = document.querySelector(".expert-teachers__btn--prev");
+  const nextBtn = document.querySelector(".expert-teachers__btn--next");
 
-      let scrollAmount = 0;
+  let scrollAmount = 0;
+  let isMobile = window.innerWidth <= 768;
 
-      // Filtrado por categoría
-      buttons.forEach(button => {
-        button.addEventListener("click", () => {
-          const category = button.getAttribute("data-category");
+  // 📌 1️⃣ - Mostrar todas las tarjetas desde el inicio
+  teacherCards.forEach(card => {
+    card.style.display = "block";
+  });
 
-          // Mostrar/ocultar tarjetas según categoría
-          teacherCards.forEach(card => {
-            if (card.getAttribute("data-category") === category) {
-              card.style.display = "block";
-            } else {
-              card.style.display = "none";
-            }
-          });
+  // 📌 2️⃣ - Ajustar la visualización en mobile y desktop
+  function updateGrid() {
+    isMobile = window.innerWidth <= 768;
 
-          // Resaltar el botón activo
-          buttons.forEach(btn => btn.classList.remove("active"));
-          button.classList.add("active");
+    if (isMobile) {
+      teacherGrid.style.overflowX = "scroll"; 
+      teacherGrid.style.scrollSnapType = "x mandatory";
+      teacherGrid.style.transform = "none"; 
+    } else {
+      teacherGrid.style.overflow = "hidden"; 
+      updateCarousel(); 
+    }
+  }
 
-          // Reiniciar scroll del carrusel al cambiar de categoría
-          scrollAmount = 0;
-          grid.scrollTo({
-            left: scrollAmount,
-            behavior: "smooth",
-          });
-        });
-      });
-
-      // Mostrar la primera categoría por defecto
-      buttons[0].click();
-
-      // Carrusel deslizable en mobile
-      function scrollGrid(direction) {
-        const scrollWidth = grid.offsetWidth * 0.8; // Desplazamiento igual al 80% del ancho visible
-        if (direction === "next") {
-          scrollAmount += scrollWidth;
-        } else {
-          scrollAmount -= scrollWidth;
-        }
-        grid.scrollTo({
-          left: scrollAmount,
-          behavior: "smooth",
-        });
+  function scrollGrid(direction) {
+    const cardWidth = teacherCards[0].offsetWidth + 16; 
+    if (direction === "next") {
+      scrollAmount += cardWidth;
+      if (scrollAmount > teacherGrid.scrollWidth - teacherGrid.offsetWidth) {
+        scrollAmount = teacherGrid.scrollWidth - teacherGrid.offsetWidth; 
       }
+    } else {
+      scrollAmount -= cardWidth;
+      if (scrollAmount < 0) scrollAmount = 0; 
+    }
 
-      prevBtn.addEventListener("click", () => scrollGrid("prev"));
-      nextBtn.addEventListener("click", () => scrollGrid("next"));
-    });
+    teacherGrid.style.transform = `translateX(-${scrollAmount}px)`;
+  }
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener("click", () => scrollGrid("prev"));
+    nextBtn.addEventListener("click", () => scrollGrid("next"));
+  }
+
+  window.addEventListener("resize", updateGrid);
+
+  updateGrid();
+});
+
 
     // Seccion siete
     document.addEventListener("DOMContentLoaded", function () {
@@ -879,6 +957,9 @@
       });
     });
   </script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+          <script src="https://cdn.tailwindcss.com"></script>
+          <script src="./scripts/main.js"></script>
 </body>
 
 </html>
