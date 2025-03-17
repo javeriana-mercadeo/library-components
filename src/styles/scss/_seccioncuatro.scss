@@ -2,9 +2,9 @@
 @use 'mixins' as *;
 
 .why-javeriana {
-  padding: $spacing-lg;
-  margin: 0 auto;
-  max-width: 1200px;
+  padding-top: $spacing-lg;
+  margin: 0px;
+  max-width: $max-width;
   text-align: center;
 
   &__image {
@@ -12,16 +12,13 @@
     flex: 1;
     text-align: center;}
 
-  // ✅ Título principal
   &__title {
     font-size: $font-size-h2;
     font-weight: $font-weight-bold;
     margin-bottom: $spacing-lg;
     color: $color-text;
-    background-color: red;
   }
 
-  // ✅ Contenedor principal
   &__container {
     display: flex;
     align-items: flex-start;
@@ -31,30 +28,30 @@
 
     @media (max-width: $breakpoint-lg) {
       flex-direction: column;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 
-  // ✅ Columnas
   &__column {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: $spacing-md;
+    gap: 0;
   }
 
-  // ✅ Subtítulo
   &__subtitle {
-    font-size: $font-size-p;
+    font-size: $font-size-h3;
     font-weight: $font-weight-bold;
     color: $gray-200;
-    margin-bottom: $spacing-sm;
+    margin-bottom: 0;
 
     @media (max-width: $breakpoint-md) {
       font-weight: $font-weight-regular;
     }
   }
 
-  // ✅ Texto con efecto de expansión
   &__text {
     font-size: $font-size-small;
     color: $gray-400;
@@ -71,17 +68,17 @@
       overflow: visible;
       display: flex;
       flex-direction: column;
+      
     }
   }
 
-  // ✅ Elemento de la lista (ícono + texto)
+  // Elemento de la lista (ícono + texto)
   &__item {
     display: flex;
-    align-items: flex-start;
-    gap: $spacing-md;
+    flex-direction: column;
+    gap: 5px;
     text-align: left;
-    position: relative;
-    overflow: hidden;
+
 
     i {
       font-size: 2rem;
@@ -89,9 +86,35 @@
     }
   }
 
-  // ✅ Botón de "Leer Más / Leer Menos"
-  &__toggle {
+  // Botón de "Leer Más / Leer Menos"
+    &__toggle {
     display: none;
+    align-self: flex-start;
+    color: $text-dark; 
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    position: relative;
+    bottom: 45px;
+  
+
+  &::after {
+    content: "+";
+    font-weight: $font-weight-regular;
+    font-size: 3rem; 
+    color: $primary-color; 
+    position: relative;
+    top: 12px;
+
+  }
+
+  &.expanded::after {
+    content: "−"; 
+    color:$primary-color; 
+  }
 
     @media (max-width: $breakpoint-md) {
       display: block;
@@ -100,21 +123,28 @@
       font-size: $font-size-small;
       color: $text-dark;
       cursor: pointer;
-      margin-top: $spacing-sm;
+
     }
   }
 
-  // ✅ Imagen con estilos optimizados
   &__image {
-    order: -1;
     flex: 1;
     text-align: center;
-
+  
+    @media (max-width: $breakpoint-md) {
+      order: -1;
+    }
+  
+    @media (min-width: $breakpoint-md) {
+      order: 0;
+    }
+  
     img {
       max-width: 100%;
       height: auto;
       border-radius: $border-radius-md;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+  
   }
 }

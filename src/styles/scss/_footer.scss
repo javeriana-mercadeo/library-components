@@ -5,6 +5,7 @@
   background-color: $gray-100;
   color: $text-light;
   padding: $spacing-lg;
+  max-width: $max-width;
 
   @media (max-width: $breakpoint-md) {
     padding: $spacing-lg $spacing-sm;

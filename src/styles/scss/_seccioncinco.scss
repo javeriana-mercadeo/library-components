@@ -4,6 +4,7 @@
 .recognitions {
   text-align: center;
   padding: $spacing-lg;
+  max-width: $max-width;
 
   &__title {
     font-size: $font-size-h2;
@@ -32,7 +33,7 @@
 
   &__item {
     flex: 0 0 80%; // Para mobile: cada ítem ocupa el 80% del ancho
-    scroll-snap-align: center; // Centrar cada ítem al deslizar
+    scroll-snap-align: center; 
 
     @media (min-width: $breakpoint-md) {
       flex: unset;

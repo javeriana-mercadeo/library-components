@@ -6,6 +6,7 @@
   color: $text-light;
   text-align: center;
   padding: $spacing-md;
+  max-width: $max-width;
 
   @media (max-width: $breakpoint-md) {
     text-align: left;
@@ -67,12 +68,16 @@
       }
 
       img {
-        max-width: 100%;
+        max-width: 90%;
         border-radius: $border-radius-sm;
         margin-bottom: $spacing-sm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       h3 {
+        width: 90%;
         font-size: $font-size-p;
         font-weight: $font-weight-bold;
         margin-bottom: $spacing-sm;
@@ -80,12 +85,14 @@
       }
 
       p {
+        width: 90%;
         font-size: $font-size-small;
         margin-bottom: $spacing-sm;
         color: $text-light;
       }
 
       a {
+        width: 90%;
         font-size: $font-size-small;
         text-decoration: none;
         font-weight: $font-weight-regular;
@@ -99,7 +106,7 @@
   }
 
   &__btn {
-    display: none;
+    display:flex;
 
     @media (max-width: $breakpoint-md) {
       display: block;

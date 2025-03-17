@@ -17,7 +17,7 @@
   align-items: stretch;
   padding-top: 50px;
   min-height: 100%;
-  max-width: 1200px;
+  max-width: $max-width;
 
   &__content {
     grid-area: content;  

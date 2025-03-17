@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html, body {
   overflow-x: hidden;
   max-width: 100%;
@@ -691,6 +692,7 @@ img, video, iframe {
   align-items: center;
   flex-direction: column;
   padding: 16px 38px;
+  max-width: 1200px;
 }
 .program-profile__title {
   font-size: clamp(1.5rem, 4vw, 2.5rem);
@@ -863,8 +865,8 @@ img, video, iframe {
 }
 
 .why-javeriana {
-  padding: 24px;
-  margin: 0 auto;
+  padding-top: 24px;
+  margin: 0px;
   max-width: 1200px;
   text-align: center;
 }
@@ -878,7 +880,6 @@ img, video, iframe {
   font-weight: 700;
   margin-bottom: 24px;
   color: #101215;
-  background-color: red;
 }
 .why-javeriana__container {
   display: flex;
@@ -890,19 +891,22 @@ img, video, iframe {
 @media (max-width: 992px) {
   .why-javeriana__container {
     flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 .why-javeriana__column {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0;
 }
 .why-javeriana__subtitle {
-  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  font-size: clamp(1.3rem, 2vw, 2rem);
   font-weight: 700;
   color: #222728;
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 @media (max-width: 768px) {
   .why-javeriana__subtitle {
@@ -929,11 +933,9 @@ img, video, iframe {
 }
 .why-javeriana__item {
   display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  flex-direction: column;
+  gap: 5px;
   text-align: left;
-  position: relative;
-  overflow: hidden;
 }
 .why-javeriana__item i {
   font-size: 2rem;
@@ -941,6 +943,28 @@ img, video, iframe {
 }
 .why-javeriana__toggle {
   display: none;
+  align-self: flex-start;
+  color: #212529;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  bottom: 45px;
+}
+.why-javeriana__toggle::after {
+  content: "+";
+  font-weight: 400;
+  font-size: 3rem;
+  color: #026FC1;
+  position: relative;
+  top: 12px;
+}
+.why-javeriana__toggle.expanded::after {
+  content: "−";
+  color: #026FC1;
 }
 @media (max-width: 768px) {
   .why-javeriana__toggle {
@@ -950,13 +974,21 @@ img, video, iframe {
     font-size: 0.875rem;
     color: #212529;
     cursor: pointer;
-    margin-top: 8px;
   }
 }
 .why-javeriana__image {
-  order: -1;
   flex: 1;
   text-align: center;
+}
+@media (max-width: 768px) {
+  .why-javeriana__image {
+    order: -1;
+  }
+}
+@media (min-width: 768px) {
+  .why-javeriana__image {
+    order: 0;
+  }
 }
 .why-javeriana__image img {
   max-width: 100%;
@@ -968,6 +1000,7 @@ img, video, iframe {
 .recognitions {
   text-align: center;
   padding: 24px;
+  max-width: 1200px;
 }
 .recognitions__title {
   font-size: clamp(1.5rem, 4vw, 2.5rem);
@@ -1037,6 +1070,7 @@ img, video, iframe {
   color: #ffffff;
   text-align: center;
   padding: 16px;
+  max-width: 1200px;
 }
 @media (max-width: 768px) {
   .expert-teachers {
@@ -1096,22 +1130,28 @@ img, video, iframe {
   }
 }
 .expert-teachers__grid .teacher-card img {
-  max-width: 100%;
+  max-width: 90%;
   border-radius: 4px;
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .expert-teachers__grid .teacher-card h3 {
+  width: 90%;
   font-size: clamp(0.875rem, 1.5vw, 1rem);
   font-weight: 700;
   margin-bottom: 8px;
   color: #ffffff;
 }
 .expert-teachers__grid .teacher-card p {
+  width: 90%;
   font-size: 0.875rem;
   margin-bottom: 8px;
   color: #ffffff;
 }
 .expert-teachers__grid .teacher-card a {
+  width: 90%;
   font-size: 0.875rem;
   text-decoration: none;
   font-weight: 400;
@@ -1121,7 +1161,7 @@ img, video, iframe {
   text-decoration: underline;
 }
 .expert-teachers__btn {
-  display: none;
+  display: flex;
 }
 @media (max-width: 768px) {
   .expert-teachers__btn {
@@ -1571,6 +1611,7 @@ img, video, iframe {
   background-color: #101215;
   color: #ffffff;
   padding: 24px;
+  max-width: 1200px;
 }
 @media (max-width: 768px) {
   .footer {

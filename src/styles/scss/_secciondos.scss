@@ -8,7 +8,7 @@
   justify-content: center;
   flex-direction: column;
   position: relative;
-  max-width: 1200px;
+  max-width: $max-width;
 
   &__title {
     margin-bottom: $spacing-sm;
