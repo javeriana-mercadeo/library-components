@@ -1,19 +1,27 @@
-@use 'variables'as *;
-@use 'mixins'as *;
+@use 'variables' as *;
+@use 'mixins' as *;
 
 .why-javeriana {
   padding: $spacing-lg;
-  margin: $spacing-lg;
-  text-align: center;
   margin: 0 auto;
+  max-width: 1200px;
+  text-align: center;
 
+  &__image {
+    order: 0;
+    flex: 1;
+    text-align: center;}
+
+  // ✅ Título principal
   &__title {
     font-size: $font-size-h2;
     font-weight: $font-weight-bold;
     margin-bottom: $spacing-lg;
     color: $color-text;
+    background-color: red;
   }
 
+  // ✅ Contenedor principal
   &__container {
     display: flex;
     align-items: flex-start;
@@ -26,6 +34,7 @@
     }
   }
 
+  // ✅ Columnas
   &__column {
     flex: 1;
     display: flex;
@@ -33,6 +42,7 @@
     gap: $spacing-md;
   }
 
+  // ✅ Subtítulo
   &__subtitle {
     font-size: $font-size-p;
     font-weight: $font-weight-bold;
@@ -40,10 +50,11 @@
     margin-bottom: $spacing-sm;
 
     @media (max-width: $breakpoint-md) {
-     font-weight: $font-weight-regular;
+      font-weight: $font-weight-regular;
     }
   }
 
+  // ✅ Texto con efecto de expansión
   &__text {
     font-size: $font-size-small;
     color: $gray-400;
@@ -51,16 +62,19 @@
     overflow: hidden;
     transition: max-height 0.3s ease-in-out;
 
-    @media (min-width: $breakpoint-md) {
-      max-height: none;
-      overflow: visible;
-    }
-
     &.expanded {
       max-height: none;
     }
+
+    @media (min-width: $breakpoint-md) {
+      max-height: none;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+    }
   }
 
+  // ✅ Elemento de la lista (ícono + texto)
   &__item {
     display: flex;
     align-items: flex-start;
@@ -75,18 +89,7 @@
     }
   }
 
-  &__image {
-    flex: 1;
-    text-align: center;
-
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: $border-radius-md;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-  }
-
+  // ✅ Botón de "Leer Más / Leer Menos"
   &__toggle {
     display: none;
 
@@ -98,6 +101,20 @@
       color: $text-dark;
       cursor: pointer;
       margin-top: $spacing-sm;
+    }
+  }
+
+  // ✅ Imagen con estilos optimizados
+  &__image {
+    order: -1;
+    flex: 1;
+    text-align: center;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: $border-radius-md;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
   }
 }

@@ -1,6 +1,7 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
+
 .program-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -16,6 +17,7 @@
   align-items: stretch;
   padding-top: 50px;
   min-height: 100%;
+  max-width: 1200px;
 
   &__content {
     grid-area: content;  
