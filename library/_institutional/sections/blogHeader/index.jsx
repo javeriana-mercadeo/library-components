@@ -11,7 +11,7 @@ import info from './info.json'
 function BlogHeader() {
   return (
     <article className="blog-header">
-      <ImgBackground id={info.name} img="https://www.javeriana.edu.co/recursosdb/d/info-prg/background-png" />
+      <ImgBackground id={info.name} img="https://www.javeriana.edu.co/recursosdb/d/info-prg/background-1" />
 
       <Container className="blog-header-container">
         <div className="blog-header-content">

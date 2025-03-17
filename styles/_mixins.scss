@@ -7,6 +7,14 @@
   }
 }
 
+@mixin hover-transition {
+  transition: 0.2s ease;
+
+  &:hover {
+    transition: 0.2s ease;
+  }
+}
+
 @mixin generate-vars($name, $colors) {
   :root {
     @each $color-value, $value in $colors {

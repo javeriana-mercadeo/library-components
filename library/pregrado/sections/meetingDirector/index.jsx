@@ -1,14 +1,15 @@
 import Caption from '@library/_general/components/contain/caption'
-import BtnLink from '@/library/_general/components/buttons/btnLink'
+import BtnLink from '@/library/_general/components/buttons/BtnLink'
 
 import './styles.scss'
+import info from './info.json'
 
 const MeetingDirector = () => {
   return (
     <div className="meeting">
       <div className="meeting-container">
-        <Caption>Resuelve tus dudas con el director del programa</Caption>
-        <BtnLink>Agenda tu reunión ahora</BtnLink>
+        <Caption id={info.key}>Resuelve tus dudas con el director del programa</Caption>
+        <BtnLink id={info.key}>Agenda tu reunión ahora</BtnLink>
       </div>
     </div>
   )

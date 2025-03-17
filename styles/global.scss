@@ -1,6 +1,13 @@
-@use './main.scss' as *;
+/* Liferay Styles */
+@use './liferayMain.scss' as *;
+@use './mixins' as *;
+@use './functions' as *;
+@use './theme' as *;
+@use './typography' as *;
 
 /************ Default Css ************/
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
 ::selection {
   background-color: var(--primary-600);
@@ -8,7 +15,11 @@
 }
 
 * {
-  font-family: $font-family;
+  margin: revert-layer;
+  padding: revert-layer;
+  box-sizing: border-box;
+  font-family: 'Raleway', serif;
+  font-weight: 500;
 }
 
 code {

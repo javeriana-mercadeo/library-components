@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const Caption = ({ children, className, id }) => {
   return (
-    <lfr-editable id={`caption-${id}`} type="rich-text" className={className ? `caption ${className}` : 'caption'}>
+    <lfr-editable id={`caption-${id || ''}`} type="rich-text" className={`caption ${className || ''}`}>
       {children}
     </lfr-editable>
   )

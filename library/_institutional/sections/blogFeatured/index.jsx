@@ -3,14 +3,11 @@ const BlogFeatured = () => {
     <div>
       {/* <!-- Blog subtitulo --> */}
       <div className="mx-auto max-w-screen-xl px-4 py-8 pb-0 text-[var(--neutral-100)] sm:pb-0 sm:px-6 sm:py-12 lg:px-8">
-        <header>
-          <h2 className="text-center text-xl font-bold text-[var(--primary-700)] sm:text-3xl">Product Collection</h2>
+        <h2 className="text-center text-xl font-bold text-[var(--primary-700)] sm:text-3xl">Titulo para blogs destacados</h2>
 
-          <p className="text-center mt-4 text-[var(--neutral-200)]">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque praesentium cumque iure dicta incidunt est ipsam, officia dolor
-            fugit natus?
-          </p>
-        </header>
+        <p className="text-center mt-4 text-[var(--neutral-200)]">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque praesentium cumque iure dicta incidunt est ipsam.
+        </p>
       </div>
 
       {/* <!-- Blog destacados --> */}
@@ -22,7 +19,12 @@ const BlogFeatured = () => {
                 <div className="blog-slider__wrp swiper-wrapper">
                   <div className="blog-slider__item swiper-slide">
                     <div className="blog-slider__img">
-                      <img src="https://i.pinimg.com/736x/e4/24/10/e424107bec570f1c5089a265f669057f.jpg" alt="" className="slider-img" />
+                      <img
+                        src="https://i.pinimg.com/736x/e4/24/10/e424107bec570f1c5089a265f669057f.jpg"
+                        alt=""
+                        className="slider-img"
+                        loading="lazy"
+                      />
                     </div>
                     <div className="blog-slider__content">
                       <div className="p-4 sm:p-6">
@@ -48,7 +50,12 @@ const BlogFeatured = () => {
 
                   <div className="blog-slider__item swiper-slide">
                     <div className="blog-slider__img">
-                      <img src="https://i.pinimg.com/736x/86/a6/13/86a6132554b67c3200a00e254da44853.jpg" alt="" className="slider-img" />
+                      <img
+                        src="https://i.pinimg.com/736x/86/a6/13/86a6132554b67c3200a00e254da44853.jpg"
+                        alt=""
+                        className="slider-img"
+                        loading="lazy"
+                      />
                     </div>
                     <div className="blog-slider__content">
                       <div className="p-4 sm:p-6">
@@ -83,6 +90,7 @@ const BlogFeatured = () => {
               alt=""
               src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
               className="h-56 w-full object-cover"
+              loading="lazy"
             />
 
             <div className="p-4 sm:p-6">

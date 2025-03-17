@@ -1,5 +1,6 @@
 import '@/styles/_tailwind.css'
 import '@/styles/global.scss'
+
 //import '@/styles/liferayStyles.css'
 
 import { Metadata } from 'next'

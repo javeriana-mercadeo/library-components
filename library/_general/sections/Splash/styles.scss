@@ -1,0 +1,67 @@
+@use '../../../../styles/functions' as *;
+
+$splash-bg: #121212;
+$text-color: #fff;
+$fade-duration: 1.5s;
+
+#splash {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--primary-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity $fade-duration ease-in-out;
+
+  .splash-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: calc(var(--icon-logo-big) + rem(100px));
+    height: calc(var(--icon-logo-big) + rem(100px));
+    text-align: center;
+    background-color: var(--neutral);
+    border-radius: 50%;
+
+    .logo {
+      width: var(--icon-logo-big);
+      font-size: 3rem;
+      color: $text-color;
+      opacity: 0;
+      animation: fadeIn 1.5s ease-in-out forwards;
+    }
+  }
+}
+
+.content {
+  display: none;
+  padding: 2rem;
+  text-align: center;
+}
+
+// Animaciones
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+// Clases para ocultar el splash
+.hidden {
+  animation: fadeOut $fade-duration ease-in-out forwards;
+}

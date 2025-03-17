@@ -27,6 +27,13 @@
       "@styles/*": ["./styles/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "library/_general/components/buttons/btnLink.tjx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "library/_general/components/buttons/btnLink.tjx",
+    "library/_general/components/buttons/BtnLink.jsx"
+  ],
   "exclude": ["node_modules"]
 }

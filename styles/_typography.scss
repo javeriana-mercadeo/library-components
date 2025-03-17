@@ -1,31 +1,40 @@
-// Icon size
-$icon-size-xs: 12px;
-$icon-size-sm: 16px;
-$icon-size-md: 24px;
-$icon-size-lg: 32px;
-$icon-size-xl: 48px;
-$icon-size-xxl: 64px;
-
-// Font size
-$font-size-xxxs: 8px;
-$font-size-xxs: 10px;
-$font-size-xs: 12px;
-$font-size-sm: 14px;
-$font-size-md: 16px;
-$font-size-lg: 18px;
-$font-size-xl: 22px;
-$font-size-xxl: 26px;
-$font-size-xxxl: 32px;
-$font-size-xxxxl: 46px;
-
-// Font weight
-$font-weight-light: 300;
-$font-weight-regular: 400;
-$font-weight-medium: 500;
-$font-weight-bold: 700;
-
-//  Fonts
-
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
 $font-family: 'Raleway', serif;
+
+:root {
+  /* ### Tamaños de iconos ### */
+
+  --icon-size-xs: 12px;
+  --icon-size-sm: 16px;
+  --icon-size-md: 24px;
+  --icon-size-lg: 32px;
+  --icon-size-xl: 48px;
+  --icon-size-xxl: 64px;
+  --icon-size-xxxl: 96px;
+  --icon-logo-big: 160px;
+
+  /* ### Tamaños de fuente ### */
+
+  /* 📌 Títulos */
+  --font-size-principal-title: clamp(2.5rem, 6vw, 4rem);
+  --font-size-title: clamp(2rem, 5vw, 3rem);
+  --font-size-subtitle: clamp(1.5rem, 3.5vw, 2.2rem);
+  --font-size-caption: clamp(1.2rem, 2.5vw, 1.6rem);
+
+  /* 📌 Texto de párrafo estándar */
+  --font-size-paragraph: clamp(1rem, 1.8vw, 1.2rem);
+  --font-size-normal: 1rem;
+
+  /* 📌 Tamaños pequeños (notas, info secundaria) */
+  --font-size-small: 0.875rem;
+  --font-size-xs: 0.75rem;
+
+  /* ### Grosor ### */
+
+  /* 📌 Peso de la fuente */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+}
