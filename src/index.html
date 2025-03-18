@@ -140,9 +140,14 @@
     </section>
 
   </div>
-  <div class="program-info__image">
-    <img src="./assets/images/program-image.png" alt="Ingeniería Civil">
-  </div>
+    <div class="program-info__image">
+      <video autoplay loop muted playsinline>
+        <source src="./assets/images/video-section-1.mp4" type="video/mp4">
+        Tu navegador no soporta videos.
+      </video>
+    </div>
+    
+    
 
 </section>
 
@@ -152,46 +157,79 @@
     <p>El plan de estudios profundiza en asignaturas en las áreas de:
       edificaciones, infraestructura vial e hidrotecnia.</p>
     <button class="button button--outline" >Descargar Plan de Estudios  <i class="\n ph ph-download"></i></button>
-    <div class="subjects-carousel__wrapper">
-      <div class="subjects-carousel__track">
-        <div class="subjects-carousel__item">
-          <div class="card">
-            <span class="card__label">Año 1</span>
-            <p class="card__title">Semestre 1</p>
-            <div class="card__divider"></div>
-            <ul class="card__list">
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-            </ul>
-            <div class="card__divider"></div>
-            <p class="card__credits"><strong>17</strong> Créditos</p>
-          </div>
-        </div>
-        <div class="subjects-carousel__item">
-          <div class="card">
-            <span class="card__label">Año 2</span>
-            <p class="card__title">Semestre 2</p>
-            <div class="card__divider"></div>
-            <ul class="card__list">
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-            </ul>
-            <div class="card__divider"></div>
-            <p class="card__credits"><strong>19</strong> Créditos</p>
-          </div>
-        </div>
+
+      
+
+<div id="indicators-carousel" class="relative w-full" data-carousel="static">
+  <!-- Carousel wrapper -->
+  <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+       <!-- Item 1 -->
+      <div class="carrusel hidden duration-700 ease-in-out" data-carousel-item="active">
+        <div class="card">
+          <!-- Año y Semestre -->
+          <span class="card__year">Año 1</span>
+          <h5 class="card__title">Semestre 1</h5>
+      
+          <!-- Divider -->
+          <div class="card__divider"></div>
+      
+          <!-- Lista de Ítems -->
+          <ul class="card__list">
+              <li class="card__item"><i class="ph ph-check"></i> Cálculo Diferencial</li>
+              <li class="card__item"><i class="ph ph-check"></i> Álgebra Lineal</li>
+              <li class="card__item"><i class="ph ph-check"></i> Física Mecánica</li>
+              <li class="card__item"><i class="ph ph-check"></i> Química de Materiales</li>
+              <li class="card__item"><i class="ph ph-check"></i> Geometría Descriptiva</li>
+              <li class="card__item"><i class="ph ph-check"></i> Introducción a la Ingeniería</li>
+              <li class="card__item"><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería I</li>
+          </ul>
+      
+          <!-- Divider -->
+          <div class="card__divider"></div>
+      
+          <!-- Créditos -->
+          <p class="card__credits"><strong>17</strong> Créditos</p>
       </div>
-    </div>
-    <button class="subjects-carousel__btn subjects-carousel__btn--prev">&#10094;</button>
-    <button class="subjects-carousel__btn subjects-carousel__btn--next">&#10095;</button>
+      
+      </div>
+      <!-- Item 5 -->
+      <div class="hidden duration-700 ease-in-out" data-carousel-item>
+        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm ">
+          
+          <div class="p-5">
+
+          </div>
+      </div>
+      
+      </div>
+  </div>
+  <!-- Slider indicators -->
+  <div class="absolute z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse bottom-5 left-1/2">
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
+  </div>
+  <!-- Slider controls -->
+  <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30  ">
+          <svg class="w-4 h-4 text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+          </svg>
+          <span class="sr-only">Previous</span>
+      </span>
+  </button>
+  <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30  ">
+          <svg class="w-4 h-4 text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+          </svg>
+          <span class="sr-only">Next</span>
+      </span>
+  </button>
+</div>
+
   </section>
 
   <!-- Sección tres -->
