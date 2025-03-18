@@ -33,24 +33,64 @@
   p{
     max-width: 70%;
   }
+  .carrusel{
+    height: 800px;
+  }
 
   .button i {
      
     margin-left: 5px;  
     color: $primary-color;
   }
-  
+
 
   .card {
+    width: fit-content;
     border: 1px solid $gray-900;
+    max-width: 400px;
     border-radius: $border-radius-md;
-    padding: $spacing-md;
-    text-align: left;  
+    padding: $spacing-lg;
+    text-align: left;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    
+
+    &__year {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: $primary-color;
+    }  
 
 
     &__title {
-      margin-top: $spacing-md;
-      font-weight: $font-weight-bold;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: $primary-color;
+      margin-top: $spacing-sm;
+    }
+
+    &__divider {
+      border-top: 0px solid $gray-900;
+      margin: 15px 0;
+    }
+
+    &__list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 15px;
+
+      .card__item {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        color: $text-dark;
+        margin-bottom: 5px;
+
+        i {
+          color: $secondary-color;
+          margin-right: 8px;
+          font-size: 1.2rem;
+        }
+      }
     }
     
     &__divider {

@@ -116,7 +116,7 @@
 
   &__accordion-item {
     border: 1px solid $primary-color;
-    background: lighten($primary-color, 10%);
+    background: $primary-color;
     border-radius: $border-radius-lg;
     overflow: hidden;
     margin-bottom: $spacing-md;
@@ -194,13 +194,7 @@
     justify-content: center;
   }
 
-  &__card {
-    background-color: $primary-color;
-    border-radius: $border-radius-lg;
-    overflow: hidden;
-    max-width: 500px;
-    text-align: left;
-  }
+
 
   &__image_content {
     display: flex;
