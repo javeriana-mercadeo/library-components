@@ -1,131 +1,116 @@
-@use 'variables'as *;
-@use 'mixins'as *;
+@use 'variables' as *;
+@use 'mixins' as *;
 
-.expert-teachers {
-  background-color: $primary-color;
-  color: $text-light;
-  text-align: center;
-  padding: $spacing-md;
-  max-width: $max-width;
-
-  @media (max-width: $breakpoint-md) {
-    text-align: left;
-  }
-
-  &__title {
-    font-size: $font-size-h2;
-    margin-bottom: $spacing-sm;
-  }
-
-  &__description {
-    font-size: $font-size-p;
-    margin-bottom: $spacing-md;
-  }
-
-  &__buttons {
-    margin-bottom: $spacing-lg;
-
-    .button {
-      margin: 0 $spacing-sm;
-
-      &:hover {
-        background-color: $secondary-color-hover;
-      }
-    }
-  }
-
-  &__wrapper {
-    position: relative;
-    overflow: hidden;
-
-    @media (max-width: $breakpoint-md) {
-      padding: 0 $spacing-sm;
-    }
-  }
-
-  &__grid {
+.experience-carousel {
     display: flex;
-    gap: $spacing-md;
-    flex-direction: row;
+    text-align: center;
+    align-items: center;
     justify-content: center;
-    transition: transform 0.5s ease-in-out;
+    flex-direction: column;
+    position: relative;
+    max-width: $max-width;
+    padding-top: 60px;
+    padding-bottom: 50px;
 
-    @media (max-width: $breakpoint-md) {
-      overflow-x: scroll;
-      scroll-snap-type: x mandatory;
+    &__title{
+      font-size: $font-size-h2;
+      color: $text-dark;
+      width: 100%;
+      padding-bottom: 15px;
     }
-
-    .teacher-card {
-      flex: 0 0 80%;
-      scroll-snap-align: center;
-      color: $color-text;
-      text-align: left;
-      padding: $spacing-md;
-      width: 190px;
-
-      @media (min-width: $breakpoint-md) {
-        flex: unset;
-      }
-
-      img {
-        max-width: 90%;
-        border-radius: $border-radius-sm;
-        margin-bottom: $spacing-sm;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      h3 {
-        width: 90%;
+    &__description{
+      color: $text-dark;
+      width: 80%;
+      text-align: center;
+    }
+    &__btn {
+        position: absolute;
+        top: 65%;
+        transform: translateY(-50%);
+        background-color: $primary-color;
+        color: $text-light;
+        border: none;
+        cursor: pointer;
+        border-radius: $border-radius-md;
+        padding: $spacing-sm $spacing-md;
         font-size: $font-size-p;
-        font-weight: $font-weight-bold;
-        margin-bottom: $spacing-sm;
-        color: $text-light;
-      }
+    }
 
-      p {
+    &__wrapper {
+        overflow: hidden;
         width: 90%;
-        font-size: $font-size-small;
-        margin-bottom: $spacing-sm;
-        color: $text-light;
-      }
+        margin: $spacing-md;
+    }
 
-      a {
-        width: 90%;
-        font-size: $font-size-small;
-        text-decoration: none;
-        font-weight: $font-weight-regular;
-        color: $text-light;
+    &__track {
+        display: flex;
+        gap: $spacing-md;
+        transition: transform 0.3s ease-in-out;
+    }
 
-        &:hover {
-          text-decoration: underline;
-        }
-      }
+    &__item {
+        min-width: 200px;
+        flex: 0 0 auto;
+    }
+
+    &__btn--prev {
+        left: 10px;
+        border-radius: 50%;
+        border: 1px solid $text-light;
+    }
+
+    &__btn--next {
+        right: 10px;
+        border-radius: 50%;
+        border: 1px solid $text-light;
+    }
+}
+
+.teacher-card-container{
+  width: 100%;
+  height: fit-content;
+  width: 200px;
+  text-align: left;
+
+  .teacher-card-header{
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .teacher-card__image{
+      width: 200px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 20px;
     }
   }
-
-  &__btn {
-    display:flex;
-
-    @media (max-width: $breakpoint-md) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      font-size: 2rem;
-      color: $text-light;
-      cursor: pointer;
-
-      &--prev {
-        left: 0;
-      }
-
-      &--next {
-        right: 0;
-      }
-    }
+  .teacher-card__name{
+    color: $text-light;
+    font-size: $font-size-p;
+    font-weight: $font-weight-bold;
   }
+  .teacher-card__title{
+    color: $text-light;
+    font-size: 0.65rem;
+  }
+  .teacher-card__link{
+    color: $text-light;
+  }
+}
+
+@media (max-width: 768px) {
+    button {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: $breakpoint-sm) {
+    p {
+        text-align: left;
+        max-width: 100%;
+    }
+
 }

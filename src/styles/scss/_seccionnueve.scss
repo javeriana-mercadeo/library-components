@@ -1,6 +1,94 @@
 @use 'variables'as *;
 @use 'mixins'as *;
 
+@use 'variables' as *;
+@use 'mixins'as *;
+
+.projects-carousel {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  max-width: $max-width;
+  padding-top: 60px;
+  padding-bottom: 50px;
+
+  &__title{
+    font-size: $font-size-h2;
+    color: $text-dark;
+    width: 100%;
+    padding-bottom: 15px;
+  }
+  &__description{
+    color: $text-dark;
+    width: 80%;
+    text-align: center;
+  }
+  &__btn {
+      position: absolute;
+      top: 65%;
+      transform: translateY(-50%);
+      background-color: $primary-color;
+      color: $text-light;
+      border: none;
+      cursor: pointer;
+      border-radius: $border-radius-md;
+      padding: $spacing-sm $spacing-md;
+      font-size: $font-size-p;
+      z-index: 10;
+  }
+
+  &__wrapper {
+      overflow: hidden;
+      width: 90%;
+      margin: $spacing-md;
+  }
+
+  &__track {
+      display: flex;
+      gap: $spacing-md;
+      width: calc(100% * 3);
+      transition: transform 0.3s ease-in-out;
+  }
+
+  &__item {
+    flex: 0 0 33.333%;
+      min-width: 200px;
+      flex: 0 0 auto;
+  }
+
+  &__btn--prev {
+      left: 10px;
+      border-radius: 50%;
+      border: 1px solid $text-light;
+  }
+
+  &__btn--next {
+      right: 10px;
+      border-radius: 50%;
+      border: 1px solid $text-light;
+  }
+}
+
+.projects-carousel__item{
+  gap: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  scroll-snap-align: center;
+  
+  .projects-carousel__imagen{
+    width: 480px; 
+    height: 480px;
+    max-width: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+  }
+}
+
 .featured-projects {
   text-align: center;
   padding: $spacing-lg 0px;
@@ -10,29 +98,10 @@
     text-align: left;
   }
 
-  &__title {
-    font-size: $font-size-h2;
-    font-weight: $font-weight-bold;
-    margin-bottom: $spacing-sm;
-    color: $color-text;
-    padding-left: $spacing-md;
-  }
-
-  &__description {
-    font-size: $font-size-p;
-    margin-bottom: $spacing-lg;
-    color: $color-muted-text;
-    padding-left: $spacing-md;
-  }
-
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-
-    @media (max-width: $breakpoint-md) {
+     @media (max-width: $breakpoint-md) {
       grid-template-columns: 1fr;
     }
-  }
+  
 
   &__item {
     position: relative;
@@ -62,7 +131,7 @@
   }
 
   &__text {
-    font-size: $font-size-h2;
+    font-size: $font-size-p;
     font-weight: $font-weight-bold;
     margin: 0;
 

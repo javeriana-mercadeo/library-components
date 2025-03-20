@@ -1,76 +1,112 @@
-@use 'variables'as *;
-@use 'mixins'as *;
+@use 'variables' as *;
+@use 'mixins' as *;
 
-.recognitions {
-  text-align: center;
-  padding: $spacing-lg;
-  max-width: $max-width;
-
-  &__title {
-    font-size: $font-size-h2;
-    font-weight: $font-weight-bold;
-    margin-bottom: $spacing-lg;
-    color: $color-text;
-  }
-
-  &__wrapper {
+.academic-carousel {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     position: relative;
+    max-width: $max-width;
+
+    &__btn {
+        position: absolute;
+        top: 65%;
+        transform: translateY(-50%);
+        background-color: $primary-color;
+        color: $text-light;
+        border: none;
+        padding: $spacing-sm $spacing-md;
+        cursor: pointer;
+        border-radius: $border-radius-md;
+        font-size: $font-size-p;
+    }
+
+
+    &__wrapper {
+        overflow: hidden;
+        width: 90%;
+        margin: $spacing-md;
+    }
+
+    &__track {
+        display: flex;
+        gap: $spacing-md;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    &__item {
+        min-width: 300px;
+        flex: 0 0 auto;
+    }
+
+    &__btn--prev {
+        left: 10px;
+      border-radius: 50%;
+
+    }
+
+    &__btn--next {
+        right: 10px;
+        border-radius: 50%;
+    }
+}
+
+.card-container {
+    width: fit-content;
+    max-width: 20rem;
+    min-width: 300px;
+    height: auto;
+    flex-grow: 1;
+    background-color: $text-light;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
-  }
+}
 
-  &__container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); // Cuatro columnas en desktop
-    gap: $spacing-md;
+.card-content {
+    padding: 1.25rem;
+    padding-top: 5px;
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+    flex-grow: 1;
+}
 
-    @media (max-width: $breakpoint-md) {
-      display: flex;
-      gap: $spacing-sm;
-      overflow-x: scroll; // Carrusel deslizable en mobile
-      scroll-snap-type: x mandatory; // Suavidad en el scroll
+.card-title {
+    margin-bottom: 0.5rem;
+    font-size: $font-size-h1;
+    font-weight: bold;
+    letter-spacing: -0.02em;
+    color: #111827;
+
+}
+
+.card-header {
+    display: flex;
+    justify-content: center;
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.academic-carousel__title{
+  font-size: $font-size-h2;
+}
+
+@media (max-width: $breakpoint-sm) {
+    button {
+        font-size: 14px;
+        padding: 8px 12px;
     }
-  }
+}
 
-  &__item {
-    flex: 0 0 80%; // Para mobile: cada ítem ocupa el 80% del ancho
-    scroll-snap-align: center; 
-
-    @media (min-width: $breakpoint-md) {
-      flex: unset;
-    }
-
-    img {
-      max-width: 100%;
-      margin-bottom: $spacing-sm;
-    }
-
-    &__text {
-      font-size: $font-size-small;
-      color: $color-muted-text;
-    }
-  }
-
-  &__btn {
-    display: none; // Botones solo se muestran en mobile
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 2rem;
-    color: $primary-color;
-    cursor: pointer;
-
-    &--prev {
-      left: $spacing-sm;
+@media (max-width: $breakpoint-sm) {
+    p {
+        text-align: left;
+        max-width: 100%;
     }
 
-    &--next {
-      right: $spacing-sm;
-    }
-
-    @media (max-width: $breakpoint-md) {
-      display: block;
-    }
-  }
 }

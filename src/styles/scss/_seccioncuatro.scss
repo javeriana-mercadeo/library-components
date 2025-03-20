@@ -1,6 +1,28 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
+.p-4{
+  border: none;
+}
+p{
+  text-align: left;
+}
+.text-gray-900{
+  margin: 0;
+}
+
+.why-javeriana__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  .why-javeriana__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
 .why-javeriana {
   padding-top: $spacing-lg;
   margin: 0px;
@@ -12,19 +34,13 @@
     flex: 1;
     text-align: center;}
 
-  &__title {
-    font-size: $font-size-h2;
-    font-weight: $font-weight-bold;
-    margin-bottom: $spacing-lg;
-    color: $color-text;
-  }
-
   &__container {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-    gap: $spacing-lg;
+    gap: 0;
     margin-top: $spacing-lg;
+    padding-bottom: 25px;
 
     @media (max-width: $breakpoint-lg) {
       flex-direction: column;
@@ -41,15 +57,14 @@
     gap: 0;
   }
 
-  &__subtitle {
-    font-size: $font-size-h3;
-    font-weight: $font-weight-bold;
-    color: $gray-200;
-    margin-bottom: 0;
+
 
     @media (max-width: $breakpoint-md) {
       font-weight: $font-weight-regular;
-    }
+    
+      .why-javeriana__column {
+        min-width: 90vw;
+      }
   }
 
   &__text {
@@ -69,61 +84,27 @@
       display: flex;
       flex-direction: column;
       
-    }
-  }
-
-  // Elemento de la lista (ícono + texto)
-  &__item {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    text-align: left;
-
-
-    i {
-      font-size: 2rem;
-      color: $text-dark;
+      
     }
   }
 
   // Botón de "Leer Más / Leer Menos"
     &__toggle {
-    display: none;
-    align-self: flex-start;
-    color: $text-dark; 
-    font-weight: bold;
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    position: relative;
-    bottom: 45px;
-  
 
-  &::after {
-    content: "+";
-    font-weight: $font-weight-regular;
-    font-size: 3rem; 
-    color: $primary-color; 
-    position: relative;
-    top: 12px;
-
-  }
-
-  &.expanded::after {
-    content: "−"; 
-    color:$primary-color; 
-  }
 
     @media (max-width: $breakpoint-md) {
-      display: block;
+      display: flex;
       background: none;
       border: none;
       font-size: $font-size-small;
       color: $text-dark;
       cursor: pointer;
-
+      font-weight: bold; 
+      border: none; 
+         }
+    
+    &-text{
+      background-color: none;
     }
   }
 
@@ -132,7 +113,12 @@
     text-align: center;
   
     @media (max-width: $breakpoint-md) {
-      order: -1;
+      order: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+  
     }
   
     @media (min-width: $breakpoint-md) {
@@ -147,4 +133,6 @@
     }
   
   }
+  
 }
+

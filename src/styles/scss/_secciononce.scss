@@ -5,6 +5,7 @@
   text-align: center;
   padding: $spacing-lg;
   background-color: $color-background;
+  max-width: $max-width;
 
   @media (max-width: $breakpoint-md) {
     padding: 0px $spacing-sm;
