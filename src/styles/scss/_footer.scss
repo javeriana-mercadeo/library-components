@@ -1,8 +1,16 @@
 @use 'variables'as *;
 @use 'mixins'as *;
 
+.color-container-footer{
+  background-color: $background-footer;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 .footer {
-  background-color: #1D2125;
+  background-color:$background-footer;
   color: $text-light;
   padding: $spacing-lg;
   max-width: $max-width;

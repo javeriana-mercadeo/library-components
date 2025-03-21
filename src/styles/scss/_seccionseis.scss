@@ -1,6 +1,14 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
+.color-container{
+  background-color: $primary-color;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 .experience-carousel {
     display: flex;
     text-align: center;
