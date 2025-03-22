@@ -6,62 +6,32 @@ document.getElementById('menu-toggle').addEventListener('click', function () {
 });
 
 // seccion dos
-document.addEventListener("DOMContentLoaded", () => {
-  const carouselItems = document.querySelectorAll("[data-carousel-item]");
-  let currentIndex = 0;
-
-  function updateCarousel() {
-    carouselItems.forEach((item, index) => {
-      if (index === currentIndex) {
-        item.classList.add("active");
-      } else {
-        item.classList.remove("active");
+new Swiper('.card-wrapper', {
+  loop: true,
+  spaceBetween: 30,
+  // Pagination bullets
+  pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+      dynamicBullets: true
+  },
+  // Navigation arrows
+  navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+  },
+  // Responsive breakpoints
+  breakpoints: {
+      0: {
+          slidesPerView: 1
+      },
+      768: {
+          slidesPerView: 2
+      },
+      1024: {
+          slidesPerView: 3
       }
-    });
   }
-
-  function nextSlide() {
-    currentIndex = (currentIndex + 1) % carouselItems.length;
-    updateCarousel();
-  }
-
-  function prevSlide() {
-    currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
-    updateCarousel();
-  }
-
-  document.getElementById("next-btn").addEventListener("click", nextSlide);
-  document.getElementById("prev-btn").addEventListener("click", prevSlide);
-
-  updateCarousel();
-});
-
- // Sección dos
- document.addEventListener("DOMContentLoaded", function () {
-  const track = document.querySelector(".subjects-carousel__track");
-  const prevBtn = document.querySelector(".subjects-carousel__btn--prev");
-  const nextBtn = document.querySelector(".subjects-carousel__btn--next");
-  const items = document.querySelectorAll(".subjects-carousel__item");
-  const itemWidth = items[0].offsetWidth + 16;
-  let index = 0;
-
-  function updateCarousel() {
-    track.style.transform = `translateX(-${index * itemWidth}px)`;
-  }
-
-  nextBtn.addEventListener("click", () => {
-    if (index < items.length - 1) {
-      index++;
-      updateCarousel();
-    }
-  });
-
-  prevBtn.addEventListener("click", () => {
-    if (index > 0) {
-      index--;
-      updateCarousel();
-    }
-  });
 });
 
 //seccion tres
@@ -88,13 +58,17 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       contents.forEach((content) => content.classList.add("hidden"));
+      buttons.forEach((btn) => btn.classList.remove("active"));
 
       if (targetContent.classList.contains("hidden")) {
         targetContent.classList.remove("hidden");
+        this.classList.add("active");
       }
     });
   });
 });
+
+//seccion cuatro
 
 document.addEventListener("DOMContentLoaded", function () {
   function handleAccordion() {

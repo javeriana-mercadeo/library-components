@@ -3,7 +3,7 @@
 @use 'sass:color';
 
 .button {
-  &--primary {
+   &--primary {
     @include button-style($primary-color, $text-light);
 
     &:hover {
@@ -11,7 +11,7 @@
     }
   }
 
-  &--secondary {
+  &--secondary{
     @include button-style($secondary-color, $primary-color);
 
     &:hover {
@@ -42,4 +42,16 @@
     padding: $spacing-md $spacing-lg;
     font-size: $font-size-h3;
   }
+  
+  @media (max-width: $breakpoint-lg) {
+  &--secondary {
+    background-color: $primary-color; 
+    color: $text-light;
+  }
+
+  &--primary {
+    background-color: $secondary-color;
+    color: $text-dark;
+  }
+}
 }

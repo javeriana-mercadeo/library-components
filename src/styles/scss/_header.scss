@@ -1,6 +1,13 @@
 @use 'variables'as *;
 @use 'sass:color';
 
+.header-color{
+   background-color: $gray-1100;
+   width: 100vw;
+   display: flex;
+   justify-content: center;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -14,8 +21,8 @@
     align-items: center;
 
     &-image {
-      width: 169px;
-      height: auto;
+      width: auto;
+      height: 50px;
       margin-right: $spacing-sm;
     }
 
@@ -24,7 +31,9 @@
       font-weight: $font-weight-bold;
       color: $color-text;
     }
+    
   }
+  
 
   @media (max-width: $breakpoint-lg) {
     padding: $spacing-sm;
@@ -121,4 +130,29 @@
       }
     }
   }
+  @media (max-width: $breakpoint-lg) {
+    .header__cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      background-color: $gray-1100;
+      padding: $spacing-sm;
+      display: flex;
+      justify-content: space-around;
+      gap: $spacing-sm;
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      
+      button {
+        width: 100%; 
+        max-width: 100%; 
+        text-align: center;
+        padding: $spacing-sm;
+      }
+    }
+  }
+  
+  
 }

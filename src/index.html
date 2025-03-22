@@ -11,10 +11,14 @@
     rel="stylesheet">
   <link rel="stylesheet" href="./styles/css/main.css" />
   <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 </head>
 
 <body id="body">
   <!-- Header -->
+   <section class="header-color">
   <header class="container header">
     <div class="header__logo">
       <img src="./assets/images/logo.svg" alt="Logo" class="header__logo-image">
@@ -44,7 +48,7 @@
       </ul>
     </div>
   </header>
-
+</section>
    <!-- Sección uno -->
    <section class="container program-info">
     <div class="program-info-facultad">
@@ -140,143 +144,140 @@
     </section>
 
   </div>
-    <div class="program-info__image">
-      <video autoplay loop muted playsinline>
-        <source src="./assets/images/video-section-1.mp4" type="video/mp4">
-        Tu navegador no soporta videos.
-      </video>
-    </div>
+  <div class="program-info__image">
+    <iframe 
+      width="100%" 
+      height="100%" 
+      src="https://www.youtube.com/embed/Yb6XUiG2ZWc?autoplay=1&loop=1&mute=1&playlist=Yb6XUiG2ZWc" 
+      frameborder="0" 
+      allow="autoplay; encrypted-media" 
+      allowfullscreen>
+    </iframe>
+  </div>
+  
     
     
 
 </section>
 
   <!-- Sección dos -->
+<section class="section-dos">
   <section class="container subjects-carousel">
     <h2 class="subjects-carousel__title">Materias por Semestre</h2>
     <p>El plan de estudios profundiza en asignaturas en las áreas de:
       edificaciones, infraestructura vial e hidrotecnia.</p>
-      
-      <section class="container subjects-carousel">
-        <div class="subjects-carousel__wrapper">
-          <div class="subjects-carousel__track">
-            <div class="subjects-carousel__item">
-              <!-- item uno -->
-              <div class="card-container max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col overflow-hidden">
-                <div class="card-header px-5 pt-5">
-                    <span class="badge">Año 1</span>
-                </div>
-                <div class="card-content p-5 flex flex-col flex-grow">
-                    <h5 class="card-title mb-2 text-2xl font-bold tracking-tight text-gray-900">
-                        Semestre 1
-                    </h5>
-                    <ul class="card-list">
-                        <li><i class="ph ph-check"></i> Cálculo Diferencial</li>
-                        <li><i class="ph ph-check"></i> Álgebra Lineal</li>
-                        <li><i class="ph ph-check"></i> Física Mecánica</li>
-                        <li><i class="ph ph-check"></i> Química de Materiales</li>
-                        <li><i class="ph ph-check"></i> Geometría Descriptiva</li>
-                        <li><i class="ph ph-check"></i> Introducción a la Ingeniería</li>
-                        <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería I</li>
-                    </ul>
-                </div>
-                    <span class="credits"><strong>17</strong> Créditos</span>  
-                </div>  
+      <a href="ruta/al/archivo.pdf" 
+   download="Plan-de-Estudios.pdf"
+   class="button-plan text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 flex items-center gap-2">
+    Descargar Plan de Estudios 
+    <i class="ph ph-download"></i>
+      </a>
 
-            </div>
-            <div class="subjects-carousel__item">
-              <!-- item uno -->
-              <div class="card-container max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col overflow-hidden">
-                <div class="card-header px-5 pt-5">
-                    <span class="badge">Año 1</span>
-                </div>
-                <div class="card-content p-5 flex flex-col flex-grow">
-                    <h5 class="card-title mb-2 text-2xl font-bold tracking-tight text-gray-900">
-                        Semestre 2
-                    </h5>
-                    <ul class="card-list">
-                      <li><i class="ph ph-check"></i> Cálculo Integral</li>
-                      <li><i class="ph ph-check"></i> Álgebra Abstracta</li>
-                      <li><i class="ph ph-check"></i> Física Eléctrica</li>
-                      <li><i class="ph ph-check"></i> Programación en C</li>
-                      <li><i class="ph ph-check"></i> Ecuaciones Diferenciales</li>
-                      <li><i class="ph ph-check"></i> Probabilidad y Estadística</li>
-                      <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería II</li>
-                    </ul>
-                </div>
-                    <span class="credits"><strong>17</strong> Créditos</span>  
-                </div>  
 
-            </div>
-            <div class="subjects-carousel__item">
-              <!-- item uno -->
-              <div class="card-container max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col overflow-hidden">
-                <div class="card-header px-5 pt-5">
-                    <span class="badge">Año 2</span>
-                </div>
-                <div class="card-content p-5 flex flex-col flex-grow">
-                    <h5 class="card-title mb-2 text-2xl font-bold tracking-tight text-gray-900">
-                        Semestre 3
-                    </h5>
-                    <ul class="card-list">
-                      <li><i class="ph ph-check"></i> Cálculo Vectorial</li>
-                      <li><i class="ph ph-check"></i> Métodos Numéricos</li>
-                      <li><i class="ph ph-check"></i> Física Moderna</li>
-                      <li><i class="ph ph-check"></i> Diseño Digital</li>
-                      <li><i class="ph ph-check"></i> Mecánica de Materiales</li>
-                      <li><i class="ph ph-check"></i> Electricidad y Magnetismo</li>
-                      <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería III</li>
-                    </ul>
-                </div>
-                    <span class="credits"><strong>17</strong> Créditos</span>  
-                </div>  
-
-            </div>
-            <div class="subjects-carousel__item">
-               <!-- item dos -->
-                <div class="card-container max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col overflow-hidden">
-                    <div class="card-header px-5 pt-5">
-                        <span class="badge">Año 2</span>
-                    </div>
-                    <div class="card-content p-5 flex flex-col flex-grow">
-                        <h5 class="card-title mb-2 text-2xl font-bold tracking-tight text-gray-900">
-                            Semestre 4
-                        </h5>
-                        <ul class="card-list">
-                          <li><i class="ph ph-check"></i> Análisis Complejo</li>
-                          <li><i class="ph ph-check"></i> Sistemas de Control</li>
-                          <li><i class="ph ph-check"></i> Electrónica Analógica</li>
-                          <li><i class="ph ph-check"></i> Termodinámica</li>
-                          <li><i class="ph ph-check"></i> Fundamentos de Redes</li>
-                          <li><i class="ph ph-check"></i> Procesamiento de Señales</li>
-                          <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería IV</li>
-                        </ul>
-                    </div>
-                        <span class="credits"><strong>17</strong> Créditos</span>  
-                    </div>  
-                </div>
-
-            </div>
-
-          </div>
+<div class="container swiper">
+<div class="card-wrapper">
+  <!-- Card slides container -->
+  <ul class="card-list swiper-wrapper">
+    <li class="card-item swiper-slide">
+      <a href="#" class="card-link">
+        <div class="card-header ">
+            <span class="badge">Año 1</span>
         </div>
-        <button class="subjects-carousel__btn subjects-carousel__btn--prev">&#10094;</button>
-        <button class="subjects-carousel__btn subjects-carousel__btn--next">&#10095;</button>
-      </section>  
+        <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
+            Semestre 1
+        </h5>
+        <ul class="subjects-list">
+            <li><i class="ph ph-check"></i> Cálculo Diferencial</li>
+            <li><i class="ph ph-check"></i> Álgebra Lineal</li>
+            <li><i class="ph ph-check"></i> Física Mecánica</li>
+            <li><i class="ph ph-check"></i> Química de Materiales</li>
+            <li><i class="ph ph-check"></i> Geometría Descriptiva</li>
+            <li><i class="ph ph-check"></i> Introducción a la Ingeniería</li>
+            <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería I</li>
+        </ul>
+        <div class="content-credits"><span class="credits"><strong>17</strong> Créditos</span> </div> 
+      </a>
+    </li>
+    <li class="card-item swiper-slide">
+        <a href="#" class="card-link">
+            <div class="card-header ">
+                <span class="badge">Año 1</span>
+            </div>
+            <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                Semestre 1
+            </h5>
+            <ul class="subjects-list">
+                <li><i class="ph ph-check"></i> Cálculo Integral</li>
+                  <li><i class="ph ph-check"></i> Álgebra Abstracta</li>
+                  <li><i class="ph ph-check"></i> Física Eléctrica</li>
+                  <li><i class="ph ph-check"></i> Programación en C</li>
+                  <li><i class="ph ph-check"></i> Ecuaciones Diferenciales</li>
+                  <li><i class="ph ph-check"></i> Probabilidad y Estadística</li>
+                  <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería II</li>
+            </ul>
+            <div class="content-credits"><span class="credits"><strong>17</strong> Créditos</span> </div> 
+          </a>
+    </li>
+    <li class="card-item swiper-slide">
+        <a href="#" class="card-link">
+            <div class="card-header">
+                <span class="badge">Año 1</span>
+            </div>
+            <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                Semestre 1
+            </h5>
+            <ul class="subjects-list">
+                <li><i class="ph ph-check"></i> Cálculo Vectorial</li>
+                  <li><i class="ph ph-check"></i> Métodos Numéricos</li>
+                  <li><i class="ph ph-check"></i> Física Moderna</li>
+                  <li><i class="ph ph-check"></i> Diseño Digital</li>
+                  <li><i class="ph ph-check"></i> Mecánica de Materiales</li>
+                  <li><i class="ph ph-check"></i> Electricidad y Magnetismo</li>
+                  <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería III</li>
+            </ul>
+            <div class="content-credits"><span class="credits"><strong>17</strong> Créditos</span> </div> 
+          </a>
+    </li>
+    <li class="card-item swiper-slide">
+        <a href="#" class="card-link">
+            <div class="card-header">
+                <span class="badge">Año 1</span>
+            </div>
+            <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                Semestre 1
+            </h5>
+            <ul class="subjects-list">
+                <li><i class="ph ph-check"></i> Análisis Complejo</li>
+                      <li><i class="ph ph-check"></i> Sistemas de Control</li>
+                      <li><i class="ph ph-check"></i> Electrónica Analógica</li>
+                      <li><i class="ph ph-check"></i> Termodinámica</li>
+                      <li><i class="ph ph-check"></i> Fundamentos de Redes</li>
+                      <li><i class="ph ph-check"></i> Procesamiento de Señales</li>
+                      <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería IV</li>
+            </ul>
+            <div class="content-credits"><span class="credits"><strong>17</strong> Créditos</span> </div> 
+          </a>
+    </li>
+  </ul>
+   <!-- Pagination -->
+  <div class="swiper-pagination"></div>
+  <!-- Navigation Buttons -->
+  <div class="swiper-slide-button swiper-button-prev"></div>
+  <div class="swiper-slide-button swiper-button-next"></div>
+</div>
+</div>
 
-   
-
-
-  </section>
-
+</section>
+</section>
   <!-- Sección tres -->
+<section class="color-container">
   <section class="program-profile">
     <h2 class="program-profile__title">Este programa es para ti si...</h2>
   
     <div class="program-profile__accordion">
       <!-- Botones del acordeón -->
       <div class="program-profile__buttons">
-        <button type="button" class="program-profile__accordion-button" data-content="content-1">
+        <button type="button" class="program-profile__accordion-button active" data-content="content-1">
           <span>Perfil de Ingreso</span>
         </button>
   
@@ -290,7 +291,7 @@
       </div>
   
       <!-- 🔹 Contenido del acordeón (inicialmente oculto) -->
-      <div id="content-1" class="program-profile__content-item hidden">
+      <div id="content-1" class="program-profile__content-item">
         <div class="program-profile__image_content">
           <img src="./assets/images/perfil-ingreso.png" alt="Perfil de Ingreso" class="program-profile__image">
         </div>
@@ -423,10 +424,13 @@
     </div>
   </div>
   </section>
-
+</section>
   <!-- Seccion cuatro -->
   <section class="container why-javeriana">
-    <h2 class="why-javeriana__title">¿Por qué elegir la Javeriana?</h2>
+    <div class="section-four-title">
+      <h2 class="why-javeriana__title">¿Por qué elegir la Javeriana?</h2>
+    </div>
+    
     <div class="why-javeriana__container">
       <div class="why-javeriana__column">
 
@@ -644,6 +648,7 @@
 </section>
 
   <!-- Seccion seis -->
+  <section class="color-container">
   <section class="container expert-carousel">
     <h2 class="expert-carousel__title">Docentes Expertos</h2>
     <p class="expert-carousel__description">
@@ -721,9 +726,10 @@
         <button class="expert-carousel__btn expert-carousel__btn--next">&#10095;</button>
     </div>
 </section>
-
+</section>
 
   <!-- Seccion siete -->
+  
   <section class="container experience-carousel">
     <h2 class="experience-carousel__title">Vive la Experiencia Javeriana</h2>
     <p class="experience-carousel__description">
@@ -786,6 +792,7 @@
   </section>
 
   <!-- Seccion ocho -->
+<section class="color-container">
   <section class="container meeting-banner">
     <div class="meeting-banner__content">
       <p class="meeting-banner__text">
@@ -794,7 +801,7 @@
       <a href="#" class="button button--outline">Agenda tu reunión ahora</a>
     </div>
   </section>
-
+</section>
   <!-- Seccion nueve -->
   <section class="container projects-carousel">
     <h2 class="projects-carousel__title">Proyectos Destacados de Arquitectura</h2>
@@ -929,6 +936,7 @@
   </section>
 
   <!-- Footer -->
+   <section class="color-container-footer">
   <footer class="container footer">
     <div class="footer__container">
       <div class="footer__left">
@@ -939,16 +947,15 @@
         
         <div class="footer__video">
           <div class="footer__mp4">
-            <video autoplay loop muted playsinline>
-              <source src="./assets/images/universidad-javeriana-tour-i5SuKAFN.mp4" type="video/mp4">
-              Tu navegador no soporta videos.
-              title="El lugar donde construyes tu legado" frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen>
-            </video>
+            <iframe width="560" height="315" 
+                src="https://www.youtube.com/embed/THDJOSiwZ38?autoplay=1&loop=1&mute=1&playlist=THDJOSiwZ38" 
+                title="El lugar donde construyes tu legado" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+            <a href="https://www.javeriana.edu.co/tour-virtual-javeriana/index.htm" target="_blank" class="video-overlay"></a>
           </div>
-
-          </iframe>
         </div>
       </div>
       <div class="footer__right">
@@ -961,8 +968,9 @@
               href="mailto:atencionaspirantes@javeriana.edu.co">atencionaspirantes@javeriana.edu.co</a></p>
         </div>
         <div class="footer__social">
-          <p>Síguenos en nuestras redes sociales:</p>
+          
           <div class="footer__icons">
+            <p>Síguenos en nuestras redes sociales:</p>
             <a href="#"><i class="ph ph-facebook-logo"></i></a>
             <a href="#"><i class="ph ph-instagram-logo"></i></a>
             <a href="#"><i class="ph ph-linkedin-logo"></i></a>
@@ -987,24 +995,25 @@
       </div>
     </div>
   </footer>
-
+</section>
   <script>
     // Header
     document.addEventListener("DOMContentLoaded", function () {
-      const menuToggle = document.getElementById("menu-toggle");
-      const mobileMenu = document.getElementById("mobile-menu");
+  const ctaButtons = document.getElementById("cta-buttons");
+  const header = document.querySelector(".header"); // Contenedor original
 
-      menuToggle.addEventListener("click", function () {
-        mobileMenu.classList.toggle("active");
-      });
+  function adjustCTAButtons() {
+    if (window.innerWidth <= 1024) { // Ajusta según tu $breakpoint-lg
+      document.body.appendChild(ctaButtons); // Mueve los botones al final de la página
+    } else {
+      header.appendChild(ctaButtons); // Devuelve los botones a su lugar original
+    }
+  }
 
-      // Cerrar menú al hacer clic en un enlace
-      document.querySelectorAll(".header__mobile-menu-list-link, .header__mobile-menu-cta-link").forEach(link => {
-        link.addEventListener("click", () => {
-          mobileMenu.classList.remove("active");
-        });
-      });
-    });
+  adjustCTAButtons(); // Ejecutar al cargar la página
+  window.addEventListener("resize", adjustCTAButtons); // Ejecutar cuando se cambia el tamaño de la pantalla
+});
+
 
    
 
