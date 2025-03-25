@@ -1,4 +1,5 @@
 @use '../../../../styles/mixins' as *;
+@use '../../../../styles/functions' as *;
 
 .meeting {
   display: flex;
@@ -22,7 +23,7 @@
 
     .caption {
       text-align: center;
-      font-size: 24px;
+      font-size: rem(20px);
       color: var(--neutral-1000);
     }
 

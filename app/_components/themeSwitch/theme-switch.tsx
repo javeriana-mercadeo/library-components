@@ -64,13 +64,15 @@ export const ThemeSwitch = () => {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 text-[var(--neutral-400)]">
+      <i className="ph ph-palette text-[var(--primary-700)]"></i>
       <Select
         selectedKeys={new Set([isSSR ? 'light' : theme || 'light'])}
         onSelectionChange={handleSelectionChange}
         className="w-[200px] max-w-xs"
         labelPlacement="outside"
         placeholder="Elige un tema"
+        aria-label="Cambiar tema"
         selectorIcon={<i className="ph ph-check-circle"></i>}>
         {themes.map(theme => (
           <SelectItem key={theme.key}>{theme.label}</SelectItem>

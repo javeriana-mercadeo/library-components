@@ -54,7 +54,7 @@ export default function ViewComponent({ path, children }: { path: string; childr
   const codeElements = [
     { type: 'html', code: htmlContent },
     { type: 'css', code: cssContent },
-    { type: 'javascript', code: jsContent }
+    { type: 'javascript', code: `${jsContent ? `Liferay.on('allPortletsReady', () => {${jsContent}});` : jsContent}` }
   ].filter(({ code }) => code.trim() !== '')
 
   return (

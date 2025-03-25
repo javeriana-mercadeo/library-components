@@ -1,17 +1,29 @@
+@use './main.scss' as *;
+
 /* Liferay Styles */
 @use './liferayMain.scss' as *;
-@use './mixins' as *;
-@use './functions' as *;
+
+/* Theme */
 @use './theme' as *;
 @use './typography' as *;
+
+/* Components */
+@use '../library/_general/components/buttons/btn_general/style.scss' as *;
+
+@include general-btn;
 
 /************ Default Css ************/
 
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
 ::selection {
-  background-color: var(--primary-600);
-  color: var(--dark-color);
+  background-color: var(--primary-400);
+  color: var(--neutral-200);
+
+  @include dark-theme {
+    background-color: var(--primary-200);
+    color: var(--neutral-100);
+  }
 }
 
 * {
@@ -29,7 +41,8 @@ code {
 html {
   scroll-behavior: smooth;
   scroll-padding-top: rem(75px);
-  min-height: auto;
+  min-height: 100vh;
+  height: 100%;
 
   body {
     position: relative;
@@ -49,7 +62,7 @@ html {
   }
 
   body::-webkit-scrollbar-thumb {
-    background-color: var(--primary-default);
+    background-color: var(--primary-600);
     border-radius: rem(5px);
     height: 40%;
   }

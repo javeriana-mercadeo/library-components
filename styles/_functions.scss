@@ -1,6 +1,8 @@
 @use 'sass:color';
 @use 'sass:map';
 @use 'sass:list';
+@use 'sass:math';
+@use 'sass:meta';
 @use './vars' as *;
 
 // Medidas relativas
@@ -66,4 +68,39 @@
 // Extractor de color de la base de colores
 @function extract-color($color-name) {
   @return map.get($color-base, $color-name);
+}
+
+// Función para calcular la luminancia del color
+// Calcular luminancia de un color
+@function luminance($color) {
+  $r: math.div(color.channel($color, 'red', $space: rgb), 255);
+  $g: math.div(color.channel($color, 'green', $space: rgb), 255);
+  $b: math.div(color.channel($color, 'blue', $space: rgb), 255);
+
+  $values: ($r, $g, $b);
+  $adjusted: ();
+
+  @each $value in $values {
+    $adjusted: list.append($adjusted, if($value <= 0.03928, math.div($value, 12.92), math.pow(math.div($value + 0.055, 1.055), 2.4)));
+  }
+
+  @return list.nth($adjusted, 1) * 0.2126 + list.nth($adjusted, 2) * 0.7152 + list.nth($adjusted, 3) * 0.0722;
+}
+
+// Función para determinar si el texto debe ser blanco o negro
+@function text-contrast($background-color) {
+  @if meta.type-of($background-color) != 'color' {
+    @error "El valor `#{$background-color}` no es un color válido.";
+  }
+
+  $bg-luminance: luminance($background-color);
+  $white-contrast: math.div(1 + 0.05, $bg-luminance + 0.05);
+  $black-contrast: math.div($bg-luminance + 0.05, 0 + 0.05);
+
+  // Si la luminancia del fondo es muy alta (> 0.85), forzamos el texto a ser negro
+  @if $bg-luminance > 0.45 {
+    @return var(--neutral-100);
+  } @else {
+    @return var(--neutral-1000);
+  }
 }

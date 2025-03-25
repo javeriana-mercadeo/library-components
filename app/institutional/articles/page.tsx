@@ -1,10 +1,13 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 import BlogHeader from '@library/_institutional/sections/blogHeader'
 import BlogFeatured from '@library/_institutional/sections/blogFeatured'
+import Splash from '@library/_general/sections/Splash'
 
-export default function page() {
+export default function Articles() {
   return (
     <>
+      <Splash />
+
       <ViewComponent path="_institutional/sections/blogHeader">
         <BlogHeader />
       </ViewComponent>

@@ -20,7 +20,8 @@ $color-base: (
     '700': #9fadbc,
     '800': #b6c2cf,
     '900': #c7d1db,
-    '1000': #eeefef
+    '1000': #eeefef,
+    '1100': #f2f2f2
   ),
   'neutral-variant': #96937f,
   'success': #36b377,
@@ -54,97 +55,183 @@ $colors-theme: (
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
   ),
   'arquitectura-diseno': (
-    'primary': generate-color-scale(#653383, true),
-    'secondary': generate-color-scale(#00559a, true)
+    'primary': generate-color-scale(#653383),
+    'secondary': generate-color-scale(#00559a)
   ),
   'arquitectura-diseno-dark': (
     'primary': generate-color-scale(#653383, true),
     'secondary': generate-color-scale(#00559a, true)
   ),
   'artes': (
+    'primary': generate-color-scale(#6f45e9),
+    'secondary': generate-color-scale(#ff4b78),
+    'tertiary': generate-color-scale(#2c5595)
+  ),
+  'artes-dark': (
     'primary': generate-color-scale(#6f45e9, true),
     'secondary': generate-color-scale(#ff4b78, true),
     'tertiary': generate-color-scale(#2c5595, true)
   ),
   'ciencias': (
+    'primary': generate-color-scale(#008aa2),
+    'secondary': generate-color-scale(#f6bd30)
+  ),
+  'ciencias-dark': (
     'primary': generate-color-scale(#008aa2, true),
     'secondary': generate-color-scale(#f6bd30, true)
   ),
   'ciencias-economicas-administrativas': (
+    'primary': generate-color-scale(#4a7ed8),
+    'secondary': generate-color-scale(#371f75),
+    'tertiary': generate-color-scale(#ff4e30)
+  ),
+  'ciencias-economicas-administrativas-dark': (
     'primary': generate-color-scale(#4a7ed8, true),
     'secondary': generate-color-scale(#371f75, true),
     'tertiary': generate-color-scale(#ff4e30, true)
   ),
   'ciencias-juridicas': (
-    'primary': generate-color-scale(#f6bd30, true),
-    'secondary': generate-color-scale(#2c5595, true),
+    'primary': generate-color-scale(#2c5595),
+    'secondary': generate-color-scale(#f6bd30),
+    'tertiary': generate-color-scale(#c6c6c6)
+  ),
+  'ciencias-juridicas-dark': (
+    'primary': generate-color-scale(#2c5595, true),
+    'secondary': generate-color-scale(#f6bd30, true),
     'tertiary': generate-color-scale(#c6c6c6, true)
   ),
   'ciencias-politicas-relaciones-internacionales': (
-    'primary': generate-color-scale(#f6bd30, true),
-    'secondary': generate-color-scale(#008874, true)
+    'primary': generate-color-scale(#008874),
+    'secondary': generate-color-scale(#f6bd30)
+  ),
+  'ciencias-politicas-relaciones-internacionales-dark': (
+    'primary': generate-color-scale(#008874, true),
+    'secondary': generate-color-scale(#f6bd30, true)
   ),
   'ciencias-sociales': (
     'primary': generate-color-scale(#003d7a, true),
     'secondary': generate-color-scale(#73d9fc, true),
     'tertiary': generate-color-scale(#3e2580, true)
   ),
+  'ciencias-sociales-dark': (
+    'primary': generate-color-scale(#003d7a),
+    'secondary': generate-color-scale(#73d9fc),
+    'tertiary': generate-color-scale(#3e2580)
+  ),
   'comunicacion-lenguaje': (
+    'primary': generate-color-scale(#8048a9),
+    'secondary': generate-color-scale(#73d9fc),
+    'tertiary': generate-color-scale(#2c5595)
+  ),
+  'comunicacion-lenguaje-dark': (
     'primary': generate-color-scale(#8048a9, true),
     'secondary': generate-color-scale(#73d9fc, true),
     'tertiary': generate-color-scale(#2c5595, true)
   ),
   'derecho-canonico': (
-    'primary': generate-color-scale(#f6bd30, true),
-    'secondary': generate-color-scale(#2c5595, true),
+    'primary': generate-color-scale(#2c5595),
+    'secondary': generate-color-scale(#f6bd30),
+    'tertiary': generate-color-scale(#f2f2f2)
+  ),
+  'derecho-canonico-dark': (
+    'primary': generate-color-scale(#2c5595, true),
+    'secondary': generate-color-scale(#f6bd30, true),
     'tertiary': generate-color-scale(#f2f2f2, true)
   ),
   'educacion': (
+    'primary': generate-color-scale(#a1bfff),
+    'secondary': generate-color-scale(#2a2a68),
+    'tertiary': generate-color-scale(#f47abd)
+  ),
+  'educacion-dark': (
     'primary': generate-color-scale(#a1bfff, true),
     'secondary': generate-color-scale(#2a2a68, true),
     'tertiary': generate-color-scale(#f47abd, true)
   ),
   'enfermeria': (
-    'primary': generate-color-scale(#ffcd00, true),
-    'secondary': generate-color-scale(#018ab9, true)
+    'primary': generate-color-scale(#018ab9),
+    'secondary': generate-color-scale(#ffcd00)
+  ),
+  'enfermeria-dark': (
+    'primary': generate-color-scale(#018ab9, true),
+    'secondary': generate-color-scale(#ffcd00, true)
   ),
   'estudios-ambientales-rurales': (
+    'primary': generate-color-scale(#abc80e),
+    'secondary': generate-color-scale(#2dcad1),
+    'tertiary': generate-color-scale(#029be2)
+  ),
+  'estudios-ambientales-rurales-dark': (
     'primary': generate-color-scale(#abc80e, true),
     'secondary': generate-color-scale(#2dcad1, true),
     'tertiary': generate-color-scale(#029be2, true)
   ),
   'filosofia': (
+    'primary': generate-color-scale(#004c8f),
+    'secondary': generate-color-scale(#c08300),
+    'tertiary': generate-color-scale(#f2f2f2)
+  ),
+  'filosofia-dark': (
     'primary': generate-color-scale(#004c8f, true),
     'secondary': generate-color-scale(#c08300, true),
     'tertiary': generate-color-scale(#f2f2f2, true)
   ),
   'ingenieria': (
+    'primary': generate-color-scale(#026fc1),
+    'secondary': generate-color-scale(#029be1),
+    'tertiary': generate-color-scale(#339e36)
+  ),
+  'ingenieria-dark': (
     'primary': generate-color-scale(#026fc1, true),
     'secondary': generate-color-scale(#029be1, true),
     'tertiary': generate-color-scale(#339e36, true)
   ),
   'instituto-pensar': (
+    'primary': generate-color-scale(#00b3ab),
+    'secondary': generate-color-scale(#ff6b17)
+  ),
+  'instituto-pensar-dark': (
     'primary': generate-color-scale(#00b3ab, true),
     'secondary': generate-color-scale(#ff6b17, true)
   ),
   'instituto-salud-publica': (
+    'primary': generate-color-scale(#a74731),
+    'secondary': generate-color-scale(#c28069)
+  ),
+  'instituto-salud-publica-dark': (
     'primary': generate-color-scale(#a74731, true),
     'secondary': generate-color-scale(#c28069, true)
   ),
   'medicina': (
-    'primary': generate-color-scale(#f6bd30, true),
-    'secondary': generate-color-scale(#2b9cd2, true)
+    'primary': generate-color-scale(#2b9cd2),
+    'secondary': generate-color-scale(#f6bd30)
+  ),
+  'medicina-dark': (
+    'primary': generate-color-scale(#2b9cd2, true),
+    'secondary': generate-color-scale(#f6bd30, true)
   ),
   'odontologia': (
-    'primary': generate-color-scale(#00c7dc, true),
+    'primary': generate-color-scale(#32abbf),
+    'secondary': generate-color-scale(#32abbf)
+  ),
+  'odontologia-dark': (
+    'primary': generate-color-scale(#32abbf, true),
     'secondary': generate-color-scale(#32abbf, true)
   ),
   'psicologia': (
-    'primary': generate-color-scale(#f6bd30, true),
-    'secondary': generate-color-scale(#029be1, true)
+    'primary': generate-color-scale(#029be1),
+    'secondary': generate-color-scale(#f6bd30)
+  ),
+  'psicologia-dark': (
+    'primary': generate-color-scale(#029be1, true),
+    'secondary': generate-color-scale(#f6bd30, true)
   ),
   'teologia': (
-    'primary': generate-color-scale(#c08300, true),
-    'secondary': generate-color-scale(#004c8f, true)
+    'primary': generate-color-scale(#004c8f),
+    'secondary': generate-color-scale(#c08300)
+  ),
+  'teologia-dark': (
+    'primary': generate-color-scale(#004c8f, true),
+    'secondary': generate-color-scale(#c08300, true)
   )
 );

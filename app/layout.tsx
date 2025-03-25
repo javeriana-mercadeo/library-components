@@ -1,4 +1,4 @@
-import '@/styles/_tailwind.css'
+import '@/styles/_tailwind.scss'
 import '@/styles/global.scss'
 
 //import '@/styles/liferayStyles.css'
@@ -27,10 +27,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* <!-- Flowbite CSS --> */}
         <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+        <title>Librería de componentes</title>
       </head>
       <body>
         <Providers themeProps={{ attribute: 'data-theme' }}>
-          <div className="relative flex flex-col h-screen">
+          <div className="relative flex flex-col">
             <Header />
             <main className="flex-grow">{children}</main>
             <Footer />

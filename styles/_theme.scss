@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:string';
 @use './colors' as *;
 @use './mixins' as *;
 
@@ -7,7 +8,9 @@
   @include generate-vars($name, $colors);
 }
 
-// Generar temas de colores
+// Generar tenas de colores
 @each $name, $colors in $colors-theme {
-  @include generate-theme($name, $colors);
+  $base-theme: if(string.index($name, 'dark'), map.get($colors-theme, 'dark'), ());
+  $merged-theme: map.merge($base-theme, $colors);
+  @include generate-theme($name, $merged-theme);
 }

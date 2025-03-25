@@ -5,30 +5,29 @@ $font-family: 'Raleway', serif;
 :root {
   /* ### Tamaños de iconos ### */
 
-  --icon-size-xs: 12px;
-  --icon-size-sm: 16px;
-  --icon-size-md: 24px;
-  --icon-size-lg: 32px;
-  --icon-size-xl: 48px;
-  --icon-size-xxl: 64px;
-  --icon-size-xxxl: 96px;
-  --icon-logo-big: 160px;
+  --icon-size-xs: rem(12px);
+  --icon-size-sm: rem(16px);
+  --icon-size-md: rem(24px);
+  --icon-size-lg: rem(32px);
+  --icon-size-xl: rem(48px);
+  --icon-size-xxl: rem(64px);
+  --icon-size-xxxl: rem(96px);
+  --icon-logo-big: rem(160px);
 
   /* ### Tamaños de fuente ### */
 
   /* 📌 Títulos */
-  --font-size-principal-title: clamp(2.5rem, 6vw, 4rem);
-  --font-size-title: clamp(2rem, 5vw, 3rem);
-  --font-size-subtitle: clamp(1.5rem, 3.5vw, 2.2rem);
-  --font-size-caption: clamp(1.2rem, 2.5vw, 1.6rem);
+  --font-size-principal-title: rem(36px);
+  --font-size-title: rem(28px);
+  --font-size-subtitle: rem(24px);
+  --font-size-caption: rem(20px);
 
   /* 📌 Texto de párrafo estándar */
-  --font-size-paragraph: clamp(1rem, 1.8vw, 1.2rem);
-  --font-size-normal: 1rem;
+  --font-size-paragraph: rem(16px);
 
   /* 📌 Tamaños pequeños (notas, info secundaria) */
-  --font-size-small: 0.875rem;
-  --font-size-xs: 0.75rem;
+  --font-size-small: rem(14px);
+  --font-size-xs: rem(10px);
 
   /* ### Grosor ### */
 

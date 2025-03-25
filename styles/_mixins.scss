@@ -7,16 +7,27 @@
   }
 }
 
-@mixin hover-transition {
-  transition: 0.2s ease;
-
-  &:hover {
-    transition: 0.2s ease;
+// Tema oscuro
+@mixin dark-theme {
+  [data-theme*='dark'] & {
+    @content;
   }
 }
 
+// Transición hover
+@mixin hover-transition {
+  transition: $transition ease;
+
+  &:hover {
+    transition: $transition ease;
+  }
+}
+
+// Generar variables
 @mixin generate-vars($name, $colors) {
   :root {
+    --theme: 'light';
+
     @each $color-value, $value in $colors {
       @if $color-value != '' {
         --#{$name}-#{$color-value}: #{$value};
@@ -27,8 +38,11 @@
   }
 }
 
+// Generar tema
 @mixin generate-theme($name, $colors) {
   :root[data-theme='#{$name}'] {
+    --theme: '#{$name}';
+
     @each $color-name, $color-value in $colors {
       @each $color-value-name, $color-value in $color-value {
         @if $color-value-name != '' {
