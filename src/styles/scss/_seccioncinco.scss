@@ -1,112 +1,104 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
+.academic-carousel__title{
+    font-size: $font-size-h2;
+    font-weight: 700;
+}
+
 .academic-carousel {
     display: flex;
-    text-align: center;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    position: relative;
     max-width: $max-width;
-
-    &__btn {
-        position: absolute;
-        top: 65%;
-        transform: translateY(-50%);
-        background-color: $primary-color;
-        color: $text-light;
-        border: none;
-        padding: $spacing-sm $spacing-md;
-        cursor: pointer;
-        border-radius: $border-radius-md;
-        font-size: $font-size-p;
-    }
-
-
-    &__wrapper {
-        overflow: hidden;
-        width: 90%;
-        margin: $spacing-md;
-    }
-
-    &__track {
-        display: flex;
-        gap: $spacing-md;
-        transition: transform 0.3s ease-in-out;
-    }
-
-    &__item {
-        min-width: 300px;
-        flex: 0 0 auto;
-    }
-
-    &__btn--prev {
-        left: 10px;
-      border-radius: 50%;
-
-    }
-
-    &__btn--next {
-        right: 10px;
-        border-radius: 50%;
-    }
 }
 
-.card-container {
-    width: fit-content;
-    max-width: 20rem;
-    min-width: 300px;
-    height: auto;
-    flex-grow: 1;
-    background-color: $text-light;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+h1 {
+    font-size: 3rem;
+    padding: 20px;
+    margin: 20px 0px;
 }
 
-.card-content {
-    padding: 1.25rem;
-    padding-top: 5px;
-    display: flex;
-    text-align: left;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.card-title {
-    margin-bottom: 0.5rem;
-    font-size: $font-size-h1;
-    font-weight: bold;
-    letter-spacing: -0.02em;
-    color: #111827;
-
-}
-
-.card-header {
+.slider {
     display: flex;
     justify-content: center;
-    padding-left: 20px;
-    padding-top: 20px;
-}
+    align-items: center;
+    height: 100%;
+    width: 80%;
+    overflow: hidden;
+    border-radius: 16px;
+    backdrop-filter: blur(7.4px);
+    -webkit-backdrop-filter: blur(7.4px);
+    position: relative;
+    padding: 20px;
+    margin: auto;
 
-.academic-carousel__title{
-  font-size: $font-size-h2;
-}
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100px; /* 🔹 Ajusta el ancho del efecto */
+        height: 100%;
+        z-index: 2;
+        pointer-events: none; /* 🔹 Permite clics en el slider */
+    }
 
-@media (max-width: $breakpoint-sm) {
-    button {
-        font-size: 14px;
-        padding: 8px 12px;
+    /* 🔹 Efecto de niebla a la izquierda */
+    &::before {
+        left: 0;
+        background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    /* 🔹 Efecto de niebla a la derecha */
+    &::after {
+        right: 0;
+        background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
     }
 }
 
-@media (max-width: $breakpoint-sm) {
-    p {
-        text-align: left;
-        max-width: 100%;
+
+
+.slider-items {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 30px;
+    animation: scrolling 20s linear infinite;
+    width: max-content;
+    height: auto;
+
+}
+
+@keyframes scrolling {
+
+    0% {
+        transform: translateX(80%);
     }
 
+    100% {
+        transform: translateX(-20%);
+    }
+}
+.img-logos{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+    min-width: 200px;
+}
+
+.slider-items img {
+    width: 150px;
+    height: auto;
+    margin: 20px;
+    object-fit: cover;
+
+}
+.slider-items p{
+    font-size: 0.7rem;
+    width: 100%;
+    text-align: center;
+    justify-self: unset;
 }

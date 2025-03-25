@@ -3,122 +3,188 @@
 
 .color-container{
   background-color: $primary-color;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  width: 100%;
 }
-.experience-carousel {
-    display: flex;
+
+.expert-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  max-width: $max-width;
+  background-color: $primary-color;
+  padding: 60px 0;
+
+  &__title {
+    font-size: $font-size-h2;
+    font-weight: 700;
+    color: $text-light;
+    padding-bottom: 15px;
+  }
+
+  &__description {
+    color: $text-light;
+    width: 80%;
     text-align: center;
+  }
+
+  &__wrapper {
+    overflow: hidden;
+    width: 90%;
+    margin: auto;
+  }
+
+  &__track {
+    display: flex;
+    gap: $spacing-md;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &__item {
+    flex: 0 0 auto;
+    min-width: 200px;
+  }
+
+  /* Botones de navegación */
+  &__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: $primary-color;
+    color: $text-light;
+    border: 1px solid $text-light;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: $spacing-sm;
+    font-size: $font-size-p;
+    width: 40px;
+    height: 40px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    position: relative;
-    max-width: $max-width;
-    padding-top: 60px;
-    padding-bottom: 50px;
 
-    &__title{
-      font-size: $font-size-h2;
-      color: $text-dark;
-      width: 100%;
-      padding-bottom: 15px;
+    &:hover {
+      background-color: lighten($primary-color, 10%);
     }
-    &__description{
-      color: $text-dark;
-      width: 80%;
-      text-align: center;
-    }
-    &__btn {
-        position: absolute;
-        top: 65%;
-        transform: translateY(-50%);
-        background-color: $primary-color;
-        color: $text-light;
-        border: none;
-        cursor: pointer;
-        border-radius: $border-radius-md;
-        padding: $spacing-sm $spacing-md;
-        font-size: $font-size-p;
-    }
+  }
 
-    &__wrapper {
-        overflow: hidden;
-        width: 90%;
-        margin: $spacing-md;
-    }
+  &__btn--prev {
+    left: 10px;
+  }
 
-    &__track {
-        display: flex;
-        gap: $spacing-md;
-        transition: transform 0.3s ease-in-out;
-    }
+  &__btn--next {
+    right: 10px;
+  }
 
-    &__item {
-        min-width: 200px;
-        flex: 0 0 auto;
-    }
-
-    &__btn--prev {
-        left: 10px;
-        border-radius: 50%;
-        border: 1px solid $text-light;
-    }
-
-    &__btn--next {
-        right: 10px;
-        border-radius: 50%;
-        border: 1px solid $text-light;
-    }
-}
-
-.teacher-card-container{
-  width: 100%;
-  height: fit-content;
-  width: 200px;
-  text-align: left;
-
-  .teacher-card-header{
+  /* Tarjetas de docentes */
+  .teacher-card-container {
     width: 100%;
-    height: auto;
+    max-width: 250px;
+    text-align: left;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 15px;
+    min-height: 100%;
+  }
+  .teacher-card-content{
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .teacher-card-header {
+    width: 100%;
+    height: auto;
+    display: flex;
     justify-content: center;
     align-items: center;
-
-    .teacher-card__image{
-      width: 200px;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 20px;
-    }
   }
-  .teacher-card__name{
+
+  .teacher-card__image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .teacher-card__name {
     color: $text-light;
-    font-size: $font-size-p;
+    font-size: 1rem;
     font-weight: $font-weight-bold;
+    margin-top: 10px;
+    text-align: left;
   }
-  .teacher-card__title{
+
+  .teacher-card__title {
+    color: $gray-700;
+    font-size: 0.75rem;
+    text-align: left;
     color: $text-light;
-    font-size: 0.65rem;
   }
-  .teacher-card__link{
+
+  .teacher-card__link {
     color: $text-light;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 10px;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
+/* Swiper estilos */
+.card-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 10px;
+  overflow: hidden;
+}
+
+.swiper-backface-hidden .swiper-slide {
+  margin-top: 20px;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Media Queries */
 @media (max-width: 768px) {
-    button {
-        font-size: 14px;
-    }
+  .expert-carousel__description {
+    width: 90%;
+  }
+
+  .teacher-card-container {
+    max-width: 180px;
+  }
 }
 
-@media (max-width: $breakpoint-sm) {
-    p {
-        text-align: left;
-        max-width: 100%;
-    }
+@media (max-width: 480px) {
+  .expert-carousel__title {
+    font-size: $font-size-h3;
+  }
 
+  .teacher-card-container {
+    max-width: 160px;
+  }
+}
+
+/* Ajustar visibilidad de los botones en pantallas pequeñas */
+@media (max-width: $breakpoint-sm) {
+  .swiper-slide-button {
+    display: none;
+  }
 }

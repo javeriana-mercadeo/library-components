@@ -1,8 +1,11 @@
-@use 'variables'as *;
-@use 'mixins'as *;
-
 @use 'variables' as *;
-@use 'mixins'as *;
+@use 'mixins' as *;
+
+.projects-carousel__title {
+  width: fit-content;
+  font-size: $font-size-h2;
+  font-weight: 700;
+}
 
 .projects-carousel {
   display: flex;
@@ -15,107 +18,20 @@
   padding-top: 60px;
   padding-bottom: 50px;
 
-  &__title{
+  &__title {
     font-size: $font-size-h2;
     color: $text-dark;
     width: 100%;
     padding-bottom: 15px;
   }
-  &__description{
-    color: $text-dark;
+
+  &__description {
+    color: $text-light;
     width: 80%;
     text-align: center;
   }
-  &__btn {
-      position: absolute;
-      top: 65%;
-      transform: translateY(-50%);
-      background-color: $primary-color;
-      color: $text-light;
-      border: none;
-      cursor: pointer;
-      border-radius: $border-radius-md;
-      padding: $spacing-sm $spacing-md;
-      font-size: $font-size-p;
-      z-index: 10;
-  }
 
-  &__wrapper {
-      overflow: hidden;
-      width: 90%;
-      margin: $spacing-md;
-  }
-
-  &__track {
-      display: flex;
-      gap: $spacing-md;
-      width: calc(100% * 3);
-      transition: transform 0.3s ease-in-out;
-  }
-
-  &__item {
-    flex: 0 0 33.333%;
-      min-width: 200px;
-      flex: 0 0 auto;
-  }
-
-  &__btn--prev {
-      left: 10px;
-      border-radius: 50%;
-      border: 1px solid $text-light;
-  }
-
-  &__btn--next {
-      right: 10px;
-      border-radius: 50%;
-      border: 1px solid $text-light;
-  }
-}
-
-.projects-carousel__item{
-  gap: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  scroll-snap-align: center;
-  
-  .projects-carousel__imagen{
-    width: 480px; 
-    height: 480px;
-    max-width: 100%;
-    border-radius: 20px;
-    object-fit: cover;
-  }
-}
-
-.featured-projects {
-  text-align: center;
-  padding: $spacing-lg 0px;
-  background-color: $color-background;
-
-  @media (max-width: $breakpoint-md) {
-    text-align: left;
-  }
-
-     @media (max-width: $breakpoint-md) {
-      grid-template-columns: 1fr;
-    }
-  
-
-  &__item {
-    position: relative;
-    overflow: hidden;
-  }
-
-  &__image {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-  }
-
-  &__overlay {
+    &__overlay {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -125,18 +41,99 @@
     text-align: left;
 
     @media (max-width: $breakpoint-md) {
-      text-align: center;
+      text-align: left;
       padding: $spacing-sm;
     }
   }
+}
 
-  &__text {
-    font-size: $font-size-p;
-    font-weight: $font-weight-bold;
-    margin: 0;
-
-    @media (max-width: $breakpoint-md) {
-      font-size: $font-size-p;
-    }
+/* Media query para pantallas pequeñas */
+@media (max-width: $breakpoint-sm) {
+  p {
+    text-align: left;
+    max-width: 100%;
   }
 }
+
+/* Media Query Responsive */
+@media (max-width: 400px) {
+  .testimonial-card {
+    width: 90%;
+  }
+}
+
+/* Contenedor de tarjetas */
+.card-wrapper {
+  overflow: hidden;
+}
+
+
+.swiper-backface-hidden .swiper-slide {
+  margin-top: 20px;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tarjetas generales */
+.card-list-9 .card-item-9 .card-link-9 {
+  display: block;
+  user-select: none;
+  text-decoration: none;
+  transition: 0.2s ease;
+  max-width: fit-content;
+}
+
+.card-image-container {
+  position: relative; 
+  width: 100%;
+  height: auto;
+  overflow: hidden; 
+}
+
+.card-overlay {
+  position: absolute; 
+  bottom: 0; 
+  left: 0;
+  color: $text-light;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.277); 
+  display: flex;
+  justify-content: left;
+  text-align: left;
+  align-items: center;
+  padding: 10px;
+  z-index: 2;
+}
+
+.image-project {
+  width: 400px;
+  height: 400px;
+  object-fit: cover; 
+  display: block;
+}
+
+
+.card-list-9 .card-link-9 .badge {
+  width: fit-content;
+  padding: 8px 15px;
+  font-size: 0.7rem;
+  border-radius: 50px;
+  font-weight: bold;
+  background: $primary-color;
+  text-align: left;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}
+
+/* Flechas de navegación */
+.card-wrapper .swiper-slide-button {
+  color: $primary-color;
+  margin-top: -35px;
+}
+
+
