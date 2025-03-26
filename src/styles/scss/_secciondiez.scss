@@ -1,16 +1,22 @@
 @use 'variables'as *;
 @use 'mixins'as *;
+@use'base' as*;
 
+#section-ten{
+  
 .related-programs {
+  display: flex;
   text-align: center;
   padding: $spacing-lg;
   background-color: $color-background;
   margin: 0 auto; 
   max-width: $max-width;
+  align-items: center;
+  flex-direction: column;
 
   @media (max-width: $breakpoint-md) {
     padding: 0px $spacing-sm;
-    text-align: left;
+    text-align: center;
   }
 
   &__title {
@@ -18,12 +24,15 @@
     font-weight: $font-weight-bold;
     margin-bottom: $spacing-sm;
     color: $color-text;
+    width: fit-content;
   }
 
   &__description {
     font-size: $font-size-p;
     margin-bottom: $spacing-lg;
     color: $color-muted-text;
+    text-align: center;
+    width: fit-content;
   }
 
   &__wrapper {
@@ -96,30 +105,20 @@
     }
   }
 
-  &__btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 2rem;
-    color: $primary-color;
-    cursor: pointer;
-
-    &--prev {
-      left: $spacing-sm;
-    }
-
-    &--next {
-      right: $spacing-sm;
-    }
-
+  
     @media (max-width: $breakpoint-md) {
       display: none;
     }
   }
 }
-
+.related-programs-swiper{
+  overflow: visible;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 .related-programs-carousel {
   display: flex;
   align-items: center;
@@ -155,23 +154,63 @@ p{
   font-size: $font-size-p;
   padding-bottom: 20px;
 }
-.button-plan{
-    color: $primary-color;
-    padding: 15px;
-    font-weight: 600;
-    border: 1px solid $primary-color;
+/* btn-navegación swiper*/
+.swiper-slide-button {
+  .swiper-slide-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); // Centra verticalmente
+    z-index: 10;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  
+    i {
+      font-size: 2rem; 
+      color: $primary-color;
+    }
+  
+    &:hover {
+      transform: translateY(-50%) scale(1.1);
+    }
+  }
+  
+  .related-programs-prev {
+    left: -6px; 
+  }
+  
+  .related-programs-next {
+    right: -6px;
+  }
+  
+  @media (max-width: 768px) {
+    .swiper-slide-button {
+      width: 40px;
+      height: 40px;
+  
+      i {
+        font-size: 1.5rem;
+      }
+    }
+    
+    .related-programs-prev {
+      left: 100px; 
+    }
+  
+    .related-programs-next {
+      right: 10px; 
+    }
+  }
+}  
 
-i{
-  padding-left: 10px;
-  size: 1rem;
-}
-}
-.card-wrapper {
-  max-width: 1100px;
-  margin: 0 60px 35px;
-  padding: 20px 10px;
-  overflow: hidden;
-}
+/* final btn-navegación swiper*/
+
 .swiper-backface-hidden .swiper-slide {
   margin-top: 20px;
   transform: translateZ(0);
@@ -180,6 +219,32 @@ i{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.card-wrapper {
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  width: 100%;
+  max-width: 1100px; 
+  margin: 0 auto;
+  padding: 20px 10px;
+  overflow: hidden;
+
+  .card-item .swiper-slide{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+  }
+}
+
+.card-list.swiper-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
+
 }
 
 .card-list .card-item .card-link {
@@ -193,6 +258,7 @@ i{
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
   transition: 0.2s ease;
   max-width: fit-content;
+  justify-content: center;
 }
 .card-list .card-item .card-link:active {
   cursor: grabbing;
@@ -235,12 +301,7 @@ i{
 .card-wrapper .swiper-pagination-bullet-active {
   opacity: 1;
 }
-/* derecha izquierda */
-.card-wrapper .swiper-slide-button {
-  color: $primary-color;
-  margin-top: -35px;
-  
-}
+
 .card-header{
   text-align: left;
   margin: 0;
@@ -281,28 +342,7 @@ i{
     }
 }
 
-.content-credits{
-    font-size: 1.125rem;
-    border-top: 0.8px solid $gray-900;
-    font-weight: bold;
-    color: $gray-900;
-    padding-top: 10px;
-
-    strong {
-      color: $gray-700;
-    }
 }
-
-/* Responsive media query code for small screens */
-@media (max-width: $breakpoint-sm) {
-  .card-wrapper {
-    margin: 0 10px 25px;
-  }
-  .card-wrapper .swiper-slide-button {
-    display: none;
-  }
-}
-
   
-}
+
 

@@ -1,8 +1,9 @@
 @use 'variables' as *;
 @use 'mixins' as *;
-
-
-.program-info {
+@use'base' as*;
+#section-one{
+  
+ .program-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr;
@@ -335,3 +336,4 @@
   }
 
   }
+}

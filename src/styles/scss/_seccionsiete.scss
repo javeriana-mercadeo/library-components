@@ -1,5 +1,16 @@
 @use 'variables' as *;
 @use 'mixins' as *;
+@use'base' as*;
+
+#section-seven{
+.container .swiper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: $max-width;
+  padding: 20px;
+  margin: 0 auto;
+}
 
 .experience-carousel__title {
   width: fit-content;
@@ -31,68 +42,85 @@
     text-align: center;
   }
 
-  &__btn {
-    position: absolute;
-    top: 65%;
-    transform: translateY(-50%);
-    background-color: $primary-color;
-    color: $text-dark;
-    border: none;
-    cursor: pointer;
-    border-radius: $border-radius-md;
-    padding: $spacing-sm $spacing-md;
-    font-size: $font-size-p;
-  }
-
-  &__wrapper {
-    overflow: hidden;
-    width: 90%;
-    margin: $spacing-md;
-  }
-
-  &__track {
-    display: flex;
-    gap: $spacing-md;
-    transition: transform 0.3s ease-in-out;
-  }
-
-  &__item {
-    gap: 24px;
+  .card-item-7 .swiper-slide {
+    flex: 0 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    width: 260px;
     scroll-snap-align: center;
+    min-height: 330px; 
+    max-height: 360px;
+    max-width: 270px;
+    min-width: 220px;
+  }
+  .testimonial-card, 
+.image-card-7 {
+  width: 100%;
+  min-height: 360px;
+  max-height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 20px;
+  }
+   
 
-    & .experience-carousel__image {
-      width: 260px;
-      height: 420px;
-      max-width: 100%;
-      border-radius: 20px;
+  .testimonial-card {
+    width: 100%; 
+    max-width: 270px; 
+    max-height: 360px;
+    display: flex;
+    align-items: stretch;
+  }
+  
+
+/* btn-navegación swiper*/
+.swiper-slide-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  i {
+    font-size: 2rem; // Tamaño del icono
+    color: $primary-color; 
+    z-index: 100;
+  }
+
+  &:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
+}
+
+.experience-prev {
+  left: 5px; 
+}
+
+.experience-next {
+  right: 5px; 
+}
+
+@media (max-width: $breakpoint-sm) {
+  .swiper-slide-button {
+    width: 40px;
+    height: 40px;
+
+    i {
+      font-size: 1.5rem;
     }
   }
-
-  &__video {
-    width: 100%;
-    max-width: 260px;
-    height: 420px;
-    border-radius: 20px;
-    object-fit: cover;
-    display: block;
-  }
-
-  &__btn--prev {
-    left: 10px;
-    border-radius: 50%;
-    border: 1px solid $text-light;
-  }
-
-  &__btn--next {
-    right: 10px;
-    border-radius: 50%;
-    border: 1px solid $text-light;
-  }
+}
+/* final btn-navegación swiper*/
+  
 
   &__overlay {
     position: absolute;
@@ -103,10 +131,6 @@
     padding: $spacing-lg;
     text-align: left;
 
-    @media (max-width: $breakpoint-md) {
-      text-align: center;
-      padding: $spacing-sm;
-    }
   }
 }
 
@@ -120,10 +144,10 @@
 
 /* Tarjeta testimonial */
 .testimonial-card {
-  width: 260px;
-  min-width: 260px;
-  height: 420px;
-  max-width: 100%;
+  max-width: 270px;
+  min-width: 220px;
+  height: auto;
+  min-height: 300px; 
   background-color: $primary-color;
   color: white;
   padding: 20px;
@@ -133,7 +157,9 @@
   justify-content: space-between;
   gap: 15px;
   text-align: left;
+  flex-grow: 1; 
 }
+
 
 .testimonial-text {
   font-size: $font-size-p;
@@ -197,20 +223,55 @@
 /* Media Query Responsive */
 @media (max-width: 400px) {
   .testimonial-card {
-    width: 90%;
+    width: 100%;
   }
 }
 
 /* Contenedor de tarjetas */
-.card-wrapper {
-  max-width: 1100px;
+.card-wrapper .experience-swiper{
+  max-width: $max-width;
   margin: 0 60px 35px;
   padding: 20px 10px;
   overflow: hidden;
 }
 
+/* tamaño de las cards */
+.swiper-backface-hidden .card-item-7.swiper-slide {
+  margin-top: 20px;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .card-link-video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 360px;
+    max-width: 270px;
+    overflow: hidden;
+    border-radius: 12px;
 
-.swiper-backface-hidden .swiper-slide {
+  .video-card-7{
+    max-height: 360px;
+    max-width: 270px;
+
+        .experience-carousel__video {
+    height: 360px;
+    max-height: 360px;
+    max-width: 270px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+  }
+
+  }
+  
+}
+
+.card-list-7 .swiper-wrapper{
   margin-top: 20px;
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
@@ -221,20 +282,24 @@
 }
 
 /* Tarjetas generales */
-.card-list-7 .card-item-7 .card-link-7 {
+.card-list-7 .card-item-7 .card-link-video {
   display: block;
   user-select: none;
   border-radius: 12px;
   text-decoration: none;
   transition: 0.2s ease;
-  max-width: fit-content;
+  max-width: 100%;
 }
 
 
-.card-list-7 .card-link-7 .image-project {
+.card-list-7 .card-link-7 .experience-carousel__image {
   width: 100%;
   border-radius: 10px;
   object-fit: cover;
+  min-height: 300px;
+  max-height: 360px;
+  min-width: 220px;
+  width: 270px;
 }
 
 .card-list-7 .card-link-7 .badge {
@@ -256,23 +321,6 @@
   color: $primary-color;
   margin-top: -35px;
 }
-
-/* Header de tarjetas */
-.card-header {
-  text-align: left;
-  display: flex;
-  align-items: center;
-  justify-content: left;
 }
 
-.title-experience {
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #111827;
-  border-bottom: 0.8px solid $gray-900;
-  padding-bottom: 10px;
-  text-align: left;
-  max-width: fit-content;
-}
+

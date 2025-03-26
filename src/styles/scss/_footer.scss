@@ -1,6 +1,8 @@
 @use 'variables'as *;
 @use 'mixins'as *;
+@use'base' as*;
 
+#footer{
 .color-container-footer{
   background-color: $background-footer;
   width: 100vw;
@@ -304,4 +306,4 @@
     color: #FFD700; 
 }
 }
-
+}

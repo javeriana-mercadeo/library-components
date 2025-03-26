@@ -13,7 +13,8 @@
   <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 
 <body id="body">
@@ -162,7 +163,7 @@
 
   <!-- Sección dos -->
 <section class="section-dos">
-  <section class="container subjects-carousel">
+  <section class="container subjects-carousel ">
     <h2 class="subjects-carousel__title">Materias por Semestre</h2>
     <p>El plan de estudios profundiza en asignaturas en las áreas de:
       edificaciones, infraestructura vial e hidrotecnia.</p>
@@ -174,8 +175,8 @@
       </a>
 
 
-<div class="container swiper">
-<div class="card-wrapper">
+<div class="container swiper ">
+<div class="card-wrapper subjects-swiper">
   <!-- Card slides container -->
   <ul class="card-list swiper-wrapper">
     <li class="card-item swiper-slide">
@@ -259,11 +260,13 @@
           </a>
     </li>
   </ul>
-   <!-- Pagination -->
-  <div class="swiper-pagination"></div>
-  <!-- Navigation Buttons -->
-  <div class="swiper-slide-button swiper-button-prev"></div>
-  <div class="swiper-slide-button swiper-button-next"></div>
+<!-- Paginación -->
+<div class="swiper-pagination subjects-pagination"></div>
+
+<!-- Botones de navegación -->
+<div class="swiper-slide-button swiper-button-prev subjects-prev"></div>
+<div class="swiper-slide-button swiper-button-next subjects-next"></div>
+
 </div>
 </div>
 
@@ -341,7 +344,7 @@
   
       <div id="content-2" class="program-profile__content-item hidden">
         <div class="program-profile__image_content">
-          <img src="./assets/images/perfil-egreso.png" alt="Perfil de Egreso" class="program-profile__image">
+          <img src="./assets/images/merco.png" alt="Perfil de Egreso" class="program-profile__image">
         </div>
         <div class="p-content">
         <p>
@@ -590,61 +593,76 @@
   <!-- Seccion cinco -->
   <section class="container academic-carousel">
     <h2 class="academic-carousel__title">Reconocimientos Académicos</h2>
-
-    <section class="container academic-carousel">
-        <div class="academic-carousel__wrapper">
-            <div class="academic-carousel__track">
-
-                <div class="academic-carousel__item">
-                    <div class="card-container max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col overflow-hidden">
-                        <div class="card-header px-5 pt-5">
-                            <img src="./assets/images/alta-calidad.png" alt="Acreditación de Alta Calidad" class="academic-recognitions__image">
-                        </div>
-                        <div class="card-content p-5 flex flex-col flex-grow">
-                            <p>Acreditación Institucional de Alta Calidad por 10 años (2020)</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="academic-carousel__item">
-                    <div class="card-container max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col overflow-hidden">
-                        <div class="card-header px-5 pt-5">
-                            <img src="./assets/images/qs-ranking.png" alt="QS World University Rankings" class="academic-recognitions__image">
-                        </div>
-                        <div class="card-content p-5 flex flex-col flex-grow">
-                            <p>3ª en empleabilidad de nuestros graduados</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="academic-carousel__item">
-                    <div class="card-container max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col overflow-hidden">
-                        <div class="card-header px-5 pt-5">
-                            <img src="./assets/images/merco.png" alt="Merco" class="academic-recognitions__image">
-                        </div>
-                        <div class="card-content p-5 flex flex-col flex-grow">
-                            <p>1º en el sector educativo de Colombia (2023).</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="academic-carousel__item">
-                    <div class="card-container max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col overflow-hidden">
-                        <div class="card-header px-5 pt-5">
-                            <img src="./assets/images/impact-rankings.png" alt="Times Higher Education Impact Rankings" class="academic-recognitions__image">
-                        </div>
-                        <div class="card-content p-5 flex flex-col flex-grow">
-                            <p>1er en Colombia por nuestro compromiso con los ODS (2023).</p>
-                        </div>
-                    </div>
-                </div>
-
+    <section>
+      <div class="slider">
+          <div class="slider-items">
+              <div class="img-logos">
+                  <img src="./assets/images/alta-calidad.png"
+                  alt="">
+                  <p>Acreditación Institucional de Alta Calidad por 10 años (2020)</p>
+              </div>
+              <div class="img-logos">
+                <img src="./assets/images/impact-rankings.png"
+                    alt="">
+                    <p>1er en Colombia por nuestro compromiso con los ODS (2023).</p>
+              </div>  
+              <div class="img-logos">
+                <img src="./assets/images/merco.png"
+                    alt="">
+                    <p>1er en el sector educativo de Colombia (2023).</p>
+              </div>
+              <div class="img-logos">
+                <img src="./assets/images/qs-ranking.png"
+                    alt="">
+                    <p>3ra en empleabilidad de nuestros graduados</p>
+              </div>   
+              <div class="img-logos">  
+                <img src="./assets/images/The-acreditada.png"
+                    alt="">
+                    <p>Tercer lugar en Colombia y 36 en Latinoamérica entre 230 instituciones.</p>
+              </div>     
+              <div class="img-logos"> 
+                <img src="./assets/images/obet.png" alt="">
+                <p>Acreditados en ABET.</p>
+              </div> 
+              <div class="img-logos">
+                <img src="./assets/images/alta-calidad.png"
+                alt="">
+                <p>Acreditación Institucional de Alta Calidad por 10 años (2020)</p>
             </div>
-        </div>
+            <div class="img-logos">
+              <img src="./assets/images/impact-rankings.png"
+                  alt="">
+                  <p>1er en Colombia por nuestro compromiso con los ODS (2023).</p>
+            </div>  
+            <div class="img-logos">
+              <img src="./assets/images/merco.png"
+                  alt="">
+                  <p>1er en el sector educativo de Colombia (2023).</p>
+            </div>
+            <div class="img-logos">
+              <img src="./assets/images/qs-ranking.png"
+                  alt="">
+                  <p>3ra en empleabilidad de nuestros graduados</p>
+            </div>   
+            <div class="img-logos">  
+              <img src="./assets/images/The-acreditada.png"
+                  alt="">
+                  <p>Tercer lugar en Colombia y 36 en Latinoamérica entre 230 instituciones.</p>
+            </div>     
+            <div class="img-logos"> 
+              <img src="./assets/images/obet.png" alt="">
+              <p>Acreditados en ABET.</p>
+            </div> 
+               
+              
+                  
 
-        <button class="academic-carousel__btn academic-carousel__btn--prev">&#10094;</button>
-        <button class="academic-carousel__btn academic-carousel__btn--next">&#10095;</button>
-    </section>
+
+          </div>
+      </div>
+
+  </section>
 </section>
 
   <!-- Seccion seis -->
@@ -655,76 +673,87 @@
       Docentes expertos con experiencia práctica y académica, comprometidos con la excelencia e innovación en Ingeniería Civil.
     </p>
 
-    <div class="expert-carousel__wrapper">
-        <button class="expert-carousel__btn expert-carousel__btn--prev">&#10094;</button>
-        <div class="expert-carousel__track">
-            <div class="expert-carousel__item">
-                <div class="teacher-card-container">
-                    <div class="teacher-card-header">
-                        <img src="./assets/images/docente1.png" alt="Alfonso Mariano Ramos" class="teacher-card__image">
-                    </div>
-                    <div class="teacher-card-content">
-                        <h3 class="teacher-card__name">Alfonso Mariano Ramos</h3>
-                        <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
-                        <a href="#" class="teacher-card__link">Ver Perfil</a>
-                    </div>
+    <div class="container swiper ">
+      <div class="card-wrapper expert-swiper">
+        <ul class="card-list-6 swiper-wrapper">
+          <li class="card-item-6 swiper-slide">
+            <a href="#" class="card-link-6">
+              <div class="teacher-card-container">
+                <div class="teacher-card-header">
+                    <img src="./assets/images/docente1.png" alt="Alfonso Mariano Ramos" class="teacher-card__image">
+                </div>
+                <div class="teacher-card-content">
+                    <h3 class="teacher-card__name">Alfonso Mariano Ramos</h3>
+                    <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
+                    <a href="#" class="teacher-card__link">Ver Perfil</a>
                 </div>
             </div>
+            </a>
+          </li>
+          <li class="card-item-6 swiper-slide">
+            <a href="#" class="card-link-6">
+              <div class="teacher-card-container">
+                <div class="teacher-card-header">
+                    <img src="./assets/images/docente2.png" alt="Andrés Eduardo Torres Abello" class="teacher-card__image">
+                </div>
+                <div class="teacher-card-content">
+                    <h3 class="teacher-card__name">Andrés Eduardo Torres Abello</h3>
+                    <p class="teacher-card__title">Ph.D. Hidrología Urbana, INSA Lyon, Francia</p>
+                    <a href="#" class="teacher-card__link">Ver Perfil</a>
+                </div>
+            </div>
+            </a>
+          </li>
+          <li class="card-item-6 swiper-slide">
+            <a href="#" class="card-link-6">
+              <div class="teacher-card-container">
+                <div class="teacher-card-header">
+                    <img src="./assets/images/docente3.png" alt="Daniel Mauricio Ruiz Valencia" class="teacher-card__image">
+                </div>
+                <div class="teacher-card-content">
+                    <h3 class="teacher-card__name">Daniel Mauricio Ruiz Valencia</h3>
+                    <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
+                    <a href="#" class="teacher-card__link">Ver Perfil</a>
+                </div>
+            </div>
+            </a>
+          </li>
+          <li class="card-item-6 swiper-slide">
+            <a href="#" class="card-link-6">
+              <div class="teacher-card-container">
+                <div class="teacher-card-header">
+                    <img src="./assets/images/docente4.png" alt="Jaime Andrés Lara" class="teacher-card__image">
+                </div>
+                <div class="teacher-card-content">
+                    <h3 class="teacher-card__name">Jaime Andrés Lara</h3>
+                    <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
+                    <a href="#" class="teacher-card__link">Ver Perfil</a>
+                </div>
+            </div>
+            </a>
+          </li>
+          <li class="card-item-6 swiper-slide">
+            <a href="#" class="card-link-6">
+              <div class="teacher-card-container">
+                <div class="teacher-card-header">
+                    <img src="./assets/images/docente5.png" alt="Nelson Obregón Neira" class="teacher-card__image">
+                </div>
+                <div class="teacher-card-content">
+                    <h3 class="teacher-card__name">Nelson Obregón Neira</h3>
+                    <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
+                    <a href="#" class="teacher-card__link">Ver Perfil</a>
+                </div>
+            </div>
+            </a>
+          </li>
+        </ul>
+    
+        <!-- Botones de navegación -->
+        <div class="swiper-slide-button swiper-button-prev expert-prev"></div>
+        <div class="swiper-slide-button swiper-button-next expert-next"></div>
+      </div>
+      </div>
 
-            <div class="expert-carousel__item">
-                <div class="teacher-card-container">
-                    <div class="teacher-card-header">
-                        <img src="./assets/images/docente2.png" alt="Andrés Eduardo Torres Abello" class="teacher-card__image">
-                    </div>
-                    <div class="teacher-card-content">
-                        <h3 class="teacher-card__name">Andrés Eduardo Torres Abello</h3>
-                        <p class="teacher-card__title">Ph.D. Hidrología Urbana, INSA Lyon, Francia</p>
-                        <a href="#" class="teacher-card__link">Ver Perfil</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="expert-carousel__item">
-                <div class="teacher-card-container">
-                    <div class="teacher-card-header">
-                        <img src="./assets/images/docente3.png" alt="Daniel Mauricio Ruiz Valencia" class="teacher-card__image">
-                    </div>
-                    <div class="teacher-card-content">
-                        <h3 class="teacher-card__name">Daniel Mauricio Ruiz Valencia</h3>
-                        <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
-                        <a href="#" class="teacher-card__link">Ver Perfil</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="expert-carousel__item">
-                <div class="teacher-card-container">
-                    <div class="teacher-card-header">
-                        <img src="./assets/images/docente4.png" alt="Jaime Andrés Lara" class="teacher-card__image">
-                    </div>
-                    <div class="teacher-card-content">
-                        <h3 class="teacher-card__name">Jaime Andrés Lara</h3>
-                        <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
-                        <a href="#" class="teacher-card__link">Ver Perfil</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="expert-carousel__item">
-                <div class="teacher-card-container">
-                    <div class="teacher-card-header">
-                        <img src="./assets/images/docente5.png" alt="Nelson Obregón Neira" class="teacher-card__image">
-                    </div>
-                    <div class="teacher-card-content">
-                        <h3 class="teacher-card__name">Nelson Obregón Neira</h3>
-                        <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
-                        <a href="#" class="teacher-card__link">Ver Perfil</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button class="expert-carousel__btn expert-carousel__btn--next">&#10095;</button>
-    </div>
 </section>
 </section>
 
@@ -736,60 +765,81 @@
       Descubre historias inspiradoras, momentos únicos y experiencias de nuestros estudiantes a través de sus palabras,
       imágenes y videos.
     </p>
-    <div class="experience-carousel__wrapper">
-      <button class="experience-carousel__btn experience-carousel__btn--prev">&#10094;</button>
-      <div class="experience-carousel__track">
-        <div class="testimonial-card">
-          <p class="testimonial-text">
-              Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.
-          </p>
+
+    <div class="container swiper ">
+      <div class="card-wrapper experience-swiper">
+        <ul class="card-list-7 swiper-wrapper">
+          <li class="card-item-7 swiper-slide">
+            <a href="#" class="card-link-7">
+
+              <div class="testimonial-card">
+                <p class="testimonial-text">
+                    Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.
+                </p>
+                <div class="testimonial-user">
+                    <div class="testimonial-avatar">
+                        <img src="./assets/images/ana-lopez.png" alt="Carlos Gómez">
+                    </div>
+                    <div class="testimonial-info">
+                        <h4 class="testimonial-name">Carlos Gómez</h4>
+                        <p class="testimonial-job">Urbanista en CityScape</p>
+                    </div>
+                    <a href="#" class="testimonial-linkedin">
+                        <img src="./assets/images/linkedin.svg" alt="LinkedIn">
+                    </a>
+                </div>      
+              </div>
+
+            </a>
+          </li>
+          <li class="card-item-7 swiper-slide">
+            <a href="#" class="card-link-7">
+              <div class="experience-carousel__item">
+                <img src="./assets/images/students-group.png" alt="Estudiantes Javeriana" class="experience-carousel__image">
+              </div>
+            </a>
+          </li>
+          <li class="card-item-7 swiper-slide">
+            <a href="#" class="card-link-7">
+              <div class="testimonial-card">
+                <p class="testimonial-text">
+                    Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.
+                </p>
+                
+                <div class="testimonial-user">
+                    <div class="testimonial-avatar">
+                        <img src="./assets/images/carlos-gomez.png" alt="Carlos Gómez">
+                    </div>
+                    <div class="testimonial-info">
+                        <h4 class="testimonial-name">Carlos Gómez</h4>
+                        <p class="testimonial-job">Urbanista en CityScape</p>
+                    </div>
+                    <a href="#" class="testimonial-linkedin">
+                        <img src="./assets/images/linkedin.svg" alt="LinkedIn">
+                    </a>
+                </div>
+            </a>
+          </li>
+          <li class="card-item-7 swiper-slide">
+            <a href="#" class="card-link-7">
+              <div class="experience-carousel__item">
+                <video src="./assets/images/video-section-8.mp4" class="experience-carousel__video"></video>
+              </div>
+            </a>
+          </li>
           
-          <div class="testimonial-user">
-              <div class="testimonial-avatar">
-                  <img src="./assets/images/ana-lopez.png" alt="Carlos Gómez">
-              </div>
-              <div class="testimonial-info">
-                  <h4 class="testimonial-name">Carlos Gómez</h4>
-                  <p class="testimonial-job">Urbanista en CityScape</p>
-              </div>
-              <a href="#" class="testimonial-linkedin">
-                  <img src="./assets/images/linkedin.svg" alt="LinkedIn">
-              </a>
-          </div>
-
-
-        </div>
-        <div class="experience-carousel__item">
-          <video src="./assets/images/video-section-8.mp4" class="experience-carousel__video"></video>
-        </div>
-        <div class="experience-carousel__item">
-          <div class="testimonial-card">
-            <p class="testimonial-text">
-                Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.
-            </p>
-            
-            <div class="testimonial-user">
-                <div class="testimonial-avatar">
-                    <img src="./assets/images/carlos-gomez.png" alt="Carlos Gómez">
-                </div>
-                <div class="testimonial-info">
-                    <h4 class="testimonial-name">Carlos Gómez</h4>
-                    <p class="testimonial-job">Urbanista en CityScape</p>
-                </div>
-                <a href="#" class="testimonial-linkedin">
-                    <img src="./assets/images/linkedin.svg" alt="LinkedIn">
-                </a>
-            </div>
-        </div>
-        
-        </div>
-        <div class="experience-carousel__item">
-          <img src="./assets/images/students-group.png" alt="Estudiantes Javeriana" class="experience-carousel__image">
-        </div>
+          
+        </ul>
+    
+        <!-- Botones de navegación -->
+        <div class="swiper-slide-button swiper-button-prev experience-prev"></div>
+        <div class="swiper-slide-button swiper-button-next experience-next"></div>
       </div>
-      <button class="experience-carousel__btn experience-carousel__btn--next">&#10095;</button>
-    </div>
+      </div>
+    
   </section>
+
+  
 
   <!-- Seccion ocho -->
 <section class="color-container">
@@ -803,41 +853,66 @@
   </section>
 </section>
   <!-- Seccion nueve -->
+
+  
   <section class="container projects-carousel">
     <h2 class="projects-carousel__title">Proyectos Destacados de Arquitectura</h2>
     <p class="projects-carousel__description">
         Explora los proyectos innovadores de nuestros estudiantes y egresados, que reflejan creatividad, sostenibilidad y
         excelencia en arquitectura.
     </p>
-    <div class="projects-carousel__wrapper">
-        <button class="projects-carousel__btn projects-carousel__btn--prev">&#10094;</button>
-        <div class="projects-carousel__track">
-            <!-- Imagen 1 -->
-            <div class="projects-carousel__item">
-                <img src="./assets/images/project1.png" alt="Proyecto 1" class="projects-carousel__imagen">
-                <div class="featured-projects__overlay">
-                    <p class="featured-projects__text"><strong>Proyecto 1</strong></p>
-                </div>
-            </div>
-            <!-- Imagen 2 -->
-            <div class="projects-carousel__item">
-                <img src="./assets/images/project2.png" alt="Proyecto 2" class="projects-carousel__imagen">
-                <div class="featured-projects__overlay">
-                    <p class="featured-projects__text"><strong>Proyecto 2</strong></p>
-                </div>
-            </div>
-            <!-- Imagen 3 -->
-            <div class="projects-carousel__item">
-                <img src="./assets/images/project3.png" alt="Proyecto 3" class="projects-carousel__imagen">
-                <div class="featured-projects__overlay">
-                    <p class="featured-projects__text"><strong>Proyecto 3</strong></p>
-                </div>
-            </div>
-        </div>
-        <button class="projects-carousel__btn projects-carousel__btn--next">&#10095;</button>
-    </div>
-</section>
 
+    <div class="container swiper ">
+      <div class="card-wrapper projects-swiper">
+        <ul class="card-list-9 swiper-wrapper">
+          <li class="card-item-9 swiper-slide">
+            <a href="#" class="card-link-9">
+              <div class="card-image-container">
+                <img src="./assets/images/project1.png" alt="Proyecto 1" class="image-project">
+                <div class="card-overlay">
+                  <p class="card-overlay-text"><strong>Proyecto 1</strong></p>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li class="card-item-9 swiper-slide">
+            <a href="#" class="card-link-9">
+              <div class="card-image-container">
+                <img src="./assets/images/project2.png" alt="Proyecto 2" class="image-project">
+                <div class="card-overlay">
+                  <p class="card-overlay-text"><strong>Proyecto 2</strong></p>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li class="card-item-9 swiper-slide">
+            <a href="#" class="card-link-9">
+              <div class="card-image-container">
+                <img src="./assets/images/project3.png" alt="Proyecto 2" class="image-project">
+                <div class="card-overlay">
+                  <p class="card-overlay-text"><strong>Proyecto 3</strong></p>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li class="card-item-9 swiper-slide">
+            <a href="#" class="card-link-9">
+              <div class="card-image-container">
+                <img src="./assets/images/project1.png" alt="Proyecto 2" class="image-project">
+                <div class="card-overlay">
+                  <p class="card-overlay-text"><strong>Proyecto 4</strong></p>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+    
+        <!-- Botones de navegación -->
+        <div class="swiper-slide-button swiper-button-prev projects-prev"></div>
+        <div class="swiper-slide-button swiper-button-next projects-next"></div>
+      </div>
+      </div>
+    </section>
 
   <!-- Seccion diez -->
   <section class="container related-programs">
@@ -845,49 +920,72 @@
     <p class="related-programs__description">
       Conoce otros programas que complementan tus intereses y expanden tus oportunidades académicas y profesionales.
     </p>
-    <div class="related-programs__wrapper">
-      <button class="related-programs__btn related-programs__btn--prev">&#10094;</button>
-      <div class="related-programs__track">
-        <div class="related-programs__item">
-          <div class="related-programs__overlay"></div>
-          <img src="./assets/images/program1.jpg" alt="Programa 1" class="related-programs__image">
-          <div class="related-programs__content">
-            <h3 class="related-programs__name">Especialización en Gerencia de Proyectos de Tecnologías de la Información
-            </h3>
-            <p class="related-programs__faculty">Facultad de Ingeniería</p>
-            <a href="#" class="related-programs__link">Ver Programa →</a>
-          </div>
-        </div>
-        <div class="related-programs__item">
-          <div class="related-programs__overlay"></div>
-          <img src="./assets/images/program1.jpg" alt="Programa 2" class="related-programs__image">
-          <div class="related-programs__content">
-            <h3 class="related-programs__name">Pregrado en Ingeniería de Sistemas</h3>
-            <p class="related-programs__faculty">Facultad de Ingeniería</p>
-            <a href="#" class="related-programs__link">Ver Programa →</a>
-          </div>
-        </div>
-        <div class="related-programs__item">
-          <div class="related-programs__overlay"></div>
-          <img src="./assets/images/program1.jpg" alt="Programa 3" class="related-programs__image">
-          <div class="related-programs__content">
-            <h3 class="related-programs__name">Pregrado en Ingeniería Industrial</h3>
-            <p class="related-programs__faculty">Facultad de Ingeniería</p>
-            <a href="#" class="related-programs__link">Ver Programa →</a>
-          </div>
-        </div>
-        <div class="related-programs__item">
-          <div class="related-programs__overlay"></div>
-          <img src="./assets/images/program1.jpg" alt="Programa 4" class="related-programs__image">
-          <div class="related-programs__content">
-            <h3 class="related-programs__name">Pregrado en Ingeniería Mecatrónica</h3>
-            <p class="related-programs__faculty">Facultad de Ingeniería</p>
-            <a href="#" class="related-programs__link">Ver Programa →</a>
-          </div>
-        </div>
-      </div>
-      <button class="related-programs__btn related-programs__btn--next">&#10095;</button>
-    </div>
+
+    <div class="container swiper">
+      <div class="card-wrapper related-programs-swiper">
+        <!-- Card slides container -->
+        <ul class="card-list swiper-wrapper">
+          <li class="card-item swiper-slide">
+            <a href="#" class="card-link">
+              <div class="related-programs__item">
+                <div class="related-programs__overlay"></div>
+                <img src="./assets/images/program1.jpg" alt="Programa 1" class="related-programs__image">
+                <div class="related-programs__content">
+                  <h3 class="related-programs__name">Especialización en Gerencia de Proyectos de Tecnologías de la Información
+                  </h3>
+                  <p class="related-programs__faculty">Facultad de Ingeniería</p>
+                  <a href="#" class="related-programs__link">Ver Programa →</a>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li class="card-item swiper-slide">
+              <a href="#" class="card-link">
+                <div class="related-programs__item">
+                  <div class="related-programs__overlay"></div>
+                  <img src="./assets/images/program1.jpg" alt="Programa 2" class="related-programs__image">
+                  <div class="related-programs__content">
+                    <h3 class="related-programs__name">Pregrado en Ingeniería de Sistemas</h3>
+                    <p class="related-programs__faculty">Facultad de Ingeniería</p>
+                    <a href="#" class="related-programs__link">Ver Programa →</a>
+                  </div>
+                </div>
+                </a>
+          </li>
+          <li class="card-item swiper-slide">
+              <a href="#" class="card-link">
+                <div class="related-programs__item">
+                  <div class="related-programs__overlay"></div>
+                  <img src="./assets/images/program1.jpg" alt="Programa 3" class="related-programs__image">
+                  <div class="related-programs__content">
+                    <h3 class="related-programs__name">Pregrado en Ingeniería Industrial</h3>
+                    <p class="related-programs__faculty">Facultad de Ingeniería</p>
+                    <a href="#" class="related-programs__link">Ver Programa →</a>
+                  </div>
+                </div>
+                </a>
+          </li>
+          <li class="card-item swiper-slide">
+              <a href="#" class="card-link">
+                <div class="related-programs__item">
+                  <div class="related-programs__overlay"></div>
+                  <img src="./assets/images/program1.jpg" alt="Programa 4" class="related-programs__image">
+                  <div class="related-programs__content">
+                    <h3 class="related-programs__name">Pregrado en Ingeniería Mecatrónica</h3>
+                    <p class="related-programs__faculty">Facultad de Ingeniería</p>
+                    <a href="#" class="related-programs__link">Ver Programa →</a>
+                  </div>
+                </div>
+                </a>
+          </li>
+        </ul>
+      <!-- Paginación -->
+      <div class="swiper-pagination related-programs-pagination"></div>
+      
+      <!-- Botones de navegación -->
+      <div class="swiper-slide-button swiper-button-prev related-programs-prev"></div>
+      <div class="swiper-slide-button swiper-button-next related-programs-next"></div>
+      
   </section>
 
   <!-- Seccion once -->
@@ -947,13 +1045,7 @@
         
         <div class="footer__video">
           <div class="footer__mp4">
-            <iframe width="560" height="315" 
-                src="https://www.youtube.com/embed/THDJOSiwZ38?autoplay=1&loop=1&mute=1&playlist=THDJOSiwZ38" 
-                title="El lugar donde construyes tu legado" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
+            <img src="./assets/images/universidad-javeriana-tour-i5SuKAFN.gif" alt="Descripción del GIF" class="video-gif">
             <a href="https://www.javeriana.edu.co/tour-virtual-javeriana/index.htm" target="_blank" class="video-overlay"></a>
           </div>
         </div>
@@ -1002,16 +1094,16 @@
   const ctaButtons = document.getElementById("cta-buttons");
   const header = document.querySelector(".header"); // Contenedor original
 
-  function adjustCTAButtons() {
-    if (window.innerWidth <= 1024) { // Ajusta según tu $breakpoint-lg
-      document.body.appendChild(ctaButtons); // Mueve los botones al final de la página
-    } else {
-      header.appendChild(ctaButtons); // Devuelve los botones a su lugar original
-    }
-  }
+  const ctaContainer = document.getElementById('cta-container');
+if (ctaContainer && newButton) {
+    ctaContainer.appendChild(newButton);
+} else {
+    console.error('Error: ctaContainer o newButton es null.');
+}
 
-  adjustCTAButtons(); // Ejecutar al cargar la página
-  window.addEventListener("resize", adjustCTAButtons); // Ejecutar cuando se cambia el tamaño de la pantalla
+
+  adjustCTAButtons();
+  window.addEventListener("resize", adjustCTAButtons); 
 });
 
 
@@ -1020,95 +1112,37 @@
     
     
 
-    // Seccion siete
-    document.addEventListener("DOMContentLoaded", function () {
-    const track = document.querySelector(".experience-carousel__track");
-    const prevBtn = document.querySelector(".experience-carousel__btn--prev");
-    const nextBtn = document.querySelector(".experience-carousel__btn--next");
-    const items = document.querySelectorAll(".experience-carousel__item");
-
-    let currentIndex = 0;
-    let isMobile = window.innerWidth <= 768;
-
-    function updateCarousel() {
-        if (!isMobile) {
-            const width = items[0].offsetWidth + 24; // Se suma el gap entre items (ajústalo si es necesario)
-            track.style.transform = `translateX(-${currentIndex * width}px)`;
-        }
-    }
-
-    function checkScreenSize() {
-        isMobile = window.innerWidth <= 768;
-        if (isMobile) {
-            track.style.transform = "none";
-        } else {
-            updateCarousel();
-        }
-    }
-
-    nextBtn.addEventListener("click", () => {
-        if (!isMobile && currentIndex < items.length - 1) {
-            currentIndex++;
-            updateCarousel();
-        }
-    });
-
-    prevBtn.addEventListener("click", () => {
-        if (!isMobile && currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
-        }
-    });
-
-    window.addEventListener("resize", checkScreenSize);
-    checkScreenSize();
-});
+   
 
     // Seccion diez
     document.addEventListener("DOMContentLoaded", function () {
-      const track = document.querySelector(".related-programs__track");
-      const prevBtn = document.querySelector(".related-programs__btn--prev");
-      const nextBtn = document.querySelector(".related-programs__btn--next");
-      const items = document.querySelectorAll(".related-programs__item");
-
-      let currentIndex = 0;
-      let isMobile = window.innerWidth <= 768;
-
-      function updateCarousel() {
-        if (!isMobile) {
-          const width = items[0].offsetWidth + 16; // Ancho más el gap
-          track.style.transform = `translateX(-${currentIndex * width}px)`;
-        } else {
-          track.style.transform = "none"; // Desactivar transformación en mobile
-        }
+  new Swiper('.related-programs-swiper', {
+    loop: true,
+    spaceBetween: 30,
+    pagination: {
+      el: '.related-programs-pagination',
+      clickable: true,
+      dynamicBullets: true
+    },
+    navigation: {
+      nextEl: '.related-programs-next',
+      prevEl: '.related-programs-prev',
+    },
+    breakpoints: {
+      0: {
+        slidesPerView: 1
+      },
+      768: {
+        slidesPerView: 2
+      },
+      1024: {
+        slidesPerView: 3
       }
+    }
+  });
+});
 
-      function checkScreenSize() {
-        isMobile = window.innerWidth <= 768;
-        if (isMobile) {
-          track.style.transform = "none"; // Habilitar scroll táctil en mobile
-        } else {
-          updateCarousel(); // Mantener lógica de carrusel en desktop
-        }
-      }
 
-      nextBtn.addEventListener("click", () => {
-        if (!isMobile && currentIndex < items.length - 2) {
-          currentIndex++;
-          updateCarousel();
-        }
-      });
-
-      prevBtn.addEventListener("click", () => {
-        if (!isMobile && currentIndex > 0) {
-          currentIndex--;
-          updateCarousel();
-        }
-      });
-
-      window.addEventListener("resize", checkScreenSize);
-      checkScreenSize();
-    });
 
     // Seccion once
     document.addEventListener("DOMContentLoaded", function () {

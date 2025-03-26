@@ -1,9 +1,16 @@
 @use 'variables' as *;
 @use 'mixins' as *;
+@use'base' as*;
+
+#section-three{
 .color-container{
+  background-color: $primary-color;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100vw;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 .program-profile {
   background-color: $primary-color;
@@ -222,4 +229,5 @@
     display: block;
     padding-bottom: 15px;
   }
+}
 }

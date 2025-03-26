@@ -1,6 +1,8 @@
 @use 'variables'as *;
 @use 'mixins'as *;
+@use'base' as*;
 
+#section-eleven{
 .faq {
   text-align: center;
   padding: $spacing-lg;
@@ -17,6 +19,7 @@
     font-weight: $font-weight-bold;
     margin-bottom: $spacing-lg;
     color: $color-text;
+    text-align: center;
   }
 
   &__container {
@@ -70,4 +73,5 @@
       transform: rotate(180deg);
     }
   }
+}
 }

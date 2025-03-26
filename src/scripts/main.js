@@ -6,7 +6,7 @@ document.getElementById('menu-toggle').addEventListener('click', function () {
 });
 
 // seccion dos
-new Swiper('.card-wrapper', {
+new Swiper('.subjects-swiper', {
   loop: true,
   spaceBetween: 30,
   // Pagination bullets
@@ -108,111 +108,134 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Ejecutar cuando la página cargue
   handleAccordion();
   toggleContent();
 
-  // Ejecutar cuando se redimensiona la pantalla
+
   window.addEventListener("resize", handleAccordion);
-});
-
-//Seccion cinco
-
-
-document.addEventListener("DOMContentLoaded", function () {
-  const track = document.querySelector(".academic-carousel__track");
-  const prevBtn = document.querySelector(".academic-carousel__btn--prev");
-  const nextBtn = document.querySelector(".academic-carousel__btn--next");
-  const items = document.querySelectorAll(".academic-carousel__item");
-  const itemWidth = items[0].offsetWidth + 16;
-  let index = 0;
-
-  function updateCarousel() {
-      track.style.transform = `translateX(-${index * itemWidth}px)`;
-  }
-
-  nextBtn.addEventListener("click", () => {
-      if (index < items.length - 1) {
-          index++;
-          updateCarousel();
-      }
-  });
-
-  prevBtn.addEventListener("click", () => {
-      if (index > 0) {
-          index--;
-          updateCarousel();
-      }
-  });
 });
 
 //seccion seis
 
 document.addEventListener("DOMContentLoaded", function () {
-  const track = document.querySelector(".expert-carousel__track");
-  const prevBtn = document.querySelector(".expert-carousel__btn--prev");
-  const nextBtn = document.querySelector(".expert-carousel__btn--next");
-  const items = document.querySelectorAll(".expert-carousel__item");
-  const itemWidth = items[0].offsetWidth + 16;
-  let index = 0;
 
-  function updateCarousel() {
-      track.style.transform = `translateX(-${index * itemWidth}px)`;
+  const swiper = new Swiper(".expert-swiper", {
+    loop: true,
+    spaceBetween: 0,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+      dynamicBullets: true,
+    },
+    navigation: {
+      nextEl: ".expert-next",
+      prevEl: ".expert-prev",
+    },
+    breakpoints: {
+      0: { slidesPerView: 1 },
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+    on: {
+      init: equalizeHeights, // 🔹 Ajusta las alturas al cargar
+      slideChangeTransitionEnd: equalizeHeights, // 🔹 Ajusta cuando cambia el slide
+    },
+  });
+
+  function equalizeHeights() {
+    let cards = document.querySelectorAll(".teacher-card-container");
+    let maxHeight = 0;
+
+    // Restablecer la altura para evitar acumulación de valores previos
+    cards.forEach((card) => {
+      card.style.height = "auto"; 
+      let height = card.offsetHeight;
+      if (height > maxHeight) {
+        maxHeight = height;
+      }
+    });
+
+    // Aplicar la altura máxima a todas las tarjetas
+    cards.forEach((card) => {
+      card.style.height = maxHeight + "px";
+    });
   }
 
-  nextBtn.addEventListener("click", () => {
-      if (index < items.length - 1) {
-          index++;
-          updateCarousel();
-      }
+  // Vuelve a ejecutar si la ventana cambia de tamaño (para responsive)
+  window.addEventListener("resize", equalizeHeights);
+});
+
+
+
+// seccion siete
+document.addEventListener("DOMContentLoaded", function () {
+  const swiper = new Swiper(".experience-swiper", {
+    loop: true,
+    spaceBetween: 20, 
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+      dynamicBullets: true,
+    },
+    navigation: {
+      nextEl: ".experience-next",
+      prevEl: ".experience-prev",
+    },
+    breakpoints: {
+      0: { slidesPerView: 1 },
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+    on: {
+      init: equalizeHeights, 
+      slideChangeTransitionEnd: equalizeHeights, 
+    },
   });
 
-  prevBtn.addEventListener("click", () => {
-      if (index > 0) {
-          index--;
-          updateCarousel();
-      }
-  });
-
+  function equalizeHeights() {
+    let cards = document.querySelectorAll(
+      ".testimonial-card, .experience-carousel__item"
+    );
+    let maxHeight = 0;
   
-  window.addEventListener("resize", () => {
-      track.style.transition = "none"; 
-      index = 0; 
-      updateCarousel();
-      setTimeout(() => {
-          track.style.transition = "transform 0.3s ease-in-out"; 
-      }, 100);
+    // 1️⃣ Primero, restablecemos la altura para evitar acumulación de valores previos
+    cards.forEach((card) => {
+      card.style.height = "auto"; 
+    });
+  
+    // 2️⃣ Encontramos la altura máxima
+    cards.forEach((card) => {
+      let height = card.offsetHeight;
+      if (height > maxHeight) {
+        maxHeight = height;
+      }
+    });
+  
+    // 3️⃣ Aplicamos la altura máxima a todas las tarjetas
+    cards.forEach((card) => {
+      card.style.height = maxHeight + "px";
+    });
+  }
+  
+
+  window.addEventListener("resize", equalizeHeights);
+});
+
+// seccion nueve
+
+document.addEventListener("DOMContentLoaded", function () {
+  new Swiper('.projects-swiper', { 
+    loop: true,
+    spaceBetween: 0,
+    navigation: { 
+      nextEl: '.projects-next', 
+      prevEl: '.projects-prev',
+    },
+    breakpoints: { 
+      0: { slidesPerView: 1 },
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 }
+    }
   });
 });
-    // Seccion nueve
-    document.addEventListener("DOMContentLoaded", function () {
-      const track = document.querySelector(".projects-carousel__track");
-      const prevBtn = document.querySelector(".projects-carousel__btn--prev");
-      const nextBtn = document.querySelector(".projects-carousel__btn--next");
-      const items = document.querySelectorAll(".projects-carousel__item");
-  
-      let currentIndex = 0;
-      let totalItems = items.length;
-    
-      function updateCarousel() {
-          const width = items[0].offsetWidth; // Ancho del item
-          track.style.transform = `translateX(-${currentIndex * width}px)`;
-      }
-  
-      nextBtn.addEventListener("click", () => {
-          if (currentIndex < totalItems - 1) { // Detiene el deslizamiento en el último item
-              currentIndex++;
-              updateCarousel();
-          }
-      });
-  
-      prevBtn.addEventListener("click", () => {
-          if (currentIndex > 0) {
-              currentIndex--;
-              updateCarousel();
-          }
-      });
-  
-      window.addEventListener("resize", updateCarousel);
-  });
-  
+

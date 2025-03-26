@@ -2,7 +2,6 @@
 
 html, body {
   overflow-x: hidden;
-  max-width: 100%;
 }
 
 *, *::before, *::after {
@@ -23,6 +22,7 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width: 100vw;
 }
 
 h1 {

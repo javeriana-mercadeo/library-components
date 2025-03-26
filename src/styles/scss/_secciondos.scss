@@ -1,8 +1,9 @@
 @use 'variables'as *;
 @use 'mixins'as *;
-
+@use'base' as*;
+#section-two{
 .section-dos{
-  max-width: fit-content;
+  max-width: $max-width;
 }
 
 .subjects-carousel {
@@ -13,6 +14,7 @@
   position: relative;
   max-width: $max-width;
   padding-bottom: 20px;
+  
   * {
     margin: 0;
     padding: 0;
@@ -28,7 +30,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh; }
+    min-height: 100vh; 
+  width: 100%;}
 
 .subjects-carousel__title{
     font-size:$font-size-h2 ;
@@ -39,6 +42,9 @@
 p{
   font-size: $font-size-p;
   padding-bottom: 20px;
+  height: auto;
+  width: 90%;
+  text-align: center;
 }
 .button-plan{
     color: $primary-color;
@@ -66,6 +72,12 @@ i{
   align-items: center;
   justify-content: center;
 }
+.card-item{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 400px;
+}
 
 .card-list .card-item .card-link {
   display: block;
@@ -78,6 +90,11 @@ i{
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
   transition: 0.2s ease;
   max-width: fit-content;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100%;
 }
 .card-list .card-item .card-link:active {
   cursor: grabbing;
@@ -120,12 +137,52 @@ i{
 .card-wrapper .swiper-pagination-bullet-active {
   opacity: 1;
 }
-/* derecha izquierda */
-.card-wrapper .swiper-slide-button {
-  color: $primary-color;
-  margin-top: -35px;
-  
+/* btn-navegación swiper*/
+.swiper-slide-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  i {
+    font-size: 2rem; // Tamaño del icono
+    color: $primary-color; 
+    z-index: 100;
+  }
+
+  &:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
 }
+
+.subjects-prev {
+  left: 2px; 
+}
+
+.subjects-next {
+  right: 2px; 
+}
+
+@media (max-width: $breakpoint-sm) {
+  .swiper-slide-button {
+    width: 40px;
+    height: 40px;
+
+    i {
+      font-size: 1.5rem;
+    }
+  }
+}
+/* final btn-navegación swiper*/
+
 .card-header{
   text-align: left;
   margin: 0;
@@ -145,7 +202,7 @@ i{
     border-bottom: 0.8px solid $gray-900;
     padding-bottom: 10px;
     text-align: left;
-    max-width: fit-content;
+    max-width: 100%;
 }
 .subjects-list{
     list-style: none;
@@ -179,8 +236,6 @@ i{
 }
 
 
-  
-
 /* Responsive media query code for small screens */
 @media (max-width: $breakpoint-sm) {
   .card-wrapper {
@@ -190,7 +245,12 @@ i{
     display: none;
   }
 }
-
+.card-item{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 400px;
+}
   
 }
-
+}
