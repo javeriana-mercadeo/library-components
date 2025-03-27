@@ -11,18 +11,21 @@
     rel="stylesheet">
   <link rel="stylesheet" href="./styles/css/main.css" />
   <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 
 <body id="body">
   <!-- Header -->
+   <section class="header-color">
   <header class="container header">
     <div class="header__logo">
       <img src="./assets/images/logo.svg" alt="Logo" class="header__logo-image">
     </div>
     <nav class="header__nav">
       <ul class="header__nav-list">
-        <li><a href="#" class="header__nav-link">Sobre el Programa</a></li>
-        <li><a href="#" class="header__nav-link">Proceso de Inscripción</a></li>
         <li><a href="#" class="header__nav-link">Centro de Ayuda</a></li>
       </ul>
     </nav>
@@ -43,398 +46,806 @@
         <li><a href="#" class="header__mobile-menu-cta-link">Inscríbete Ahora!</a></li>
       </ul>
     </div>
+ 
   </header>
-
+</section> <div id="cta-container" class="cta-container"></div>
    <!-- Sección uno -->
-   <section class="container program-info">
-    <div class="program-info-facultad">
-      <p class="program-info__title_facultad">Facultad de Ingeniería</p>
-      <h2 class="program-info__title">Estudia  <span class="highlight">Ingeniería Civil </span> y Crea Soluciones que
-        impactan el Futuro.</h2>
-      <p class="program-info__snies">SNIES 959 </p>
-      <p class="program-info__description">
-        Nuestra carrera de Ingeniería Civil forma <strong>líderes en construcción sostenible</strong>. Nuestros
-        estudiantes se
-        especializan en áreas como edificación, infraestructura vial e hidrotecnia, desarrollando proyectos que
-        transforman la sociedad con responsabilidad y conciencia ambiental.
-      </p>
-    </div>
-    <section class="program-details">
-      <div class="program-details__item">
-        <div class="program-details__icon_container">
-          <i class="ph ph-graduation-cap"></i>
-        </div>
-        <div>
-          <span class="program-details__label">Título</span>
-          <p class="program-details__value"><strong>Ingeniería Civil</strong></p>
-        </div>
+   <section id="section-one">
+    <div class="container program-info">
+      
+      <!-- Información del programa -->
+      <div class="program-info-facultad">
+        <p class="program-info__title_facultad">Facultad de Ingeniería</p>
+        <h2 class="program-info__title">Estudia <span class="highlight">Ingeniería Civil</span> y Crea Soluciones que impactan el Futuro.</h2>
+        <p class="program-info__snies">SNIES 959</p>
+        <p class="program-info__description">
+          Nuestra carrera de Ingeniería Civil forma <strong>líderes en construcción sostenible</strong>. Nuestros
+          estudiantes se especializan en áreas como edificación, infraestructura vial e hidrotecnia, desarrollando proyectos que
+          transforman la sociedad con responsabilidad y conciencia ambiental.
+        </p>
       </div>
-      <div class="program-details__item">
-        <div class="program-details__icon_container">
-          <i class="ph ph-student"></i>
+  
+      <!-- Detalles del programa -->
+      <section class="program-details">
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-graduation-cap"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Título</span>
+            <p class="program-details__value"><strong>Ingeniería Civil</strong></p>
+          </div>
         </div>
-        <div>
-          <span class="program-details__label">Nivel Académico</span>
-          <p class="program-details__value"><strong>Pregrado</strong></p>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-student"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Nivel Académico</span>
+            <p class="program-details__value"><strong>Pregrado</strong></p>
+          </div>
         </div>
-      </div>
-      <div class="program-details__item">
-        <div class="program-details__icon_container">
-          <i class="ph ph-calendar-dots"></i>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-calendar-dots"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Duración</span>
+            <p class="program-details__value"><strong>Ocho (8) semestres.</strong></p>
+          </div>
         </div>
-        <div>
-          <span class="program-details__label">Duración</span>
-          <p class="program-details__value"><strong>Ocho (8) semestres.</strong></p>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-sun"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Modalidad</span>
+            <p class="program-details__value"><strong>Presencial / Diurna</strong></p>
+          </div>
         </div>
-      </div>
-      <div class="program-details__item">
-        <div class="program-details__icon_container">
-          <i class="ph ph-sun"></i>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-piggy-bank"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Inversión Semestre</span>
+            <p class="program-details__value"><strong>$18,059,000 Semestral*</strong></p>
+          </div>
         </div>
-        <div>
-          <span class="program-details__label">Modalidad</span>
-          <p class="program-details__value"><strong>Presencial / Diurna</strong></p>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-sun"></i>
+          </div>
+          <div>
+            <span class="program-details__label">Costo Inscripción</span>
+            <p class="program-details__value"><strong>$150.000</strong></p>
+          </div>
         </div>
-      </div>
-      <div class="program-details__item">
-        <div class="program-details__icon_container">
-          <i class="ph ph-piggy-bank"></i>
+        <div class="program-details__item">
+          <div class="program-details__icon_container">
+            <i class="ph ph-money"></i>
+          </div>
+          <div class="program-details-fechas">
+            <span class="program-details__label">Fechas de cierre de inscripciones</span><br>
+            <strong>Segundo semestre 2025:</strong> 30 de enero de 2025<br>
+            <strong>Primer semestre 2026:</strong> 30 de junio de 2025<br>
+            <strong>Segundo semestre 2026:</strong> 30 de enero de 2026<br>
+          </div>
         </div>
-        <div>
-          <span class="program-details__label">Inversión Semestre</span>
-          <p class="program-details__value"><strong>$18,059,000 Semestral*</strong></p>
+      </section>
+  
+      <!-- Información de inscripción -->
+      <section class="program-details-row">
+        <div class="inscripcion-container">
+          <strong class="inscripcion">Conoce el proceso de inscripción </strong> 
         </div>
-      </div>
-      <div class="program-details__item">
-        <div class="program-details__icon_container">
-          <i class="ph ph-sun"></i>
-        </div>
-        <div>
-          <span class="program-details__label">Costo Inscripción</span>
-          <p class="program-details__value"><strong>$150.000</strong></p>
-        </div>
-      </div>
-      <div class="program-details__item">
-        <div class="program-details__icon_container">
-          <i class="ph ph-money"></i>
-        </div>
-        <div class="program-details-fechas">
-          <span class="program-details__label">Fechas de cierre de inscripciones</span><br>
-          <strong>Segundo semestre 2025:</strong> 30 de enero de 2025<br>
-          <strong>Primer semestre 2026:</strong> 30 de junio de 2025<br>
-          <strong>Segundo semestre 2026:</strong> 30 de enero de 2026<br>
-        </div>
-
-      </div>
-    </section>
-    <section class="program-details-row">
-      <div class="inscripcion-container">
-        <strong class="inscripcion">Conoce el proceso de inscripción </strong> 
-      </div>
-      <div class="program-details__note">
+        <div class="program-details__note">
           <p>
-        *<strong>Aspirantes 2025:</strong> Precio especial hasta el 08 de noviembre de 2024. Después aplicará el costo
-        2025.
+            *<strong>Aspirantes 2025:</strong> Precio especial hasta el 08 de noviembre de 2024. Después aplicará el costo 2025.
           </p>
-      </div> 
-    </section>
-
-  </div>
-  <div class="program-info__image">
-    <img src="./assets/images/program-image.png" alt="Ingeniería Civil">
-  </div>
-
-</section>
+        </div> 
+      </section>
+  
+      <!-- Video -->
+      <div class="program-info__image">
+        <iframe width="560" height="315" 
+          src="https://www.youtube.com/embed/Yb6XUiG2ZWc?autoplay=1&loop=1&mute=1&playlist=Yb6XUiG2ZWc"
+          frameborder="0" allowfullscreen>
+        </iframe>
+      </div>
+  
+    </div> 
+  </section>
+  
 
   <!-- Sección dos -->
-  <section class="container subjects-carousel">
+<section id="section-two" class="section-dos">
+  <section class="container subjects-carousel ">
     <h2 class="subjects-carousel__title">Materias por Semestre</h2>
-    <button class="button button--outline">Descargar Plan de Estudios</button>
-    <div class="subjects-carousel__wrapper">
-      <div class="subjects-carousel__track">
-        <div class="subjects-carousel__item">
-          <div class="card">
-            <span class="card__label">Text</span>
-            <p class="card__title">Heading</p>
-            <div class="card__divider"></div>
-            <ul class="card__list">
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-            </ul>
-            <div class="card__divider"></div>
-            <p class="card__credits"><strong>19</strong> Créditos</p>
-          </div>
-        </div>
-        <div class="subjects-carousel__item">
-          <div class="card">
-            <span class="card__label">Text</span>
-            <p class="card__title">Heading</p>
-            <div class="card__divider"></div>
-            <ul class="card__list">
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-              <li>✔ Item Text</li>
-            </ul>
-            <div class="card__divider"></div>
-            <p class="card__credits"><strong>19</strong> Créditos</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button class="subjects-carousel__btn subjects-carousel__btn--prev">&#10094;</button>
-    <button class="subjects-carousel__btn subjects-carousel__btn--next">&#10095;</button>
-  </section>
+    <p>El plan de estudios profundiza en asignaturas en las áreas de:
+      edificaciones, infraestructura vial e hidrotecnia.</p>
+      <a href="ruta/al/archivo.pdf" 
+   download="Plan-de-Estudios.pdf"
+   class="button-plan text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 flex items-center gap-2">
+    Descargar Plan de Estudios 
+    <i class="ph ph-download"></i>
+      </a>
 
+
+<div class="container swiper ">
+<div class="card-wrapper subjects-swiper">
+  <!-- Card slides container -->
+  <ul class="card-list swiper-wrapper">
+    <li class="card-item swiper-slide">
+      <a href="#" class="card-link">
+        <div class="card-header ">
+            <span class="badge">Año 1</span>
+        </div>
+        <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
+            Semestre 1
+        </h5>
+        <ul class="subjects-list">
+            <li><i class="ph ph-check"></i> Cálculo Diferencial</li>
+            <li><i class="ph ph-check"></i> Álgebra Lineal</li>
+            <li><i class="ph ph-check"></i> Física Mecánica</li>
+            <li><i class="ph ph-check"></i> Química de Materiales</li>
+            <li><i class="ph ph-check"></i> Geometría Descriptiva</li>
+            <li><i class="ph ph-check"></i> Introducción a la Ingeniería</li>
+            <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería I</li>
+        </ul>
+        <div class="content-credits"><span class="credits"><strong>17</strong> Créditos</span> </div> 
+      </a>
+    </li>
+    <li class="card-item swiper-slide">
+        <a href="#" class="card-link">
+            <div class="card-header ">
+                <span class="badge">Año 1</span>
+            </div>
+            <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                Semestre 1
+            </h5>
+            <ul class="subjects-list">
+                <li><i class="ph ph-check"></i> Cálculo Integral</li>
+                  <li><i class="ph ph-check"></i> Álgebra Abstracta</li>
+                  <li><i class="ph ph-check"></i> Física Eléctrica</li>
+                  <li><i class="ph ph-check"></i> Programación en C</li>
+                  <li><i class="ph ph-check"></i> Ecuaciones Diferenciales</li>
+                  <li><i class="ph ph-check"></i> Probabilidad y Estadística</li>
+                  <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería II</li>
+            </ul>
+            <div class="content-credits"><span class="credits"><strong>17</strong> Créditos</span> </div> 
+          </a>
+    </li>
+    <li class="card-item swiper-slide">
+        <a href="#" class="card-link">
+            <div class="card-header">
+                <span class="badge">Año 1</span>
+            </div>
+            <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                Semestre 1
+            </h5>
+            <ul class="subjects-list">
+                <li><i class="ph ph-check"></i> Cálculo Vectorial</li>
+                  <li><i class="ph ph-check"></i> Métodos Numéricos</li>
+                  <li><i class="ph ph-check"></i> Física Moderna</li>
+                  <li><i class="ph ph-check"></i> Diseño Digital</li>
+                  <li><i class="ph ph-check"></i> Mecánica de Materiales</li>
+                  <li><i class="ph ph-check"></i> Electricidad y Magnetismo</li>
+                  <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería III</li>
+            </ul>
+            <div class="content-credits"><span class="credits"><strong>17</strong> Créditos</span> </div> 
+          </a>
+    </li>
+    <li class="card-item swiper-slide">
+        <a href="#" class="card-link">
+            <div class="card-header">
+                <span class="badge">Año 1</span>
+            </div>
+            <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                Semestre 1
+            </h5>
+            <ul class="subjects-list">
+                <li><i class="ph ph-check"></i> Análisis Complejo</li>
+                      <li><i class="ph ph-check"></i> Sistemas de Control</li>
+                      <li><i class="ph ph-check"></i> Electrónica Analógica</li>
+                      <li><i class="ph ph-check"></i> Termodinámica</li>
+                      <li><i class="ph ph-check"></i> Fundamentos de Redes</li>
+                      <li><i class="ph ph-check"></i> Procesamiento de Señales</li>
+                      <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería IV</li>
+            </ul>
+            <div class="content-credits"><span class="credits"><strong>17</strong> Créditos</span> </div> 
+          </a>
+    </li>
+  </ul>
+<!-- Paginación -->
+<div class="swiper-pagination subjects-pagination"></div>
+
+<!-- Botones de navegación -->
+<div class="swiper-slide-button  subjects-prev "> <i class="ph ph-arrow-circle-left"></i></div>
+<div class="swiper-slide-button  subjects-next "> <i class="ph ph-arrow-circle-right"></i></div>
+
+</div>
+</div>
+
+</section>
+</section>
   <!-- Sección tres -->
-  <section class="container program-profile">
+<section id="section-three" >
+  <div class="color-container">
+  <section class="program-profile">
     <h2 class="program-profile__title">Este programa es para ti si...</h2>
-    <div class="program-profile__container">
-      <div class="program-profile__card">
-        <img src="./assets/images/perfil-ingreso.png" alt="Perfil de Ingreso" class="program-profile__image">
-        <div class="program-profile__content">
-          <h3 class="program-profile__subtitle">Perfil de Ingreso</h3>
-          <p class="program-profile__text">
-            La carrera de Ingeniería Civil es ideal si te interesa resolver problemas en diseño,
-            construcción y operación de infraestructura. Requiere habilidades en matemáticas,
-            lectura, comunicación verbal y trabajo en equipo.
-          </p>
-        </div>
+  
+    <div class="program-profile__accordion">
+      <!-- Botones del acordeón -->
+      <div class="program-profile__buttons">
+        <button type="button" class="program-profile__accordion-button active" data-content="content-1">
+          <span>Perfil de Ingreso</span>
+        </button>
+  
+        <button type="button" class="program-profile__accordion-button" data-content="content-2">
+          <span>Perfil de Egreso</span>
+        </button>
+  
+        <button type="button" class="program-profile__accordion-button" data-content="content-3">
+          <span>Diferenciales</span>
+        </button>
       </div>
-      <div class="program-profile__card">
-        <img src="./assets/images/perfil-egreso.png" alt="Perfil de Egreso" class="program-profile__image">
-        <div class="program-profile__content">
-          <h3 class="program-profile__subtitle">Perfil de Egreso</h3>
-          <p class="program-profile__text">
-            Los egresados de Ingeniería Civil son analíticos, éticos y comprometidos con el marco social,
-            económico y ambiental. Lideran y colaboran en equipos interdisciplinarios para lograr
-            los objetivos de empresas y organizaciones.
-          </p>
+  
+      <!-- 🔹 Contenido del acordeón (inicialmente oculto) -->
+      <div id="content-1" class="program-profile__content-item">
+        <div class="program-profile__image_content">
+          <img src="./assets/images/perfil-ingreso.png" alt="Perfil de Ingreso" class="program-profile__image">
+        </div>
+        <div class="p-content">
+          <p>
+            Esperamos que los aspirantes al programa de Ingeniería Civil de la Universidad Javeriana tengan interés en diseñar,
+            construir y gestionar proyectos de infraestructura que transformen la sociedad de manera sostenible.
+          </p><br>
+          <h3><strong>Tu carrera es Ingeniería Civil si:</strong></h3>
+          <div class="program-profile__list">
+            <div class="program-profile__item">
+              <div class="program-profile__icon-container">
+                <i class="ph ph-check-circle"></i>
+              </div>
+              <p class="program-profile__text">
+                Te apasiona la solución de problemas en el diseño, construcción y operación de infraestructura civil.
+              </p>
+            </div>
+            <div class="program-profile__item">
+              <div class="program-profile__icon-container">
+                <i class="ph ph-check-circle"></i>
+              </div>
+              <p class="program-profile__text">
+                Tienes habilidades en matemáticas, análisis y resolución de problemas.
+              </p>
+            </div>
+            <div class="program-profile__item">
+              <div class="program-profile__icon-container">
+                <i class="ph ph-check-circle"></i>
+              </div>
+              <p class="program-profile__text">
+                Te interesa la sostenibilidad y el impacto ambiental de las construcciones.
+              </p>
+            </div>
+            <div class="program-profile__item">
+              <div class="program-profile__icon-container">
+                <i class="ph ph-check-circle"></i>
+              </div>
+              <p class="program-profile__text">
+                Disfrutas el trabajo en equipo en proyectos multidisciplinarios.
+              </p>
+            </div>
+          </div>
+        </div>
+        </div>
+       
+  
+      <div id="content-2" class="program-profile__content-item hidden">
+        <div class="program-profile__image_content">
+          <img src="./assets/images/perfil-egreso.png" alt="Perfil de Egreso" class="program-profile__image">
+        </div>
+        <div class="p-content">
+        <p>
+          Los egresados de Ingeniería Civil de la Universidad Javeriana son profesionales capacitados para diseñar, construir y gestionar proyectos de infraestructura con un enfoque sostenible y ético.
+        </p><br>
+        <h3><strong>Los egresados de Ingeniería Civil:</strong></h3>
+        <div class="program-profile__list">
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Aplican conocimientos técnicos para resolver problemas en todas las etapas del ciclo de vida de proyectos de infraestructura civil.
+            </p>
+          </div>
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Integran factores sociales, económicos y ambientales en la toma de decisiones.
+            </p>
+          </div>
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Ejercen su profesión con responsabilidad ética y compromiso con el desarrollo sostenible.
+            </p>
+          </div>
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Demuestran liderazgo y trabajan en equipos interdisciplinarios de manera colaborativa y efectiva.
+            </p>
+          </div>
         </div>
       </div>
     </div>
+  
+      <div id="content-3" class="program-profile__content-item hidden">
+        <div class="program-profile__image_content">
+          <img src="./assets/images/perfil-ingreso.png" alt="Perfil de Ingreso" class="program-profile__image">
+        </div>
+        <div class="p-content">
+        <p>
+          La carrera de Ingeniería Civil en la Universidad Javeriana se distingue por su enfoque innovador y compromiso con la sostenibilidad.
+        </p><br>
+        <h3><strong>Diferenciales del programa:</strong></h3>
+        <div class="program-profile__list">
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Uso de tecnología avanzada y herramientas digitales para la planificación y ejecución de proyectos.
+            </p>
+          </div>
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Formación interdisciplinaria con enfoque en soluciones innovadoras.
+            </p>
+          </div>
+          <div class="program-profile__item">
+            <div class="program-profile__icon-container">
+              <i class="ph ph-check-circle"></i>
+            </div>
+            <p class="program-profile__text">
+              Compromiso con la sostenibilidad y el desarrollo social.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   </section>
-
+</div>
+</section>
   <!-- Seccion cuatro -->
-  <section class="container why-javeriana">
-    <h2 class="why-javeriana__title">¿Por qué elegir la Javeriana?</h2>
+  <section id="section-four">
+    <div  class="container why-javeriana">
+    <div class="section-four-title">
+      <h2 class="why-javeriana__title">¿Por qué elegir la Javeriana?</h2>
+    </div>
+    
     <div class="why-javeriana__container">
       <div class="why-javeriana__column">
-        <div class="why-javeriana__item">
-          <i class="ph ph-graduation-cap"></i>
-          <div>
-            <p class="why-javeriana__subtitle">Doble titulación</p>
-            <p class="why-javeriana__text">
-              Doble titulación con el Politécnico de Torino (Italia), donde podrás adelantar asignaturas de posgrado
-              antes de terminar la carrera.
+
+        <div id="accordion-open" data-accordion="open" class="border border-gray-200 p-4 rounded-lg">
+          <!-- Título e Ícono -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <i class="ph ph-graduation-cap text-blue-500 text-2xl"></i>
+              <p class="font-semibold text-gray-900">Doble titulación</p>
+            </div>
+        
+            <!-- Botón solo en mobile -->
+            <button type="button"
+              class="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              data-accordion-target="#accordion-open-body-1"
+              aria-expanded="false"
+              aria-controls="accordion-open-body-1">
+              <span class="toggle-text">Leer Más</span>
+              <i class="ph ph-plus"></i>
+            </button>
+          </div>
+        
+          <!-- Contenido -->
+          <div id="accordion-open-body-1" class="mt-2 text-gray-700 hidden lg:block">
+            <p>
+              Tendrás la posibilidad de obtener la doble titulación con universidades como el Politécnico de Turín, Politécnico de Milán y Paris Tech.
             </p>
           </div>
         </div>
-        <div class="why-javeriana__item">
-          <i class="ph ph-certificate"></i>
-          <div>
-            <p class="why-javeriana__subtitle">Acreditación nacional</p>
-            <p class="why-javeriana__text">
-              Acreditados con Alta Calidad por el Ministerio de Educación, destacando la excelencia y calidad de nuestro
-              programa educativo.
+        
+                <!-- Múltiple programa -->
+        <div id="accordion-open-1" data-accordion="open" class="border border-gray-200 p-4 rounded-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <i class="ph ph-books text-blue-500 text-2xl"></i>
+              <p class="font-semibold text-gray-900">Múltiple programa</p>
+            </div>
+
+            <!-- Botón solo en mobile -->
+            <button type="button"
+              class="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              data-accordion-target="#accordion-body-1" aria-expanded="false" aria-controls="accordion-body-1">
+              <span class="toggle-text">Leer Más</span>
+              <i class="ph ph-plus"></i>
+            </button>
+          </div>
+
+          <div id="accordion-body-1" class="mt-2 text-gray-700 hidden lg:block">
+            <p>
+              Tendrás la posibilidad de hacer dos o más carreras simultáneamente, de acuerdo con tus intereses profesionales.
             </p>
           </div>
         </div>
-        <div class="why-javeriana__item">
-          <i class="ph ph-books"></i>
-          <div>
-            <p class="why-javeriana__subtitle">Múltiple programa</p>
-            <p class="why-javeriana__text">
-              Tendrás la posibilidad de hacer dos o más carreras simultáneamente, de acuerdo con tus intereses
-              profesionales.
+
+        <!-- Consejería Académica -->
+        <div id="accordion-open-2" data-accordion="open" class="border border-gray-200 p-4 rounded-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <i class="ph ph-user-circle text-blue-500 text-2xl"></i>
+              <p class="font-semibold text-gray-900">Consejería Académica</p>
+            </div>
+
+            <button type="button"
+              class="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              data-accordion-target="#accordion-body-2" aria-expanded="false" aria-controls="accordion-body-2">
+              <span class="toggle-text">Leer Más</span>
+              <i class="ph ph-plus"></i>
+            </button>
+          </div>
+
+          <div id="accordion-body-2" class="mt-2 text-gray-700 hidden lg:block">
+            <p>
+              Te acompañamos con apoyo académico y personal, guiados por un profesor que ofrece estrategias personalizadas para tu bienestar integral.
             </p>
           </div>
         </div>
-        <div class="why-javeriana__item">
-          <i class="ph ph-user-circle"></i>
-          <div>
-            <p class="why-javeriana__subtitle">Consejería Académica</p>
-            <p class="why-javeriana__text">
-              Te acompañamos con apoyo académico y personal, guiados por un profesor que ofrece estrategias
-              personalizadas para tu bienestar integral.
-            </p>
-          </div>
-        </div>
+
       </div>
+
+
       <div class="why-javeriana__image">
         <img src="./assets/images/why-javeriana.png" alt="Estudiantes en laboratorio">
       </div>
+      
       <div class="why-javeriana__column">
-        <div class="why-javeriana__item">
-          <i class="ph ph-star"></i>
-          <div>
-            <p class="why-javeriana__subtitle">Validación RIBA</p>
-            <p class="why-javeriana__text">
-              Reconocimiento del Royal Institute of British Architects, destacando la calidad del programa y abriendo
-              oportunidades internacionales.
+
+        <!-- Validación RIBA -->
+        <div id="accordion-open-3" data-accordion="open" class="border border-gray-200 p-4 rounded-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <i class="ph ph-star text-blue-500 text-2xl"></i>
+              <p class="font-semibold text-gray-900">Validación RIBA</p>
+            </div>
+
+            <button type="button"
+              class="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              data-accordion-target="#accordion-body-3" aria-expanded="false" aria-controls="accordion-body-3">
+              <span class="toggle-text">Leer Más</span>
+              <i class="ph ph-plus"></i>
+            </button>
+          </div>
+
+          <div id="accordion-body-3" class="mt-2 text-gray-700 hidden lg:block">
+            <p>
+              Reconocimiento del Royal Institute of British Architects, destacando la calidad del programa y abriendo oportunidades internacionales.
             </p>
           </div>
         </div>
-        <div class="why-javeriana__item">
-          <i class="ph ph-lightbulb"></i>
-          <div>
-            <p class="why-javeriana__subtitle">Experiencia directa</p>
-            <p class="why-javeriana__text">
-              Aprende a través de experiencias prácticas y formación personalizada, enfocada en tus intereses y
-              desarrollo individual.
+
+        <!-- Experiencia directa -->
+        <div id="accordion-open-4" data-accordion="open" class="border border-gray-200 p-4 rounded-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <i class="ph ph-lightbulb text-blue-500 text-2xl"></i>
+              <p class="font-semibold text-gray-900">Experiencia directa</p>
+            </div>
+
+            <button type="button"
+              class="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              data-accordion-target="#accordion-body-4" aria-expanded="false" aria-controls="accordion-body-4">
+              <span class="toggle-text">Leer Más</span>
+              <i class="ph ph-plus"></i>
+            </button>
+          </div>
+
+          <div id="accordion-body-4" class="mt-2 text-gray-700 hidden lg:block">
+            <p>
+              Aprende a través de experiencias prácticas y formación personalizada, enfocada en tus intereses y desarrollo individual.
             </p>
           </div>
         </div>
-        <div class="why-javeriana__item">
-          <i class="ph ph-globe"></i>
-          <div>
-            <p class="why-javeriana__subtitle">Actividades nacionales e internacionales</p>
-            <p class="why-javeriana__text">
-              Realiza cursos en España, Italia, México y más; participa en concursos globales y haz tu práctica
-              preprofesional en cualquier parte del mundo.
+
+        <!-- Actividades nacionales e internacionales -->
+        <div id="accordion-open-5" data-accordion="open" class="border border-gray-200 p-4 rounded-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <i class="ph ph-globe text-blue-500 text-2xl"></i>
+              <p class="font-semibold text-gray-900">Actividades nacionales e internacionales</p>
+            </div>
+
+            <button type="button"
+              class="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              data-accordion-target="#accordion-body-5" aria-expanded="false" aria-controls="accordion-body-5">
+              <span class="toggle-text">Leer Más</span>
+              <i class="ph ph-plus"></i>
+            </button>
+          </div>
+
+          <div id="accordion-body-5" class="mt-2 text-gray-700 hidden lg:block">
+            <p>
+              Realiza cursos en España, Italia, México y más; participa en concursos globales y haz tu práctica preprofesional en cualquier parte del mundo.
             </p>
           </div>
         </div>
       </div>
-    </div>
   </section>
 
   <!-- Seccion cinco -->
-  <section class="container recognitions">
-    <div class="recognitions__wrapper">
-      <button class="recognitions__btn recognitions__btn--prev">&#10094;</button>
-      <div class="recognitions__container">
-        <div class="recognitions__item">
-          <img src="./assets/images/alta-calidad.png" alt="Acreditación de Alta Calidad" class="recognitions__image">
-          <p class="recognitions__text">Acreditación Institucional de Alta Calidad por 10 años (2020)</p>
-        </div>
-        <div class="recognitions__item">
-          <img src="./assets/images/qs-ranking.png" alt="QS World University Rankings" class="recognitions__image">
-          <p class="recognitions__text">3ª en empleabilidad de nuestros graduados</p>
-        </div>
-        <div class="recognitions__item">
-          <img src="./assets/images/merco.png" alt="Merco" class="recognitions__image">
-          <p class="recognitions__text">1º en el sector educativo de Colombia (2023).</p>
-        </div>
-        <div class="recognitions__item">
-          <img src="./assets/images/impact-rankings.png" alt="Times Higher Education Impact Rankings"
-            class="recognitions__image">
-          <p class="recognitions__text">1er en Colombia por nuestro compromiso con los ODS (2023).</p>
-        </div>
+  <section id="section-five" >
+    <div class="container academic-carousel">
+    <h2 class="academic-carousel__title">Reconocimientos Académicos</h2>
+    <section>
+      <div class="slider">
+          <div class="slider-items">
+              <div class="img-logos">
+                  <img src="./assets/images/alta-calidad.png"
+                  alt="">
+                  <p>Acreditación Institucional de Alta Calidad por 10 años (2020)</p>
+              </div>
+              <div class="img-logos">
+                <img src="./assets/images/impact-rankings.png"
+                    alt="">
+                    <p>1er en Colombia por nuestro compromiso con los ODS (2023).</p>
+              </div>  
+              <div class="img-logos">
+                <img src="./assets/images/merco.png"
+                    alt="">
+                    <p>1er en el sector educativo de Colombia (2023).</p>
+              </div>
+              <div class="img-logos">
+                <img src="./assets/images/qs-ranking.png"
+                    alt="">
+                    <p>3ra en empleabilidad de nuestros graduados</p>
+              </div>   
+              <div class="img-logos">  
+                <img src="./assets/images/The-acreditada.png"
+                    alt="">
+                    <p>Tercer lugar en Colombia y 36 en Latinoamérica entre 230 instituciones.</p>
+              </div>     
+              <div class="img-logos"> 
+                <img src="./assets/images/obet.png" alt="">
+                <p>Acreditados en ABET.</p>
+              </div> 
+              <div class="img-logos">
+                <img src="./assets/images/alta-calidad.png"
+                alt="">
+                <p>Acreditación Institucional de Alta Calidad por 10 años (2020)</p>
+            </div>
+            <div class="img-logos">
+              <img src="./assets/images/impact-rankings.png"
+                  alt="">
+                  <p>1er en Colombia por nuestro compromiso con los ODS (2023).</p>
+            </div>  
+            <div class="img-logos">
+              <img src="./assets/images/merco.png"
+                  alt="">
+                  <p>1er en el sector educativo de Colombia (2023).</p>
+            </div>
+            <div class="img-logos">
+              <img src="./assets/images/qs-ranking.png"
+                  alt="">
+                  <p>3ra en empleabilidad de nuestros graduados</p>
+            </div>   
+            <div class="img-logos">  
+              <img src="./assets/images/The-acreditada.png"
+                  alt="">
+                  <p>Tercer lugar en Colombia y 36 en Latinoamérica entre 230 instituciones.</p>
+            </div>     
+            <div class="img-logos"> 
+              <img src="./assets/images/obet.png" alt="">
+              <p>Acreditados en ABET.</p>
+            </div> 
+          </div>
       </div>
-      <button class="recognitions__btn recognitions__btn--next">&#10095;</button>
-    </div>
   </section>
+</div>
+</section>
 
   <!-- Seccion seis -->
-  <section class="container expert-teachers">
-    <h2 class="expert-teachers__title">Docentes Expertos</h2>
-    <p class="expert-teachers__description">
-      Docentes expertos con experiencia práctica y académica, comprometidos con la excelencia e innovación en Ingeniería
-      Civil.
+<section id="section-six" >
+  <div class="color-container">
+  <section class="container expert-carousel">
+    <h2 class="expert-carousel__title">Docentes Expertos</h2>
+    <p class="expert-carousel__description">
+      Docentes expertos con experiencia práctica y académica, comprometidos con la excelencia e innovación en Ingeniería Civil.
     </p>
-    <div class="expert-teachers__buttons">
-      <button class="button button--secondary" data-category="titular">Titular</button>
-      <button class="button button--secondary" data-category="asociado">Asociado</button>
-      <button class="button button--secondary" data-category="asistente">Asistente</button>
-    </div>
-    <div class="expert-teachers__wrapper">
-      <button class="expert-teachers__btn expert-teachers__btn--prev">&#10094;</button>
-      <div class="expert-teachers__grid" id="teacher-grid">
-        <div class="teacher-card" data-category="titular">
-          <img src="./assets/images/docente1.png" alt="Alfonso Mariano Ramos" class="teacher-card__image">
-          <h3 class="teacher-card__name">Alfonso Mariano Ramos</h3>
-          <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
-          <a href="#" class="teacher-card__link">Ver Perfil</a>
-        </div>
-        <div class="teacher-card" data-category="titular">
-          <img src="./assets/images/docente1.png" alt="Andrés Eduardo Torres Abello" class="teacher-card__image">
-          <h3 class="teacher-card__name">Andrés Eduardo Torres Abello</h3>
-          <p class="teacher-card__title">Ph.D. Hidrología Urbana, INSA Lyon, Francia</p>
-          <a href="#" class="teacher-card__link">Ver Perfil</a>
-        </div>
-        <div class="teacher-card" data-category="titular">
-          <img src="./assets/images/docente1.png" alt="Daniel Mauricio Ruiz Valencia" class="teacher-card__image">
-          <h3 class="teacher-card__name">Daniel Mauricio Ruiz Valencia</h3>
-          <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
-          <a href="#" class="teacher-card__link">Ver Perfil</a>
-        </div>
-        <!-- Tarjetas adicionales con otras categorías -->
-        <div class="teacher-card" data-category="asociado">
-          <img src="./assets/images/docente1.png" alt="Jaime Andrés Lara" class="teacher-card__image">
-          <h3 class="teacher-card__name">Jaime Andrés Lara</h3>
-          <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
-          <a href="#" class="teacher-card__link">Ver Perfil</a>
-        </div>
-        <div class="teacher-card" data-category="asistente">
-          <img src="./assets/images/docente1.png" alt="Nelson Obregón Neira" class="teacher-card__image">
-          <h3 class="teacher-card__name">Nelson Obregón Neira</h3>
-          <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
-          <a href="#" class="teacher-card__link">Ver Perfil</a>
-        </div>
+
+    <div class="container swiper container-slider-g">
+      <div class="card-wrapper expert-swiper">
+        <ul class="card-list-6 swiper-wrapper">
+          <li class="card-item-6 swiper-slide">
+            <a href="#" class="card-link-6">
+              <div class="teacher-card-container">
+                <div class="teacher-card-header">
+                    <img src="./assets/images/docente1.png" alt="Alfonso Mariano Ramos" class="teacher-card__image">
+                </div>
+                <div class="teacher-card-content">
+                    <h3 class="teacher-card__name">Alfonso Mariano Ramos</h3>
+                    <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
+                    <a href="#" class="teacher-card__link">Ver Perfil</a>
+                </div>
+            </div>
+            </a>
+          </li>
+          <li class="card-item-6 swiper-slide">
+            <a href="#" class="card-link-6">
+              <div class="teacher-card-container">
+                <div class="teacher-card-header">
+                    <img src="./assets/images/docente2.png" alt="Andrés Eduardo Torres Abello" class="teacher-card__image">
+                </div>
+                <div class="teacher-card-content">
+                    <h3 class="teacher-card__name">Andrés Eduardo Torres Abello</h3>
+                    <p class="teacher-card__title">Ph.D. Hidrología Urbana, INSA Lyon, Francia</p>
+                    <a href="#" class="teacher-card__link">Ver Perfil</a>
+                </div>
+            </div>
+            </a>
+          </li>
+          <li class="card-item-6 swiper-slide">
+            <a href="#" class="card-link-6">
+              <div class="teacher-card-container">
+                <div class="teacher-card-header">
+                    <img src="./assets/images/docente3.png" alt="Daniel Mauricio Ruiz Valencia" class="teacher-card__image">
+                </div>
+                <div class="teacher-card-content">
+                    <h3 class="teacher-card__name">Daniel Mauricio Ruiz Valencia</h3>
+                    <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
+                    <a href="#" class="teacher-card__link">Ver Perfil</a>
+                </div>
+            </div>
+            </a>
+          </li>
+          <li class="card-item-6 swiper-slide">
+            <a href="#" class="card-link-6">
+              <div class="teacher-card-container">
+                <div class="teacher-card-header">
+                    <img src="./assets/images/docente4.png" alt="Jaime Andrés Lara" class="teacher-card__image">
+                </div>
+                <div class="teacher-card-content">
+                    <h3 class="teacher-card__name">Jaime Andrés Lara</h3>
+                    <p class="teacher-card__title">Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá</p>
+                    <a href="#" class="teacher-card__link">Ver Perfil</a>
+                </div>
+            </div>
+            </a>
+          </li>
+          <li class="card-item-6 swiper-slide">
+            <a href="#" class="card-link-6">
+              <div class="teacher-card-container">
+                <div class="teacher-card-header">
+                    <img src="./assets/images/docente5.png" alt="Nelson Obregón Neira" class="teacher-card__image">
+                </div>
+                <div class="teacher-card-content">
+                    <h3 class="teacher-card__name">Nelson Obregón Neira</h3>
+                    <p class="teacher-card__title">Ph.D. Ingeniería, Universidad de los Andes, Bogotá</p>
+                    <a href="#" class="teacher-card__link">Ver Perfil</a>
+                </div>
+            </div>
+            </a>
+          </li>
+        </ul>
+           
+        <!-- Botones de navegación -->
+        <div class="swiper-slide-button  expert-prev "> <i class="ph ph-arrow-circle-left"></i></div>
+        <div class="swiper-slide-button  expert-next "> <i class="ph ph-arrow-circle-right"></i></div>
+
       </div>
-      <button class="expert-teachers__btn expert-teachers__btn--next">&#10095;</button>
-    </div>
-  </section>
+      </div>
+    </section>
+  </div>
+</section>
 
   <!-- Seccion siete -->
-  <section class="container experience-carousel">
+  
+  <section id="section-seven" >
+    <div class="container experience-carousel">
     <h2 class="experience-carousel__title">Vive la Experiencia Javeriana</h2>
     <p class="experience-carousel__description">
       Descubre historias inspiradoras, momentos únicos y experiencias de nuestros estudiantes a través de sus palabras,
       imágenes y videos.
     </p>
-    <div class="experience-carousel__wrapper">
-      <button class="experience-carousel__btn experience-carousel__btn--prev">&#10094;</button>
-      <div class="experience-carousel__track">
-        <div class="experience-carousel__item">
-          <div class="experience-carousel__text-card">
-            <p class="experience-carousel__text">
-              La Javeriana me dio las herramientas para liderar proyectos de impacto. Hoy diseño espacios sostenibles
-              como arquitecta en una firma internacional.
-            </p>
-            <div class="experience-carousel__author">
-              <img src="./assets/images/ana-lopez.png" alt="Ana María López" class="experience-carousel__author-img">
-              <div>
-                <p class="experience-carousel__author-name">Ana María López</p>
-                <p class="experience-carousel__author-title">Arquitecta en GreenBuild Studio</p>
+
+    <div class="container swiper ">
+      <div class="card-wrapper experience-swiper">
+        <ul class="card-list-7 swiper-wrapper">
+          <li class="card-item-7 swiper-slide">
+            <a href="#" class="card-link-7">
+
+              <div class="testimonial-card">
+                <p class="testimonial-text">
+                    Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.
+                </p>
+                <div class="testimonial-user">
+                    <div class="testimonial-avatar">
+                        <img src="./assets/images/ana-lopez.png" alt="Carlos Gómez">
+                    </div>
+                    <div class="testimonial-info">
+                        <h4 class="testimonial-name">Carlos Gómez</h4>
+                        <p class="testimonial-job">Urbanista en CityScape</p>
+                    </div>
+                    <a href="#" class="testimonial-linkedin">
+                        <img src="./assets/images/linkedin.svg" alt="LinkedIn">
+                    </a>
+                </div>      
               </div>
+
+            </a>
+          </li>
+          <li class="card-item-7 swiper-slide">
+            <a href="#" class="card-link-7">
+              <div class="image-card-7">
+                <img src="./assets/images/students-group.png" alt="Estudiantes Javeriana" class="experience-carousel__image">
+             </div>
+            </a>
+          </li>
+          <li class="card-item-7 swiper-slide">
+            <a href="#" class="card-link-7">
+              <div class="testimonial-card">
+                <p class="testimonial-text">
+                    Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.
+                </p>
+                
+                <div class="testimonial-user">
+                    <div class="testimonial-avatar">
+                        <img src="./assets/images/carlos-gomez.png" alt="Carlos Gómez">
+                    </div>
+                    <div class="testimonial-info">
+                        <h4 class="testimonial-name">Carlos Gómez</h4>
+                        <p class="testimonial-job">Urbanista en CityScape</p>
+                    </div>
+                    <a href="#" class="testimonial-linkedin">
+                        <img src="./assets/images/linkedin.svg" alt="LinkedIn">
+                    </a>
+                </div>
+            </a>
+          </li>
+          <li class="card-item-7 swiper-slide">
+            <a href="#" class="card-link-video">
+              <div class="video-card-7">
+                <video
+                src="./assets/images/video-section-8.mp4" 
+                class="experience-carousel__video"
+                autoplay
+                muted
+                playsinline>
+                </video>
             </div>
-          </div>
-        </div>
-        <div class="experience-carousel__item">
-          <img src="./assets/images/students-group.png" alt="Estudiantes Javeriana" class="experience-carousel__image">
-        </div>
-        <div class="experience-carousel__item">
-          <div class="experience-carousel__text-card">
-            <p class="experience-carousel__text">
-              Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando
-              ciudades más inclusivas.
-            </p>
-            <div class="experience-carousel__author">
-              <img src="assets/images/ana-lopez.png" alt="Carlos Gómez" class="experience-carousel__author-img">
-              <div>
-                <p class="experience-carousel__author-name">Carlos Gómez</p>
-                <p class="experience-carousel__author-title">Urbanista en CityScape</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="experience-carousel__item">
-          <img src="./assets/images/students-group.png" alt="Estudiantes Javeriana" class="experience-carousel__image">
-        </div>
+            </a>
+          </li>
+          
+        </ul>
+<!-- Botones de navegación -->
+<div class="swiper-slide-button  experience-prev "> <i class="ph ph-arrow-circle-left"></i></div>
+<div class="swiper-slide-button  experience-next "> <i class="ph ph-arrow-circle-right"></i></div>
       </div>
-      <button class="experience-carousel__btn experience-carousel__btn--next">&#10095;</button>
+      </div>
     </div>
   </section>
 
   <!-- Seccion ocho -->
+<section id="section-eigth" >
+  <div class="color-container">
   <section class="container meeting-banner">
     <div class="meeting-banner__content">
       <p class="meeting-banner__text">
@@ -443,89 +854,175 @@
       <a href="#" class="button button--outline">Agenda tu reunión ahora</a>
     </div>
   </section>
-
+</div>
+</section>
   <!-- Seccion nueve -->
-  <section class="container featured-projects">
-    <h2 class="featured-projects__title">Proyectos Destacados de Arquitectura</h2>
-    <p class="featured-projects__description">
-      Explora los proyectos innovadores de nuestros estudiantes y egresados, que reflejan creatividad, sostenibilidad y
-      excelencia en arquitectura.
+
+  
+  <section id="section-nine">
+    <div class="container projects-carousel">
+    <h2 class="projects-carousel__title">Proyectos Destacados de Arquitectura</h2>
+    <p class="projects-carousel__description">
+        Explora los proyectos innovadores de nuestros estudiantes y egresados, que reflejan creatividad, sostenibilidad y
+        excelencia en arquitectura.
     </p>
-    <div class="featured-projects__grid">
-      <div class="featured-projects__item">
-        <img src="./assets/images/project1.png" alt="Proyecto 1" class="featured-projects__image">
-        <div class="featured-projects__overlay">
-          <p class="featured-projects__text"><strong>Lorem ipsum dolor sit amet consectetur.</strong></p>
-        </div>
+
+    <div class="container swiper ">
+      <div class="card-wrapper projects-swiper">
+        <ul class="card-list-9 swiper-wrapper"style="width: fit-content">
+          <li class="card-item-9 swiper-slide swiper-slide-next swiper-slide-prev swiper-slide-prev " 
+          class="card-item-9 swiper-slide swiper-slide-active" 
+          class="card-item-9 swiper-slide swiper-slide-next"
+          class="card-item-9 swiper-slide swiper-slide-prev"
+          class="card-item-9 swiper-slide swiper-slide-next swiper-slide-visible swiper-slide-fully-visible"
+          style="width: fit-content">
+            <a href="#" class="card-link-9">
+              <div class="card-image-container">
+                <img src="./assets/images/project1.png" alt="Proyecto 1" class="image-project">
+                <div class="card-overlay">
+                  <p class="card-overlay-text"><strong>Proyecto 1</strong></p>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li class="card-item-9 swiper-slide swiper-slide-next swiper-slide-prev swiper-slide-next "
+          class="card-item-9 swiper-slide swiper-slide-active" 
+          class="card-item-9 swiper-slide swiper-slide-next swiper-slide-visible swiper-slide-fully-visible"
+          class="card-item-9 swiper-slide swiper-slide-next"
+          class="card-item-9 swiper-slide swiper-slide-prev"
+          class="card-item-9 swiper-slide swiper-slide-next swiper-slide-visible swiper-slide-fully-visible"
+          style="width: fit-content">
+            <a href="#" class="card-link-9">
+              <div class="card-image-container">
+                <img src="./assets/images/project2.png" alt="Proyecto 2" class="image-project">
+                <div class="card-overlay">
+                  <p class="card-overlay-text"><strong>Proyecto 2</strong></p>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li class="card-item-9 swiper-slide swiper-slide-next swiper-slide-prev swiper-slide-next "
+          class="card-item-9 swiper-slide swiper-slide-active" 
+          class="card-item-9 swiper-slide swiper-slide-next swiper-slide-visible swiper-slide-fully-visible"
+          class="card-item-9 swiper-slide swiper-slide-next"
+          class="card-item-9 swiper-slide swiper-slide-prev"
+          class="card-item-9 swiper-slide swiper-slide-next swiper-slide-visible swiper-slide-fully-visible"
+          style="width: fit-content">
+            <a href="#" class="card-link-9">
+              <div class="card-image-container">
+                <img src="./assets/images/project3.png" alt="Proyecto 2" class="image-project">
+                <div class="card-overlay">
+                  <p class="card-overlay-text"><strong>Proyecto 3</strong></p>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li class="card-item-9 swiper-slide swiper-slide-next swiper-slide-prev swiper-slide-next "
+          class="card-item-9 swiper-slide swiper-slide-active" 
+          class="card-item-9 swiper-slide swiper-slide-next swiper-slide-visible swiper-slide-fully-visible"
+          class="card-item-9 swiper-slide swiper-slide-next"
+          class="card-item-9 swiper-slide swiper-slide-prev"
+          class="card-item-9 swiper-slide swiper-slide-next swiper-slide-visible swiper-slide-fully-visible"
+          style="width: fit-content">
+            <a href="#" class="card-link-9">
+              <div class="card-image-container">
+                <img src="./assets/images/project1.png" alt="Proyecto 2" class="image-project">
+                <div class="card-overlay">
+                  <p class="card-overlay-text"><strong>Proyecto 4</strong></p>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        
+
+<!-- Botones de navegación -->
+<div class="swiper-slide-button  projects-prev "> <i class="ph ph-arrow-circle-left"></i></div>
+<div class="swiper-slide-button  projects-next "> <i class="ph ph-arrow-circle-right"></i></div>
       </div>
-      <div class="featured-projects__item">
-        <img src="./assets/images/project1.png" alt="Proyecto 2" class="featured-projects__image">
-        <div class="featured-projects__overlay">
-          <p class="featured-projects__text"><strong>Lorem ipsum dolor sit amet consectetur.</strong></p>
-        </div>
-      </div>
-      <div class="featured-projects__item">
-        <img src="./assets/images/project1.png" alt="Proyecto 3" class="featured-projects__image">
-        <div class="featured-projects__overlay">
-          <p class="featured-projects__text"><strong>Lorem ipsum dolor sit amet consectetur.</strong></p>
-        </div>
       </div>
     </div>
   </section>
 
   <!-- Seccion diez -->
-  <section class="container related-programs">
+  <section id="section-ten" >
+    <div class="container related-programs">
     <h2 class="related-programs__title">Explora Programas Relacionados</h2>
     <p class="related-programs__description">
       Conoce otros programas que complementan tus intereses y expanden tus oportunidades académicas y profesionales.
     </p>
-    <div class="related-programs__wrapper">
-      <button class="related-programs__btn related-programs__btn--prev">&#10094;</button>
-      <div class="related-programs__track">
-        <div class="related-programs__item">
-          <div class="related-programs__overlay"></div>
-          <img src="./assets/images/program1.jpg" alt="Programa 1" class="related-programs__image">
-          <div class="related-programs__content">
-            <h3 class="related-programs__name">Especialización en Gerencia de Proyectos de Tecnologías de la Información
-            </h3>
-            <p class="related-programs__faculty">Facultad de Ingeniería</p>
-            <a href="#" class="related-programs__link">Ver Programa →</a>
-          </div>
-        </div>
-        <div class="related-programs__item">
-          <div class="related-programs__overlay"></div>
-          <img src="./assets/images/program1.jpg" alt="Programa 2" class="related-programs__image">
-          <div class="related-programs__content">
-            <h3 class="related-programs__name">Pregrado en Ingeniería de Sistemas</h3>
-            <p class="related-programs__faculty">Facultad de Ingeniería</p>
-            <a href="#" class="related-programs__link">Ver Programa →</a>
-          </div>
-        </div>
-        <div class="related-programs__item">
-          <div class="related-programs__overlay"></div>
-          <img src="./assets/images/program1.jpg" alt="Programa 3" class="related-programs__image">
-          <div class="related-programs__content">
-            <h3 class="related-programs__name">Pregrado en Ingeniería Industrial</h3>
-            <p class="related-programs__faculty">Facultad de Ingeniería</p>
-            <a href="#" class="related-programs__link">Ver Programa →</a>
-          </div>
-        </div>
-        <div class="related-programs__item">
-          <div class="related-programs__overlay"></div>
-          <img src="./assets/images/program1.jpg" alt="Programa 4" class="related-programs__image">
-          <div class="related-programs__content">
-            <h3 class="related-programs__name">Pregrado en Ingeniería Mecatrónica</h3>
-            <p class="related-programs__faculty">Facultad de Ingeniería</p>
-            <a href="#" class="related-programs__link">Ver Programa →</a>
-          </div>
-        </div>
-      </div>
-      <button class="related-programs__btn related-programs__btn--next">&#10095;</button>
-    </div>
+
+    <div class="container swiper">
+      <div class="card-wrapper related-programs-swiper">
+        <!-- Card slides container -->
+        <ul class="card-list swiper-wrapper">
+
+          <li class="card-item swiper-slide">
+            <a href="#" class="card-link">
+              <div class="related-programs__item">
+                <div class="related-programs__overlay"></div>
+                <img src="./assets/images/program1.jpg" alt="Programa 1" class="related-programs__image">
+                <div class="related-programs__content">
+                  <h3 class="related-programs__name">Especialización en Gerencia de Proyectos de Tecnologías de la Información
+                  </h3>
+                  <p class="related-programs__faculty">Facultad de Ingeniería</p>
+                  <a href="#" class="related-programs__link">Ver Programa →</a>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li class="card-item swiper-slide">
+              <a href="#" class="card-link">
+                <div class="related-programs__item">
+                  <div class="related-programs__overlay"></div>
+                  <img src="./assets/images/program1.jpg" alt="Programa 2" class="related-programs__image">
+                  <div class="related-programs__content">
+                    <h3 class="related-programs__name">Pregrado en Ingeniería de Sistemas</h3>
+                    <p class="related-programs__faculty">Facultad de Ingeniería</p>
+                    <a href="#" class="related-programs__link">Ver Programa →</a>
+                  </div>
+                </div>
+                </a>
+          </li>
+          <li class="card-item swiper-slide">
+              <a href="#" class="card-link">
+                <div class="related-programs__item">
+                  <div class="related-programs__overlay"></div>
+                  <img src="./assets/images/program1.jpg" alt="Programa 3" class="related-programs__image">
+                  <div class="related-programs__content">
+                    <h3 class="related-programs__name">Pregrado en Ingeniería Industrial</h3>
+                    <p class="related-programs__faculty">Facultad de Ingeniería</p>
+                    <a href="#" class="related-programs__link">Ver Programa →</a>
+                  </div>
+                </div>
+                </a>
+          </li>
+          <li class="card-item swiper-slide">
+              <a href="#" class="card-link">
+                <div class="related-programs__item">
+                  <div class="related-programs__overlay"></div>
+                  <img src="./assets/images/program1.jpg" alt="Programa 4" class="related-programs__image">
+                  <div class="related-programs__content">
+                    <h3 class="related-programs__name">Pregrado en Ingeniería Mecatrónica</h3>
+                    <p class="related-programs__faculty">Facultad de Ingeniería</p>
+                    <a href="#" class="related-programs__link">Ver Programa →</a>
+                  </div>
+                </div>
+                </a>
+          </li>
+        </ul>
+      <!-- Paginación -->
+      <div class="swiper-pagination related-programs-pagination"></div>
+      
+<!-- Botones de navegación -->
+<div class="swiper-slide-button  related-programs-prev "> <i class="ph ph-arrow-circle-left"></i></div>
+<div class="swiper-slide-button  related-programs-next "> <i class="ph ph-arrow-circle-right"></i></div>
+    </div>   
   </section>
 
   <!-- Seccion once -->
-  <section class="container faq">
+  <section id="section-eleven" >
+    <div class="container faq">
     <h2 class="faq__title">Preguntas Frecuentes</h2>
     <div class="faq__container">
       <div class="faq__item">
@@ -567,9 +1064,12 @@
         </div>
       </div>
     </div>
+  </div>
   </section>
 
   <!-- Footer -->
+   <section id="footer" >
+    <div class="color-container-footer">
   <footer class="container footer">
     <div class="footer__container">
       <div class="footer__left">
@@ -577,12 +1077,12 @@
         <h3 class="footer__title">Explora nuestro campus <br> y su tecnología de punta.</h3>
       </div>
       <div class="footer__middle">
+        
         <div class="footer__video">
-          <iframe src="https://www.youtube.com/embed/ly27Tnkg6mQ?si=qPcNz6hhMNiUYMuD"
-            title="El lugar donde construyes tu legado" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
+          <div class="footer__mp4">
+            <img src="./assets/images/universidad-javeriana-tour-i5SuKAFN.gif" alt="Descripción del GIF" class="video-gif">
+            <a href="https://www.javeriana.edu.co/tour-virtual-javeriana/index.htm" target="_blank" class="video-overlay"></a>
+          </div>
         </div>
       </div>
       <div class="footer__right">
@@ -595,8 +1095,9 @@
               href="mailto:atencionaspirantes@javeriana.edu.co">atencionaspirantes@javeriana.edu.co</a></p>
         </div>
         <div class="footer__social">
-          <p>Síguenos en nuestras redes sociales:</p>
+          
           <div class="footer__icons">
+            <p>Síguenos en nuestras redes sociales:</p>
             <a href="#"><i class="ph ph-facebook-logo"></i></a>
             <a href="#"><i class="ph ph-instagram-logo"></i></a>
             <a href="#"><i class="ph ph-linkedin-logo"></i></a>
@@ -620,243 +1121,20 @@
         <a href="#">Accesibilidad Digital</a>
       </div>
     </div>
+ 
   </footer>
-
+ </div>
+</section>
   <script>
-    // Header
-    document.addEventListener("DOMContentLoaded", function () {
-      const menuToggle = document.getElementById("menu-toggle");
-      const mobileMenu = document.getElementById("mobile-menu");
 
-      menuToggle.addEventListener("click", function () {
-        mobileMenu.classList.toggle("active");
-      });
+    
+    
 
-      // Cerrar menú al hacer clic en un enlace
-      document.querySelectorAll(".header__mobile-menu-list-link, .header__mobile-menu-cta-link").forEach(link => {
-        link.addEventListener("click", () => {
-          mobileMenu.classList.remove("active");
-        });
-      });
-    });
+   
 
-    // Sección dos
-    document.addEventListener("DOMContentLoaded", function () {
-      const track = document.querySelector(".subjects-carousel__track");
-      const prevBtn = document.querySelector(".subjects-carousel__btn--prev");
-      const nextBtn = document.querySelector(".subjects-carousel__btn--next");
-      const items = document.querySelectorAll(".subjects-carousel__item");
-      const itemWidth = items[0].offsetWidth + 16;
-      let index = 0;
+    
 
-      function updateCarousel() {
-        track.style.transform = `translateX(-${index * itemWidth}px)`;
-      }
 
-      nextBtn.addEventListener("click", () => {
-        if (index < items.length - 1) {
-          index++;
-          updateCarousel();
-        }
-      });
-
-      prevBtn.addEventListener("click", () => {
-        if (index > 0) {
-          index--;
-          updateCarousel();
-        }
-      });
-    });
-
-    // Seccion cuatro
-    document.addEventListener("DOMContentLoaded", function () {
-      function handleToggleButtons() {
-        const isMobile = window.innerWidth <= 768;
-
-        document.querySelectorAll('.why-javeriana__item').forEach(item => {
-          const text = item.querySelector('.why-javeriana__text');
-          let toggle = item.querySelector('.why-javeriana__toggle');
-
-          if (isMobile) {
-            // Si es mobile, asegurarse de que el texto esté truncado por defecto
-            text.classList.remove("expanded");
-
-            if (!toggle) {
-              toggle = document.createElement('button');
-              toggle.textContent = 'Leer Más +';
-              toggle.classList.add('why-javeriana__toggle');
-
-              toggle.addEventListener('click', () => {
-                text.classList.toggle('expanded');
-                toggle.textContent = text.classList.contains('expanded') ? 'Leer Menos −' : 'Leer Más +';
-              });
-
-              item.appendChild(toggle);
-            }
-          } else {
-            // En desktop, asegurarse de que el texto esté completamente visible y eliminar el botón
-            text.classList.add("expanded");
-            if (toggle) {
-              toggle.remove();
-            }
-          }
-        });
-      }
-
-      // Ejecutar cuando la página cargue
-      handleToggleButtons();
-
-      // Ejecutar cuando se redimensiona la pantalla (para cambios responsive)
-      window.addEventListener('resize', handleToggleButtons);
-    });
-
-    // Seccion seis
-    document.addEventListener("DOMContentLoaded", () => {
-      const buttons = document.querySelectorAll(".button--secondary");
-      const teacherCards = document.querySelectorAll(".teacher-card");
-      const grid = document.querySelector(".expert-teachers__grid");
-      const prevBtn = document.querySelector(".expert-teachers__btn--prev");
-      const nextBtn = document.querySelector(".expert-teachers__btn--next");
-
-      let scrollAmount = 0;
-
-      // Filtrado por categoría
-      buttons.forEach(button => {
-        button.addEventListener("click", () => {
-          const category = button.getAttribute("data-category");
-
-          // Mostrar/ocultar tarjetas según categoría
-          teacherCards.forEach(card => {
-            if (card.getAttribute("data-category") === category) {
-              card.style.display = "block";
-            } else {
-              card.style.display = "none";
-            }
-          });
-
-          // Resaltar el botón activo
-          buttons.forEach(btn => btn.classList.remove("active"));
-          button.classList.add("active");
-
-          // Reiniciar scroll del carrusel al cambiar de categoría
-          scrollAmount = 0;
-          grid.scrollTo({
-            left: scrollAmount,
-            behavior: "smooth",
-          });
-        });
-      });
-
-      // Mostrar la primera categoría por defecto
-      buttons[0].click();
-
-      // Carrusel deslizable en mobile
-      function scrollGrid(direction) {
-        const scrollWidth = grid.offsetWidth * 0.8; // Desplazamiento igual al 80% del ancho visible
-        if (direction === "next") {
-          scrollAmount += scrollWidth;
-        } else {
-          scrollAmount -= scrollWidth;
-        }
-        grid.scrollTo({
-          left: scrollAmount,
-          behavior: "smooth",
-        });
-      }
-
-      prevBtn.addEventListener("click", () => scrollGrid("prev"));
-      nextBtn.addEventListener("click", () => scrollGrid("next"));
-    });
-
-    // Seccion siete
-    document.addEventListener("DOMContentLoaded", function () {
-      const track = document.querySelector(".experience-carousel__track");
-      const prevBtn = document.querySelector(".experience-carousel__btn--prev");
-      const nextBtn = document.querySelector(".experience-carousel__btn--next");
-      const items = document.querySelectorAll(".experience-carousel__item");
-
-      let currentIndex = 0;
-      let isMobile = window.innerWidth <= 768;
-
-      function updateCarousel() {
-        if (!isMobile) {
-          const width = items[0].offsetWidth;
-          track.style.transform = `translateX(-${currentIndex * width}px)`;
-        }
-      }
-
-      function checkScreenSize() {
-        isMobile = window.innerWidth <= 768;
-        if (isMobile) {
-          track.style.transform = "none";
-        } else {
-          updateCarousel();
-        }
-      }
-
-      nextBtn.addEventListener("click", () => {
-        if (!isMobile && currentIndex < items.length - 1) {
-          currentIndex++;
-          updateCarousel();
-        }
-      });
-
-      prevBtn.addEventListener("click", () => {
-        if (!isMobile && currentIndex > 0) {
-          currentIndex--;
-          updateCarousel();
-        }
-      });
-
-      window.addEventListener("resize", checkScreenSize);
-      checkScreenSize();
-    });
-
-    // Seccion diez
-    document.addEventListener("DOMContentLoaded", function () {
-      const track = document.querySelector(".related-programs__track");
-      const prevBtn = document.querySelector(".related-programs__btn--prev");
-      const nextBtn = document.querySelector(".related-programs__btn--next");
-      const items = document.querySelectorAll(".related-programs__item");
-
-      let currentIndex = 0;
-      let isMobile = window.innerWidth <= 768;
-
-      function updateCarousel() {
-        if (!isMobile) {
-          const width = items[0].offsetWidth + 16; // Ancho más el gap
-          track.style.transform = `translateX(-${currentIndex * width}px)`;
-        } else {
-          track.style.transform = "none"; // Desactivar transformación en mobile
-        }
-      }
-
-      function checkScreenSize() {
-        isMobile = window.innerWidth <= 768;
-        if (isMobile) {
-          track.style.transform = "none"; // Habilitar scroll táctil en mobile
-        } else {
-          updateCarousel(); // Mantener lógica de carrusel en desktop
-        }
-      }
-
-      nextBtn.addEventListener("click", () => {
-        if (!isMobile && currentIndex < items.length - 2) {
-          currentIndex++;
-          updateCarousel();
-        }
-      });
-
-      prevBtn.addEventListener("click", () => {
-        if (!isMobile && currentIndex > 0) {
-          currentIndex--;
-          updateCarousel();
-        }
-      });
-
-      window.addEventListener("resize", checkScreenSize);
-      checkScreenSize();
-    });
 
     // Seccion once
     document.addEventListener("DOMContentLoaded", function () {
@@ -879,6 +1157,9 @@
       });
     });
   </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.js"></script>
+<script src="./scripts/main.js"></script>
 </body>
 
 </html>

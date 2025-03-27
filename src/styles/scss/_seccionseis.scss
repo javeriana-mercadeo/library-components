@@ -1,131 +1,220 @@
-@use 'variables'as *;
-@use 'mixins'as *;
+@use 'variables' as *;
+@use 'mixins' as *;
+@use'base' as*;
 
-.expert-teachers {
+#section-six{
+.color-container{
   background-color: $primary-color;
-  color: $text-light;
+  width: 100vw;
+}
+.container-slider-g{
+  width: 90%; 
+  max-width: $max-width; 
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.expert-carousel {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  padding: $spacing-md;
+  position: relative;
   max-width: $max-width;
-
-  @media (max-width: $breakpoint-md) {
-    text-align: left;
-  }
+  background-color: $primary-color;
+  padding: 60px 0;
+  margin: 0 auto;
 
   &__title {
     font-size: $font-size-h2;
-    margin-bottom: $spacing-sm;
+    font-weight: 700;
+    color: $text-light;
+    padding-bottom: 15px;
   }
 
   &__description {
-    font-size: $font-size-p;
-    margin-bottom: $spacing-md;
-  }
-
-  &__buttons {
-    margin-bottom: $spacing-lg;
-
-    .button {
-      margin: 0 $spacing-sm;
-
-      &:hover {
-        background-color: $secondary-color-hover;
-      }
-    }
+    color: $text-light;
+    width: 80%;
+    text-align: center;
   }
 
   &__wrapper {
-    position: relative;
     overflow: hidden;
+    width: 90%;
+    margin: auto;
+  }
+  .card-wrapper .swiper-slide-button {
+    color: $text-light;
+    margin-top: -35px;
+}
+/* btn-navegación swiper*/
+.swiper-slide-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
 
-    @media (max-width: $breakpoint-md) {
-      padding: 0 $spacing-sm;
-    }
+  i {
+    font-size: 2rem; // Tamaño del icono
+    color: $text-light; 
+    z-index: 100;
   }
 
-  &__grid {
+  &:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
+}
+
+.expert-prev {
+  left: -8px; 
+}
+
+.expert-next{
+  right: -8px; 
+}
+
+@media (max-width: $breakpoint-sm) {
+  .swiper-slide-button {
+    width: 40px;
+    height: 40px;
+
+    i {
+      font-size: 1.5rem;
+    }
+  }
+}
+/* final btn-navegación swiper*/
+
+  &__track {
     display: flex;
     gap: $spacing-md;
-    flex-direction: row;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &__item {
+    flex: 0 0 auto;
+    min-width: 200px;
+  }
+
+  /* Tarjetas de docentes */
+  .teacher-card-container {
+    width: 100%;
+    max-width: 250px;
+    text-align: left;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 15px;
+    min-height: 100%;
+  }
+  .teacher-card-content{
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .teacher-card-header {
+    width: 100%;
+    height: auto;
+    display: flex;
     justify-content: center;
-    transition: transform 0.5s ease-in-out;
-
-    @media (max-width: $breakpoint-md) {
-      overflow-x: scroll;
-      scroll-snap-type: x mandatory;
-    }
-
-    .teacher-card {
-      flex: 0 0 80%;
-      scroll-snap-align: center;
-      color: $color-text;
-      text-align: left;
-      padding: $spacing-md;
-      width: 190px;
-
-      @media (min-width: $breakpoint-md) {
-        flex: unset;
-      }
-
-      img {
-        max-width: 90%;
-        border-radius: $border-radius-sm;
-        margin-bottom: $spacing-sm;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      h3 {
-        width: 90%;
-        font-size: $font-size-p;
-        font-weight: $font-weight-bold;
-        margin-bottom: $spacing-sm;
-        color: $text-light;
-      }
-
-      p {
-        width: 90%;
-        font-size: $font-size-small;
-        margin-bottom: $spacing-sm;
-        color: $text-light;
-      }
-
-      a {
-        width: 90%;
-        font-size: $font-size-small;
-        text-decoration: none;
-        font-weight: $font-weight-regular;
-        color: $text-light;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
+    align-items: center;
   }
 
-  &__btn {
-    display:flex;
+  .teacher-card__image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
 
-    @media (max-width: $breakpoint-md) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      font-size: 2rem;
-      color: $text-light;
-      cursor: pointer;
+  .teacher-card__name {
+    color: $text-light;
+    font-size: 1rem;
+    font-weight: $font-weight-bold;
+    margin-top: 10px;
+    text-align: left;
+  }
 
-      &--prev {
-        left: 0;
-      }
+  .teacher-card__title {
+    color: $gray-700;
+    font-size: 0.75rem;
+    text-align: left;
+    color: $text-light;
+  }
 
-      &--next {
-        right: 0;
-      }
+  .teacher-card__link {
+    color: $text-light;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 10px;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
+}
+
+/* Swiper estilos */
+.expert-swiper {
+  margin: 0 auto;
+  padding: 20px 10px;
+  overflow: hidden;
+  display: flex;
+}
+
+.swiper-backface-hidden .swiper-slide {
+  margin-top: 20px;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .expert-carousel__description {
+    width: 90%;
+  }
+
+  .teacher-card-container {
+    max-width: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .expert-carousel__title {
+    font-size: $font-size-h3;
+  }
+
+  .teacher-card-container {
+    max-width: 160px;
+  }
+}
+
+/* Ajustar visibilidad de los botones en pantallas pequeñas */
+@media (max-width: $breakpoint-sm) {
+  .swiper-slide-button {
+    display: none;
+  }
+}
 }

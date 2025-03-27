@@ -1,6 +1,43 @@
 @use 'variables' as *;
 @use 'mixins' as *;
+@use'base' as*;
 
+#section-four{
+  padding-top: 30px;
+  max-width: $max-width;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+.p-4{
+  border: none;
+}
+p{
+  text-align: left;
+}
+.text-gray-900{
+  margin: 0;
+}
+
+.why-javeriana__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  
+}
+.section-four-title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+   .why-javeriana__title {
+    gap: 8px;
+    width: fit-content;
+    font-size: $font-size-h2;
+    font-weight: bold;
+  }
+}
 .why-javeriana {
   padding-top: $spacing-lg;
   margin: 0px;
@@ -10,21 +47,33 @@
   &__image {
     order: 0;
     flex: 1;
-    text-align: center;}
+    text-align: center;
 
-  &__title {
-    font-size: $font-size-h2;
-    font-weight: $font-weight-bold;
-    margin-bottom: $spacing-lg;
-    color: $color-text;
+    img {
+
+      max-width: 100%;
+      max-height: 550px;
+      min-height: 450px;
+      object-fit: cover;
+      border-radius: $border-radius-md;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
   }
+ 
 
   &__container {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-    gap: $spacing-lg;
+    gap: 0;
     margin-top: $spacing-lg;
+    padding-bottom: 25px;
+    width: fit-content;
+    gap: 30px;
+
+    .border{
+      padding: 5px;
+    }
 
     @media (max-width: $breakpoint-lg) {
       flex-direction: column;
@@ -41,15 +90,14 @@
     gap: 0;
   }
 
-  &__subtitle {
-    font-size: $font-size-h3;
-    font-weight: $font-weight-bold;
-    color: $gray-200;
-    margin-bottom: 0;
+
 
     @media (max-width: $breakpoint-md) {
       font-weight: $font-weight-regular;
-    }
+    
+      .why-javeriana__column {
+        min-width: 90vw;
+      }
   }
 
   &__text {
@@ -68,83 +116,66 @@
       overflow: visible;
       display: flex;
       flex-direction: column;
+    
+    
       
-    }
-  }
-
-  // Elemento de la lista (ícono + texto)
-  &__item {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    text-align: left;
-
-
-    i {
-      font-size: 2rem;
-      color: $text-dark;
     }
   }
 
   // Botón de "Leer Más / Leer Menos"
     &__toggle {
-    display: none;
-    align-self: flex-start;
-    color: $text-dark; 
-    font-weight: bold;
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    position: relative;
-    bottom: 45px;
-  
 
-  &::after {
-    content: "+";
-    font-weight: $font-weight-regular;
-    font-size: 3rem; 
-    color: $primary-color; 
-    position: relative;
-    top: 12px;
-
-  }
-
-  &.expanded::after {
-    content: "−"; 
-    color:$primary-color; 
-  }
 
     @media (max-width: $breakpoint-md) {
-      display: block;
+      display: flex;
       background: none;
       border: none;
       font-size: $font-size-small;
       color: $text-dark;
       cursor: pointer;
-
+      font-weight: bold; 
+      border: none; 
+         }
+    
+    &-text{
+      background-color: none;
     }
   }
 
   &__image {
     flex: 1;
     text-align: center;
-  
+    width: fit-content;
     @media (max-width: $breakpoint-md) {
-      order: -1;
+      order: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+  
     }
   
     @media (min-width: $breakpoint-md) {
       order: 0;
     }
-  
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: $border-radius-md;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .why-javeriana__image{
+      img{
+        width: 50px;
+        height: auto;
+      }
     }
-  
+  }}  
+  @media (max-width: 992px) {
+    .why-javeriana__image{
+      order: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    img {
+      max-width: 70%; 
+      height: 300px;
+      object-fit: cover;
+    }
   }
-}
+  }}

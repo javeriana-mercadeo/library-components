@@ -1,5 +1,14 @@
 @use 'variables' as *;
 @use 'mixins'as *;
+@use'base' as*;
+
+#section-eigth{
+
+  .color-container{
+    background-color: $primary-color;
+    width: 100vw;
+    padding: 5px;
+  }
 
 .meeting-banner {
   background-color: $primary-color;
@@ -52,4 +61,5 @@
       margin-top: $spacing-md;
     }
   }
+}
 }
