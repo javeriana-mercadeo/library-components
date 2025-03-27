@@ -8,7 +8,7 @@ import { Providers } from './providers'
 import { siteConfig } from '@/config/site'
 
 import Footer from './_components/footer/footer'
-import Header from './_components/header/header'
+import ThemeSwitch from './_components/themeSwitch/theme-switch'
 
 export const metadata: Metadata = {
   title: {
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers themeProps={{ attribute: 'data-theme' }}>
           <div className="relative flex flex-col">
-            <Header />
+            <ThemeSwitch />
             <main className="flex-grow">{children}</main>
             <Footer />
           </div>

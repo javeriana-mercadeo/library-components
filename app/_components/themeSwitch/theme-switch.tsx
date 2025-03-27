@@ -5,7 +5,9 @@ import { Select, SelectItem } from '@heroui/react'
 import { useTheme } from 'next-themes'
 import { useIsSSR } from '@react-aria/ssr'
 
-export const ThemeSwitch = () => {
+import './theme-switch.scss'
+
+const ThemeSwitch = () => {
   const { theme, setTheme } = useTheme()
   const isSSR = useIsSSR()
 
@@ -64,7 +66,7 @@ export const ThemeSwitch = () => {
   }
 
   return (
-    <div className="flex items-center gap-2 text-[var(--neutral-400)]">
+    <div className="theme-switch flex items-center gap-2 text-[var(--neutral-400)]">
       <i className="ph ph-palette text-[var(--primary-700)]"></i>
       <Select
         selectedKeys={new Set([isSSR ? 'light' : theme || 'light'])}
@@ -81,3 +83,5 @@ export const ThemeSwitch = () => {
     </div>
   )
 }
+
+export default ThemeSwitch

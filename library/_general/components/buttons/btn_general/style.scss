@@ -21,29 +21,41 @@
       background-color: var(--neutral-1000);
       color: var(--primary);
     }
+  }
 
-    // Generar variantes dinámicas según colores del mapa
-    @each $theme-name, $theme-values in $colors-theme {
-      @warn $theme-name;
-      [data-theme='#{$theme-name}'] {
-        @each $color-name, $color-values in $theme-values {
-          @if meta.type-of($color-values) == 'map' {
-            .btn-#{$color-name} {
-              $solid-color: if(map.has-key($color-values, 600), map.get($color-values, 600), map.get($color-values, ''));
-              $border-color: if(map.has-key($color-values, 900), map.get($color-values, 900), $solid-color);
-              $text-color: text-contrast($solid-color);
+  @include theme-variants-component('btn', meta.get-mixin('button-theme-style'));
+}
 
-              background-color: $solid-color;
-              color: $text-color;
-              border: 2px solid $border-color;
+@mixin button-theme-style($color-values) {
+  $solid-color: if(map.has-key($color-values, 600), map.get($color-values, 600), map.get($color-values, ''));
+  $solid-hover-color: if(map.has-key($color-values, 600), map.get($color-values, 600), map.get($color-values, ''));
+  $border-color: if(map.has-key($color-values, 900), map.get($color-values, 900), $solid-color);
+  $text-color: text-contrast($solid-color);
+  $text-color-hover: text-contrast($solid-hover-color);
 
-              &:hover {
-                background-color: color.adjust($solid-color, $lightness: -10%);
-              }
-            }
-          }
-        }
-      }
+  background-color: $solid-color;
+  color: $text-color;
+  border: 2px solid $border-color;
+
+  &:hover {
+    background-color: $solid-hover-color;
+    color: $text-color-hover;
+  }
+
+  @include dark-theme {
+    $solid-color: if(map.has-key($color-values, 200), map.get($color-values, 200), map.get($color-values, ''));
+    $solid-hover-color: if(map.has-key($color-values, 600), map.get($color-values, 600), map.get($color-values, ''));
+    $border-color: if(map.has-key($color-values, 900), map.get($color-values, 900), $solid-color);
+    $text-color: text-contrast($solid-color);
+    $text-color-hover: text-contrast($solid-hover-color);
+
+    background-color: $solid-color;
+    color: $text-color;
+    border: 2px solid $border-color;
+
+    &:hover {
+      background-color: $solid-hover-color;
+      color: $text-color-hover;
     }
   }
 }

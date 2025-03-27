@@ -4,6 +4,7 @@
 @use './liferayMain.scss' as *;
 
 /* Theme */
+@use './general_vars' as *;
 @use './theme' as *;
 @use './typography' as *;
 
