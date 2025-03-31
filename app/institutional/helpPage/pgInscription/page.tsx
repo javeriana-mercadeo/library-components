@@ -1,19 +1,18 @@
 import ButtonReturn from '@library/_institutional/sections/helpPage/sections/buttonReturn'
 import PgInscription from '@library/_institutional/sections/helpPage/sections/pgInscription-I'
-import HelpQuestions from '@library/_institutional/sections/helpPage/sections/helpQuestions'
 import VideoHelp from '@library/_institutional/sections/helpPage/sections/videoHelp'
-
+import QuestionFrequently from '@library/_institutional/sections/helpPage/sections/questionFrequently'
 
 export default function page(){
   return (
-  <>
+  <> <QuestionFrequently />
   <ButtonReturn />
   
   <PgInscription />
 
-  <HelpQuestions />  
-
   <VideoHelp />
+
+ 
     </>
   )
 }

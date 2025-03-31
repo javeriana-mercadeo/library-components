@@ -1,0 +1,7 @@
+@use '../../styles/_variables.scss'as *;
+@use '../../styles/mixins'as *;
+
+.frequently-section{
+    max-width: $breakpoint-xl;
+    
+}

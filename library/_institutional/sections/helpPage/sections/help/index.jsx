@@ -6,7 +6,7 @@ return(
 <section className="help-section">
         <div className="help-header">
             <h2>¿Necesitas ayuda?</h2>
-            <a href="/institutional/help/pgInscription">Ver más <i className="ph ph-arrow-right"></i></a>
+            <a href="/institutional/helpPage/pgInscription">Ver más <i className="ph ph-arrow-right"></i></a>
         </div>
 
         <div className="help-links">

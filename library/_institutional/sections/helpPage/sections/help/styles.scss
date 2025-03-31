@@ -1,7 +1,6 @@
 @use '../../styles/_variables.scss'as *;
 @use '../../styles/mixins'as *;
 
-
 // Estilos generales de la sección de ayuda
 
 .help-section {
@@ -11,7 +10,7 @@
   margin-top: 20px;
   flex-wrap: wrap;
   max-width: 1200px;
-  padding: 30px;
+  padding: 20px;
   padding-top: 0;
 
   .help-header {
@@ -44,6 +43,7 @@
     flex-direction: column;
     gap: 20px;
     transition: all 0.5s ease-in-out;
+    
     .help-item {
       display: flex;
       flex-direction: column;
@@ -56,6 +56,7 @@
         align-items: center;
         justify-content: space-between;
         color: $primary-color;
+        font-size: $font-size-p;
         font-weight: bold;
         text-decoration: none;
         gap: 5px;

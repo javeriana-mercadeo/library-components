@@ -2,10 +2,9 @@
 @use '../../styles/mixins'as *;
 
 .btn-return{
-    max-width: 1200px;
-    padding: 30px;
+    max-width: $breakpoint-xl;
+    padding: 20px;
     padding-bottom: 0;
-    max-width: 1200px;
 
 .back-button {
     display: flex;
