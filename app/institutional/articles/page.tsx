@@ -1,6 +1,6 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-import BlogHeader from '@library/_institutional/sections/blogHeader'
-import BlogFeatured from '@library/_institutional/sections/blogFeatured'
+import BlogHeader from '@library/_institutional/sections/blogs/blogHeader'
+import BlogFeatured from '@library/_institutional/sections/blogs/blogFeatured'
 import Splash from '@library/_general/sections/Splash'
 
 export default function Articles() {

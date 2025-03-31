@@ -1,0 +1,33 @@
+@use '../../styles/_variables.scss'as *;
+@use '../../styles/mixins'as *;
+
+.btn-return{
+    max-width: 1200px;
+    padding: 30px;
+    padding-bottom: 0;
+    max-width: 1200px;
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    i{
+        color: $primary-color;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+    h2{
+        font-size: $font-size-p;
+        color: $primary-color;
+    }
+  }
+  
+  .back-button:hover {
+    transform: scale(1.05);
+  }  }
