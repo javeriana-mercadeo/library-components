@@ -1,0 +1,53 @@
+// ==========================================
+// NÚCLEO DEL SISTEMA DE TEMAS
+// ==========================================
+@use 'sass:map';
+@use 'sass:string';
+@use '../abstracts/colors' as colors;
+@use '../abstracts/mixins' as mixins;
+
+// Generar variables de color para todos los temas
+@mixin initialize-themes {
+  // Generar variables de colores para el tema base
+  @each $name, $color-values in colors.$colors-map {
+    @include mixins.generate-vars($name, $color-values);
+  }
+
+  // Generar variables para cada tema específico
+  @each $theme-name, $theme-colors in colors.$colors-theme {
+    $base-theme: if(string.index($theme-name, 'dark'), map.get(colors.$colors-theme, 'dark'), ());
+    $merged-theme: map.merge($base-theme, $theme-colors);
+    @include mixins.generate-theme($theme-name, $merged-theme);
+  }
+}
+
+// Aplicar variantes de componentes basadas en temas
+@mixin apply-component-variants($base-class, $mixin-ref) {
+  @each $theme-name, $theme-values in colors.$colors-theme {
+    [data-theme='#{$theme-name}'] {
+      @each $color-name, $color-values in $theme-values {
+        .#{$base-class}-#{$color-name} {
+          @include $mixin-ref($color-values);
+        }
+      }
+    }
+  }
+}
+
+// Función de contraste de texto automático
+@mixin auto-text-contrast($property, $background-var) {
+  #{$property}: var(--neutral-100);
+
+  @include mixins.dark-theme {
+    #{$property}: var(--neutral-1000);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      #{$property}: var(--neutral-1000);
+    }
+  }
+}
+
+// Inicializar todos los temas
+@include initialize-themes;

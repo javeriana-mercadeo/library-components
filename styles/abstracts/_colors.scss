@@ -1,0 +1,313 @@
+// ==========================================
+// SISTEMA DE COLORES
+// ==========================================
+@use 'sass:map';
+@use 'functions' as *;
+
+// PALETA DE COLORES BASE
+// ------------------------------------------
+// Colores base para generar las escalas
+$color-base: (
+  'primary': #026fc1,
+  'primary-dark': #0285d1,
+  'secondary': #029be1,
+  'tertiary': #359c36,
+  'tertiary-dark': #5dc85e,
+  'background': #1e1e1e,
+  'neutral': (
+    '': #ffffff,
+    '100': #1d2125,
+    '200': #22272b,
+    '300': #2c333a,
+    '400': #454f59,
+    '500': #596773,
+    '600': #8c9bab,
+    '700': #9fadbc,
+    '800': #b6c2cf,
+    '900': #c7d1db,
+    '1000': #eeefef,
+    '1100': #f2f2f2
+  ),
+  'neutral-variant': #96937f,
+  'success': #36b377,
+  'warning': #f2bf2e,
+  'danger': #ff1200
+);
+
+// ESCALAS DE COLORES GENERADAS
+// ------------------------------------------
+// Genera las escalas de colores para el tema base
+$colors-map: (
+  'primary': generate-color-scale(map.get($color-base, 'primary')),
+  'secondary': generate-color-scale(map.get($color-base, 'secondary')),
+  'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
+  'background': generate-color-scale(map.get($color-base, 'background')),
+  'neutral': map.get($color-base, 'neutral'),
+  'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+  'success': generate-color-scale(map.get($color-base, 'success')),
+  'warning': generate-color-scale(map.get($color-base, 'warning')),
+  'danger': generate-color-scale(map.get($color-base, 'danger'))
+);
+
+// DEFINICIÓN DE TEMAS
+// ------------------------------------------
+// Configuración de temas para facultades y variantes oscuras
+$colors-theme: (
+  // Tema oscuro base (se aplica a todas las variantes dark)
+  'dark': (
+    'primary': generate-color-scale(map.get($color-base, 'primary-dark'), true),
+    'secondary': generate-color-scale(map.get($color-base, 'secondary'), true),
+    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
+    'background': generate-color-scale(map.get($color-base, 'background'), true),
+    'neutral': invert-color-map(map.get($color-base, 'neutral')),
+    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'success': generate-color-scale(map.get($color-base, 'success'), true),
+    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
+    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
+  ),
+
+  // Temas por facultad - modo claro
+  // ----------------------------------------
+  'arquitectura-diseno': (
+    'primary': generate-color-scale(#653383),
+    'secondary': generate-color-scale(#00559a)
+  ),
+
+  'artes': (
+    'primary': generate-color-scale(#6f45e9),
+    'secondary': generate-color-scale(#ff4b78),
+    'tertiary': generate-color-scale(#2c5595)
+  ),
+
+  'ciencias': (
+    'primary': generate-color-scale(#008aa2),
+    'secondary': generate-color-scale(#f6bd30)
+  ),
+
+  'ciencias-economicas-administrativas': (
+    'primary': generate-color-scale(#4a7ed8),
+    'secondary': generate-color-scale(#371f75),
+    'tertiary': generate-color-scale(#ff4e30)
+  ),
+
+  'ciencias-juridicas': (
+    'primary': generate-color-scale(#2c5595),
+    'secondary': generate-color-scale(#f6bd30),
+    'tertiary': generate-color-scale(#c6c6c6)
+  ),
+
+  'ciencias-politicas-relaciones-internacionales': (
+    'primary': generate-color-scale(#008874),
+    'secondary': generate-color-scale(#f6bd30)
+  ),
+
+  'ciencias-sociales': (
+    'primary': generate-color-scale(#003d7a, true),
+    'secondary': generate-color-scale(#73d9fc, true),
+    'tertiary': generate-color-scale(#3e2580, true)
+  ),
+
+  'comunicacion-lenguaje': (
+    'primary': generate-color-scale(#8048a9),
+    'secondary': generate-color-scale(#73d9fc),
+    'tertiary': generate-color-scale(#2c5595)
+  ),
+
+  'derecho-canonico': (
+    'primary': generate-color-scale(#2c5595),
+    'secondary': generate-color-scale(#f6bd30),
+    'tertiary': generate-color-scale(#f2f2f2)
+  ),
+
+  'educacion': (
+    'primary': generate-color-scale(#a1bfff),
+    'secondary': generate-color-scale(#2a2a68),
+    'tertiary': generate-color-scale(#f47abd)
+  ),
+
+  'enfermeria': (
+    'primary': generate-color-scale(#018ab9),
+    'secondary': generate-color-scale(#ffcd00)
+  ),
+
+  'estudios-ambientales-rurales': (
+    'primary': generate-color-scale(#abc80e),
+    'secondary': generate-color-scale(#2dcad1),
+    'tertiary': generate-color-scale(#029be2)
+  ),
+
+  'filosofia': (
+    'primary': generate-color-scale(#004c8f),
+    'secondary': generate-color-scale(#c08300),
+    'tertiary': generate-color-scale(#f2f2f2)
+  ),
+
+  'ingenieria': (
+    'primary': generate-color-scale(#026fc1),
+    'secondary': generate-color-scale(#029be1),
+    'tertiary': generate-color-scale(#339e36)
+  ),
+
+  'instituto-pensar': (
+    'primary': generate-color-scale(#00b3ab),
+    'secondary': generate-color-scale(#ff6b17)
+  ),
+
+  'instituto-salud-publica': (
+    'primary': generate-color-scale(#a74731),
+    'secondary': generate-color-scale(#c28069)
+  ),
+
+  'medicina': (
+    'primary': generate-color-scale(#2b9cd2),
+    'secondary': generate-color-scale(#f6bd30)
+  ),
+
+  'odontologia': (
+    'primary': generate-color-scale(#32abbf),
+    'secondary': generate-color-scale(#32abbf)
+  ),
+
+  'psicologia': (
+    'primary': generate-color-scale(#029be1),
+    'secondary': generate-color-scale(#f6bd30)
+  ),
+
+  'teologia': (
+    'primary': generate-color-scale(#004c8f),
+    'secondary': generate-color-scale(#c08300)
+  ),
+
+  // Temas por facultad - modo oscuro
+  // ----------------------------------------
+  'arquitectura-diseno-dark': (
+    'primary': generate-color-scale(#653383, true),
+    'secondary': generate-color-scale(#00559a, true)
+  ),
+
+  'artes-dark': (
+    'primary': generate-color-scale(#6f45e9, true),
+    'secondary': generate-color-scale(#ff4b78, true),
+    'tertiary': generate-color-scale(#2c5595, true)
+  ),
+
+  'ciencias-dark': (
+    'primary': generate-color-scale(#008aa2, true),
+    'secondary': generate-color-scale(#f6bd30, true)
+  ),
+
+  'ciencias-economicas-administrativas-dark': (
+    'primary': generate-color-scale(#4a7ed8, true),
+    'secondary': generate-color-scale(#371f75, true),
+    'tertiary': generate-color-scale(#ff4e30, true)
+  ),
+
+  'ciencias-juridicas-dark': (
+    'primary': generate-color-scale(#2c5595, true),
+    'secondary': generate-color-scale(#f6bd30, true),
+    'tertiary': generate-color-scale(#c6c6c6, true)
+  ),
+
+  'ciencias-politicas-relaciones-internacionales-dark': (
+    'primary': generate-color-scale(#008874, true),
+    'secondary': generate-color-scale(#f6bd30, true)
+  ),
+
+  'ciencias-sociales-dark': (
+    'primary': generate-color-scale(#003d7a),
+    'secondary': generate-color-scale(#73d9fc),
+    'tertiary': generate-color-scale(#3e2580)
+  ),
+
+  'comunicacion-lenguaje-dark': (
+    'primary': generate-color-scale(#8048a9, true),
+    'secondary': generate-color-scale(#73d9fc, true),
+    'tertiary': generate-color-scale(#2c5595, true)
+  ),
+
+  'derecho-canonico-dark': (
+    'primary': generate-color-scale(#2c5595, true),
+    'secondary': generate-color-scale(#f6bd30, true),
+    'tertiary': generate-color-scale(#f2f2f2, true)
+  ),
+
+  'educacion-dark': (
+    'primary': generate-color-scale(#a1bfff, true),
+    'secondary': generate-color-scale(#2a2a68, true),
+    'tertiary': generate-color-scale(#f47abd, true)
+  ),
+
+  'enfermeria-dark': (
+    'primary': generate-color-scale(#018ab9, true),
+    'secondary': generate-color-scale(#ffcd00, true)
+  ),
+
+  'estudios-ambientales-rurales-dark': (
+    'primary': generate-color-scale(#abc80e, true),
+    'secondary': generate-color-scale(#2dcad1, true),
+    'tertiary': generate-color-scale(#029be2, true)
+  ),
+
+  'filosofia-dark': (
+    'primary': generate-color-scale(#004c8f, true),
+    'secondary': generate-color-scale(#c08300, true),
+    'tertiary': generate-color-scale(#f2f2f2, true)
+  ),
+
+  'ingenieria-dark': (
+    'primary': generate-color-scale(#026fc1, true),
+    'secondary': generate-color-scale(#029be1, true),
+    'tertiary': generate-color-scale(#339e36, true)
+  ),
+
+  'instituto-pensar-dark': (
+    'primary': generate-color-scale(#00b3ab, true),
+    'secondary': generate-color-scale(#ff6b17, true)
+  ),
+
+  'instituto-salud-publica-dark': (
+    'primary': generate-color-scale(#a74731, true),
+    'secondary': generate-color-scale(#c28069, true)
+  ),
+
+  'medicina-dark': (
+    'primary': generate-color-scale(#2b9cd2, true),
+    'secondary': generate-color-scale(#f6bd30, true)
+  ),
+
+  'odontologia-dark': (
+    'primary': generate-color-scale(#32abbf, true),
+    'secondary': generate-color-scale(#32abbf, true)
+  ),
+
+  'psicologia-dark': (
+    'primary': generate-color-scale(#029be1, true),
+    'secondary': generate-color-scale(#f6bd30, true)
+  ),
+
+  'teologia-dark': (
+    'primary': generate-color-scale(#004c8f, true),
+    'secondary': generate-color-scale(#c08300, true)
+  )
+);
+
+// ALIAS DE COLORES SEMÁNTICOS
+// ------------------------------------------
+// Colores con significado semántico para la UI
+$semantic-colors: (
+  'text-primary': var(--neutral-100),
+  'text-secondary': var(--neutral-300),
+  'text-muted': var(--neutral-400),
+  'text-inverse': var(--neutral-1000),
+
+  'border-default': var(--neutral-500),
+  'border-light': var(--neutral-700),
+  'border-focus': var(--primary-500),
+
+  'background-body': var(--background-100),
+  'background-card': var(--neutral),
+  'background-elevated': var(--neutral-1100),
+
+  'shadow-color': rgba(0, 0, 0, 0.1),
+  'shadow-color-dark': rgba(0, 0, 0, 0.2)
+);

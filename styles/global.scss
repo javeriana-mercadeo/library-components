@@ -1,47 +1,58 @@
-@use './main.scss' as *;
+// ==========================================
+// ARCHIVO PRINCIPAL DE ESTILOS
+// ==========================================
 
-/* Liferay Styles */
-@use './liferayMain.scss' as *;
+// 1. Abstracts (sin salida CSS)
+// ------------------------------------------
+@use 'abstracts/variables';
+@use 'abstracts/functions';
+@use 'abstracts/mixins';
+@use 'abstracts/colors';
 
-/* Theme */
-@use './general_vars' as *;
-@use './theme' as *;
-@use './typography' as *;
+// 2. Vendors (librerías terceras)
+// ------------------------------------------
+@use 'vendors/tailwind';
+@use 'vendors/liferay';
 
-/* Components */
-@use '../library/_general/components/buttons/btn_general/style.scss' as *;
+// 3. Base (estilos fundamentales)
+// ------------------------------------------
+@use 'base/reset';
+@use 'base/typography';
+@use 'base/animations';
+@use 'base/utilities';
 
-@include general-btn;
+// 4. Sistema de temas
+// ------------------------------------------
+@use 'themes/theme-core';
+@use 'themes/themes';
 
-/************ Default Css ************/
+// 5. Componentes globales
+// ------------------------------------------
+@use 'components/buttons';
+@use 'components/forms';
+@use 'components/cards';
 
+// 6. Estilos globales específicos
+// ------------------------------------------
+
+// Fuentes
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
+// Selección de texto
 ::selection {
   background-color: var(--primary-400);
   color: var(--neutral-200);
 
-  @include dark-theme {
+  @include mixins.dark-theme {
     background-color: var(--primary-200);
     color: var(--neutral-100);
   }
 }
 
-* {
-  margin: revert-layer;
-  padding: revert-layer;
-  box-sizing: border-box;
-  font-family: 'Raleway', serif;
-  font-weight: 500;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
+// Estilos globales de HTML y body
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: rem(75px);
+  scroll-padding-top: functions.rem(75px);
   min-height: 100vh;
   height: 100%;
 
@@ -56,20 +67,21 @@ html {
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* * Scroll personalizado */
+  // Personalización del scroll
   body::-webkit-scrollbar {
-    width: rem(7px);
+    width: functions.rem(7px);
     background-color: var(--neutral-700);
   }
 
   body::-webkit-scrollbar-thumb {
     background-color: var(--primary-600);
-    border-radius: rem(5px);
+    border-radius: functions.rem(5px);
     height: 40%;
   }
 }
 
-@include responsive {
+// Media queries globales
+@include mixins.responsive {
   html body {
     background-attachment: scroll;
   }
