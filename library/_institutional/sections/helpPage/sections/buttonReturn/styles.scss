@@ -1,12 +1,13 @@
-@use '../../styles/_variables.scss'as *;
-@use '../../styles/mixins'as *;
+@use '../../styles/_variables.scss' as *;
+@use '../../styles/mixins' as *;
+@use '../../../../../../styles/global.scss' as *;
 
-.btn-return{
-    max-width: $breakpoint-xl;
-    padding: 20px;
-    padding-bottom: 0;
+.btn-return {
+  max-width: $breakpoint-xl;
+  padding: 20px;
+  padding-bottom: 0;
 
-.back-button {
+  .back-button {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -14,19 +15,22 @@
     font-size: 18px;
     font-weight: bold;
     border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition:
+      background-color 0.3s ease,
+      transform 0.2s ease;
     cursor: pointer;
-    i{
-        color: $primary-color;
-        font-size: 1rem;
-        font-weight: 700;
+    i {
+      color: $primary-color;
+      font-size: 1rem;
+      font-weight: 700;
     }
-    h2{
-        font-size: $font-size-p;
-        color: $primary-color;
+    h2 {
+      font-size: $font-size-p;
+      color: $primary-color;
     }
   }
-  
+
   .back-button:hover {
     transform: scale(1.05);
-  }  }
+  }
+}

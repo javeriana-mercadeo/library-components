@@ -1,7 +1,6 @@
 @use '../../styles/_variables.scss'as *;
 @use '../../styles/mixins'as *;
-
-// Estilos para las preguntas frecuentes
+@use '../../../../../../styles/global.scss' as *;
 
 
 .faq-section {

@@ -1,72 +1,116 @@
-import React from "react";
+'use client'
+import React from 'react'
 import './styles.scss'
 
-const Index = () =>{
-return(
-  <section>
+import RegistrationSteps from '@library/_institutional/sections/helpPage/sections/registrationSteps'
+import RequirementsHelp from '@library/_institutional/sections/helpPage/sections/requirementsHelp'
+import DataHelp from '@library/_institutional/sections/helpPage/sections/dataHelp'
+import NecessaryDocumentation from '@library/_institutional/sections/helpPage/sections/necessaryDocumentation'
+import WhentHelp from '@library/_institutional/sections/helpPage/sections/whenHelp'
+import UploadDocuments from '@library/_institutional/sections/helpPage/sections/uploadDocuments'
+import InterviewProcess from '@library/_institutional/sections/helpPage/sections/interviewProcess'
+import MoreDoubts from '@library/_institutional/sections/helpPage/sections/moreDoubts'
+class Accordion extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeIndex: 0,
+      isCollapsed: true // Inicialmente colapsado para evitar error en SSR
+    }
+  }
 
-<div id="accordion-collapse" data-accordion="collapse">
-  <h2 id="accordion-collapse-heading-1">
-    <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 " data-accordion-target="#accordion-collapse-body-2" aria-expanded="false" aria-controls="accordion-collapse-body-2">
-      <span>What is Flowbite?</span>
-      <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-      </svg>
-    </button>
-  </h2>
-  <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
-    <div class="p-5 border border-b-0 border-gray-200 ">
-           <ul className="questions">
-              <li>¿Cuáles son los pasos para inscribirme en la universidad?</li>
-              <li>¿Cuáles son los requisitos para aplicar a un programa de pregrado o posgrado?</li>
-              <li>¿Dónde puedo consultar las fechas clave del proceso de admisión?</li>
-              <li>¿Qué documentos necesito para completar mi inscripción?</li>
-              <li>¿Cuándo y cómo recibiré los resultados de admisión?</li>
-              <li>¿Cómo subo mis documentos a la plataforma?</li>
-              <li>¿Cómo funciona la entrevista o prueba de admisión, si mi programa la requiere?</li>
-            </ul>
-    </div>
-  </div>
-  <h2 id="accordion-collapse-heading-2">
-    <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 " data-accordion-target="#accordion-collapse-body-2" aria-expanded="false" aria-controls="accordion-collapse-body-2">
-      <span>Is there a Figma file available?</span>
-      <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-      </svg>
-    </button>
-  </h2>
-  <div id="accordion-collapse-body-2" class="hidden" aria-labelledby="accordion-collapse-heading-2">
-    <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
-      <p class="mb-2 text-gray-500 dark:text-gray-400">Flowbite is first conceptualized and designed using the Figma software so everything you see in the library has a design equivalent in our Figma file.</p>
-      <p class="text-gray-500 dark:text-gray-400">Check out the <a href="https://flowbite.com/figma/" class="text-blue-600 dark:text-blue-500 hover:underline">Figma design system</a> based on the utility classes from Tailwind CSS and components from Flowbite.</p>
-    </div>
-  </div>
-  <h2 id="accordion-collapse-heading-3">
-    <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-body-3" aria-expanded="false" aria-controls="accordion-collapse-body-3">
-      <span>What are the differences between Flowbite and Tailwind UI?</span>
-      <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-      </svg>
-    </button>
-  </h2>
-  <div id="accordion-collapse-body-3" class="hidden" aria-labelledby="accordion-collapse-heading-3">
-    <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
-      <p class="mb-2 text-gray-500 dark:text-gray-400">The main difference is that the core components from Flowbite are open source under the MIT license, whereas Tailwind UI is a paid product. Another difference is that Flowbite relies on smaller and standalone components, whereas Tailwind UI offers sections of pages.</p>
-      <p class="mb-2 text-gray-500 dark:text-gray-400">However, we actually recommend using both Flowbite, Flowbite Pro, and even Tailwind UI as there is no technical reason stopping you from using the best of two worlds.</p>
-      <p class="mb-2 text-gray-500 dark:text-gray-400">Learn more about these technologies:</p>
-      <ul class="ps-5 text-gray-500 list-disc dark:text-gray-400">
-        <li><a href="https://flowbite.com/pro/" class="text-blue-600 dark:text-blue-500 hover:underline">Flowbite Pro</a></li>
-        <li><a href="https://tailwindui.com/" rel="nofollow" class="text-blue-600 dark:text-blue-500 hover:underline">Tailwind UI</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
+  componentDidMount() {
+    // Aquí ya tenemos acceso a `window`
+    if (window.innerWidth >= 1200) {
+      this.setState({ isCollapsed: false }) // En desktop, siempre expandido
+    }
 
+    // Añadir listener para detectar cambios de tamaño de pantalla
+    window.addEventListener('resize', this.handleResize)
+  }
 
-</section>
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize)
+  }
 
+  handleResize = () => {
+    if (window.innerWidth >= 1200) {
+      this.setState({ isCollapsed: false })
+    } else {
+      this.setState({ isCollapsed: true })
+    }
+  }
 
+  toggleAccordion = index => {
+    this.setState(prevState => ({
+      activeIndex: prevState.activeIndex === index ? null : index
+    }))
+  }
 
-);
+  toggleAllAccordions = () => {
+    this.setState(prevState => ({
+      isCollapsed: !prevState.isCollapsed,
+      activeIndex: prevState.isCollapsed ? 0 : null
+    }))
+  }
+
+  render() {
+    const accordionData = [
+      { title: '¿Cuáles son los pasos para inscribirme en la universidad?', content: <RegistrationSteps /> },
+      { title: '¿Cuáles son los requisitos para aplicar a un programa de pregrado o posgrado?', content: <RequirementsHelp /> },
+      { title: '¿Dónde puedo consultar las fechas clave del proceso de admisión?', content: <DataHelp /> },
+      { title: '¿Qué documentos necesito para completar mi inscripción?', content: <NecessaryDocumentation /> },
+      { title: '¿Cuándo y cómo recibiré los resultados de admisión?', content: <WhentHelp /> },
+      { title: '¿Cómo subo mis documentos a la plataforma?', content: <UploadDocuments /> },
+      { title: '¿Cómo funciona la entrevista o prueba de admisión, si mi programa la requiere?', content: <InterviewProcess /> }
+    ]
+
+    const { activeIndex, isCollapsed } = this.state
+
+    return (
+      <section className="accordion-container">
+        {/* Botón de toggle (se oculta en desktop con CSS) */}
+        <div className="accordion-header">
+          <button className="accordion-toggle" onClick={this.toggleAllAccordions}>
+            Ver más preguntas frecuentes
+            <i className={`ph ${isCollapsed ? 'ph-caret-down' : 'ph-caret-up'}`}></i>
+          </button>
+        </div>
+
+        {/* Contenedor de preguntas y respuestas */}
+        {!isCollapsed && (
+          <div className="accordion-items">
+            {/* Preguntas (lado izquierdo en desktop) */}
+            <div className="accordion-questions">
+              {accordionData.map((item, index) => (
+                <button
+                  key={index}
+                  className={`question-button ${activeIndex === index ? 'active' : ''}`}
+                  onClick={() => this.toggleAccordion(index)}>
+                  <span>{item.title}</span>
+                  <i className={`ph ${activeIndex === index ? 'ph-caret-up' : 'ph-caret-down'}`}></i>
+                </button>
+              ))}
+            </div>
+
+            {/* Respuesta (lado derecho en desktop) */}
+            <div className="accordion-answer">
+              {activeIndex !== null &&
+                accordionData[activeIndex] &&
+                (typeof accordionData[activeIndex].content === 'string' ? (
+                  <p>{accordionData[activeIndex].content}</p>
+                ) : (
+                  accordionData[activeIndex].content
+                ))}
+            </div>
+          </div>
+        )}
+        <div className="more-doubts-container doubts-questions">
+          <MoreDoubts />
+        </div>
+      </section>
+    )
+  }
 }
-export default Index
+
+export default Accordion

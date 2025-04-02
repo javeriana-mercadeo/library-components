@@ -2,17 +2,22 @@
 @use '../../styles/mixins' as *;
 @use '../../../../../../styles/global.scss' as *;
 
-.help-section {
+.requirements-section {
   display: flex;
   flex-direction: column;
   gap: 15px;
   margin-top: 20px;
   flex-wrap: wrap;
   max-width: 1200px;
-  padding: 20px;
   padding-top: 0;
 
-  .help-header {
+  .inscription-title {
+    color: #6d7881;
+    font-size: $font-size-p;
+    width: fit-content;
+  }
+
+  .requirements-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,59 +27,59 @@
       font-size: $font-size-h2;
       font-weight: bold;
       width: 100%;
-    }
-
-    a {
-      font-size: $font-size-p;
-      color: $primary-color;
-      text-decoration: none;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: end;
-      gap: 10px;
-      width: 30%;
+      padding-top: 10px;
+      color: $text-dark;
     }
   }
 
-  .help-links {
+  .requirements-links {
     display: flex;
     flex-direction: column;
     gap: 20px;
     transition: all 0.5s ease-in-out;
 
-    .help-item {
+    .requirements-p {
+      color: #000000;
+      font-size: $font-size-h3;
+      font-weight: 700;
+    }
+
+    .requirements-item {
       display: flex;
       flex-direction: column;
-      border-bottom: 1px solid $primary-color;
       padding-bottom: 20px;
       gap: 10px;
 
-      a {
+      ul {
+        padding-left: 20px;
+        font-size: $font-size-p;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: $primary-color;
-        font-size: $font-size-p;
-        font-weight: bold;
-        text-decoration: none;
-        gap: 5px;
-      }
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        list-style-type: disc;
 
-      p {
-        font-size: $font-size-p;
-        color: $gray-500;
-        margin: 5px 0 0 0;
+        li {
+          color: #2c333a;
+
+          &::marker {
+            color: $primary-color;
+          }
+        }
       }
     }
+  }
+  .sub-title {
+    font-size: $font-size-p;
+    font-weight: bold;
   }
 }
 
 @media (min-width: $breakpoint-xl) {
-  .help-section {
+  .requirements-section {
     max-width: $breakpoint-xl;
 
-    .help-header {
+    .requirements-header {
       width: 100%;
 
       h2 {
@@ -88,15 +93,14 @@
       }
     }
 
-    .help-links {
+    .requirements-links {
       display: flex;
-      flex-direction: row;
-      gap: 40px;
+      flex-direction: column;
+      gap: 20px;
       transform: translateY(-5px);
-      .help-item {
+      .requirements-item {
         border-bottom: none;
         padding-bottom: 20px;
-        padding-top: 20px;
         width: 100%;
 
         a {

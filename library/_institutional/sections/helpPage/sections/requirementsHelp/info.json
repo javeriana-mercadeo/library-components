@@ -1,0 +1,31 @@
+{
+    "helpItems": [
+      {
+        "title": "Proceso de Inscripción",
+        "description": "Todo lo que necesitas saber para inscribirte en la Universidad Javeriana."
+      },
+      {
+        "title": "Becas y Financiación",
+        "description": "Opciones de apoyo económico para facilitar tu ingreso a la universidad."
+      },
+      {
+        "title": "Internacionalización y Movilidad",
+        "description": "Oportunidades de estudios en el extranjero y experiencias internacionales."
+      }
+    ],
+    "faqItems": [
+      {
+        "question": "¿Cuáles son los pasos para inscribirme en la universidad?"
+      },
+      {
+        "question": "¿Qué tipos de becas ofrece la Universidad Javeriana?"
+      },
+      {
+        "question": "¿Cuáles son los requisitos para aplicar a un programa de movilidad internacional?"
+      },
+      {
+        "question": "¿Cuáles son las opciones de financiación para pagar la matrícula?"
+      }
+    ]
+  }
+  

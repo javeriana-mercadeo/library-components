@@ -1,0 +1,92 @@
+@use '../../styles/_variables.scss' as *;
+@use '../../styles/mixins' as *;
+@use '../../../../../../styles/global.scss' as *;
+
+$primary-color: #007bff;
+$primary-color-hover: #0056b3;
+$text-color: #2c333a;
+$border-color: #ccc;
+$background-color: #fff;
+
+.form-container {
+  background-color: $background-color;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+}
+
+// Título del formulario
+.form-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $text-color;
+  margin-bottom: 10px;
+}
+
+// Descripción del formulario
+.form-description {
+  font-size: 1rem;
+  color: $text-color;
+  margin-bottom: 20px;
+}
+
+// Estilos generales para los campos del formulario
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .form-label {
+    text-align: left;
+    font-weight: bold;
+    color: $text-color;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $border-color;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: $text-color;
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+    }
+  }
+
+  .form-button {
+    width: 100%;
+    background-color: $primary-color;
+    color: white;
+    padding: 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s;
+
+    &:hover {
+      background-color: $primary-color-hover;
+    }
+  }
+}
+
+// Pie de página con aviso legal
+.form-footer {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 15px;
+
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

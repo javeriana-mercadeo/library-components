@@ -1,10 +1,8 @@
-@use '../../styles/_variables.scss'as *;
-@use '../../styles/mixins'as *;
+@use '../../styles/_variables.scss' as *;
+@use '../../styles/mixins' as *;
+@use '../../../../../../styles/global.scss' as *;
 
-@use "../../styles/_variables.scss" as *; // Asegúrate de importar tus variables de color
-@use "../../styles/mixins.scss" as *;
-
-.inscription-container{
+.inscription-container {
   max-width: $breakpoint-xl;
   margin: auto;
   padding: 20px;
@@ -19,7 +17,7 @@
   flex-direction: column;
   border-bottom: 1px solid $primary-color;
   padding-bottom: 20px;
-  gap:10px;
+  gap: 10px;
 
   .help-header {
     display: flex;
@@ -28,15 +26,32 @@
     font-weight: bold;
     width: 100%;
     cursor: pointer;
-    font-size: $font-size-p;
-    font-weight: bold;
-    color: $primary-color;
     padding-bottom: 20px;
 
-    i {
-      font-size: 1rem;
-      color: $primary-color;
+    .i-button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+
+      h2 {
+        font-size: $font-size-p;
+        font-weight: 700px;
+        color: $primary-color;
+      }
+
+      i {
+        font-size: 1rem;
+        color: $primary-color;
+      }
     }
+  }
+  .button:hover {
+    transform: scale(1.02);
   }
 
   .help-description {
@@ -61,9 +76,8 @@
 }
 
 // Responsive
-@media (min-width: $breakpoint-xl){
-  
-  .inscription-container{
+@media (min-width: $breakpoint-xl) {
+  .inscription-container {
     display: flex;
     flex-direction: row;
     gap: 40px;
@@ -71,6 +85,6 @@
     max-width: $breakpoint-xl;
   }
   .item-inscription {
-    border-bottom:none;
-
-}}
+    border-bottom: none;
+  }
+}

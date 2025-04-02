@@ -1,6 +1,3 @@
 export function addClickEvent() {
-    console.log("Help section loaded");
-  
-
-  }
-  
+  console.log('Help section loaded')
+}
