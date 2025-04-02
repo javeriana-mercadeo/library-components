@@ -2,7 +2,7 @@
 import React from 'react'
 import './styles.scss'
 
-import RegistrationSteps from '@library/_institutional/sections/helpPage/sections/registrationSteps'
+import RegistrationSteps from '../../../../../../app/institutional/helpPage/questions/registrationSteps/page.tsx';
 import RequirementsHelp from '@library/_institutional/sections/helpPage/sections/requirementsHelp'
 import DataHelp from '@library/_institutional/sections/helpPage/sections/dataHelp'
 import NecessaryDocumentation from '@library/_institutional/sections/helpPage/sections/necessaryDocumentation'

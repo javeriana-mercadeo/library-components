@@ -7,6 +7,8 @@ export default function Page() {
       <ButtonReturn />
 
       <QuestionFrequently />
+
+      
     </>
   )
 }

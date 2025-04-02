@@ -1,10 +1,9 @@
 import React from 'react'
 import './styles.scss'
-import MoreDoubts from '@library/_institutional/sections/helpPage/sections/moreDoubts'
 const Index = () => {
   return (
     <section className="steps-section">
-      <h2 className='inscription-title'>Proceso de inscripción</h2>
+      <h2 className="inscription-title">Proceso de inscripción</h2>
       <div className="steps-header">
         <h2>¿Cuáles son los pasos para inscribirme en la universidad?</h2>
       </div>
@@ -37,10 +36,6 @@ const Index = () => {
             Tu navegador no soporta la etiqueta de video.
           </video>
         </div>
-      </div>
-
-      <div className="more-doubts-container">
-        <MoreDoubts />
       </div>
     </section>
   )
