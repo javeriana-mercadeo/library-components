@@ -1,12 +1,13 @@
-import Form from '@library/_institutional/sections/helpPage/sections/form'
+import WhenHelp from '@library/_institutional/sections/helpPage/sections/registration/whenHelp'
+import MoreDoubts from '@library/_institutional/sections/helpPage/sections/registration/moreDoubts'
 
-
-export default function page(){
+export default function page() {
   return (
-  <>
-  <Form />
+    <>
+      <WhenHelp />
+      <div className="only-desktop">
+        <MoreDoubts />
+      </div>
     </>
   )
 }
-
-

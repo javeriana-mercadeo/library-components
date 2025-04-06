@@ -1,13 +1,13 @@
-import RegistrationSteps from '@library/_institutional/sections/helpPage/sections/registrationSteps'
-import MoreDoubts from '@library/_institutional/sections/helpPage/sections/moreDoubts'
+import RegistrationSteps from '@library/_institutional/sections/helpPage/sections/registration/registrationSteps'
+import MoreDoubts from '@library/_institutional/sections/helpPage/sections/registration/moreDoubts'
 
-export default function page(){
+export default function page() {
   return (
-  <>
-  <RegistrationSteps />
-
-  <MoreDoubts />
-
+    <>
+      <RegistrationSteps />
+      <div className="only-desktop">
+        <MoreDoubts />
+      </div>
     </>
   )
 }

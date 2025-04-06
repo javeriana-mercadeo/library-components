@@ -1,0 +1,115 @@
+@use '../../../styles/_variables.scss'as *;
+@use '../../../styles/mixins'as *;
+@use '../../../../../../../styles/global.scss' as *;
+
+.requirements-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+
+  .requirements-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    h2 {
+      font-size: $font-size-h2;
+      font-weight: bold;
+      width: 100%;
+      color: $text-dark;
+    }
+  }
+  .note {
+    color: #2c333a;
+    font-size: $font-size-p;
+    width: fit-content;
+    font-weight: 700;
+
+    a{
+      color: $primary-color;
+      font-size: $font-size-p;
+      font-weight: 700;
+    }
+  }
+      .aplication-item {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 20px;
+      gap: 10px;
+
+      ol {
+        list-style: none;
+      }
+
+      ol {
+        list-style: disc;
+        padding-left: 20px;
+        font-size: $font-size-p;
+        color: #2c333a;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+
+        li::marker {
+          color: $primary-color;
+          font-weight: bold;
+          font-size: 1rem;
+        }
+        li {
+          padding-left: 5px;
+        }
+      }
+    }
+  }
+  .sub-title {
+    font-size: $font-size-p;
+    font-weight: bold;
+  }
+
+@media (min-width: $breakpoint-xl) {
+  .requirements-section {
+    max-width: $breakpoint-xl;
+
+    .requirements-header {
+      width: 100%;
+
+      h2 {
+        width: 100%;
+      }
+
+      a {
+        justify-content: end;
+        gap: 10px;
+        width: 30%;
+      }
+    }
+   
+      .requirements-item {
+        border-bottom: none;
+        width: 100%;
+
+        a {
+          gap: 5px;
+          width: 100%;
+        }
+
+        p {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+//sección de moreDoubts
+.only-desktop {
+  display: none; // Oculto en móvil
+
+  @media (min-width: 1200px) {
+    display: block; 
+  }
+}

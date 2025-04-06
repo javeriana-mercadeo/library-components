@@ -1,13 +1,14 @@
-import ButtonReturn from '@library/_institutional/sections/helpPage/sections/buttonReturn'
-import QuestionFrequently from '@library/_institutional/sections/helpPage/sections/questionFrequently'
-
+import QuestionFrequently from '@library/_institutional/sections/helpPage/sections/registration/questionFrequently'
+import MoreDoubts from '@library/_institutional/sections/helpPage/sections/registration/moreDoubts'
 export default function Page() {
   return (
     <>
-      <ButtonReturn />
+      
 
       <QuestionFrequently />
-
+<div className="only-mobile">
+  <MoreDoubts />
+</div>
       
     </>
   )

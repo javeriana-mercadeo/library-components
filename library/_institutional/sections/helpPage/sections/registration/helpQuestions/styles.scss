@@ -1,0 +1,138 @@
+@use '../../../styles/_variables.scss'as *;
+@use '../../../styles/mixins'as *;
+@use '../../../../../../../styles/global.scss' as *;
+
+
+.faq-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  padding: 20px;
+  h2 {
+    font-size: $font-size-h2;
+    font-weight: bold;
+  }
+  .faq-item-content{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.5s ease-in-out;
+  }
+  .faq-item {
+    background: white;
+    border: 1px solid $color-border;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-width: 260px;
+
+    h3 {
+      width: 60%;
+      font-size: $font-size-p;
+      font-weight: $font-weight-bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+    }
+
+    a {
+      color: $primary-color;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: $font-size-p;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      width: fit-content;
+
+    }
+    .iconsTitle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $primary-color;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      color: $text-light;
+      font-size: 1.2rem;
+      line-height: 38px;
+      padding: 0; 
+    }
+    
+  }
+}
+@media (min-width: $breakpoint-xl){
+
+  .faq-section {
+    max-width: $breakpoint-lg;
+  
+    .faq-item-content {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      gap: 26px;
+      transform: translateY(-10px);
+      .faq-item {
+       
+        padding: 15px;
+        margin-top: 10px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content:space-between;
+        gap: 20px;
+        width: 240px; 
+        height: auto;
+      }
+  
+      h3 {
+        width: 90%;
+        font-size: $font-size-p;
+        font-weight: $font-weight-bold;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+  
+      }
+  
+      a {
+        color: $primary-color;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: $font-size-p;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: fit-content;
+  
+      }
+      .iconsTitle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $primary-color;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        color: $text-light;
+        font-size: 1.2rem;
+        line-height: 38px;
+        padding: 0; 
+      }
+      
+    }
+}}

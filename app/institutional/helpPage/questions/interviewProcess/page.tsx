@@ -1,10 +1,13 @@
-import Form from '@library/_institutional/sections/helpPage/sections/form'
+import InterviewProcess from '@library/_institutional/sections/helpPage/sections/registration/interviewProcess'
+import MoreDoubts from '@library/_institutional/sections/helpPage/sections/registration/moreDoubts'
 
-
-export default function page(){
+export default function page() {
   return (
-  <>
-  <Form />
+    <>
+      <InterviewProcess />
+      <div className="only-desktop">
+        <MoreDoubts />
+      </div>
     </>
   )
 }
