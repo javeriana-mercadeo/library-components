@@ -1,0 +1,182 @@
+@use 'sass:color';
+@use '@styles/main' as *;
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--neutral-1000);
+  z-index: 1000;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 70px;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+
+  // Logo
+  &__logo {
+    display: flex;
+    align-items: center;
+    margin: 0;
+
+    &-image {
+      width: 150px;
+      height: auto;
+
+      /* Aplicar el color del SVG usando variables CSS */
+      fill: var(--primary-600);
+
+      /* Para SVGs más complejos que pueden tener paths con stroke */
+      stroke: var(--primary-600);
+
+      /* Para asegurar que los cambios de colores tengan transición suave */
+      transition:
+        fill 0.3s ease,
+        stroke 0.3s ease;
+
+      &.dark {
+        display: none;
+      }
+
+      @include dark-theme {
+        &.light {
+          display: none;
+        }
+
+        &.dark {
+          display: block;
+        }
+      }
+    }
+  }
+
+  // Navegación Desktop
+  &__nav {
+    display: none;
+
+    @include responsive {
+      display: flex;
+      flex-grow: 1;
+    }
+
+    &-list {
+      display: flex;
+      gap: var(--spacing-lg);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    &-link {
+      text-decoration: none;
+      font-size: var(--font-size-normal);
+      color: var(--neutral-200);
+      transition: color 0.3s;
+
+      &:hover {
+        color: var(--primary-600);
+      }
+    }
+  }
+
+  // Botones CTA
+  &__cta {
+    display: none;
+
+    @include responsive {
+      display: flex;
+      gap: var(--spacing-sm);
+      align-items: center;
+    }
+  }
+
+  // Toggle para menú móvil
+  &__menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--neutral-200);
+    cursor: pointer;
+
+    @include responsive {
+      display: none;
+    }
+  }
+
+  // Menú móvil
+  &__mobile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--neutral-1000);
+    border-top: 1px solid var(--neutral-300);
+    padding: var(--spacing-md);
+    flex-direction: column;
+    gap: var(--spacing-md);
+
+    &.active {
+      display: flex;
+    }
+
+    &-list,
+    &-cta {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    &-link,
+    &-cta-link {
+      display: block;
+      text-decoration: none;
+      color: var(--neutral-200);
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--neutral-300);
+
+      &:hover {
+        color: var(--primary-600);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+// Contenedor de CTA fijo en móvil
+.cta-container {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--neutral-1100);
+  padding: var(--spacing-sm);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  z-index: 1000;
+
+  @include responsive {
+    display: none;
+  }
+
+  button {
+    width: 90%;
+    max-width: 300px;
+    text-align: center;
+  }
+}

@@ -4,30 +4,21 @@
 
 // 1. Abstracts (sin salida CSS)
 // ------------------------------------------
-@use 'abstracts/variables';
-@use 'abstracts/functions';
-@use 'abstracts/mixins';
-@use 'abstracts/colors';
-
-// 2. Vendors (librerías terceras)
-// ------------------------------------------
-@use 'vendors/tailwind';
-@use 'vendors/liferay';
+@forward 'abstracts/variables';
+@forward 'abstracts/functions';
+@forward 'abstracts/mixins';
+@forward 'abstracts/colors';
 
 // 3. Base (estilos fundamentales)
 // ------------------------------------------
-@use 'base/reset';
-@use 'base/typography';
-@use 'base/animations';
-@use 'base/utilities';
+@forward 'base/reset';
+@forward 'base/typography';
+@forward 'base/animations';
+@forward 'base/utilities';
 
 // 4. Sistema de temas
 // ------------------------------------------
-@use 'themes/theme-core';
-@use 'themes/themes';
+@forward 'themes/theme-core';
+@forward 'themes/themes';
 
-// 5. Componentes globales
-// ------------------------------------------
-@use 'components/buttons';
-@use 'components/forms';
-@use 'components/cards';
+

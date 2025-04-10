@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slider de Acreditaciones - Versión Compatible</title>
+
+    <style>
+      :root {
+        /* Variables de colores */
+        --jav-slider-color-white: #ffffff;
+        --jav-slider-color-background: #f1efef;
+        --jav-slider-color-hover: #233d9b;
+        --jav-slider-color-border-hover: #d8d8d8;
+        --jav-slider-color-box-shadow: rgba(75, 74, 74, 0.055);
+        --jav-slider-color-gradient-start: #4a5fac;
+        --jav-slider-color-gradient-end: #4866d1;
+        --jav-slider-transition-duration: 0.3s;
+        --jav-slider-transition-easing: cubic-bezier(0.25, 0.1, 0.25, 1);
+      }
+
+      /* Contenedor principal del slider */
+      .jav-slider-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 1920px;
+        overflow: hidden;
+        margin: 0 auto;
+      }
+
+      .jav-slider-card[data-finite='true'] .jav-slider-general-container {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+      }
+
+      .jav-slider-card * {
+        box-sizing: border-box;
+      }
+
+      .jav-slider-card:hover > .jav-slider-card-track .jav-slider-card-item::after {
+        opacity: 1;
+      }
+
+      .jav-slider-card .jav-container-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+
+      /* Contenedor general */
+      .jav-slider-general-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(100% - 80px);
+        margin: 20px auto;
+      }
+
+      /* Contenedor de las tarjetas */
+      .jav-slider-general-container .jav-slider-card-container {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(100% - 80px);
+        mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+      }
+
+      /* Track del slider (elemento que se mueve) */
+      .jav-slider-general-container .jav-slider-card-track {
+        display: flex;
+        align-items: stretch;
+        gap: 20px;
+        transition: transform 0.8s var(--jav-slider-transition-easing);
+      }
+
+      /* Items individuales */
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex: 1 1 260px;
+        min-width: 180px;
+        background-color: var(--jav-slider-color-white);
+        border: 1px solid var(--jav-slider-color-white);
+        box-shadow: 0 0 10px var(--jav-slider-color-box-shadow);
+        border-radius: 20px;
+        padding: 1px;
+        margin: 5px;
+        transition: var(--jav-slider-transition-duration);
+        overflow: hidden;
+      }
+
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item:hover {
+        opacity: 1;
+        border: 1px solid var(--jav-slider-color-border-hover);
+        transition: var(--jav-slider-transition-duration);
+      }
+
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item:hover figure img {
+        transition: var(--jav-slider-transition-duration);
+      }
+
+      /* Efectos de hover */
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item::before,
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item::after {
+        border-radius: inherit;
+        content: '';
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transition: opacity 500ms;
+        width: 100%;
+      }
+
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item::before {
+        background: radial-gradient(20px circle at var(--mouse-x) var(--mouse-y), var(--jav-slider-color-gradient-start), transparent 40%);
+        z-index: 2;
+      }
+
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item::after {
+        background: radial-gradient(300px circle at var(--mouse-x) var(--mouse-y), var(--jav-slider-color-gradient-end), transparent 50%);
+        z-index: 1;
+      }
+
+      /* Contenido de los items */
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background-color: var(--jav-slider-color-white);
+        border-radius: inherit;
+        flex-grow: 1;
+        z-index: 2;
+        padding: 15px;
+      }
+
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item-content figure {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+      }
+
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item-content figure img {
+        object-fit: contain;
+        width: 100%;
+        max-height: 120px;
+        transition: var(--jav-slider-transition-duration);
+      }
+
+      .jav-slider-general-container .jav-slider-card-track .jav-slider-card-item-content p {
+        width: 100%;
+        font-family: Arial, 'Raleway', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        color: #707070;
+        text-align: center;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Botones de navegación */
+      .jav-slider-general-container .jav-slider-btn-next,
+      .jav-slider-general-container .jav-slider-btn-prev {
+        position: absolute;
+        top: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        color: var(--jav-slider-color-background);
+        background-color: var(--jav-slider-color-gradient-end);
+        border-radius: 50%;
+        border: none;
+        padding: 0;
+        z-index: 5;
+        transition: var(--jav-slider-transition-duration);
+      }
+
+      .jav-slider-general-container .jav-slider-btn-next:hover,
+      .jav-slider-general-container .jav-slider-btn-prev:hover {
+        background-color: var(--jav-slider-color-hover);
+        color: #d4d4d4;
+        width: 32px;
+        height: 32px;
+      }
+
+      .jav-slider-general-container .jav-slider-btn-next svg,
+      .jav-slider-general-container .jav-slider-btn-prev svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      .jav-slider-general-container .jav-slider-btn-next {
+        right: 14px;
+        transform: translate(50%, -50%) rotate(90deg);
+      }
+
+      .jav-slider-general-container .jav-slider-btn-prev {
+        left: 14px;
+        transform: translate(-50%, -50%) rotate(270deg);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .jav-slider-general-container {
+          width: calc(100% - 40px);
+        }
+
+        .jav-slider-general-container .jav-slider-card-container {
+          justify-content: flex-start;
+        }
+
+        .jav-slider-general-container .jav-slider-card-container .jav-slider-card-track {
+          justify-content: flex-start;
+        }
+
+        .jav-slider-general-container .jav-slider-card-container .jav-slider-card-track .jav-slider-card-item {
+          width: calc(50% - 20px);
+          min-height: 150px;
+          margin: 5px 10px;
+        }
+
+        .jav-slider-general-container .jav-slider-card-container .jav-slider-card-track .jav-slider-card-item:hover {
+          width: calc(50% - 20px);
+          height: auto;
+        }
+
+        .jav-slider-general-container
+          .jav-slider-card-container
+          .jav-slider-card-track
+          .jav-slider-card-item
+          .jav-slider-card-item-content {
+          flex-direction: column;
+        }
+
+        .jav-slider-general-container
+          .jav-slider-card-container
+          .jav-slider-card-track
+          .jav-slider-card-item
+          .jav-slider-card-item-content
+          figure {
+          width: 100%;
+          height: 100px;
+          margin: 0;
+        }
+
+        .jav-slider-general-container
+          .jav-slider-card-container
+          .jav-slider-card-track
+          .jav-slider-card-item
+          .jav-slider-card-item-content
+          figure
+          img {
+          filter: grayscale(0%);
+          max-height: 150px;
+          max-width: 150px;
+        }
+
+        .jav-slider-general-container
+          .jav-slider-card-container
+          .jav-slider-card-track
+          .jav-slider-card-item
+          .jav-slider-card-item-content
+          p {
+          width: 100%;
+          text-align: center;
+          padding: 5px;
+        }
+
+        .jav-acre-inst {
+          margin-top: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <article id="slider-acreditaciones-javeriana" class="jav-acreditaciones-container">
+      <!-- Contenido definido por el usuario -->
+      <div class="jav-acreditaciones-data" hidden>
+        <!-- Título -->
+        <h2>Acreditaciones institucionales</h2>
+
+        <!-- Items -->
+        <div
+          class="jav-acreditacion-item"
+          data-img="https://www.javeriana.edu.co/recursosdb/1372208/12527648/alta_calidad.png"
+          data-alt="Alta Calidad">
+          Acreditación Institucional de Alta Calidad por 10 años (2020).
+        </div>
+
+        <div
+          class="jav-acreditacion-item"
+          data-img="https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-qs-empleabilidad-lp"
+          data-alt="QS Empleabilidad">
+          Tercera posición en empleabilidad de nuestros graduados.
+        </div>
+
+        <div
+          class="jav-acreditacion-item"
+          data-img="https://www.javeriana.edu.co/recursosdb/1372208/12527648/merco-img.png"
+          data-alt="MERCO">
+          Primer lugar en el sector educativo de Colombia (2023).
+        </div>
+
+        <div
+          class="jav-acreditacion-item"
+          data-img="https://www.javeriana.edu.co/recursosdb/1372208/12527648/THE+Impact+Rankings+2024_COL_RGB.jpg"
+          data-alt="THE Impact Rankings">
+          Primer lugar en Colombia por nuestro compromiso con los ODS (2023).
+        </div>
+
+        <div
+          class="jav-acreditacion-item"
+          data-img="https://www.javeriana.edu.co/recursosdb/1372208/12527648/logo-ranking-the-latin-america.png"
+          data-alt="Ranking THE Latin America">
+          Tercer lugar en Colombia y 36 en Latinoamérica entre 230 instituciones.
+        </div>
+      </div>
+    </article>
+
+    <script>
+      /**
+       * Carrusel Infinito Mejorado
+       * Versión: 2.0.0
+       * Autor: Javeriana
+       *
+       * Componente optimizado con:
+       * - Carga diferida de recursos
+       * - Verificación de dependencias
+       * - Mejor compatibilidad entre navegadores
+       * - Manejo de errores
+       * - Estructura más modular y mantenible
+       */
+      ;(function () {
+        // Verificar si el navegador soporta las características necesarias
+        const isBrowserCompatible = () => {
+          return 'querySelector' in document && 'addEventListener' in window && 'classList' in document.createElement('div')
+        }
+
+        class JaverianaInfiniteCarousel {
+          constructor(containerId = 'slider-acreditaciones-javeriana') {
+            // Configuración
+            this.config = {
+              duplicateItems: 2, // Número de veces que se duplican los items
+              itemWidth: 210, // Ancho inicial de cada item
+              transitionTime: 3, // Tiempo en segundos para el autoplay
+              autoPlay: true, // Activar/desactivar autoplay
+              finite: false, // Carrusel finito o infinito
+              namespace: 'jav-slider-' // Prefijo para clases CSS
+            }
+
+            // Clases CSS
+            this.classes = {
+              container: this.config.namespace + 'card',
+              generalContainer: this.config.namespace + 'general-container',
+              slideContainer: this.config.namespace + 'card-container',
+              track: this.config.namespace + 'card-track',
+              item: this.config.namespace + 'card-item',
+              itemContent: this.config.namespace + 'card-item-content',
+              btnNext: this.config.namespace + 'btn-next',
+              btnPrev: this.config.namespace + 'btn-prev',
+              title: 'jav-acre-inst'
+            }
+
+            // Referencias DOM
+            this.container = document.getElementById(containerId)
+            this.dataContainer = this.container.querySelector('.jav-acreditaciones-data')
+            this.slideTrack = null
+            this.intervalId = null
+
+            // Estado
+            this.items = []
+            this.title = ''
+
+            // Inicializar si el navegador es compatible
+            if (isBrowserCompatible()) {
+              this.init()
+            } else {
+              console.warn('El navegador no soporta todas las características necesarias para el carrusel.')
+              this.renderFallback()
+            }
+          }
+
+          /**
+           * Inicializar el componente
+           */
+          init() {
+            try {
+              // Cargar datos
+              this.loadData()
+
+              // Comprobar si tenemos items
+              if (this.items.length === 0) {
+                console.warn('No se encontraron elementos para el carrusel.')
+                return
+              }
+
+              // Renderizar componente
+              this.render()
+
+              // Iniciar autoplay si está activado
+              if (this.config.autoPlay) {
+                this.startAutoPlay()
+              }
+
+              // Registrar eventos de redimensionado para adaptabilidad
+              window.addEventListener(
+                'resize',
+                this.debounce(() => {
+                  this.revalueItems()
+                }, 250)
+              )
+
+              console.log('🟢 Carrusel de acreditaciones inicializado correctamente')
+            } catch (error) {
+              console.error('Error al inicializar el carrusel:', error)
+              this.renderFallback()
+            }
+          }
+
+          /**
+           * Cargar datos del contenedor
+           */
+          loadData() {
+            if (!this.dataContainer) {
+              throw new Error('No se encontró el contenedor de datos del carrusel.')
+            }
+
+            // Cargar título
+            const titleElement = this.dataContainer.querySelector('h2')
+            this.title = titleElement ? titleElement.textContent : 'Acreditaciones institucionales'
+
+            // Cargar items
+            const itemElements = this.dataContainer.querySelectorAll('.jav-acreditacion-item')
+            this.items = Array.from(itemElements).map(item => ({
+              img: item.getAttribute('data-img') || '',
+              alt: item.getAttribute('data-alt') || '',
+              text: item.textContent.trim()
+            }))
+          }
+
+          /**
+           * Renderizar todo el componente
+           */
+          render() {
+            this.createElements()
+            this.applyStyles()
+            this.revalueItems()
+          }
+
+          /**
+           * Renderizar una versión simplificada en caso de error
+           */
+          renderFallback() {
+            if (!this.dataContainer) return
+
+            // Limpiar el contenedor principal
+            this.container.innerHTML = ''
+
+            // Crear título
+            const titleElement = document.createElement('h2')
+            titleElement.textContent = this.title || 'Acreditaciones institucionales'
+            titleElement.className = 'jav-acreditaciones-titulo'
+            this.container.appendChild(titleElement)
+
+            // Crear contenedor de items
+            const itemsContainer = document.createElement('div')
+            itemsContainer.className = 'jav-acreditaciones-lista'
+            this.container.appendChild(itemsContainer)
+
+            // Crear items estáticos
+            const itemElements = this.dataContainer.querySelectorAll('.jav-acreditacion-item')
+            Array.from(itemElements).forEach(item => {
+              const itemElement = document.createElement('div')
+              itemElement.className = 'jav-acreditacion-item-static'
+
+              const figure = document.createElement('figure')
+              const img = document.createElement('img')
+              img.src = item.getAttribute('data-img') || ''
+              img.alt = item.getAttribute('data-alt') || ''
+              figure.appendChild(img)
+
+              const text = document.createElement('p')
+              text.textContent = item.textContent.trim()
+
+              itemElement.appendChild(figure)
+              itemElement.appendChild(text)
+              itemsContainer.appendChild(itemElement)
+            })
+          }
+
+          /**
+           * Crear todos los elementos DOM necesarios
+           */
+          createElements() {
+            // Limpiar el contenedor
+            this.container.innerHTML = ''
+            this.container.classList.add(this.classes.container)
+
+            if (this.config.finite) {
+              this.container.setAttribute('data-finite', 'true')
+            }
+
+            // Crear el contenedor del título
+            const containerTitle = this.createElement('div', ['col-12', 'p-6', this.classes.title])
+            containerTitle.id = 'background-element-title'
+            this.container.appendChild(containerTitle)
+
+            // Crear título
+            const h2 = this.createElement('h2', ['text-bold', 'text-center', 'title-block', 'title-block-plan', 'color-txt'])
+            h2.textContent = this.title
+            containerTitle.appendChild(h2)
+
+            // Crear contenedor general
+            const generalContainer = this.createElement('article', [this.classes.generalContainer])
+            this.container.appendChild(generalContainer)
+
+            // Crear contenedor de slides
+            const containerSlide = this.createElement('article', [this.classes.slideContainer])
+            generalContainer.appendChild(containerSlide)
+
+            // Crear track
+            const slideTrack = this.createElement('article', [this.classes.track])
+            this.slideTrack = slideTrack
+            containerSlide.appendChild(slideTrack)
+
+            // Crear botones de navegación
+            const btnPrev = this.createButton(this.classes.btnPrev, () => this.moveSlide(-1))
+            const btnNext = this.createButton(this.classes.btnNext, () => this.moveSlide(1))
+            generalContainer.appendChild(btnPrev)
+            generalContainer.appendChild(btnNext)
+
+            // Crear items iniciales
+            this.createItems()
+          }
+
+          /**
+           * Aplicar estilos y efectos interactivos
+           */
+          applyStyles() {
+            const item = this.container.querySelector(`.${this.classes.item}`)
+            if (!item) return
+
+            // Calcular ancho de items
+            this.config.itemWidth = item.offsetWidth || this.config.itemWidth
+
+            // Aplicar ancho al track
+            if (this.slideTrack) {
+              this.slideTrack.style.width = `${this.config.itemWidth * this.items.length * this.config.duplicateItems}px`
+            }
+
+            // Aplicar efecto hover
+            this.container.addEventListener('mousemove', e => {
+              const cards = this.container.querySelectorAll(`.${this.classes.item}`)
+              cards.forEach(card => {
+                const rect = card.getBoundingClientRect()
+                const x = e.clientX - rect.left
+                const y = e.clientY - rect.top
+
+                card.style.setProperty('--mouse-x', `${x}px`)
+                card.style.setProperty('--mouse-y', `${y}px`)
+              })
+            })
+          }
+
+          /**
+           * Ajustar items según dimensiones
+           */
+          revalueItems() {
+            if (!this.slideTrack) return
+
+            const totalItems = this.items.length
+            const itemsInRow = Math.ceil(this.container.clientWidth / this.config.itemWidth)
+
+            // Ocultar/mostrar botones según configuración
+            if (itemsInRow > totalItems && this.config.finite) {
+              const btnNext = this.container.querySelector(`.${this.classes.btnNext}`)
+              const btnPrev = this.container.querySelector(`.${this.classes.btnPrev}`)
+
+              if (btnNext) btnNext.style.display = 'none'
+              if (btnPrev) btnPrev.style.display = 'none'
+            }
+
+            // Calcular duplicación necesaria
+            let multiplier = Math.ceil(itemsInRow / totalItems)
+            this.config.duplicateItems = this.config.finite ? 1 : multiplier * 2
+
+            // Recrear items y aplicar estilos
+            this.createItems()
+            this.applyStyles()
+          }
+
+          /**
+           * Mover el carrusel
+           * @param {number} direction - Dirección (1: derecha, -1: izquierda)
+           */
+          moveSlide(direction) {
+            if (!this.slideTrack) return
+
+            const items = this.slideTrack.querySelectorAll(`.${this.classes.item}`)
+            if (items.length === 0) return
+
+            const widthItem = items[0].offsetWidth
+
+            if (direction === 1) {
+              // Mover a la izquierda
+              this.slideTrack.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)'
+              this.slideTrack.style.transform = `translateX(-${widthItem + 40}px)`
+
+              setTimeout(() => {
+                if (items[0] && this.slideTrack) {
+                  this.slideTrack.appendChild(items[0]) // Mover el primer item al final
+                  this.slideTrack.style.transition = 'none'
+                  this.slideTrack.style.transform = 'translateX(0)'
+                }
+              }, 800)
+            } else {
+              // Mover a la derecha
+              if (items.length > 0 && this.slideTrack) {
+                this.slideTrack.style.transition = 'none'
+                this.slideTrack.style.transform = `translateX(-${widthItem + 40}px)`
+                this.slideTrack.insertBefore(items[items.length - 1], items[0]) // Mover el último al principio
+
+                setTimeout(() => {
+                  this.slideTrack.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)'
+                  this.slideTrack.style.transform = 'translateX(0)'
+                }, 10)
+              }
+            }
+          }
+
+          /**
+           * Iniciar reproducción automática
+           */
+          startAutoPlay() {
+            // Limpiar intervalo existente
+            if (this.intervalId) {
+              clearInterval(this.intervalId)
+            }
+
+            // Crear nuevo intervalo
+            this.intervalId = setInterval(() => {
+              this.moveSlide(1)
+            }, this.config.transitionTime * 1300)
+          }
+
+          /**
+           * Detener reproducción automática
+           */
+          stopAutoPlay() {
+            if (this.intervalId) {
+              clearInterval(this.intervalId)
+              this.intervalId = null
+            }
+          }
+
+          /**
+           * Crear items en el track
+           */
+          createItems() {
+            if (!this.slideTrack) return
+
+            // Limpiar track
+            this.slideTrack.innerHTML = ''
+
+            // Crear items duplicados según configuración
+            for (let i = 0; i < this.config.duplicateItems; i++) {
+              this.items.forEach(item => {
+                const listItem = this.createItem(item)
+                this.slideTrack.appendChild(listItem)
+              })
+            }
+          }
+
+          /**
+           * Crear un item individual
+           * @param {Object} item - Datos del item
+           * @returns {HTMLElement} - Elemento del item
+           */
+          createItem(item) {
+            // Crear item
+            const listItem = document.createElement('article')
+            listItem.classList.add(this.classes.item)
+
+            // Crear contenido
+            const content = document.createElement('article')
+            content.classList.add(this.classes.itemContent)
+            listItem.appendChild(content)
+
+            // Crear imagen
+            const figure = document.createElement('figure')
+            content.appendChild(figure)
+
+            const img = document.createElement('img')
+            img.src = item.img
+            img.alt = item.alt
+            img.loading = 'lazy' // Carga diferida de imágenes
+            figure.appendChild(img)
+
+            // Crear texto
+            const text = document.createElement('p')
+            text.textContent = item.text
+            content.appendChild(text)
+
+            return listItem
+          }
+
+          /**
+           * Crear un botón de navegación
+           * @param {string} className - Clase CSS
+           * @param {Function} onClick - Función de clic
+           * @returns {HTMLButtonElement} - Elemento botón
+           */
+          createButton(className, onClick) {
+            const button = this.createElement('button', [className])
+            button.innerHTML = this.createSVGIcon()
+            button.addEventListener('click', onClick)
+            return button
+          }
+
+          /**
+           * Crear un elemento con clases
+           * @param {string} tag - Etiqueta HTML
+           * @param {Array} classList - Lista de clases
+           * @returns {HTMLElement} - Elemento creado
+           */
+          createElement(tag, classList = []) {
+            const element = document.createElement(tag)
+            classList.forEach(className => {
+              if (className) element.classList.add(className)
+            })
+            return element
+          }
+
+          /**
+           * Crear ícono SVG para botones
+           * @returns {string} - Código SVG
+           */
+          createSVGIcon() {
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 1 1-.708.708L8.5 5.707z"/>
+            </svg>
+          `
+          }
+
+          /**
+           * Función para limitar la frecuencia de ejecución (debounce)
+           * @param {Function} func - Función a ejecutar
+           * @param {number} wait - Tiempo de espera en ms
+           * @returns {Function} - Función con debounce
+           */
+          debounce(func, wait) {
+            let timeout
+            return function (...args) {
+              clearTimeout(timeout)
+              timeout = setTimeout(() => func.apply(this, args), wait)
+            }
+          }
+        }
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', () => {
+          console.log('🟠 Iniciando carrusel de acreditaciones...')
+
+          try {
+            const carousel = new JaverianaInfiniteCarousel()
+
+            // Exponer la instancia para acceso externo
+            window.JaverianaSlider = carousel
+          } catch (error) {
+            console.error('Error al inicializar el carrusel:', error)
+          }
+        })
+
+        // Función auxiliar para convertir el formato antiguo al nuevo
+        function convertLegacyFormat() {
+          const oldSlider = document.getElementById('slider-card')
+          if (!oldSlider) return
+
+          // Crear el nuevo contenedor
+          const newContainer = document.createElement('article')
+          newContainer.id = 'slider-acreditaciones-javeriana'
+          newContainer.className = 'jav-acreditaciones-container'
+
+          // Crear contenedor de datos
+          const dataContainer = document.createElement('div')
+          dataContainer.className = 'jav-acreditaciones-data'
+          dataContainer.hidden = true
+
+          // Obtener título
+          const titleElement = oldSlider.querySelector('title')
+          if (titleElement) {
+            const h2 = document.createElement('h2')
+            h2.textContent = titleElement.textContent
+            dataContainer.appendChild(h2)
+          }
+
+          // Convertir items
+          const items = oldSlider.querySelectorAll('item')
+          items.forEach(item => {
+            const newItem = document.createElement('div')
+            newItem.className = 'jav-acreditacion-item'
+            newItem.setAttribute('data-img', item.getAttribute('img') || '')
+            newItem.setAttribute('data-alt', item.getAttribute('alt') || '')
+            newItem.textContent = item.textContent.trim()
+            dataContainer.appendChild(newItem)
+          })
+
+          // Agregar al DOM
+          newContainer.appendChild(dataContainer)
+          oldSlider.parentNode.insertBefore(newContainer, oldSlider)
+          oldSlider.style.display = 'none'
+
+          return newContainer.id
+        }
+
+        // Detectar y convertir formato antiguo si existe
+        if (document.getElementById('slider-card') && !document.getElementById('slider-acreditaciones-javeriana')) {
+          document.addEventListener('DOMContentLoaded', () => {
+            const newId = convertLegacyFormat()
+            if (newId) {
+              console.log('🔄 Formato antiguo de slider detectado y convertido')
+              try {
+                const carousel = new JaverianaInfiniteCarousel(newId)
+                window.JaverianaSlider = carousel
+              } catch (error) {
+                console.error('Error al inicializar el carrusel convertido:', error)
+              }
+            }
+          })
+        }
+      })()
+    </script>
+  </body>
+</html>

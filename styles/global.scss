@@ -1,38 +1,21 @@
 // ==========================================
-// ARCHIVO PRINCIPAL DE ESTILOS
+// ESTILOS GLOBALES
 // ==========================================
 
-// 1. Abstracts (sin salida CSS)
+// 1. Dependencias
 // ------------------------------------------
-@use 'abstracts/variables';
-@use 'abstracts/functions';
-@use 'abstracts/mixins';
-@use 'abstracts/colors';
+@use './main' as *;
 
-// 2. Vendors (librerías terceras)
+// 2. Vendors (Terceras)
 // ------------------------------------------
-@use 'vendors/tailwind';
-@use 'vendors/liferay';
+@forward 'vendors/liferay';
 
-// 3. Base (estilos fundamentales)
+// 3. Componentes globales
 // ------------------------------------------
-@use 'base/reset';
-@use 'base/typography';
-@use 'base/animations';
-@use 'base/utilities';
+@use '@general/components/buttons/btn_general/style.scss' as *;
+@include general-btn;
 
-// 4. Sistema de temas
-// ------------------------------------------
-@use 'themes/theme-core';
-@use 'themes/themes';
-
-// 5. Componentes globales
-// ------------------------------------------
-@use 'components/buttons';
-@use 'components/forms';
-@use 'components/cards';
-
-// 6. Estilos globales específicos
+// 4. Estilos globales específicos
 // ------------------------------------------
 
 // Fuentes
@@ -43,7 +26,7 @@
   background-color: var(--primary-400);
   color: var(--neutral-200);
 
-  @include mixins.dark-theme {
+  @include dark-theme {
     background-color: var(--primary-200);
     color: var(--neutral-100);
   }
@@ -52,7 +35,7 @@
 // Estilos globales de HTML y body
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: functions.rem(75px);
+  scroll-padding-top: rem(75px);
   min-height: 100vh;
   height: 100%;
 
@@ -69,19 +52,19 @@ html {
 
   // Personalización del scroll
   body::-webkit-scrollbar {
-    width: functions.rem(7px);
+    width: rem(7px);
     background-color: var(--neutral-700);
   }
 
   body::-webkit-scrollbar-thumb {
     background-color: var(--primary-600);
-    border-radius: functions.rem(5px);
+    border-radius: rem(5px);
     height: 40%;
   }
 }
 
 // Media queries globales
-@include mixins.responsive {
+@include responsive {
   html body {
     background-attachment: scroll;
   }

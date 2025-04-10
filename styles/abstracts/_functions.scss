@@ -6,6 +6,7 @@
 @use 'sass:list';
 @use 'sass:math';
 @use 'sass:meta';
+@use 'sass:string';
 @use 'variables' as *;
 
 // MEDIDAS RELATIVAS
@@ -114,6 +115,30 @@
   $black-contrast: math.div($bg-luminance + 0.05, 0 + 0.05);
 
   // Si la luminancia del fondo es muy alta (> 0.85), forzamos el texto a ser negro
+  @if $bg-luminance > 0.55 {
+    @return var(--neutral-100);
+  } @else {
+    @return var(--neutral-1000);
+  }
+}
+
+@function text-contrast-byVarName($background-color) {
+  @if meta.type-of($background-color) != 'color' {
+    // Determinar si el tema es oscuro o claro basado en el nombre de la variable
+    @if string.index($background-color, '--neutral-') and string.index($background-color, '-100') {
+      @return var(--neutral-1000);
+    } @else if string.index($background-color, '-500') or string.index($background-color, '-800') {
+      @return var(--neutral-100);
+    } @else if string.index($background-color, '') {
+      @return var(--neutral-100);
+    } @else {
+      @return var(--neutral-1000);
+    }
+  }
+
+  // Para valores de color reales, usa el cálculo de luminancia
+  $bg-luminance: luminance($background-color);
+
   @if $bg-luminance > 0.45 {
     @return var(--neutral-100);
   } @else {
@@ -130,4 +155,32 @@
   }
 
   @error "Color semántico '#{$name}' no encontrado en $semantic-colors";
+}
+
+// FUNCIÓN PARA ACCEDER A LOS COLORES DEL TEMA
+// ------------------------------------------
+// Permite usar los colores del tema de forma programática
+
+@function deep-merge($map1, $map2) {
+  $result: $map1;
+
+  @each $key, $value in $map2 {
+    $existing: map.get($result, $key);
+
+    $new-value: if(
+      meta.type-of($existing) == 'map' and meta.type-of($value) == 'map',
+      deep-merge($existing, $value),
+      // merge recursivo
+      $value
+    );
+
+    $result: map.merge(
+      $result,
+      (
+        $key: $new-value
+      )
+    );
+  }
+
+  @return $result;
 }
