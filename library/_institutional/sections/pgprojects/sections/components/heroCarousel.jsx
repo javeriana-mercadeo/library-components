@@ -2,29 +2,26 @@
 import React, { Component } from 'react'
 import '../styles/heroCarousel.scss'
 
-
 class HeroCarousel extends Component {
   constructor(props) {
-    
     super(props)
     this.state = {
       activeIndex: 0,
       showModal: false,
       selectedSlideIndex: null,
       isMobile: false,
-      
       slides: [
         {
           image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1',
           title: 'Universidad Destacada',
           description: 'Descubre nuestros programas académicos y la experiencia universitaria',
-          url: '/institutional/pgprojects/projectsDetails' 
+          url: '/institutional/pgprojects/projectsDetails'
         },
         {
           image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
           title: 'Investigación de Clase Mundial',
           description: 'Conoce nuestros proyectos de investigación y logros académicos',
-          url: '/institutional/pgprojects/projectsDetails' 
+          url: '/institutional/pgprojects/projectsDetails'
         },
         {
           image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3',
@@ -84,7 +81,6 @@ class HeroCarousel extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.slideInterval)
     window.removeEventListener('resize', this.handleResize)
   }
 
@@ -104,26 +100,27 @@ class HeroCarousel extends Component {
 
     return (
       <section className="hero-carousel">
-      <div className="carousel-title"><h1 >Proyectos</h1></div>
-        <div className="carousel-container">
-          {slides.map((slide, index) => (
-            <div
-              key={index}
-              className={`carousel-slide ${getPositionClass(index)}`}
-              onClick={() => this.openModal(index)}
-              style={{ cursor: 'pointer' }}
-            >
+        <div className="carousel-title">
+          <h1>Proyectos</h1>
+        </div>
+
+        <div className="main-container">
+          <div className="carousel-container">
+            {slides.map((slide, index) => (
               <div
-                className="slide-image"
-                style={{ backgroundImage: `url(${slide.image})` }}
-              >
-                <div className="slide-content">
-                  <h2>{slide.title}</h2>
-                  <p>{slide.description}</p>
+                key={index}
+                className={`carousel-slide ${getPositionClass(index)}`}
+                onClick={() => this.openModal(index)}
+                style={{ cursor: 'pointer' }}>
+                <div className="slide-image" style={{ backgroundImage: `url(${slide.image})` }}>
+                  <div className="slide-content">
+                    <h2>{slide.title}</h2>
+                    <p>{slide.description}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
           <div className="carousel-controls">
             <button className="carousel-control prev" onClick={this.prevSlide}>
@@ -145,18 +142,13 @@ class HeroCarousel extends Component {
           </div>
         </div>
 
-        {/* MODAL */}
         {showModal && (
           <div className="modal-backdrop">
             <div className="modal-content">
-              <button className="modal-close" onClick={this.closeModal}>×</button>
-
-              <iframe
-                src={slides[selectedSlideIndex]?.url}
-                width="100%"
-                height="100%"
-                style={{ border: 'none', borderRadius: '10px' }}
-              />
+              <button className="modal-close" onClick={this.closeModal}>
+                ×
+              </button>
+              <iframe src={slides[selectedSlideIndex]?.url} width="100%" height="100%" style={{ border: 'none', borderRadius: '10px' }} />
             </div>
           </div>
         )}

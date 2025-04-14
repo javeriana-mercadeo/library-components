@@ -1,46 +1,65 @@
-.carousel-title {
+.hero-carousel {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
-
-  h1 {
-    color: #333;
-    font-weight: 700;
-    width: fit-content;
-    padding: 15px;
-    text-align: center;
-    font-size: clamp(1.5rem, 2.5vw, 3rem);
-  }
-}
-
-.hero-carousel {
-  position: relative;
   width: 100%;
 
-  .carousel-container {
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%;
-    overflow: hidden;
+  .carousel-title {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
 
-    @media (min-width: 768px) {
-      padding-bottom: 33.333%;
+    h1 {
+      color: #454F59;
+      font-weight: 700;
+      padding: 50px;
+      text-align: center;
+      font-size: clamp(1.25rem, 2vw + 1rem, 1.875rem);
     }
   }
-  @media (max-width: 768px) {
-    .slide-content {
-      opacity: 1 !important;
-      transform: translateY(0) !important;
+
+  .main-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  
+
+    @supports (aspect-ratio: 1 / 1) {
+      aspect-ratio: 1 / 1;
+  
+      @media (min-width: 768px) {
+        aspect-ratio: 3 / 1;
+      }
     }
+
+    @supports not (aspect-ratio: 1 / 1) {
+      height: 0;
+      padding-bottom: 100%; 
+  
+      @media (min-width: 768px) {
+        padding-bottom: 33.333%; 
+      }
+    }
+  }
+  
+
+  .carousel-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   .carousel-slide {
     position: absolute;
     top: 0;
     opacity: 0;
-    transition: all 0.5s ease-in-out;
     display: none;
+    transition: all 0.5s ease-in-out;
 
     .slide-image {
       width: 100%;
@@ -50,10 +69,11 @@
       position: relative;
       cursor: pointer;
       transition: transform 0.4s ease;
+      border-radius: 0;
 
       &:hover {
-        transform: scale(0.9);}
-      
+        transform: scale(0.9);
+      }
 
       .slide-content {
         position: absolute;
@@ -123,17 +143,14 @@
   .carousel-controls {
     position: absolute;
     top: 50%;
-    left: 0;
-    width: 100%;
     transform: translateY(-50%);
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 0 15px;
-    pointer-events: none;
     z-index: 10;
 
     .carousel-control {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.5);
       color: white;
       border: none;
       width: 40px;
@@ -145,20 +162,21 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      pointer-events: auto;
+      margin: 0 10px;
 
       &:hover {
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.7);
       }
     }
   }
 
   .carousel-indicators {
     position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 20px;
+    left: 0;
+    right: 0;
     display: flex;
+    justify-content: center;
     gap: 8px;
     z-index: 15;
 
@@ -166,13 +184,13 @@
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: rgba(235, 234, 234, 0.464);
+      background: rgba(235, 234, 234, 0.6);
       border: none;
       cursor: pointer;
       transition: all 0.3s ease;
 
       &.active {
-        background: rgba(190, 255, 251, 0.8);
+        background: rgba(190, 255, 251, 0.9);
         transform: scale(1.2);
       }
 
@@ -181,6 +199,7 @@
       }
     }
   }
+
   .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -197,7 +216,6 @@
     height: 90vh;
     background: white;
     position: relative;
-    border-radius: 10px;
     overflow: hidden;
   }
 
@@ -207,7 +225,7 @@
     right: 15px;
     width: 40px;
     height: 40px;
-    background-color: rgba(0, 0, 0, 0.7); // semitransparente
+    background-color: rgba(0, 0, 0, 0.7);
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -221,11 +239,9 @@
       background 0.3s ease,
       transform 0.2s ease;
     z-index: 10;
-    margin: 0 auto;
 
     &:hover {
       background-color: rgba(8, 29, 57, 0.9);
-      color: #ffffff;
       transform: scale(1.05);
     }
 

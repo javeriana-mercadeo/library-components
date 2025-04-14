@@ -12,7 +12,6 @@ const ProjectDetails = () => {
   return (
     <div className="project-details">
       <div className="project-layout">
-        {/* Info Section */}
         <div className="project-info">
           <h2>Lorem ipsum dolor sit amet consectetur.</h2>
           <div className="info-row">
@@ -33,7 +32,6 @@ const ProjectDetails = () => {
           </div>
         </div>
 
-        {/* Image Gallery */}
         <div className="project-gallery">
           {images.map((src, index) => (
             <img key={index} src={src} alt={`Imagen ${index + 1}`} style={{ width: '100%', marginBottom: '1rem', objectFit: 'cover' }} />
