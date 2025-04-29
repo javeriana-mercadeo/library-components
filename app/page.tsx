@@ -37,7 +37,7 @@ export default function Home() {
     {
       name: 'Botones',
       items: [
-        { name: 'Botón Icon', section: '_general/components/buttons/btn_icon', icon: 'ph-cursor-click' },
+        { name: 'Botón Icon', section: '/fragments/components/buttons', icon: 'ph-cursor-click' },
         { name: 'Botón Link', section: '_general/components/buttons/BtnLink', icon: 'ph-link' },
         { name: 'Botón General', section: '_general/components/buttons/btn_general', icon: 'ph-button' }
       ]
@@ -231,14 +231,12 @@ export default function Home() {
                           </div>
                         </CardBody>
                         <CardFooter className="bg-[var(--background-100)] border-t border-[var(--background-300)] flex justify-end">
-                          <Button
-                            className="text-[var(--neutral-100)] bg-[var(--primary-700)]"
-                            variant="flat"
-                            onClick={() => navigateToComponent(component.section)}
-                            size="sm">
-                            Ver componente
-                            <i className="ph ph-arrow-right ml-2"></i>
-                          </Button>
+                          <Link href={component.section}>
+                            <Button className="text-[var(--neutral-100)] bg-[var(--primary-700)]" variant="flat">
+                              Ver página
+                              <i className="ph ph-arrow-right ml-2"></i>
+                            </Button>
+                          </Link>
                         </CardFooter>
                       </Card>
                     ))}

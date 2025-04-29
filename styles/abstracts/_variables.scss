@@ -84,28 +84,14 @@ $lightness-steps: (
   --spacing-lg: #{$spacing-lg};
   --spacing-xl: #{$spacing-xl};
 
-  // Tamaños de iconos
-  --icon-size-xs: #{calc(12px / $base-font-size)}rem;
-  --icon-size-sm: #{calc(16px / $base-font-size)}rem;
-  --icon-size-md: #{calc(24px / $base-font-size)}rem;
-  --icon-size-lg: #{calc(32px / $base-font-size)}rem;
-  --icon-size-xl: #{calc(48px / $base-font-size)}rem;
-  --icon-size-xxl: #{calc(64px / $base-font-size)}rem;
-  --icon-size-xxxl: #{calc(96px / $base-font-size)}rem;
-  --icon-logo-big: #{calc(160px / $base-font-size)}rem;
+  /* Variables para el efecto de onda */
+  --btn-ripple-duration: 0.6s;
+  --btn-ripple-color-light: rgba(255, 255, 255, 0.3);
+  --btn-ripple-color-dark: rgba(0, 0, 0, 0.15);
 
-  // Tamaños de fuente
-  --font-size-principal-title: #{calc(36px / $base-font-size)}rem;
-  --font-size-title: #{calc(28px / $base-font-size)}rem;
-  --font-size-subtitle: #{calc(24px / $base-font-size)}rem;
-  --font-size-caption: #{calc(20px / $base-font-size)}rem;
-  --font-size-paragraph: #{calc(16px / $base-font-size)}rem;
-  --font-size-small: #{calc(14px / $base-font-size)}rem;
-  --font-size-xs: #{calc(10px / $base-font-size)}rem;
-
-  // Pesos de fuente
-  --font-weight-light: #{$font-weight-light};
-  --font-weight-regular: #{$font-weight-regular};
-  --font-weight-medium: #{$font-weight-medium};
-  --font-weight-bold: #{$font-weight-bold};
+  /* Variables para la transición del botón */
+  --btn-transition-duration: 0.3s;
+  --btn-hover-y-offset: -2px;
+  --btn-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --btn-shadow-hover-dark: 0 4px 12px rgba(0, 0, 0, 0.25);
 }

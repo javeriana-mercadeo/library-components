@@ -1,5 +1,10 @@
+'use client'
+import { useEffect } from 'react'
+import script from './script.js'
+
 /**
  * Componente de botón reutilizable con estilos configurables
+ * El efecto de onda se aplica a través de un script externo
  *
  * @param {Object} props - Propiedades del componente
  * @param {string} [props.id] - Identificador único del botón para Liferay
@@ -10,6 +15,10 @@
  * @param {('solid'|'outline'|'ghost'|'link')} [props.variant='solid'] - Variante de estilo del botón
  * @param {React.ReactNode} [props.startIcon] - Icono que aparece al inicio del botón
  * @param {React.ReactNode} [props.endIcon] - Icono que aparece al final del botón
+ * @param {boolean} [props.fullWidth=false] - Si el botón debe ocupar todo el ancho disponible
+ * @param {('sm'|'md'|'lg')} [props.size='md'] - Tamaño del botón
+ * @param {boolean} [props.disabled=false] - Si el botón está deshabilitado
+ * @param {Function} [props.onClick] - Función a ejecutar al hacer clic
  * @returns {JSX.Element} Botón renderizado con los estilos aplicados
  */
 export default function Btn({
@@ -20,7 +29,12 @@ export default function Btn({
   color = 'primary',
   variant = 'solid',
   startIcon,
-  endIcon
+  endIcon,
+  fullWidth = false,
+  size = 'md',
+  disabled = false,
+  onClick,
+  ...otherProps
 }) {
   // Constante para el nombre base del elemento (facilita cambios futuros)
   const ELEMENT_NAME = 'btn'
@@ -30,6 +44,8 @@ export default function Btn({
     base: ELEMENT_NAME,
     color: color ? `${ELEMENT_NAME}-${color}` : '',
     variant: variant ? `${ELEMENT_NAME}-${variant}` : '',
+    size: size ? `${ELEMENT_NAME}-${size}` : '',
+    fullWidth: fullWidth ? `${ELEMENT_NAME}-full-width` : '',
     custom: className
   }
 
@@ -39,11 +55,30 @@ export default function Btn({
   // Construcción del ID para la edición en Liferay
   const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
 
+  // Manejar el evento onClick
+  const handleClick = event => {
+    if (onClick && !disabled) {
+      onClick(event)
+    }
+  }
+
+  useEffect(() => {
+    script()
+  }, [])
+
   return (
-    <button className={finalClassName} type={type} data-lfr-editable-id={editableId} data-lfr-editable-type="text">
-      {startIcon && <span className="mr-2">{startIcon}</span>}
-      {children}
-      {endIcon && <span className="ml-2">{endIcon}</span>}
+    <button
+      {...otherProps}
+      data-dmpa-element-id="btn"
+      className={finalClassName}
+      type={type}
+      disabled={disabled}
+      onClick={handleClick}
+      data-lfr-editable-id={editableId}
+      data-lfr-editable-type="text">
+      {startIcon && <span className="btn-icon btn-icon-start">{startIcon}</span>}
+      <span className="btn-text">{children}</span>
+      {endIcon && <span className="btn-icon btn-icon-end">{endIcon}</span>}
     </button>
   )
 }

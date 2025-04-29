@@ -1,9 +1,3 @@
-import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-import Splash from '@library/_general/sections/Splash'
-
-import Header from '@library/pregrado/sections/0_header'
-import Hero from '@library/pregrado/sections/1_hero'
-import MeetingDirector from '@library/pregrado/sections/meetingDirector'
 import Btn from '@library/_general/components/buttons/btn_general/index'
 
 /**
@@ -98,41 +92,4 @@ const VariantButton = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' 
   )
 }
 
-const variantColorsButton: Array<'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger'> = [
-  'primary',
-  'secondary',
-  'tertiary',
-  'success',
-  'warning',
-  'danger'
-]
-
-export default function Profesional() {
-  return (
-    <>
-      {/* <Splash />
-      <Header />
-      <Hero />
-      <MeetingDirector /> */}
-      {/* === BOTONES POR COLOR === */}
-      <h1 className="text-3xl font-bold">Botones por color</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {variantColorsButton.map((color, index) => (
-          <VariantButton key={index} color={color} />
-        ))}
-      </div>
-
-      {/*       <ViewComponent path="pregrado/sections/0_header">
-        <Header />
-      </ViewComponent>
-
-      <ViewComponent path="/pregrado/sections/1_hero">
-        <Hero />
-      </ViewComponent>
-
-      <ViewComponent path="/pregrado/sections/meetingDirector">
-        <MeetingDirector />
-      </ViewComponent> */}
-    </>
-  )
-}
+export default VariantButton
