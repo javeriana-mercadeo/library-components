@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="relative flex flex-col">
             <ThemeSwitch />
             <BtnReturn />
-            <main className="flex-grow">{children}</main>
+            <main className="global-container">{children}</main>
             <Footer />
           </div>
         </Providers>

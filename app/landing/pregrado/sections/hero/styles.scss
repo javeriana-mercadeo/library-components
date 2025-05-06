@@ -1,5 +1,4 @@
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use '@styles/main' as *;
 
 /* Components */
 @use '../../components/programDetails.scss' as *;
@@ -46,15 +45,15 @@
   }
 
   &__title_facultad {
-    @include text-style($font-size-small, $font-weight-bold, $letter-spacing-normal, $line-height-base);
     color: $primary-color;
     padding-top: 35px;
+    @include text-style($font-size-small, $font-weight-bold, $letter-spacing-normal, $line-height-base);
   }
 
   &__title {
-    @include text-style($font-size-h1, $font-weight-bold, $letter-spacing-normal, $line-height-heading);
     color: $color-text;
     margin-top: 0;
+    @include text-style($font-size-h1, $font-weight-bold, $letter-spacing-normal, $line-height-heading);
   }
 
   .highlight {
@@ -62,8 +61,8 @@
   }
 
   &__snies {
-    @include text-style($font-size-small, $font-weight-regular, $letter-spacing-normal, $line-height-base);
     color: $gray-600;
+    @include text-style($font-size-small, $font-weight-regular, $letter-spacing-normal, $line-height-base);
   }
 
   &__description {
@@ -87,6 +86,7 @@
     border-radius: 50%;
     background-color: $primary-color;
   }
+
   .inscripcion {
     color: $primary-color;
     padding-left: 55px;

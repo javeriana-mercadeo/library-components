@@ -95,3 +95,83 @@ $lightness-steps: (
   --btn-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.1);
   --btn-shadow-hover-dark: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
+
+/* VALIABLES TEMPORALES */
+
+// Colores
+$color-background: #ffffff;
+
+// Escala de grises
+$gray-100: #101215;
+$gray-200: #222728;
+$gray-300: #2c333a;
+$gray-400: #454f59;
+$gray-500: #596773;
+$gray-600: #596773;
+$gray-700: #8c98a8;
+$gray-800: #9faabc;
+$gray-900: #b6c2cf;
+$gray-1000: #c7d1de;
+$gray-1100: #eeeeff;
+$gray-1200: #ffffff;
+
+// Alias de colores
+$color-text: $gray-100; // Color para textos principales
+$color-muted-text: $gray-400; // Textos secundarios o deshabilitados
+$color-border: $gray-500; // Color para bordes
+
+$primary-color: #026fc1;
+$primary-color-hover: #029be1;
+$secondary-color: #c7d1db;
+$secondary-color-hover: #026fc1;
+$disabled-color: #e0e0e0;
+$text-light: #ffffff;
+$text-dark: #212529;
+
+$background-footer: #1d2125;
+// Tipografía
+$font-family-primary: 'Raleway', sans-serif;
+
+// Tamaños de fuente
+$font-size-h1: clamp(1.8rem, 5vw, 3rem);
+$font-size-h2: clamp(1.5rem, 4vw, 2.5rem);
+$font-size-h3: clamp(1.2rem, 1.5vw, 2rem);
+$font-size-p: clamp(0.875rem, 1.3vw, 1rem);
+$font-size-small: 0.875rem; // Tamaño pequeño
+$font-size-xs: 0.6rem; // Tamaño pequeño xs
+$font-size-header: clamp(0.65rem, 1vw, 1.3rem);
+
+// Pesos de fuente
+$font-weight-regular: 400;
+$font-weight-bold: 700;
+
+// Altura de línea
+$line-height-base: 1.5;
+$line-height-heading: 1.2;
+
+// Espaciado entre letras
+$letter-spacing-normal: normal;
+$letter-spacing-wide: 0.05em;
+
+// Espaciados
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 38px;
+
+// Redondeos
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 16px;
+$border-radius-xl: 20px;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1800px;
+
+//max-width
+
+$max-width: 1200px;

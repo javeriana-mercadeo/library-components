@@ -9,10 +9,11 @@
 // 2. Vendors (Terceras)
 // ------------------------------------------
 @forward 'vendors/liferay';
+@forward 'vendors/flowbite';
 
 // 3. Componentes globales
 // ------------------------------------------
-@use '@general/components/buttons/btn_general/style.scss' as *;
+@use '@library/components/buttons/btn_general/style.scss' as *;
 @include general-btn;
 
 // 4. Estilos globales específicos
@@ -48,6 +49,14 @@ html {
     background: var(--background-100);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    .global-container {
+      min-height: 100vh;
+      height: 100%;
+      flex-grow: 1;
+
+      padding-top: 5rem;
+    }
   }
 
   // Personalización del scroll

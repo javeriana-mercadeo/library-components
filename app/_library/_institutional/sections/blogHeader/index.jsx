@@ -1,9 +1,9 @@
 'use client'
 
-import Title from '@library/_general/components/contain/title'
-import Paragraph from '@library/_general/components/contain/paragraph'
-import ImgBackground from '@library/_general/components/contain/imgBackground'
-import Container from '@library/_general/components/container/Container'
+import Title from '@/app/library/components/contain/title'
+import Paragraph from '@/app/library/components/contain/paragraph'
+import ImgBackground from '@/app/library/components/contain/imgBackground'
+import Container from '@/app/library/components/container/Container'
 
 import './styles.scss'
 import info from './info.json'

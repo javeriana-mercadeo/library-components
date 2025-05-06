@@ -1,5 +1,5 @@
-import Container from '@library/_general/components/container/Container'
-import ProgramDetails from '@library/pregrado/components/ProgramDetails'
+import Container from '@library/components/container/Container'
+import ProgramDetails from '../../components/ProgramDetails'
 
 import image from './assets/program-image.png'
 import './styles.scss'

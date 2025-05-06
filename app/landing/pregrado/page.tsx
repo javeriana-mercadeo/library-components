@@ -1,10 +1,10 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-import Splash from '@library/_general/sections/Splash'
+import Splash from '@/app/_library/sections/splash'
+import Btn from '@library/components/buttons/btn_general/index'
 
-import Header from '@library/pregrado/sections/0_header'
-import Hero from '@library/pregrado/sections/1_hero'
-import MeetingDirector from '@library/pregrado/sections/meetingDirector'
-import Btn from '@library/_general/components/buttons/btn_general/index'
+import Header from './sections/header'
+import Hero from './sections/hero'
+import MeetingDirector from './sections/meetingDirector'
 
 /**
  * Componente que muestra las diferentes variantes de un botón por color
@@ -110,10 +110,10 @@ const variantColorsButton: Array<'primary' | 'secondary' | 'tertiary' | 'success
 export default function Profesional() {
   return (
     <>
-      {/* <Splash />
+      <Splash />
       <Header />
       <Hero />
-      <MeetingDirector /> */}
+      <MeetingDirector />
       {/* === BOTONES POR COLOR === */}
       <h1 className="text-3xl font-bold">Botones por color</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -1,7 +1,7 @@
 @use '@styles/main' as *;
 
 // Variables específicas del componente
-$splash-z-index: 1000;
+$splash-z-index: 2000;
 $splash-gradient-light-center: var(--background-100);
 $splash-gradient-light-edge: var(--primary-200);
 $splash-gradient-dark-center: var(--background-200);

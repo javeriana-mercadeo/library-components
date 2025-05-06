@@ -1,4 +1,4 @@
-import Btn from '@library/_general/components/buttons/btn_general/index'
+import Btn from '@/app/library/components/buttons/btn_general/index'
 
 /**
  * Componente que muestra las diferentes variantes de un botón por color
