@@ -16,8 +16,9 @@
   padding: $spacing-md $spacing-xl;
   justify-items: start;
   align-items: stretch;
-  padding-top: 50px;
-  min-height: 100%;
+  padding-top: 100px;
+  padding-bottom: $spacing-xl;
+  min-height: 100vh;
   max-width: $max-width;
 
   &__content {
@@ -30,13 +31,14 @@
   &__image {
     grid-area: image;
     width: 100%;
-    height: 80%;
+    height: 97%;
     display: flex;
     align-items: stretch;
     justify-content: center;
-    align-self: center;
+    align-self: stretch;
     border-radius: 16px;
     overflow: hidden;
+    aspect-ratio: 9 / 16;
 
    iframe {
       width: 100%;
@@ -156,7 +158,7 @@
     display: none;
   }
  
-  @media (max-width: $breakpoint-xl) {
+  @media (max-width: $breakpoint-lg) {
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -274,7 +276,7 @@
     flex-direction: column;
     text-align: left;
     padding: $spacing-md;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 
     &__content,
@@ -328,6 +330,7 @@
         order: 4;
         display: flex;
         flex-direction: column;
+        width: 100%;
     }
 
     .program-details-row {
