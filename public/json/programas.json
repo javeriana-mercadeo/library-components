@@ -1,0 +1,1400 @@
+{
+  "PREG": {
+    "Arquitectura y Diseño": {
+      "FacultadCodigo": "Arquitectura y Diseño",
+      "url": "https://www.javeriana.edu.co/thank-you-page-arquidiseno-pre",
+      "Programas": [
+        {
+          "Codigo": "ARQUI",
+          "Nombre": "Arquitectura"
+        },
+        {
+          "Codigo": "DSIND",
+          "Nombre": "Diseño Industrial"
+        },
+        {
+          "Codigo": "PCPAD",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Artes": {
+      "FacultadCodigo": "Artes",
+      "url": "https://www.javeriana.edu.co/thank-you-page-artes-pre",
+      "Programas": [
+        {
+          "Codigo": "ARESC",
+          "Nombre": "Artes Escénicas"
+        },
+        {
+          "Codigo": "ARTVI",
+          "Nombre": "Artes Visuales"
+        },
+        {
+          "Codigo": "EMSCL",
+          "Nombre": "Estudios Musicales"
+        },
+        {
+          "Codigo": "PCPAR",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ciencias": {
+      "FacultadCodigo": "Ciencias",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ciencias-pre",
+      "Programas": [
+        {
+          "Codigo": "BACTE",
+          "Nombre": "Bacteriología"
+        },
+        {
+          "Codigo": "BIOLG",
+          "Nombre": "Biología"
+        },
+        {
+          "Codigo": "CIDAT",
+          "Nombre": "Ciencia de Datos"
+        },
+        {
+          "Codigo": "MATEM",
+          "Nombre": "Matemáticas"
+        },
+        {
+          "Codigo": "MINDS",
+          "Nombre": "Microbiología Industrial"
+        },
+        {
+          "Codigo": "NUTDT",
+          "Nombre": "Nutrición y Dietética"
+        },
+        {
+          "Codigo": "QUIFA",
+          "Nombre": "Química Farmacéutica"
+        },
+        {
+          "Codigo": "PCPCI",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ciencias Económicas y Administrativas": {
+      "FacultadCodigo": "Ciencias Económicas y Administrativas",
+      "url": "https://www.javeriana.edu.co/thank-you-page-cea-pregrado",
+      "Programas": [
+        {
+          "Codigo": "ADMD",
+          "Nombre": "Administración de Empresas"
+        },
+        {
+          "Codigo": "CTDPD",
+          "Nombre": "Contaduría Pública"
+        },
+        {
+          "Codigo": "ECONM",
+          "Nombre": "Economía"
+        },
+        {
+          "Codigo": "FINAN",
+          "Nombre": "Finanzas"
+        },
+        {
+          "Codigo": "NINTR",
+          "Nombre": "Negocios Internacionales"
+        },
+        {
+          "Codigo": "PCPCE",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ciencias Jurídicas": {
+      "FacultadCodigo": "Ciencias Jurídicas",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ciencias-juridicas-pre",
+      "Programas": [
+        {
+          "Codigo": "DRCHO",
+          "Nombre": "Derecho"
+        },
+        {
+          "Codigo": "PCPCJ",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ciencias Políticas y Relaciones Internacionales": {
+      "FacultadCodigo": "Ciencias Políticas y Relaciones Internacionales",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ciencias-pol-rel-pre",
+      "Programas": [
+        {
+          "Codigo": "POLIT",
+          "Nombre": "Ciencia Política"
+        },
+        {
+          "Codigo": "RLINT",
+          "Nombre": "Relaciones Internacionales"
+        },
+        {
+          "Codigo": "PCPCP",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ciencias Sociales": {
+      "FacultadCodigo": "Ciencias Sociales",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ciencias-sociales-pre",
+      "Programas": [
+        {
+          "Codigo": "ANTRO",
+          "Nombre": "Antropología"
+        },
+        {
+          "Codigo": "LITER",
+          "Nombre": "Estudios Literarios"
+        },
+        {
+          "Codigo": "HISTO",
+          "Nombre": "Historia"
+        },
+        {
+          "Codigo": "SOCIO",
+          "Nombre": "Sociología"
+        },
+        {
+          "Codigo": "PCPCS",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Comunicación y Lenguaje": {
+      "FacultadCodigo": "Comunicación y Lenguaje",
+      "url": "https://www.javeriana.edu.co/thank-you-page-comunicacion-pre",
+      "Programas": [
+        {
+          "Codigo": "CIBAR",
+          "Nombre": "Ciencia de la Información, Bibliotecología y Archivística"
+        },
+        {
+          "Codigo": "COMSC",
+          "Nombre": "Comunicación Social"
+        },
+        {
+          "Codigo": "LLMOD",
+          "Nombre": "Licenciatura en Lenguas Modernas con énfasis en inglés y francés"
+        },
+        {
+          "Codigo": "PCPCL",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Educación": {
+      "FacultadCodigo": "Educación",
+      "url": "https://www.javeriana.edu.co/thank-you-page-educacion-pre",
+      "Programas": [
+        {
+          "Codigo": "LCNEA",
+          "Nombre": "Licenciatura en Ciencias Naturales y Educación Ambiental"
+        },
+        {
+          "Codigo": "LEDUF",
+          "Nombre": "Licenciatura en Educación Física"
+        },
+        {
+          "Codigo": "INFTL",
+          "Nombre": "Licenciatura en Educación Infantil"
+        },
+        {
+          "Codigo": "LFILE",
+          "Nombre": "Licenciatura en Filosofía"
+        },
+        {
+          "Codigo": "LLLCA",
+          "Nombre": "Licenciatura en Literatura y Lengua Castellana"
+        },
+        {
+          "Codigo": "PCPED",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Enfermería": {
+      "FacultadCodigo": "Enfermería",
+      "url": "https://www.javeriana.edu.co/thank-you-page-enfermeria-pre",
+      "Programas": [
+        {
+          "Codigo": "ENFER",
+          "Nombre": "Enfermería"
+        },
+        {
+          "Codigo": "PCPEN",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Estudios Ambientales y Rurales": {
+      "FacultadCodigo": "Estudios Ambientales y Rurales",
+      "url": "https://www.javeriana.edu.co/thank-you-page-est-ambientales-pre",
+      "Programas": [
+        {
+          "Codigo": "ECOLG",
+          "Nombre": "Ecología"
+        },
+        {
+          "Codigo": "PCPES",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Filosofía": {
+      "FacultadCodigo": "Filosofía",
+      "url": "https://www.javeriana.edu.co/thank-you-page-filosofia-pre",
+      "Programas": [
+        {
+          "Codigo": "FILOS",
+          "Nombre": "Filosofía"
+        },
+        {
+          "Codigo": "PCPFI",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ingeniería": {
+      "FacultadCodigo": "Ingeniería",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ingenieria-pre",
+      "Programas": [
+        {
+          "Codigo": "BIOIN",
+          "Nombre": "Bioingeniería"
+        },
+        {
+          "Codigo": "ICIVL",
+          "Nombre": "Ingeniería Civil"
+        },
+        {
+          "Codigo": "ISIST",
+          "Nombre": "Ingeniería de Sistemas"
+        },
+        {
+          "Codigo": "IELEC",
+          "Nombre": "Ingeniería Electrónica"
+        },
+        {
+          "Codigo": "IREDT",
+          "Nombre": "Ingeniería en Redes y Telecomunicaciones"
+        },
+        {
+          "Codigo": "IINDS",
+          "Nombre": "Ingeniería Industrial"
+        },
+        {
+          "Codigo": "IMECA",
+          "Nombre": "Ingeniería Mecánica"
+        },
+        {
+          "Codigo": "IMETR",
+          "Nombre": "Ingeniería Mecatrónica"
+        },
+        {
+          "Codigo": "PCPIN",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Medicina": {
+      "FacultadCodigo": "Medicina",
+      "url": "https://www.javeriana.edu.co/thank-you-page-medicina-pre",
+      "Programas": [
+        {
+          "Codigo": "MEDIC",
+          "Nombre": "Medicina"
+        },
+        {
+          "Codigo": "PCPME",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Odontología": {
+      "FacultadCodigo": "Odontología",
+      "url": "https://www.javeriana.edu.co/thank-you-page-odontologia-pre",
+      "Programas": [
+        {
+          "Codigo": "ODONT",
+          "Nombre": "Odontología"
+        },
+        {
+          "Codigo": "PCPOD",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Psicología": {
+      "FacultadCodigo": "Psicología",
+      "url": "https://www.javeriana.edu.co/thank-you-page-psicologia-pre",
+      "Programas": [
+        {
+          "Codigo": "PSICO",
+          "Nombre": "Psicología"
+        },
+        {
+          "Codigo": "PCPPS",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Teología": {
+      "FacultadCodigo": "Teología",
+      "url": "https://www.javeriana.edu.co/thank-you-page-teologia-pre",
+      "Programas": [
+        {
+          "Codigo": "LTEOL",
+          "Nombre": "Licenciatura en Teología"
+        },
+        {
+          "Codigo": "TEOLO",
+          "Nombre": "Teología"
+        },
+        {
+          "Codigo": "PCPTE",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    }
+  },
+  "GRAD": {
+    "Arquitectura y Diseño": {
+      "FacultadCodigo": "Arquitectura y Diseño",
+      "url": "https://www.javeriana.edu.co/thank-you-page-arquidiseno-pos",
+      "Programas": [
+        {
+          "Codigo": "DGPEX",
+          "Nombre": "Especialización en Gerencia de Proyectos de Diseño"
+        },
+        {
+          "Codigo": "MDIPS",
+          "Nombre": "Maestría en Diseño para la Innovación de Productos y Servicios"
+        },
+        {
+          "Codigo": "MINVC",
+          "Nombre": "Maestría en Innovación en la Construcción"
+        },
+        {
+          "Codigo": "MPART",
+          "Nombre": "Maestría en Paisajes Artificiales"
+        },
+        {
+          "Codigo": "MPLUR",
+          "Nombre": "Maestría en Planeación Urbana y Regional"
+        },
+        {
+          "Codigo": "PCGAD",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Artes": {
+      "FacultadCodigo": "Artes",
+      "url": "https://www.javeriana.edu.co/thank-you-page-artes-pos",
+      "Programas": [
+        {
+          "Codigo": "MCAUD",
+          "Nombre": "Maestría en Creación Audiovisual"
+        },
+        {
+          "Codigo": "MMUSI",
+          "Nombre": "Maestría en Música"
+        },
+        {
+          "Codigo": "PCGAR",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ciencias": {
+      "FacultadCodigo": "Ciencias",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ciencias-pos",
+      "Programas": [
+        {
+          "Codigo": "DCYTM",
+          "Nombre": "Doctorado en Ciencia y Tecnología de Materiales"
+        },
+        {
+          "Codigo": "DCSB",
+          "Nombre": "Doctorado en Ciencias Biológicas"
+        },
+        {
+          "Codigo": "EAQI",
+          "Nombre": "Especialización en Análisis Químico Instrumental"
+        },
+        {
+          "Codigo": "EHLBS",
+          "Nombre": "Especialización en Hematología en el Laboratorio Clínico y Manejo del Banco de Sangre"
+        },
+        {
+          "Codigo": "EMICM",
+          "Nombre": "Especialización en Microbiología Médica"
+        },
+        {
+          "Codigo": "MACIB",
+          "Nombre": "Maestría en Ciencias Biológicas"
+        },
+        {
+          "Codigo": "MCILC",
+          "Nombre": "Maestría en Ciencias del Laboratorio Clínico"
+        },
+        {
+          "Codigo": "MFIME",
+          "Nombre": "Maestría en Física Médica"
+        },
+        {
+          "Codigo": "MMATE",
+          "Nombre": "Maestría en Matemáticas"
+        },
+        {
+          "Codigo": "MRECO",
+          "Nombre": "Maestría en Restauración Ecológica"
+        },
+        {
+          "Codigo": "PCGCI",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ciencias Económicas y Administrativas": {
+      "FacultadCodigo": "Ciencias Económicas y Administrativas",
+      "url": "https://www.javeriana.edu.co/thank-you-page-cea-pos",
+      "Programas": [
+        {
+          "Codigo": "DECON",
+          "Nombre": "Doctorado en Economía"
+        },
+        {
+          "Codigo": "EASSS",
+          "Nombre": "Especialización en Administración de Salud"
+        },
+        {
+          "Codigo": "ASEGC",
+          "Nombre": "Especialización en Aseguramiento y Control Interno (Bogotá)"
+        },
+        {
+          "Codigo": "ASEGB",
+          "Nombre": "Especialización en Aseguramiento y Control Interno (Bucaramanga)"
+        },
+        {
+          "Codigo": "COFIB",
+          "Nombre": "Especialización en Contabilidad Financiera Internacional (Barranquilla)"
+        },
+        {
+          "Codigo": "COFIN",
+          "Nombre": "Especialización en Contabilidad Financiera Internacional (Bogotá)"
+        },
+        {
+          "Codigo": "COFBU",
+          "Nombre": "Especialización en Contabilidad Financiera Internacional (Bucaramanga)"
+        },
+        {
+          "Codigo": "ECGER",
+          "Nombre": "Especialización en Contabilidad Gerencial"
+        },
+        {
+          "Codigo": "ECNOE",
+          "Nombre": "Especialización en Economía"
+        },
+        {
+          "Codigo": "EGCSS",
+          "Nombre": "Especialización en Gerencia de la Calidad de los Servicios de Salud"
+        },
+        {
+          "Codigo": "EGTH",
+          "Nombre": "Especialización en Gerencia del Talento Humano"
+        },
+        {
+          "Codigo": "EGTEC",
+          "Nombre": "Especialización en Gerencia Estratégica de la Innovación"
+        },
+        {
+          "Codigo": "SGFIN",
+          "Nombre": "Especialización en Gerencia Financiera"
+        },
+        {
+          "Codigo": "EGHOS",
+          "Nombre": "Especialización en Gerencia Hospitalaria"
+        },
+        {
+          "Codigo": "ESGIN",
+          "Nombre": "Especialización en Gerencia Internacional"
+        },
+        {
+          "Codigo": "EGMER",
+          "Nombre": "Especialización en Marketing Estratégico"
+        },
+        {
+          "Codigo": "REFIS",
+          "Nombre": "Especialización en Revisoría Fiscal"
+        },
+        {
+          "Codigo": "MADMI",
+          "Nombre": "Maestría en Administración - MBA Profesional"
+        },
+        {
+          "Codigo": "MADME",
+          "Nombre": "Maestría en Administración - Modalidad Ejecutiva EMBA"
+        },
+        {
+          "Codigo": "MADSA",
+          "Nombre": "Maestría en Administración de Salud"
+        },
+        {
+          "Codigo": "MBFIN",
+          "Nombre": "Maestría en Banca y Finanzas"
+        },
+        {
+          "Codigo": "MECON",
+          "Nombre": "Maestría en Economía"
+        },
+        {
+          "Codigo": "MESAL",
+          "Nombre": "Maestría en Economía de la Salud"
+        },
+        {
+          "Codigo": "MEINC",
+          "Nombre": "Maestría en Estrategia, Innovación y Competitividad"
+        },
+        {
+          "Codigo": "MGRSS",
+          "Nombre": "Maestría en Gerencia de la Sostenibilidad"
+        },
+        {
+          "Codigo": "PCGCE",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ciencias Jurídicas": {
+      "FacultadCodigo": "Ciencias Jurídicas",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ciencias-juridicas-pos",
+      "Programas": [
+        {
+          "Codigo": "DDERC",
+          "Nombre": "Doctorado en Ciencias Jurídicas"
+        },
+        {
+          "Codigo": "ESDAD",
+          "Nombre": "Especialización en Derecho Administrativo"
+        },
+        {
+          "Codigo": "EDCOM",
+          "Nombre": "Especialización en Derecho Comercial"
+        },
+        {
+          "Codigo": "EDFAM",
+          "Nombre": "Especialización en Derecho de Familia"
+        },
+        {
+          "Codigo": "EDCLC",
+          "Nombre": "Especialización en Derecho de la Competencia (Bogotá)"
+        },
+        {
+          "Codigo": "EDCCC",
+          "Nombre": "Especialización en Derecho de la Competencia (Cali)"
+        },
+        {
+          "Codigo": "EDSSJ",
+          "Nombre": "Especialización en Derecho de la Seguridad Social"
+        },
+        {
+          "Codigo": "EDSEG",
+          "Nombre": "Especialización en Derecho de Seguros (Bogotá)"
+        },
+        {
+          "Codigo": "EDSEM",
+          "Nombre": "Especialización en Derecho de Seguros (Medellín)"
+        },
+        {
+          "Codigo": "EDSOC",
+          "Nombre": "Especialización en Derecho de Sociedades"
+        },
+        {
+          "Codigo": "MECAP",
+          "Nombre": "Especialización en Derecho Financiero y Mercado de Valores"
+        },
+        {
+          "Codigo": "EDLAB",
+          "Nombre": "Especialización en Derecho Laboral"
+        },
+        {
+          "Codigo": "EDSCC",
+          "Nombre": "Especialización en Derecho Sustantivo y Contencioso Constitucional"
+        },
+        {
+          "Codigo": "DTRIB",
+          "Nombre": "Especialización en Derecho Tributario"
+        },
+        {
+          "Codigo": "DURBA",
+          "Nombre": "Especialización en Derecho Urbanístico (Bogotá)"
+        },
+        {
+          "Codigo": "EDURB",
+          "Nombre": "Especialización en Derecho Urbanístico (Bucaramanga)"
+        },
+        {
+          "Codigo": "MDADM",
+          "Nombre": "Maestría en Derecho Administrativo"
+        },
+        {
+          "Codigo": "MDCON",
+          "Nombre": "Maestría en Derecho Constitucional"
+        },
+        {
+          "Codigo": "MDSEG",
+          "Nombre": "Maestría en Derecho de Seguros"
+        },
+        {
+          "Codigo": "MDER",
+          "Nombre": "Maestría en Derecho Económico"
+        },
+        {
+          "Codigo": "MDLSS",
+          "Nombre": "Maestría en Derecho Laboral y de la Seguridad Social"
+        },
+        {
+          "Codigo": "PCGCJ",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ciencias Políticas y Relaciones Internacionales": {
+      "FacultadCodigo": "Ciencias Políticas y Relaciones Internacionales",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ciencias-pol-rel-pos",
+      "Programas": [
+        {
+          "Codigo": "GGPTB",
+          "Nombre": "Especialización en Gobierno y Gestión Pública Territoriales (Barranquilla)"
+        },
+        {
+          "Codigo": "GGPT",
+          "Nombre": "Especialización en Gobierno y Gestión Pública Territoriales (Bogotá)"
+        },
+        {
+          "Codigo": "EOPMP",
+          "Nombre": "Especialización en Opinión Pública y Mercadeo Político"
+        },
+        {
+          "Codigo": "RCON",
+          "Nombre": "Especialización en Resolución de Conflictos"
+        },
+        {
+          "Codigo": "MELAT",
+          "Nombre": "Maestría en Estudios Contemporáneos de América Latina"
+        },
+        {
+          "Codigo": "MEPRC",
+          "Nombre": "Maestría en Estudios de Paz y Resolución de Conflictos"
+        },
+        {
+          "Codigo": "MREL",
+          "Nombre": "Maestría en Estudios Internacionales"
+        },
+        {
+          "Codigo": "MESTP",
+          "Nombre": "Maestría en Estudios Políticos"
+        },
+        {
+          "Codigo": "MGTGP",
+          "Nombre": "Maestría en Gobierno del Territorio y Gestión Pública"
+        },
+        {
+          "Codigo": "MPSOC",
+          "Nombre": "Maestría en Política Social"
+        },
+        {
+          "Codigo": "PCGCP",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ciencias Sociales": {
+      "FacultadCodigo": "Ciencias Sociales",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ciencias-sociales-pos",
+      "Programas": [
+        {
+          "Codigo": "DCSHU",
+          "Nombre": "Doctorado en Ciencias Sociales y Humanas"
+        },
+        {
+          "Codigo": "ELITI",
+          "Nombre": "Especialización en Literatura Infantil y Juvenil"
+        },
+        {
+          "Codigo": "MEAFB",
+          "Nombre": "Maestría en Estudios Afrocolombianos (Bogotá)"
+        },
+        {
+          "Codigo": "MESTC",
+          "Nombre": "Maestría en Estudios Culturales"
+        },
+        {
+          "Codigo": "MESCL",
+          "Nombre": "Maestría en Estudios Culturales Latinoamericanos - Virtual"
+        },
+        {
+          "Codigo": "MAHIS",
+          "Nombre": "Maestría en Historia"
+        },
+        {
+          "Codigo": "MALIT",
+          "Nombre": "Maestría en Literatura"
+        },
+        {
+          "Codigo": "PCGCS",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Comunicación y Lenguaje": {
+      "FacultadCodigo": "Comunicación y Lenguaje",
+      "url": "https://www.javeriana.edu.co/thank-you-page-comunicacion-pos",
+      "Programas": [
+        {
+          "Codigo": "DCLIN",
+          "Nombre": "Doctorado en Comunicación, Lenguajes e Información"
+        },
+        {
+          "Codigo": "ESCOR",
+          "Nombre": "Especialización en Comunicación Organizacional"
+        },
+        {
+          "Codigo": "ESTEL",
+          "Nombre": "Especialización en Televisión Expandida y Transmedia"
+        },
+        {
+          "Codigo": "MAHIM",
+          "Nombre": "Maestría en Archivística Histórica y Memoria"
+        },
+        {
+          "Codigo": "MACOM",
+          "Nombre": "Maestría en Comunicación, Tecnología y Sociedad"
+        },
+        {
+          "Codigo": "MLING",
+          "Nombre": "Maestría en Lingüística Aplicada del Español como Lengua Extranjera"
+        },
+        {
+          "Codigo": "MLINV",
+          "Nombre": "Maestría en Lingüística Aplicada del Español como Lengua Extranjera - Virtual"
+        },
+        {
+          "Codigo": "MPERC",
+          "Nombre": "Maestría en Periodismo Científico"
+        },
+        {
+          "Codigo": "PCGCL",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Derecho Canónico": {
+      "FacultadCodigo": "Derecho Canónico",
+      "url": "https://www.javeriana.edu.co/thank-you-page-canonico-pos",
+      "Programas": [
+        {
+          "Codigo": "EDMCV",
+          "Nombre": "Especialización en Derecho Matrimonial Canónico - Virtual"
+        },
+        {
+          "Codigo": "MDERC",
+          "Nombre": "Maestría en Derecho Canónico"
+        },
+        {
+          "Codigo": "PCGDC",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Educación": {
+      "FacultadCodigo": "Educación",
+      "url": "https://www.javeriana.edu.co/thank-you-page-educacion-pos",
+      "Programas": [
+        {
+          "Codigo": "ELIGS",
+          "Nombre": "Especialización en Liderazgo para la Gestión Social - Virtual"
+        },
+        {
+          "Codigo": "MEDUC",
+          "Nombre": "Maestría en Educación"
+        },
+        {
+          "Codigo": "MEICI",
+          "Nombre": "Maestría en Educación para la Innovación y las Ciudadanías - Virtual"
+        },
+        {
+          "Codigo": "MSAME",
+          "Nombre": "Maestría en Salud Mental Escolar"
+        },
+        {
+          "Codigo": "PCGED",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Enfermería": {
+      "FacultadCodigo": "Enfermería",
+      "url": "https://www.javeriana.edu.co/thank-you-page-enfermeria-pos",
+      "Programas": [
+        {
+          "Codigo": "EECC",
+          "Nombre": "Especialización en Enfermería en Cuidado Crítico"
+        },
+        {
+          "Codigo": "EEPED",
+          "Nombre": "Especialización en Enfermería Pediátrica"
+        },
+        {
+          "Codigo": "SALOC",
+          "Nombre": "Especialización en Seguridad y Salud en el Trabajo"
+        },
+        {
+          "Codigo": "MECPA",
+          "Nombre": "Maestría en Enfermería en Cuidado Paliativo"
+        },
+        {
+          "Codigo": "MECC",
+          "Nombre": "Maestría en Enfermería en el Cuidado Crítico"
+        },
+        {
+          "Codigo": "MENFO",
+          "Nombre": "Maestría en Enfermería Oncológica"
+        },
+        {
+          "Codigo": "MSEST",
+          "Nombre": "Maestría en Seguridad y Salud en el Trabajo"
+        },
+        {
+          "Codigo": "PCGEN",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Estudios Ambientales y Rurales": {
+      "FacultadCodigo": "Estudios Ambientales y Rurales",
+      "url": "https://www.javeriana.edu.co/thank-you-page-est-ambientales-pos",
+      "Programas": [
+        {
+          "Codigo": "DEAMB",
+          "Nombre": "Doctorado en Estudios Ambientales y Rurales"
+        },
+        {
+          "Codigo": "EGEEV",
+          "Nombre": "Especialización en Gestión de Empresas de la Economía Social y Solidaria - Virtual"
+        },
+        {
+          "Codigo": "MCUBI",
+          "Nombre": "Maestría en Conservación y Uso de Biodiversidad"
+        },
+        {
+          "Codigo": "MDRUR",
+          "Nombre": "Maestría en Desarrollo Rural"
+        },
+        {
+          "Codigo": "MGEAM",
+          "Nombre": "Maestría en Gestión Ambiental"
+        },
+        {
+          "Codigo": "PCGES",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Filosofía": {
+      "FacultadCodigo": "Filosofía",
+      "url": "https://www.javeriana.edu.co/thank-you-page-filosofia-pos",
+      "Programas": [
+        {
+          "Codigo": "DFILS",
+          "Nombre": "Doctorado en Filosofía"
+        },
+        {
+          "Codigo": "MBIOE",
+          "Nombre": "Maestría en Bioética"
+        },
+        {
+          "Codigo": "MAFIL",
+          "Nombre": "Maestría en Filosofía"
+        },
+        {
+          "Codigo": "PCGFI",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Ingeniería": {
+      "FacultadCodigo": "Ingeniería",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ingenieria-pos",
+      "Programas": [
+        {
+          "Codigo": "DING",
+          "Nombre": "Doctorado en Ingeniería"
+        },
+        {
+          "Codigo": "AESOF",
+          "Nombre": "Especialización en Arquitectura Empresarial de Software"
+        },
+        {
+          "Codigo": "GVPAV",
+          "Nombre": "Especialización en Geotecnia Vial y Pavimentos"
+        },
+        {
+          "Codigo": "GCONT",
+          "Nombre": "Especialización en Gerencia de Construcciones"
+        },
+        {
+          "Codigo": "EGPTI",
+          "Nombre": "Especialización en Gerencia de Proyectos de Tecnologías de la Información"
+        },
+        {
+          "Codigo": "EIOMS",
+          "Nombre": "Especialización en Ingeniería de Operaciones en Manufactura y Servicios"
+        },
+        {
+          "Codigo": "EINTA",
+          "Nombre": "Especialización en Inteligencia Artificial"
+        },
+        {
+          "Codigo": "SGING",
+          "Nombre": "Especialización en Sistemas Gerenciales de Ingeniería"
+        },
+        {
+          "Codigo": "TCONS",
+          "Nombre": "Especialización en Tecnología de la Construcción en Edificaciones"
+        },
+        {
+          "Codigo": "MAINN",
+          "Nombre": "Maestría en Analítica para la Inteligencia de Negocios"
+        },
+        {
+          "Codigo": "MBIOI",
+          "Nombre": "Maestría en Bioingeniería"
+        },
+        {
+          "Codigo": "MENES",
+          "Nombre": "Maestría en Energía y Sostenibilidad"
+        },
+        {
+          "Codigo": "MHIDR",
+          "Nombre": "Maestría en Hidrosistemas"
+        },
+        {
+          "Codigo": "MINGC",
+          "Nombre": "Maestría en Ingeniería Civil"
+        },
+        {
+          "Codigo": "MINSC",
+          "Nombre": "Maestría en Ingeniería de Sistemas y Computación"
+        },
+        {
+          "Codigo": "MIICO",
+          "Nombre": "Maestría en Ingeniería del Internet de las Cosas"
+        },
+        {
+          "Codigo": "MINEL",
+          "Nombre": "Maestría en Ingeniería Electrónica"
+        },
+        {
+          "Codigo": "MININ",
+          "Nombre": "Maestría en Ingeniería Industrial"
+        },
+        {
+          "Codigo": "MINTA",
+          "Nombre": "Maestría en Inteligencia Artificial"
+        },
+        {
+          "Codigo": "MLTRA",
+          "Nombre": "Maestría en Gestión Inteligente de la Cadena de Abastecimiento"
+        },
+        {
+          "Codigo": "MSEGD",
+          "Nombre": "Maestría en Seguridad Digital"
+        },
+        {
+          "Codigo": "PCGIN",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Medicina": {
+      "FacultadCodigo": "Medicina",
+      "url": "https://www.javeriana.edu.co/thank-you-page-medicina",
+      "Programas": [
+        {
+          "Codigo": "DECLI",
+          "Nombre": "Doctorado en Epidemiología Clínica"
+        },
+        {
+          "Codigo": "DNEUC",
+          "Nombre": "Doctorado en Neurociencias"
+        },
+        {
+          "Codigo": "ESPAN",
+          "Nombre": "Especialización en Anestesiología"
+        },
+        {
+          "Codigo": "ESCAR",
+          "Nombre": "Especialización en Cardiología"
+        },
+        {
+          "Codigo": "EHCIN",
+          "Nombre": "Especialización en Cardiología Intervencionista y Hemodinamia"
+        },
+        {
+          "Codigo": "ESCCV",
+          "Nombre": "Especialización en Cirugía Cardiovascular"
+        },
+        {
+          "Codigo": "ECIMA",
+          "Nombre": "Especialización en Cirugía de Mano"
+        },
+        {
+          "Codigo": "ESPCG",
+          "Nombre": "Especialización en Cirugía General"
+        },
+        {
+          "Codigo": "ESCON",
+          "Nombre": "Especialización en Cirugía Oncológica"
+        },
+        {
+          "Codigo": "ESCPL",
+          "Nombre": "Especialización en Cirugía Plástica Reconstructiva y Estética"
+        },
+        {
+          "Codigo": "ESDER",
+          "Nombre": "Especialización en Dermatología"
+        },
+        {
+          "Codigo": "EPPS",
+          "Nombre": "Especialización en Educación para Profesionales de la Salud - Virtual"
+        },
+        {
+          "Codigo": "ECEAC",
+          "Nombre": "Especialización en Electrofisiología Clínica, Estimulación y Arritmias Cardíacas"
+        },
+        {
+          "Codigo": "ENDOC",
+          "Nombre": "Especialización en Endocrinología"
+        },
+        {
+          "Codigo": "ESGED",
+          "Nombre": "Especialización en Gastroenterología"
+        },
+        {
+          "Codigo": "ESGM",
+          "Nombre": "Especialización en Genética Médica"
+        },
+        {
+          "Codigo": "ESGER",
+          "Nombre": "Especialización en Geriatría"
+        },
+        {
+          "Codigo": "GINOB",
+          "Nombre": "Especialización en Ginecología y Obstetricia"
+        },
+        {
+          "Codigo": "EINFE",
+          "Nombre": "Especialización en Infectología"
+        },
+        {
+          "Codigo": "EMAST",
+          "Nombre": "Especialización en Mastología"
+        },
+        {
+          "Codigo": "EMCCI",
+          "Nombre": "Especialización en Medicina Crítica y Cuidado Intensivo"
+        },
+        {
+          "Codigo": "ESMUR",
+          "Nombre": "Especialización en Medicina de Urgencias"
+        },
+        {
+          "Codigo": "EDCPP",
+          "Nombre": "Especialización en Medicina del Dolor y Cuidados Paliativos"
+        },
+        {
+          "Codigo": "EMEDF",
+          "Nombre": "Especialización en Medicina Familiar"
+        },
+        {
+          "Codigo": "MEDIN",
+          "Nombre": "Especialización en Medicina Interna"
+        },
+        {
+          "Codigo": "ESNEF",
+          "Nombre": "Especialización en Nefrología"
+        },
+        {
+          "Codigo": "ENEON",
+          "Nombre": "Especialización en Neonatología"
+        },
+        {
+          "Codigo": "ENEUM",
+          "Nombre": "Especialización en Neumología"
+        },
+        {
+          "Codigo": "NEUR",
+          "Nombre": "Especialización en Neurocirugía"
+        },
+        {
+          "Codigo": "NEURL",
+          "Nombre": "Especialización en Neurología"
+        },
+        {
+          "Codigo": "OFTAL",
+          "Nombre": "Especialización en Oftalmología"
+        },
+        {
+          "Codigo": "EONCL",
+          "Nombre": "Especialización en Oncología Clínica"
+        },
+        {
+          "Codigo": "ORONT",
+          "Nombre": "Especialización en Ortopedia y Traumatología"
+        },
+        {
+          "Codigo": "ORINF",
+          "Nombre": "Especialización en Ortopedia y Traumatología Pediátrica"
+        },
+        {
+          "Codigo": "OTRLG",
+          "Nombre": "Especialización en Otorrinolaringología"
+        },
+        {
+          "Codigo": "ESPAT",
+          "Nombre": "Especialización en Patología"
+        },
+        {
+          "Codigo": "ESPED",
+          "Nombre": "Especialización en Pediatría"
+        },
+        {
+          "Codigo": "ESPPG",
+          "Nombre": "Especialización en Psiquiatría"
+        },
+        {
+          "Codigo": "ESPEN",
+          "Nombre": "Especialización en Psiquiatría de Enlace"
+        },
+        {
+          "Codigo": "SPNAD",
+          "Nombre": "Especialización en Psiquiatría de Niños y Adolescentes"
+        },
+        {
+          "Codigo": "EPSGE",
+          "Nombre": "Especialización en Psiquiatría Geriátrica"
+        },
+        {
+          "Codigo": "ESRAD",
+          "Nombre": "Especialización en Radiología e Imágenes Diagnósticas"
+        },
+        {
+          "Codigo": "ERATE",
+          "Nombre": "Especialización en Radioterapia"
+        },
+        {
+          "Codigo": "EREUM",
+          "Nombre": "Especialización en Reumatología"
+        },
+        {
+          "Codigo": "UROL",
+          "Nombre": "Especialización en Urología"
+        },
+        {
+          "Codigo": "MBEST",
+          "Nombre": "Maestría en Bioestadística"
+        },
+        {
+          "Codigo": "MEPSV",
+          "Nombre": "Maestría en Educación para Profesionales de la Salud - Virtual"
+        },
+        {
+          "Codigo": "MEPCL",
+          "Nombre": "Maestría en Epidemiología Clínica (Bogotá)"
+        },
+        {
+          "Codigo": "MEPCC",
+          "Nombre": "Maestría en Epidemiología Clínica (Cali)"
+        },
+        {
+          "Codigo": "PCGME",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Odontología": {
+      "FacultadCodigo": "Odontología",
+      "url": "https://www.javeriana.edu.co/thank-you-page-odontologia-pos",
+      "Programas": [
+        {
+          "Codigo": "ESCMF",
+          "Nombre": "Especialización en Cirugía Maxilofacial"
+        },
+        {
+          "Codigo": "ENDOD",
+          "Nombre": "Especialización en Endodoncia"
+        },
+        {
+          "Codigo": "EODON",
+          "Nombre": "Especialización en Odontopediatría"
+        },
+        {
+          "Codigo": "ORTOD",
+          "Nombre": "Especialización en Ortodoncia"
+        },
+        {
+          "Codigo": "PCBCL",
+          "Nombre": "Especialización en Patología y Cirugía Bucal"
+        },
+        {
+          "Codigo": "ESPER",
+          "Nombre": "Especialización en Periodoncia"
+        },
+        {
+          "Codigo": "REHOR",
+          "Nombre": "Especialización en Rehabilitación Oral"
+        },
+        {
+          "Codigo": "PCGOD",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Psicología": {
+      "FacultadCodigo": "Psicología",
+      "url": "https://www.javeriana.edu.co/thank-you-page-psicologia-pos",
+      "Programas": [
+        {
+          "Codigo": "DPSIC",
+          "Nombre": "Doctorado en Psicología"
+        },
+        {
+          "Codigo": "MPSCL",
+          "Nombre": "Maestría en Psicología Clínica"
+        },
+        {
+          "Codigo": "PCGPS",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Teología": {
+      "FacultadCodigo": "Teología",
+      "url": "https://www.javeriana.edu.co/thank-you-page-teologia-pos",
+      "Programas": [
+        {
+          "Codigo": "DTEOL",
+          "Nombre": "Doctorado en Teología"
+        },
+        {
+          "Codigo": "MTEOL",
+          "Nombre": "Maestría en Teología"
+        },
+        {
+          "Codigo": "PCGTE",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Instituto de Salud Pública": {
+      "FacultadCodigo": "Instituto de Salud Pública",
+      "url": "https://www.javeriana.edu.co/thank-you-page-salud-publica-pos",
+      "Programas": [
+        {
+          "Codigo": "MSAPU",
+          "Nombre": "Maestría en Salud Pública"
+        },
+        {
+          "Codigo": "PCGIS",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    },
+    "Instituto Pensar": {
+      "FacultadCodigo": "Instituto Pensar",
+      "url": "https://www.javeriana.edu.co/thank-you-page-ins-pensar-pos",
+      "Programas": [
+        {
+          "Codigo": "MECMV",
+          "Nombre": "Maestría en Estudios Críticos de las Migraciones Contemporáneas - Virtual"
+        },
+        {
+          "Codigo": "PCGIP",
+          "Nombre": "No sé qué estudiar"
+        }
+      ]
+    }
+  },
+  "ECLE": {
+    "Derecho Canónico": {
+      "FacultadCodigo": "Derecho Canónico",
+      "Programas": [
+        {
+          "Codigo": "DEDC",
+          "Nombre": "Doctorado Eclesiástico en Derecho Canónico"
+        },
+        {
+          "Codigo": "LECLE",
+          "Nombre": "Licenciatura Eclesiástica en Derecho Canónico"
+        }
+      ]
+    },
+    "Filosofía": {
+      "FacultadCodigo": "Filosofía",
+      "Programas": [
+        {
+          "Codigo": "BEFIL",
+          "Nombre": "Bachillerato Eclesiástico en Filosofía"
+        },
+        {
+          "Codigo": "DEFIL",
+          "Nombre": "Doctorado Eclesiástico en Filosofía"
+        },
+        {
+          "Codigo": "LEFIL",
+          "Nombre": "Licenciatura Eclesiástica en Filosofía"
+        }
+      ]
+    },
+    "Teología": {
+      "FacultadCodigo": "Teología",
+      "Programas": [
+        {
+          "Codigo": "BECLE",
+          "Nombre": "Bachillerato Eclesiástico en Teología"
+        },
+        {
+          "Codigo": "BECLV",
+          "Nombre": "Bachillerato Eclesiástico en Teología - Virtual"
+        },
+        {
+          "Codigo": "DECLE",
+          "Nombre": "Doctorado Eclesiástico en Teología"
+        },
+        {
+          "Codigo": "LETEO",
+          "Nombre": "Licenciatura Eclesiástica en Teología"
+        }
+      ]
+    }
+  },
+  "ETDH": {
+    "Odontología": {
+      "FacultadCodigo": "Odontología",
+      "Programas": [
+        {
+          "Codigo": "ASALO",
+          "Nombre": "Técnico Laboral por Competencias en Auxiliar en Salud Oral"
+        }
+      ]
+    }
+  }
+}

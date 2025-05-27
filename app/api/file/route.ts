@@ -13,7 +13,7 @@ export async function GET(req: Request) {
 
   // Normalizar la ruta para evitar accesos no autorizados
   const safePath = path.normalize(decodeURIComponent(requestedPath)).replace(/^(\.\.(\/|\\|$))+/, '')
-  const basePath = path.join(process.cwd(), 'app', 'library')
+  const basePath = path.join(process.cwd(), 'app')
   const componentPath = path.join(basePath, safePath)
 
   console.log(componentPath)
@@ -39,20 +39,32 @@ export async function GET(req: Request) {
     if (scssContent) {
       try {
         compiledCSS = sass.compileString(scssContent, {
-          // 📌 Añadir el directorio base para `@use`
-          loadPaths: [
-            componentPath,
-            path.join(process.cwd(), 'styles'), // Ruta correcta a la carpeta styles
-            path.join(process.cwd()) // Ruta raíz para resolver rutas relativas
-          ],
+          loadPaths: [componentPath, path.join(process.cwd(), 'styles'), path.join(process.cwd(), 'app'), process.cwd()],
           importers: [
             {
-              // Configurar un importador personalizado para manejar alias
-              findFileUrl(url) {
-                if (url.startsWith('@/styles/')) {
-                  // Reemplazar el alias @/styles con la ruta real
-                  return new URL('file://' + path.join(process.cwd(), 'styles', url.substring(9)))
+              findFileUrl(url: string): URL | null {
+                // Manejar alias @styles
+                if (url.startsWith('@styles/')) {
+                  const fileName = url.substring(8) // Remover '@styles/'
+                  const fullPath = path.join(process.cwd(), 'styles', fileName)
+
+                  // Intentar diferentes extensiones
+                  const extensions = ['', '.scss', '.sass', '.css']
+                  for (const ext of extensions) {
+                    const filePathWithExt = fullPath + ext
+                    try {
+                      // Verificar si el archivo existe de forma síncrona
+                      require('fs').accessSync(filePathWithExt)
+                      return new URL(`file://${filePathWithExt.replace(/\\/g, '/')}`)
+                    } catch {
+                      continue
+                    }
+                  }
+
+                  console.warn(`No se encontró el archivo: ${fullPath}`)
+                  return null
                 }
+
                 return null // Dejar que Sass maneje otras importaciones
               }
             }

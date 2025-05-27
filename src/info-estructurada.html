@@ -2,164 +2,161 @@
 
 <script type="text/javascript">
   // Data tomada de Liferay
-  const APPLY_STRUCT_DATA = "${configuration.applyStructData}";
-  const URL_API_JAVERIANA = "https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals";
-  let codPrograma = "${configuration.codigoPrograma}";
-  let dataPrograma = {};
+  const APPLY_STRUCT_DATA = '${configuration.applyStructData}'
+  const URL_API_JAVERIANA = 'https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals'
+  let codPrograma = '${configuration.codigoPrograma}'
+  let dataPrograma = {}
   // Variables para rastrear el estado de los eventos.
-  let loadEventTriggered = false;
-  let dataRenderedEventTriggered = false;
+  let loadEventTriggered = false
+  let dataRenderedEventTriggered = false
 
   // Convierte a minúsculas todas las palabras excepto los conectores comunes
   let clearUpperUnions = function (title) {
     const pres = {
-      En: "en",
-      La: "la",
-      Los: "los",
-      Y: "y",
-      Para: "para",
-      De: "de",
-      Desde: "desde",
-      Del: "del",
-      Las: "las",
-      E: "e",
-      O: "o",
-      Al: "al",
-      Los: "los",
-      Como: "como",
-      EN: "en",
-      LA: "la",
-      El: "el",
-      Con: "con",
-      Él: "el",
-    };
+      En: 'en',
+      La: 'la',
+      Los: 'los',
+      Y: 'y',
+      Para: 'para',
+      De: 'de',
+      Desde: 'desde',
+      Del: 'del',
+      Las: 'las',
+      E: 'e',
+      O: 'o',
+      Al: 'al',
+      Los: 'los',
+      Como: 'como',
+      EN: 'en',
+      LA: 'la',
+      El: 'el',
+      Con: 'con',
+      Él: 'el'
+    }
 
-    let resp = title;
+    let resp = title
 
     for (let k in pres) {
-      if (resp.includes(" " + k + " ")) {
-        resp = resp.replaceAll(" " + k + " ", " " + pres[k] + " ");
+      if (resp.includes(' ' + k + ' ')) {
+        resp = resp.replaceAll(' ' + k + ' ', ' ' + pres[k] + ' ')
       }
     }
 
-    return resp;
-  };
+    return resp
+  }
 
   // Verifica si el programa tiene información estructurada
   let initFillerData = async function () {
-    if ($(".control-menu").length > 0) {
-      if ($("#fragment_4053715").length > 0) {
+    if ($('.control-menu').length > 0) {
+      if ($('#fragment_4053715').length > 0) {
         let btnMM1 =
-          '<span style="margin-left:30px;" class="badge badge-info panel-notifications-count"><span class="badge-item badge-item-expand ">Filler Información Estructurada Condicional</span></span>';
-        $("#fragment_4053715").append(btnMM1);
+          '<span style="margin-left:30px;" class="badge badge-info panel-notifications-count"><span class="badge-item badge-item-expand ">Filler Información Estructurada Condicional</span></span>'
+        $('#fragment_4053715').append(btnMM1)
       }
     }
-  };
+  }
 
   // Inicializa el botón de información del plan de estudios
   let initPlanEst = function (codPrograma, dataPrograma) {
-    let botonInfoPlan = document.getElementById("boton-info-plan");
-    let codPlan = planesEst[codPrograma];
+    let botonInfoPlan = document.getElementById('boton-info-plan')
+    let codPlan = planesEst[codPrograma]
 
-    console.log("DATOS Plan Estudios: " + dataPrograma.programa + ": ", codPlan);
+    console.log('DATOS Plan Estudios: ' + dataPrograma.programa + ': ', codPlan)
 
     if (codPlan !== undefined && botonInfoPlan !== null) {
-      let hrefValue = codPlan.replace("documentos", "documents");
+      let hrefValue = codPlan.replace('documentos', 'documents')
 
-      botonInfoPlan.setAttribute("href", hrefValue);
-      botonInfoPlan.setAttribute("target", "_blank");
-      botonInfoPlan.style.display = "inline-block";
-      botonInfoPlan.style.marginTop = "15px";
-      botonInfoPlan.id = "boton-info-plan";
+      botonInfoPlan.setAttribute('href', hrefValue)
+      botonInfoPlan.setAttribute('target', '_blank')
+      botonInfoPlan.style.display = 'inline-block'
+      botonInfoPlan.style.marginTop = '15px'
+      botonInfoPlan.id = 'boton-info-plan'
 
       try {
-        let btnAcceso = document.getElementById("btn-acceso");
-        if (btnAcceso) btnAcceso.id = "btn-acceso-";
+        let btnAcceso = document.getElementById('btn-acceso')
+        if (btnAcceso) btnAcceso.id = 'btn-acceso-'
       } catch (err) {
-        console.error("Error al cambiar el ID de btn-acceso:", err);
+        console.error('Error al cambiar el ID de btn-acceso:', err)
       }
     }
-  };
+  }
 
   // Formatea un número con comas
   let numberWithCommas = function (x) {
-    x = x.toString();
-    let pattern = /(-?\d+)(\d{3})/;
-    while (pattern.test(x)) x = x.replace(pattern, "$1,$2");
-    return x;
-  };
+    x = x.toString()
+    let pattern = /(-?\d+)(\d{3})/
+    while (pattern.test(x)) x = x.replace(pattern, '$1,$2')
+    return x
+  }
 
   // Capitaliza la primera letra de cada palabra
   let capitalizeStr = function (str) {
-    const arr = str.split(" ");
+    const arr = str.split(' ')
     for (let i = 0; i < arr.length; i++) {
-      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
+      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase()
     }
-    const str2 = clearUpperUnions(arr.join(" "));
-    return str2;
-  };
+    const str2 = clearUpperUnions(arr.join(' '))
+    return str2
+  }
 
   // Carga la información del programa
   let loadData = async function (applyStructData, URL, codPrg) {
-    const response = await fetch(URL + "/filterprograma?codprograma=" + codPrograma);
-    const res = await response.json();
+    const response = await fetch(URL + '/filterprograma?codprograma=' + codPrograma)
+    const res = await response.json()
 
-    const dataProgramSecondApi = await fetch("https://www.javeriana.edu.co/prg-api/searchpuj/general-search-program", {
-      method: "POST",
+    const dataProgramSecondApi = await fetch('https://www.javeriana.edu.co/prg-api/searchpuj/general-search-program', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        query: "",
-        visibilidad: "yes",
-        tipoPrograma: "",
-        areas: "",
-        facultad: "",
-      }),
-    });
-    const dataProgramSecondApiJson = await dataProgramSecondApi.json();
-    const dataProgramSecondApiFiltered = dataProgramSecondApiJson.filter((program) => program.codigo == codPrograma)[0];
-    console.log("Data programa segunda API: ", dataProgramSecondApiFiltered);
-
+        query: '',
+        visibilidad: 'yes',
+        tipoPrograma: '',
+        areas: '',
+        facultad: ''
+      })
+    })
+    const dataProgramSecondApiJson = await dataProgramSecondApi.json()
+    const dataProgramSecondApiFiltered = dataProgramSecondApiJson.filter(program => program.codigo == codPrograma)[0]
+    console.log('Data programa segunda API: ', dataProgramSecondApiFiltered)
 
     // Agregar un contador de intentos y un límite máximo
-    let attemptCount = 0;
-    const MAX_ATTEMPTS = 15; // Máximo de 10 intentos (5 segundos)
+    let attemptCount = 0
+    const MAX_ATTEMPTS = 15 // Máximo de 10 intentos (5 segundos)
 
     const intervalId = setInterval(() => {
-      attemptCount++;
+      attemptCount++
 
-      const titlePage = document.querySelector("div.container-banner-principal > h1 > div");
-      const academic = document.querySelector(
-        "div.container > div.banner-propacad > div > div > div > div > div > p#academico"
-      );
-      const inversion = document.getElementById("inversion");
+      const titlePage = document.querySelector('div.container-banner-principal > h1 > div')
+      const academic = document.querySelector('div.container > div.banner-propacad > div > div > div > div > div > p#academico')
+      const inversion = document.getElementById('inversion')
       const snies = document.querySelector(
-        "div > div.banner-propacad > div.col-12.snies > div > div.col-12.col-md-9.mb-3.mx-auto.snies-detalle > div > strong"
-      );
-      const container = document.getElementById("fechasInscripciones");
-      const modalidad = document.getElementById("modalidad-content");
+        'div > div.banner-propacad > div.col-12.snies > div > div.col-12.col-md-9.mb-3.mx-auto.snies-detalle > div > strong'
+      )
+      const container = document.getElementById('fechasInscripciones')
+      const modalidad = document.getElementById('modalidad-content')
 
       // Actualizar elementos que existen
       if (titlePage) {
-        titlePage.innerHTML = capitalizeStr(res.programa);
+        titlePage.innerHTML = capitalizeStr(res.programa)
       }
 
       if (academic) {
-        academic.innerHTML = res.grado;
+        academic.innerHTML = res.grado
       }
 
       if (inversion) {
         inversion.innerHTML =
           '<a href="#requisitos-inscripcion-admision"><strong></strong>$' +
           numberWithCommas(res.costo) +
-          " / " +
+          ' / ' +
           res.periodicidad +
-          ".*</a>";
+          '.*</a>'
       }
 
       if (snies) {
-        snies.innerHTML = "SNIES " + res.snies + " ";
+        snies.innerHTML = 'SNIES ' + res.snies + ' '
       }
 
       // Importante: Limpiar el contenedor antes de agregar nuevos elementos
@@ -167,39 +164,39 @@
         // Solo llenar el contenedor si está vacío
         if (container.children.length === 0) {
           if (dataPrograma.datosFechaCierreInscripcion && dataPrograma.datosFechaCierreInscripcion.length == 0) {
-            const descCiclo = document.createElement("STRONG");
-            descCiclo.textContent = "Cierre de inscripciones";
+            const descCiclo = document.createElement('STRONG')
+            descCiclo.textContent = 'Cierre de inscripciones'
 
-            const fFinCierreLetra = document.createElement("p");
-            fFinCierreLetra.textContent = "Próxima apertura siguiente semestre";
+            const fFinCierreLetra = document.createElement('p')
+            fFinCierreLetra.textContent = 'Próxima apertura siguiente semestre'
 
-            container.appendChild(descCiclo);
-            container.appendChild(fFinCierreLetra);
+            container.appendChild(descCiclo)
+            container.appendChild(fFinCierreLetra)
           } else {
-            dataPrograma.datosFechaCierreInscripcion.forEach((element) => {
-              const descCiclo = document.createElement("STRONG");
-              descCiclo.textContent = "Ingreso " + element.descCiclo;
+            dataPrograma.datosFechaCierreInscripcion.forEach(element => {
+              const descCiclo = document.createElement('STRONG')
+              descCiclo.textContent = 'Ingreso ' + element.descCiclo
 
-              const fFinCierreLetra = document.createElement("p");
-              fFinCierreLetra.textContent = "Cierre de inscripciones: ";
+              const fFinCierreLetra = document.createElement('p')
+              fFinCierreLetra.textContent = 'Cierre de inscripciones: '
 
-              const span = document.createElement("span");
-              span.classList.add("fecha-cierre");
-              span.textContent = element.fFinCierreLetra;
+              const span = document.createElement('span')
+              span.classList.add('fecha-cierre')
+              span.textContent = element.fFinCierreLetra
 
-              container.appendChild(descCiclo);
-              container.appendChild(fFinCierreLetra);
-              fFinCierreLetra.appendChild(span);
-            });
+              container.appendChild(descCiclo)
+              container.appendChild(fFinCierreLetra)
+              fFinCierreLetra.appendChild(span)
+            })
           }
         }
       }
 
       if (modalidad) {
         if (dataProgramSecondApiFiltered.modalidad) {
-          modalidad.innerHTML = dataProgramSecondApiFiltered.modalidad;
+          modalidad.innerHTML = dataProgramSecondApiFiltered.modalidad
         } else {
-          modalidad.innerHTML = "Modalidad no disponible";
+          modalidad.innerHTML = 'Modalidad no disponible'
         }
       }
 
@@ -207,130 +204,127 @@
       // 1. Si todos los elementos existen, terminamos
       // 2. O si hemos alcanzado el máximo de intentos, también terminamos
       if ((titlePage && inversion && snies && container) || attemptCount >= MAX_ATTEMPTS) {
-        clearInterval(intervalId);
+        clearInterval(intervalId)
 
         if (attemptCount >= MAX_ATTEMPTS) {
-          console.log(
-            "⚠️ [Información estructurada] Se alcanzó el límite de intentos. Algunos elementos pueden no estar disponibles."
-          );
+          console.log('⚠️ [Información estructurada] Se alcanzó el límite de intentos. Algunos elementos pueden no estar disponibles.')
         } else {
-          console.log("🟢 [Información estructurada] Elementos cargados correctamente");
+          console.log('🟢 [Información estructurada] Elementos cargados correctamente')
         }
       }
-    }, 500);
+    }, 500)
 
     // Evento DOM de carga de datos
-    const event = new CustomEvent("dataLoad", { detail: res });
-    document.dispatchEvent(event);
-    return res;
-  };
+    const event = new CustomEvent('dataLoad', { detail: res })
+    document.dispatchEvent(event)
+    return res
+  }
 
   // Carga la información básica del programa
   let chargeBasicInfo = async function (dataPrograma) {
-    const titlePage = "div.container-banner-principal > h1 > div";
-    const sniesPage =
-      "div > div.banner-propacad > div.col-12.snies > div > div.col-12.col-md-9.mb-3.mx-auto.snies-detalle > div > strong";
-    const academicPage = "div.container > div.banner-propacad > div > div > div > div > div > p#academico";
+    const titlePage = 'div.container-banner-principal > h1 > div'
+    const sniesPage = 'div > div.banner-propacad > div.col-12.snies > div > div.col-12.col-md-9.mb-3.mx-auto.snies-detalle > div > strong'
+    const academicPage = 'div.container > div.banner-propacad > div > div > div > div > div > p#academico'
     const inversionPage =
-      "div.container > div.banner-propacad > div > .row > div.col-12.col-md.text-center > div.text-center.text-gray.d-inline-block > div > p#inversion";
+      'div.container > div.banner-propacad > div > .row > div.col-12.col-md.text-center > div.text-center.text-gray.d-inline-block > div > p#inversion'
 
-    const name = document.querySelector(titlePage);
-    const snies = document.querySelector(sniesPage);
-    const academic = document.querySelector(academicPage);
-    const inversion = document.querySelector(inversionPage);
-    const container = document.getElementById("fechasInscripciones");
+    const name = document.querySelector(titlePage)
+    const snies = document.querySelector(sniesPage)
+    const academic = document.querySelector(academicPage)
+    const inversion = document.querySelector(inversionPage)
+    const container = document.getElementById('fechasInscripciones')
 
     // Llena los campos con la información del programa
 
-    if (name) name.innerHTML = capitalizeStr(dataPrograma.programa);
+    if (name) name.innerHTML = capitalizeStr(dataPrograma.programa)
 
-    if (snies) snies.innerHTML = "SNIES " + dataPrograma.snies + " ";
+    if (snies) snies.innerHTML = 'SNIES ' + dataPrograma.snies + ' '
 
-    if (academic) academic.innerHTML = dataPrograma.grado;
+    if (academic) academic.innerHTML = dataPrograma.grado
 
     if (inversion) {
       inversion.innerHTML =
         '<a href="#requisitos-inscripcion-admision"><strong></strong>$' +
         numberWithCommas(dataPrograma.costo) +
-        " / " +
+        ' / ' +
         dataPrograma.periodicidad +
-        ".*</a>";
+        '.*</a>'
     }
 
     if (container) {
       if (dataPrograma.datosFechaCierreInscripcion && dataPrograma.datosFechaCierreInscripcion.length == 0) {
-        const descCiclo = document.createElement("STRONG");
-        descCiclo.textContent = "Cierre de inscripciones";
+        const descCiclo = document.createElement('STRONG')
+        descCiclo.textContent = 'Cierre de inscripciones'
 
-        const fFinCierreLetra = document.createElement("p");
-        fFinCierreLetra.textContent = "Próxima apertura siguiente semestre";
+        const fFinCierreLetra = document.createElement('p')
+        fFinCierreLetra.textContent = 'Próxima apertura siguiente semestre'
 
-        container.appendChild(descCiclo);
-        container.appendChild(fFinCierreLetra);
+        container.appendChild(descCiclo)
+        container.appendChild(fFinCierreLetra)
       } else {
-        dataPrograma.datosFechaCierreInscripcion.forEach((element) => {
-          const descCiclo = document.createElement("STRONG");
-          descCiclo.textContent = "Ingreso " + element.descCiclo;
+        dataPrograma.datosFechaCierreInscripcion.forEach(element => {
+          const descCiclo = document.createElement('STRONG')
+          descCiclo.textContent = 'Ingreso ' + element.descCiclo
 
-          const fFinCierreLetra = document.createElement("p");
-          fFinCierreLetra.textContent = "Cierre de inscripciones: ";
+          const fFinCierreLetra = document.createElement('p')
+          fFinCierreLetra.textContent = 'Cierre de inscripciones: '
 
-          const span = document.createElement("span");
-          span.classList.add("fecha-cierre");
-          span.textContent = element.fFinCierreLetra;
+          const span = document.createElement('span')
+          span.classList.add('fecha-cierre')
+          span.textContent = element.fFinCierreLetra
 
-          container.appendChild(descCiclo);
-          container.appendChild(fFinCierreLetra);
-          fFinCierreLetra.appendChild(span);
-        });
+          container.appendChild(descCiclo)
+          container.appendChild(fFinCierreLetra)
+          fFinCierreLetra.appendChild(span)
+        })
       }
     }
-  };
+  }
 
   // MAIN
-  (async () => {
+  ;(async () => {
     try {
-      console.log("🟠 [Información estructurada] Cargando programa: ", codPrograma);
+      console.log('🟠 [Información estructurada] Cargando programa: ', codPrograma)
       // Verifica si el código del programa está definido
-      if (codPrograma === undefined || codPrograma.length == 0) new Error("Código de programa no definido");
+      if (codPrograma === undefined || codPrograma.length == 0) new Error('Código de programa no definido')
       // Verifica si los datos estan estrcturados
-      if (APPLY_STRUCT_DATA != "true") new Error("Datos de Liferay no estructurados");
+      if (APPLY_STRUCT_DATA != 'true') new Error('Datos de Liferay no estructurados')
       // Carga la información del programa
 
-      dataPrograma = await loadData(APPLY_STRUCT_DATA, URL_API_JAVERIANA, codPrograma);
-      console.log("API - programa " + dataPrograma.programa + ": ", dataPrograma);
+      dataPrograma = await loadData(APPLY_STRUCT_DATA, URL_API_JAVERIANA, codPrograma)
+      console.log('API - programa ' + dataPrograma.programa + ': ', dataPrograma)
       //chargeBasicInfo(dataPrograma);
     } catch (error) {
-      console.error("❌ [Información estructurada] Error al cargar la información del programa: ", error);
+      console.error('❌ [Información estructurada] Error al cargar la información del programa: ', error)
     }
-  })();
+  })()
 
   // Función para verificar si ambos eventos han ocurrido
   const checkEventsAndInit = () => {
     if (loadEventTriggered && dataRenderedEventTriggered) {
-      initPlanEst(codPrograma, dataPrograma);
-      initFillerData();
+      initPlanEst(codPrograma, dataPrograma)
+      initFillerData()
       //chargeBasicInfo(dataPrograma);
-      console.log("🟢 [Información estructurada] Cargado con éxito");
+      console.log('🟢 [Información estructurada] Cargado con éxito')
 
       // Dispara el evento de renderizado de datos
-      const event = new CustomEvent("dataRendered", {
+      const event = new CustomEvent('dataRendered', {
         detail: dataPrograma.datosFechaCierreInscripcion,
-        faculty: dataPrograma.facultad,
-      });
-      document.dispatchEvent(event);
+        faculty: dataPrograma.facultad
+      })
+      document.dispatchEvent(event)
     }
-  };
+  }
 
   // Evento de carga de la página
-  window.addEventListener("load", () => {
-    loadEventTriggered = true;
-    checkEventsAndInit();
-  });
+  window.addEventListener('load', () => {
+    loadEventTriggered = true
+    checkEventsAndInit()
+  })
 
   // Evento de carga de datos
-  document.addEventListener("dataLoad", () => {
-    dataRenderedEventTriggered = true;
-    checkEventsAndInit();
-  });
+  document.addEventListener('dataLoad', () => {
+    dataRenderedEventTriggered = true
+    checkEventsAndInit()
+  })
 </script>

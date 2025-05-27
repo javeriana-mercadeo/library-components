@@ -9,7 +9,7 @@
 // RESPONSIVE
 // ------------------------------------------
 // Mixin para aplicar estilos responsivos
-@mixin responsive {
+@mixin responsive($break_point: $breakpoint-md) {
   @media (min-width: $break_point) {
     @content;
   }
