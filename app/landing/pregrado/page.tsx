@@ -1,20 +1,19 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-import Splash from '@library/_general/sections/Splash'
+import Splash from '@/app/_library/sections/splash'
 
-import Header from '@library/pregrado/sections/0_header'
-import Hero from '@library/pregrado/sections/1_hero'
-import MeetingDirector from '@library/pregrado/sections/meetingDirector'
-import Btn from '@library/_general/components/buttons/btn_general'
+import Header from './sections/header'
+import Hero from './sections/hero'
+import MeetingDirector from './sections/meetingDirector'
 
 export default function Profesional() {
+  const basePath = '/landing/pregrado'
   return (
     <>
       <Splash />
-
-      <Header />
-
+      <ViewComponent path={`${basePath}/sections/header`}>
+        <Header />
+      </ViewComponent>
       <Hero />
-
       <MeetingDirector />
 
       {/*       <ViewComponent path="pregrado/sections/0_header">
@@ -28,10 +27,6 @@ export default function Profesional() {
       <ViewComponent path="/pregrado/sections/meetingDirector">
         <MeetingDirector />
       </ViewComponent> */}
-
-      <ViewComponent path="/_general/components/buttons/btn_general">
-        <Btn id="1" className="c" color="primary" />
-      </ViewComponent>
     </>
   )
 }
