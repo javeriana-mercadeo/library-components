@@ -29,7 +29,7 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
 }
 
 h3 {
@@ -391,8 +391,9 @@ img, video, iframe {
   padding: 16px 38px;
   justify-items: start;
   align-items: stretch;
-  padding-top: 50px;
-  min-height: 100%;
+  padding-top: 100px;
+  padding-bottom: 38px;
+  min-height: 100vh;
   max-width: 1200px;
 }
 #section-one .program-info__content {
@@ -404,13 +405,14 @@ img, video, iframe {
 #section-one .program-info__image {
   grid-area: image;
   width: 100%;
-  height: 80%;
+  height: 97%;
   display: flex;
   align-items: stretch;
   justify-content: center;
-  align-self: center;
+  align-self: stretch;
   border-radius: 16px;
   overflow: hidden;
+  aspect-ratio: 9/16;
 }
 #section-one .program-info__image iframe {
   width: 100%;
@@ -428,7 +430,7 @@ img, video, iframe {
   padding-top: 15px;
 }
 #section-one .program-info__title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: 700;
   letter-spacing: normal;
   line-height: 1.2;
@@ -521,7 +523,7 @@ img, video, iframe {
 #section-one .program-info .content-button {
   display: none;
 }
-@media (max-width: 1200px) {
+@media (max-width: 992px) {
   #section-one .program-info {
     display: flex;
     flex-direction: column;
@@ -621,7 +623,7 @@ img, video, iframe {
     flex-direction: column;
     text-align: left;
     padding: 16px;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
   }
   #section-one .program-info__content, #section-one .program-info__image {
@@ -664,6 +666,7 @@ img, video, iframe {
     order: 4;
     display: flex;
     flex-direction: column;
+    width: 100%;
   }
   #section-one .program-info .program-details-row {
     order: 5;
@@ -700,7 +703,7 @@ img, video, iframe {
   width: 100%;
 }
 #section-two .subjects-carousel .subjects-carousel__title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: bold;
   padding-bottom: 10px;
   width: fit-content;
@@ -887,6 +890,16 @@ img, video, iframe {
   right: 2px;
 }
 @media (max-width: 576px) {
+  #section-two .subjects-carousel .text-align-movil {
+    text-align: left;
+    width: 100%;
+  }
+  #section-two .subjects-carousel .button-plan {
+    width: 98%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+  }
   #section-two .subjects-carousel .swiper-slide-button {
     width: 40px;
     height: 40px;
@@ -933,7 +946,7 @@ img, video, iframe {
   max-width: 1200px;
 }
 #section-three .program-profile__title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: 700;
   margin-bottom: 16px;
 }
@@ -1134,7 +1147,7 @@ img, video, iframe {
 #section-four .section-four-title .why-javeriana__title {
   gap: 8px;
   width: fit-content;
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: bold;
 }
 #section-four .why-javeriana {
@@ -1266,7 +1279,7 @@ img, video, iframe {
   padding-bottom: 25px;
 }
 #section-five .academic-carousel__title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: 700;
   width: fit-content;
 }
@@ -1278,7 +1291,7 @@ img, video, iframe {
   max-width: 1200px;
 }
 #section-five h1 {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   padding: 20px;
   margin: 20px 0px;
 }
@@ -1385,7 +1398,7 @@ img, video, iframe {
   /* Tarjetas de docentes */
 }
 #section-six .expert-carousel__title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: 700;
   color: #ffffff;
   padding-bottom: 15px;
@@ -1565,7 +1578,7 @@ img, video, iframe {
 }
 #section-seven .experience-carousel__title {
   width: fit-content;
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: 700;
 }
 #section-seven .experience-carousel {
@@ -1582,7 +1595,7 @@ img, video, iframe {
   /* final btn-navegación swiper*/
 }
 #section-seven .experience-carousel__title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   color: #212529;
   width: 100%;
   padding-bottom: 15px;
@@ -1887,7 +1900,7 @@ img, video, iframe {
 }
 #section-nine .projects-carousel__title {
   width: fit-content;
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: 700;
   padding-top: 20px;
 }
@@ -1904,7 +1917,7 @@ img, video, iframe {
   padding: 0;
 }
 #section-nine .projects-carousel__title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   color: #212529;
   width: 100%;
   padding-bottom: 15px;
@@ -2105,7 +2118,7 @@ img, video, iframe {
   }
 }
 #section-ten .related-programs__title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: 700;
   margin-bottom: 8px;
   color: #101215;
@@ -2226,7 +2239,7 @@ img, video, iframe {
   min-height: 100vh;
 }
 .related-programs-carousel .related-programs-carousel__title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: bold;
   padding-bottom: 10px;
   width: fit-content;
@@ -2412,7 +2425,7 @@ img, video, iframe {
   }
 }
 #section-eleven .faq__title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
   font-weight: 700;
   margin-bottom: 24px;
   color: #101215;
