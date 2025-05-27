@@ -11,6 +11,7 @@
 
 // 3. Base (estilos fundamentales)
 // ------------------------------------------
+@forward 'base/root_vars';
 @forward 'base/reset';
 @forward 'base/typography';
 @forward 'base/animations';
