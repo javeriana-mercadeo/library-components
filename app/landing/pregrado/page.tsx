@@ -7,6 +7,7 @@ import MeetingDirector from './sections/meetingDirector'
 
 export default function Profesional() {
   const basePath = '/landing/pregrado'
+
   return (
     <>
       <Splash />
