@@ -1,9 +1,9 @@
-@use 'mixins'as *;
-@use 'variables'as *;
+@use 'mixins' as *;
+@use 'variables' as *;
 @use 'sass:color';
 
 .button {
-   &--primary {
+  &--primary {
     @include button-style($primary-color, $text-light);
 
     &:hover {
@@ -11,7 +11,7 @@
     }
   }
 
-  &--secondary{
+  &--secondary {
     @include button-style($secondary-color, $primary-color);
 
     &:hover {
@@ -24,7 +24,7 @@
     @include button-style(transparent, $primary-color, $primary-color);
 
     &:hover {
-     color: $secondary-color;
+      color: $secondary-color;
     }
   }
 
@@ -42,16 +42,16 @@
     padding: $spacing-md $spacing-lg;
     font-size: $font-size-h3;
   }
-  
-  @media (max-width: $breakpoint-lg) {
-  &--secondary {
-    background-color: $primary-color; 
-    color: $text-light;
-  }
 
-  &--primary {
-    background-color: $secondary-color;
-    color: $text-dark;
+  @media (max-width: $breakpoint-lg) {
+    &--secondary {
+      background-color: $primary-color;
+      color: $text-light;
+    }
+
+    &--primary {
+      background-color: $secondary-color;
+      color: $text-dark;
+    }
   }
-}
 }

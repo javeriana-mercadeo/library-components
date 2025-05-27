@@ -1,0 +1,150 @@
+// ==========================================
+// MIXINS
+// ==========================================
+@use 'sass:meta';
+@use 'sass:map';
+@use 'variables' as *;
+@use 'colors' as *;
+
+// RESPONSIVE
+// ------------------------------------------
+// Mixin para aplicar estilos responsivos
+@mixin responsive($break_point: $breakpoint-md) {
+  @media (min-width: $break_point) {
+    @content;
+  }
+}
+
+// DARK THEME
+// ------------------------------------------
+// Mixin para aplicar estilos específicos del tema oscuro
+@mixin dark-theme {
+  [data-theme*='dark'] & {
+    @content;
+  }
+}
+
+// TRANSICIONES
+// ------------------------------------------
+// Mixin para aplicar transiciones suaves
+@mixin hover-transition {
+  transition: $transition ease;
+
+  &:hover {
+    transition: $transition ease;
+  }
+}
+
+// GENERAR VARIABLES
+// ------------------------------------------
+// Mixin para generar variables de color
+@mixin generate-vars($name, $colors) {
+  :root {
+    --theme: 'light';
+
+    @each $color-value, $value in $colors {
+      @if $color-value != '' {
+        --#{$name}-#{$color-value}: #{$value};
+      } @else {
+        --#{$name}: #{$value};
+      }
+    }
+  }
+}
+
+// GENERAR TEMAS
+// ------------------------------------------
+// Mixin para generar variables de color para temas
+// GENERAR TEMAS (completando colores faltantes con los del tema base)
+@mixin generate-theme($name, $colors) {
+  :root[data-theme='#{$name}'] {
+    --theme: '#{$name}';
+
+    @each $color-name, $color-value in $colors {
+      @each $variant, $val in $color-value {
+        @if $variant != '' {
+          --#{$color-name}-#{$variant}: #{$val};
+        } @else {
+          --#{$color-name}: #{$val};
+        }
+      }
+    }
+  }
+}
+
+// APLICAR VARIANTES DE COMPONENTES POR TEMA
+// ------------------------------------------
+// Mixin para aplicar variantes de componentes basadas en temas
+@mixin theme-variants-component($base-class, $mixin-ref) {
+  // Estilos por defecto (sin tema explícito)
+  @each $color-name, $color-values in $colors-map {
+    .#{$base-class}-#{$color-name} {
+      @include meta.apply($mixin-ref, ($color-values));
+    }
+  }
+
+  // Estilos para cada tema con [data-theme="..."]
+  @each $theme-name, $theme-values in $colors-theme {
+    [data-theme='#{$theme-name}'] {
+      @each $color-name, $color-values in $theme-values {
+        .#{$base-class}-#{$color-name} {
+          @include meta.apply($mixin-ref, ($color-values));
+        }
+      }
+    }
+  }
+}
+
+/* Organizar mixins */
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint==sm {
+    @media (min-width: $breakpoint-sm) {
+      @content;
+    }
+  } @else if $breakpoint==md {
+    @media (min-width: $breakpoint-md) {
+      @content;
+    }
+  } @else if $breakpoint==lg {
+    @media (min-width: $breakpoint-lg) {
+      @content;
+    }
+  } @else if $breakpoint==xl {
+    @media (min-width: $breakpoint-xl) {
+      @content;
+    }
+  }
+}
+
+// Mixin para estilos de texto
+@mixin text-style($size, $weight: $font-weight-regular, $spacing: $letter-spacing-normal, $line-height: $line-height-base) {
+  font-size: $size;
+  font-weight: $weight;
+  letter-spacing: $spacing;
+  line-height: $line-height;
+  font-family: $font-family-primary;
+}
+
+// Mixin para botones
+@mixin button-style($bg-color, $text-color, $border-color: null) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: if($border-color, 1px solid $border-color, none);
+  border-radius: $border-radius-md;
+  padding: $spacing-sm $spacing-md;
+  text-align: center;
+  cursor: pointer;
+  font-family: $font-family-primary;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: color.adjust($bg-color, $lightness: -10%);
+  }
+
+  &:disabled {
+    background-color: $disabled-color;
+    color: $color-muted-text;
+    cursor: not-allowed;
+  }
+}

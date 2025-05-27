@@ -1,0 +1,48 @@
+@use '@styles/autoload' as *;
+
+.meeting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: var(--primary);
+  padding: 30px 20px;
+
+  .meeting-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1400px;
+
+    @include responsive {
+      flex-direction: row;
+    }
+
+    .caption {
+      text-align: center;
+      font-size: rem(20px);
+      color: var(--neutral-1000);
+    }
+
+    .btn.btn-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 8px;
+      border-radius: 8px;
+      font-size: 16px;
+      color: var(--neutral-1000);
+      border: 1px solid var(--neutral-1000);
+      text-decoration: none;
+
+      @include hover-transition;
+
+      &:hover {
+        background-color: var(--neutral-1000);
+        color: var(--primary);
+      }
+    }
+  }
+}
