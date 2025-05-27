@@ -13,8 +13,14 @@ export default function Profesional() {
       <ViewComponent path={`${basePath}/sections/header`}>
         <Header />
       </ViewComponent>
-      <Hero />
-      <MeetingDirector />
+
+      <ViewComponent path={`${basePath}/sections/hero`}>
+        <Hero />
+      </ViewComponent>
+
+      <ViewComponent path={`${basePath}/sections/meetingDirector`}>
+        <MeetingDirector />
+      </ViewComponent>
 
       {/*       <ViewComponent path="pregrado/sections/0_header">
         <Header />
