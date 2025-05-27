@@ -1,0 +1,34 @@
+@use './vars' as *;
+
+// Responsive
+@mixin responsive {
+  @media (min-width: $break_point) {
+    @content;
+  }
+}
+
+@mixin generate-vars($name, $colors) {
+  :root {
+    @each $color-value, $value in $colors {
+      @if $color-value != '' {
+        --#{$name}-#{$color-value}: #{$value};
+      } @else {
+        --#{$name}: #{$value};
+      }
+    }
+  }
+}
+
+@mixin generate-theme($name, $colors) {
+  :root[data-theme='#{$name}'] {
+    @each $color-name, $color-value in $colors {
+      @each $color-value-name, $color-value in $color-value {
+        @if $color-value-name != '' {
+          --#{$color-name}-#{$color-value-name}: #{$color-value};
+        } @else {
+          --#{$color-name}: #{$color-value};
+        }
+      }
+    }
+  }
+}

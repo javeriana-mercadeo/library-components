@@ -1,0 +1,212 @@
+/* Importación de fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Estilos para el modo de edición */
+.signed-in #promoModal {
+  display: none;
+}
+
+.has-edit-mode-menu #promoModal {
+  display: block;
+  opacity: 1;
+  position: initial;
+  z-index: 1050;
+}
+
+.has-edit-mode-menu .modal-backdrop.fade.show {
+  display: none;
+  position: initial;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.has-edit-mode-menu .modal.fade.show {
+  display: block;
+  opacity: 1;
+  position: initial;
+  z-index: 1050;
+}
+
+.has-edit-mode-menu .modal.fade.show .modal-dialog {
+  position: initial !important;
+}
+
+/* Estilo general del modal */
+.promo-modal .modal.fade.show {
+  overflow-y: scroll;
+}
+
+.promo-modal .modal.fade.show .modal-dialog {
+  margin: 15px;
+}
+
+.promo-modal .modal-content {
+  background-color: #fff;
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 900px;
+  position: relative;
+}
+
+.promo-modal .background-image {
+  background-size: cover;
+  height: 100%;
+  right: 0;
+  position: absolute;
+  top: 0;
+  z-index: 0;
+}
+
+.promo-modal .background-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Contenedor principal del contenido */
+.promo-modal .content-wrapper {
+  display: flex;
+  overflow: hidden;
+}
+
+/* Información del contenido */
+.promo-modal .content-info {
+  color: #fff;
+  padding: 56px;
+  position: relative;
+  width: 53%;
+  z-index: 2;
+  background-color: #003d7a;
+  margin: 32px;
+}
+
+/* Líneas amarillas */
+.promo-modal .content-wrapper::before,
+.promo-modal .content-wrapper::after {
+  content: '';
+  position: absolute;
+  border: 5px solid #fbc02d;
+  z-index: 3;
+}
+
+.promo-modal .content-wrapper::before {
+  top: 52px;
+  left: 90px;
+  width: 82%;
+  height: 60px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.promo-modal .content-wrapper::after {
+  bottom: 52px;
+  right: 72px;
+  width: 82%;
+  height: 280px;
+  border-left: none;
+  border-top: none;
+}
+
+.popup-text {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: left;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+  text-align: left;
+}
+
+hr {
+  width: 141px;
+  height: 3px;
+  background: #73d7fa;
+  margin: 20px 0px;
+}
+
+.promo-modal .content-button {
+  align-items: flex-end;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 32px;
+  width: 31%;
+  position: relative;
+}
+
+.promo-modal .cta-button {
+  background-color: #003d7a;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.6em;
+  font-weight: bold;
+  padding: 5px 35px;
+  position: relative;
+  z-index: 4;
+}
+
+.promo-modal .cta-button a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Botón de cierre */
+.promo-modal .close-button {
+  text-align: center;
+  background: #003d7a;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.2em;
+  height: 30px;
+  font-weight: bold;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  z-index: 3;
+}
+
+/* Media Queries */
+
+/* Ajustes para pantallas medianas */
+@media (max-width: 768px) {
+  .promo-modal .content-wrapper {
+    flex-direction: column;
+  }
+
+  .promo-modal .content-info {
+    width: 90%;
+    margin: 48px 20px 15px 20px;
+    padding: 30px;
+  }
+
+  .promo-modal .content-button {
+    width: 100%;
+  }
+
+  .promo-modal .background-image {
+    display: none;
+  }
+
+  .promo-modal .content-wrapper::before,
+  .promo-modal .content-wrapper::after {
+    display: none;
+  }
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (min-width: 480px) {
+  .modal-dialog {
+    max-width: 100%;
+  }
+}
