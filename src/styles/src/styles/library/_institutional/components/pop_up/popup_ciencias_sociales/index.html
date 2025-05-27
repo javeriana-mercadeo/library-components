@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Popup Promocional</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <!-- Popup Estructura -->
+    <div class="promo-modal">
+      <div class="modal fade" id="promoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="background-overlay"></div>
+
+            <lfr-editable id="image-banner" class="background-image" type="image">
+              <img src="./assets/fondo.png" />
+            </lfr-editable>
+
+            <button id="promoModal-btn-close" type="button" class="close-button" data-dismiss="modal" aria-label="Close">X</button>
+
+            <div class="content-wrapper">
+              <div class="content-info">
+                <div class="popup-text">
+                  <div class="title">
+                    <lfr-editable id="popup-title" type="rich-text"> Especialización en Literatura Infantil y Juvenil </lfr-editable>
+                  </div>
+                  <hr />
+                  <div class="mb-2">
+                    <lfr-editable id="popup-description" type="rich-text">
+                      Conoce nuestra nueva modalidad presencial, con modo de enseñanza mediada por la tecnología (remoto sincrónico).
+                    </lfr-editable>
+                  </div>
+                  <div class="mb-2">
+                    <lfr-editable id="popup-description-dos" type="rich-text">
+                      Si te encuentras fuera de Bogotá, puedes tomar nuestra Especialización de manera remota sincrónica a través de
+                      tecnología. Esto te permitirá formarte y alcanzar un nuevo nivel profesional.
+                    </lfr-editable>
+                  </div>
+                  <div class="mb-2">
+                    <lfr-editable id="popup-description-subtitle" type="rich-text">
+                      <strong>Beneficios:</strong>
+                    </lfr-editable>
+                  </div>
+                  <ul>
+                    <lfr-editable id="popup-description-lista" type="rich-text">
+                      <li>Formación de alta calidad desde cualquier lugar.</li>
+                      <li>Flexibilidad para adaptarse a tus necesidades.</li>
+                      <li>Oportunidad de crecimiento profesional.</li>
+                    </lfr-editable>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="content-button">
+                <button class="cta-button">
+                  <lfr-editable id="popupButtonText" type="link">
+                    <a href="">Continuar</a>
+                  </lfr-editable>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<script>
+  let loadEventTriggered = false
+  let dataRenderedEventTriggered = false
+
+  // Evento de carga de la página
+  window.addEventListener('load', () => {
+    loadEventTriggered = true
+    checkEventsAndInit()
+  })
+
+  // Evento de carga de datos
+  document.addEventListener('data_load-program', () => {
+    dataRenderedEventTriggered = true
+    checkEventsAndInit()
+  })
+
+  // Función para verificar si los eventos se han ejecutado correctamente
+  const checkEventsAndInit = () => {
+    if (loadEventTriggered && dataRenderedEventTriggered) {
+      console.log('🟢 Todos los eventos se han ejecutado correctamente')
+      console.log('------------------')
+      console.log('El estado de los componentes es: ', statusPage)
+    } else {
+      console.log('🟡 Esperando a que se ejecuten los eventos')
+    }
+  }
+</script>

@@ -1,0 +1,150 @@
+@use 'sass:map';
+@use './mixins' as *;
+@use './functions' as *;
+
+$color-base: (
+  'primary': #026fc1,
+  'primary-dark': #0285d1,
+  'secondary': #029be1,
+  'tertiary': #359c36,
+  'tertiary-dark': #5dc85e,
+  'background': #1e1e1e,
+  'neutral': (
+    '': #ffffff,
+    '100': #1d2125,
+    '200': #22272b,
+    '300': #2c333a,
+    '400': #454f59,
+    '500': #596773,
+    '600': #8c9bab,
+    '700': #9fadbc,
+    '800': #b6c2cf,
+    '900': #c7d1db,
+    '1000': #eeefef
+  ),
+  'neutral-variant': #96937f,
+  'success': #36b377,
+  'warning': #f2bf2e,
+  'danger': #ff1200
+);
+
+$colors-map: (
+  'primary': generate-color-scale(map.get($color-base, 'primary')),
+  'secondary': generate-color-scale(map.get($color-base, 'secondary')),
+  'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
+  'background': generate-color-scale(map.get($color-base, 'background')),
+  'neutral': map.get($color-base, 'neutral'),
+  'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+  'success': generate-color-scale(map.get($color-base, 'success')),
+  'warning': generate-color-scale(map.get($color-base, 'warning')),
+  'danger': generate-color-scale(map.get($color-base, 'danger'))
+);
+
+$colors-theme: (
+  'dark': (
+    'primary': generate-color-scale(map.get($color-base, 'primary-dark'), true),
+    'secondary': generate-color-scale(map.get($color-base, 'secondary'), true),
+    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
+    'background': generate-color-scale(map.get($color-base, 'background'), true),
+    // ! Fix: el color de fondo no se está invirtiendo correctamente.
+    'neutral': invert-color-map(map.get($color-base, 'neutral')),
+    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'success': generate-color-scale(map.get($color-base, 'success'), true),
+    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
+    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
+  ),
+  'arquitectura-diseno': (
+    'primary': generate-color-scale(#653383, true),
+    'secondary': generate-color-scale(#00559a, true)
+  ),
+  'arquitectura-diseno-dark': (
+    'primary': generate-color-scale(#653383, true),
+    'secondary': generate-color-scale(#00559a, true)
+  ),
+  'artes': (
+    'primary': generate-color-scale(#6f45e9, true),
+    'secondary': generate-color-scale(#ff4b78, true),
+    'tertiary': generate-color-scale(#2c5595, true)
+  ),
+  'ciencias': (
+    'primary': generate-color-scale(#008aa2, true),
+    'secondary': generate-color-scale(#f6bd30, true)
+  ),
+  'ciencias-economicas-administrativas': (
+    'primary': generate-color-scale(#4a7ed8, true),
+    'secondary': generate-color-scale(#371f75, true),
+    'tertiary': generate-color-scale(#ff4e30, true)
+  ),
+  'ciencias-juridicas': (
+    'primary': generate-color-scale(#f6bd30, true),
+    'secondary': generate-color-scale(#2c5595, true),
+    'tertiary': generate-color-scale(#c6c6c6, true)
+  ),
+  'ciencias-politicas-relaciones-internacionales': (
+    'primary': generate-color-scale(#f6bd30, true),
+    'secondary': generate-color-scale(#008874, true)
+  ),
+  'ciencias-sociales': (
+    'primary': generate-color-scale(#003d7a, true),
+    'secondary': generate-color-scale(#73d9fc, true),
+    'tertiary': generate-color-scale(#3e2580, true)
+  ),
+  'comunicacion-lenguaje': (
+    'primary': generate-color-scale(#8048a9, true),
+    'secondary': generate-color-scale(#73d9fc, true),
+    'tertiary': generate-color-scale(#2c5595, true)
+  ),
+  'derecho-canonico': (
+    'primary': generate-color-scale(#f6bd30, true),
+    'secondary': generate-color-scale(#2c5595, true),
+    'tertiary': generate-color-scale(#f2f2f2, true)
+  ),
+  'educacion': (
+    'primary': generate-color-scale(#a1bfff, true),
+    'secondary': generate-color-scale(#2a2a68, true),
+    'tertiary': generate-color-scale(#f47abd, true)
+  ),
+  'enfermeria': (
+    'primary': generate-color-scale(#ffcd00, true),
+    'secondary': generate-color-scale(#018ab9, true)
+  ),
+  'estudios-ambientales-rurales': (
+    'primary': generate-color-scale(#abc80e, true),
+    'secondary': generate-color-scale(#2dcad1, true),
+    'tertiary': generate-color-scale(#029be2, true)
+  ),
+  'filosofia': (
+    'primary': generate-color-scale(#004c8f, true),
+    'secondary': generate-color-scale(#c08300, true),
+    'tertiary': generate-color-scale(#f2f2f2, true)
+  ),
+  'ingenieria': (
+    'primary': generate-color-scale(#026fc1, true),
+    'secondary': generate-color-scale(#029be1, true),
+    'tertiary': generate-color-scale(#339e36, true)
+  ),
+  'instituto-pensar': (
+    'primary': generate-color-scale(#00b3ab, true),
+    'secondary': generate-color-scale(#ff6b17, true)
+  ),
+  'instituto-salud-publica': (
+    'primary': generate-color-scale(#a74731, true),
+    'secondary': generate-color-scale(#c28069, true)
+  ),
+  'medicina': (
+    'primary': generate-color-scale(#f6bd30, true),
+    'secondary': generate-color-scale(#2b9cd2, true)
+  ),
+  'odontologia': (
+    'primary': generate-color-scale(#00c7dc, true),
+    'secondary': generate-color-scale(#32abbf, true)
+  ),
+  'psicologia': (
+    'primary': generate-color-scale(#f6bd30, true),
+    'secondary': generate-color-scale(#029be1, true)
+  ),
+  'teologia': (
+    'primary': generate-color-scale(#c08300, true),
+    'secondary': generate-color-scale(#004c8f, true)
+  )
+);
