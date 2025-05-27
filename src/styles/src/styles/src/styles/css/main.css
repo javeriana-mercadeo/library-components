@@ -531,6 +531,7 @@ img, video, iframe {
     padding: 16px;
     align-items: center;
     justify-content: center;
+    padding-top: 100px;
   }
   #section-one .program-info__content, #section-one .program-info__image {
     width: 100%;
@@ -625,6 +626,7 @@ img, video, iframe {
     padding: 16px;
     align-items: flex-start;
     justify-content: center;
+    padding-top: 100px;
   }
   #section-one .program-info__content, #section-one .program-info__image {
     width: 100%;
@@ -958,7 +960,6 @@ img, video, iframe {
   column-gap: 30px;
   row-gap: 20px;
   align-items: start;
-  padding: 40px;
   max-width: 1200px;
   margin: 0 auto;
   align-items: center;
@@ -1043,7 +1044,6 @@ img, video, iframe {
   margin-bottom: 16px;
 }
 #section-three .program-profile__accordion-button {
-  background: #026FC1;
   color: #b6c2cf;
   font-style: clamp(1.2rem, 1.5vw, 2rem);
   font-weight: 700;
@@ -1056,7 +1056,6 @@ img, video, iframe {
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid #b6c2cf;
-  max-width: 300px;
   transition: background 0.3s ease;
 }
 #section-three .program-profile__accordion-button:hover, #section-three .program-profile__accordion-button.active {
@@ -1440,10 +1439,10 @@ img, video, iframe {
   transform: translateY(-50%) scale(1.1);
 }
 #section-six .expert-carousel .expert-prev {
-  left: -8px;
+  left: -7px;
 }
 #section-six .expert-carousel .expert-next {
-  right: -8px;
+  right: -7px;
 }
 @media (max-width: 576px) {
   #section-six .expert-carousel .swiper-slide-button {
