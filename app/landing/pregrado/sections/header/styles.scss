@@ -1,0 +1,205 @@
+@use '@styles/autoload' as *;
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--neutral-1000);
+  z-index: 1000;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 70px;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    gap: var(--spacing-md);
+    width: 100%;
+  }
+
+  // Logo
+  &__logo {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    flex-shrink: 0;
+    max-width: 150px;
+
+    &-image {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+
+      /* Aplicar el color del SVG usando variables CSS */
+      fill: var(--primary-600);
+
+      /* Para SVGs más complejos que pueden tener paths con stroke */
+      stroke: var(--primary-600);
+
+      /* Para asegurar que los cambios de colores tengan transición suave */
+      transition:
+        fill 0.3s ease,
+        stroke 0.3s ease;
+
+      &.dark {
+        display: none;
+      }
+
+      @include dark-theme {
+        &.light {
+          display: none;
+        }
+
+        &.dark {
+          display: block;
+        }
+      }
+    }
+  }
+
+  // Navegación Desktop
+  &__nav {
+    display: none;
+
+    @include responsive {
+      display: flex;
+      flex-grow: 1;
+    }
+
+    &-list {
+      display: flex;
+      gap: var(--spacing-lg);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    &-link {
+      text-decoration: none;
+      font-size: var(--font-size-normal);
+      color: var(--neutral-200);
+      transition: color 0.3s;
+
+      &:hover {
+        color: var(--primary-600);
+      }
+    }
+  }
+
+  // Botones CTA
+  &__cta {
+    display: none;
+
+    @include responsive {
+      display: flex;
+      gap: var(--spacing-sm);
+      align-items: center;
+    }
+  }
+
+  // Toggle para menú móvil
+  &__menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--neutral-200);
+    cursor: pointer;
+    padding: var(--spacing-sm);
+
+    @include responsive {
+      display: none;
+    }
+  }
+
+  // Menú móvil
+  &__mobile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--neutral-1000);
+    border-top: 1px solid var(--neutral-300);
+    padding: var(--spacing-md);
+    flex-direction: column;
+    gap: var(--spacing-md);
+    max-height: calc(100vh - 70px); // Altura máxima = altura de la ventana - altura del header
+    overflow-y: auto; // Scroll vertical si el contenido es muy largo
+
+    &.active {
+      display: flex;
+    }
+
+    &-list,
+    &-cta {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    &-link,
+    &-cta-link {
+      display: block;
+      text-decoration: none;
+      color: var(--neutral-200);
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--neutral-300);
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: var(--primary-600);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  &__mobile-actions {
+    margin-top: var(--spacing-md);
+  }
+}
+
+// Contenedor de CTA fijo en móvil
+.cta-container {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--neutral-1100);
+  padding: var(--spacing-sm);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  z-index: 1000;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+
+  @include responsive {
+    display: none;
+  }
+
+  button {
+    width: 90%;
+    max-width: 300px;
+    text-align: center;
+  }
+}
+
+// Ajuste de espaciado para el contenido principal cuando header es fixed
+// Añade esta clase al componente main o al primer elemento de contenido
+.main-content {
+  padding-top: 70px; // Altura del header
+  padding-bottom: 120px; // Espacio para el CTA fijo en móvil
+
+  @include responsive {
+    padding-bottom: 0; // Sin CTA fijo en escritorio
+  }
+}

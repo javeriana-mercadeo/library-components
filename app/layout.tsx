@@ -1,4 +1,4 @@
-import '@/styles/_tailwind.scss'
+import '@/styles/vendors/_tailwind.scss'
 import '@/styles/global.scss'
 
 //import '@/styles/liferayStyles.css'
@@ -9,6 +9,7 @@ import { siteConfig } from '@/config/site'
 
 import Footer from './_components/footer/footer'
 import ThemeSwitch from './_components/themeSwitch/theme-switch'
+import BtnReturn from './_components/btnReturn/btnReturn'
 
 export const metadata: Metadata = {
   title: {
@@ -33,7 +34,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers themeProps={{ attribute: 'data-theme' }}>
           <div className="relative flex flex-col">
             <ThemeSwitch />
-            <main className="flex-grow">{children}</main>
+            <BtnReturn />
+            <main className="global-container">{children}</main>
             <Footer />
           </div>
         </Providers>

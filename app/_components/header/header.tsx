@@ -15,7 +15,7 @@ import {
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@heroui/react'
 import Image from 'next/image'
 import logo from '../../../assets/icon.svg'
-import { ThemeSwitch } from '@/app/_components/themeSwitch/theme-switch'
+import ThemeSwitch from '@/app/_components/themeSwitch/theme-switch'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)

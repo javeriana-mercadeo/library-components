@@ -1,0 +1,33 @@
+// ==========================================
+// Modificado de Flowbite
+// ==========================================
+
+// 1. Modal
+// ------------------------------------------
+.modal {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-content {
+    transform: translateY(-20px);
+    opacity: 0;
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
+  }
+
+  &.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

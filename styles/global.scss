@@ -1,22 +1,28 @@
-@use './main.scss' as *;
+// ==========================================
+// ESTILOS GLOBALES
+// ==========================================
 
-/* Liferay Styles */
-@use './liferayMain.scss' as *;
+// 1. Dependencias
+// ------------------------------------------
+@use './main' as *;
 
-/* Theme */
-@use './general_vars' as *;
-@use './theme' as *;
-@use './typography' as *;
+// 2. Vendors (Terceras)
+// ------------------------------------------
+@forward 'vendors/liferay';
+@forward 'vendors/flowbite';
 
-/* Components */
-@use '../library/_general/components/buttons/btn_general/style.scss' as *;
-
+// 3. Componentes globales
+// ------------------------------------------
+@use '@library/components/buttons/btn_general/style.scss' as *;
 @include general-btn;
 
-/************ Default Css ************/
+// 4. Estilos globales específicos
+// ------------------------------------------
 
+// Fuentes
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
+// Selección de texto
 ::selection {
   background-color: var(--primary-400);
   color: var(--neutral-200);
@@ -27,18 +33,7 @@
   }
 }
 
-* {
-  margin: revert-layer;
-  padding: revert-layer;
-  box-sizing: border-box;
-  font-family: 'Raleway', serif;
-  font-weight: 500;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
+// Estilos globales de HTML y body
 html {
   scroll-behavior: smooth;
   scroll-padding-top: rem(75px);
@@ -52,11 +47,20 @@ html {
     height: 100%;
 
     background: var(--background-100);
+    background-position: fixed;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    .global-container {
+      min-height: 100vh;
+      height: 100%;
+      flex-grow: 1;
+
+      padding-top: 5rem;
+    }
   }
 
-  /* * Scroll personalizado */
+  // Personalización del scroll
   body::-webkit-scrollbar {
     width: rem(7px);
     background-color: var(--neutral-700);
@@ -69,6 +73,7 @@ html {
   }
 }
 
+// Media queries globales
 @include responsive {
   html body {
     background-attachment: scroll;
