@@ -29,7 +29,8 @@ const handleZipExport = async (info, htmlFormat, cssFormat, jsFormat, previewRef
       'fragment.json',
       JSON.stringify(
         {
-          ...info,
+          name: info.name,
+          type: info.type,
           configurationPath: 'index.json',
           jsPath: 'index.js',
           htmlPath: 'index.html',

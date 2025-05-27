@@ -6,21 +6,15 @@
     @media (min-width: $breakpoint-sm) {
       @content;
     }
-  }
-
-  @else if $breakpoint==md {
+  } @else if $breakpoint==md {
     @media (min-width: $breakpoint-md) {
       @content;
     }
-  }
-
-  @else if $breakpoint==lg {
+  } @else if $breakpoint==lg {
     @media (min-width: $breakpoint-lg) {
       @content;
     }
-  }
-
-  @else if $breakpoint==xl {
+  } @else if $breakpoint==xl {
     @media (min-width: $breakpoint-xl) {
       @content;
     }
@@ -58,4 +52,3 @@
     cursor: not-allowed;
   }
 }
-

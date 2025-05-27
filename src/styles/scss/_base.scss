@@ -1,10 +1,13 @@
 @use 'variables' as *;
 
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   max-width: 100%;
 }
@@ -53,7 +56,9 @@ small {
   padding: 0 20px;
 }
 
-img, video, iframe {
+img,
+video,
+iframe {
   max-width: 100%;
   height: auto;
   display: block;

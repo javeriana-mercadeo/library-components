@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @use 'variables'as *;
 @use 'mixins'as *;
 @use'base' as*;
@@ -20,20 +21,26 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+=======
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'base' as *;
+#section-two {
+  .section-dos {
+    max-width: $max-width;
+>>>>>>> main
   }
-  
-  body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $text-light;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh; 
-  width: 100%;}
 
+  .subjects-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    max-width: $max-width;
+    padding-bottom: 20px;
+
+<<<<<<< HEAD
 .subjects-carousel__title{
     font-size:$font-size-h2 ;
     font-weight: bold;
@@ -287,3 +294,243 @@ i{
   
 }
 }
+=======
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $text-light;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    .subjects-carousel__title {
+      font-size: $font-size-h2;
+      font-weight: bold;
+      padding-bottom: 10px;
+      width: fit-content;
+    }
+    p {
+      font-size: $font-size-p;
+      padding-bottom: 20px;
+      height: auto;
+      width: 90%;
+      text-align: center;
+    }
+    .button-plan {
+      color: $primary-color;
+      padding: 15px;
+      font-weight: 600;
+      border: 1px solid $primary-color;
+
+      i {
+        padding-left: 10px;
+        size: 1rem;
+      }
+    }
+    .card-wrapper {
+      max-width: 1100px;
+      margin: 0 60px 35px;
+      padding: 20px 10px;
+      overflow: hidden;
+    }
+    .swiper-backface-hidden .swiper-slide {
+      margin-top: 20px;
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-item {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 400px;
+    }
+
+    .card-list .card-item .card-link {
+      display: block;
+      background: $text-light;
+      padding: 18px;
+      user-select: none;
+      border-radius: 12px;
+      text-decoration: none;
+      border: 2px solid $gray-900;
+      box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
+      transition: 0.2s ease;
+      max-width: fit-content;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      flex-direction: column;
+      min-height: 100%;
+    }
+    .card-list .card-item .card-link:active {
+      cursor: grabbing;
+    }
+    /* borde que sale con el cursos */
+    .card-list .card-item .card-link:hover {
+      border: 2px solid;
+      border-color: $primary-color;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.351);
+    }
+    .card-list .card-link .card-image {
+      width: 100%;
+      border-radius: 10px;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+    .card-list .card-link .badge {
+      color: $text-light;
+      width: fit-content;
+      padding: 8px 15px;
+      font-size: 0.95rem;
+      border-radius: 50px;
+      font-weight: 500;
+      background: $primary-color;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-align: left;
+      display: flex;
+      align-items: end;
+      justify-content: end;
+    }
+
+    /* botones slider redondos */
+    .card-wrapper .swiper-pagination-bullet {
+      height: 13px;
+      width: 13px;
+      opacity: 0.5;
+      background: $primary-color;
+    }
+    .card-wrapper .swiper-pagination-bullet-active {
+      opacity: 1;
+    }
+    /* btn-navegación swiper*/
+    .swiper-slide-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      i {
+        font-size: 2rem; // Tamaño del icono
+        color: $primary-color;
+        z-index: 100;
+      }
+
+      &:hover {
+        transform: translateY(-50%) scale(1.1);
+      }
+    }
+
+    .subjects-prev {
+      left: 2px;
+    }
+
+    .subjects-next {
+      right: 2px;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      .swiper-slide-button {
+        width: 40px;
+        height: 40px;
+
+        i {
+          font-size: 1.5rem;
+        }
+      }
+    }
+    /* final btn-navegación swiper*/
+
+    .card-header {
+      text-align: left;
+      margin: 0;
+      padding: 0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: left;
+    }
+    .title-subjects {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #111827;
+      border-bottom: 0.8px solid $gray-900;
+      padding-bottom: 10px;
+      text-align: left;
+      max-width: 100%;
+    }
+    .subjects-list {
+      list-style: none;
+      padding-top: 5px;
+      margin: 0;
+      padding-bottom: 10px;
+    }
+    .subjects-list li {
+      color: $gray-500;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+
+      i {
+        font-size: 1.25rem;
+        margin-right: 0.5rem;
+        color: $primary-color;
+      }
+    }
+
+    .content-credits {
+      font-size: 1.125rem;
+      border-top: 0.8px solid $gray-900;
+      font-weight: bold;
+      color: $gray-900;
+      padding-top: 10px;
+
+      strong {
+        color: $gray-700;
+      }
+    }
+
+    /* Responsive media query code for small screens */
+    @media (max-width: $breakpoint-sm) {
+      .card-wrapper {
+        margin: 0 10px 25px;
+      }
+      .card-wrapper .swiper-slide-button {
+        display: none;
+      }
+    }
+    .card-item {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 400px;
+    }
+  }
+}
+>>>>>>> main

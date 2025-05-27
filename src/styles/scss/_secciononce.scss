@@ -1,77 +1,77 @@
-@use 'variables'as *;
-@use 'mixins'as *;
-@use'base' as*;
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'base' as *;
 
-#section-eleven{
-.faq {
-  text-align: center;
-  padding: $spacing-lg;
-  background-color: $color-background;
-  max-width: $max-width;
-
-  @media (max-width: $breakpoint-md) {
-    padding: 0px $spacing-sm;
-    text-align: left;
-  }
-
-  &__title {
-    font-size: $font-size-h2;
-    font-weight: $font-weight-bold;
-    margin-bottom: $spacing-lg;
-    color: $color-text;
+#section-eleven {
+  .faq {
     text-align: center;
-  }
+    padding: $spacing-lg;
+    background-color: $color-background;
+    max-width: $max-width;
 
-  &__container {
-    max-width: 90%;
-    margin: 0 auto;
-  }
-
-  &__item {
-    border-bottom: 1px solid $color-border;
-    margin-bottom: $spacing-sm;
-  }
-
-  &__question {
-    width: 100%;
-    background: none;
-    border: none;
-    font-size: $font-size-p;
-    font-weight: $font-weight-bold;
-    color: $primary-color;
-    text-align: left;
-    padding: $spacing-md;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-
-    &:hover {
-      color: $primary-color-hover;
-    }
-  }
-
-  &__icon {
-    font-size: $font-size-p;
-    transition: transform 0.3s ease;
-  }
-
-  &__answer {
-    display: none;
-    padding: $spacing-md;
-    font-size: $font-size-small;
-    color: $color-text;
-    text-align: left;
-  }
-
-  .faq__item.active {
-    .faq__answer {
-      display: block;
+    @media (max-width: $breakpoint-md) {
+      padding: 0px $spacing-sm;
+      text-align: left;
     }
 
-    .faq__icon {
-      transform: rotate(180deg);
+    &__title {
+      font-size: $font-size-h2;
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacing-lg;
+      color: $color-text;
+      text-align: center;
+    }
+
+    &__container {
+      max-width: 90%;
+      margin: 0 auto;
+    }
+
+    &__item {
+      border-bottom: 1px solid $color-border;
+      margin-bottom: $spacing-sm;
+    }
+
+    &__question {
+      width: 100%;
+      background: none;
+      border: none;
+      font-size: $font-size-p;
+      font-weight: $font-weight-bold;
+      color: $primary-color;
+      text-align: left;
+      padding: $spacing-md;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+
+      &:hover {
+        color: $primary-color-hover;
+      }
+    }
+
+    &__icon {
+      font-size: $font-size-p;
+      transition: transform 0.3s ease;
+    }
+
+    &__answer {
+      display: none;
+      padding: $spacing-md;
+      font-size: $font-size-small;
+      color: $color-text;
+      text-align: left;
+    }
+
+    .faq__item.active {
+      .faq__answer {
+        display: block;
+      }
+
+      .faq__icon {
+        transform: rotate(180deg);
+      }
     }
   }
-}
 }
