@@ -1,0 +1,238 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use'base' as*;
+
+#section-nine{
+  padding-bottom: 50px;
+
+.projects-carousel__title {
+  width: fit-content;
+  font-size: $font-size-h2;
+  font-weight: 700;
+  padding-top: 20px;
+}
+
+.projects-carousel {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  max-width: $max-width;
+  padding-top: 60px;
+  width: 100%;
+  padding: 0;
+
+  &__title {
+    font-size: $font-size-h2;
+    color: $text-dark;
+    width: 100%;
+    padding-bottom: 15px;
+  }
+
+  &__description {
+    color: $text-dark;
+    width: 80%;
+    text-align: center;
+  }
+
+    &__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    color: $text-light;
+    padding: $spacing-lg;
+    text-align: left;
+
+    @media (max-width: $breakpoint-md) {
+      text-align: left;
+      padding: $spacing-sm;
+      width: 100%;
+
+      .swiper-slide {
+        width: 100%;
+      }
+    }
+  }
+}
+/* Media query para pantallas pequeñas */
+@media (max-width: $breakpoint-sm) {
+  p {
+    text-align: left;
+    max-width: 100%;
+  }
+  .card-item-9 .swiper-slide .swiper-slide-visible .swiper-slide-fully-visible .swiper-slide-active{
+    max-width:max-content;
+  }
+  .swiper-slide {
+    width: 100%;
+  }
+}
+@media (max-width: $breakpoint-lg) {
+  .card-item-9 .swiper-slide .swiper-slide-visible .swiper-slide-fully-visible .swiper-slide-active{
+    text-align: left;
+    padding: 0;
+    width: fit-content;
+  }
+  .swiper-slide {
+    width: 100%;
+  } }
+@media (max-width: $breakpoint-lg) {
+  .card-item-9 .swiper-slide .swiper-slide-active {
+    text-align: left;
+    padding: 0;
+    width: fit-content;
+  }
+  .swiper-slide {
+    width: 100%;
+  }
+}
+@media (max-width: $breakpoint-xl) {
+  .card-item-9 .swiper-slide .swiper-slide-visible .swiper-slide-fully-visible .swiper-slide-active{
+    padding: 0;
+    width: fit-content;
+  } 
+  .swiper-slide {
+    width: fit-content !important;
+  }
+
+}
+@media (max-width: $breakpoint-xxl) {
+  .card-item-9 .swiper-slide .swiper-slide-next .swiper-slide-visible .swiper-slide-fully-visible{
+    text-align: left;
+    padding: 0;
+    width: fit-content;
+  } 
+
+}
+
+
+/* Contenedor de tarjetas */
+.card-wrapper {
+  max-width: fit-content;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+.swiper-backface-hidden .swiper-slide {
+  margin-top: 20px;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-item-9 .swiper-slide .swiper-slide-active{
+  width: fit-content;
+}
+
+.card-item-9 .swiper-slide .swiper-slide-next{
+  width: fit-content;
+}
+
+.card-list-9 .card-item-9 .card-link-9 {
+  display: block;
+  user-select: none;
+  text-decoration: none;
+  transition: 0.2s ease;
+  max-width: fit-content;
+}
+
+.card-image-container {
+  position: relative; 
+  width: fit-content;
+  height: auto;
+  overflow: hidden; 
+}
+
+.card-overlay {
+  position: absolute; 
+  bottom: 0; 
+  left: 0;
+  color: $text-light;
+  width: 400px;
+  background: rgba(0, 0, 0, 0.277); 
+  display: flex;
+  justify-content: left;
+  text-align: left;
+  align-items: center;
+  padding: 10px;
+  z-index: 2;
+}
+
+.image-project {
+  width: 400px;
+  height: 400px;
+  object-fit: cover; 
+  display: block;
+}
+
+
+.card-list-9 .card-link-9 .badge {
+  width: fit-content;
+  padding: 8px 15px;
+  font-size: 0.7rem;
+  border-radius: 50px;
+  font-weight: bold;
+  background: $primary-color;
+  text-align: left;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}
+
+/* btn-navegación swiper*/
+.swiper-slide-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 2rem;
+  height: 2rem;
+  background-color: rgba(6, 6, 36, 0.534);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); 
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  i {
+    font-size: 2rem;
+    color: $text-light; 
+    z-index: 100;
+  }
+
+  &:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
+}
+
+.projects-prev {
+  left: 20px; 
+}
+
+.projects-next {
+  right: 20px; 
+}
+
+@media (max-width: $breakpoint-sm) {
+  .swiper-slide-button {
+    width: 40px;
+    height: 40px;
+
+    i {
+      font-size: 1.5rem;
+    }
+  }
+}
+/* final btn-navegación swiper*/
+
+}

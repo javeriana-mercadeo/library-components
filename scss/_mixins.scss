@@ -1,0 +1,61 @@
+@use 'variables' as *;
+@use 'sass:color';
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint==sm {
+    @media (min-width: $breakpoint-sm) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint==md {
+    @media (min-width: $breakpoint-md) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint==lg {
+    @media (min-width: $breakpoint-lg) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint==xl {
+    @media (min-width: $breakpoint-xl) {
+      @content;
+    }
+  }
+}
+
+// Mixin para estilos de texto
+@mixin text-style($size, $weight: $font-weight-regular, $spacing: $letter-spacing-normal, $line-height: $line-height-base) {
+  font-size: $size;
+  font-weight: $weight;
+  letter-spacing: $spacing;
+  line-height: $line-height;
+  font-family: $font-family-primary;
+}
+
+// Mixin para botones
+@mixin button-style($bg-color, $text-color, $border-color: null) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: if($border-color, 1px solid $border-color, none);
+  border-radius: $border-radius-md;
+  padding: $spacing-sm $spacing-md;
+  text-align: center;
+  cursor: pointer;
+  font-family: $font-family-primary;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: color.adjust($bg-color, $lightness: -10%);
+  }
+
+  &:disabled {
+    background-color: $disabled-color;
+    color: $color-muted-text;
+    cursor: not-allowed;
+  }
+}
+
