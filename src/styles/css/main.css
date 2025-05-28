@@ -765,7 +765,7 @@ img, video, iframe {
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
   transition: 0.2s ease;
   width: 100%;
-  height: 100% !important;
+  height: 100%;
   gap: 0;
 }
 #section-two .subjects-carousel .card-list .card-item .card-link:active {
@@ -791,7 +791,6 @@ img, video, iframe {
   color: #111827;
   text-align: left;
   max-width: 100%;
-  grid-row: 2;
 }
 #section-two .subjects-carousel .card-list .card-link .badge {
   color: #ffffff;
@@ -805,7 +804,6 @@ img, video, iframe {
   display: flex;
   align-items: center;
   justify-content: center;
-  grid-row: 3;
   margin-bottom: 10px;
 }
 #section-two .subjects-carousel .card-header {
@@ -816,14 +814,12 @@ img, video, iframe {
   border-bottom: 0.8px solid #b6c2cf;
   padding-bottom: 10px;
   margin-bottom: 10px;
-  grid-row: 3;
 }
 #section-two .subjects-carousel .subjects-list {
   list-style: none;
   padding-top: 5px;
   margin: 0;
   padding-bottom: 10px;
-  grid-row: 4;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
