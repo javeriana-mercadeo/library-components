@@ -1,4 +1,11 @@
-//Sección tres 
+'use client'
+
+import { useEffect } from 'react'
+import Container from '@library/components/container/Container'
+
+import script from './script.js'
+import './styles.scss'
+
 <section id="section-three" >
   <div className="color-container">
   <section className="program-profile">
