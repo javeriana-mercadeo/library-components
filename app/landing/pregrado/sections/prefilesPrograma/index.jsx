@@ -3,11 +3,16 @@
 import { useEffect } from 'react'
 import Container from '@library/components/container/Container'
 
+import perfilIngresoImg from '../../../../../assets/perfiles/perfil-ingreso.png'
+import perfilEgresoImg from '../../../../../assets/perfiles/perfil-egreso.png'
 import script from './script.js'
+
 import './styles.scss'
 
 const PerfilesPrograma = () => {
-  //Ejecutar el script cuando el componente se monta
+  {
+    /*Ejecutar el script cuando el componente se monta*/
+  }
   useEffect(() => {
     script()
   }, [])
@@ -19,7 +24,7 @@ const PerfilesPrograma = () => {
           <h2 className="program-profile__title">Este programa es para ti si...</h2>
 
           <div className="program-profile__accordion">
-            // Botones del acordeón
+            {/* Botones del acordeón*/}
             <div className="program-profile__buttons">
               <button type="button" className="program-profile__accordion-button active" data-content="content-1">
                 <span>Perfil de Ingreso</span>
@@ -33,10 +38,10 @@ const PerfilesPrograma = () => {
                 <span>Diferenciales</span>
               </button>
             </div>
-            //Contenido del acordeón (inicialmente oculto)
+            {/*Contenido del acordeón (inicialmente oculto)*/}
             <div id="content-1" className="program-profile__content-item">
               <div className="program-profile__image_content">
-                <img src="./assets/images/perfil-ingreso.png" alt="Perfil de Ingreso" className="program-profile__image"></img>
+                <img src={perfilIngresoImg.src} alt="Perfil de Ingreso" className="program-profile__image" />
               </div>
               <div className="p-content">
                 <p>
@@ -79,7 +84,7 @@ const PerfilesPrograma = () => {
             </div>
             <div id="content-2" className="program-profile__content-item hidden">
               <div className="program-profile__image_content">
-                <img src="./assets/images/perfil-egreso.png" alt="Perfil de Egreso" className="program-profile__image"></img>
+                <img src={perfilEgresoImg.src} alt="Perfil de Egreso" className="program-profile__image" />
               </div>
               <div className="p-content">
                 <p>
@@ -127,8 +132,9 @@ const PerfilesPrograma = () => {
             </div>
             <div id="content-3" className="program-profile__content-item hidden">
               <div className="program-profile__image_content">
-                <img src="./assets/images/perfil-ingreso.png" alt="Perfil de Ingreso" className="program-profile__image"></img>
+                <img src={perfilIngresoImg.src} alt="Perfil de Ingreso" className="program-profile__image" />
               </div>
+
               <div className="p-content">
                 <p>
                   La carrera de Ingeniería Civil en la Universidad Javeriana se distingue por su enfoque innovador y compromiso con la
