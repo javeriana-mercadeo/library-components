@@ -1,9 +1,8 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-import Button from '@/app/_library/components/buttons/btn_general/index'
 import Splash from '@/app/_library/sections/splash'
 
 import Header from './sections/header'
-import Hero from './sections/hero'
+import DatosProgramaVideo from './sections/datosProgramaVideo'
 import MeetingDirector from './sections/meetingDirector'
 
 export default function Profesional() {
@@ -16,9 +15,11 @@ export default function Profesional() {
         <Header />
       </ViewComponent>
 
-      <ViewComponent path={`${basePath}/sections/hero`}>
-        <Hero />
-      </ViewComponent>
+      {/* <DatosProgramaVideo /> */}
+
+      {/* <ViewComponent path={`${basePath}/sections/datosProgramaVideo`}>
+        <DatosProgramaVideo />
+      </ViewComponent> */}
 
       <ViewComponent path={`${basePath}/sections/meetingDirector`}>
         <MeetingDirector />
