@@ -92,8 +92,8 @@ i{
 }
 
 .card-list .card-item .card-link {
-  display: grid !important;
-  grid-template-rows: auto auto auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   background: $text-light;
   padding: 18px;
   user-select: none;
