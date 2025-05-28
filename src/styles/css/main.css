@@ -754,8 +754,8 @@ img, video, iframe {
   min-height: 500px !important;
 }
 #section-two .subjects-carousel .card-list .card-item .card-link {
-  display: grid !important;
-  grid-template-rows: auto auto auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   background: #ffffff;
   padding: 18px;
   user-select: none;
