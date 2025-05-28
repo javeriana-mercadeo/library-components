@@ -761,7 +761,7 @@ img, video, iframe {
   user-select: none;
   border-radius: 12px;
   text-decoration: none;
-  border: 2px solid #b6c2cf;
+  border: 1px solid #b6c2cf;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
   transition: 0.2s ease;
   width: 100%;
@@ -772,7 +772,7 @@ img, video, iframe {
   cursor: grabbing;
 }
 #section-two .subjects-carousel .card-list .card-item .card-link:hover {
-  border: 2px solid;
+  border: 1px solid;
   border-color: #026fc1;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.351);
 }
@@ -846,8 +846,9 @@ img, video, iframe {
   font-weight: bold;
   color: #b6c2cf;
   padding-top: 10px;
-  grid-row: 5;
   align-self: end;
+  width: 100%;
+  margin-top: auto;
 }
 #section-two .subjects-carousel .content-credits strong {
   color: #8c98a8;
