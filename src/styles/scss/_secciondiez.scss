@@ -1,115 +1,117 @@
-@use 'variables' as *;
-@use 'mixins' as *;
-@use 'base' as *;
+@use 'variables'as *;
+@use 'mixins'as *;
+@use'base' as*;
 
-#section-ten {
-  .related-programs {
-    display: flex;
+#section-ten{
+  
+.related-programs {
+  display: flex;
+  text-align: center;
+  padding: $spacing-lg;
+  background-color: $color-background;
+  margin: 0 auto; 
+  max-width: $max-width;
+  align-items: center;
+  flex-direction: column;
+
+  @media (max-width: $breakpoint-md) {
+    padding: 0px $spacing-sm;
     text-align: center;
-    padding: $spacing-lg;
-    background-color: $color-background;
-    margin: 0 auto;
-    max-width: $max-width;
-    align-items: center;
-    flex-direction: column;
+  }
+
+  &__title {
+    font-size: $font-size-h2;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-sm;
+    color: $color-text;
+    width: fit-content;
+  }
+
+  &__description {
+    font-size: $font-size-p;
+    margin-bottom: $spacing-lg;
+    color: $color-muted-text;
+    text-align: center;
+    width: fit-content;
+  }
+
+  &__wrapper {
+    position: relative;
+    overflow: hidden;
 
     @media (max-width: $breakpoint-md) {
-      padding: 0px $spacing-sm;
-      text-align: center;
+      padding: 0 $spacing-sm;
+    }
+  }
+
+  &__item {
+    position: relative;
+    width: 270px;
+    height: 380px;
+    border-radius: $border-radius-md;
+    overflow: hidden;
+    text-align: left;
+    scroll-snap-align: center;
+
+    @media (max-width: $breakpoint-md) {
+      flex: 0 0 80%;
     }
 
-    &__title {
-      font-size: $font-size-h2;
-      font-weight: $font-weight-bold;
-      margin-bottom: $spacing-sm;
-      color: $color-text;
-      width: fit-content;
-    }
-
-    &__description {
-      font-size: $font-size-p;
-      margin-bottom: $spacing-lg;
-      color: $color-muted-text;
-      text-align: center;
-      width: fit-content;
-    }
-
-    &__wrapper {
-      position: relative;
-      overflow: hidden;
-
-      @media (max-width: $breakpoint-md) {
-        padding: 0 $spacing-sm;
-      }
-    }
-
-    &__item {
-      position: relative;
-      width: 270px;
-      height: 380px;
-      border-radius: $border-radius-md;
-      overflow: hidden;
-      text-align: left;
-      scroll-snap-align: center;
-
-      @media (max-width: $breakpoint-md) {
-        flex: 0 0 80%;
-      }
-
-      & > img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-
-    &__overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
+    &>img {
       width: 100%;
       height: 100%;
-      background: linear-gradient(180deg, rgba(2, 111, 193, 0) 19.88%, #026fc1 84.25%);
+      object-fit: cover;
     }
+  }
 
-    &__content {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      padding: $spacing-md;
-      color: $text-light;
-      z-index: 2;
+  &__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(2, 111, 193, 0) 19.88%, #026FC1 84.25%);
+  }
+
+  &__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: $spacing-md;
+    color: $text-light;
+    z-index: 2;
+  }
+
+  &__name {
+    font-size: $font-size-p;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__faculty {
+    font-size: $font-size-small;
+    color: $text-light;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__link {
+    font-size: $font-size-small;
+    color: $text-light;
+    text-decoration: none;
+    font-weight: $font-weight-bold;
+
+    &:hover {
+      text-decoration: underline;
     }
+  }
 
-    &__name {
-      font-size: $font-size-p;
-      font-weight: $font-weight-bold;
-      margin-bottom: $spacing-sm;
-    }
-
-    &__faculty {
-      font-size: $font-size-small;
-      color: $text-light;
-      margin-bottom: $spacing-sm;
-    }
-
-    &__link {
-      font-size: $font-size-small;
-      color: $text-light;
-      text-decoration: none;
-      font-weight: $font-weight-bold;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
+  
     @media (max-width: $breakpoint-md) {
       display: none;
     }
   }
 }
-.related-programs-swiper {
+.related-programs-swiper{
   overflow: visible;
   position: relative;
   display: flex;
@@ -130,7 +132,7 @@
     padding: 0;
     box-sizing: border-box;
   }
-
+  
   body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -140,203 +142,207 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-  }
+    min-height: 100vh; }
 
-  .related-programs-carousel__title {
-    font-size: $font-size-h2;
+.related-programs-carousel__title{
+    font-size:$font-size-h2 ;
     font-weight: bold;
     padding-bottom: 10px;
     width: fit-content;
-  }
-  p {
-    font-size: $font-size-p;
-    padding-bottom: 20px;
-  }
-  /* btn-navegación swiper*/
+}
+p{
+  font-size: $font-size-p;
+  padding-bottom: 20px;
+}
+/* btn-navegación swiper*/
+.swiper-slide-button {
   .swiper-slide-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); // Centra verticalmente
+    z-index: 10;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  
+    i {
+      font-size: 2rem; 
+      color: $primary-color;
+    }
+  
+    &:hover {
+      transform: translateY(-50%) scale(1.1);
+    }
+  }
+  
+  .related-programs-prev {
+    left: -6px; 
+  }
+  
+  .related-programs-next {
+    right: -6px;
+  }
+  
+  @media (max-width: 768px) {
     .swiper-slide-button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%); // Centra verticalmente
-      z-index: 10;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.8);
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-
+      width: 40px;
+      height: 40px;
+  
       i {
-        font-size: 2rem;
-        color: $primary-color;
-      }
-
-      &:hover {
-        transform: translateY(-50%) scale(1.1);
+        font-size: 1.5rem;
       }
     }
-
+    
     .related-programs-prev {
-      left: -6px;
+      left: 100px; 
     }
-
+  
     .related-programs-next {
-      right: -6px;
-    }
-
-    @media (max-width: 768px) {
-      .swiper-slide-button {
-        width: 40px;
-        height: 40px;
-
-        i {
-          font-size: 1.5rem;
-        }
-      }
-
-      .related-programs-prev {
-        left: 100px;
-      }
-
-      .related-programs-next {
-        right: 10px;
-      }
+      right: 10px; 
     }
   }
+}  
 
-  /* final btn-navegación swiper*/
+/* final btn-navegación swiper*/
 
-  .swiper-backface-hidden .swiper-slide {
-    margin-top: 20px;
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.swiper-backface-hidden .swiper-slide {
+  margin-top: 20px;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .card-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 20px 10px;
-    overflow: hidden;
+.card-wrapper {
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  width: 100%;
+  max-width: 1100px; 
+  margin: 0 auto;
+  padding: 20px 10px;
+  overflow: hidden;
 
-    .card-item .swiper-slide {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: red;
-    }
-  }
-
-  .card-list.swiper-wrapper {
+  .card-item .swiper-slide{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    background-color: red;
   }
+}
 
-  .card-list .card-item .card-link {
-    display: block;
-    background: $text-light;
-    padding: 18px;
-    user-select: none;
-    border-radius: 12px;
-    text-decoration: none;
-    border: 2px solid $gray-900;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
-    transition: 0.2s ease;
-    max-width: fit-content;
-    justify-content: center;
-  }
-  .card-list .card-item .card-link:active {
-    cursor: grabbing;
-  }
-  /* borde que sale con el cursos */
-  .card-list .card-item .card-link:hover {
-    border: 2px solid;
-    border-color: $primary-color;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.351);
-  }
-  .card-list .card-link .card-image {
-    width: 100%;
-    border-radius: 10px;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-  }
-  .card-list .card-link .badge {
-    color: $text-light;
-    width: fit-content;
-    padding: 8px 15px;
-    font-size: 0.95rem;
-    border-radius: 50px;
-    font-weight: 500;
-    background: $primary-color;
-    font-size: 0.7rem;
-    font-weight: bold;
-    text-align: left;
-    display: flex;
-    align-items: end;
-    justify-content: end;
-  }
+.card-list.swiper-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
 
-  /* botones slider redondos */
-  .card-wrapper .swiper-pagination-bullet {
-    height: 13px;
-    width: 13px;
-    opacity: 0.5;
-    background: $primary-color;
-  }
-  .card-wrapper .swiper-pagination-bullet-active {
-    opacity: 1;
-  }
+}
 
-  .card-header {
-    text-align: left;
-    margin: 0;
-    padding: 0;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-  }
-  .title-related-programs {
+.card-list .card-item .card-link {
+  display: block;
+  background: $text-light;
+  padding: 18px;
+  user-select: none;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 2px solid $gray-900;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
+  transition: 0.2s ease;
+  max-width: fit-content;
+  justify-content: center;
+}
+.card-list .card-item .card-link:active {
+  cursor: grabbing;
+}
+/* borde que sale con el cursos */
+.card-list .card-item .card-link:hover {
+  border: 2px solid;
+  border-color: $primary-color;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.351);
+}
+.card-list .card-link .card-image {
+  width: 100%;
+  border-radius: 10px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.card-list .card-link .badge {
+  color: $text-light;
+  width: fit-content;
+  padding: 8px 15px;
+  font-size: 0.95rem;
+  border-radius: 50px;
+  font-weight: 500;
+  background:$primary-color;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-align: left;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}
+
+/* botones slider redondos */
+.card-wrapper .swiper-pagination-bullet {
+  height: 13px;
+  width: 13px;
+  opacity: 0.5;
+  background: $primary-color;
+}
+.card-wrapper .swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+.card-header{
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+.title-related-programs{
     margin-bottom: 0.5rem;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight:700;
     letter-spacing: -0.02em;
     color: #111827;
     border-bottom: 0.8px solid $gray-900;
     padding-bottom: 10px;
     text-align: left;
     max-width: fit-content;
-  }
-  .related-programs-list {
+}
+.related-programs-list{
     list-style: none;
     padding-top: 5px;
     margin: 0;
     padding-bottom: 10px;
-  }
-  .related-programs-list li {
-    color: $gray-500;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-
-    i {
-      font-size: 1.25rem;
-      margin-right: 0.5rem;
-      color: $primary-color;
-    }
-  }
 }
+.related-programs-list li{
+color: $gray-500; 
+margin-bottom: 0.5rem;
+display: flex;
+align-items: center;
+
+i{
+    font-size: 1.25rem; 
+    margin-right: 0.5rem;
+    color:$primary-color;
+    }
+}
+
+}
+  
+
+

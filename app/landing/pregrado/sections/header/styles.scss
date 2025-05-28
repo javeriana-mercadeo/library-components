@@ -25,7 +25,7 @@
     align-items: center;
     margin: 0;
     flex-shrink: 0;
-    max-width: 150px;
+    max-width: rem(150px);
 
     &-image {
       width: 100%;
