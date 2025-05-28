@@ -1,4 +1,5 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
+import Button from '@/app/_library/components/buttons/btn_general/index'
 import Splash from '@/app/_library/sections/splash'
 
 import Header from './sections/header'
