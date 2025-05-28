@@ -20,7 +20,8 @@ $breakpoint-xxl: 1800px;
 
 // Espaciados
 // ------------------------------------------
-$spacing-sm: 8px;
+$spacing-xs: 8px;
+$spacing-sm: 12px;
 $spacing-md: 16px;
 $spacing-lg: 24px;
 $spacing-xl: 38px;
@@ -131,12 +132,6 @@ $line-height-heading: 1.2;
 // Espaciado entre letras
 $letter-spacing-normal: normal;
 $letter-spacing-wide: 0.05em;
-
-// Espaciados
-$spacing-sm: 8px;
-$spacing-md: 16px;
-$spacing-lg: 24px;
-$spacing-xl: 38px;
 
 // Redondeos
 $border-radius-sm: 4px;

@@ -1,45 +1,24 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import Btn from '@library/components/buttons/btn_general'
 import Container from '@library/components/container/Container'
 
 import logo from '../../../../../assets/logos/logo-jave-h-blue.svg'
 import logoDark from '../../../../../assets/logos/logo-jave-h-white.svg'
+import script from './script.js'
 
 import './styles.scss'
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  // Cerrar el menú al hacer clic fuera o en los enlaces
+  // Ejecutar el script cuando el componente se monta
   useEffect(() => {
-    const handleOutsideClick = e => {
-      if (!e.target.closest('#mobile-menu') && !e.target.closest('#menu-toggle')) {
-        setIsMenuOpen(false)
-      }
-    }
-
-    document.addEventListener('click', handleOutsideClick)
-
-    // Prevenir scroll cuando el menú está abierto
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-
-    return () => {
-      document.removeEventListener('click', handleOutsideClick)
-      document.body.style.overflow = ''
-    }
-  }, [isMenuOpen])
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+    script()
+  }, [])
 
   return (
     <>
-      <header className="header h-20">
+      <header className="header">
         <Container className="header__container">
           {/* Logo */}
           <figure className="header__logo">
@@ -58,7 +37,7 @@ const Header = () => {
             </ul>
           </nav>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons - Solo desktop */}
           <div className="header__cta">
             <Btn id="info-btn" variant="outline" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
               Recibe más Información
@@ -67,60 +46,85 @@ const Header = () => {
             <Btn id="register-btn">¡Inscríbete Ahora!</Btn>
           </div>
 
-          {/* Botón de menú móvil */}
-          <button
+          {/* Botón de menú móvil con icono animado */}
+          <Btn
             className="header__menu-toggle"
             id="menu-toggle"
-            onClick={toggleMenu}
-            aria-expanded={isMenuOpen}
-            aria-label="Abrir menú de navegación">
-            <i className="ph ph-list"></i>
-          </button>
+            aria-label="Abrir menú de navegación"
+            isEditable={false}
+            variant="ghost"
+            type="button">
+            <div className="menu-icon" id="menu-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </Btn>
 
-          {/* Menú móvil */}
-          <div className={`header__mobile-menu ${isMenuOpen ? 'active' : ''}`} id="mobile-menu">
-            <nav>
-              <ul className="header__mobile-menu-list">
-                <li>
-                  <a href="#" className="header__mobile-menu-link">
-                    Sobre el Programa
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="header__mobile-menu-link">
-                    Proceso de Inscripción
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="header__mobile-menu-link">
-                    Centro de Ayuda
-                  </a>
-                </li>
-              </ul>
-            </nav>
-            <div className="header__mobile-actions">
-              <ul className="header__mobile-cta">
-                <li>
-                  <a href="#" className="header__mobile-cta-link">
-                    Escríbenos por WhatsApp
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="header__mobile-cta-link">
-                    Recibe más Información
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="header__mobile-cta-link">
-                    Inscríbete Ahora!
-                  </a>
-                </li>
-              </ul>
+          {/* Overlay para cerrar menú */}
+          <div className="header__overlay" id="menu-overlay"></div>
+
+          {/* Menú móvil mejorado - SIN CTA */}
+          <div className="header__mobile-menu" id="mobile-menu">
+            <div className="header__mobile-menu-content">
+              {/* Logo */}
+              <figure className="header__logo">
+                <img src={logo.src} alt="Logo" className="header__logo-image light" />
+                <img src={logoDark.src} alt="Logo" className="header__logo-image dark" />
+              </figure>
+
+              <nav>
+                <ul className="header__mobile-menu-list">
+                  <li>
+                    <Btn href="#" className="header__mobile-menu-link" variant="link" startIcon={<i className="ph ph-info"></i>}>
+                      Sobre el Programa
+                    </Btn>
+                  </li>
+                  <li>
+                    <Btn href="#" className="header__mobile-menu-link" variant="link" startIcon={<i className="ph ph-clipboard-text"></i>}>
+                      Proceso de Inscripción
+                    </Btn>
+                  </li>
+                  <li>
+                    <Btn href="#" className="header__mobile-menu-link" variant="link" startIcon={<i className="ph ph-question"></i>}>
+                      Centro de Ayuda
+                    </Btn>
+                  </li>
+                  <li>
+                    <Btn
+                      href="#"
+                      className="header__mobile-menu-link whats"
+                      variant="link"
+                      startIcon={<i className="ph ph-whatsapp-logo"></i>}>
+                      Escríbenos por WhatsApp
+                    </Btn>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </Container>
       </header>
 
+      {/* CTA Fixed Bottom - Solo móvil */}
+      <div className="mobile-cta-fixed">
+        <Container className="mobile-cta-fixed__container">
+          <Btn href="#" className="mobile-cta-fixed__btn mobile-cta-fixed__btn--primary" fullWidth>
+            ¡Inscríbete Ahora!
+          </Btn>
+          <Btn
+            href="#"
+            className="mobile-cta-fixed__btn mobile-cta-fixed__btn--secondary"
+            variant="outline"
+            fullWidth
+            data-modal-target="authentication-modal"
+            data-modal-toggle="authentication-modal">
+            Recibe más Información
+          </Btn>
+        </Container>
+      </div>
+
+      {/* Modal de autenticación */}
       <div
         id="authentication-modal"
         tabIndex="-1"

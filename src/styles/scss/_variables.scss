@@ -20,18 +20,17 @@ $color-text: $gray-100; // Color para textos principales
 $color-muted-text: $gray-400; // Textos secundarios o deshabilitados
 $color-border: $gray-500; // Color para bordes
 
-$primary-color: #026FC1;
-$primary-color-hover: #029BE1;
-$secondary-color: #C7D1DB;
-$secondary-color-hover: #026FC1;
+$primary-color: #026fc1;
+$primary-color-hover: #029be1;
+$secondary-color: #c7d1db;
+$secondary-color-hover: #026fc1;
 $disabled-color: #e0e0e0;
 $text-light: #ffffff;
 $text-dark: #212529;
 
-$background-footer:#1D2125;
+$background-footer: #1d2125;
 // Tipografía
-$font-family-primary: 'Raleway',
-sans-serif;
+$font-family-primary: 'Raleway', sans-serif;
 
 // Tamaños de fuente
 $font-size-h1: clamp(1.8rem, 5vw, 3rem);
@@ -40,7 +39,7 @@ $font-size-h3: clamp(1.2rem, 1.5vw, 2rem);
 $font-size-p: clamp(0.875rem, 1.3vw, 1rem);
 $font-size-small: 0.875rem; // Tamaño pequeño
 $font-size-xs: 0.6rem; // Tamaño pequeño xs
-$font-size-header:clamp(0.65rem, 1vw, 1.3rem);
+$font-size-header: clamp(0.65rem, 1vw, 1.3rem);
 
 // Pesos de fuente
 $font-weight-regular: 400;
