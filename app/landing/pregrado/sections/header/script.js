@@ -1,10 +1,10 @@
 // ===========================================
-// UTILIDADES GENERALES
+// SCRIPT PRINCIPAL INTEGRADO - HEADER + MODAL
 // ===========================================
 
-/**
- * Sistema de logging mejorado
- */
+// ===========================================
+// UTILIDADES GENERALES
+// ===========================================
 const Logger = {
   debug: (message, data = null) => {
     if (process.env.NODE_ENV === 'development') {
@@ -16,11 +16,7 @@ const Logger = {
   error: message => console.error(`❌ ${message}`)
 }
 
-/**
- * Manejo de elementos del DOM
- */
 const DOMHelpers = {
-  // Encontrar múltiples elementos con validación
   findElements(selectors) {
     const elements = {}
     const missing = []
@@ -34,20 +30,16 @@ const DOMHelpers = {
     return { elements, missing }
   },
 
-  // Verificar si el DOM está listo
   isReady(callback) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', callback)
     } else {
-      // Pequeño delay para asegurar que React haya terminado
       setTimeout(callback, 100)
     }
   },
 
-  // Añadir/remover clases de forma segura
   toggleClasses(element, classNames, add = true) {
     if (!element) return false
-
     const method = add ? 'add' : 'remove'
     classNames.forEach(className => {
       element.classList[method](className)
@@ -56,13 +48,9 @@ const DOMHelpers = {
   }
 }
 
-/**
- * Manejo de eventos con cleanup automático
- */
 const EventManager = {
   listeners: new Map(),
 
-  // Añadir event listener con tracking
   add(element, event, handler, options = {}) {
     if (!element) return null
 
@@ -75,15 +63,11 @@ const EventManager = {
     }
 
     element.addEventListener(event, wrappedHandler, options)
-
-    // Guardar referencia para cleanup
-    const key = `${element.id || 'anonymous'}-${event}`
+    const key = `${element.id || 'anonymous'}-${event}-${Date.now()}`
     this.listeners.set(key, { element, event, handler: wrappedHandler })
-
     return key
   },
 
-  // Remover event listener específico
   remove(key) {
     const listener = this.listeners.get(key)
     if (listener) {
@@ -92,7 +76,6 @@ const EventManager = {
     }
   },
 
-  // Limpiar todos los listeners
   cleanup() {
     this.listeners.forEach((listener, key) => {
       this.remove(key)
@@ -100,9 +83,6 @@ const EventManager = {
   }
 }
 
-/**
- * Utilidades de timing
- */
 const TimingUtils = {
   debounce(func, wait) {
     let timeout
@@ -122,280 +102,309 @@ const TimingUtils = {
 }
 
 // ===========================================
-// COMPONENTE MENU MÓVIL MODULAR
+// MENÚ MÓVIL (simplificado)
 // ===========================================
-
-/**
- * Clase para manejar el estado del menú
- */
-class MenuState {
-  constructor() {
-    this.isOpen = false
-    this.observers = []
-  }
-
-  // Patrón Observer para reactividad
-  subscribe(callback) {
-    this.observers.push(callback)
-  }
-
-  // Notificar cambios de estado
-  notify() {
-    this.observers.forEach(callback => callback(this.isOpen))
-  }
-
-  open() {
-    if (this.isOpen) return false
-    this.isOpen = true
-    this.notify()
-    Logger.debug('Menú abierto')
-    return true
-  }
-
-  close() {
-    if (!this.isOpen) return false
-    this.isOpen = false
-    this.notify()
-    Logger.debug('Menú cerrado')
-    return true
-  }
-
-  toggle() {
-    return this.isOpen ? this.close() : this.open()
-  }
-}
-
-/**
- * Configuración del menú
- */
-const MENU_CONFIG = {
-  selectors: {
-    toggle: 'menu-toggle',
-    menu: 'mobile-menu',
-    icon: 'menu-icon',
-    overlay: 'menu-overlay'
-  },
-  classes: {
-    active: 'active',
-    menuOpen: 'menu-open'
-  },
-  breakpoint: 768,
-  animationDelay: 150,
-  links: '.header__mobile-menu-link, .header__mobile-cta-link'
-}
-
-/**
- * Módulo principal del menú móvil
- */
 const MobileMenu = {
-  // Inicialización
-  init(config = MENU_CONFIG) {
-    this.config = config
-    this.state = new MenuState()
-    this.elements = {}
+  init() {
+    const menuToggle = document.getElementById('menu-toggle')
+    const mobileMenu = document.getElementById('mobile-menu')
+    const menuOverlay = document.getElementById('menu-overlay')
+    const menuIcon = document.getElementById('menu-icon')
 
-    Logger.debug('Inicializando menú móvil...')
-
-    if (!this.findElements()) {
-      Logger.error('No se pudieron encontrar elementos esenciales del menú')
+    if (!menuToggle || !mobileMenu) {
+      Logger.warning('Elementos del menú móvil no encontrados')
       return false
     }
 
-    this.setupStateObserver()
-    this.setupEventListeners()
-    this.setupAccessibility()
+    // Toggle del menú
+    EventManager.add(menuToggle, 'click', e => {
+      e.preventDefault()
+      const isOpen = mobileMenu.classList.contains('active')
 
-    Logger.success('Sistema de menú móvil inicializado correctamente')
+      if (isOpen) {
+        this.closeMenu(mobileMenu, menuOverlay, menuIcon)
+      } else {
+        this.openMenu(mobileMenu, menuOverlay, menuIcon)
+      }
+    })
+
+    // Cerrar con overlay
+    if (menuOverlay) {
+      EventManager.add(menuOverlay, 'click', () => {
+        this.closeMenu(mobileMenu, menuOverlay, menuIcon)
+      })
+    }
+
+    // Cerrar con ESC
+    EventManager.add(document, 'keydown', e => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        this.closeMenu(mobileMenu, menuOverlay, menuIcon)
+      }
+    })
+
+    Logger.success('Menú móvil inicializado')
     return true
   },
 
-  // Encontrar elementos del DOM
-  findElements() {
-    const { elements, missing } = DOMHelpers.findElements(this.config.selectors)
-    this.elements = elements
-
-    if (missing.length > 0) {
-      Logger.warning(`Elementos no encontrados: ${missing.join(', ')}`)
-    }
-
-    return !!(elements.toggle && elements.menu)
+  openMenu(menu, overlay, icon) {
+    DOMHelpers.toggleClasses(menu, ['active'], true)
+    DOMHelpers.toggleClasses(overlay, ['active'], true)
+    DOMHelpers.toggleClasses(icon, ['active'], true)
+    DOMHelpers.toggleClasses(document.body, ['menu-open'], true)
   },
 
-  // Configurar observer de estado
-  setupStateObserver() {
-    this.state.subscribe(isOpen => {
-      this.updateUI(isOpen)
-      this.updateAccessibility(isOpen)
-    })
-  },
-
-  // Actualizar UI basado en el estado
-  updateUI(isOpen) {
-    const { menu, icon, overlay } = this.elements
-    const { classes } = this.config
-
-    // Actualizar clases
-    DOMHelpers.toggleClasses(menu, [classes.active], isOpen)
-    DOMHelpers.toggleClasses(icon, [classes.active], isOpen)
-    DOMHelpers.toggleClasses(overlay, [classes.active], isOpen)
-    DOMHelpers.toggleClasses(document.body, [classes.menuOpen], isOpen)
-  },
-
-  // Actualizar accesibilidad
-  updateAccessibility(isOpen) {
-    const { toggle } = this.elements
-    if (toggle) {
-      toggle.setAttribute('aria-expanded', isOpen.toString())
-    }
-  },
-
-  // Configurar event listeners
-  setupEventListeners() {
-    this.setupToggleListener()
-    this.setupOverlayListener()
-    this.setupOutsideClickListener()
-    this.setupMenuLinksListeners()
-    this.setupKeyboardListeners()
-    this.setupResizeListener()
-  },
-
-  // Listener del botón toggle
-  setupToggleListener() {
-    EventManager.add(this.elements.toggle, 'click', e => {
-      e.stopPropagation()
-      e.preventDefault()
-      this.state.toggle()
-    })
-  },
-
-  // Listener del overlay
-  setupOverlayListener() {
-    if (this.elements.overlay) {
-      EventManager.add(this.elements.overlay, 'click', e => {
-        e.stopPropagation()
-        this.state.close()
-      })
-    }
-  },
-
-  // Listener para clicks fuera
-  setupOutsideClickListener() {
-    const handleOutsideClick = e => {
-      if (this.state.isOpen && !this.elements.menu.contains(e.target) && !this.elements.toggle.contains(e.target)) {
-        this.state.close()
-      }
-    }
-
-    EventManager.add(document, 'click', e => {
-      TimingUtils.delay(() => handleOutsideClick(e), 10)
-    })
-  },
-
-  // Listeners de los enlaces del menú
-  setupMenuLinksListeners() {
-    DOMHelpers.isReady(() => {
-      const menuLinks = document.querySelectorAll(this.config.links)
-
-      menuLinks.forEach(link => {
-        EventManager.add(link, 'click', e => {
-          // Prevenir navegación en enlaces hash
-          if (link.getAttribute('href') === '#') {
-            e.preventDefault()
-          }
-
-          // Cerrar menú con delay para UX
-          TimingUtils.delay(() => {
-            this.state.close()
-          }, this.config.animationDelay)
-        })
-      })
-
-      Logger.debug(`Configurados ${menuLinks.length} enlaces de menú`)
-    })
-  },
-
-  // Listeners de teclado
-  setupKeyboardListeners() {
-    // Cerrar con ESC
-    EventManager.add(document, 'keydown', e => {
-      if (e.key === 'Escape' && this.state.isOpen) {
-        this.state.close()
-      }
-    })
-
-    // Manejo de Tab para accesibilidad (configurado en setupAccessibility)
-  },
-
-  // Listener de redimensionado
-  setupResizeListener() {
-    const handleResize = TimingUtils.debounce(() => {
-      if (window.innerWidth >= this.config.breakpoint && this.state.isOpen) {
-        this.state.close()
-      }
-    }, 150)
-
-    EventManager.add(window, 'resize', handleResize)
-  },
-
-  // Configurar accesibilidad
-  setupAccessibility() {
-    DOMHelpers.isReady(() => {
-      const focusableElements = this.elements.menu.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])')
-
-      if (focusableElements.length === 0) {
-        Logger.warning('No se encontraron elementos enfocables en el menú')
-        return
-      }
-
-      const firstFocusable = focusableElements[0]
-      const lastFocusable = focusableElements[focusableElements.length - 1]
-
-      // Manejo de Tab dentro del menú
-      EventManager.add(this.elements.menu, 'keydown', e => {
-        if (e.key === 'Tab' && this.state.isOpen) {
-          if (e.shiftKey) {
-            if (document.activeElement === firstFocusable) {
-              e.preventDefault()
-              lastFocusable.focus()
-            }
-          } else {
-            if (document.activeElement === lastFocusable) {
-              e.preventDefault()
-              firstFocusable.focus()
-            }
-          }
-        }
-      })
-
-      // Enfocar primer elemento al abrir
-      this.state.subscribe(isOpen => {
-        if (isOpen) {
-          TimingUtils.delay(() => {
-            firstFocusable?.focus()
-          }, 100)
-        }
-      })
-    })
-  },
-
-  // Método de limpieza
-  destroy() {
-    EventManager.cleanup()
-    this.state = null
-    this.elements = {}
-    Logger.debug('Menú móvil destruido')
+  closeMenu(menu, overlay, icon) {
+    DOMHelpers.toggleClasses(menu, ['active'], false)
+    DOMHelpers.toggleClasses(overlay, ['active'], false)
+    DOMHelpers.toggleClasses(icon, ['active'], false)
+    DOMHelpers.toggleClasses(document.body, ['menu-open'], false)
   }
 }
 
 // ===========================================
-// EXPORTACIÓN Y AUTO-INICIALIZACIÓN
+// MODAL DE CONTACTO
 // ===========================================
+const ContactModal = {
+  init() {
+    this.modal = document.getElementById('contact-modal')
+    this.overlay = document.getElementById('modal-overlay')
+    this.closeBtn = document.getElementById('modal-close')
+    this.form = document.getElementById('contact-form')
 
-export default () => {
-  DOMHelpers.isReady(() => {
-    MobileMenu.init()
-  })
+    // Buscar todos los triggers
+    this.triggers = document.querySelectorAll('[data-modal-target="contact-modal"]')
+
+    if (!this.modal || !this.overlay) {
+      Logger.warning('Elementos del modal no encontrados')
+      return false
+    }
+
+    this.setupEventListeners()
+    this.setupFormValidation()
+
+    Logger.success('Modal de contacto inicializado')
+    return true
+  },
+
+  setupEventListeners() {
+    // Triggers para abrir
+    this.triggers.forEach(trigger => {
+      EventManager.add(trigger, 'click', e => {
+        e.preventDefault()
+        this.open()
+      })
+    })
+
+    // Botón cerrar
+    if (this.closeBtn) {
+      EventManager.add(this.closeBtn, 'click', e => {
+        e.preventDefault()
+        this.close()
+      })
+    }
+
+    // Cerrar con overlay
+    EventManager.add(this.overlay, 'click', e => {
+      if (e.target === this.overlay) {
+        this.close()
+      }
+    })
+
+    // Cerrar con ESC
+    EventManager.add(document, 'keydown', e => {
+      if (e.key === 'Escape' && this.modal.classList.contains('show')) {
+        this.close()
+      }
+    })
+  },
+
+  setupFormValidation() {
+    if (!this.form) return
+
+    EventManager.add(this.form, 'submit', e => {
+      e.preventDefault()
+      this.handleSubmit()
+    })
+
+    // Validación en tiempo real
+    const inputs = this.form.querySelectorAll('input')
+    inputs.forEach(input => {
+      EventManager.add(input, 'blur', () => {
+        this.validateField(input)
+      })
+    })
+  },
+
+  open() {
+    // Mostrar modal
+    DOMHelpers.toggleClasses(this.modal, ['show'], true)
+    DOMHelpers.toggleClasses(this.overlay, ['active'], true)
+    DOMHelpers.toggleClasses(document.body, ['modal-open'], true)
+
+    // Activar animación
+    TimingUtils.delay(() => {
+      DOMHelpers.toggleClasses(this.modal, ['active'], true)
+    }, 10)
+
+    // Enfocar primer input
+    TimingUtils.delay(() => {
+      const firstInput = this.modal.querySelector('input')
+      if (firstInput) firstInput.focus()
+    }, 300)
+
+    Logger.debug('Modal abierto')
+  },
+
+  close() {
+    // Quitar animación
+    DOMHelpers.toggleClasses(this.modal, ['active'], false)
+
+    // Ocultar modal después de la animación
+    TimingUtils.delay(() => {
+      DOMHelpers.toggleClasses(this.modal, ['show'], false)
+      DOMHelpers.toggleClasses(this.overlay, ['active'], false)
+      DOMHelpers.toggleClasses(document.body, ['modal-open'], false)
+    }, 400)
+
+    Logger.debug('Modal cerrado')
+  },
+
+  validateField(input) {
+    const { name, value } = input
+    let isValid = true
+    let message = ''
+
+    // Validaciones básicas
+    switch (name) {
+      case 'nombres':
+      case 'apellidos':
+        isValid = value.length >= 2 && /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value)
+        message = 'Mínimo 2 caracteres, solo letras'
+        break
+      case 'documento':
+        isValid = /^\d{6,12}$/.test(value)
+        message = 'Entre 6 y 12 dígitos'
+        break
+      case 'celular':
+        isValid = /^[+]?[\d\s-()]{10,15}$/.test(value)
+        message = 'Número de celular válido'
+        break
+      case 'email':
+        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+        message = 'Correo electrónico válido'
+        break
+    }
+
+    this.showFieldError(input, isValid ? null : message)
+    return isValid
+  },
+
+  showFieldError(input, message) {
+    const container = input.closest('.form-group')
+    if (!container) return
+
+    // Remover error anterior
+    const existingError = container.querySelector('.field-error')
+    if (existingError) existingError.remove()
+
+    input.classList.remove('error')
+
+    if (message) {
+      input.classList.add('error')
+      const errorElement = document.createElement('span')
+      errorElement.className = 'field-error'
+      errorElement.textContent = message
+      container.appendChild(errorElement)
+    }
+  },
+
+  async handleSubmit() {
+    const formData = new FormData(this.form)
+    const data = Object.fromEntries(formData.entries())
+
+    // Validar todos los campos
+    const inputs = this.form.querySelectorAll('input')
+    let isValid = true
+
+    inputs.forEach(input => {
+      if (!this.validateField(input)) {
+        isValid = false
+      }
+    })
+
+    if (!isValid) {
+      Logger.warning('Formulario con errores')
+      return
+    }
+
+    // Simular envío
+    const submitBtn = this.form.querySelector('[type="submit"]')
+    const originalText = submitBtn.textContent
+
+    try {
+      submitBtn.textContent = 'Enviando...'
+      submitBtn.disabled = true
+
+      // Simular delay de envío
+      await new Promise(resolve => setTimeout(resolve, 2000))
+
+      Logger.success('Formulario enviado correctamente')
+
+      // Mostrar mensaje de éxito
+      this.showSuccess()
+
+      // Cerrar modal después de un momento
+      TimingUtils.delay(() => {
+        this.close()
+        this.form.reset()
+      }, 2000)
+    } catch (error) {
+      Logger.error('Error al enviar formulario:', error)
+    } finally {
+      submitBtn.textContent = originalText
+      submitBtn.disabled = false
+    }
+  },
+
+  showSuccess() {
+    const successHTML = `
+      <div class="success-message">
+        <div class="success-icon">✅</div>
+        <p>¡Gracias! Hemos recibido tu información.</p>
+        <p>Te contactaremos pronto.</p>
+      </div>
+    `
+
+    const modalContent = this.modal.querySelector('.modal-content')
+    modalContent.innerHTML = successHTML
+  }
 }
 
-// Exportar utilidades para reutilización
-export { Logger, DOMHelpers, EventManager, TimingUtils, MobileMenu }
+// ===========================================
+// INICIALIZACIÓN PRINCIPAL
+// ===========================================
+export default () => {
+  DOMHelpers.isReady(() => {
+    Logger.debug('Inicializando sistemas del header...')
+
+    const systems = {
+      mobileMenu: MobileMenu.init(),
+      contactModal: ContactModal.init()
+    }
+
+    const activeSystems = Object.entries(systems)
+      .filter(([_, isActive]) => isActive)
+      .map(([name]) => name)
+
+    if (activeSystems.length > 0) {
+      Logger.success(`Sistemas activos: ${activeSystems.join(', ')}`)
+    } else {
+      Logger.warning('No se pudieron inicializar los sistemas')
+    }
+
+    // Cleanup al cambiar de página
+    window.addEventListener('beforeunload', () => {
+      EventManager.cleanup()
+    })
+  })
+}

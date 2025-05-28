@@ -6,8 +6,8 @@ import Container from '@library/components/container/Container'
 
 import logo from '../../../../../assets/logos/logo-jave-h-blue.svg'
 import logoDark from '../../../../../assets/logos/logo-jave-h-white.svg'
-import script from './script.js'
 
+import script from './script.js'
 import './styles.scss'
 
 const Header = () => {
@@ -39,7 +39,7 @@ const Header = () => {
 
           {/* CTA Buttons - Solo desktop */}
           <div className="header__cta">
-            <Btn id="info-btn" variant="outline" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
+            <Btn id="info-btn" variant="outline" data-modal-target="contact-modal">
               Recibe más Información
             </Btn>
 
@@ -76,11 +76,6 @@ const Header = () => {
               <nav>
                 <ul className="header__mobile-menu-list">
                   <li>
-                    <Btn href="#" className="header__mobile-menu-link" variant="link" startIcon={<i className="ph ph-info"></i>}>
-                      Sobre el Programa
-                    </Btn>
-                  </li>
-                  <li>
                     <Btn href="#" className="header__mobile-menu-link" variant="link" startIcon={<i className="ph ph-clipboard-text"></i>}>
                       Proceso de Inscripción
                     </Btn>
@@ -109,106 +104,143 @@ const Header = () => {
       {/* CTA Fixed Bottom - Solo móvil */}
       <div className="mobile-cta-fixed">
         <Container className="mobile-cta-fixed__container">
-          <Btn href="#" className="mobile-cta-fixed__btn mobile-cta-fixed__btn--primary" fullWidth>
+          <Btn href="#" className="mobile-cta-fixed__btn" fullWidth size="md" color="primary">
             ¡Inscríbete Ahora!
           </Btn>
-          <Btn
-            href="#"
-            className="mobile-cta-fixed__btn mobile-cta-fixed__btn--secondary"
-            variant="outline"
-            fullWidth
-            data-modal-target="authentication-modal"
-            data-modal-toggle="authentication-modal">
+          <Btn className="mobile-cta-fixed__btn" fullWidth size="md" color="primary" variant="outline" data-modal-target="contact-modal">
             Recibe más Información
           </Btn>
         </Container>
       </div>
 
-      {/* Modal de autenticación */}
-      <div
-        id="authentication-modal"
-        tabIndex="-1"
-        aria-hidden="true"
-        className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div className="relative p-4 w-full max-w-md max-h-full">
-          <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Sign in to our platform</h3>
-              <button
-                type="button"
-                className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="authentication-modal">
-                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                  />
-                </svg>
-                <span className="sr-only">Close modal</span>
-              </button>
+      {/* MODAL DE CONTACTO RESPONSIVO */}
+      <div className="modal-overlay" id="modal-overlay">
+        <div className="contact-modal" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          {/* Imagen lateral - Solo visible en desktop */}
+          <div
+            className="modal-image"
+            style={{
+              backgroundImage:
+                'url("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80")'
+            }}
+          />
+
+          {/* Contenedor del formulario */}
+          <div className="modal-form-container">
+            {/* Header del Modal */}
+            <div className="modal-header">
+              <h2 className="modal-header__title" id="modal-title">
+                ¿Tienes dudas?
+              </h2>
+              <p className="modal-header__subtitle">
+                Déjanos tus datos y te contactaremos para brindarte toda la información del programa.
+              </p>
+              <button className="modal-header__close" id="modal-close" aria-label="Cerrar modal" />
             </div>
 
-            <div className="p-4 md:p-5">
-              <form className="space-y-4" action="#">
-                <div>
-                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Your email
+            {/* Contenido del Modal */}
+            <div className="modal-content">
+              <form className="contact-form" id="contact-form" noValidate>
+                {/* Nombres */}
+                <div className="form-group">
+                  <label htmlFor="nombres" className="form-label required">
+                    Nombres
+                  </label>
+                  <input
+                    type="text"
+                    id="nombres"
+                    name="nombres"
+                    className="form-input"
+                    placeholder="Escribe tu(s) nombre(s)"
+                    required
+                    autoComplete="given-name"
+                  />
+                </div>
+
+                {/* Apellidos */}
+                <div className="form-group">
+                  <label htmlFor="apellidos" className="form-label required">
+                    Apellidos
+                  </label>
+                  <input
+                    type="text"
+                    id="apellidos"
+                    name="apellidos"
+                    className="form-input"
+                    placeholder="Escribe tu(s) apellido(s)"
+                    required
+                    autoComplete="family-name"
+                  />
+                </div>
+
+                {/* Número de documento */}
+                <div className="form-group">
+                  <label htmlFor="documento" className="form-label required">
+                    Número de documento
+                  </label>
+                  <input
+                    type="text"
+                    id="documento"
+                    name="documento"
+                    className="form-input"
+                    placeholder="Ingresa tu número de documento"
+                    required
+                    autoComplete="off"
+                  />
+                </div>
+
+                {/* Celular */}
+                <div className="form-group">
+                  <label htmlFor="celular" className="form-label required">
+                    Celular
+                  </label>
+                  <input
+                    type="tel"
+                    id="celular"
+                    name="celular"
+                    className="form-input"
+                    placeholder="Ingresa tu número de celular"
+                    required
+                    autoComplete="tel"
+                  />
+                </div>
+
+                {/* Correo Electrónico */}
+                <div className="form-group">
+                  <label htmlFor="email" className="form-label required">
+                    Correo Electrónico
                   </label>
                   <input
                     type="email"
-                    name="email"
                     id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    placeholder="name@company.com"
+                    name="email"
+                    className="form-input"
+                    placeholder="Ingresa tu correo electrónico"
                     required
+                    autoComplete="email"
                   />
                 </div>
-                <div>
-                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Your password
+
+                {/* Checkbox de términos y condiciones */}
+                <div className="terms-group" id="terms-group">
+                  <input type="checkbox" id="terms" name="terms" className="terms-checkbox" required />
+                  <label htmlFor="terms" className="terms-label">
+                    Acepto la{' '}
+                    <a href="#" className="terms-link">
+                      política de privacidad
+                    </a>{' '}
+                    y el{' '}
+                    <a href="#" className="terms-link">
+                      tratamiento de datos
+                    </a>{' '}
+                    de la Pontificia Universidad Javeriana.
                   </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    required
-                  />
                 </div>
-                <div className="flex justify-between">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        type="checkbox"
-                        value=""
-                        className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                        required
-                      />
-                    </div>
-                    <label htmlFor="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                      Remember me
-                    </label>
-                  </div>
-                  <a href="#" className="text-sm text-blue-700 hover:underline dark:text-blue-500">
-                    Lost Password?
-                  </a>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  Login to your account
+
+                {/* Botón de envío */}
+                <button type="submit" className="submit-btn">
+                  Enviar Ahora
                 </button>
-                <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
-                  Not registered?{' '}
-                  <a href="#" className="text-blue-700 hover:underline dark:text-blue-500">
-                    Create account
-                  </a>
-                </div>
               </form>
             </div>
           </div>
