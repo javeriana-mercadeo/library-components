@@ -43,7 +43,6 @@
     column-gap: 30px;
     row-gap: 20px;
     align-items: start;
-    padding: 40px;
     max-width: 1200px;
     margin: 0 auto;
     align-items: center;
@@ -156,7 +155,6 @@
     justify-content: center;
     align-items: center;
     border-bottom: 1px solid $gray-900;
-    max-width: 300px;
     transition: background 0.3s ease;
 
     &:hover,
