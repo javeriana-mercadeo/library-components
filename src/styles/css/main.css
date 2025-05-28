@@ -754,25 +754,25 @@ img, video, iframe {
   min-height: 500px !important;
 }
 #section-two .subjects-carousel .card-list .card-item .card-link {
-  display: grid !important;
-  grid-template-rows: auto auto auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   background: #ffffff;
   padding: 18px;
   user-select: none;
   border-radius: 12px;
   text-decoration: none;
-  border: 2px solid #b6c2cf;
+  border: 1px solid #b6c2cf;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
   transition: 0.2s ease;
   width: 100%;
-  height: 100% !important;
+  height: 100%;
   gap: 0;
 }
 #section-two .subjects-carousel .card-list .card-item .card-link:active {
   cursor: grabbing;
 }
 #section-two .subjects-carousel .card-list .card-item .card-link:hover {
-  border: 2px solid;
+  border: 1px solid;
   border-color: #026fc1;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.351);
 }
@@ -791,7 +791,6 @@ img, video, iframe {
   color: #111827;
   text-align: left;
   max-width: 100%;
-  grid-row: 2;
 }
 #section-two .subjects-carousel .card-list .card-link .badge {
   color: #ffffff;
@@ -805,7 +804,6 @@ img, video, iframe {
   display: flex;
   align-items: center;
   justify-content: center;
-  grid-row: 3;
   margin-bottom: 10px;
 }
 #section-two .subjects-carousel .card-header {
@@ -816,14 +814,12 @@ img, video, iframe {
   border-bottom: 0.8px solid #b6c2cf;
   padding-bottom: 10px;
   margin-bottom: 10px;
-  grid-row: 3;
 }
 #section-two .subjects-carousel .subjects-list {
   list-style: none;
   padding-top: 5px;
   margin: 0;
   padding-bottom: 10px;
-  grid-row: 4;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -846,8 +842,9 @@ img, video, iframe {
   font-weight: bold;
   color: #b6c2cf;
   padding-top: 10px;
-  grid-row: 5;
   align-self: end;
+  width: 100%;
+  margin-top: auto;
 }
 #section-two .subjects-carousel .content-credits strong {
   color: #8c98a8;
