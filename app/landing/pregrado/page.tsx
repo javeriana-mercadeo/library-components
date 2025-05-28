@@ -21,8 +21,6 @@ export default function Profesional() {
         <DatosProgramaVideo />
       </ViewComponent> */}
 
-
-
       <ViewComponent path={`${basePath}/sections/meetingDirector`}>
         <MeetingDirector />
       </ViewComponent>
