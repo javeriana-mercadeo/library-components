@@ -1,66 +1,65 @@
 @use 'variables' as *;
-@use 'mixins' as *;
-@use 'base' as *;
+@use 'mixins'as *;
+@use'base' as*;
 
-#section-eigth {
-  .color-container {
+#section-eigth{
+
+  .color-container{
     background-color: $primary-color;
     width: 100vw;
     padding: 5px;
   }
 
-  .meeting-banner {
-    background-color: $primary-color;
-    padding: $spacing-md;
-    text-align: center;
+.meeting-banner {
+  background-color: $primary-color;
+  padding: $spacing-md;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: $breakpoint-md) {
+    flex-direction: column;
+    padding: $spacing-lg;
+  }
+
+  &__content {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    color: $text-light;
 
     @media (max-width: $breakpoint-md) {
       flex-direction: column;
-      padding: $spacing-lg;
-    }
-
-    &__content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      max-width: 1200px;
-      color: $text-light;
-
-      @media (max-width: $breakpoint-md) {
-        flex-direction: column;
-        text-align: center;
-      }
-    }
-
-    &__text {
-      font-size: $font-size-h3;
-      font-weight: $font-weight-bold;
-      margin-bottom: 0px;
-    }
-
-    .button--outline {
-      border: 2px solid $text-light;
-      color: $text-light;
-      padding: $spacing-sm $spacing-lg;
-      border-radius: $border-radius-md;
-      font-size: $font-size-p;
-      text-decoration: none;
-      transition:
-        background-color 0.3s ease,
-        color 0.3s ease;
-
-      &:hover {
-        background-color: $text-light;
-        color: $primary-color;
-      }
-
-      @media (max-width: $breakpoint-md) {
-        margin-top: $spacing-md;
-      }
+      text-align: center;
     }
   }
+
+  &__text {
+    font-size: $font-size-h3;
+    font-weight: $font-weight-bold;
+    margin-bottom: 0px;
+  }
+
+  .button--outline {
+    border: 2px solid $text-light;
+    color: $text-light;
+    padding: $spacing-sm $spacing-lg;
+    border-radius: $border-radius-md;
+    font-size: $font-size-p;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:hover {
+      background-color: $text-light;
+      color: $primary-color;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      margin-top: $spacing-md;
+    }
+  }
+}
 }

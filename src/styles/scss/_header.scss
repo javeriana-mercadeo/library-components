@@ -1,20 +1,21 @@
-@use 'variables' as *;
-@use 'sass:color';
+@use "variables" as *;
+@use "sass:color";
 
-.header-color {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  background-color: $gray-1100;
-  z-index: 1000;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  min-height: 70px;
-}
+
+  .header-color {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background-color: $gray-1100;
+    z-index: 1000;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto; 
+    min-height: 70px; 
+  }
 
 .header {
   position: relative;
@@ -86,44 +87,44 @@
     align-items: center;
     margin-left: auto;
     font-size: $font-size-header;
-    min-width: fit-content;
-  }
+    min-width: fit-content;}
 
-  @media (max-width: $breakpoint-md) {
-    .header-color {
+    @media (max-width: $breakpoint-md) {
+      .header-color{
       display: flex; /* Ocultar en móvil, usaremos un contenedor fijo */
       justify-content: center;
       align-items: center;
       width: 100%;
       flex-direction: column;
-    }
-    &__mobile-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background-color: $gray-1200;
-      border-top: 1px solid $color-border;
-      padding: $spacing-sm;
-      flex-direction: column;
-      z-index: 999;
 
-      &.active {
-        display: flex;
       }
+      &__mobile-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: $gray-1200;
+        border-top: 1px solid $color-border;
+        padding: $spacing-sm;
+        flex-direction: column;
+        z-index: 999;
+    
+        &.active {
+          display: flex;
+        }
+    
+        &-list,
+        &-cta {
+          display: flex;
+          position: fixed;
+          list-style: none;
+          padding: 0;
+          margin: $spacing-sm 0;
+          justify-content: flex-end; 
 
-      &-list,
-      &-cta {
-        display: flex;
-        position: fixed;
-        list-style: none;
-        padding: 0;
-        margin: $spacing-sm 0;
-        justify-content: flex-end;
-      }
-    }
-  }
+    }}}
+  
 
   /* MENU MÓVIL */
   &__menu-toggle {
@@ -136,6 +137,7 @@
 
     @media (max-width: $breakpoint-lg) {
       display: block;
+      
     }
   }
 
@@ -162,7 +164,7 @@
       list-style: none;
       padding: 0;
       margin: $spacing-sm 0;
-      justify-content: flex-end;
+      justify-content: flex-end; 
       &-link {
         display: block;
         text-decoration: none;
@@ -183,8 +185,10 @@
   }
 }
 
+
 /* BOTONES FIJOS EN MOBILE */
 @media (max-width: $breakpoint-lg) {
+
   #cta-container {
     display: flex;
     position: fixed;
@@ -199,10 +203,10 @@
     z-index: 1000;
     flex-direction: column;
     align-items: center;
-
+    
     button {
-      width: 90%;
-      max-width: 300px;
+      width: 90%; 
+      max-width: 300px; 
       text-align: center;
       padding: $spacing-sm;
     }
