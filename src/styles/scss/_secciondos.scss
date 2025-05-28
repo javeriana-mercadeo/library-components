@@ -23,7 +23,7 @@
   }
   
   body {
-    font-family: Arial, sans-serif;
+    font-family: $font-family-primary;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,11 +32,11 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh; 
-  width: 100%;}
+    width: 100%;}
 
 .subjects-carousel__title{
     font-size:$font-size-h2 ;
-    font-weight: bold;
+    font-weight: $font-weight-bold;
     padding-bottom: 10px;
     width: fit-content;
 }
@@ -71,10 +71,10 @@ i{
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  display: flex !important;
-  align-items: stretch !important;
+  display: flex;
+  align-items: stretch;
   justify-content: center;
-  height: auto !important;
+  height: auto;
 }
 
 .card-list {
@@ -87,8 +87,7 @@ i{
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 500px !important;
-  min-height: 500px !important;
+  min-height: 500px;
 }
 
 .card-list .card-item .card-link {
@@ -104,7 +103,6 @@ i{
   transition: 0.2s ease;
   width: 100%;
   height: 100%;
-  gap: 0;
 }
 
 .card-list .card-item .card-link:active {
@@ -122,15 +120,15 @@ i{
   border-radius: 10px;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  grid-row: 1;
 }
 
 .title-subjects{
     margin-bottom: 0.5rem;
-    font-size: 1rem;
-    font-weight:700;
-    letter-spacing: -0.02em;
-    color: #111827;
+    border-bottom: 0.8px solid $gray-900;
+    font-size: $font-size-p; //Ajuste temporal en el uso de la variable para este elemento
+    font-weight:$font-weight-bold;
+    letter-spacing: $letter-spacing-normal;
+    color: $gray-100;
     text-align: left;
     max-width: 100%;
 }
@@ -138,10 +136,10 @@ i{
 .card-list .card-link .badge {
   color: $text-light;
   width: fit-content;
-  padding: 8px 15px;
-  font-size: 0.7rem;
+  padding: 8px 16px;
+  font-size: $font-size-small;
   border-radius: 50px;
-  font-weight: bold;
+  font-weight: $font-weight-bold;
   background: $primary-color;
   text-align: left;
   display: flex;
@@ -151,13 +149,6 @@ i{
 }
 
 .card-header{
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  display: block;
-  border-bottom: 0.8px solid $gray-900;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
 }
 
 .subjects-list{
@@ -176,6 +167,8 @@ color: $gray-500;
 margin-bottom: 0.5rem;
 display: flex;
 align-items: center;
+font-size: $font-size-p;
+font-weight: $font-weight-regular;
 
 i{
     font-size: 1.25rem; 
@@ -188,13 +181,13 @@ i{
     font-size: 1.125rem;
     border-top: 0.8px solid $gray-900;
     font-weight: bold;
-    color: $gray-900;
+    color: $gray-800;
     padding-top: 10px;
     align-self: end;
     width: 100%;
     margin-top: auto;
     strong {
-      color: $gray-700;
+      color: $gray-500;
     }
 }
 
