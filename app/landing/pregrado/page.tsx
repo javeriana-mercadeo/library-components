@@ -2,6 +2,7 @@ import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 import Splash from '@/app/_library/sections/splash'
 
 import Header from './sections/header'
+import MateriasSemestre from './sections/materiasPorSemestre'
 import PerfilesPrograma from './sections/perfilesPrograma'
 import DatosProgramaVideo from './sections/datosProgramaVideo'
 import MeetingDirector from './sections/meetingDirector'
@@ -22,6 +23,10 @@ export default function Profesional() {
         <DatosProgramaVideo />
       </ViewComponent> */}
 
+      {/* <ViewComponent path={`${basePath}/sections/materiasPorSemestre`}>
+        <MateriasSemestre/>
+      </ViewComponent> */}
+      
       <ViewComponent path={`${basePath}/sections/perfilesPrograma`}>
         <PerfilesPrograma />
       </ViewComponent>

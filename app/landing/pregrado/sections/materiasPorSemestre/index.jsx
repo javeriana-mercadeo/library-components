@@ -17,7 +17,9 @@ const MateriasSemestre = () => {
     }, [])
 
     return (
-        <>
-        </>
+        <section id="section-two" className='section-dos'>
+            <h2 className="text-align-movil subjects-carousel__title">Materias por Semestre</h2>
+        </section>
     )
 }
+export default MateriasSemestre
