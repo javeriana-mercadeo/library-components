@@ -23,9 +23,9 @@ export default function Profesional() {
         <DatosProgramaVideo />
       </ViewComponent> */}
 
-      {/* <ViewComponent path={`${basePath}/sections/materiasPorSemestre`}>
+      <ViewComponent path={`${basePath}/sections/materiasPorSemestre`}>
         <MateriasSemestre/>
-      </ViewComponent> */}
+      </ViewComponent>
       
       <ViewComponent path={`${basePath}/sections/perfilesPrograma`}>
         <PerfilesPrograma />
