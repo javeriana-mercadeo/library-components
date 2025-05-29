@@ -137,7 +137,7 @@
 
     &__accordion-button {
       background: var(--primary);
-      color: var(--neutral-1000);
+      color: var(--neutral-700);
       font-style: var(--font-size-caption);
       font-weight: var(--font-weight-bold);
       padding: var(--spacing-md);
@@ -148,7 +148,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border-bottom: rem(1px) solid var(--neutral-1000);
+      border-bottom: rem(1px) solid var(--neutral-700);
       transition: background 0.3s ease;
 
       &:hover,
