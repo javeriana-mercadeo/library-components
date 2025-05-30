@@ -16,31 +16,26 @@ const MateriasSemestre = () => {
         script()
     }, [])
 
-    return (
-<section id="section-two" className="section-dos">
-<div className="container subjects-carousel">
-<h2 className="text-align-movil subjects-carousel__title">
-    Materias por Semestre
-</h2>
-<p className="text-align-movil">
-    El plan de estudios profundiza en asignaturas en las áreas de:
-    edificaciones, infraestructura vial e hidrotecnia.
-</p>
+return (
+  <section id="section-two" className="section-dos">
+    <div className="container subjects-carousel">
+    <h2 className="text-align-movil subjects-carousel__title">Materias por Semestre</h2>
+      <p className="text-align-movil">El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.</p>
 
-<a 
-    href="ruta/al/archivo.pdf"
-    download="Plan-de-Estudios.pdf"
-    className="button-plan text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 flex items-center gap-2"
-    aria-label="Descargar Plan de Estudios en formato PDF"
->
-    Descargar Plan de Estudios
-    <i className="ph ph-download" aria-hidden="true"></i>
-</a>
+      <a 
+        href="ruta/al/archivo.pdf"
+        download="Plan-de-Estudios.pdf"
+        className="button-plan text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 flex items-center gap-2"
+        aria-label="Descargar Plan de Estudios en formato PDF"
+      >
+        Descargar Plan de Estudios
+        <i className="ph ph-download" aria-hidden="true"></i>
+      </a>
 
-<div className="container swiper">
-    <div className="card-wrapper subjects-swiper">
-    {/* Card slides container */}
-    <div className="card-list swiper-wrapper" role="list">
+    <div className="container swiper">
+      <div className="card-wrapper subjects-swiper">
+        {/* Card slides container */}
+      <div className="card-list swiper-wrapper" role="list">
         
         {/* Semestre 1 - Año 1 */}
         <div className="card-item swiper-slide" role="listitem">
