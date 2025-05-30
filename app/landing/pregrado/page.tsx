@@ -6,6 +6,7 @@ import MateriasSemestre from './sections/materiasPorSemestre'
 import PerfilesPrograma from './sections/perfilesPrograma'
 import DatosProgramaVideo from './sections/datosProgramaVideo'
 import MeetingDirector from './sections/meetingDirector'
+import PreguntasFrecuentes from './sections/preguntasFrecuentes'
 
 export default function Profesional() {
   const basePath = '/landing/pregrado'
@@ -24,15 +25,19 @@ export default function Profesional() {
       </ViewComponent> */}
 
       <ViewComponent path={`${basePath}/sections/materiasPorSemestre`}>
-        <MateriasSemestre/>
+        <MateriasSemestre />
       </ViewComponent>
-      
+
       <ViewComponent path={`${basePath}/sections/perfilesPrograma`}>
         <PerfilesPrograma />
       </ViewComponent>
 
       <ViewComponent path={`${basePath}/sections/meetingDirector`}>
         <MeetingDirector />
+      </ViewComponent>
+
+      <ViewComponent path={`${basePath}/sections/preguntasFrecuentes`}>
+        <PreguntasFrecuentes />
       </ViewComponent>
 
       {/*       <ViewComponent path="pregrado/sections/0_header">
