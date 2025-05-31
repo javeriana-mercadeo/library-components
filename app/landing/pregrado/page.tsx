@@ -6,6 +6,7 @@ import PerfilesPrograma from './sections/perfilesPrograma'
 import PreguntasFrecuentes from './sections/preguntasFrecuentes'
 import Encabezado from './sections/encabezado'
 import DatosProgramaVideo from './sections/datosProgramaVideo'
+import PorQueLaJaveriana from './sections/porQueLaJaveriana'
 import MeetingDirector from './sections/citaDirector'
 
 export default function Profesional() {
@@ -33,6 +34,8 @@ export default function Profesional() {
       {/* <ViewComponent path={`${basePath}/sections/perfilesPrograma`}>
         <PerfilesPrograma />
       </ViewComponent> */}
+
+      <PorQueLaJaveriana />
 
       <MeetingDirector />
       {/* <ViewComponent path={`${basePath}/sections/meetingDirector`}>
