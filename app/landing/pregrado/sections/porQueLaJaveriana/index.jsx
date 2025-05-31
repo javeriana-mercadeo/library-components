@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import Container from '@library/components/container/Container'
+import Paragraph from '@library/components/contain/paragraph'
 
 import whyJaverianaImg from '../../../../../assets/whyJaveriana/why-javeriana.png'
 
@@ -29,7 +29,7 @@ const PorqueLaJaveriana = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <i className="ph ph-graduation-cap text-blue-500 text-2xl"></i>
-              <p className="font-semibold text-gray-900">Doble titulación</p>
+              <Paragraph className="font-semibold text-gray-900" isEditable={true}>Doble titulación</Paragraph>
             </div>
 
             {/* Botón solo en mobile */}
@@ -105,7 +105,7 @@ const PorqueLaJaveriana = () => {
       </div>
 
       <div className="why-javeriana__image">
-        <img src="./assets/images/why-javeriana.png" alt="Estudiantes en laboratorio" />
+        <img src={whyJaverianaImg.src} alt="Estudiantes en laboratorio" />
       </div>
 
       <div className="why-javeriana__column">
