@@ -1,14 +1,61 @@
 // ==========================================
-// MIXINS
+// MIXINS OPTIMIZADOS PARA TEMAS
 // ==========================================
 @use 'sass:meta';
 @use 'sass:map';
 @use 'variables' as *;
 @use 'colors' as *;
 
+// GENERAR VARIABLES BASE (tema light por defecto)
+// ------------------------------------------
+@mixin generate-base-vars($colors-map) {
+  :root {
+    --theme: 'light';
+
+    @each $color-name, $color-values in $colors-map {
+      @each $variant, $value in $color-values {
+        @if $variant != '' {
+          --#{$color-name}-#{$variant}: #{$value};
+        } @else {
+          --#{$color-name}: #{$value};
+        }
+      }
+    }
+  }
+}
+
+// GENERAR TEMA ESPECÍFICO (agrupado en un solo bloque)
+// ------------------------------------------
+@mixin generate-theme($theme-name, $theme-colors) {
+  :root[data-theme='#{$theme-name}'] {
+    --theme: '#{$theme-name}';
+
+    @each $color-name, $color-values in $theme-colors {
+      @each $variant, $value in $color-values {
+        @if $variant != '' {
+          --#{$color-name}-#{$variant}: #{$value};
+        } @else {
+          --#{$color-name}: #{$value};
+        }
+      }
+    }
+  }
+}
+
+// INICIALIZAR TODOS LOS TEMAS DE FORMA OPTIMIZADA
+// ------------------------------------------
+@mixin initialize-themes {
+  // 1. Generar variables base (tema light)
+  @include generate-base-vars($colors-map);
+
+  // 2. Generar cada tema específico en bloques separados
+  @each $theme-name, $theme-colors in $colors-theme {
+    @include generate-theme($theme-name, $theme-colors);
+  }
+}
+
 // RESPONSIVE
 // ------------------------------------------
-// Mixin para aplicar estilos responsivos
 @mixin responsive($break_point: $breakpoint-md) {
   @media (min-width: $break_point) {
     @content;
@@ -17,16 +64,15 @@
 
 // DARK THEME
 // ------------------------------------------
-// Mixin para aplicar estilos específicos del tema oscuro
 @mixin dark-theme {
-  [data-theme*='dark'] & {
+  [data-theme*='-dark'] &,
+  [data-theme='dark'] & {
     @content;
   }
 }
 
 // TRANSICIONES
 // ------------------------------------------
-// Mixin para aplicar transiciones suaves
 @mixin hover-transition {
   transition: $transition ease;
 
@@ -35,46 +81,20 @@
   }
 }
 
-// GENERAR VARIABLES
+// LIFERAY EDIT MODE
 // ------------------------------------------
-// Mixin para generar variables de color
-@mixin generate-vars($name, $colors) {
-  :root {
-    --theme: 'light';
-
-    @each $color-value, $value in $colors {
-      @if $color-value != '' {
-        --#{$name}-#{$color-value}: #{$value};
-      } @else {
-        --#{$name}: #{$value};
-      }
-    }
+@mixin liferay-edit-mode {
+  .has-edit-mode-menu & {
+    @content;
   }
-}
 
-// GENERAR TEMAS
-// ------------------------------------------
-// Mixin para generar variables de color para temas
-// GENERAR TEMAS (completando colores faltantes con los del tema base)
-@mixin generate-theme($name, $colors) {
-  :root[data-theme='#{$name}'] {
-    --theme: '#{$name}';
-
-    @each $color-name, $color-value in $colors {
-      @each $variant, $val in $color-value {
-        @if $variant != '' {
-          --#{$color-name}-#{$variant}: #{$val};
-        } @else {
-          --#{$color-name}: #{$val};
-        }
-      }
-    }
+  .signed-in & {
+    @content;
   }
 }
 
 // APLICAR VARIANTES DE COMPONENTES POR TEMA
 // ------------------------------------------
-// Mixin para aplicar variantes de componentes basadas en temas
 @mixin theme-variants-component($base-class, $mixin-ref) {
   // Estilos por defecto (sin tema explícito)
   @each $color-name, $color-values in $colors-map {
@@ -95,29 +115,30 @@
   }
 }
 
-/* Organizar mixins */
-
+// RESPONSIVE BREAKPOINTS
+// ------------------------------------------
 @mixin respond-to($breakpoint) {
-  @if $breakpoint==sm {
+  @if $breakpoint == sm {
     @media (min-width: $breakpoint-sm) {
       @content;
     }
-  } @else if $breakpoint==md {
+  } @else if $breakpoint == md {
     @media (min-width: $breakpoint-md) {
       @content;
     }
-  } @else if $breakpoint==lg {
+  } @else if $breakpoint == lg {
     @media (min-width: $breakpoint-lg) {
       @content;
     }
-  } @else if $breakpoint==xl {
+  } @else if $breakpoint == xl {
     @media (min-width: $breakpoint-xl) {
       @content;
     }
   }
 }
 
-// Mixin para estilos de texto
+// TEXTO STYLING
+// ------------------------------------------
 @mixin text-style($size, $weight: $font-weight-regular, $spacing: $letter-spacing-normal, $line-height: $line-height-base) {
   font-size: $size;
   font-weight: $weight;
@@ -126,25 +147,18 @@
   font-family: $font-family-primary;
 }
 
-// Mixin para botones
-@mixin button-style($bg-color, $text-color, $border-color: null) {
-  background-color: $bg-color;
-  color: $text-color;
-  border: if($border-color, 1px solid $border-color, none);
-  border-radius: $border-radius-md;
-  padding: $spacing-sm $spacing-md;
-  text-align: center;
-  cursor: pointer;
-  font-family: $font-family-primary;
-  transition: background-color 0.3s ease;
+// CONTRASTE AUTOMÁTICO DE TEXTO
+// ------------------------------------------
+@mixin auto-text-contrast($property, $background-var) {
+  #{$property}: var(--neutral-100);
 
-  &:hover {
-    background-color: color.adjust($bg-color, $lightness: -10%);
+  @include dark-theme {
+    #{$property}: var(--neutral-1000);
   }
 
-  &:disabled {
-    background-color: $disabled-color;
-    color: $color-muted-text;
-    cursor: not-allowed;
+  @media (prefers-color-scheme: dark) {
+    & {
+      #{$property}: var(--neutral-1000);
+    }
   }
 }

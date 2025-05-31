@@ -10,9 +10,6 @@ import script from './script.js'
 import './styles.scss'
 
 const PerfilesPrograma = () => {
-  {
-    /*Ejecutar el script cuando el componente se monta*/
-  }
   useEffect(() => {
     script()
   }, [])

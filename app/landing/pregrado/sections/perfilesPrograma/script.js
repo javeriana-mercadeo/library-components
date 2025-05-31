@@ -6,9 +6,9 @@ export default function initAccordion() {
         console.log(`🔍 ${msg}`, data || '')
       }
     },
-    success: (msg) => console.log(`✅ ${msg}`),
-    warning: (msg) => console.warn(`⚠️ ${msg}`),
-    error: (msg) => console.error(`❌ ${msg}`),
+    success: msg => console.log(`✅ ${msg}`),
+    warning: msg => console.warn(`⚠️ ${msg}`),
+    error: msg => console.error(`❌ ${msg}`)
   }
 
   // Delay para asegurar que el DOM esté listo después del montaje
@@ -23,7 +23,7 @@ export default function initAccordion() {
       return
     }
 
-    buttons.forEach((button) => {
+    buttons.forEach(button => {
       button.addEventListener('click', function () {
         const contentId = this.getAttribute('data-content')
         const targetContent = document.getElementById(contentId)
@@ -34,8 +34,8 @@ export default function initAccordion() {
         }
 
         // Ocultar todos los contenidos y desactivar botones
-        contents.forEach((content) => content.classList.add('hidden'))
-        buttons.forEach((btn) => btn.classList.remove('active'))
+        contents.forEach(content => content.classList.add('hidden'))
+        buttons.forEach(btn => btn.classList.remove('active'))
 
         // Mostrar el contenido seleccionado y activar el botón
         targetContent.classList.remove('hidden')

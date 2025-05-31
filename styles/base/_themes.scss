@@ -1,0 +1,24 @@
+// ==========================================
+// NÚCLEO DEL SISTEMA DE TEMAS OPTIMIZADO
+// ==========================================
+@use 'sass:map';
+@use 'sass:string';
+@use 'sass:meta';
+@use '../abstracts/colors' as *;
+@use '../abstracts/mixins' as *;
+
+// Inicializar todos los temas de forma optimizada
+@include initialize-themes;
+
+// Aplicar variantes de componentes basadas en temas
+@mixin apply-component-variants($base-class, $mixin-ref) {
+  @each $theme-name, $theme-values in $colors-theme {
+    [data-theme='#{$theme-name}'] {
+      @each $color-name, $color-values in $theme-values {
+        .#{$base-class}-#{$color-name} {
+          @include meta.apply($mixin-ref, ($color-values));
+        }
+      }
+    }
+  }
+}
