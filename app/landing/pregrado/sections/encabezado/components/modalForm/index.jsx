@@ -1,4 +1,4 @@
-import Btn from '@library/components/buttons/btn_general'
+import Btn from '@library/components/contain/btn'
 
 const ModalForm = () => {
   return (

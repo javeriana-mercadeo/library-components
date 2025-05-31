@@ -5,7 +5,7 @@ import { Button, Tabs, Tab, Snippet, Card, CardBody, Spinner, Badge, Pagination 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { a11yDark } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
-const LINES_PER_PAGE = 100 // Mostrar solo 100 líneas por página
+const LINES_PER_PAGE = 300 // Mostrar solo 100 líneas por página
 
 export default function GlobalAssetsViewer() {
   const [activeTab, setActiveTab] = useState('css')

@@ -17,7 +17,7 @@ const TIMEOUT_MS = 25000
 
 // URLs de las librerías externas
 const EXTERNAL_LIBRARIES = [
-  'https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js',
+  'https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js'
   //'https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js',
   //'https://www.javeriana.edu.co/planestudio/pages/libraries/simple_datatables/simple-datatables.js'
 ]
@@ -386,6 +386,47 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
   }
 }
 
+// Función auxiliar para optimizar CSS
+function optimizeCSSThemes(css) {
+  const themes = new Map()
+
+  // Encontrar y agrupar bloques :root
+  const rootBlockRegex = /:root(\[data-theme='([^']+)'\])?\s*\{([^}]+)\}/g
+  let match
+
+  while ((match = rootBlockRegex.exec(css)) !== null) {
+    const [fullMatch, themeSelector, themeName, content] = match
+    const themeKey = themeName || 'default'
+
+    if (!themes.has(themeKey)) {
+      themes.set(themeKey, {
+        selector: themeName ? `:root[data-theme='${themeName}']` : ':root',
+        variables: []
+      })
+    }
+
+    // Extraer variables
+    const variableRegex = /--([^:]+):\s*([^;]+);/g
+    let varMatch
+    while ((varMatch = variableRegex.exec(content)) !== null) {
+      const [, name, value] = varMatch
+      themes.get(themeKey).variables.push(`  --${name.trim()}: ${value.trim()};`)
+    }
+  }
+
+  // Remover bloques originales y regenerar optimizados
+  let optimizedCSS = css.replace(rootBlockRegex, '')
+
+  const optimizedBlocks: string[] = []
+  themes.forEach(theme => {
+    // Eliminar duplicados y ordenar
+    const uniqueVars = [...new Set(theme.variables)].sort()
+    optimizedBlocks.push(`${theme.selector} {\n${uniqueVars.join('\n')}\n}`)
+  })
+
+  return optimizedBlocks.join('\n\n') + '\n\n' + optimizedCSS
+}
+
 export async function GET(req: Request) {
   const startTime = Date.now()
   console.log('🚀 === INICIANDO COMPILACIÓN DE ASSETS ===')
@@ -486,6 +527,9 @@ export async function GET(req: Request) {
               }
             ]
           })
+
+          // NUEVO: Optimizar CSS compilado
+          const optimizedCSS = optimizeCSSThemes(sassResult.css)
 
           // Agregar header al CSS compilado
           compiledCSS = [

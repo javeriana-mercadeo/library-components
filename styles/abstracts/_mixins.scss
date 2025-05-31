@@ -1,10 +1,58 @@
 // ==========================================
-// MIXINS OPTIMIZADOS (SIN DUPLICACIÓN)
+// MIXINS OPTIMIZADOS PARA TEMAS
 // ==========================================
 @use 'sass:meta';
 @use 'sass:map';
 @use 'variables' as *;
 @use 'colors' as *;
+
+// GENERAR VARIABLES BASE (tema light por defecto)
+// ------------------------------------------
+@mixin generate-base-vars($colors-map) {
+  :root {
+    --theme: 'light';
+
+    @each $color-name, $color-values in $colors-map {
+      @each $variant, $value in $color-values {
+        @if $variant != '' {
+          --#{$color-name}-#{$variant}: #{$value};
+        } @else {
+          --#{$color-name}: #{$value};
+        }
+      }
+    }
+  }
+}
+
+// GENERAR TEMA ESPECÍFICO (agrupado en un solo bloque)
+// ------------------------------------------
+@mixin generate-theme($theme-name, $theme-colors) {
+  :root[data-theme='#{$theme-name}'] {
+    --theme: '#{$theme-name}';
+
+    @each $color-name, $color-values in $theme-colors {
+      @each $variant, $value in $color-values {
+        @if $variant != '' {
+          --#{$color-name}-#{$variant}: #{$value};
+        } @else {
+          --#{$color-name}: #{$value};
+        }
+      }
+    }
+  }
+}
+
+// INICIALIZAR TODOS LOS TEMAS DE FORMA OPTIMIZADA
+// ------------------------------------------
+@mixin initialize-themes {
+  // 1. Generar variables base (tema light)
+  @include generate-base-vars($colors-map);
+
+  // 2. Generar cada tema específico en bloques separados
+  @each $theme-name, $theme-colors in $colors-theme {
+    @include generate-theme($theme-name, $theme-colors);
+  }
+}
 
 // RESPONSIVE
 // ------------------------------------------
@@ -45,46 +93,8 @@
   }
 }
 
-// GENERAR VARIABLES
-// ------------------------------------------
-// Mixin para generar variables de color
-@mixin generate-vars($name, $colors) {
-  :root {
-    --theme: 'light';
-
-    @each $color-value, $value in $colors {
-      @if $color-value != '' {
-        --#{$name}-#{$color-value}: #{$value};
-      } @else {
-        --#{$name}: #{$value};
-      }
-    }
-  }
-}
-
-// GENERAR TEMAS
-// ------------------------------------------
-// Mixin para generar variables de color para temas
-// GENERAR TEMAS (completando colores faltantes con los del tema base)
-@mixin generate-theme($name, $colors) {
-  :root[data-theme='#{$name}'] {
-    --theme: '#{$name}';
-
-    @each $color-name, $color-value in $colors {
-      @each $variant, $val in $color-value {
-        @if $variant != '' {
-          --#{$color-name}-#{$variant}: #{$val};
-        } @else {
-          --#{$color-name}: #{$val};
-        }
-      }
-    }
-  }
-}
-
 // APLICAR VARIANTES DE COMPONENTES POR TEMA
 // ------------------------------------------
-// Mixin para aplicar variantes de componentes basadas en temas
 @mixin theme-variants-component($base-class, $mixin-ref) {
   // Estilos por defecto (sin tema explícito)
   @each $color-name, $color-values in $colors-map {

@@ -1,5 +1,5 @@
 import Caption from '@library/components/contain/caption'
-import BtnLink from '@library/components/buttons/BtnLink'
+import Btn from '@library/components/contain/btn'
 
 import './styles.scss'
 import info from './info.json'
@@ -9,7 +9,9 @@ const MeetingDirector = () => {
     <div className="meeting">
       <div className="meeting-container">
         <Caption id={info.key}>Resuelve tus dudas con el director del programa</Caption>
-        <BtnLink id={info.key}>Agenda tu reunión ahora</BtnLink>
+        <Btn href="#" variant="outline" color="neutral" id={info.key}>
+          Agenda tu reunión ahora
+        </Btn>
       </div>
     </div>
   )
