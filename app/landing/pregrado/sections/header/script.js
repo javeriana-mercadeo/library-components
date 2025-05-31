@@ -1,109 +1,106 @@
 // ===========================================
-// SCRIPT PRINCIPAL INTEGRADO - HEADER + MODAL
+// SCRIPT MEJORADO - HEADER Y MODAL CON APIs
 // ===========================================
 
-// ===========================================
-// UTILIDADES GENERALES
-// ===========================================
-const Logger = {
-  debug: (message, data = null) => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`🔍 ${message}`, data || '')
-    }
-  },
-  success: message => console.log(`✅ ${message}`),
-  warning: message => console.warn(`⚠️ ${message}`),
-  error: message => console.error(`❌ ${message}`)
+// URLs de las APIs
+const API_ENDPOINTS = {
+  //ubicaciones: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/ubicaciones.json',
+  //codigosPais: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/codigos_pais.json',
+  ubicaciones: '/data/ubicaciones.json',
+  codigosPais: '/data/codigos_pais.json'
 }
 
-const DOMHelpers = {
-  findElements(selectors) {
-    const elements = {}
-    const missing = []
+// Cache para los datos de las APIs
+let LOCATION_DATA = {}
+let COUNTRY_CODES = {}
 
-    Object.entries(selectors).forEach(([key, selector]) => {
-      const element = document.getElementById(selector) || document.querySelector(selector)
-      elements[key] = element
-      if (!element) missing.push(selector)
-    })
+// ███████████████████████████████████████████████████████████████████████████████
+// █                         SECCIÓN: API MANAGER                               █
+// ███████████████████████████████████████████████████████████████████████████████
 
-    return { elements, missing }
-  },
+const APIManager = {
+  async fetchData(url) {
+    try {
+      Logger.debug(`Cargando datos desde: ${url}`)
+      const response = await fetch(url)
 
-  isReady(callback) {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', callback)
-    } else {
-      setTimeout(callback, 100)
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      Logger.success(`Datos cargados exitosamente desde: ${url}`)
+      return data
+    } catch (error) {
+      Logger.error(`Error al cargar datos de ${url}:`, error)
+      throw error
     }
   },
 
-  toggleClasses(element, classNames, add = true) {
-    if (!element) return false
-    const method = add ? 'add' : 'remove'
-    classNames.forEach(className => {
-      element.classList[method](className)
-    })
-    return true
-  }
-}
+  async loadLocationData() {
+    try {
+      // Cargar ambas APIs en paralelo
+      const [ubicaciones, codigosPais] = await Promise.all([
+        this.fetchData(API_ENDPOINTS.ubicaciones),
+        this.fetchData(API_ENDPOINTS.codigosPais)
+      ])
 
-const EventManager = {
-  listeners: new Map(),
+      // Procesar datos de ubicaciones
+      LOCATION_DATA = this.processLocationData(ubicaciones)
+      COUNTRY_CODES = codigosPais
 
-  add(element, event, handler, options = {}) {
-    if (!element) return null
+      Logger.success('Datos de ubicaciones y códigos de país cargados correctamente')
+      return { ubicaciones: LOCATION_DATA, codigosPais: COUNTRY_CODES }
+    } catch (error) {
+      Logger.error('Error al cargar datos de ubicaciones:', error)
+      // Usar datos de fallback si es necesario
+      this.loadFallbackData()
+      throw error
+    }
+  },
 
-    const wrappedHandler = e => {
-      try {
-        handler(e)
-      } catch (error) {
-        Logger.error(`Error en event handler: ${error.message}`)
+  processLocationData(ubicaciones) {
+    const processed = {}
+
+    // Procesar según la estructura de la API
+    // Asumiendo estructura: { paises: [{ nombre, departamentos: [{ nombre, ciudades: [...] }] }] }
+    if (ubicaciones.paises) {
+      ubicaciones.paises.forEach(pais => {
+        processed[pais.nombre] = {}
+
+        if (pais.departamentos) {
+          pais.departamentos.forEach(depto => {
+            processed[pais.nombre][depto.nombre] = depto.ciudades || []
+          })
+        }
+      })
+    }
+
+    return processed
+  },
+
+  loadFallbackData() {
+    Logger.warning('Usando datos de fallback para ubicaciones')
+    LOCATION_DATA = {
+      Colombia: {
+        'Bogotá D.C.': ['Bogotá D.C.'],
+        Antioquia: ['Medellín', 'Bello', 'Itagüí', 'Envigado', 'Sabaneta'],
+        'Valle del Cauca': ['Cali', 'Palmira', 'Buenaventura', 'Tuluá']
       }
     }
 
-    element.addEventListener(event, wrappedHandler, options)
-    const key = `${element.id || 'anonymous'}-${event}-${Date.now()}`
-    this.listeners.set(key, { element, event, handler: wrappedHandler })
-    return key
-  },
-
-  remove(key) {
-    const listener = this.listeners.get(key)
-    if (listener) {
-      listener.element.removeEventListener(listener.event, listener.handler)
-      this.listeners.delete(key)
+    COUNTRY_CODES = {
+      Colombia: '+57',
+      'Estados Unidos': '+1',
+      México: '+52'
     }
-  },
-
-  cleanup() {
-    this.listeners.forEach((listener, key) => {
-      this.remove(key)
-    })
   }
 }
 
-const TimingUtils = {
-  debounce(func, wait) {
-    let timeout
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout)
-        func(...args)
-      }
-      clearTimeout(timeout)
-      timeout = setTimeout(later, wait)
-    }
-  },
+// ███████████████████████████████████████████████████████████████████████████████
+// █                            SECCIÓN: HEADER                                 █
+// ███████████████████████████████████████████████████████████████████████████████
 
-  delay(callback, ms = 100) {
-    setTimeout(callback, ms)
-  }
-}
-
-// ===========================================
-// MENÚ MÓVIL (simplificado)
-// ===========================================
 const MobileMenu = {
   init() {
     const menuToggle = document.getElementById('menu-toggle')
@@ -116,7 +113,6 @@ const MobileMenu = {
       return false
     }
 
-    // Toggle del menú
     EventManager.add(menuToggle, 'click', e => {
       e.preventDefault()
       const isOpen = mobileMenu.classList.contains('active')
@@ -128,18 +124,23 @@ const MobileMenu = {
       }
     })
 
-    // Cerrar con overlay
     if (menuOverlay) {
       EventManager.add(menuOverlay, 'click', () => {
         this.closeMenu(mobileMenu, menuOverlay, menuIcon)
       })
     }
 
-    // Cerrar con ESC
     EventManager.add(document, 'keydown', e => {
       if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
         this.closeMenu(mobileMenu, menuOverlay, menuIcon)
       }
+    })
+
+    const menuLinks = mobileMenu.querySelectorAll('a')
+    menuLinks.forEach(link => {
+      EventManager.add(link, 'click', () => {
+        this.closeMenu(mobileMenu, menuOverlay, menuIcon)
+      })
     })
 
     Logger.success('Menú móvil inicializado')
@@ -148,30 +149,271 @@ const MobileMenu = {
 
   openMenu(menu, overlay, icon) {
     DOMHelpers.toggleClasses(menu, ['active'], true)
-    DOMHelpers.toggleClasses(overlay, ['active'], true)
-    DOMHelpers.toggleClasses(icon, ['active'], true)
+    if (overlay) DOMHelpers.toggleClasses(overlay, ['active'], true)
+    if (icon) DOMHelpers.toggleClasses(icon, ['active'], true)
     DOMHelpers.toggleClasses(document.body, ['menu-open'], true)
   },
 
   closeMenu(menu, overlay, icon) {
     DOMHelpers.toggleClasses(menu, ['active'], false)
-    DOMHelpers.toggleClasses(overlay, ['active'], false)
-    DOMHelpers.toggleClasses(icon, ['active'], false)
+    if (overlay) DOMHelpers.toggleClasses(overlay, ['active'], false)
+    if (icon) DOMHelpers.toggleClasses(icon, ['active'], false)
     DOMHelpers.toggleClasses(document.body, ['menu-open'], false)
   }
 }
 
-// ===========================================
-// MODAL DE CONTACTO
-// ===========================================
+const HeaderSystem = {
+  init() {
+    Logger.debug('Inicializando sistemas del header...')
+    const systems = { mobileMenu: MobileMenu.init() }
+
+    const activeSystems = Object.entries(systems)
+      .filter(([_, isActive]) => isActive)
+      .map(([name]) => name)
+
+    if (activeSystems.length > 0) {
+      Logger.success(`Header - Sistemas activos: ${activeSystems.join(', ')}`)
+    }
+    return systems
+  }
+}
+
+// ███████████████████████████████████████████████████████████████████████████████
+// █                             SECCIÓN: MODAL                                 █
+// ███████████████████████████████████████████████████████████████████████████████
+
+const FormAnimations = {
+  init() {
+    Logger.debug('Inicializando animaciones del formulario...')
+
+    const inputs = document.querySelectorAll('.form-input')
+    const selects = document.querySelectorAll('.form-select')
+
+    inputs.forEach(input => this.setupInputAnimations(input))
+    selects.forEach(select => this.setupSelectAnimations(select))
+
+    Logger.success(`Animaciones inicializadas: ${inputs.length} inputs, ${selects.length} selects`)
+  },
+
+  setupInputAnimations(input) {
+    const label = input.nextElementSibling || input.parentElement.querySelector('.form-label')
+    if (!label) return
+
+    const checkInputContent = () => {
+      const hasContent = input.value.trim() !== ''
+
+      if (hasContent || input === document.activeElement) {
+        label.classList.add('active')
+        input.classList.add('has-content')
+      } else {
+        label.classList.remove('active')
+        input.classList.remove('has-content')
+      }
+    }
+
+    EventManager.add(input, 'focus', () => label.classList.add('active'))
+    EventManager.add(input, 'blur', checkInputContent)
+    EventManager.add(input, 'input', checkInputContent)
+
+    checkInputContent()
+  },
+
+  setupSelectAnimations(select) {
+    const label = select.parentElement.querySelector('.form-label')
+    if (!label) return
+
+    const checkSelectValue = () => {
+      const hasSelection = select.value !== '' && select.value !== null
+
+      if (hasSelection || select === document.activeElement) {
+        label.classList.add('active')
+        select.classList.add('has-selection')
+      } else {
+        label.classList.remove('active')
+        select.classList.remove('has-selection')
+      }
+    }
+
+    EventManager.add(select, 'focus', () => label.classList.add('active'))
+    EventManager.add(select, 'blur', checkSelectValue)
+    EventManager.add(select, 'change', checkSelectValue)
+
+    checkSelectValue()
+  },
+
+  showError(fieldId, errorMessage) {
+    const field = document.getElementById(fieldId)
+    const label = field?.parentElement.querySelector('.form-label')
+
+    if (field) {
+      field.classList.add('error')
+      field.classList.remove('validated')
+      if (label) {
+        label.classList.add('error')
+        label.classList.add('active')
+      }
+    }
+  },
+
+  clearError(fieldId) {
+    const field = document.getElementById(fieldId)
+    const label = field?.parentElement.querySelector('.form-label')
+
+    if (field) {
+      field.classList.remove('error')
+      if (label) label.classList.remove('error')
+    }
+  },
+
+  markAsValid(fieldId) {
+    const field = document.getElementById(fieldId)
+    const label = field?.parentElement.querySelector('.form-label')
+
+    if (field) {
+      field.classList.add('validated')
+      field.classList.remove('error')
+      if (label) {
+        label.classList.remove('error')
+        label.classList.add('active')
+      }
+    }
+  }
+}
+
+const LocationManager = {
+  async init() {
+    const paisSelect = document.getElementById('paisResidencia')
+    const departamentoSelect = document.getElementById('departamento')
+    const ciudadSelect = document.getElementById('ciudad')
+    const locationRow = document.getElementById('location-row')
+    const phoneCodeDisplay = document.getElementById('phone-code') // Para mostrar código de país
+
+    if (!paisSelect || !departamentoSelect || !ciudadSelect) {
+      Logger.warning('Elementos de ubicación no encontrados')
+      return false
+    }
+
+    // Cargar datos de ubicaciones si no están cargados
+    if (Object.keys(LOCATION_DATA).length === 0) {
+      try {
+        await APIManager.loadLocationData()
+      } catch (error) {
+        Logger.error('Error al cargar datos de ubicaciones')
+        return false
+      }
+    }
+
+    // Poblar países
+    this.populateCountries(paisSelect)
+
+    EventManager.add(paisSelect, 'change', () => {
+      this.handleCountryChange(paisSelect.value, departamentoSelect, ciudadSelect, locationRow, phoneCodeDisplay)
+    })
+
+    EventManager.add(departamentoSelect, 'change', () => {
+      this.handleStateChange(paisSelect.value, departamentoSelect.value, ciudadSelect)
+    })
+
+    Logger.success('Gestor de ubicaciones inicializado')
+    return true
+  },
+
+  populateCountries(paisSelect) {
+    // Limpiar opciones existentes (excepto la primera)
+    const firstOption = paisSelect.querySelector('option[value=""]')
+    paisSelect.innerHTML = ''
+    if (firstOption) {
+      paisSelect.appendChild(firstOption.cloneNode(true))
+    }
+
+    // Agregar países desde la API
+    Object.keys(LOCATION_DATA).forEach(country => {
+      const option = document.createElement('option')
+      option.value = country
+      option.textContent = country
+      paisSelect.appendChild(option)
+    })
+  },
+
+  handleCountryChange(country, departamentoSelect, ciudadSelect, locationRow, phoneCodeDisplay) {
+    // Limpiar selects
+    this.clearSelect(departamentoSelect)
+    this.clearSelect(ciudadSelect)
+
+    if (!country || !LOCATION_DATA[country]) {
+      if (locationRow) locationRow.style.display = 'none'
+      if (phoneCodeDisplay) phoneCodeDisplay.textContent = ''
+      return
+    }
+
+    // Mostrar código de país si existe el elemento
+    if (phoneCodeDisplay && COUNTRY_CODES[country]) {
+      phoneCodeDisplay.textContent = COUNTRY_CODES[country]
+    }
+
+    // Mostrar fila de ubicación
+    if (locationRow) {
+      locationRow.style.display = 'flex'
+
+      // Animar la aparición
+      TimingUtils.delay(() => {
+        locationRow.style.opacity = '1'
+        locationRow.style.transform = 'translateY(0)'
+      }, 10)
+    }
+
+    // Poblar departamentos/estados
+    const states = Object.keys(LOCATION_DATA[country])
+    states.forEach(state => {
+      const option = document.createElement('option')
+      option.value = state
+      option.textContent = state
+      departamentoSelect.appendChild(option)
+    })
+
+    departamentoSelect.disabled = false
+
+    // Reinicializar animaciones
+    FormAnimations.setupSelectAnimations(departamentoSelect)
+    FormAnimations.setupSelectAnimations(ciudadSelect)
+  },
+
+  handleStateChange(country, state, ciudadSelect) {
+    this.clearSelect(ciudadSelect)
+
+    if (!country || !state || !LOCATION_DATA[country] || !LOCATION_DATA[country][state]) {
+      ciudadSelect.disabled = true
+      return
+    }
+
+    // Poblar ciudades
+    const cities = LOCATION_DATA[country][state]
+    cities.forEach(city => {
+      const option = document.createElement('option')
+      option.value = city
+      option.textContent = city
+      ciudadSelect.appendChild(option)
+    })
+
+    ciudadSelect.disabled = false
+  },
+
+  clearSelect(select) {
+    // Mantener la primera opción vacía
+    const firstOption = select.querySelector('option[value=""]')
+    select.innerHTML = ''
+    if (firstOption) {
+      select.appendChild(firstOption.cloneNode(true))
+    }
+  }
+}
+
 const ContactModal = {
   init() {
     this.modal = document.getElementById('contact-modal')
     this.overlay = document.getElementById('modal-overlay')
     this.closeBtn = document.getElementById('modal-close')
     this.form = document.getElementById('contact-form')
-
-    // Buscar todos los triggers
     this.triggers = document.querySelectorAll('[data-modal-target="contact-modal"]')
 
     if (!this.modal || !this.overlay) {
@@ -227,15 +469,17 @@ const ContactModal = {
     })
 
     // Validación en tiempo real
-    const inputs = this.form.querySelectorAll('input')
+    const inputs = this.form.querySelectorAll('input, select')
     inputs.forEach(input => {
       EventManager.add(input, 'blur', () => {
-        this.validateField(input)
+        if (input.hasAttribute('required')) {
+          this.validateField(input)
+        }
       })
     })
   },
 
-  open() {
+  async open() {
     // Mostrar modal
     DOMHelpers.toggleClasses(this.modal, ['show'], true)
     DOMHelpers.toggleClasses(this.overlay, ['active'], true)
@@ -246,13 +490,51 @@ const ContactModal = {
       DOMHelpers.toggleClasses(this.modal, ['active'], true)
     }, 10)
 
-    // Enfocar primer input
-    TimingUtils.delay(() => {
-      const firstInput = this.modal.querySelector('input')
-      if (firstInput) firstInput.focus()
-    }, 300)
+    // Mostrar loading mientras se cargan los datos
+    this.showLoadingState()
+
+    // Inicializar sistemas del formulario
+    try {
+      await LocationManager.init()
+      this.hideLoadingState()
+
+      TimingUtils.delay(() => {
+        FormAnimations.init()
+      }, 50)
+
+      // Enfocar primer input
+      TimingUtils.delay(() => {
+        const firstInput = this.modal.querySelector('input:not([type="radio"]):not([type="checkbox"])')
+        if (firstInput) firstInput.focus()
+      }, 300)
+    } catch (error) {
+      this.showErrorState('Error al cargar datos de ubicaciones')
+    }
 
     Logger.debug('Modal abierto')
+  },
+
+  showLoadingState() {
+    const paisSelect = document.getElementById('paisResidencia')
+    if (paisSelect) {
+      paisSelect.disabled = true
+      paisSelect.innerHTML = '<option value="">Cargando países...</option>'
+    }
+  },
+
+  hideLoadingState() {
+    const paisSelect = document.getElementById('paisResidencia')
+    if (paisSelect) {
+      paisSelect.disabled = false
+    }
+  },
+
+  showErrorState(message) {
+    const paisSelect = document.getElementById('paisResidencia')
+    if (paisSelect) {
+      paisSelect.disabled = false
+      paisSelect.innerHTML = `<option value="">Error: ${message}</option>`
+    }
   },
 
   close() {
@@ -274,24 +556,34 @@ const ContactModal = {
     let isValid = true
     let message = ''
 
-    // Validaciones básicas
     switch (name) {
       case 'nombres':
       case 'apellidos':
-        isValid = value.length >= 2 && /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value)
+        isValid = Validators.name(value)
         message = 'Mínimo 2 caracteres, solo letras'
         break
-      case 'documento':
-        isValid = /^\d{6,12}$/.test(value)
+      case 'tipoDocumento':
+        isValid = Validators.required(value)
+        message = 'Selecciona un tipo de documento'
+        break
+      case 'numeroDocumento':
+        isValid = Validators.document(value)
         message = 'Entre 6 y 12 dígitos'
         break
-      case 'celular':
-        isValid = /^[+]?[\d\s-()]{10,15}$/.test(value)
-        message = 'Número de celular válido'
+      case 'telefono':
+        isValid = Validators.phone(value)
+        message = 'Número de teléfono válido'
         break
       case 'email':
-        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+        isValid = Validators.email(value)
         message = 'Correo electrónico válido'
+        break
+      case 'paisResidencia':
+      case 'departamento':
+      case 'ciudad':
+      case 'periodoIngreso':
+        isValid = Validators.required(value)
+        message = 'Este campo es obligatorio'
         break
     }
 
@@ -307,14 +599,14 @@ const ContactModal = {
     const existingError = container.querySelector('.field-error')
     if (existingError) existingError.remove()
 
-    input.classList.remove('error')
+    FormAnimations.clearError(input.id)
 
     if (message) {
-      input.classList.add('error')
-      const errorElement = document.createElement('span')
-      errorElement.className = 'field-error'
-      errorElement.textContent = message
+      FormAnimations.showError(input.id, message)
+      const errorElement = DOMHelpers.createElement('span', 'field-error', message)
       container.appendChild(errorElement)
+    } else {
+      FormAnimations.markAsValid(input.id)
     }
   },
 
@@ -323,7 +615,7 @@ const ContactModal = {
     const data = Object.fromEntries(formData.entries())
 
     // Validar todos los campos
-    const inputs = this.form.querySelectorAll('input')
+    const inputs = this.form.querySelectorAll('input[required], select[required]')
     let isValid = true
 
     inputs.forEach(input => {
@@ -332,8 +624,16 @@ const ContactModal = {
       }
     })
 
+    // Validar autorización
+    const autorizacionChecked = this.form.querySelector('input[name="autorizacion"]:checked')
+    if (!autorizacionChecked) {
+      isValid = false
+      const termsGroup = this.form.querySelector('.terms-group')
+      if (termsGroup) termsGroup.classList.add('error')
+    }
+
     if (!isValid) {
-      Logger.warning('Formulario con errores')
+      Logger.warning('Formulario con errores de validación')
       return
     }
 
@@ -348,18 +648,17 @@ const ContactModal = {
       // Simular delay de envío
       await new Promise(resolve => setTimeout(resolve, 2000))
 
-      Logger.success('Formulario enviado correctamente')
-
-      // Mostrar mensaje de éxito
+      Logger.success('Formulario enviado correctamente', data)
       this.showSuccess()
 
       // Cerrar modal después de un momento
       TimingUtils.delay(() => {
         this.close()
         this.form.reset()
-      }, 2000)
+      }, 3000)
     } catch (error) {
       Logger.error('Error al enviar formulario:', error)
+      this.showError('Ocurrió un error al enviar el formulario. Intenta nuevamente.')
     } finally {
       submitBtn.textContent = originalText
       submitBtn.disabled = false
@@ -370,26 +669,38 @@ const ContactModal = {
     const successHTML = `
       <div class="success-message">
         <div class="success-icon">✅</div>
-        <p>¡Gracias! Hemos recibido tu información.</p>
-        <p>Te contactaremos pronto.</p>
+        <p><strong>¡Gracias! Hemos recibido tu información.</strong></p>
+        <p>Te contactaremos pronto con más detalles del programa.</p>
       </div>
     `
 
     const modalContent = this.modal.querySelector('.modal-content')
     modalContent.innerHTML = successHTML
+  },
+
+  showError(message) {
+    const errorHTML = `
+      <div class="error-message">
+        <div class="error-icon">❌</div>
+        <p><strong>Error al enviar</strong></p>
+        <p>${message}</p>
+        <button class="btn btn-primary" onclick="location.reload()">Intentar nuevamente</button>
+      </div>
+    `
+
+    const modalContent = this.modal.querySelector('.modal-content')
+    modalContent.innerHTML = errorHTML
   }
 }
 
-// ===========================================
-// INICIALIZACIÓN PRINCIPAL
-// ===========================================
-export default () => {
-  DOMHelpers.isReady(() => {
-    Logger.debug('Inicializando sistemas del header...')
+const ModalSystem = {
+  init() {
+    Logger.debug('Inicializando sistemas del modal...')
 
     const systems = {
-      mobileMenu: MobileMenu.init(),
-      contactModal: ContactModal.init()
+      contactModal: ContactModal.init(),
+      formAnimations: true,
+      locationManager: true
     }
 
     const activeSystems = Object.entries(systems)
@@ -397,13 +708,57 @@ export default () => {
       .map(([name]) => name)
 
     if (activeSystems.length > 0) {
-      Logger.success(`Sistemas activos: ${activeSystems.join(', ')}`)
-    } else {
-      Logger.warning('No se pudieron inicializar los sistemas')
+      Logger.success(`Modal - Sistemas activos: ${activeSystems.join(', ')}`)
     }
+    return systems
+  }
+}
 
-    // Cleanup al cambiar de página
+// ███████████████████████████████████████████████████████████████████████████████
+// █                        INICIALIZACIÓN GENERAL                              █
+// ███████████████████████████████████████████████████████████████████████████████
+
+const AppSystem = {
+  async init() {
+    Logger.debug('🚀 Inicializando aplicación...')
+
+    try {
+      // Pre-cargar datos de ubicaciones
+      Logger.debug('Pre-cargando datos de ubicaciones...')
+      await APIManager.loadLocationData()
+
+      // Inicializar sistemas
+      const headerSystems = HeaderSystem.init()
+      const modalSystems = ModalSystem.init()
+
+      // Reporte final
+      const allSystems = { ...headerSystems, ...modalSystems }
+      const totalActiveSystems = Object.values(allSystems).filter(Boolean).length
+
+      Logger.success(`✅ Aplicación iniciada - ${totalActiveSystems} sistemas activos`)
+      return allSystems
+    } catch (error) {
+      Logger.warning('⚠️ Aplicación iniciada con limitaciones - Error al cargar datos externos')
+
+      // Inicializar sistemas básicos sin datos externos
+      const headerSystems = HeaderSystem.init()
+      const modalSystems = ModalSystem.init()
+
+      return { ...headerSystems, ...modalSystems }
+    }
+  }
+}
+
+// ===========================================
+// AUTO-INICIALIZACIÓN
+// ===========================================
+export default () => {
+  DOMHelpers.isReady(async () => {
+    await AppSystem.init()
+
+    // Cleanup global al cambiar de página
     window.addEventListener('beforeunload', () => {
+      Logger.debug('🧹 Limpiando eventos globales...')
       EventManager.cleanup()
     })
   })

@@ -1,4 +1,5 @@
 @use '@styles/autoload' as *;
+@use './components/modalForm/styles.scss' as *;
 
 .header {
   position: fixed;
@@ -9,6 +10,17 @@
   z-index: 9999;
   box-shadow: rem(0px) rem(4px) rem(6px) rgba(0, 0, 0, 0.1);
   min-height: 70px;
+  transition: transform 0.3s ease;
+
+  // Header oculto al hacer scroll (opcional)
+  &--hidden {
+    transform: translateY(-100%);
+  }
+
+  @include liferay-edit-mode {
+    position: relative;
+    z-index: 1;
+  }
 
   &__container {
     display: flex;
@@ -17,40 +29,6 @@
     padding: var(--spacing-xs) var(--spacing-md);
     gap: var(--spacing-md);
     width: 100%;
-  }
-
-  // Logo
-  &__logo {
-    display: flex;
-    align-items: center;
-    max-width: rem(150px);
-    margin: 0;
-    flex-shrink: 0;
-
-    &-image {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      fill: var(--primary-600);
-      stroke: var(--primary-600);
-      transition:
-        fill 0.3s ease,
-        stroke 0.3s ease;
-
-      &.dark {
-        display: none;
-      }
-
-      @include dark-theme {
-        &.light {
-          display: none;
-        }
-
-        &.dark {
-          display: block;
-        }
-      }
-    }
   }
 
   // Navegación Desktop
@@ -165,7 +143,7 @@
     }
   }
 
-  // Header oculto al hacer scroll
+  // Menú móvil
   &__mobile-menu {
     position: fixed;
     top: rem(0px);
@@ -199,7 +177,7 @@
       flex-direction: column;
     }
 
-    .header__logo {
+    .logo {
       margin-bottom: var(--spacing-lg);
     }
 
@@ -232,11 +210,11 @@
       animation: slideInLeft 0.3s ease-out forwards;
     }
 
-    &-link.btn-link {
+    &-link.btn-ghost {
       text-decoration: none;
       justify-content: start;
       color: var(--neutral-200);
-      font-weight: 500;
+      font-weight: var(--font-weight-medium);
       padding: var(--spacing-sm) var(--spacing-xs);
       position: relative;
       overflow: hidden;
@@ -267,13 +245,23 @@
       }
 
       @include dark-theme {
-        font-weight: 500;
+        font-weight: var(--font-weight-medium);
         text-decoration: none;
         color: var(--neutral-200);
         padding: var(--spacing-sm) var(--spacing-xs);
 
         &:hover {
-          color: var(--primary);
+          color: var(--primary-600);
+        }
+      }
+
+      .btn-icon {
+        margin-right: var(--spacing-xs);
+        color: var(--primary-600);
+        font-size: var(--icon-size-md);
+
+        @include dark-theme {
+          color: var(--primary-600);
         }
       }
     }
@@ -316,6 +304,11 @@
     display: none;
   }
 
+  @include liferay-edit-mode {
+    position: relative;
+    z-index: 1;
+  }
+
   &__container {
     background: linear-gradient(135deg, var(--background-100) 0%, var(--background-200) 100%);
     border-top: rem(1px) solid var(--neutral-800);
@@ -327,55 +320,9 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
-  }
 
-  &__btn {
-    border-radius: rem(12px);
-    padding: var(--spacing-md) var(--spacing-lg);
-    font-weight: 600;
-    font-size: rem(16px);
-    transition: all 0.3s ease;
-    text-align: center;
-
-    &--primary {
-      background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
-      color: var(--neutral-1000);
-      border: none;
-      box-shadow:
-        0 rem(4px) rem(15px) rgba(var(--primary-rgb), 0.3),
-        0 rem(2px) rem(8px) rgba(var(--primary-rgb), 0.2);
-
-      &:hover {
-        transform: translateY(rem(-2px));
-        box-shadow:
-          0 rem(6px) rem(20px) rgba(var(--primary-rgb), 0.4),
-          0 rem(3px) rem(12px) rgba(var(--primary-rgb), 0.3);
-      }
-
-      &:active {
-        transform: translateY(0);
-        box-shadow:
-          0 rem(2px) rem(10px) rgba(var(--primary-rgb), 0.3),
-          0 rem(1px) rem(5px) rgba(var(--primary-rgb), 0.2);
-      }
-    }
-
-    &--secondary {
-      background: transparent;
-      color: var(--primary-600);
-      border: rem(2px) solid var(--primary-600);
-
-      &:hover {
-        background-color: var(--primary-600);
-        color: var(--neutral-1000);
-        transform: translateY(rem(-1px));
-        box-shadow: 0 rem(3px) rem(10px) rgba(var(--primary-rgb), 0.2);
-      }
-
-      &:active {
-        transform: translateY(0);
-        box-shadow: 0 rem(1px) rem(5px) rgba(var(--primary-rgb), 0.2);
-      }
+    @include responsive($breakpoint-sm) {
+      padding: var(--spacing-sm) var(--spacing-md);
     }
   }
 }
@@ -386,46 +333,11 @@
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-20px);
+    transform: translateX(rem(-20px));
   }
   to {
     opacity: 1;
     transform: translateX(0);
-  }
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// ===========================================
-// AJUSTES RESPONSIVOS
-// ===========================================
-@media (max-width: 480px) {
-  .header {
-    &__mobile-menu {
-      &-content {
-        padding: var(--spacing-md);
-      }
-    }
-  }
-
-  .mobile-cta-fixed {
-    &__container {
-      padding: var(--spacing-sm) var(--spacing-md);
-    }
-
-    &__btn {
-      padding: var(--spacing-sm) var(--spacing-md);
-      font-size: rem(14px);
-    }
   }
 }
 
@@ -441,561 +353,5 @@ body.menu-open {
   // Cuando el menú está abierto, siempre mostrar el header
   .header--hidden {
     transform: translateY(0) !important;
-  }
-}
-
-// Añadir padding bottom para evitar que el contenido se oculte detrás del CTA fijo
-body {
-  @media (max-width: $breakpoint-md) {
-    padding-bottom: rem(140px); // Altura aproximada del CTA fijo
-  }
-}
-
-// ===========================================
-// MODAL SISTEMA - LAYOUT CORREGIDO
-// ===========================================
-
-// Variables del modal
-$modal-z-index: 10000;
-$modal-overlay-bg: rgba(0, 0, 0, 0.6);
-$modal-backdrop-blur: 8px;
-$modal-border-radius: rem(16px);
-$modal-shadow: 0 rem(20px) rem(60px) rgba(0, 0, 0, 0.3);
-$modal-max-width-mobile: rem(500px);
-$modal-max-width-desktop: rem(900px);
-$modal-max-height: 85vh; // Reducido para mejor ajuste
-
-// Animaciones
-$modal-animation-duration: 0.4s;
-$modal-animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
-
-// ===========================================
-// OVERLAY Y CONTENEDOR PRINCIPAL
-// ===========================================
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: $modal-z-index;
-
-  // Estados iniciales
-  opacity: 0;
-  visibility: hidden;
-  backdrop-filter: blur(0px);
-  background: transparent;
-
-  // Transiciones
-  transition: all $modal-animation-duration $modal-animation-easing;
-
-  // Estado activo
-  &.active {
-    opacity: 1;
-    visibility: visible;
-    backdrop-filter: blur($modal-backdrop-blur);
-    background: $modal-overlay-bg;
-  }
-
-  // Flex para centrar modal
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: rem(20px);
-
-  @media (max-width: $breakpoint-md) {
-    padding: rem(10px);
-    align-items: flex-start;
-    padding-top: rem(30px);
-  }
-}
-
-// ===========================================
-// CONTENEDOR DEL MODAL
-// ===========================================
-.contact-modal {
-  justify-content: normal;
-  align-items: normal;
-  background: var(--background-100);
-  border-radius: $modal-border-radius;
-  box-shadow: $modal-shadow;
-  width: 100%;
-  max-height: $modal-max-height;
-  overflow: hidden;
-  position: relative;
-
-  // Estados de animación
-  transform: scale(0.7) translateY(rem(50px));
-  opacity: 0;
-  transition: all $modal-animation-duration $modal-animation-easing;
-
-  // Desktop: Con imagen lateral
-  @include responsive {
-    max-width: $modal-max-width-desktop;
-    display: flex;
-    flex-direction: row;
-    height: 80vh; // Altura fija en desktop
-    max-height: rem(600px); // Máximo más bajo
-  }
-
-  // Móvil: Sin imagen, solo formulario
-  @media (max-width: $breakpoint-md) {
-    max-width: $modal-max-width-mobile;
-    display: flex;
-    flex-direction: column;
-    max-height: calc(100vh - rem(60px));
-  }
-
-  // Estado show (para el display)
-  &.show {
-    display: flex;
-  }
-
-  // Estado activo (para la animación)
-  &.active {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-
-  // Estados iniciales (oculto)
-  &:not(.show) {
-    display: none;
-  }
-}
-
-// ===========================================
-// IMAGEN LATERAL - SOLO DESKTOP
-// ===========================================
-.modal-image {
-  // Solo visible en desktop
-  display: none;
-
-  @include responsive {
-    display: block;
-    flex: 0 0 45%; // Proporción fija
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: $modal-border-radius 0 0 $modal-border-radius;
-  }
-}
-
-// ===========================================
-// CONTENEDOR DEL FORMULARIO
-// ===========================================
-.modal-form-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: var(--background-100);
-  border-radius: $modal-border-radius;
-  min-height: 0; // Importante para el scroll
-
-  @include responsive {
-    border-radius: 0 $modal-border-radius $modal-border-radius 0;
-  }
-}
-
-// ===========================================
-// HEADER DEL MODAL
-// ===========================================
-.modal-header {
-  position: relative;
-  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
-  border-bottom: rem(1px) solid var(--neutral-800);
-  background: linear-gradient(135deg, var(--background-100) 0%, var(--background-200) 100%);
-  border-radius: $modal-border-radius $modal-border-radius 0 0;
-  flex-shrink: 0; // No se comprime
-
-  @include responsive {
-    border-radius: 0 $modal-border-radius 0 0;
-  }
-
-  @media (max-width: $breakpoint-md) {
-    padding: var(--spacing-md);
-  }
-
-  // Título principal
-  &__title {
-    font-size: rem(22px);
-    font-weight: 700;
-    color: var(--neutral-200);
-    margin: 0 0 rem(6px) 0;
-    line-height: 1.3;
-
-    @media (max-width: $breakpoint-md) {
-      font-size: rem(20px);
-    }
-  }
-
-  // Subtítulo
-  &__subtitle {
-    font-size: rem(13px);
-    color: var(--neutral-400);
-    margin: 0;
-    line-height: 1.4;
-  }
-
-  // Botón cerrar
-  &__close {
-    position: absolute;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
-    width: rem(36px);
-    height: rem(36px);
-    border: none;
-    background: transparent;
-    color: var(--neutral-400);
-    cursor: pointer;
-    border-radius: rem(8px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: var(--neutral-700);
-      color: var(--neutral-200);
-      transform: scale(1.1);
-    }
-
-    &:active {
-      transform: scale(0.95);
-    }
-
-    // Icono X
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      width: rem(14px);
-      height: rem(2px);
-      background: currentColor;
-      border-radius: rem(1px);
-    }
-
-    &::before {
-      transform: rotate(45deg);
-    }
-
-    &::after {
-      transform: rotate(-45deg);
-    }
-  }
-}
-
-// ===========================================
-// CONTENIDO DEL MODAL
-// ===========================================
-.modal-content {
-  padding: var(--spacing-lg);
-  overflow-y: auto;
-  flex: 1;
-  min-height: 0; // Permite que el scroll funcione
-
-  @media (max-width: $breakpoint-md) {
-    padding: var(--spacing-md);
-  }
-
-  // Scrollbar personalizado
-  &::-webkit-scrollbar {
-    width: rem(6px);
-  }
-
-  &::-webkit-scrollbar-track {
-    background: var(--neutral-800);
-    border-radius: rem(3px);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--neutral-600);
-    border-radius: rem(3px);
-
-    &:hover {
-      background: var(--neutral-500);
-    }
-  }
-}
-
-// ===========================================
-// FORMULARIO
-// ===========================================
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md); // Reducido para más compacto
-
-  // Grupo de campos
-  .form-group {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: rem(4px);
-  }
-
-  // Labels
-  .form-label {
-    font-size: rem(13px);
-    font-weight: 600;
-    color: var(--neutral-300);
-    margin-bottom: rem(2px);
-
-    // Asterisco para campos requeridos
-    &.required::after {
-      content: ' *';
-      color: var(--danger-500);
-    }
-  }
-
-  // Inputs
-  .form-input {
-    width: 100%;
-    padding: rem(10px) rem(14px);
-    border: rem(1px) solid var(--neutral-700);
-    border-radius: rem(6px);
-    background: var(--background-100);
-    color: var(--neutral-200);
-    font-size: rem(14px);
-    transition: all 0.3s ease;
-
-    &::placeholder {
-      color: var(--neutral-500);
-      opacity: 1;
-      font-size: rem(13px);
-    }
-
-    // Estados
-    &:focus {
-      outline: none;
-      border-color: var(--primary-500);
-      box-shadow: 0 0 0 rem(2px) rgba(var(--primary-rgb), 0.1);
-      background: var(--background-200);
-    }
-
-    &:hover:not(:focus) {
-      border-color: var(--neutral-600);
-    }
-
-    // Estado de error
-    &.error {
-      border-color: var(--danger-500);
-      background: rgba(var(--danger-rgb), 0.05);
-
-      &:focus {
-        box-shadow: 0 0 0 rem(2px) rgba(var(--danger-rgb), 0.1);
-      }
-    }
-
-    @media (max-width: $breakpoint-md) {
-      padding: rem(12px) rem(14px);
-      font-size: rem(16px); // Evita zoom en iOS
-    }
-  }
-
-  // Mensaje de error
-  .field-error {
-    font-size: rem(11px);
-    color: var(--danger-500);
-    margin-top: rem(2px);
-    display: flex;
-    align-items: center;
-    gap: rem(4px);
-
-    &::before {
-      content: '⚠';
-      font-size: rem(10px);
-    }
-  }
-
-  // Checkbox de términos
-  .terms-group {
-    display: flex;
-    align-items: flex-start;
-    gap: rem(8px);
-    margin-top: var(--spacing-sm);
-
-    .terms-checkbox {
-      width: rem(16px);
-      height: rem(16px);
-      margin: 0;
-      margin-top: rem(2px);
-      accent-color: var(--primary-600);
-      flex-shrink: 0;
-
-      &:focus {
-        outline: rem(2px) solid var(--primary-400);
-        outline-offset: rem(2px);
-      }
-    }
-
-    .terms-label {
-      font-size: rem(11px);
-      color: var(--neutral-500);
-      line-height: 1.4;
-      cursor: pointer;
-
-      .terms-link {
-        color: var(--primary-500);
-        text-decoration: underline;
-
-        &:hover {
-          color: var(--primary-400);
-        }
-      }
-    }
-
-    &.error {
-      .terms-label {
-        color: var(--danger-500);
-      }
-    }
-  }
-
-  // Botón de envío
-  .submit-btn {
-    margin-top: var(--spacing-md);
-    padding: rem(12px) rem(20px);
-    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
-    color: var(--neutral-1000);
-    border: none;
-    border-radius: rem(6px);
-    font-size: rem(14px);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-
-    &:hover:not(:disabled) {
-      transform: translateY(rem(-1px));
-      box-shadow:
-        0 rem(6px) rem(20px) rgba(var(--primary-rgb), 0.3),
-        0 rem(3px) rem(10px) rgba(var(--primary-rgb), 0.2);
-    }
-
-    &:active:not(:disabled) {
-      transform: translateY(0);
-    }
-
-    &:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    @media (max-width: $breakpoint-md) {
-      padding: rem(14px) rem(20px);
-      font-size: rem(16px);
-    }
-  }
-}
-
-// ===========================================
-// MENSAJE DE ÉXITO
-// ===========================================
-.success-message {
-  text-align: center;
-  padding: var(--spacing-lg);
-  background: linear-gradient(135deg, var(--success-50), var(--success-100));
-  border-radius: rem(8px);
-  border: rem(1px) solid var(--success-300);
-
-  .success-icon {
-    font-size: rem(40px);
-    margin-bottom: var(--spacing-sm);
-    animation: successBounce 0.6s ease-out;
-  }
-
-  p {
-    margin: rem(6px) 0;
-    color: var(--success-700);
-
-    &:first-of-type {
-      font-weight: 600;
-      font-size: rem(15px);
-    }
-
-    &:last-of-type {
-      font-size: rem(13px);
-      opacity: 0.8;
-    }
-  }
-}
-
-// ===========================================
-// ESTADOS DEL BODY
-// ===========================================
-body.modal-open {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-}
-
-// ===========================================
-// ANIMACIONES
-// ===========================================
-@keyframes successBounce {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-// ===========================================
-// RESPONSIVE ESPECÍFICO
-// ===========================================
-@media (max-width: $breakpoint-sm) {
-  .modal-overlay {
-    padding: rem(5px);
-  }
-
-  .contact-modal {
-    max-height: calc(100vh - rem(10px));
-    border-radius: rem(8px);
-    max-width: calc(100vw - rem(10px));
-  }
-
-  .modal-header {
-    padding: var(--spacing-sm) var(--spacing-sm) rem(10px);
-
-    &__title {
-      font-size: rem(18px);
-    }
-
-    &__close {
-      width: rem(32px);
-      height: rem(32px);
-      top: rem(8px);
-      right: rem(8px);
-    }
-  }
-
-  .modal-content {
-    padding: var(--spacing-sm);
-  }
-
-  .contact-form {
-    gap: rem(12px);
-  }
-}
-
-@media (max-width: 375px) {
-  .modal-overlay {
-    padding: rem(5px);
-  }
-
-  .contact-modal {
-    border-radius: rem(6px);
-  }
-
-  .modal-header,
-  .modal-content {
-    padding: rem(12px);
   }
 }

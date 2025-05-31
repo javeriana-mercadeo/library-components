@@ -1,5 +1,5 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-import Splash from '@/app/_library/sections/splash'
+import Splash from '@/app/_library/components/splash'
 
 import Header from './sections/header'
 import DatosProgramaVideo from './sections/datosProgramaVideo'
@@ -11,6 +11,7 @@ export default function Profesional() {
   return (
     <>
       <Splash />
+      {/* <Header /> */}
       <ViewComponent path={`${basePath}/sections/header`}>
         <Header />
       </ViewComponent>
