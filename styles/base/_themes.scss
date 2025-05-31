@@ -35,20 +35,5 @@
   }
 }
 
-// Función de contraste de texto automático
-@mixin auto-text-contrast($property, $background-var) {
-  #{$property}: var(--neutral-100);
-
-  @include mixins.dark-theme {
-    #{$property}: var(--neutral-1000);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    & {
-      #{$property}: var(--neutral-1000);
-    }
-  }
-}
-
 // Inicializar todos los temas
 @include initialize-themes;

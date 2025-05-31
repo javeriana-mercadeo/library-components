@@ -9,7 +9,7 @@
 @forward 'abstracts/mixins';
 @forward 'abstracts/colors';
 
-// 3. Base (estilos fundamentales)
+// 2. Base (estilos fundamentales)
 // ------------------------------------------
 @forward 'base/root_vars';
 @forward 'base/reset';
@@ -17,7 +17,11 @@
 @forward 'base/animations';
 @forward 'base/utilities';
 
-// 4. Sistema de temas
+// 3. Sistema de temas
 // ------------------------------------------
-@forward 'themes/theme-core';
-@forward 'themes/themes';
+@forward 'base/themes';
+
+// 4. Vendors (Terceras)
+// ------------------------------------------
+@forward 'vendors/liferay';
+@forward 'vendors/flowbite';

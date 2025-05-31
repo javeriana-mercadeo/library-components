@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import './style.scss'
-import Splash from './_library/sections/splash'
+import Splash from './_library/components/splash'
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState('landing-pages')
