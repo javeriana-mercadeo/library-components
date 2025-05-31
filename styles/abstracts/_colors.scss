@@ -1,5 +1,5 @@
 // ==========================================
-// SISTEMA DE COLORES
+/// SISTEMA DE COLORES
 // ==========================================
 @use 'sass:map';
 @use 'functions' as *;
@@ -29,6 +29,7 @@ $color-base: (
     '1100': #f2f2f2
   ),
   'neutral-variant': #96937f,
+  'neutral-variant-blue': #eeefef,
   'success': #28a368,
   'warning': #f2bf2e,
   'danger': #ff1200
@@ -44,6 +45,7 @@ $colors-map: (
   'background': generate-color-scale(map.get($color-base, 'background')),
   'neutral': map.get($color-base, 'neutral'),
   'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+  'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
   'success': generate-color-scale(map.get($color-base, 'success')),
   'warning': generate-color-scale(map.get($color-base, 'warning')),
   'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -62,6 +64,7 @@ $colors-theme: (
       'background': generate-color-scale(map.get($color-base, 'background'), true),
       'neutral': invert-color-map(map.get($color-base, 'neutral')),
       'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+      'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
       'success': generate-color-scale(map.get($color-base, 'success'), true),
       'warning': generate-color-scale(map.get($color-base, 'warning'), true),
       'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -77,6 +80,7 @@ $colors-theme: (
       'background': generate-color-scale(map.get($color-base, 'background')),
       'neutral': map.get($color-base, 'neutral'),
       'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+      'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
       'success': generate-color-scale(map.get($color-base, 'success')),
       'warning': generate-color-scale(map.get($color-base, 'warning')),
       'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -89,6 +93,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -101,6 +106,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -113,6 +119,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -125,6 +132,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -137,6 +145,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -149,6 +158,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -161,6 +171,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -173,6 +184,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -185,6 +197,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -197,6 +210,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -209,6 +223,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -221,6 +236,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -233,6 +249,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -245,6 +262,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -257,6 +275,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -269,6 +288,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -281,6 +301,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -293,6 +314,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -305,6 +327,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background')),
     'neutral': map.get($color-base, 'neutral'),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
     'success': generate-color-scale(map.get($color-base, 'success')),
     'warning': generate-color-scale(map.get($color-base, 'warning')),
     'danger': generate-color-scale(map.get($color-base, 'danger'))
@@ -320,6 +343,7 @@ $colors-theme: (
       'background': generate-color-scale(map.get($color-base, 'background'), true),
       'neutral': invert-color-map(map.get($color-base, 'neutral')),
       'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+      'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
       'success': generate-color-scale(map.get($color-base, 'success'), true),
       'warning': generate-color-scale(map.get($color-base, 'warning'), true),
       'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -332,6 +356,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -344,6 +369,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -356,6 +382,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -368,6 +395,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -380,6 +408,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -392,6 +421,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -404,6 +434,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -416,6 +447,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -428,6 +460,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -440,6 +473,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -452,6 +486,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -464,6 +499,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -476,6 +512,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -488,6 +525,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -500,6 +538,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -512,6 +551,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -524,6 +564,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -536,6 +577,7 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
@@ -548,26 +590,9 @@ $colors-theme: (
     'background': generate-color-scale(map.get($color-base, 'background'), true),
     'neutral': invert-color-map(map.get($color-base, 'neutral')),
     'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
     'success': generate-color-scale(map.get($color-base, 'success'), true),
     'warning': generate-color-scale(map.get($color-base, 'warning'), true),
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
   )
-);
-
-// ALIAS DE COLORES SEMÁNTICOS
-// ------------------------------------------
-// Colores con significado semántico para la UI
-$semantic-colors: (
-  'text-primary': var(--neutral-100),
-  'text-secondary': var(--neutral-300),
-  'text-muted': var(--neutral-400),
-  'text-inverse': var(--neutral-1000),
-  'border-default': var(--neutral-500),
-  'border-light': var(--neutral-700),
-  'border-focus': var(--primary-500),
-  'background-body': var(--background-100),
-  'background-card': var(--neutral),
-  'background-elevated': var(--neutral-1100),
-  'shadow-color': rgba(0, 0, 0, 0.1),
-  'shadow-color-dark': rgba(0, 0, 0, 0.2)
 );

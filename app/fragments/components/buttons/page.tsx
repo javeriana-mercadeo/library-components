@@ -1,7 +1,7 @@
 import Container from '@library/components/container/Container'
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-import Splash from '@/app/_library/sections/splash'
-import Btn from '@library/components/buttons/btn_general/index'
+import Splash from '@/app/_library/components/splash'
+import Btn from '@library/components/contain/btn'
 
 /**
  * Componente que muestra las diferentes variantes de un botón por color
