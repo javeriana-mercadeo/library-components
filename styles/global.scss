@@ -8,7 +8,7 @@
 
 // 2. Componentes globales
 // ------------------------------------------
-@use '@library/components/buttons/btn_general/style.scss' as *;
+@use '@library/components/contain/btn/style.scss' as *;
 @use '@library/components/logo_institucional/style.scss' as *;
 
 @include general-btn;

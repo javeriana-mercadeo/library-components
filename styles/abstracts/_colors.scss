@@ -596,21 +596,3 @@ $colors-theme: (
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
   )
 );
-
-// ALIAS DE COLORES SEMÁNTICOS
-// ------------------------------------------
-// Colores con significado semántico para la UI
-$semantic-colors: (
-  'text-primary': var(--neutral-100),
-  'text-secondary': var(--neutral-300),
-  'text-muted': var(--neutral-400),
-  'text-inverse': var(--neutral-1000),
-  'border-default': var(--neutral-500),
-  'border-light': var(--neutral-700),
-  'border-focus': var(--primary-500),
-  'background-body': var(--background-100),
-  'background-card': var(--neutral),
-  'background-elevated': var(--neutral-1100),
-  'shadow-color': rgba(0, 0, 0, 0.1),
-  'shadow-color-dark': rgba(0, 0, 0, 0.2)
-);

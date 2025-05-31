@@ -1,5 +1,5 @@
 /* ===== ESTILOS COMPILADOS AUTOMÁTICAMENTE ===== */
-/* Compilado el: 2025-05-31T00:04:20.057Z */
+/* Compilado el: 2025-05-31T03:00:42.393Z */
 /* Archivo fuente: style.scss */
 
 @charset "UTF-8";
@@ -136,10 +136,6 @@ button {
   --primary-900: rgb(29, 56, 99);
   --primary-1000: rgb(17, 34, 59);
   --primary-1100: rgb(12, 22, 39);
-}
-
-:root {
-  --theme: "light";
   --secondary: #029be1;
   --secondary-100: rgb(245, 252, 255);
   --secondary-200: rgb(230, 247, 255);
@@ -152,10 +148,6 @@ button {
   --secondary-900: rgb(1, 87, 126);
   --secondary-1000: rgb(1, 52, 76);
   --secondary-1100: rgb(0, 35, 51);
-}
-
-:root {
-  --theme: "light";
   --tertiary: #359c36;
   --tertiary-100: rgb(247, 252, 247);
   --tertiary-200: rgb(236, 249, 236);
@@ -168,10 +160,6 @@ button {
   --tertiary-900: rgb(32, 95, 33);
   --tertiary-1000: rgb(19, 57, 20);
   --tertiary-1100: rgb(13, 38, 13);
-}
-
-:root {
-  --theme: "light";
   --background: #1e1e1e;
   --background-100: rgb(250, 250, 250);
   --background-200: rgb(242, 242, 242);
@@ -184,10 +172,6 @@ button {
   --background-900: rgb(64, 64, 64);
   --background-1000: rgb(38, 38, 38);
   --background-1100: rgb(26, 26, 26);
-}
-
-:root {
-  --theme: "light";
   --neutral: #ffffff;
   --neutral-100: #1d2125;
   --neutral-200: #22272b;
@@ -200,10 +184,6 @@ button {
   --neutral-900: #c7d1db;
   --neutral-1000: #eeefef;
   --neutral-1100: #f2f2f2;
-}
-
-:root {
-  --theme: "light";
   --neutral-variant: #96937f;
   --neutral-variant-100: rgb(250, 250, 249);
   --neutral-variant-200: rgb(244, 243, 241);
@@ -216,10 +196,6 @@ button {
   --neutral-variant-900: rgb(70, 68, 57);
   --neutral-variant-1000: rgb(42, 41, 34);
   --neutral-variant-1100: rgb(28, 27, 23);
-}
-
-:root {
-  --theme: "light";
   --neutral-variant-blue: #eeefef;
   --neutral-variant-blue-100: rgb(250, 250, 250);
   --neutral-variant-blue-200: rgb(242, 243, 243);
@@ -232,10 +208,6 @@ button {
   --neutral-variant-blue-900: rgb(62, 66, 66);
   --neutral-variant-blue-1000: rgb(37, 39, 39);
   --neutral-variant-blue-1100: rgb(25, 26, 26);
-}
-
-:root {
-  --theme: "light";
   --success: #28a368;
   --success-100: rgb(247, 253, 250);
   --success-200: rgb(235, 250, 243);
@@ -248,10 +220,6 @@ button {
   --success-900: rgb(25, 102, 65);
   --success-1000: rgb(15, 61, 39);
   --success-1100: rgb(10, 41, 26);
-}
-
-:root {
-  --theme: "light";
   --warning: #f2bf2e;
   --warning-100: rgb(254, 252, 245);
   --warning-200: rgb(254, 248, 231);
@@ -264,10 +232,6 @@ button {
   --warning-900: rgb(120, 91, 7);
   --warning-1000: rgb(72, 54, 4);
   --warning-1100: rgb(48, 36, 3);
-}
-
-:root {
-  --theme: "light";
   --danger: #ff1200;
   --danger-100: rgb(255, 246, 245);
   --danger-200: rgb(255, 231, 229);

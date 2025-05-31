@@ -1,5 +1,5 @@
-import './caption.scss'
 import PropTypes from 'prop-types'
+import './style.scss'
 
 const Caption = ({ children, className, id }) => {
   return (

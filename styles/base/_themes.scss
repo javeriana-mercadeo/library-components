@@ -1,5 +1,5 @@
 // ==========================================
-// NÚCLEO DEL SISTEMA DE TEMAS
+// NÚCLEO DEL SISTEMA DE TEMAS OPTIMIZADO
 // ==========================================
 @use 'sass:map';
 @use 'sass:string';
@@ -7,20 +7,8 @@
 @use '../abstracts/colors' as *;
 @use '../abstracts/mixins' as *;
 
-// Generar variables de color para todos los temas
-@mixin initialize-themes {
-  // Generar variables de colores para el tema base
-  @each $name, $color-values in $colors-map {
-    @include generate-vars($name, $color-values);
-  }
-
-  // Generar variables para cada tema específico
-  @each $theme-name, $theme-colors in $colors-theme {
-    $base-theme: if(string.index($theme-name, 'dark'), map.get($colors-theme, 'dark'), $colors-map);
-    $merged-theme: map.merge($base-theme, $theme-colors);
-    @include generate-theme($theme-name, $merged-theme);
-  }
-}
+// Inicializar todos los temas de forma optimizada
+@include initialize-themes;
 
 // Aplicar variantes de componentes basadas en temas
 @mixin apply-component-variants($base-class, $mixin-ref) {
@@ -34,6 +22,3 @@
     }
   }
 }
-
-// Inicializar todos los temas
-@include initialize-themes;

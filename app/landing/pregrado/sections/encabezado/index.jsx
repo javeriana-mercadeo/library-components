@@ -1,11 +1,11 @@
 'use client'
 
 import { useEffect } from 'react'
-import Btn from '@library/components/buttons/btn_general'
+import Btn from '@library/components/contain/btn'
 import Container from '@library/components/container/Container'
 import Logo from '@library/components/logo_institucional'
 
-import ModalForm from './components/modalForm'
+import ModalForm from './components/modalForm/index.jsx'
 
 import script from './script.js'
 import './styles.scss'
