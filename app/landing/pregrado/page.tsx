@@ -3,11 +3,12 @@ import Splash from '@/app/_library/components/splash'
 
 import MateriasSemestre from './sections/materiasSemestre'
 import PerfilesPrograma from './sections/perfilesPrograma'
-import PreguntasFrecuentes from './sections/preguntasFrecuentes'
 import Encabezado from './sections/encabezado'
 import DatosProgramaVideo from './sections/datosProgramaVideo'
 import PorQueLaJaveriana from './sections/porQueLaJaveriana'
 import MeetingDirector from './sections/citaDirector'
+import PreguntasFrecuentes from './sections/preguntasFrecuentes'
+import PieDePagina from './sections/pieDePagina'
 
 export default function Profesional() {
   const basePath = '/landing/pregrado'
@@ -45,6 +46,11 @@ export default function Profesional() {
       <PreguntasFrecuentes />
       {/* <ViewComponent path={`${basePath}/sections/preguntasFrecuentes`}>
         <PreguntasFrecuentes />
+      </ViewComponent> */}
+
+      <PieDePagina />
+      {/* <ViewComponent path={`${basePath}/sections/PieDePagina`}>
+        <PieDePagina />
       </ViewComponent> */}
     </>
   )
