@@ -6,6 +6,7 @@ import PerfilesPrograma from './sections/perfilesPrograma'
 import Encabezado from './sections/encabezado'
 import DatosProgramaVideo from './sections/datosProgramaVideo'
 import PorQueLaJaveriana from './sections/porQueLaJaveriana'
+import Reconocimientos from './sections/reconocimientos'
 import MeetingDirector from './sections/citaDirector'
 import ExperienciaJaveriana from './sections/experienciaJaveriana'
 import PreguntasFrecuentes from './sections/preguntasFrecuentes'
@@ -39,17 +40,22 @@ export default function Profesional() {
 
       <PorQueLaJaveriana />
       {/* <ViewComponent path={`${basePath}/sections`}>
-        <PerfilesPrograma />
+        <PorQueLaJaveriana />
       </ViewComponent> */}
 
-      <MeetingDirector />
-      {/* <ViewComponent path={`${basePath}/sections/meetingDirector`}>
-        <MeetingDirector />
+      <Reconocimientos />
+      {/* <ViewComponent path={`${basePath}/reconocimientos`}>
+        <Reconocimientos />
       </ViewComponent> */}
 
       <ExperienciaJaveriana />
       {/* <ViewComponent path={`${basePath}/sections/experienciaJaveriana`}>
         <ExperienciaJaveriana />
+      </ViewComponent> */}
+
+      <MeetingDirector />
+      {/* <ViewComponent path={`${basePath}/sections/meetingDirector`}>
+        <MeetingDirector />
       </ViewComponent> */}
 
       <PreguntasFrecuentes />

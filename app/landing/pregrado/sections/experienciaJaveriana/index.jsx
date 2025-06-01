@@ -17,10 +17,10 @@ const ExperienciaJaveriana = () => {
     <section id="section-seven">
       <div className="container experience-carousel">
         <h2 className="experience-carousel__title">Vive la Experiencia Javeriana</h2>
-        <p className="experience-carousel__description">
+        <Paragraph className="experience-carousel__description">
           Descubre historias inspiradoras, momentos únicos y experiencias de nuestros estudiantes a través de sus palabras,
           imágenes y videos.
-        </p>
+        </Paragraph>
         <div className="container swiper">
           <div className="card-wrapper experience-swiper">
             <ul className="card-list-7 swiper-wrapper">
@@ -38,16 +38,16 @@ const ExperienciaJaveriana = () => {
               <li className="card-item-7 swiper-slide">
                 <a href="#" className="card-link-7">
                   <div className="testimonial-card">
-                    <p className="testimonial-text">
+                    <Paragraph className="testimonial-text">
                       Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.
-                    </p>
+                    </Paragraph>
                     <div className="testimonial-user">
                       <div className="testimonial-avatar">
                         <img src="./assets/images/carlos-gomez.png" alt="Carlos Gómez" />
                       </div>
                       <div className="testimonial-info">
                         <h4 className="testimonial-name">Carlos Gómez</h4>
-                        <p className="testimonial-job">Urbanista en CityScape</p>
+                        <Paragraph className="testimonial-job">Urbanista en CityScape</Paragraph>
                       </div>
                       <a href="#" className="testimonial-linkedin">
                         <img src="./assets/images/linkedin.svg" alt="LinkedIn" />
@@ -73,16 +73,16 @@ const ExperienciaJaveriana = () => {
               <li className="card-item-7 swiper-slide">
                 <a href="#" className="card-link-7">
                   <div className="testimonial-card">
-                    <p className="testimonial-text">
+                    <Paragraph className="testimonial-text">
                       Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.
-                    </p>
+                    </Paragraph>
                     <div className="testimonial-user">
                       <div className="testimonial-avatar">
                         <img src="./assets/images/carlos-gomez.png" alt="Carlos Gómez" />
                       </div>
                       <div className="testimonial-info">
                         <h4 className="testimonial-name">Carlos Gómez</h4>
-                        <p className="testimonial-job">Urbanista en CityScape</p>
+                        <Paragraph className="testimonial-job">Urbanista en CityScape</Paragraph>
                       </div>
                       <a href="#" className="testimonial-linkedin">
                         <img src="./assets/images/linkedin.svg" alt="LinkedIn" />
@@ -102,6 +102,27 @@ const ExperienciaJaveriana = () => {
                       playsInline
                     >
                     </video>
+                  </div>
+                </a>
+              </li>
+              <li className="card-item-7 swiper-slide">
+                <a href="#" className="card-link-7">
+                  <div className="testimonial-card">
+                    <Paragraph className="testimonial-text">
+                      Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.
+                    </Paragraph>
+                    <div className="testimonial-user">
+                      <div className="testimonial-avatar">
+                        <img src="./assets/images/carlos-gomez.png" alt="Carlos Gómez" />
+                      </div>
+                      <div className="testimonial-info">
+                        <h4 className="testimonial-name">Carlos Gómez</h4>
+                        <Paragraph className="testimonial-job">Urbanista en CityScape</Paragraph>
+                      </div>
+                      <a href="#" className="testimonial-linkedin">
+                        <img src="./assets/images/linkedin.svg" alt="LinkedIn" />
+                      </a>
+                    </div>
                   </div>
                 </a>
               </li>
