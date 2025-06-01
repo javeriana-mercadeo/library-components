@@ -2733,14 +2733,26 @@ img, video, iframe {
 #footer .footer__icons {
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  text-align: left;
+  gap: 20px;
+}
+@media (max-width: 768px) {
+  #footer .footer__icons {
+    flex-direction: column;
+  }
 }
 #footer .footer__icons p {
   font-size: 12px;
   margin: 0;
-  text-align: center;
+  text-align: left;
+}
+@media (max-width: 768px) {
+  #footer .footer__icons p {
+    text-align: center;
+  }
 }
 #footer .footer__icons-links {
   display: flex;
@@ -2759,6 +2771,13 @@ img, video, iframe {
 }
 #footer .footer__icons-links .ph {
   font-size: 24px;
+}
+@media (max-width: 768px) {
+  #footer .footer__icons-links .ph {
+    font-size: 32px;
+    display: flex;
+    justify-content: space-between;
+  }
 }
 @media (max-width: 768px) {
   #footer .footer__icons-links {
@@ -2862,13 +2881,17 @@ img, video, iframe {
     text-align: center;
     justify-content: center;
   }
+}
+@media (max-width: 768px) and (max-width: 768px) {
+  #footer .footer__icons {
+    gap: 10px;
+  }
+}
+@media (max-width: 768px) {
   #footer .footer__icons a {
     font-size: 1.5rem;
     color: #ffffff;
     transition: color 0.3s ease;
-  }
-  #footer .footer__icons a:hover {
-    color: #ffd700;
   }
 }
 
