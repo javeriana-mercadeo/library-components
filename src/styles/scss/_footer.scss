@@ -11,12 +11,13 @@
     align-items: center;
     flex-direction: column;
   }
+
   .footer {
-    background-color: $background-footer;
     color: $text-light;
     padding: $spacing-lg;
     max-width: $max-width;
 
+    // breakpoint-md (menor a 768px)
     @media (max-width: $breakpoint-md) {
       padding: $spacing-lg $spacing-sm;
       text-align: left;
@@ -32,6 +33,12 @@
       width: 100%;
       margin: 0 auto;
 
+      // breakpoint-lg
+      @media (max-width: $breakpoint-lg) {
+        gap: 20px;
+      }
+
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         flex-direction: column;
         align-items: center;
@@ -48,11 +55,13 @@
       gap: 16px;
       width: 100%;
     }
+
     &__middle {
       width: fit-content;
       padding: auto;
     }
-    .footer__right {
+
+    &__right {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -62,6 +71,7 @@
         align-self: center;
       }
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         width: 100%;
       }
@@ -72,11 +82,13 @@
       height: auto;
       align-items: baseline;
     }
+
     &__logoV {
       width: 57px;
       height: auto;
       align-items: baseline;
     }
+
     &__title {
       font-size: 32px;
       font-weight: $font-weight-bold;
@@ -100,7 +112,6 @@
       overflow: hidden;
       position: relative;
       background-color: transparent;
-      border: 0.3px solid rgb(56, 62, 61);
 
       .footer__mp4 {
         position: relative;
@@ -135,15 +146,17 @@
         }
       }
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
-        width: 200px;
-        height: 200px;
+        height: 350px;
+        width: 350px;
         max-width: 100%;
       }
 
+      // breakpoint-sm
       @media (max-width: $breakpoint-sm) {
-        width: 180px;
-        height: 180px;
+        height: 350px;
+        width: 350px;
       }
     }
 
@@ -151,6 +164,7 @@
       font-size: 12px;
       width: 100%;
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         text-align: left;
       }
@@ -163,6 +177,12 @@
       display: flex;
       flex-direction: row;
       align-items: flex-start;
+
+      // breakpoint-md (menor a 768px)
+      @media (max-width: $breakpoint-md) {
+        flex-direction: column;
+        font-size: 16px;
+      }
     }
 
     &__contact_title {
@@ -171,6 +191,10 @@
       min-width: 90px;
       font-weight: bold;
       flex-shrink: 0;
+
+      @media (max-width: $breakpoint-md) {
+        font-size: 14px;
+      }
     }
 
     a {
@@ -191,32 +215,42 @@
     &__icons {
       width: 100%;
       display: flex;
-      gap: 25px;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      gap: $spacing-sm;
 
-      a {
-        text-decoration: none;
-        font-size: $font-size-small;
+      p {
+        font-size: 12px;
+        margin: 0;
+        text-align: center;
       }
 
-      .ph {
-        color: $text-light;
-        font-size: 24px;
-      }
-
-      a {
-        color: $text-light;
-        font-size: 1.5rem;
-        transition: color 0.3s ease;
-
-        &:hover {
-          color: $primary-color;
-        }
-      }
-
-      @media (max-width: $breakpoint-md) {
+      &-links {
+        display: flex;
+        gap: 25px;
         justify-content: center;
+        align-items: center;
+
+        a {
+          text-decoration: none;
+          font-size: 1.5rem;
+          color: $text-light;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: $primary-color;
+          }
+        }
+
+        .ph {
+          font-size: 24px;
+        }
+
+        @media (max-width: $breakpoint-md) {
+          flex-direction: row;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
       }
     }
 
@@ -230,11 +264,10 @@
       font-size: 10px;
       text-align: center;
       margin-top: $spacing-lg;
-      color: $gray-700;
+      color: $text-light;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: $text-light;
       gap: 5px;
 
       p {
@@ -242,6 +275,7 @@
         font-size: 10px;
       }
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         flex-direction: column;
       }
@@ -254,6 +288,7 @@
       gap: $spacing-md;
       margin: 0px;
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         font-size: $font-size-xs;
       }
@@ -264,6 +299,7 @@
       color: $text-light;
       margin: 0px;
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         font-size: $font-size-xs;
       }
@@ -271,66 +307,75 @@
 
     &__links {
       color: $text-light;
-      margin-top: $spacing-sm;
       display: flex;
       justify-content: space-between;
       gap: 50px;
+
       a {
         color: $text-light;
         text-decoration: underline;
       }
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         font-size: $font-size-xs;
       }
     }
   }
+
+  // breakpoint-lg
   @media (max-width: $breakpoint-lg) {
     .footer {
-      padding-bottom: 150px;
-    }
-    .footer__left {
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      .footer__title {
-        font-size: 1.5rem !important;
+      padding-bottom: 30px;
+
+      &__left {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+
+        .footer__title {
+          font-size: 1.1rem;
+        }
       }
     }
   }
+
+  // breakpoint-md (menor a 768px)
   @media (max-width: $breakpoint-md) {
-    .footer__left {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      .footer__title {
-        font-size: 1.5rem !important;
-        width: 100%;
+    .footer {
+      &__left {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .footer__title {
+          font-size: 1.5rem !important;
+          width: 100%;
+        }
       }
-    }
 
-    .footer__social p {
-      width: 100%;
-      text-align: center;
-    }
-    .footer__icons {
-      width: 100%;
-      display: flex;
-      gap: 20px;
-      display: flow-root;
-      grid-template-rows: auto auto;
-      gap: 10px;
-      text-align: center;
-      justify-content: center;
-    }
-    .footer__icons a {
-      font-size: 1.5rem;
-      color: $text-light;
-      transition: color 0.3s ease;
-    }
+      &__social p {
+        width: 100%;
+        text-align: center;
+      }
 
-    .footer__icons a:hover {
-      color: #ffd700;
+      &__icons {
+        width: 100%;
+        display: flex;
+        gap: 20px;
+        text-align: center;
+        justify-content: center;
+
+        a {
+          font-size: 1.5rem;
+          color: $text-light;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: #ffd700;
+          }
+        }
+      }
     }
   }
 }
