@@ -215,14 +215,24 @@
     &__icons {
       width: 100%;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      gap: $spacing-sm;
+      justify-content: space-between;
+      text-align: left;
+      gap: 20px;
+
+      @media (max-width: $breakpoint-md) {
+        flex-direction: column;
+      }
 
       p {
         font-size: 12px;
         margin: 0;
-        text-align: center;
+        text-align: left;
+
+        @media (max-width: $breakpoint-md) {
+          text-align: center;
+        }
       }
 
       &-links {
@@ -244,6 +254,12 @@
 
         .ph {
           font-size: 24px;
+
+          @media (max-width: $breakpoint-md) {
+            font-size: 32px;
+            display: flex;
+            justify-content: space-between;
+          }
         }
 
         @media (max-width: $breakpoint-md) {
@@ -366,14 +382,14 @@
         text-align: center;
         justify-content: center;
 
+        @media (max-width: $breakpoint-md) {
+          gap: 10px;
+        }
+
         a {
           font-size: 1.5rem;
           color: $text-light;
           transition: color 0.3s ease;
-
-          &:hover {
-            color: #ffd700;
-          }
         }
       }
     }
