@@ -1,0 +1,36 @@
+@use '@styles/autoload' as *;
+
+@mixin logo {
+  .logo {
+    display: flex;
+    align-items: center;
+    max-width: rem(150px);
+    margin: 0;
+    flex-shrink: 0;
+
+    &-image {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      fill: var(--primary-600);
+      stroke: var(--primary-600);
+      transition:
+        fill 0.3s ease,
+        stroke 0.3s ease;
+
+      &.dark {
+        display: none;
+      }
+
+      @include dark-theme {
+        &.light {
+          display: none;
+        }
+
+        &.dark {
+          display: block;
+        }
+      }
+    }
+  }
+}
