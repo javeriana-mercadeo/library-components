@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import Btn from '@library/components/contain/btn'
 import Container from '@library/components/container/Container'
 
 import script from './script.js'
