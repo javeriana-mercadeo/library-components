@@ -2,7 +2,7 @@
 
 #footer {
   .color-container-footer {
-    background-color: $background-footer;
+    background-color: var(--neutral-100);
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -11,11 +11,11 @@
   }
 
   .footer {
-    color: $text-light;
+    color: var(--neutral);
     padding: var(--spacing-xl) 0;
 
     @media (max-width: $breakpoint-md) {
-      padding: $spacing-lg $spacing-sm;
+      padding: var(--spacing-lg) var(--spacing-xs);
       text-align: left;
       padding-bottom: rem(150px);
     }
@@ -82,15 +82,15 @@
     }
 
     &__title {
-      font-size: rem(32px);
-      font-weight: $font-weight-bold;
-      margin-bottom: $spacing-sm;
+      font-size: var(--font-size-title);
+      font-weight: var( --font-weight-bold);
+      margin-bottom: var(--spacing-xs);
       width: 100%;
     }
 
     &__info {
       font-size: rem(10px);
-      color: $gray-700;
+      color: var(--neutral-800);
     }
 
     &__video {
@@ -133,7 +133,7 @@
         cursor: pointer;
 
         &:hover {
-          background-color: rgba(0, 0, 0, 0.1);
+          background-color: var(--background-1100);
           transition: background-color 0.3s ease;
         }
       }
@@ -161,8 +161,9 @@
 
     &__container_contact {
       font-size: rem(12px);
-      border-bottom: 1px solid $gray-600;
-      padding-bottom: $spacing-sm;
+      border-bottom: rem(1px) solid var(--neutral-700);
+      padding-bottom: var(--spacing-xs);
+      padding-top: var(--spacing-xs);
       display: flex;
       flex-direction: row;
       align-items: flex-start;
@@ -174,8 +175,8 @@
     }
 
     &__contact_title {
-      color: $gray-600;
-      font-size: $font-size-xs;
+      color: var(--neutral-700);
+      font-size: var(--font-size-small);
       min-width: rem(90px);
       font-weight: bold;
       flex-shrink: 0;
@@ -186,7 +187,7 @@
     }
 
     a {
-      color: $text-light;
+      color: var(--neutral);
       text-decoration: none;
     }
 
@@ -232,11 +233,11 @@
         a {
           text-decoration: none;
           font-size: rem(24px);
-          color: $text-light;
+          color: var(--neutral);
           transition: color 0.3s ease;
 
           &:hover {
-            color: $primary-color;
+            color: var(--primary);
           }
         }
 
@@ -259,16 +260,16 @@
     }
 
     &__divider {
-      border: 1px solid $gray-300;
+      border: rem(1px) solid $gray-300;
       width: 100%;
-      margin: $spacing-md auto;
+      margin: var(--spacing-md) auto;
     }
 
     &__bottom {
       font-size: rem(10px);
       text-align: center;
-      margin-top: $spacing-lg;
-      color: $text-light;
+      margin-top: var(--spacing-lg);
+      color: var(--neutral);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -288,26 +289,26 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: $spacing-md;
-      margin: 0px;
+      gap: var(--spacing-md);
+      margin: 0;
 
       @media (max-width: $breakpoint-md) {
-        font-size: $font-size-xs;
+        font-size: var(--font-size-xs);
       }
     }
 
     &__info {
       font-size: rem(10px);
-      color: $text-light;
+      color: var(--neutral);
       margin: 0px;
 
       @media (max-width: $breakpoint-md) {
-        font-size: $font-size-xs;
+        font-size: var(--font-size-xs);
       }
     }
 
     &__links {
-      color: $text-light;
+      color: var(--neutral);
       display: flex;
       justify-content: space-between;
       gap: rem(50px);
@@ -318,7 +319,7 @@
       }
 
       @media (max-width: $breakpoint-md) {
-        font-size: $font-size-xs;
+        font-size: var(--font-size-xs);
       }
     }
   }
@@ -333,7 +334,7 @@
         justify-content: center;
 
         .footer__title {
-          font-size: rem(17.6px); // 1.1rem
+          font-size: rem(17.6px); 
         }
       }
     }
@@ -370,7 +371,7 @@
 
         a {
           font-size: rem(24px);
-          color: $text-light;
+          color: var(--neutral);
           transition: color 0.3s ease;
         }
       }
