@@ -115,7 +115,7 @@
   }
 
   // MEDIA QUERY PARA PANTALLAS PEQUEÑAS
-   @include responsive($breakpoint-lg) {
+  @media (max-width: $breakpoint-lg) {
     .program-profile__content-item {
       display: flex;
       flex-direction: column;
