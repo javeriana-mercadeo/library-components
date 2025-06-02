@@ -5,6 +5,7 @@ import LogoBlanco from '@library/components/logo_institucional_blanco'
 import UniversidadTour from '../../../../../assets/pieDePagina/universidad-tour.gif'
 import Vigilada from '../../../../../assets/pieDePagina/vigilada.png'
 
+
 import './styles.scss'
 
 const PieDePagina = () => {
