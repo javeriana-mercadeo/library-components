@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import Container from '@library/components/container/Container'
+import Paragraph from '@library/components/contain/paragraph'
 
 import perfilIngresoImg from '../../../../../assets/perfiles/perfil-ingreso.png'
 import perfilEgresoImg from '../../../../../assets/perfiles/perfil-egreso.png'
