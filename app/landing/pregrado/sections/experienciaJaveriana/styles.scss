@@ -1,6 +1,10 @@
 @use '@styles/autoload' as *;
 
-#section-seven .container .swiper {
+#section-seven{
+
+background-color: var(--background-100); 
+
+.container .swiper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,8 +15,8 @@
 
 .experience-carousel__title {
   width: fit-content;
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-bold);
 }
 
 .experience-carousel {
@@ -28,14 +32,14 @@
 }
 
 .experience-carousel__title {
-  font-size: 2.5rem;
-  color: #333;
+  font-size: var(--font-size-title);
+  color: var(--neutral-100);
   width: 100%;
   padding-bottom: 25px; // Aumentado de 15px a 25px
 }
 
 .experience-carousel__description {
-  color: #333;
+  color: var(--neutral);
   width: 80%;
   text-align: center;
   margin-bottom: 30px; // Agregado margen inferior
@@ -71,8 +75,8 @@
 .testimonial-card {
   max-width: 270px;
   min-width: 220px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--primary);
+  color: var(--neutral);
   padding: 20px;
   border-radius: 15px;
   justify-content: space-between;
@@ -87,6 +91,7 @@
   flex-grow: 1; // Ocupa el espacio disponible
   display: flex;
   align-items: center;
+  color:var(--neutral);
 }
 
 .testimonial-user {
@@ -116,6 +121,7 @@
   flex-direction: column;
   flex-grow: 1;
   min-width: 0;
+  color:var(--neutral);
 }
 
 .testimonial-name {
@@ -358,4 +364,6 @@
   .testimonial-text {
     font-size: 0.85rem;
   }
+}
+
 }

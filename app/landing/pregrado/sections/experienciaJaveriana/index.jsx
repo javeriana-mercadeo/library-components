@@ -126,9 +126,8 @@ const ExperienciaJaveriana = () => {
   }
 
   return (
-    <Container>
       <section id="section-seven">
-        <div className="container experience-carousel">
+        <Container className="container experience-carousel">
           <h2 className="experience-carousel__title">Vive la Experiencia Javeriana</h2>
           <Paragraph className="experience-carousel__description">
             Descubre historias inspiradoras, momentos únicos y experiencias de nuestros estudiantes a través de sus palabras,
@@ -152,9 +151,8 @@ const ExperienciaJaveriana = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
-    </Container>
   )
 }
 
