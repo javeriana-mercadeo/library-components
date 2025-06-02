@@ -15,7 +15,7 @@ const PieDePagina = () => {
           <Container>
             <div className="footer__container">
               <div className="footer__left">
-                <LogoBlanco alt="Logo Pontificia Universidad Javeriana" className="footer__logo light" />
+                <LogoBlanco alt="Logo Pontificia Universidad Javeriana" className="footer__logo light" isEditable={false}/>
                 <h3 className="footer__title">
                   Explora nuestro campus <br /> y su tecnología de punta.
                 </h3>

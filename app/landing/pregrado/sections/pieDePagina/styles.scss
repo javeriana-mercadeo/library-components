@@ -2,7 +2,7 @@
 
 #footer {
   .color-container-footer {
-    background-color: var(--neutral-100);
+    background-color: #1D2124;
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -35,7 +35,6 @@
         gap: rem(20px);
         display: flex;
         justify-content: space-around;
-        
       }
 
       // breakpoint-md (menor a 768px)
@@ -174,7 +173,7 @@
       font-size: rem(12px);
       border-bottom: rem(1px) solid var(--neutral-700);
       padding-bottom: var(--spacing-xs);
-      padding-top:var(--spacing-xs);
+      padding-top: var(--spacing-xs);
       display: flex;
       flex-direction: row;
       align-items: flex-start;
@@ -255,7 +254,7 @@
         }
 
         .ph {
-         font-size: rem(24px);
+          font-size: rem(24px);
 
           @media (max-width: $breakpoint-md) {
             font-size: rem(32px);
@@ -279,7 +278,7 @@
     }
 
     &__bottom {
-       font-size: rem(10px);
+      font-size: rem(10px);
       text-align: center;
       margin-top: var(--spacing-lg);
       color: var(--neutral);
@@ -289,7 +288,7 @@
       gap: rem(5px);
 
       p {
-         margin: 0px;
+        margin: 0px;
         font-size: rem(10px);
       }
 
@@ -304,13 +303,13 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-       gap: var(--spacing-md);
+      gap: var(--spacing-md);
       margin: 0;
       max-width: rem(358px);
 
       // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
-         font-size: var(--font-size-xs);
+        font-size: var(--font-size-xs);
       }
     }
 
@@ -346,7 +345,7 @@
   // breakpoint-lg
   @media (max-width: $breakpoint-lg) {
     .footer {
-       padding-bottom: rem(30px);
+      padding-bottom: rem(30px);
 
       &__left {
         display: flex;
@@ -356,7 +355,7 @@
         align-items: center;
 
         .footer__title {
-          font-size: rem(17.6px); 
+          font-size: rem(17.6px);
           width: fit-content;
         }
       }
@@ -372,7 +371,7 @@
         justify-content: center;
 
         .footer__title {
-     font-size: rem(24px) !important;
+          font-size: rem(24px) !important;
           width: 100%;
         }
       }
@@ -390,7 +389,7 @@
         justify-content: center;
 
         @media (max-width: $breakpoint-md) {
-            gap: rem(10px);
+          gap: rem(10px);
         }
 
         a {
