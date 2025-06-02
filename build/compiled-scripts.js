@@ -1,5 +1,5 @@
 // ===== LIBRERÍAS EXTERNAS =====
-// Compilado automáticamente el: 2025-06-01T22:26:35.843Z
+// Compilado automáticamente el: 2025-06-02T13:29:05.453Z
 
 var head = document.getElementsByTagName("head")[0];
 
@@ -16,7 +16,7 @@ for (const weight of ["regular", "thin", "light", "bold", "fill", "duotone"]) {
 // ===== CÓDIGO PERSONALIZADO =====
 
 // ===== IMPORTADO DE: ../utils/main =====
-// Archivo: G:\Documentos\GitHub\library-components\utils\main.js
+// Archivo: C:\Users\Usuario\Documents\trabajo_u\library-components-main\utils\main.js
 function main() {
   // ===========================================
   // UTILIDADES GLOBALES
@@ -154,7 +154,7 @@ function main() {
 
 
 // ===== IMPORTADO DE: ../app/_library/components/contain/btn/script.js =====
-// Archivo: G:\Documentos\GitHub\library-components\app\_library\components\contain\btn\script.js
+// Archivo: C:\Users\Usuario\Documents\trabajo_u\library-components-main\app\_library\components\contain\btn\script.js
 /**
  * script.js - Añade efecto de onda a los botones
  * Versión corregida para evitar problemas de hidratación con SSR
