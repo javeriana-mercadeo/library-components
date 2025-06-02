@@ -37,17 +37,10 @@ export default function Home() {
 
   const uiComponents = [
     {
-      name: 'Botones',
+      name: 'Contenido',
       items: [
-        { name: 'Botón Icon', section: '/fragments/components/buttons', icon: 'ph-cursor-click' },
-        { name: 'Botón Link', section: '_general/components/buttons/BtnLink', icon: 'ph-link' },
-        { name: 'Botón General', section: '_general/components/buttons/btn_general', icon: 'ph-button' }
-      ]
-    },
-    {
-      name: 'Contenedores',
-      items: [
-        { name: 'Título', section: '_general/components/contain/title', icon: 'ph-text-h' },
+        { name: 'Botón', section: '/fragments/components/buttons', icon: 'ph-cursor-click' },
+        { name: 'Título', section: '/fragments/components/titles', icon: 'ph-text-h' },
         { name: 'Párrafo', section: '_general/components/contain/paragraph', icon: 'ph-text-align-left' },
         { name: 'Caption', section: '_general/components/contain/caption', icon: 'ph-text-caption' },
         { name: 'Imagen de Fondo', section: '_general/components/contain/imgBackground', icon: 'ph-image' }
