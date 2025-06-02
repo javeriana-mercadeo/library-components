@@ -16,7 +16,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    max-width: $max-width;
+    max-width: rem(1200px);
 }
 
 h1 {
@@ -61,37 +61,67 @@ h1 {
         right: 0;
         background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
     }
+
+    /* Pausar animación al hacer hover en el slider */
+    &:hover .slider-track {
+        animation-play-state: paused;
+    }
 }
 
-
+/* Contenedor que se moverá con la animación */
+.slider-track {
+    display: flex;
+    gap: 30px;
+    animation: scrolling 30s linear infinite;
+    width: max-content;
+}
 
 .slider-items {
     display: flex;
     justify-content: center;
     align-items: stretch;
     gap: 30px;
-    animation: scrolling 20s linear infinite;
     width: max-content;
     height: auto;
-
+    flex-shrink: 0;
 }
 
+.slider-items--original {
+    animation: none;
+}
+
+.slider-items--duplicate {
+    animation: none;
+}
+
+.slider-items--third {
+    animation: none;
+}
+
+.slider-items--fourth {
+    animation: none;
+}
+
+.slider-items--fifth {
+    animation: none;
+}
+
+/* Animación ajustada para 5 grupos completos */
 @keyframes scrolling {
-
     0% {
-        transform: translateX(80%);
+        transform: translateX(0);
     }
-
     100% {
         transform: translateX(-20%);
     }
 }
+
 .img-logos{
     display: flex;
     align-items: center;
     flex-direction: column;
     height: auto;
-    min-width: 200px;
+    max-width: 200px;
 }
 
 .slider-items img {
@@ -106,4 +136,5 @@ h1 {
     width: 100%;
     text-align: center;
     justify-self: unset;
-}}
+}
+}
