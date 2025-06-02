@@ -14,6 +14,7 @@
     color: var(--neutral);
     padding: var(--spacing-xl) 0;
 
+    // breakpoint-md (menor a 768px)
     @media (max-width: $breakpoint-md) {
       padding: var(--spacing-lg) var(--spacing-xs);
       text-align: left;
@@ -27,11 +28,14 @@
       flex-wrap: wrap;
       gap: rem(70px);
       width: 100%;
+      margin: 0 auto;
 
+      // breakpoint-lg
       @media (max-width: $breakpoint-lg) {
         gap: rem(20px);
       }
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         flex-direction: column;
         align-items: center;
@@ -64,6 +68,7 @@
         align-self: center;
       }
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         width: 100%;
       }
@@ -83,7 +88,7 @@
 
     &__title {
       font-size: var(--font-size-title);
-      font-weight: var( --font-weight-bold);
+      font-weight: var(--font-weight-bold);
       margin-bottom: var(--spacing-xs);
       width: 100%;
     }
@@ -133,17 +138,19 @@
         cursor: pointer;
 
         &:hover {
-          background-color: var(--background-1100);
+          background-color: rgba(0, 0, 0, 0.1);
           transition: background-color 0.3s ease;
         }
       }
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         height: rem(350px);
         width: rem(350px);
         max-width: 100%;
       }
 
+      // breakpoint-sm
       @media (max-width: $breakpoint-sm) {
         height: rem(350px);
         width: rem(350px);
@@ -154,6 +161,7 @@
       font-size: rem(12px);
       width: 100%;
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         text-align: left;
       }
@@ -163,11 +171,11 @@
       font-size: rem(12px);
       border-bottom: rem(1px) solid var(--neutral-700);
       padding-bottom: var(--spacing-xs);
-      padding-top: var(--spacing-xs);
       display: flex;
       flex-direction: row;
       align-items: flex-start;
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         flex-direction: column;
         font-size: rem(16px);
@@ -208,6 +216,7 @@
       align-items: center;
       justify-content: space-between;
       text-align: left;
+      padding-top: rem(10px);
       gap: rem(20px);
 
       @media (max-width: $breakpoint-md) {
@@ -242,7 +251,7 @@
         }
 
         .ph {
-          font-size: rem(24px);
+         font-size: rem(24px);
 
           @media (max-width: $breakpoint-md) {
             font-size: rem(32px);
@@ -260,13 +269,13 @@
     }
 
     &__divider {
-      border: rem(1px) solid $gray-300;
+      border: rem(1px) solid var(--neutral-300);
       width: 100%;
       margin: var(--spacing-md) auto;
     }
 
     &__bottom {
-      font-size: rem(10px);
+       font-size: rem(10px);
       text-align: center;
       margin-top: var(--spacing-lg);
       color: var(--neutral);
@@ -276,10 +285,11 @@
       gap: rem(5px);
 
       p {
-        margin: 0px;
+         margin: 0px;
         font-size: rem(10px);
       }
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
         flex-direction: column;
       }
@@ -289,21 +299,23 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: var(--spacing-md);
+       gap: var(--spacing-md);
       margin: 0;
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
-        font-size: var(--font-size-xs);
+         font-size: var(--font-size-xs);
       }
     }
 
     &__info {
       font-size: rem(10px);
       color: var(--neutral);
-      margin: 0px;
+      margin: 0;
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
-        font-size: var(--font-size-xs);
+        font-size: var(--font-size-small);
       }
     }
 
@@ -314,19 +326,21 @@
       gap: rem(50px);
 
       a {
-        color: $text-light;
+        color: var(--neutral);
         text-decoration: underline;
       }
 
+      // breakpoint-md (menor a 768px)
       @media (max-width: $breakpoint-md) {
-        font-size: var(--font-size-xs);
+        font-size: var(--font-size-small);
       }
     }
   }
 
+  // breakpoint-lg
   @media (max-width: $breakpoint-lg) {
     .footer {
-      padding-bottom: rem(30px);
+       padding-bottom: rem(30px);
 
       &__left {
         display: flex;
@@ -340,6 +354,7 @@
     }
   }
 
+  // breakpoint-md (menor a 768px)
   @media (max-width: $breakpoint-md) {
     .footer {
       &__left {
@@ -348,7 +363,7 @@
         justify-content: center;
 
         .footer__title {
-          font-size: rem(24px) !important;
+     font-size: rem(24px) !important;
           width: 100%;
         }
       }
@@ -366,7 +381,7 @@
         justify-content: center;
 
         @media (max-width: $breakpoint-md) {
-          gap: rem(10px);
+            gap: rem(10px);
         }
 
         a {
