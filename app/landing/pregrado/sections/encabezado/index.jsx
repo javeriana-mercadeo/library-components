@@ -25,7 +25,7 @@ const Header = () => {
           <nav className="header__nav">
             <ul className="header__nav-list">
               <li>
-                <Btn href="#" className="header__nav-link" variant="ghost" isEditable={false}>
+                <Btn href="#" variant="light" isEditable={false}>
                   Centro de Ayuda
                 </Btn>
               </li>
@@ -34,7 +34,7 @@ const Header = () => {
 
           {/* CTA Buttons - Solo desktop */}
           <div className="header__cta">
-            <Btn id="info-btn" variant="outline" data-modal-target="contact-modal" isEditable={false}>
+            <Btn id="info-btn" variant="faded" data-modal-target="contact-modal" isEditable={false}>
               Recibe más Información
             </Btn>
 
@@ -49,7 +49,7 @@ const Header = () => {
             id="menu-toggle"
             aria-label="Abrir menú de navegación"
             isEditable={false}
-            variant="ghost"
+            variant="light"
             type="button">
             <div className="menu-icon" id="menu-icon">
               <span></span>
@@ -72,7 +72,7 @@ const Header = () => {
                     <Btn
                       href="#"
                       className="header__mobile-menu-link"
-                      variant="ghost"
+                      variant="light"
                       startIcon={<i className="ph ph-clipboard-text"></i>}
                       isEditable={false}>
                       Proceso de Inscripción
@@ -82,7 +82,7 @@ const Header = () => {
                     <Btn
                       href="#"
                       className="header__mobile-menu-link"
-                      variant="ghost"
+                      variant="light"
                       startIcon={<i className="ph ph-question"></i>}
                       isEditable={false}>
                       Centro de Ayuda
@@ -92,7 +92,7 @@ const Header = () => {
                     <Btn
                       href="#"
                       className="header__mobile-menu-link whats"
-                      variant="ghost"
+                      variant="light"
                       startIcon={<i className="ph ph-whatsapp-logo"></i>}
                       isEditable={false}>
                       Escríbenos por WhatsApp
@@ -116,7 +116,7 @@ const Header = () => {
             fullWidth
             size="md"
             color="primary"
-            variant="outline"
+            variant="faded"
             data-modal-target="contact-modal"
             isEditable={false}>
             Recibe más Información

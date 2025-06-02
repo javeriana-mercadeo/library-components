@@ -1,4 +1,5 @@
 import Btn from '@library/components/contain/btn'
+import Title from '@library/components/contain/title'
 
 const ModalForm = () => {
   return (
@@ -16,9 +17,9 @@ const ModalForm = () => {
         <div className="modal-form-container">
           {/* Header del Modal */}
           <div className="modal-header">
-            <h2 className="modal-header__title" id="modal-title">
-              Conoce más del programa
-            </h2>
+            <Title hierarchy="h3" size="2xl" weight="bold" isEditable={false} color='primary' id="modal-title">
+              ¿Tienes dudas?
+            </Title>
             <p className="modal-header__subtitle">Déjanos tus datos y te contactaremos para brindarte toda la información.</p>
             <Btn className="modal-header__close" id="modal-close" aria-label="Cerrar modal" isEditable={false}>
               {''}
@@ -229,7 +230,7 @@ const ModalForm = () => {
 
               {/* Botón de envío */}
               <div className="form-submit">
-                <Btn type="submit" color="primary" size="lg" fullWidth>
+                <Btn type="submit" color="neutral" size="lg" fullWidth>
                   Enviar
                 </Btn>
               </div>
