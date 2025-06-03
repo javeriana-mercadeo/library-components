@@ -1,0 +1,418 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use '@styles/autoload' as *;
+
+@mixin paragraph {
+  // Clase base común para todos los párrafos
+  .paragraph {
+    display: block;
+    margin: 0;
+    font-family: var(--font-family);
+    line-height: 1.6;
+    transition: all 0.2s ease-in-out;
+
+    // ==========================================
+    // TAMAÑOS DE PÁRRAFO
+    // ==========================================
+    &.paragraph-xs {
+      font-size: var(--font-size-xs);
+      margin-bottom: rem(8px);
+      line-height: 1.2;
+    }
+
+    &.paragraph-sm {
+      font-size: var(--font-size-small);
+      margin-bottom: rem(12px);
+      line-height: 1.4;
+    }
+
+    &.paragraph-md {
+      font-size: var(--font-size-paragraph);
+      margin-bottom: rem(16px);
+      line-height: 1.5;
+    }
+
+    &.paragraph-lg {
+      font-size: var(--font-size-caption);
+      margin-bottom: rem(20px);
+      line-height: 1.6;
+    }
+
+    &.paragraph-xl {
+      font-size: var(--font-size-subtitle);
+      margin-bottom: rem(24px);
+      line-height: 1.8;
+    }
+
+    // ==========================================
+    // ALINEACIONES
+    // ==========================================
+    &.paragraph-left {
+      text-align: left;
+    }
+
+    &.paragraph-center {
+      text-align: center;
+    }
+
+    &.paragraph-right {
+      text-align: right;
+    }
+
+    &.paragraph-justify {
+      text-align: justify;
+      text-justify: inter-word;
+    }
+
+    // ==========================================
+    // PESOS DE FUENTE
+    // ==========================================
+    &.paragraph-light {
+      font-weight: var(--font-weight-light);
+    }
+
+    &.paragraph-regular {
+      font-weight: var(--font-weight-regular);
+    }
+
+    &.paragraph-medium {
+      font-weight: var(--font-weight-medium);
+    }
+
+    &.paragraph-semibold {
+      font-weight: 600;
+    }
+
+    &.paragraph-bold {
+      font-weight: var(--font-weight-bold);
+    }
+
+    &.paragraph-extrabold {
+      font-weight: 800;
+    }
+
+    // ==========================================
+    // ELEMENTOS INTERNOS COMUNES
+    // ==========================================
+    strong,
+    b {
+      font-weight: var(--font-weight-bold);
+    }
+
+    em,
+    i {
+      font-style: italic;
+    }
+
+    // Enlaces dentro del párrafo
+    a {
+      color: var(--primary-600);
+      text-decoration: underline;
+      text-underline-offset: rem(2px);
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: var(--primary-700);
+        text-decoration-thickness: rem(2px);
+      }
+
+      &:focus {
+        outline: rem(2px) solid var(--primary-400);
+        outline-offset: rem(2px);
+        border-radius: rem(2px);
+      }
+    }
+
+    // Listas dentro del párrafo
+    ul,
+    ol {
+      margin: rem(8px) 0;
+      padding-left: rem(20px);
+
+      li {
+        margin-bottom: rem(4px);
+        line-height: inherit;
+      }
+    }
+
+    // Código inline
+    code {
+      background: var(--neutral-100);
+      color: var(--neutral-800);
+      padding: rem(2px) rem(4px);
+      border-radius: rem(3px);
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+
+    // ==========================================
+    // ESTADOS ESPECIALES
+    // ==========================================
+    // Párrafo clickeable
+    &.paragraph-clickable {
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: rem(4px);
+      padding: rem(2px) rem(4px);
+      margin: rem(-2px) rem(-4px);
+
+      &:hover {
+        background: rgba(var(--primary-rgb), 0.05);
+        transform: translateY(rem(-1px));
+      }
+
+      &:active {
+        transform: translateY(0);
+        background: rgba(var(--primary-rgb), 0.1);
+      }
+
+      &:focus {
+        outline: rem(2px) solid var(--primary-400);
+        outline-offset: rem(2px);
+        background: rgba(var(--primary-rgb), 0.05);
+      }
+    }
+
+    // Párrafo con truncado
+    &.paragraph-truncate {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    // Párrafo con múltiples líneas (line-clamp)
+    &.paragraph-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &.paragraph-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &.paragraph-clamp-4 {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &.paragraph-clamp-5 {
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+
+  // ==========================================
+  // MODIFICADORES DE TEXTO - ALTA ESPECIFICIDAD
+  // ==========================================
+  .paragraph {
+    // Modificadores con !important para asegurar que no se sobrescriban
+    &.paragraph-uppercase {
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+    }
+
+    &.paragraph-italic {
+      font-style: italic !important;
+    }
+
+    &.paragraph-bold {
+      font-weight: var(--font-weight-bold) !important;
+    }
+
+    // ==========================================
+    // COMBINACIONES DE MODIFICADORES
+    // ==========================================
+    // Italic + Bold
+    &.paragraph-italic.paragraph-bold {
+      font-style: italic !important;
+      font-weight: var(--font-weight-bold) !important;
+    }
+
+    // Uppercase + Bold
+    &.paragraph-uppercase.paragraph-bold {
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      font-weight: var(--font-weight-bold) !important;
+    }
+
+    // Uppercase + Italic
+    &.paragraph-uppercase.paragraph-italic {
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      font-style: italic !important;
+    }
+
+    // Triple combinación
+    &.paragraph-uppercase.paragraph-italic.paragraph-bold {
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      font-style: italic !important;
+      font-weight: var(--font-weight-bold) !important;
+    }
+  }
+
+  // ==========================================
+  // VARIACIONES ESPECIALES PARA NEUTRAL
+  // ==========================================
+  .paragraph-neutral {
+    color: var(--neutral-400);
+
+    // Preservar modificadores de texto
+    &.paragraph-bold {
+      font-weight: var(--font-weight-bold) !important;
+    }
+
+    &.paragraph-italic {
+      font-style: italic !important;
+    }
+
+    &.paragraph-uppercase {
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+    }
+
+    @include dark-theme {
+      color: var(--neutral-300);
+
+      // Preservar modificadores en tema oscuro también
+      &.paragraph-bold {
+        font-weight: var(--font-weight-bold) !important;
+      }
+
+      &.paragraph-italic {
+        font-style: italic !important;
+      }
+
+      &.paragraph-uppercase {
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+      }
+    }
+  }
+
+  // ⚡ APLICAR SOLO COLORES BÁSICOS OPTIMIZADOS
+  @include css-var-color-variants('paragraph', meta.get-mixin('paragraph-color-styles'));
+}
+
+// ===========================================
+// MIXIN DE COLORES PARA PÁRRAFO
+// ===========================================
+@mixin paragraph-color-styles($color-values, $color-name) {
+  // Variables CSS que se adaptan automáticamente por tema
+  $color-200: var(--#{$color-name}-200);
+  $color-300: var(--#{$color-name}-300);
+  $color-400: var(--#{$color-name}-400);
+  $color-500: var(--#{$color-name}-500);
+  $color-600: var(--#{$color-name}-600);
+  $color-700: var(--#{$color-name}-700);
+  $color-800: var(--#{$color-name}-800);
+
+  // Color principal del párrafo
+  color: $color-500;
+
+  // Enlaces dentro del párrafo con el color del tema
+  a {
+    color: $color-600;
+
+    &:hover {
+      color: $color-700;
+    }
+
+    &:focus {
+      outline-color: $color-400;
+    }
+  }
+
+  // Código inline con el color del tema
+  code {
+    background: rgba(var(--#{$color-name}-rgb), 0.1);
+    color: $color-800;
+  }
+
+  // Estados para párrafos clickeables
+  &.paragraph-clickable {
+    &:hover {
+      background: rgba(var(--#{$color-name}-rgb), 0.05);
+    }
+
+    &:active {
+      background: rgba(var(--#{$color-name}-rgb), 0.1);
+    }
+
+    &:focus {
+      outline-color: $color-400;
+      background: rgba(var(--#{$color-name}-rgb), 0.05);
+    }
+  }
+
+  // Preservar modificadores de texto
+  &.paragraph-bold {
+    font-weight: var(--font-weight-bold) !important;
+  }
+
+  &.paragraph-italic {
+    font-style: italic !important;
+  }
+
+  &.paragraph-uppercase {
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  // ==========================================
+  // AJUSTES PARA MODO OSCURO
+  // ==========================================
+  @include dark-theme {
+    color: $color-300;
+
+    a {
+      color: $color-300;
+
+      &:hover {
+        color: $color-200;
+      }
+    }
+
+    code {
+      background: rgba(var(--#{$color-name}-rgb), 0.15);
+      color: $color-200;
+    }
+
+    &.paragraph-clickable {
+      &:hover {
+        background: rgba(var(--#{$color-name}-rgb), 0.08);
+      }
+
+      &:active {
+        background: rgba(var(--#{$color-name}-rgb), 0.15);
+      }
+
+      &:focus {
+        background: rgba(var(--#{$color-name}-rgb), 0.08);
+      }
+    }
+
+    // Preservar modificadores en tema oscuro
+    &.paragraph-bold {
+      font-weight: var(--font-weight-bold) !important;
+    }
+
+    &.paragraph-italic {
+      font-style: italic !important;
+    }
+
+    &.paragraph-uppercase {
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+    }
+  }
+}

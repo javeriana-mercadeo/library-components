@@ -4,12 +4,23 @@
 // Variables CSS raíz para consistencia entre Sass y CSS
 // ------------------------------------------
 :root {
+  // Ancho máximo del contenedor
+  --max-width: #{rem(1520px)};
+  --max-width-sm: #{rem(576px)};
+  --max-width-md: #{rem(768px)};
+  --max-width-lg: #{rem(992px)};
+  --max-width-xl: #{rem(1200px)};
+  --max-width-2xl: #{rem(1400px)};
+
   // Espaciados
   --spacing-xs: #{rem(8px)};
   --spacing-sm: #{rem(12px)};
   --spacing-md: #{rem(16px)};
   --spacing-lg: #{rem(24px)};
   --spacing-xl: #{rem(38px)};
+  --spacing-2xl: #{rem(48px)};
+  --spacing-3xl: #{rem(64px)};
+  --spacing-4xl: #{rem(80px)};
 
   //  Bordes y esquinas
   --border-radius-xs: #{rem(2px)};

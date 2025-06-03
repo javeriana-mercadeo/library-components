@@ -2,45 +2,35 @@
 
 @mixin container {
   .container {
-    // Estilos base del contenedor
-    max-width: $max-width; // 1200px definido en variables
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);
     width: 100%;
+    max-width: var(--max-width);
+    padding: var(--spacing-md);
+    margin: 0 auto;
 
     // Responsive adjustments
-    @include responsive($breakpoint-sm) {
-      padding-left: var(--spacing-lg);
-      padding-right: var(--spacing-lg);
-    }
-
-    @include responsive($breakpoint-xl) {
-      max-width: $max-width;
-      padding-left: var(--spacing-xl);
-      padding-right: var(--spacing-xl);
+    @include responsive {
+      padding: var(--spacing-md) var(--spacing-lg);
     }
 
     // Variantes de ancho máximo
     &.container-sm {
-      max-width: rem(576px);
+      max-width: var(--max-width-sm);
     }
 
     &.container-md {
-      max-width: rem(768px);
+      max-width: var(--max-width-md);
     }
 
     &.container-lg {
-      max-width: rem(992px);
+      max-width: var(--max-width-lg);
     }
 
     &.container-xl {
-      max-width: rem(1200px);
+      max-width: var(--max-width-xl);
     }
 
-    &.container-xxl {
-      max-width: rem(1400px);
+    &.container-2xl {
+      max-width: var(--max-width-2xl);
     }
 
     // Variantes de padding

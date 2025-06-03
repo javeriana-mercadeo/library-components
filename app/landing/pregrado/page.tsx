@@ -1,61 +1,62 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 import Splash from '@/app/_library/components/splash'
 
-import MateriasSemestre from './sections/materiasSemestre'
-import PerfilesPrograma from './sections/perfilesPrograma'
-import Encabezado from './sections/encabezado'
-import DatosPrograma from './sections/datosPrograma'
-import PorQueLaJaveriana from './sections/porQueLaJaveriana'
-import Reconocimientos from './sections/reconocimientos'
-import MeetingDirector from './sections/citaDirector'
-import ExperienciaJaveriana from './sections/experienciaJaveriana'
-import PreguntasFrecuentes from './sections/preguntasFrecuentes'
-import PieDePagina from './sections/pieDePagina'
+import Encabezado from './sections/0_encabezado'
+import Datos from './sections/1_datos'
+import PlanEstudio from './sections/2_planEstudio'
+import Perfiles from './sections/3_perfiles'
+import Diferenciales from './sections/4_diferenciales'
+import Insignias from './sections/5_insignias'
+//import Insignias from './sections/6_insignias'
+import Experiencia from './sections/7_experiencia'
+import Cita from './sections/8_cita'
+import PreguntasFrecuentes from './sections/9_preguntasFrecuentes'
+import Footer from './sections/10_footer'
 
 export default function Profesional() {
   const basePath = '/landing/pregrado'
 
   return (
     <>
-      <Splash />
-      {/*  <Encabezado /> */}
-      <ViewComponent path={`${basePath}/sections/encabezado`}>
+      {/* <Splash /> */}
+      <Encabezado />
+      {/* <ViewComponent path={`${basePath}/sections/encabezado`}>
         <Encabezado />
+      </ViewComponent> */}
+
+      <Datos />
+      {/* <ViewComponent path={`${basePath}/sections/Datos`}>
+        <Datos />
+      </ViewComponent> */}
+
+      {/*  <PlanEstudio /> */}
+      <ViewComponent path={`${basePath}/sections/PlanEstudio`}>
+        <PlanEstudio />
       </ViewComponent>
 
-      {/*   <DatosPrograma /> */}
-      <ViewComponent path={`${basePath}/sections/datosPrograma`}>
-        <DatosPrograma />
+      {/* <Perfiles /> */}
+      <ViewComponent path={`${basePath}/sections/perfiles`}>
+        <Perfiles />
       </ViewComponent>
 
-      {/*  <MateriasSemestre /> */}
-      <ViewComponent path={`${basePath}/sections/materiasSemestre`}>
-        <MateriasSemestre />
+      {/* <Diferenciales /> */}
+      <ViewComponent path={`${basePath}/sections/Diferenciales`}>
+        <Diferenciales />
       </ViewComponent>
 
-      {/* <PerfilesPrograma /> */}
-      <ViewComponent path={`${basePath}/sections/perfilesPrograma`}>
-        <PerfilesPrograma />
+      {/* <Insignias /> */}
+      <ViewComponent path={`${basePath}/sections/Insignias`}>
+        <Insignias />
       </ViewComponent>
 
-      {/* <PorQueLaJaveriana /> */}
-      <ViewComponent path={`${basePath}/sections/porQueLaJaveriana`}>
-        <PorQueLaJaveriana />
+      {/* <Experiencia /> */}
+      <ViewComponent path={`${basePath}/sections/experiencia`}>
+        <Experiencia />
       </ViewComponent>
 
-      {/* <Reconocimientos /> */}
-      <ViewComponent path={`${basePath}/sections/reconocimientos`}>
-        <Reconocimientos />
-      </ViewComponent>
-
-      {/* <ExperienciaJaveriana /> */}
-      <ViewComponent path={`${basePath}/sections/experienciaJaveriana`}>
-        <ExperienciaJaveriana />
-      </ViewComponent>
-
-      {/* <MeetingDirector /> */}
+      {/* <Cita /> */}
       <ViewComponent path={`${basePath}/sections/citaDirector`}>
-        <MeetingDirector />
+        <Cita />
       </ViewComponent>
 
       {/*  <PreguntasFrecuentes /> */}
@@ -63,9 +64,9 @@ export default function Profesional() {
         <PreguntasFrecuentes />
       </ViewComponent>
 
-      {/* <PieDePagina /> */}
-      <ViewComponent path={`${basePath}/sections/PieDePagina`}>
-        <PieDePagina />
+      {/* <Footer /> */}
+      <ViewComponent path={`${basePath}/sections/Footer`}>
+        <Footer />
       </ViewComponent>
     </>
   )
