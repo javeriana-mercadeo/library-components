@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import './style.scss'
+import './styles.scss'
 
 const Paragraph = ({ children, className, id }) => {
   return (
