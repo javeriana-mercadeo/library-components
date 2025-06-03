@@ -71,11 +71,6 @@ const Caption = ({
     }
   }
 
-  // Renderizar como lfr-editable si es editable, div si no
-  if (isEditable) {
-    return <lfr-editable {...baseProps}>{children}</lfr-editable>
-  }
-
   return <div {...baseProps}>{children}</div>
 }
 

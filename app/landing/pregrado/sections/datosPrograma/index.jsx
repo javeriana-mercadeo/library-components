@@ -12,6 +12,8 @@ const ProgramDataVideo = () => {
     script()
   }, [])
 
+  const base = 'datos-pregrado'
+
   const programDetails = [
     {
       icon: 'ph-graduation-cap',
@@ -50,7 +52,9 @@ const ProgramDataVideo = () => {
       <div className="program-container">
         {/* Contenido principal del programa */}
         <div className="program-content">
-          <Caption className="program-content__faculty">Facultad de Ingeniería</Caption>
+          <Caption className="program-content__faculty" id={`${base}-caption`}>
+            Facultad de Ingeniería
+          </Caption>
 
           <h1 className="program-content__title">
             <span className="highlight">Ingeniería Civil:</span> Construyendo el Futuro Sostenible de Colombia

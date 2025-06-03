@@ -11,6 +11,7 @@ import script from './script.js'
 import './styles.scss'
 
 const PerfilesPrograma = () => {
+  const base = 'perfiles-programa'
   useEffect(() => {
     script()
   }, [])
@@ -43,7 +44,7 @@ const PerfilesPrograma = () => {
                   <img src={perfilIngresoImg.src} alt="Perfil de Ingreso" className="program-profile__image" />
                 </div>
                 <div className="p-content">
-                  <Paragraph isEditable={true}>
+                  <Paragraph id={`${base}-parrafo`} isEditable={true}>
                     <p>
                       Esperamos que los aspirantes al programa de Ingeniería Civil de la Universidad Javeriana tengan interés en diseñar,
                       construir y gestionar proyectos de infraestructura que transformen la sociedad de manera sostenible.
@@ -88,7 +89,7 @@ const PerfilesPrograma = () => {
                   <img src={perfilEgresoImg.src} alt="Perfil de Egreso" className="program-profile__image" />
                 </div>
                 <div className="p-content">
-                  <Paragraph isEditable={true}>
+                  <Paragraph id={`${base}-parrafo-2`} isEditable={true}>
                     <p>
                       Los egresados de Ingeniería Civil de la Universidad Javeriana son profesionales capacitados para diseñar, construir y
                       gestionar proyectos de infraestructura con un enfoque sostenible y ético.
@@ -141,7 +142,7 @@ const PerfilesPrograma = () => {
                 </div>
 
                 <div className="p-content">
-                  <Paragraph isEditable={true}>
+                  <Paragraph id={`${base}-parrafo-3`} isEditable={true}>
                     <p>
                       La carrera de Ingeniería Civil en la Universidad Javeriana se distingue por su enfoque innovador y compromiso con la
                       sostenibilidad.

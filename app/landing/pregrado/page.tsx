@@ -18,55 +18,55 @@ export default function Profesional() {
   return (
     <>
       <Splash />
-      <Encabezado />
-      {/* <ViewComponent path={`${basePath}/sections/header`}>
+      {/*  <Encabezado /> */}
+      <ViewComponent path={`${basePath}/sections/encabezado`}>
         <Encabezado />
-      </ViewComponent> */}
+      </ViewComponent>
 
-      <DatosPrograma />
-      {/* <ViewComponent path={`${basePath}/sections/datosProgramaVideo`}>
+      {/*   <DatosPrograma /> */}
+      <ViewComponent path={`${basePath}/sections/datosPrograma`}>
         <DatosPrograma />
-      </ViewComponent> */}
+      </ViewComponent>
 
-      <MateriasSemestre />
-      {/* <ViewComponent path={`${basePath}/sections/materiasPorSemestre`}>
+      {/*  <MateriasSemestre /> */}
+      <ViewComponent path={`${basePath}/sections/materiasSemestre`}>
         <MateriasSemestre />
-      </ViewComponent> */}
+      </ViewComponent>
 
-      <PerfilesPrograma />
-      {/* <ViewComponent path={`${basePath}/sections/perfilesPrograma`}>
+      {/* <PerfilesPrograma /> */}
+      <ViewComponent path={`${basePath}/sections/perfilesPrograma`}>
         <PerfilesPrograma />
-      </ViewComponent> */}
+      </ViewComponent>
 
-      <PorQueLaJaveriana />
-      {/* <ViewComponent path={`${basePath}/sections`}>
+      {/* <PorQueLaJaveriana /> */}
+      <ViewComponent path={`${basePath}/sections/porQueLaJaveriana`}>
         <PorQueLaJaveriana />
-      </ViewComponent> */}
+      </ViewComponent>
 
-      <Reconocimientos />
-      {/* <ViewComponent path={`${basePath}/reconocimientos`}>
+      {/* <Reconocimientos /> */}
+      <ViewComponent path={`${basePath}/sections/reconocimientos`}>
         <Reconocimientos />
-      </ViewComponent> */}
+      </ViewComponent>
 
-      <ExperienciaJaveriana />
-      {/* <ViewComponent path={`${basePath}/sections/experienciaJaveriana`}>
+      {/* <ExperienciaJaveriana /> */}
+      <ViewComponent path={`${basePath}/sections/experienciaJaveriana`}>
         <ExperienciaJaveriana />
-      </ViewComponent> */}
+      </ViewComponent>
 
-      <MeetingDirector />
-      {/* <ViewComponent path={`${basePath}/sections/meetingDirector`}>
+      {/* <MeetingDirector /> */}
+      <ViewComponent path={`${basePath}/sections/citaDirector`}>
         <MeetingDirector />
-      </ViewComponent> */}
+      </ViewComponent>
 
-      <PreguntasFrecuentes />
-      {/* <ViewComponent path={`${basePath}/sections/preguntasFrecuentes`}>
+      {/*  <PreguntasFrecuentes /> */}
+      <ViewComponent path={`${basePath}/sections/preguntasFrecuentes`}>
         <PreguntasFrecuentes />
-      </ViewComponent> */}
+      </ViewComponent>
 
-      <PieDePagina />
-      {/* <ViewComponent path={`${basePath}/sections/PieDePagina`}>
+      {/* <PieDePagina /> */}
+      <ViewComponent path={`${basePath}/sections/PieDePagina`}>
         <PieDePagina />
-      </ViewComponent> */}
+      </ViewComponent>
     </>
   )
 }
