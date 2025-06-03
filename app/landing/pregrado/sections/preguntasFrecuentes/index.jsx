@@ -17,8 +17,8 @@ const PreguntasFrecuentes = () => {
 
   return (
     <section id="section-eleven">
-      <Container>
-        <div className="container faq">
+      <Container className="container faq">
+        <div >
           <Title className="faq__title"><h2 >Preguntas Frecuentes</h2></Title>
           <div className="faq__container">
             {/* Primera pregunta expandida por defecto */}

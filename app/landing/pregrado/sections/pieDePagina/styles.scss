@@ -1,20 +1,20 @@
 @use '@styles/autoload' as *;
 
 #footer {
-
   .color-container-footer {
-    background-color: #1D2124;
+    background-color: #1d2124;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin: 0 auto;
   }
 
   .footer {
     color: var(--neutral);
     padding: var(--spacing-xl) var(--spacing-md);
-    width: 100%;
+
 
     // breakpoint-md (menor a 768px)
     @media (max-width: $breakpoint-md) {
@@ -30,7 +30,6 @@
       flex-wrap: wrap;
       gap: rem(70px);
       width: 100%;
-      margin: 0 auto;
 
       // breakpoint-lg
       @media (max-width: $breakpoint-lg) {
@@ -403,3 +402,5 @@
     }
   }
 }
+
+
