@@ -4,7 +4,7 @@ import Container from '@library/components/container/Container'
 import LogoBlanco from '@library/components/logo_institucional_blanco'
 import UniversidadTour from '../../../../../assets/pieDePagina/universidad-tour.gif'
 import Vigilada from '../../../../../assets/pieDePagina/vigilada.png'
-
+import Title from '@library/components/contain/title'
 
 import './styles.scss'
 
@@ -16,10 +16,12 @@ const PieDePagina = () => {
           <Container>
             <div className="footer__container">
               <div className="footer__left">
-                <LogoBlanco alt="Logo Pontificia Universidad Javeriana" className="footer__logo light" isEditable={false}/>
-                <h3 className="footer__title">
-                  Explora nuestro campus <br /> y su tecnología de punta.
-                </h3>
+                <LogoBlanco alt="Logo Pontificia Universidad Javeriana" className="footer__logo light" isEditable={false} />
+                <Title className="footer__title">
+                  <h3>
+                    Explora nuestro campus <br /> y su tecnología de punta.
+                  </h3>
+                </Title>
               </div>
               <div className="footer__middle">
                 <div className="footer__video">

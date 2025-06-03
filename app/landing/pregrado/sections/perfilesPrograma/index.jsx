@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import Container from '@library/components/container/Container'
 import Paragraph from '@library/components/contain/paragraph'
+import Title from '@library/components/contain/title'
 import perfilIngresoImg from '../../../../../assets/perfiles/perfil-ingreso.png'
 import perfilEgresoImg from '../../../../../assets/perfiles/perfil-egreso.png'
 import script from './script.js'
@@ -19,7 +20,7 @@ const PerfilesPrograma = () => {
       <div className="color-container">
         <Container>
           <section className="program-profile">
-            <h2 className="program-profile__title">Este programa es para ti si...</h2>
+            <Title className="program-profile__title"> <h2>Este programa es para ti si...</h2></Title>
 
             <div className="program-profile__accordion">
               <div className="program-profile__buttons">
@@ -55,8 +56,8 @@ const PerfilesPrograma = () => {
                       <div className="program-profile__icon-container">
                         <i className="ph ph-check-circle"></i>
                       </div>
-                      <Paragraph>
-                        <p className="program-profile__text">
+                      <Paragraph className="program-profile__text">
+                        <p >
                           Te apasiona la solución de problemas en el diseño, construcción y operación de infraestructura civil.
                         </p>
                       </Paragraph>
@@ -65,24 +66,24 @@ const PerfilesPrograma = () => {
                       <div className="program-profile__icon-container">
                         <i className="ph ph-check-circle"></i>
                       </div>
-                      <Paragraph>
-                        <p className="program-profile__text">Tienes habilidades en matemáticas, análisis y resolución de problemas.</p>
+                      <Paragraph className="program-profile__text">
+                        <p >Tienes habilidades en matemáticas, análisis y resolución de problemas.</p>
                       </Paragraph>
                     </div>
                     <div className="program-profile__item">
                       <div className="program-profile__icon-container">
                         <i className="ph ph-check-circle"></i>
                       </div>
-                      <Paragraph>
-                        <p className="program-profile__text">Te interesa la sostenibilidad y el impacto ambiental de las construcciones.</p>
+                      <Paragraph className="program-profile__text">
+                        <p >Te interesa la sostenibilidad y el impacto ambiental de las construcciones.</p>
                       </Paragraph>
                     </div>
                     <div className="program-profile__item">
                       <div className="program-profile__icon-container">
                         <i className="ph ph-check-circle"></i>
                       </div>
-                      <Paragraph>
-                        <p className="program-profile__text">Disfrutas el trabajo en equipo en proyectos multidisciplinarios.</p>
+                      <Paragraph className="program-profile__text">
+                        <p >Disfrutas el trabajo en equipo en proyectos multidisciplinarios.</p>
                       </Paragraph>
                     </div>
                   </div>
@@ -119,8 +120,8 @@ const PerfilesPrograma = () => {
                       <div className="program-profile__icon-container">
                         <i className="ph ph-check-circle"></i>
                       </div>
-                      <Paragraph>
-                        <p className="program-profile__text">
+                      <Paragraph className="program-profile__text"> 
+                        <p >
                           Integran factores sociales, económicos y ambientales en la toma de decisiones.
                         </p>
                       </Paragraph>
@@ -129,8 +130,8 @@ const PerfilesPrograma = () => {
                       <div className="program-profile__icon-container">
                         <i className="ph ph-check-circle"></i>
                       </div>
-                      <Paragraph>
-                        <p className="program-profile__text">
+                      <Paragraph className="program-profile__text">
+                        <p >
                           Ejercen su profesión con responsabilidad ética y compromiso con el desarrollo sostenible.
                         </p>
                       </Paragraph>
@@ -139,8 +140,8 @@ const PerfilesPrograma = () => {
                       <div className="program-profile__icon-container">
                         <i className="ph ph-check-circle"></i>
                       </div>
-                      <Paragraph>
-                        <p className="program-profile__text">
+                      <Paragraph className="program-profile__text">
+                        <p >
                           Demuestran liderazgo y trabajan en equipos interdisciplinarios de manera colaborativa y efectiva.
                         </p>
                       </Paragraph>
