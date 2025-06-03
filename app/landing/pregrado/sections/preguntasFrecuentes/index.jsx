@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import Container from '@library/components/container/Container'
+import Title from '@library/components/contain/title'
 
 import script from './script.js'
 import './styles.scss'
@@ -18,7 +19,7 @@ const PreguntasFrecuentes = () => {
     <section id="section-eleven">
       <Container>
         <div className="container faq">
-          <h2 className="faq__title">Preguntas Frecuentes</h2>
+          <Title className="faq__title"><h2 >Preguntas Frecuentes</h2></Title>
           <div className="faq__container">
             {/* Primera pregunta expandida por defecto */}
             <div className="faq__item active">
