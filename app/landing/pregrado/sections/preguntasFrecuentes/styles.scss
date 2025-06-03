@@ -144,7 +144,7 @@
     }
 
     // Responsive adjustments
-    @media (max-width: $breakpoint-xl) {
+   @include responsive($breakpoint-xl) {
       &__question {
         font-size: var(--font-size-paragraph);
         padding: var(--spacing-sm) 0;
