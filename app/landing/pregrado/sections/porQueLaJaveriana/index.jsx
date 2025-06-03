@@ -25,12 +25,12 @@ const PorqueLaJaveriana = () => {
     <div className="why-javeriana__container">
       <div className="why-javeriana__column">
 
-        <div id="accordion-open" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
+        <div id="accordion-open" data-accordion="open" className="border p-4 rounded-lg">
           {/* Título e Ícono */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <i className="ph ph-graduation-cap text-2xl"></i>
-              <Paragraph className="font-semibold text-gray-900" isEditable={true}>Doble titulación</Paragraph>
+              <Paragraph className="font-semibold" isEditable={true}>Doble titulación</Paragraph>
             </div>
 
             {/* Botón solo en mobile */}
@@ -45,7 +45,7 @@ const PorqueLaJaveriana = () => {
           </div>
 
           {/* Contenido */}
-          <div id="accordion-open-body-1" className="mt-2 text-gray-700 accordion-content">
+          <div id="accordion-open-body-1" className="mt-2 accordion-content">
             <p>
               Tendrás la posibilidad de obtener la doble titulación con universidades como el Politécnico de Turín, Politécnico de Milán y Paris Tech.
             </p>
@@ -57,7 +57,7 @@ const PorqueLaJaveriana = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <i className="ph ph-books text-2xl"></i>
-              <p className="font-semibold text-gray-900">Múltiple programa</p>
+              <p className="font-semibold">Múltiple programa</p>
             </div>
 
             {/* Botón solo en mobile */}
@@ -71,7 +71,7 @@ const PorqueLaJaveriana = () => {
             </button>
           </div>
 
-          <div id="accordion-body-1" className="mt-2 text-gray-700 accordion-content">
+          <div id="accordion-body-1" className="mt-2 accordion-content">
             <p>
               Tendrás la posibilidad de hacer dos o más carreras simultáneamente, de acuerdo con tus intereses profesionales.
             </p>
@@ -83,7 +83,7 @@ const PorqueLaJaveriana = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <i className="ph ph-user-circle text-2xl"></i>
-              <p className="font-semibold text-gray-900">Consejería Académica</p>
+              <p className="font-semibold">Consejería Académica</p>
             </div>
 
             <button type="button"
@@ -96,7 +96,7 @@ const PorqueLaJaveriana = () => {
             </button>
           </div>
 
-          <div id="accordion-body-2" className="mt-2 text-gray-700 accordion-content">
+          <div id="accordion-body-2" className="mt-2 accordion-content">
             <p>
               Te acompañamos con apoyo académico y personal, guiados por un profesor que ofrece estrategias personalizadas para tu bienestar integral.
             </p>
@@ -116,7 +116,7 @@ const PorqueLaJaveriana = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <i className="ph ph-star text-2xl"></i>
-              <p className="font-semibold text-gray-900">Validación RIBA</p>
+              <p className="font-semibold">Validación RIBA</p>
             </div>
 
             <button type="button"
@@ -129,7 +129,7 @@ const PorqueLaJaveriana = () => {
             </button>
           </div>
 
-          <div id="accordion-body-3" className="mt-2 text-gray-700 accordion-content">
+          <div id="accordion-body-3" className="mt-2 accordion-content">
             <p>
               Reconocimiento del Royal Institute of British Architects, destacando la calidad del programa y abriendo oportunidades internacionales.
             </p>
@@ -141,7 +141,7 @@ const PorqueLaJaveriana = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <i className="ph ph-lightbulb text-2xl"></i>
-              <p className="font-semibold text-gray-900">Experiencia directa</p>
+              <p className="font-semibold">Experiencia directa</p>
             </div>
 
             <button type="button"
@@ -154,7 +154,7 @@ const PorqueLaJaveriana = () => {
             </button>
           </div>
 
-          <div id="accordion-body-4" className="mt-2 text-gray-700 accordion-content">
+          <div id="accordion-body-4" className="mt-2 accordion-content">
             <p>
               Aprende a través de experiencias prácticas y formación personalizada, enfocada en tus intereses y desarrollo individual.
             </p>
@@ -166,7 +166,7 @@ const PorqueLaJaveriana = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <i className="ph ph-globe text-2xl"></i>
-              <p className="font-semibold text-gray-900">Actividades nacionales e internacionales</p>
+              <p className="font-semibold">Actividades nacionales e internacionales</p>
             </div>
 
             <button type="button"
@@ -179,7 +179,7 @@ const PorqueLaJaveriana = () => {
             </button>
           </div>
 
-          <div id="accordion-body-5" className="mt-2 text-gray-700 accordion-content">
+          <div id="accordion-body-5" className="mt-2 accordion-content">
             <p>
               Realiza cursos en España, Italia, México y más; participa en concursos globales y haz tu práctica preprofesional en cualquier parte del mundo.
             </p>
