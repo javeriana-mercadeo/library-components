@@ -16,7 +16,7 @@ for (const weight of ["regular", "thin", "light", "bold", "fill", "duotone"]) {
 // ===== CÓDIGO PERSONALIZADO =====
 
 // ===== IMPORTADO DE: ../utils/main =====
-// Archivo: C:\Users\Amaro\OneDrive\Documentos\Trabajos\DMPA - Pontificia Universidad Javeriana\Desarrollo\library-components\utils\main.js
+// Archivo: G:\Documentos\GitHub\library-components\utils\main.js
 function main() {
   // ===========================================
   // UTILIDADES GLOBALES
@@ -154,7 +154,7 @@ function main() {
 
 
 // ===== IMPORTADO DE: ../app/_library/components/contain/btn/script.js =====
-// Archivo: C:\Users\Amaro\OneDrive\Documentos\Trabajos\DMPA - Pontificia Universidad Javeriana\Desarrollo\library-components\app\_library\components\contain\btn\script.js
+// Archivo: G:\Documentos\GitHub\library-components\app\_library\components\contain\btn\script.js
 /**
  * script.js - Efecto de onda optimizado para botones
  * Versión optimizada para mejor rendimiento y compatibilidad SSR

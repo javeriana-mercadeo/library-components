@@ -1,0 +1,140 @@
+@use '@styles/autoload' as *;
+
+#section-five{
+    padding-top:25px;
+    padding-bottom: 25px;
+
+.academic-carousel__title{
+    font-size: $font-size-h2;
+    font-weight: 700;
+    width: fit-content;
+
+}
+
+.academic-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: rem(1200px);
+}
+
+h1 {
+    font-size: $font-size-h2;
+    padding: 20px;
+    margin: 20px 0px;
+}
+
+.slider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 16px;
+    backdrop-filter: blur(7.4px);
+    -webkit-backdrop-filter: blur(7.4px);
+    position: relative;
+    padding: 20px;
+    margin: auto;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100px; /* 🔹 Ajusta el ancho del efecto */
+        height: 100%;
+        z-index: 2;
+        pointer-events: none; /* 🔹 Permite clics en el slider */
+    }
+
+    /* 🔹 Efecto de niebla a la izquierda */
+    &::before {
+        left: 0;
+        background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    /* 🔹 Efecto de niebla a la derecha */
+    &::after {
+        right: 0;
+        background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    /* Pausar animación al hacer hover en el slider */
+    &:hover .slider-track {
+        animation-play-state: paused;
+    }
+}
+
+/* Contenedor que se moverá con la animación */
+.slider-track {
+    display: flex;
+    gap: 30px;
+    animation: scrolling 30s linear infinite;
+    width: max-content;
+}
+
+.slider-items {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 30px;
+    width: max-content;
+    height: auto;
+    flex-shrink: 0;
+}
+
+.slider-items--original {
+    animation: none;
+}
+
+.slider-items--duplicate {
+    animation: none;
+}
+
+.slider-items--third {
+    animation: none;
+}
+
+.slider-items--fourth {
+    animation: none;
+}
+
+.slider-items--fifth {
+    animation: none;
+}
+
+/* Animación ajustada para 5 grupos completos */
+@keyframes scrolling {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-20%);
+    }
+}
+
+.img-logos{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+    max-width: 200px;
+}
+
+.slider-items img {
+    width: 150px;
+    height: auto;
+    margin: 20px;
+    object-fit: cover;
+
+}
+.slider-items p{
+    font-size: 0.7rem;
+    width: 100%;
+    text-align: center;
+    justify-self: unset;
+}
+}
