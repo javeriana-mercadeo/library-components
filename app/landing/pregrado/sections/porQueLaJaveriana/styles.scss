@@ -1,8 +1,8 @@
 @use '@styles/autoload' as *;
 
 #section-four{
+  background-color: var(--background-100);
   padding-top: 30px;
-  max-width: $max-width;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,8 +34,9 @@ p{
   .why-javeriana__title {
     gap: 8px;
     width: fit-content;
-    font-size: $font-size-h2;
-    font-weight: bold;
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-bold);
+    color:var(--neutral-100);
   }
 }
 .why-javeriana {
