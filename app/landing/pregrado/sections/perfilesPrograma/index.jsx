@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import Container from '@library/components/container/Container'
+import Container from '@library/components/container'
 
 import perfilIngresoImg from '../../../../../assets/perfiles/perfil-ingreso.png'
 import perfilEgresoImg from '../../../../../assets/perfiles/perfil-egreso.png'

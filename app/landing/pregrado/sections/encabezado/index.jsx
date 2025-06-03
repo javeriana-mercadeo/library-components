@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import Btn from '@library/components/contain/btn'
-import Container from '@library/components/container/Container'
+import Container from '@library/components/container'
 import Logo from '@library/components/logo_institucional'
 
 import ModalForm from './components/modalForm/index.jsx'

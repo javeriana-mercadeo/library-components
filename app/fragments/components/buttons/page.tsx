@@ -1,6 +1,6 @@
 'use client'
 
-import Container from '@library/components/container/Container'
+import Container from '@library/components/container'
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 import Splash from '@/app/_library/components/splash'
 import Btn from '@library/components/contain/btn'

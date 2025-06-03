@@ -5,7 +5,7 @@ import MateriasSemestre from './sections/materiasSemestre'
 import PerfilesPrograma from './sections/perfilesPrograma'
 import PreguntasFrecuentes from './sections/preguntasFrecuentes'
 import Encabezado from './sections/encabezado'
-import DatosProgramaVideo from './sections/datosProgramaVideo'
+import DatosPrograma from './sections/datosPrograma'
 import MeetingDirector from './sections/citaDirector'
 
 export default function Profesional() {
@@ -19,9 +19,9 @@ export default function Profesional() {
         <Encabezado />
       </ViewComponent> */}
 
-      <DatosProgramaVideo />
+      <DatosPrograma />
       {/* <ViewComponent path={`${basePath}/sections/datosProgramaVideo`}>
-        <DatosProgramaVideo />
+        <DatosPrograma />
       </ViewComponent> */}
 
       <MateriasSemestre />
