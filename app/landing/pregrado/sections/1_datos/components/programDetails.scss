@@ -1,0 +1,394 @@
+@use '@styles/autoload' as *;
+
+@mixin programDetails {
+  // ==========================================
+  // PROGRAM DETAILS - COMPONENTE GENÉRICO
+  // ==========================================
+
+  .program-details {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+
+    @include responsive($breakpoint-md) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-lg);
+    }
+
+    @include responsive($breakpoint-lg) {
+      gap: rem(32px);
+    }
+  }
+
+  // ==========================================
+  // ITEM INDIVIDUAL - CLASE BASE
+  // ==========================================
+  .program-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    transition: all 0.3s ease;
+
+    // Modificadores por tipo
+    &--dates {
+      @include responsive($breakpoint-md) {
+        grid-column: 1 / -1;
+      }
+    }
+
+    &--modal {
+      .program-detail__content {
+        cursor: pointer;
+      }
+
+      &:hover {
+        transform: translateY(rem(-2px));
+
+        .program-detail__icon {
+          transform: scale(1.05);
+          box-shadow: 0 rem(4px) rem(12px) rgba(var(--primary-rgb), 0.3);
+        }
+      }
+    }
+
+    // ==========================================
+    // ICONO DEL DETALLE
+    // ==========================================
+    &__icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: var(--primary-600);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: var(--icon-size-md);
+      transition: all 0.3s ease;
+
+      @include responsive($breakpoint-lg) {
+        width: 44px;
+        height: 44px;
+        font-size: var(--icon-size-lg);
+      }
+    }
+
+    // ==========================================
+    // CONTENIDO DEL DETALLE
+    // ==========================================
+    &__content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &__label {
+      @include text-style(var(--font-size-small), var(--font-weight-regular));
+      color: var(--neutral-500);
+      margin-bottom: rem(2px);
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: rem(0.5px);
+    }
+
+    &__value {
+      @include text-style(var(--font-size-paragraph), var(--font-weight-bold));
+      color: var(--neutral-200);
+      margin: 0;
+      line-height: 1.4;
+
+      // Modificador para valores clickeables
+      &--clickable {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        transition: all 0.3s ease;
+        border-radius: var(--border-radius-sm);
+        padding: rem(4px) rem(8px);
+        margin: rem(-4px) rem(-8px);
+
+        &:hover {
+          background: rgba(var(--primary-rgb), 0.1);
+          color: var(--primary-600);
+
+          .program-detail__info-icon {
+            transform: scale(1.2);
+            color: var(--primary-600);
+          }
+        }
+
+        &:focus {
+          outline: rem(2px) solid var(--primary-400);
+          outline-offset: rem(2px);
+        }
+      }
+    }
+
+    &__info-icon {
+      font-size: var(--font-size-small);
+      color: var(--neutral-400);
+      transition: all 0.3s ease;
+    }
+
+    // ==========================================
+    // FECHAS ESPECÍFICAS
+    // ==========================================
+    &__dates {
+      display: flex;
+      flex-direction: column;
+      gap: rem(6px);
+      margin-top: rem(4px);
+    }
+
+    &__date-item {
+      display: flex;
+      flex-direction: column;
+      gap: rem(2px);
+      padding: rem(8px) rem(12px);
+      background: var(--neutral-900);
+      border-radius: var(--border-radius-sm);
+      border-left: rem(3px) solid var(--primary-600);
+
+      @include responsive($breakpoint-sm) {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-xs);
+      }
+    }
+
+    &__date-period {
+      @include text-style(var(--font-size-small), var(--font-weight-bold));
+      color: var(--primary-600);
+      white-space: nowrap;
+    }
+
+    &__date-value {
+      @include text-style(var(--font-size-small), var(--font-weight-regular));
+      color: var(--neutral-200);
+    }
+  }
+
+  // ==========================================
+  // MODAL PEQUEÑO
+  // ==========================================
+  .program-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    animation: modalFadeIn 0.3s ease-out;
+
+    &__content {
+      background: var(--background-100);
+      border-radius: var(--border-radius-lg);
+      box-shadow: 0 rem(20px) rem(40px) rgba(0, 0, 0, 0.3);
+      max-width: rem(400px);
+      width: 100%;
+      max-height: 80vh;
+      overflow: hidden;
+      animation: modalSlideIn 0.3s ease-out;
+      border: rem(1px) solid var(--neutral-700);
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-md) var(--spacing-lg);
+      border-bottom: rem(1px) solid var(--neutral-800);
+      background: linear-gradient(135deg, var(--background-100) 0%, var(--background-200) 100%);
+    }
+
+    &__title {
+      @include text-style(var(--font-size-caption), var(--font-weight-bold));
+      color: var(--primary-600);
+      margin: 0;
+    }
+
+    &__close {
+      width: rem(32px);
+      height: rem(32px);
+      border: none;
+      background: var(--neutral-700);
+      color: var(--neutral-400);
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-size-paragraph);
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: var(--danger-500);
+        color: var(--neutral-1000);
+        transform: scale(1.05);
+      }
+
+      &:focus {
+        outline: rem(2px) solid var(--primary-400);
+        outline-offset: rem(2px);
+      }
+    }
+
+    &__body {
+      padding: var(--spacing-lg);
+      overflow-y: auto;
+      max-height: rem(400px);
+
+      // Estilo para el contenido del modal
+      p {
+        @include text-style(var(--font-size-paragraph), var(--font-weight-regular));
+        color: var(--neutral-300);
+        line-height: 1.6;
+        margin-bottom: var(--spacing-sm);
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          @include text-style(var(--font-size-paragraph), var(--font-weight-regular));
+          color: var(--neutral-300);
+          padding: rem(4px) 0;
+          padding-left: var(--spacing-md);
+          position: relative;
+
+          &:before {
+            content: '•';
+            color: var(--primary-600);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+          }
+        }
+      }
+
+      strong {
+        color: var(--neutral-200);
+        font-weight: var(--font-weight-bold);
+      }
+
+      .highlight {
+        color: var(--primary-600);
+        font-weight: var(--font-weight-medium);
+      }
+    }
+  }
+
+  // ==========================================
+  // ANIMACIONES
+  // ==========================================
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(rem(-20px)) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  // ==========================================
+  // RESPONSIVE MÓVILES PEQUEÑOS
+  // ==========================================
+  @media (max-width: 375px) {
+    .program-detail-modal {
+      padding: var(--spacing-sm);
+
+      &__content {
+        max-width: 100%;
+      }
+
+      &__header {
+        padding: var(--spacing-sm) var(--spacing-md);
+      }
+
+      &__body {
+        padding: var(--spacing-md);
+      }
+    }
+
+    .program-detail {
+      &__date-item {
+        padding: rem(6px) rem(8px);
+      }
+    }
+  }
+
+  // ==========================================
+  // ACCESIBILIDAD
+  // ==========================================
+  @media (prefers-reduced-motion: reduce) {
+    .program-detail-modal {
+      animation: none;
+
+      &__content {
+        animation: none;
+      }
+    }
+
+    .program-detail {
+      transition: none;
+
+      &__icon {
+        transition: none;
+      }
+
+      &__value--clickable {
+        transition: none;
+
+        .program-detail__info-icon {
+          transition: none;
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // MODO ALTO CONTRASTE
+  // ==========================================
+  @media (prefers-contrast: high) {
+    .program-detail-modal {
+      &__content {
+        border: rem(2px) solid var(--neutral-200);
+      }
+    }
+
+    .program-detail {
+      &__date-item {
+        border-left-width: rem(4px);
+      }
+    }
+  }
+}

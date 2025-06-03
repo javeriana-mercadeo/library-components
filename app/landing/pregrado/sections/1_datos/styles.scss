@@ -1,0 +1,492 @@
+@use '@styles/autoload' as *;
+@use './components/programDetails.scss' as *;
+
+@include programDetails;
+
+// ==========================================
+// PROGRAMA DATA VIDEO - CSS GRID LAYOUT
+// ==========================================
+.program-data {
+  display: grid;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-sm);
+
+  // ==========================================
+  // MOBILE LAYOUT - Una columna, video después del párrafo
+  // ==========================================
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'faculty'
+    'title'
+    'snies'
+    'description'
+    'video'
+    'details'
+    'enrollment';
+
+  @include responsive($breakpoint-md) {
+    // ==========================================
+    // DESKTOP LAYOUT - Dos columnas, video a la derecha
+    // ==========================================
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'faculty video'
+      'title video'
+      'snies video'
+      'description video'
+      'details video'
+      'enrollment video';
+    padding: var(--spacing-3xl) var(--spacing-md);
+    gap: var(--spacing-xl);
+  }
+
+  @include responsive($breakpoint-lg) {
+    // ==========================================
+    // DESKTOP GRANDE - Proporción 60/40
+    // ==========================================
+    grid-template-columns: 3fr 2fr;
+    max-width: 1200px;
+  }
+
+  // ==========================================
+  // ÁREAS DEL GRID
+  // ==========================================
+  &_faculty {
+    grid-area: faculty;
+  }
+
+  &_title {
+    grid-area: title;
+    font-weight: var(--font-weight-bold);
+
+    .lead {
+      color: var(--primary);
+      font-weight: var(--font-weight-bold);
+    }
+  }
+
+  &_snies {
+    grid-area: snies;
+  }
+
+  &_description {
+    grid-area: description;
+    margin: var(--spacing-sm) 0;
+
+    strong {
+      color: var(--neutral-200);
+      font-weight: var(--font-weight-medium);
+    }
+  }
+
+  // ==========================================
+  // CONTENIDO DEL PROGRAMA
+  // ==========================================
+  &_content {
+    // Remover este contenedor wrapper ya que usamos grid directamente
+    display: contents; // Esto hace que los hijos se comporten como si estuvieran directamente en el grid
+  }
+
+  // ==========================================
+  // DETALLES DEL PROGRAMA
+  // ==========================================
+  .program-details {
+    grid-area: details;
+    align-self: start;
+  }
+
+  // ==========================================
+  // SECCIÓN DE INSCRIPCIÓN
+  // ==========================================
+  &__enrollment {
+    grid-area: enrollment;
+    align-self: end;
+
+    &-link {
+      @include text-style(var(--font-size-paragraph), var(--font-weight-regular));
+      color: var(--primary-600);
+      text-decoration: none;
+      display: block;
+      margin-bottom: var(--spacing-md);
+      transition: all 0.3s ease;
+
+      &:hover {
+        text-decoration: underline;
+        color: var(--primary-500);
+      }
+
+      &:focus {
+        outline: rem(2px) solid var(--primary-400);
+        outline-offset: rem(2px);
+        border-radius: var(--border-radius-xs);
+      }
+    }
+
+    &-note {
+      @include text-style(var(--font-size-small), var(--font-weight-regular));
+      color: var(--neutral-400);
+      font-style: italic;
+      margin: 0;
+      padding: rem(8px) rem(12px);
+      background: var(--neutral-900);
+      border-radius: var(--border-radius-sm);
+      border-left: rem(3px) solid var(--warning-500);
+    }
+  }
+
+  // ==========================================
+  // VIDEO/MEDIA CONTAINER
+  // ==========================================
+  &__media {
+    grid-area: video;
+    width: 100%;
+    position: relative;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    background: var(--neutral-900);
+    align-self: start;
+
+    // Mobile: aspect ratio 16:9 (horizontal)
+    aspect-ratio: 16 / 9;
+    max-height: 300px;
+
+    @include responsive($breakpoint-md) {
+      // Desktop: aspect ratio 9:16 (vertical)
+      aspect-ratio: 9 / 16;
+      max-height: none;
+      height: auto;
+      min-height: 400px;
+      align-self: stretch;
+    }
+
+    @include responsive($breakpoint-lg) {
+      min-height: 500px;
+    }
+
+    // GPU acceleration y optimizaciones
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    contain: layout style paint;
+
+    // Estados de carga
+    &:not(.responsive-video-ready) {
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: rem(40px);
+        height: rem(40px);
+        margin: rem(-20px) 0 0 rem(-20px);
+        border: rem(4px) solid var(--neutral-600);
+        border-top-color: var(--primary-600);
+        border-radius: 50%;
+        animation: videoLoading 1s linear infinite;
+        z-index: 2;
+      }
+    }
+
+    // Overlay sutil
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.1);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover::after {
+      opacity: 1;
+    }
+
+    // Estados según dispositivo actual
+    &[data-current-video='mobile'] {
+      .program-data__iframe--desktop {
+        display: none !important;
+      }
+    }
+
+    &[data-current-video='desktop'] {
+      .program-data__iframe--mobile {
+        display: none !important;
+      }
+    }
+  }
+
+  // ==========================================
+  // IFRAME DEL VIDEO - BASE
+  // ==========================================
+  &__iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border: none;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    will-change: auto;
+    backface-visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+
+    // Mostrar cuando está cargado
+    &[src]:not([src='']) {
+      opacity: 1;
+    }
+
+    // Optimización para móviles
+    @media (max-width: $breakpoint-md) {
+      transform: translate(-50%, -50%) translate3d(0, 0, 0);
+    }
+
+    // ==========================================
+    // MODIFICADOR MOBILE
+    // ==========================================
+    &--mobile {
+      // Por defecto visible en mobile, se oculta con JS en desktop
+      display: block;
+
+      // Asegurar aspect ratio 16:9
+      width: 100%;
+      height: 100%;
+    }
+
+    // ==========================================
+    // MODIFICADOR DESKTOP
+    // ==========================================
+    &--desktop {
+      // Por defecto oculto, se muestra con JS en desktop
+      display: none;
+
+      // Escalar para llenar contenedor vertical en desktop
+      @include responsive($breakpoint-md) {
+        width: 150%;
+        height: 150%;
+      }
+
+      @include responsive($breakpoint-lg) {
+        width: 150%;
+        height: 150%;
+      }
+    }
+  }
+
+  // ==========================================
+  // RESPONSIVE EXTREMO - MÓVILES PEQUEÑOS
+  // ==========================================
+  @media (max-width: 375px) {
+    padding: var(--spacing-md) var(--spacing-sm);
+    gap: var(--spacing-md);
+
+    &__media {
+      border-radius: var(--border-radius-md);
+      max-height: 250px;
+    }
+
+    &_title {
+      @include text-style(rem(20px), var(--font-weight-bold));
+    }
+
+    &__enrollment {
+      &-note {
+        padding: rem(6px) rem(8px);
+        font-size: rem(11px);
+      }
+    }
+  }
+
+  // ==========================================
+  // TABLET - Layout intermedio
+  // ==========================================
+  @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
+    &__media {
+      max-height: 350px;
+    }
+  }
+
+  // ==========================================
+  // MEJORAS DE ACCESIBILIDAD
+  // ==========================================
+  @media (prefers-reduced-motion: reduce) {
+    &__media {
+      &::after {
+        transition: none;
+      }
+
+      &::before {
+        animation: none;
+      }
+    }
+
+    &__iframe {
+      transition: none;
+    }
+
+    &__enrollment-link {
+      transition: none;
+    }
+  }
+
+  // ==========================================
+  // MODO ALTO CONTRASTE
+  // ==========================================
+  @media (prefers-contrast: high) {
+    &__media {
+      border: rem(2px) solid var(--neutral-200);
+
+      &::after {
+        background: rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    &__enrollment-note {
+      border-left-width: rem(4px);
+    }
+  }
+
+  // ==========================================
+  // PRINT STYLES
+  // ==========================================
+  @media print {
+    display: block !important;
+
+    &__media {
+      display: none;
+    }
+
+    &_content {
+      display: block;
+    }
+
+    &_title {
+      color: #000;
+    }
+
+    &_description {
+      color: #333;
+    }
+  }
+}
+
+// ==========================================
+// ANIMACIONES
+// ==========================================
+@keyframes videoLoading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(rem(20px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ==========================================
+// ESTADOS DE CARGA Y OPTIMIZACIONES
+// ==========================================
+.program-data {
+  // Estado de carga inicial
+  &:not(.loaded) {
+    .program-data__media {
+      opacity: 0.8;
+
+      &::before {
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  // Estado completamente cargado
+  &.loaded {
+    .program-data__media {
+      opacity: 1;
+      transition: opacity 0.5s ease-in-out;
+    }
+  }
+
+  // Estado cuando los videos están listos
+  &__media.responsive-video-ready {
+    &::before {
+      opacity: 0;
+      animation: none;
+    }
+  }
+
+  // Optimizaciones para conexiones lentas
+  &[data-connection='slow'] {
+    .program-data__iframe {
+      // Mostrar controles en conexiones lentas
+      pointer-events: auto;
+    }
+  }
+
+  // Optimizaciones para dispositivos con poca memoria
+  &[data-performance='low'] {
+    .program-data__media {
+      // Reducir calidad de animaciones
+      &::after {
+        transition: none;
+      }
+    }
+
+    .program-data__iframe {
+      transition: opacity 0.2s ease;
+    }
+  }
+}
+
+// ==========================================
+// DEBUGGING STYLES (solo en desarrollo)
+// ==========================================
+// Descomenta estas líneas para debugging visual
+/*
+.program-data__media {
+  border: 2px solid red;
+
+  &[data-current-video="mobile"]::after {
+    content: "MOBILE VIDEO";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    z-index: 10;
+    opacity: 1 !important;
+  }
+
+  &[data-current-video="desktop"]::after {
+    content: "DESKTOP VIDEO";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 255, 0.8);
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    z-index: 10;
+    opacity: 1 !important;
+  }
+}
+*/
