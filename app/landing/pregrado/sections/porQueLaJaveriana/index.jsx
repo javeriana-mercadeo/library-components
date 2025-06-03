@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import Container from '@library/components/container/Container'
 import Paragraph from '@library/components/contain/paragraph'
 
 import whyJaverianaImg from '../../../../../assets/whyJaveriana/why-javeriana.png'
@@ -16,7 +17,7 @@ const PorqueLaJaveriana = () => {
 
   return (
 <section id="section-four">
-  <div className="container why-javeriana">
+  <Container className="container why-javeriana">
     <div className="section-four-title">
       <h2 className="why-javeriana__title">¿Por qué elegir la Javeriana?</h2>
     </div>
@@ -28,13 +29,13 @@ const PorqueLaJaveriana = () => {
           {/* Título e Ícono */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <i className="ph ph-graduation-cap text-blue-500 text-2xl"></i>
+              <i className="ph ph-graduation-cap text-2xl"></i>
               <Paragraph className="font-semibold text-gray-900" isEditable={true}>Doble titulación</Paragraph>
             </div>
 
             {/* Botón solo en mobile */}
             <button type="button"
-              className="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
               data-accordion-target="#accordion-open-body-1"
               aria-expanded="false"
               aria-controls="accordion-open-body-1">
@@ -55,13 +56,13 @@ const PorqueLaJaveriana = () => {
         <div id="accordion-open-1" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <i className="ph ph-books text-blue-500 text-2xl"></i>
+              <i className="ph ph-books text-2xl"></i>
               <p className="font-semibold text-gray-900">Múltiple programa</p>
             </div>
 
             {/* Botón solo en mobile */}
             <button type="button"
-              className="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
               data-accordion-target="#accordion-body-1" 
               aria-expanded="false" 
               aria-controls="accordion-body-1">
@@ -81,12 +82,12 @@ const PorqueLaJaveriana = () => {
         <div id="accordion-open-2" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <i className="ph ph-user-circle text-blue-500 text-2xl"></i>
+              <i className="ph ph-user-circle text-2xl"></i>
               <p className="font-semibold text-gray-900">Consejería Académica</p>
             </div>
 
             <button type="button"
-              className="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
               data-accordion-target="#accordion-body-2" 
               aria-expanded="false" 
               aria-controls="accordion-body-2">
@@ -114,12 +115,12 @@ const PorqueLaJaveriana = () => {
         <div id="accordion-open-3" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <i className="ph ph-star text-blue-500 text-2xl"></i>
+              <i className="ph ph-star text-2xl"></i>
               <p className="font-semibold text-gray-900">Validación RIBA</p>
             </div>
 
             <button type="button"
-              className="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
               data-accordion-target="#accordion-body-3" 
               aria-expanded="false" 
               aria-controls="accordion-body-3">
@@ -139,12 +140,12 @@ const PorqueLaJaveriana = () => {
         <div id="accordion-open-4" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <i className="ph ph-lightbulb text-blue-500 text-2xl"></i>
+              <i className="ph ph-lightbulb text-2xl"></i>
               <p className="font-semibold text-gray-900">Experiencia directa</p>
             </div>
 
             <button type="button"
-              className="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
               data-accordion-target="#accordion-body-4" 
               aria-expanded="false" 
               aria-controls="accordion-body-4">
@@ -164,12 +165,12 @@ const PorqueLaJaveriana = () => {
         <div id="accordion-open-5" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <i className="ph ph-globe text-blue-500 text-2xl"></i>
+              <i className="ph ph-globe text-2xl"></i>
               <p className="font-semibold text-gray-900">Actividades nacionales e internacionales</p>
             </div>
 
             <button type="button"
-              className="flex items-center text-blue-500 font-bold gap-2 focus:outline-none transition-all lg:hidden"
+              className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
               data-accordion-target="#accordion-body-5" 
               aria-expanded="false" 
               aria-controls="accordion-body-5">
@@ -186,7 +187,7 @@ const PorqueLaJaveriana = () => {
         </div>
       </div>
     </div>
-  </div>
+  </Container>
 </section>
   )
 }
