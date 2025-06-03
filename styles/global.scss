@@ -8,13 +8,17 @@
 
 // 2. Componentes globales
 // ------------------------------------------
+@use '@library/components/container/styles.scss' as *;
 @use '@library/components/contain/btn/styles.scss' as *;
 @use '@library/components/contain/title/styles.scss' as *;
+@use '@library/components/contain/caption/styles.scss' as *;
 
 @use '@library/components/logo_institucional/styles.scss' as *;
 
+@include container;
 @include logo;
 @include title;
+@include caption;
 
 @include general-btn;
 

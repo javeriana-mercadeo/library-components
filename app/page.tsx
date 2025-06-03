@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import './style.scss'
 import Splash from './_library/components/splash'
 import GlobalAssetsViewer from './_components/globalAssetsViewe/globalAssetsViewer'
-import Container from './_library/components/container/Container'
+import Container from './_library/components/container'
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState('landing-pages')
@@ -42,7 +42,7 @@ export default function Home() {
         { name: 'Botón', section: '/fragments/components/buttons', icon: 'ph-cursor-click' },
         { name: 'Título', section: '/fragments/components/titles', icon: 'ph-text-h' },
         { name: 'Párrafo', section: '_general/components/contain/paragraph', icon: 'ph-text-align-left' },
-        { name: 'Caption', section: '_general/components/contain/caption', icon: 'ph-text-caption' },
+        { name: 'Caption', section: '/fragments/components/captions', icon: 'ph-text-caption' },
         { name: 'Imagen de Fondo', section: '_general/components/contain/imgBackground', icon: 'ph-image' }
       ]
     }

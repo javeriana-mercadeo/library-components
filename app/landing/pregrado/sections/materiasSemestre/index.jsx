@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import Btn from '@library/components/contain/btn'
-import Container from '@library/components/container/Container'
+import Container from '@library/components/container'
 
 import script from './script.js'
 import './styles.scss'
