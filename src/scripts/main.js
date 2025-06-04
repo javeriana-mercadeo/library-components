@@ -165,8 +165,8 @@ document.addEventListener("DOMContentLoaded", function () {
       1200: { slidesPerView: 4 },
     },
     on: {
-      init: equalizeHeights, // 🔹 Ajusta las alturas al cargar
-      slideChangeTransitionEnd: equalizeHeights, // 🔹 Ajusta cuando cambia el slide
+      init: equalizeHeights, //ajusta alturas
+      slideChangeTransitionEnd: equalizeHeights, // Ajusta cuando cambia el slide
     },
   });
 

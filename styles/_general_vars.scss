@@ -1,9 +1,0 @@
-@use './functions' as *;
-
-:root {
-  /* ### Tamaños de Espaciados ### */
-  --spacing-sm: #{rem(8px)};
-  --spacing-md: #{rem(16px)};
-  --spacing-lg: #{rem(24px)};
-  --spacing-xl: #{rem(38px)};
-}

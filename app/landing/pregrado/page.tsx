@@ -1,37 +1,48 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-import Splash from '@library/_general/sections/Splash'
+import Splash from '@/app/_library/components/splash'
 
-import Header from '@library/pregrado/sections/0_header'
-import Hero from '@library/pregrado/sections/1_hero'
-import MeetingDirector from '@library/pregrado/sections/meetingDirector'
-import Btn from '@library/_general/components/buttons/btn_general'
+import MateriasSemestre from './sections/materiasSemestre'
+import PerfilesPrograma from './sections/perfilesPrograma'
+import PreguntasFrecuentes from './sections/preguntasFrecuentes'
+import Encabezado from './sections/encabezado'
+import DatosProgramaVideo from './sections/datosProgramaVideo'
+import MeetingDirector from './sections/citaDirector'
 
 export default function Profesional() {
+  const basePath = '/landing/pregrado'
+
   return (
     <>
       <Splash />
+      <Encabezado />
+      {/* <ViewComponent path={`${basePath}/sections/header`}>
+        <Encabezado />
+      </ViewComponent> */}
 
-      <Header />
+      <DatosProgramaVideo />
+      {/* <ViewComponent path={`${basePath}/sections/datosProgramaVideo`}>
+        <DatosProgramaVideo />
+      </ViewComponent> */}
 
-      <Hero />
+      <MateriasSemestre />
+      {/* <ViewComponent path={`${basePath}/sections/materiasPorSemestre`}>
+        <MateriasSemestre />
+      </ViewComponent> */}
+
+      <PerfilesPrograma />
+      {/* <ViewComponent path={`${basePath}/sections/perfilesPrograma`}>
+        <PerfilesPrograma />
+      </ViewComponent> */}
 
       <MeetingDirector />
-
-      {/*       <ViewComponent path="pregrado/sections/0_header">
-        <Header />
-      </ViewComponent>
-
-      <ViewComponent path="/pregrado/sections/1_hero">
-        <Hero />
-      </ViewComponent>
-
-      <ViewComponent path="/pregrado/sections/meetingDirector">
+      {/* <ViewComponent path={`${basePath}/sections/meetingDirector`}>
         <MeetingDirector />
       </ViewComponent> */}
 
-      <ViewComponent path="/_general/components/buttons/btn_general">
-        <Btn id="1" className="c" color="primary" />
-      </ViewComponent>
+      <PreguntasFrecuentes />
+      {/* <ViewComponent path={`${basePath}/sections/preguntasFrecuentes`}>
+        <PreguntasFrecuentes />
+      </ViewComponent> */}
     </>
   )
 }
