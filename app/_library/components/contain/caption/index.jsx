@@ -1,0 +1,17 @@
+import PropTypes from 'prop-types'
+import './style.scss'
+
+const Caption = ({ children, className, id }) => {
+  return (
+    <lfr-editable id={`caption-${id || ''}`} type="rich-text" className={`caption ${className || ''}`}>
+      {children}
+    </lfr-editable>
+  )
+}
+Caption.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+  id: PropTypes.string.isRequired
+}
+
+export default Caption

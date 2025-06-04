@@ -19,7 +19,7 @@
 
 <body id="body">
   <!-- Header -->
-   <section class="header-color">
+  <section class="header-color">
   <header class="container header">
     <div class="header__logo">
       <img src="./assets/images/logo.svg" alt="Logo" class="header__logo-image">
@@ -46,6 +46,7 @@
         <li><a href="#" class="header__mobile-menu-cta-link">Inscríbete Ahora!</a></li>
       </ul>
     </div>
+
   </header>
 </section> <div id="cta-container" class="cta-container"></div>
    <!-- Sección uno -->
@@ -145,11 +146,12 @@
         </div>
       </section>
 
-      <!-- Video -->
       <div class="program-info__image">
-        <iframe width="560" height="315"
-          src="https://www.youtube.com/embed/Yb6XUiG2ZWc?autoplay=1&loop=1&mute=1&playlist=Yb6XUiG2ZWc"
-          frameborder="0" allowfullscreen>
+        <iframe width="560" height="515"
+          src="https://www.youtube.com/embed/Yb6XUiG2ZWc?autoplay=1&mute=1&loop=1&playlist=Yb6XUiG2ZWc&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&end=&start="
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          style="pointer-events: none;">
         </iframe>
       </div>
 
@@ -160,8 +162,8 @@
   <!-- Sección dos -->
 <section id="section-two" class="section-dos">
   <section class="container subjects-carousel ">
-    <h2 class="subjects-carousel__title">Materias por Semestre</h2>
-    <p>El plan de estudios profundiza en asignaturas en las áreas de:
+    <h2 class="text-align-movil subjects-carousel__title">Materias por Semestre</h2>
+    <p class="text-align-movil">El plan de estudios profundiza en asignaturas en las áreas de:
       edificaciones, infraestructura vial e hidrotecnia.</p>
       <a href="ruta/al/archivo.pdf"
    download="Plan-de-Estudios.pdf"
@@ -190,7 +192,7 @@
             <li><i class="ph ph-check"></i> Química de Materiales</li>
             <li><i class="ph ph-check"></i> Geometría Descriptiva</li>
             <li><i class="ph ph-check"></i> Introducción a la Ingeniería</li>
-            <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería I</li>
+            <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería I </li>
         </ul>
         <div class="content-credits"><span class="credits"><strong>17</strong> Créditos</span> </div>
       </a>
@@ -201,7 +203,7 @@
                 <span class="badge">Año 1</span>
             </div>
             <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
-                Semestre 1
+                Semestre 2
             </h5>
             <ul class="subjects-list">
                 <li><i class="ph ph-check"></i> Cálculo Integral</li>
@@ -210,7 +212,7 @@
                   <li><i class="ph ph-check"></i> Programación en C</li>
                   <li><i class="ph ph-check"></i> Ecuaciones Diferenciales</li>
                   <li><i class="ph ph-check"></i> Probabilidad y Estadística</li>
-                  <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería II</li>
+                  <li><i class="ph ph-check"></i> Proyecto de Diseño en Ingeniería II </li>
             </ul>
             <div class="content-credits"><span class="credits"><strong>17</strong> Créditos</span> </div>
           </a>
@@ -218,7 +220,7 @@
     <li class="card-item swiper-slide">
         <a href="#" class="card-link">
             <div class="card-header">
-                <span class="badge">Año 1</span>
+                <span class="badge">Año 2</span>
             </div>
             <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
                 Semestre 1
@@ -238,7 +240,7 @@
     <li class="card-item swiper-slide">
         <a href="#" class="card-link">
             <div class="card-header">
-                <span class="badge">Año 1</span>
+                <span class="badge">Año 2</span>
             </div>
             <h5 class="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">
                 Semestre 1
@@ -1019,52 +1021,81 @@
     </div>
   </section>
 
-  <!-- Seccion once -->
-  <section id="section-eleven" >
-    <div class="container faq">
+<!-- Sección once -->
+<section id="section-eleven">
+  <div class="container faq">
     <h2 class="faq__title">Preguntas Frecuentes</h2>
     <div class="faq__container">
-      <div class="faq__item">
+      
+      <!-- Primera pregunta expandida por defecto -->
+      <div class="faq__item active">
         <button class="faq__question">
-          Preguntas Frecuentes (FAQ)
-          <span class="faq__icon">▼</span>
+          ¿Cuál es el perfil de ingreso al programa?
+          <span class="faq__icon"><i class="ph ph-caret-down"></i></span>
         </button>
         <div class="faq__answer">
-          <p>
-            The world's linguistic diversity is stunning with about 1,300 languages with 100K+ speakers,
-            and thousands more with fewer speakers, our world boasts many more languages than most of us realize.
-          </p>
-          <p>
-            We've worked hard to gather the robust datasets and quality knowledge required to support
-            the creation and use of everyday technology by speakers of diverse languages around the world.
-          </p>
+          <div class="faq__sub-questions">
+            <p class="faq__sub-question">¿Cuáles son los pasos para inscribirme en la universidad?</p>
+            <p class="faq__sub-question">¿Cuáles son los requisitos para aplicar a un programa de pregrado o posgrado?</p>
+            <p class="faq__sub-question">¿Dónde puedo consultar las fechas clave del proceso de admisión?</p>
+            <p class="faq__sub-question">¿Qué documentos necesito para completar mi inscripción?</p>
+            <p class="faq__sub-question">¿Cuándo y cómo recibiré los resultados de admisión?</p>
+            <p class="faq__sub-question">¿Cómo subo mis documentos a la plataforma?</p>
+            <p class="faq__sub-question">¿Cómo funciona la entrevista o prueba de admisión, si mi programa la requiere?</p>
+          </div>
         </div>
       </div>
+
+      <!-- Preguntas colapsadas -->
       <div class="faq__item">
         <button class="faq__question">
-          Preguntas Frecuentes (FAQ)
-          <span class="faq__icon">▼</span>
+          ¿Qué debo tener en cuenta al momento de realizar la inscripción?
+          <span class="faq__icon"><i class="ph ph-caret-up"></i></span>
         </button>
         <div class="faq__answer">
-          <p>
-            Pero esto significa que miles de millones de personas aún enfrentan barreras de idioma en Internet.
-          </p>
+          <div class="faq__sub-questions">
+            <p class="faq__sub-question">¿Cuáles son los pasos para inscribirme en la universidad?</p>
+            <p class="faq__sub-question">¿Cuáles son los requisitos para aplicar a un programa de pregrado o posgrado?</p>
+            <p class="faq__sub-question">¿Dónde puedo consultar las fechas clave del proceso de admisión?</p>
+            <p class="faq__sub-question">¿Qué documentos necesito para completar mi inscripción?</p>
+            <p class="faq__sub-question">¿Cuándo y cómo recibiré los resultados de admisión?</p>
+            <p class="faq__sub-question">¿Cómo subo mis documentos a la plataforma?</p>
+            <p class="faq__sub-question">¿Cómo funciona la entrevista o prueba de admisión, si mi programa la requiere?</p>
+          </div>
         </div>
       </div>
+
       <div class="faq__item">
         <button class="faq__question">
-          Preguntas Frecuentes (FAQ)
-          <span class="faq__icon">▼</span>
+          ¿Qué oportunidades tendré para desarrollarme profesionalmente?
+          <span class="faq__icon"><i class="ph ph-caret-down"></i></span>
         </button>
         <div class="faq__answer">
-          <p>
-            Esto es por lo que trabajamos para organizar la información del mundo y hacerla accesible universalmente.
-          </p>
+          <div class="faq__sub-questions">
+            <p class="faq__sub-question">¿Cuáles son los pasos para inscribirme en la universidad?</p>
+            <p class="faq__sub-question">¿Cuáles son los requisitos para aplicar a un programa de pregrado o posgrado?</p>
+            <p class="faq__sub-question">¿Dónde puedo consultar las fechas clave del proceso de admisión?</p>
+            <p class="faq__sub-question">¿Qué documentos necesito para completar mi inscripción?</p>
+            <p class="faq__sub-question">¿Cuándo y cómo recibiré los resultados de admisión?</p>
+            <p class="faq__sub-question">¿Cómo subo mis documentos a la plataforma?</p>
+            <p class="faq__sub-question">¿Cómo funciona la entrevista o prueba de admisión, si mi programa la requiere?</p>
+          </div>
         </div>
       </div>
+
+      <div class="faq__item">
+        <button class="faq__question">
+          Estoy interesado en la investigación, ¿Qué oferta tiene el programa?
+          <span class="faq__icon"><i class="ph ph-caret-down"></i></span>
+        </button>
+        <div class="faq__answer">
+          <p>Información sobre las oportunidades de investigación disponibles en el programa.</p>
+        </div>
+      </div>
+
     </div>
   </div>
-  </section>
+</section>
 
   <!-- Footer -->
    <section id="footer" >
@@ -1126,35 +1157,42 @@
 </section>
   <script>
 
-
-
-
-
-
-
-
-
-
     // Seccion once
-    document.addEventListener("DOMContentLoaded", function () {
-      const faqItems = document.querySelectorAll(".faq__item");
+// JavaScript para manejar la funcionalidad del FAQ
+document.addEventListener('DOMContentLoaded', function () {
+  const faqItems = document.querySelectorAll('.faq__item');
 
-      faqItems.forEach(item => {
-        const question = item.querySelector(".faq__question");
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq__question');
+    const icon = item.querySelector('.faq__icon');
 
-        question.addEventListener("click", () => {
-          const isActive = item.classList.contains("active");
+    question.addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
 
-          // Cerrar todos los elementos antes de abrir uno nuevo
-          faqItems.forEach(el => el.classList.remove("active"));
-
-          // Si no estaba activo, activarlo
-          if (!isActive) {
-            item.classList.add("active");
-          }
-        });
+      // Cerrar todos los elementos antes de abrir uno nuevo
+      faqItems.forEach(el => {
+        el.classList.remove('active');
+        const elIcon = el.querySelector('.faq__icon');
+        elIcon.innerHTML = '<i class="ph ph-caret-down"></i>';
       });
+
+      // Si no estaba activo, activarlo
+      if (!isActive) {
+        item.classList.add('active');
+        icon.innerHTML = '<i class="ph ph-caret-up"></i>';
+      }
     });
+  });
+
+  // Funcionalidad opcional para las sub-preguntas
+  const subQuestions = document.querySelectorAll('.faq__sub-question');
+  subQuestions.forEach(subQuestion => {
+    subQuestion.addEventListener('click', function() {
+      // Aquí puedes agregar funcionalidad adicional para las sub-preguntas
+      console.log('Sub-pregunta clickeada:', this.textContent);
+    });
+  });
+});
   </script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.js"></script>

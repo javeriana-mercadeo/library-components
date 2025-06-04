@@ -1,0 +1,164 @@
+// ==========================================
+// MIXINS OPTIMIZADOS PARA TEMAS
+// ==========================================
+@use 'sass:meta';
+@use 'sass:map';
+@use 'variables' as *;
+@use 'colors' as *;
+
+// GENERAR VARIABLES BASE (tema light por defecto)
+// ------------------------------------------
+@mixin generate-base-vars($colors-map) {
+  :root {
+    --theme: 'light';
+
+    @each $color-name, $color-values in $colors-map {
+      @each $variant, $value in $color-values {
+        @if $variant != '' {
+          --#{$color-name}-#{$variant}: #{$value};
+        } @else {
+          --#{$color-name}: #{$value};
+        }
+      }
+    }
+  }
+}
+
+// GENERAR TEMA ESPECÍFICO (agrupado en un solo bloque)
+// ------------------------------------------
+@mixin generate-theme($theme-name, $theme-colors) {
+  :root[data-theme='#{$theme-name}'] {
+    --theme: '#{$theme-name}';
+
+    @each $color-name, $color-values in $theme-colors {
+      @each $variant, $value in $color-values {
+        @if $variant != '' {
+          --#{$color-name}-#{$variant}: #{$value};
+        } @else {
+          --#{$color-name}: #{$value};
+        }
+      }
+    }
+  }
+}
+
+// INICIALIZAR TODOS LOS TEMAS DE FORMA OPTIMIZADA
+// ------------------------------------------
+@mixin initialize-themes {
+  // 1. Generar variables base (tema light)
+  @include generate-base-vars($colors-map);
+
+  // 2. Generar cada tema específico en bloques separados
+  @each $theme-name, $theme-colors in $colors-theme {
+    @include generate-theme($theme-name, $theme-colors);
+  }
+}
+
+// RESPONSIVE
+// ------------------------------------------
+@mixin responsive($break_point: $breakpoint-md) {
+  @media (min-width: $break_point) {
+    @content;
+  }
+}
+
+// DARK THEME
+// ------------------------------------------
+@mixin dark-theme {
+  [data-theme*='-dark'] &,
+  [data-theme='dark'] & {
+    @content;
+  }
+}
+
+// TRANSICIONES
+// ------------------------------------------
+@mixin hover-transition {
+  transition: $transition ease;
+
+  &:hover {
+    transition: $transition ease;
+  }
+}
+
+// LIFERAY EDIT MODE
+// ------------------------------------------
+@mixin liferay-edit-mode {
+  .has-edit-mode-menu & {
+    @content;
+  }
+
+  .signed-in & {
+    @content;
+  }
+}
+
+// APLICAR VARIANTES DE COMPONENTES POR TEMA
+// ------------------------------------------
+@mixin theme-variants-component($base-class, $mixin-ref) {
+  // Estilos por defecto (sin tema explícito)
+  @each $color-name, $color-values in $colors-map {
+    .#{$base-class}-#{$color-name} {
+      @include meta.apply($mixin-ref, ($color-values));
+    }
+  }
+
+  // Estilos para cada tema con [data-theme="..."]
+  @each $theme-name, $theme-values in $colors-theme {
+    [data-theme='#{$theme-name}'] {
+      @each $color-name, $color-values in $theme-values {
+        .#{$base-class}-#{$color-name} {
+          @include meta.apply($mixin-ref, ($color-values));
+        }
+      }
+    }
+  }
+}
+
+// RESPONSIVE BREAKPOINTS
+// ------------------------------------------
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: $breakpoint-sm) {
+      @content;
+    }
+  } @else if $breakpoint == md {
+    @media (min-width: $breakpoint-md) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-lg) {
+      @content;
+    }
+  } @else if $breakpoint == xl {
+    @media (min-width: $breakpoint-xl) {
+      @content;
+    }
+  }
+}
+
+// TEXTO STYLING
+// ------------------------------------------
+@mixin text-style($size, $weight: $font-weight-regular, $spacing: $letter-spacing-normal, $line-height: $line-height-base) {
+  font-size: $size;
+  font-weight: $weight;
+  letter-spacing: $spacing;
+  line-height: $line-height;
+  font-family: $font-family-primary;
+}
+
+// CONTRASTE AUTOMÁTICO DE TEXTO
+// ------------------------------------------
+@mixin auto-text-contrast($property, $background-var) {
+  #{$property}: var(--neutral-100);
+
+  @include dark-theme {
+    #{$property}: var(--neutral-1000);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      #{$property}: var(--neutral-1000);
+    }
+  }
+}
