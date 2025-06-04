@@ -5,7 +5,6 @@ export default function swiperCarousel() {
     if (typeof window !== 'undefined' && !window.Swiper) {
       // Verificar si ya existe el script
       const existingScript = document.querySelector('#swiper-js');
-      const existingCSS = document.querySelector('#swiper-css');
       
       if (!existingScript) {
         // Cargar CSS
@@ -94,13 +93,13 @@ export default function swiperCarousel() {
   };
 
   // Ejecutar la carga de Swiper
-  loadSwiper()
-}
+  loadSwiper();
 
- // Retornar función de cleanup
+  // Retornar función de cleanup
   return () => {
     if (window.subjectsSwiper) {
       window.subjectsSwiper.destroy(true, true);
       window.subjectsSwiper = null;
     }
-};
+  };
+}

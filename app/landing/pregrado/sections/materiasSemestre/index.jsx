@@ -1,21 +1,30 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import Container from '@library/components/container/Container'
 
 import script from './script.js'
 import './styles.scss'
 
 const MateriasSemestre = () => {
+  const cleanupRef = useRef(null);
+
   // Ejecutar el script cuando el componente se monta
   useEffect(() => {
-    script()
-  }, [])
+    // Ejecutar el script y guardar la función de cleanup
+    cleanupRef.current = script();
+
+    // Cleanup cuando el componente se desmonta
+    return () => {
+      if (cleanupRef.current) {
+        cleanupRef.current();
+      }
+    };
+  }, []);
 
   return (
-    <Container>
-      <div id="section-two" className="section-dos">
-        <div className="container subjects-carousel">
+      <section id="section-two" className="section-dos">
+        <Container className="container subjects-carousel">
           <h2 className="text-align-movil subjects-carousel__title">Materias por Semestre</h2>
           <p className="text-align-movil">
             El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
@@ -199,9 +208,9 @@ const MateriasSemestre = () => {
               </button>
             </div>
           </div>
-        </div>
-      </div>
-    </Container>
+        </Container>
+      </section>
   )
 }
+
 export default MateriasSemestre
