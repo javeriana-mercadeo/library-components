@@ -1,208 +1,143 @@
 'use client'
-
-import { useEffect } from 'react'
-import Btn from '@library/components/contain/btn'
-import Container from '@library/components/container/Container'
-
-import script from './script.js'
+import React, { Component, createRef } from 'react'
 import './styles.scss'
 
-const MateriasSemestre = () => {
-  // Ejecutar el script cuando el componente se monta
-  useEffect(() => {
-    script()
-  }, [])
+class DobleTitulacion2 extends Component {
+  constructor(props) {
+    super(props)
+    this.containerRef = createRef()
+    this.rightColumnRef = createRef()
+  }
 
-  return (
-    <Container>
-      <div id="section-two" className="section-dos">
-        <div className="container subjects-carousel">
-          <h2 className="text-align-movil subjects-carousel__title">Materias por Semestre</h2>
-          <p className="text-align-movil">
-            El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
-          </p>
+  componentDidMount() {
+    if (window.innerWidth > 768) {
+      const container = this.containerRef.current
+      const rightColumn = this.rightColumnRef.current
 
-          <a
-            href="ruta/al/archivo.pdf"
-            download="Plan-de-Estudios.pdf"
-            className="button-plan text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 flex items-center gap-2"
-            aria-label="Descargar Plan de Estudios en formato PDF">
-            Descargar Plan de Estudios
-            <i className="ph ph-download" aria-hidden="true"></i>
-          </a>
+      this.handleWheel = e => {
+        const isMouseOverRightColumn = rightColumn.contains(e.target)
+        const deltaY = e.deltaY
 
-          <div className="container swiper">
-            <div className="card-wrapper subjects-swiper">
-              {/* Card slides container */}
-              <div className="card-list swiper-wrapper" role="list">
-                {/* Semestre 1 - Año 1 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 1</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 1</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Diferencial
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Álgebra Lineal
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Mecánica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Química de Materiales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Geometría Descriptiva
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Introducción a la Ingeniería
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería I
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
+        if (isMouseOverRightColumn) return
+
+        const scrollTop = rightColumn.scrollTop
+        const scrollHeight = rightColumn.scrollHeight
+        const clientHeight = rightColumn.clientHeight
+        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 2
+
+        if (deltaY > 0 && !isAtBottom) {
+          e.preventDefault()
+          rightColumn.scrollBy({ top: deltaY, behavior: 'auto' })
+        }
+      }
+
+      container.addEventListener('wheel', this.handleWheel, { passive: false })
+
+      this.handleResize = () => {}
+
+      window.addEventListener('resize', this.handleResize)
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.containerRef.current && this.handleWheel) {
+      this.containerRef.current.removeEventListener('wheel', this.handleWheel)
+    }
+
+    if (this.handleResize) {
+      window.removeEventListener('resize', this.handleResize)
+    }
+  }
+
+  render() {
+    return (
+      <div className="doble-titulacion-container" ref={this.containerRef}>
+        <div className="content-wrapper">
+          <h1 className="main-title">Doble Titulación 2</h1>
+
+          <div className="two-column-layout">
+            <div className="left-column">
+              <div className="university-building">
+                <div className="overlay-content">
+                  <h2 className="overlay-title">Internacionaliza tu MBA y amplía tu visión global</h2>
+
+                  <img
+                    src="https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-tres"
+                    alt="Universidad Pompeu Fabra - Edificio"
+                    className="university-image mobile-only"
+                  />
+
+                  <p className="overlay-description">
+                    Vive experiencias académicas en el extranjero que potencian tu perfil profesional y amplían tus oportunidades laborales.
+                  </p>
                 </div>
 
-                {/* Semestre 2 - Año 1 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 1</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 2</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Integral
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Álgebra Abstracta
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Eléctrica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Programación en C
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Ecuaciones Diferenciales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Probabilidad y Estadística
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería II
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
+                <img
+                  src="https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-tres"
+                  alt="Universidad Pompeu Fabra - Edificio"
+                  className="university-image desktop-only"
+                />
+              </div>
+            </div>
+
+            <div className="right-column" ref={this.rightColumnRef}>
+              <div className="header-section">
+                <div className="title-section">
+                  <h2 className="section-title">Esquema de Doble Titulación</h2>
+                  <p className="university-info">con la Universidad Pompeu Fabra - Barcelona School of Management (BSM)</p>
                 </div>
 
-                {/* Semestre 1 - Año 2 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 2</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 1</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Vectorial
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Métodos Numéricos
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Moderna
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Diseño Digital
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Mecánica de Materiales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Electricidad y Magnetismo
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería III
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
+                <div className="logo-container">
+                  <img
+                    src="https://www.javeriana.edu.co/recursosdb/d/info-prg/logobarcelona"
+                    alt="Barcelona School of Management"
+                    className="university-logo"
+                  />
+                  <img
+                    src="https://www.javeriana.edu.co/recursosdb/d/info-prg/logoUPF"
+                    alt="Universidad Pompeu Fabra"
+                    className="university-logo"
+                  />
+                </div>
+              </div>
+
+              <div className="scroll-container">
+                <div className="program-items">
+                  <div className="program-item">
+                    <img
+                      src="https://www.javeriana.edu.co/recursosdb/d/info-prg/tutulacion-uno"
+                      alt="Campus Universitario"
+                      className="program-image"
+                    />
+                    <div className="program-info">
+                      <h3 className="program-title">Misiones Internacionales:</h3>
+                      <p className="program-description">
+                        Dos experiencias académicas en innovación, estrategia y emprendimiento, incluidas en la matrícula.
+                      </p>
                     </div>
                   </div>
-                </div>
 
-                {/* Semestre 2 - Año 2 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 2</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 2</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Análisis Complejo
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Sistemas de Control
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Electrónica Analógica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Termodinámica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Fundamentos de Redes
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Procesamiento de Señales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería IV
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
+                  <div className="program-item">
+                    <img
+                      src="https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-dos"
+                      alt="Aula de clases"
+                      className="program-image"
+                    />
+                    <div className="program-info">
+                      <h3 className="program-title">Summer Business School:</h3>
+                      <p className="program-description">
+                        Programa intersemestral con docentes internacionales para complementar tu formación.
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
-
-              {/* Paginación */}
-              <div className="swiper-pagination subjects-pagination" role="tablist" aria-label="Control de páginas del carrusel"></div>
-
-              {/* Botones de navegación */}
-              <button className="swiper-slide-button subjects-prev" aria-label="Ir al slide anterior" type="button">
-                <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
-              </button>
-              <button className="swiper-slide-button subjects-next" aria-label="Ir al siguiente slide" type="button">
-                <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
-              </button>
             </div>
           </div>
         </div>
       </div>
-    </Container>
-  )
+    )
+  }
 }
-export default MateriasSemestre
+
+export default DobleTitulacion2

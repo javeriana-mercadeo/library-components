@@ -1,208 +1,250 @@
 'use client'
+import React, { Component } from 'react'
+import './styles.scss';
 
-import { useEffect } from 'react'
-import Btn from '@library/components/contain/btn'
-import Container from '@library/components/container/Container'
 
-import script from './script.js'
-import './styles.scss'
+class ImageSlider extends Component {
+  constructor(props) {
+    super(props)
 
-const MateriasSemestre = () => {
-  // Ejecutar el script cuando el componente se monta
-  useEffect(() => {
-    script()
-  }, [])
+    // Estado inicial
+    this.state = {
+      currentIndex: 0,
+      slidesPerView: this.getSlidesPerView(),
+      slideWidth: 0,
+      slideGap: 15
+    }
 
-  return (
-    <Container>
-      <div id="section-two" className="section-dos">
-        <div className="container subjects-carousel">
-          <h2 className="text-align-movil subjects-carousel__title">Materias por Semestre</h2>
-          <p className="text-align-movil">
-            El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
-          </p>
+    // Referencias
+    this.sliderWrapperRef = React.createRef()
+    this.scrollTimeout = null
 
-          <a
-            href="ruta/al/archivo.pdf"
-            download="Plan-de-Estudios.pdf"
-            className="button-plan text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 flex items-center gap-2"
-            aria-label="Descargar Plan de Estudios en formato PDF">
-            Descargar Plan de Estudios
-            <i className="ph ph-download" aria-hidden="true"></i>
-          </a>
+    // Bindings de métodos
+    this.handleResize = this.handleResize.bind(this)
+    this.handleScroll = this.handleScroll.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.goToSlide = this.goToSlide.bind(this)
+  }
 
-          <div className="container swiper">
-            <div className="card-wrapper subjects-swiper">
-              {/* Card slides container */}
-              <div className="card-list swiper-wrapper" role="list">
-                {/* Semestre 1 - Año 1 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 1</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 1</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Diferencial
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Álgebra Lineal
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Mecánica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Química de Materiales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Geometría Descriptiva
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Introducción a la Ingeniería
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería I
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
+  // Datos para las slides
+  slides = [
+    {
+      id: 1,
+      type: 'video',
+      videoUrl: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/multimedia-mp41',
+      title: 'Video 1'
+    },
+    {
+      id: 2,
+      type: 'video',
+      videoUrl: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/multimedia-mp44',
+      title: 'Video 2'
+    },
+    {
+      id: 3,
+      type: 'youtube',
+      youtubeUrl: 'https://www.youtube.com/watch?v=xV8jjDRgSyM',
+      title: 'YouTube Video'
+    },
+    {
+      id: 4,
+      type: 'image',
+      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
+      title: 'Imagen 1'
+    },
+    {
+      id: 5,
+      type: 'image',
+      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
+      title: 'Imagen 2'
+    },
+    {
+      id: 6,
+      type: 'image',
+      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
+      title: 'Imagen 3'
+    }
+  ]
+  getYouTubeEmbedUrl(url) {
+    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
+    const match = url.match(regExp)
+    return match && match[2].length === 11 ? `https://www.youtube.com/embed/${match[2]}` : null
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize)
+    document.addEventListener('keydown', this.handleKeyDown)
+
+    this.calculateDimensions()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize)
+    document.removeEventListener('keydown', this.handleKeyDown)
+
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout)
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.slidesPerView !== this.state.slidesPerView) {
+      const maxIndex = this.slides.length - this.state.slidesPerView
+      if (this.state.currentIndex > maxIndex) {
+        this.setState({ currentIndex: maxIndex })
+      }
+    }
+  }
+
+  getSlidesPerView() {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth >= 992) {
+        return 3
+      } else if (window.innerWidth >= 576) {
+        return
+      } else {
+        return 1
+      }
+    }
+    return 3
+  }
+
+  calculateDimensions() {
+    if (this.sliderWrapperRef.current) {
+      const slideElements = this.sliderWrapperRef.current.querySelectorAll('.slide')
+      if (slideElements.length > 0) {
+        const slideWidth = slideElements[0].offsetWidth
+        const computedStyle = window.getComputedStyle(this.sliderWrapperRef.current)
+        const slideGap = parseInt(computedStyle.gap) || 15
+
+        this.setState({ slideWidth, slideGap })
+      }
+    }
+  }
+
+  handleResize() {
+    const slidesPerView = this.getSlidesPerView()
+    this.setState({ slidesPerView }, () => {
+      this.calculateDimensions()
+    })
+  }
+
+  handleScroll() {
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout)
+    }
+
+    this.scrollTimeout = setTimeout(() => {
+      if (this.sliderWrapperRef.current) {
+        const { slideWidth, slideGap } = this.state
+        const totalSlideWidth = slideWidth + slideGap
+        const scrollPosition = this.sliderWrapperRef.current.scrollLeft
+
+        const newIndex = Math.round(scrollPosition / totalSlideWidth)
+        this.setState({ currentIndex: newIndex })
+      }
+    }, 150)
+  }
+
+  handleKeyDown(e) {
+    if (e.key === 'ArrowLeft') {
+      this.goToSlide(this.state.currentIndex - 1)
+    } else if (e.key === 'ArrowRight') {
+      this.goToSlide(this.state.currentIndex + 1)
+    }
+  }
+
+  goToSlide(index) {
+    const maxIndex = this.slides.length - this.state.slidesPerView
+    const newIndex = Math.max(0, Math.min(index, maxIndex))
+
+    this.setState({ currentIndex: newIndex })
+
+    if (this.sliderWrapperRef.current) {
+      const { slideWidth, slideGap } = this.state
+      const scrollPosition = newIndex * (slideWidth + slideGap)
+
+      this.sliderWrapperRef.current.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      })
+    }
+  }
+
+  render() {
+    const { currentIndex, slidesPerView } = this.state
+    const maxIndex = this.slides.length - slidesPerView
+
+    return (
+      <div className="slider-section">
+        <div className="carousel-title">
+          <h1>Multimedia</h1>
+        </div>
+
+        <div className="image-slider-container">
+          <div className="title-gallery">
+            <h1>Lorem ipsum dolor sit amet consectetur.</h1>
+          </div>
+
+          <div className="image-slider">
+            <button
+              className={`nav-button prev-button ${currentIndex <= 0 ? 'disabled' : ''}`}
+              onClick={() => this.goToSlide(currentIndex - 1)}
+              disabled={currentIndex <= 0}>
+              <span className="arrow-icon">&#10094;</span>
+            </button>
+
+            <button
+              className={`nav-button next-button ${currentIndex >= maxIndex ? 'disabled' : ''}`}
+              onClick={() => this.goToSlide(currentIndex + 1)}
+              disabled={currentIndex >= maxIndex}>
+              <span className="arrow-icon">&#10095;</span>
+            </button>
+
+            <div className="slider-wrapper" ref={this.sliderWrapperRef} onScroll={this.handleScroll}>
+              {this.slides.map(slide => (
+                <div className="slide" key={slide.id}>
+                  <a href={slide.link || '#'} className="slide-link" onClick={e => (slide.link ? null : e.preventDefault())}>
+                    {slide.type === 'image' && (
+                      <div className="slide-image" style={{ backgroundImage: `url(${slide.image})` }}>
+                        <div className="slide-content">
+                          <button className="content-button" aria-label={`Ver más de ${slide.title}`}></button>
+                        </div>
+                      </div>
+                    )}
+
+                    {slide.type === 'video' && (
+                      <div className="slide-video">
+                        <video
+                          src={slide.videoUrl}
+                          controls
+                          preload="metadata"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '10px' }}
+                        />
+                      </div>
+                    )}
+
+                    {slide.type === 'youtube' && (
+                      <div className="slide-video">
+                        <iframe
+                          src={this.getYouTubeEmbedUrl(slide.youtubeUrl)}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          title={slide.title}
+                          style={{ width: '100%', height: '100%', borderRadius: '10px' }}
+                        />
+                      </div>
+                    )}
+                  </a>
                 </div>
-
-                {/* Semestre 2 - Año 1 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 1</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 2</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Integral
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Álgebra Abstracta
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Eléctrica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Programación en C
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Ecuaciones Diferenciales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Probabilidad y Estadística
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería II
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Semestre 1 - Año 2 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 2</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 1</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Vectorial
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Métodos Numéricos
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Moderna
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Diseño Digital
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Mecánica de Materiales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Electricidad y Magnetismo
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería III
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Semestre 2 - Año 2 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 2</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 2</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Análisis Complejo
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Sistemas de Control
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Electrónica Analógica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Termodinámica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Fundamentos de Redes
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Procesamiento de Señales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería IV
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Paginación */}
-              <div className="swiper-pagination subjects-pagination" role="tablist" aria-label="Control de páginas del carrusel"></div>
-
-              {/* Botones de navegación */}
-              <button className="swiper-slide-button subjects-prev" aria-label="Ir al slide anterior" type="button">
-                <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
-              </button>
-              <button className="swiper-slide-button subjects-next" aria-label="Ir al siguiente slide" type="button">
-                <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
-              </button>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </Container>
-  )
+    )
+  }
 }
-export default MateriasSemestre
+
+export default ImageSlider

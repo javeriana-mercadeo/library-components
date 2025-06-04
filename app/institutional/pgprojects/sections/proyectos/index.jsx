@@ -1,11 +1,11 @@
 'use client'
 import React, { Component } from 'react'
-import './script'
-import './styles.scss'
 import DetalleProyecto from './components/detalleProyecto'
 import Title from '../../../../_library/components/contain/title'
 import Paragraph from '../../../../_library/components/contain/paragraph'
 import Container from '@library/components/container/Container'
+import './styles.scss'
+import script from './script.js'
 
 class Proyectos extends Component {
   constructor(props) {
@@ -15,6 +15,10 @@ class Proyectos extends Component {
       showModal: false,
       selectedSlideIndex: null,
       isMobile: false,
+      touchStartX: 0,
+      touchEndX: 0,
+      touchStartY: 0,
+      touchEndY: 0,
       slides: [
         {
           image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1',
@@ -50,17 +54,35 @@ class Proyectos extends Component {
     }
   }
 
+  componentDidMount() {
+    this.handleResize()
+    window.addEventListener('resize', this.handleResize)
+    script()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize)
+  }
+
+  handleResize = () => {
+    this.setState({ isMobile: window.innerWidth < 768 })
+  }
+
   nextSlide = () => {
     const { slides, activeIndex } = this.state
+    const nextIndex = (activeIndex + 1) % slides.length
     this.setState({
-      activeIndex: (activeIndex + 1) % slides.length
+      activeIndex: nextIndex,
+      selectedSlideIndex: nextIndex
     })
   }
 
   prevSlide = () => {
     const { slides, activeIndex } = this.state
+    const prevIndex = (activeIndex - 1 + slides.length) % slides.length
     this.setState({
-      activeIndex: (activeIndex - 1 + slides.length) % slides.length
+      activeIndex: prevIndex,
+      selectedSlideIndex: prevIndex
     })
   }
 
@@ -76,21 +98,45 @@ class Proyectos extends Component {
     this.setState({ showModal: false, selectedSlideIndex: null })
   }
 
-  handleResize = () => {
-    this.setState({ isMobile: window.innerWidth < 768 })
+  handleTouchStart = (e) => {
+    this.setState({
+      touchStartX: e.targetTouches[0].clientX,
+      touchStartY: e.targetTouches[0].clientY
+    })
   }
 
-  componentDidMount() {
-    this.handleResize()
-    window.addEventListener('resize', this.handleResize)
+  handleTouchMove = (e) => {
+    this.setState({
+      touchEndX: e.targetTouches[0].clientX,
+      touchEndY: e.targetTouches[0].clientY
+    })
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize)
+  handleTouchEnd = () => {
+    const { touchStartX, touchEndX, touchStartY, touchEndY } = this.state
+    const deltaX = touchStartX - touchEndX
+    const deltaY = Math.abs(touchStartY - touchEndY)
+
+    if (deltaY < 50 && Math.abs(deltaX) > 50) {
+      if (deltaX > 0) {
+        this.nextSlide()
+      } else {
+        this.prevSlide()
+      }
+    }
+  }
+
+  handleSwipeInModal = (direction) => {
+    if (direction === 'up') {
+      this.nextSlide()
+    } else if (direction === 'down') {
+      this.prevSlide()
+    }
   }
 
   render() {
     const { activeIndex, slides, isMobile, showModal, selectedSlideIndex } = this.state
+    const selectedSlide = selectedSlideIndex !== null ? slides[selectedSlideIndex] : null
 
     const getPositionClass = index => {
       if (isMobile) {
@@ -112,7 +158,12 @@ class Proyectos extends Component {
         </div>
         <Container className="main-container">
           <div>
-            <div className="carousel-container">
+            <div 
+              className="carousel-container"
+              onTouchStart={this.handleTouchStart}
+              onTouchMove={this.handleTouchMove}
+              onTouchEnd={this.handleTouchEnd}
+            >
               {slides.map((slide, index) => (
                 <div
                   key={index}
@@ -149,14 +200,22 @@ class Proyectos extends Component {
             </div>
           </div>
         </Container>
-        {showModal && (
+
+        {showModal && selectedSlide && (
           <div className="modal-backdrop">
             <div className="modal-content">
               <button className="modal-close" onClick={this.closeModal}>
                 ×
               </button>
               <div className="modal-body">
-                <DetalleProyecto slideData={slides[selectedSlideIndex]?.slideData} />
+                <DetalleProyecto 
+                  proyecto={selectedSlide}
+                  slideData={selectedSlide.slideData}
+                  title={selectedSlide.title}
+                  description={selectedSlide.description}
+                  image={selectedSlide.image}
+                  onSwipe={this.handleSwipeInModal} 
+                />
               </div>
             </div>
           </div>

@@ -8,14 +8,12 @@
   width: 100%;
 
   .carousel-title {
-    margin-bottom: rem(16px);
     display: flex;
     justify-content: center;
 
     h1 {
       color: var(--neutral-400);
       font-weight: var(--font-weight-bold);
-      padding: rem(50px);
       text-align: center;
       font-size: var(--font-size-principal-title);
     }
@@ -87,18 +85,14 @@
         pointer-events: none;
 
         h2 {
-          font-size: rem(28.8px); // 1.8rem
-
-          @media (min-width: 768px) {
-            font-size: rem(22.4px); // 1.4rem
-          }
+          font-size: var(--font-size-subtitle);
         }
 
         p {
-          font-size: rem(16px); // 1rem
+          font-size: var(--font-size-paragraph);
 
           @media (min-width: 768px) {
-            font-size: rem(14.4px); // 0.9rem
+            font-size: var( --font-size-paragraph); 
           }
         }
       }
@@ -147,6 +141,10 @@
     justify-content: space-between;
     z-index: 10;
     padding: 0 rem(10px);
+
+    @media (max-width: 767px) {
+      display: none !important;
+    }
   }
 
   .carousel-control {
@@ -203,6 +201,14 @@
       }
     }
   }
+  .modal-body {
+    width: 100%;
+    height: calc(100% - 40px); 
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
 
   .modal-backdrop {
     position: fixed;
@@ -214,14 +220,21 @@
     justify-content: center;
   }
 
-  .modal-content {
-    width: 90%;
-    max-width: rem(1000px);
-    height: 90vh;
-    background: white;
-    position: relative;
-    overflow: hidden;
+.modal-content {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  max-width: rem(800px);
+  background-color: white;
+  border-radius: rem(8px);
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    width: 95vw;
+    height: 95vh;
   }
+}
+
 
   .modal-close {
     position: absolute;
@@ -233,7 +246,7 @@
     color: #fff;
     border: none;
     border-radius: 50%;
-    font-size: rem(32px); // 2rem
+    font-size: rem(32px); 
     font-weight: bold;
     cursor: pointer;
     display: flex;
