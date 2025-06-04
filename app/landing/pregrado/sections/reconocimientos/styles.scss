@@ -3,12 +3,13 @@
 #section-five{
     padding-top:25px;
     padding-bottom: 25px;
+    background-color: var(--background-100);
 
 .academic-carousel__title{
-    font-size: $font-size-h2;
-    font-weight: 700;
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-bold);
     width: fit-content;
-
+    color:var(--neutral-100);
 }
 
 .academic-carousel {
@@ -53,13 +54,13 @@ h1 {
     /* 🔹 Efecto de niebla a la izquierda */
     &::before {
         left: 0;
-        background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+        background: linear-gradient(to right, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
     }
 
     /* 🔹 Efecto de niebla a la derecha */
     &::after {
         right: 0;
-        background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+        background: linear-gradient(to left, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
     }
 
     /* Pausar animación al hacer hover en el slider */
@@ -129,12 +130,13 @@ h1 {
     height: auto;
     margin: 20px;
     object-fit: cover;
-
+    filter: grayscale(100%);
 }
 .slider-items p{
     font-size: 0.7rem;
     width: 100%;
     text-align: center;
     justify-self: unset;
+    color:var(--neutral-100);
 }
 }

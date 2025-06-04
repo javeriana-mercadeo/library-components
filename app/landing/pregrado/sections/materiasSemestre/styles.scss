@@ -1,8 +1,7 @@
 @use '@styles/autoload' as *;
 
 .section-dos {
-  max-width: $max-width;
-}
+  background-color: var(--background-100);
 
 .subjects-carousel {
   display: flex;
@@ -34,10 +33,11 @@
   }
 
   .subjects-carousel__title {
-    font-size: $font-size-h2;
-    font-weight: $font-weight-bold;
-    padding-bottom: 10px;
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-bold);
+    padding-bottom: var(--spacing-xl);
     width: fit-content;
+    color:var(--neutral-100);
   }
   p {
     font-size: $font-size-p;
@@ -45,6 +45,7 @@
     height: auto;
     width: 90%;
     text-align: center;
+    color: var(--neutral-100);
   }
   .button-plan {
     color: $primary-color;
@@ -91,7 +92,7 @@
   .card-list .card-item .card-link {
     display: flex;
     flex-direction: column;
-    background: $text-light;
+    background: var(--background-100);
     padding: 18px;
     user-select: none;
     border-radius: 12px;
@@ -126,7 +127,7 @@
     font-size: $font-size-p; //Ajuste temporal en el uso de la variable para este elemento
     font-weight: $font-weight-bold;
     letter-spacing: $letter-spacing-normal;
-    color: $gray-100;
+    color: var(--neutral-100);
     text-align: left;
     max-width: 100%;
   }
@@ -156,7 +157,6 @@
     justify-content: flex-start;
     align-self: start;
   }
-
   .subjects-list li {
     color: $gray-500;
     margin-bottom: 0.5rem;
@@ -164,7 +164,7 @@
     align-items: center;
     font-size: $font-size-p;
     font-weight: $font-weight-regular;
-
+    color: var(--neutral-100);
     i {
       font-size: 1.25rem;
       margin-right: 0.5rem;
@@ -264,4 +264,5 @@
       display: none;
     }
   }
+}
 }
