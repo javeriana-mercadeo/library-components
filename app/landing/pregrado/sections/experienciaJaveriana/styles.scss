@@ -258,7 +258,7 @@ background-color: var(--background-100);
   align-items: stretch; // Asegura que todos los items tengan la misma altura
 }
 
-@media (max-width: 768px) {
+@include responsive {
   .swiper-slide-button {
     width: 40px;
     height: 40px;

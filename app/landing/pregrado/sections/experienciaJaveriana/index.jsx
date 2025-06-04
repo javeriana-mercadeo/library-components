@@ -24,7 +24,7 @@ const ExperienciaJaveriana = () => {
     },
     {
       type: 'testimonial',
-      text: 'Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.',
+      text: 'Actualmente me desempeño en la organización Terpel en el área de Inteligencia de Negocios. Mis funciones en la compañía son hacer estudios de mercado y encontrar oportunidades de mejora, que permitan al área comercial, de mercadeo y financiera potenciar los resultados de la compañía.',
       user: {
         name: 'Carlos Gómez',
         job: 'Urbanista en CityScape',
@@ -39,7 +39,7 @@ const ExperienciaJaveriana = () => {
     },
     {
       type: 'testimonial',
-      text: 'Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.',
+      text: 'La Javeriana me dio las herramientas para liderar proyectos empresariales. Hoy impulso estrategias de crecimiento en una multinacional.',
       user: {
         name: 'Anamaría López',
         job: 'Gerente de estrategia en GlobalCorp',
@@ -92,7 +92,7 @@ const ExperienciaJaveriana = () => {
           <Paragraph className="testimonial-job">{user.job}</Paragraph>
         </div>
         <a href={user.linkedin} className="testimonial-linkedin">
-          <i class="ph ph-linkedin-logo"></i>
+          <i className="ph ph-linkedin-logo"></i>
         </a>
       </div>
     </div>

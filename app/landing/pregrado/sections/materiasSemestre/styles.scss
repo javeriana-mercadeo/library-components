@@ -200,7 +200,7 @@
     height: 13px;
     width: 13px;
     opacity: 0.5;
-    background: $primary-color;
+    background: var(--primary);
   }
   .card-wrapper .swiper-pagination-bullet-active {
     opacity: 1;
@@ -222,7 +222,7 @@
 
     i {
       font-size: 2rem;
-      color: $primary-color;
+      color: var(--primary);
       z-index: 100;
     }
 

@@ -99,8 +99,17 @@ p{
       font-weight: $font-weight-regular;
     
       .why-javeriana__column {
-        min-width: 90vw;
+        width: 90vw;
         color:var(--neutral-variant-900);
+        margin: 0 auto;
+      }
+
+      .why-javeriana__container{
+        width: 100vw;
+        gap: 0;
+      }
+      button{
+        width: 25%;
       }
   }
 
