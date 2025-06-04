@@ -30,21 +30,26 @@
       }
 
       h2 {
+        font-size: var(--font-size-title);
         margin-bottom: 1rem;
+        font-weight: var( --font-weight-bold);
       }
 
       .info-row {
         margin-bottom: 1rem;
+        font-size: var(--font-size-subtitle);
+        font-weight: var(--font-weight-bold);
 
         strong {
           display: block;
-          font-weight: 600;
+          font-weight: var(--font-weight-bold);
           margin-bottom: 0.25rem;
         }
 
         span,
         p {
           color: #444;
+          font-size: var(--font-size-subtitle);
         }
       }
 
@@ -70,7 +75,7 @@
       }
 
       .image-wrapper {
-        border-radius: 12px;
+        border-radius: rem(12px);
         overflow: hidden;
         img {
           width: 100%;

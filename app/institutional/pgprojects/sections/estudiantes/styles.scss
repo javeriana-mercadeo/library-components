@@ -1,267 +1,237 @@
 @use '@styles/autoload' as *;
 
-.section-dos {
-  max-width: $max-width;
-}
-
-.subjects-carousel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  position: relative;
-  max-width: $max-width;
-  padding-bottom: 20px;
-  margin: 0 auto;
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.slider-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
   }
-
-  body {
-    font-family: $font-family-primary;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $text-light;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    width: 100%;
-  }
-
-  .subjects-carousel__title {
-    font-size: $font-size-h2;
-    font-weight: $font-weight-bold;
-    padding-bottom: 10px;
-    width: fit-content;
-  }
-  p {
-    font-size: $font-size-p;
-    padding-bottom: 20px;
-    height: auto;
-    width: 90%;
+  
+  .slider-title {
+    color: #454F59;
+    font-weight: 700;
+    padding: 50px;
     text-align: center;
+    font-size: clamp(1.25rem, 2vw + 1rem, 1.875rem);
   }
-  .button-plan {
-    color: $primary-color;
-    padding: 15px;
-    font-weight: 600;
-    border: 1px solid $primary-color;
-
-    i {
-      padding-left: 10px;
-      size: 1rem;
-    }
-  }
-  .card-wrapper {
-    max-width: 1100px;
-    margin: 0 60px 35px;
-    padding: 20px 10px;
+  
+  .slider-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
+    padding: 0 40px;
   }
-
-  .swiper-backface-hidden .swiper-slide {
-    margin-top: 20px;
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+  
+  .slider-cards {
     display: flex;
-    align-items: stretch;
-    justify-content: center;
-    height: auto;
-  }
-
-  .card-list {
-    display: flex;
-    align-items: stretch;
-    height: 100%;
-  }
-
-  .card-item {
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    min-height: 500px;
+    position: relative;
+    min-height: 350px;
+    overflow: visible;
+    gap: 20px;
   }
-
-  .card-list .card-item .card-link {
-    display: flex;
-    flex-direction: column;
-    background: $text-light;
-    padding: 18px;
-    user-select: none;
+  
+  .student-card {
+    position: absolute;
+    width: 100%;
+    max-width: 320px;
+    height: 330px;
+    background-color: #f9f9f9;
     border-radius: 12px;
-    text-decoration: none;
-    border: 1px solid $gray-900;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.06);
-    transition: 0.2s ease;
-    width: 100%;
-    height: 100%;
-  }
-
-  .card-list .card-item .card-link:active {
-    cursor: grabbing;
-  }
-
-  .card-list .card-item .card-link:hover {
-    border: 1px solid;
-    border-color: var(--primary);
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.351);
-  }
-
-  .card-list .card-link .card-image {
-    width: 100%;
-    border-radius: 10px;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-  }
-
-  .title-subjects {
-    margin-bottom: 0.5rem;
-    border-bottom: 0.8px solid $gray-900;
-    font-size: $font-size-p; //Ajuste temporal en el uso de la variable para este elemento
-    font-weight: $font-weight-bold;
-    letter-spacing: $letter-spacing-normal;
-    color: $gray-100;
-    text-align: left;
-    max-width: 100%;
-  }
-
-  .card-list .card-link .badge {
-    color: $text-light;
-    width: fit-content;
-    padding: 8px 16px;
-    font-size: $font-size-small;
-    border-radius: 50px;
-    font-weight: $font-weight-bold;
-    background: var(--primary);
-    text-align: left;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-
-  .subjects-list {
-    list-style: none;
-    padding-top: 5px;
-    margin: 0;
-    padding-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-self: start;
-  }
-
-  .subjects-list li {
-    color: $gray-500;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    font-size: $font-size-p;
-    font-weight: $font-weight-regular;
-
-    i {
-      font-size: 1.25rem;
-      margin-right: 0.5rem;
-      color: var(--primary);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.5s ease;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0 12px;
+  
+    &.active {
+      z-index: 2;
     }
   }
-
-  .content-credits {
-    font-size: 1.125rem;
-    border-top: 0.8px solid $gray-900;
-    font-weight: bold;
-    color: $gray-800;
-    padding-top: 10px;
-    align-self: end;
+  
+  .student-image {
     width: 100%;
-    margin-top: auto;
-    strong {
-      color: $gray-500;
+    height: 65%;
+    overflow: hidden;
+  
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
-
-  .card-wrapper .swiper-pagination-bullet {
-    height: 13px;
-    width: 13px;
-    opacity: 0.5;
-    background: $primary-color;
+  
+  .student-info {
+    padding: 15px;
+    background-color: white;
+  
+    h3 {
+      font-size: clamp(0.7rem, 1vw + 0.5rem, 1rem); 
+      font-weight: 700;
+      margin: 0 0 5px;
+    }
+  
+    p {
+      font-size: clamp(0.68rem, 1vw + 0.5rem, 0.7rem);
+      color: #596773;
+      font-size: 14px;
+    }
+  
+    .company-logo {
+      height: auto;
+      max-width: 83px;
+      object-fit: contain;
+      padding-top: 5px;
+    }
   }
-  .card-wrapper .swiper-pagination-bullet-active {
-    opacity: 1;
-  }
-
-  .swiper-slide-button {
+  
+  .slider-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 10;
-    width: 50px;
-    height: 50px;
+    background-color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    font-size: 18px;
     cursor: pointer;
-    transition: all 0.3s ease;
-
-    i {
-      font-size: 2rem;
-      color: $primary-color;
-      z-index: 100;
+    z-index: 20;
+  
+    &.prev-arrow {
+      left: 10px;
     }
-
+  
+    &.next-arrow {
+      right: 10px;
+    }
+  
     &:hover {
-      transform: translateY(-50%) scale(1.1);
+      background-color: #f0f0f0;
     }
   }
-
-  .subjects-prev {
-    left: 2px;
-  }
-
-  .subjects-next {
-    right: 2px;
-  }
-
-  @media (max-width: $breakpoint-sm) {
-    .text-align-movil {
-      text-align: left;
-      width: 100%;
-    }
-    .button-plan {
-      width: 98%;
-      display: flex;
-      text-align: center;
-      justify-content: center;
-    }
-
-    .swiper-slide-button {
-      width: 40px;
-      height: 40px;
-
-      i {
-        font-size: 1.5rem;
+  
+  .slider-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #ccc;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  
+      &.active {
+        background-color: #333;
       }
     }
-
-    .card-item {
-      height: 450px !important;
-      min-height: 450px !important;
+  }
+  
+  @media (min-width: 768px) {
+    .slider-cards {
+      min-height: 350px;
+    }
+  
+    .student-card {
+      transform: translateX(-50%) scale(0.8);
+      opacity: 0.6;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+  
+      &.active {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+      }
+  
+      &.prev {
+        transform: translateX(-170%) scale(0.8);
+        opacity: 0.6;
+        z-index: 1;
+      }
+  
+      &.next {
+        transform: translateX(70%) scale(0.8);
+        opacity: 0.6;
+        z-index: 1;
+      }
     }
   }
-
-  @media (max-width: $breakpoint-sm) {
-    .card-wrapper {
-      margin: 0 10px 25px;
+  
+  @media (min-width: 992px) {
+    .slider-content {
+      padding: 0 60px;
     }
-    .card-wrapper .swiper-slide-button {
-      display: none;
+  
+    .slider-cards {
+      min-height: 350px;
+      gap: 30px;
+    }
+  
+    .student-card {
+      margin: 0 15px;
+      position: absolute;
+      transition: all 0.5s ease;
+  
+      &.active {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+        z-index: 3;
+      }
+  
+      &.next {
+        transform: translateX(85%) scale(0.9);
+        opacity: 0.7;
+        z-index: 2;
+      }
+  
+      &.prev {
+        transform: translateX(-185%) scale(0.9);
+        opacity: 0.7;
+        z-index: 1;
+      }
     }
   }
-}
+  
+  @media (min-width: 1200px) {
+    .slider-cards {
+      min-height: 380px;
+      gap: 20px;
+    }
+  
+    .student-card {
+      max-width: 350px;
+      height: 350px;
+      margin: 0 20px;
+  
+      &.prev {
+        transform: translateX(-200%) scale(0.9);
+      }
+  
+      &.next {
+        transform: translateX(100%) scale(0.9);
+      }
+  
+      &.prev-prev {
+        transform: translateX(-350%) scale(0.8);
+        opacity: 0.5;
+        z-index: 0;
+      }
+  
+      &.next-next {
+        transform: translateX(250%) scale(0.8);
+        opacity: 0.5;
+        z-index: 0;
+      }
+    }
+  }
+  

@@ -1,208 +1,84 @@
-'use client'
+import React from 'react'
+import './styles.scss';
 
-import { useEffect } from 'react'
-import Btn from '@library/components/contain/btn'
-import Container from '@library/components/container/Container'
 
-import script from './script.js'
-import './styles.scss'
+const organizarLogos = logos => {
+  if (!logos || logos.length === 0) return []
 
-const MateriasSemestre = () => {
-  // Ejecutar el script cuando el componente se monta
-  useEffect(() => {
-    script()
-  }, [])
+  const totalLogos = logos.length
+  let columnasTotal
+
+  if (totalLogos <= 3) {
+    columnasTotal = totalLogos
+  } else if (totalLogos <= 6) {
+    columnasTotal = 3
+  } else if (totalLogos <= 9) {
+    columnasTotal = 3
+  } else {
+    columnasTotal = 4
+  }
+
+  const columnas = Array(columnasTotal)
+    .fill()
+    .map(() => [])
+
+  logos.forEach((logo, index) => {
+    const columnaIndex = index % columnasTotal
+    columnas[columnaIndex].push(logo)
+  })
+
+  return columnas
+}
+
+const Herramientas = ({ logos = [] }) => {
+  const logosOrganizados = organizarLogos(logos)
 
   return (
-    <Container>
-      <div id="section-two" className="section-dos">
-        <div className="container subjects-carousel">
-          <h2 className="text-align-movil subjects-carousel__title">Materias por Semestre</h2>
-          <p className="text-align-movil">
-            El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
+    <section className="tools-container">
+      <h1 className="tools-titulo">Herramientas</h1>
+      <div className="tools-content">
+        <div className="tools-texto">
+          <h2>Lorem ipsum dolor sit amet</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur. Eget id cursus eget at congue turpis. Volutpat odio nisi dictum in congue. Suspendisse
+            diam pellentesque volutpat donec consequat tempor et quis sed. Leo sit donec scelerisque vitae risus senectus dignissim.
           </p>
+        </div>
 
-          <a
-            href="ruta/al/archivo.pdf"
-            download="Plan-de-Estudios.pdf"
-            className="button-plan text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 flex items-center gap-2"
-            aria-label="Descargar Plan de Estudios en formato PDF">
-            Descargar Plan de Estudios
-            <i className="ph ph-download" aria-hidden="true"></i>
-          </a>
-
-          <div className="container swiper">
-            <div className="card-wrapper subjects-swiper">
-              {/* Card slides container */}
-              <div className="card-list swiper-wrapper" role="list">
-                {/* Semestre 1 - Año 1 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 1</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 1</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Diferencial
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Álgebra Lineal
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Mecánica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Química de Materiales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Geometría Descriptiva
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Introducción a la Ingeniería
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería I
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
+        <div className="tools-logos-grid">
+          {logosOrganizados.map((columna, columnaIndex) => (
+            <div key={`columna-${columnaIndex}`} className={`columna-logos ${columnaIndex % 2 === 1 ? 'offset' : ''}`}>
+              {columna.map((logo, logoIndex) => (
+                <div key={`logo-${columnaIndex}-${logoIndex}`} className="logo-item">
+                  <img src={logo.imagen} alt={logo.nombre} />
                 </div>
-
-                {/* Semestre 2 - Año 1 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 1</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 2</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Integral
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Álgebra Abstracta
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Eléctrica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Programación en C
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Ecuaciones Diferenciales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Probabilidad y Estadística
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería II
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Semestre 1 - Año 2 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 2</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 1</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Vectorial
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Métodos Numéricos
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Moderna
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Diseño Digital
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Mecánica de Materiales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Electricidad y Magnetismo
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería III
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Semestre 2 - Año 2 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 2</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 2</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Análisis Complejo
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Sistemas de Control
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Electrónica Analógica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Termodinámica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Fundamentos de Redes
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Procesamiento de Señales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería IV
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Paginación */}
-              <div className="swiper-pagination subjects-pagination" role="tablist" aria-label="Control de páginas del carrusel"></div>
-
-              {/* Botones de navegación */}
-              <button className="swiper-slide-button subjects-prev" aria-label="Ir al slide anterior" type="button">
-                <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
-              </button>
-              <button className="swiper-slide-button subjects-next" aria-label="Ir al siguiente slide" type="button">
-                <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
-              </button>
+              ))}
             </div>
-          </div>
+          ))}
         </div>
       </div>
-    </Container>
+    </section>
   )
 }
-export default MateriasSemestre
+
+const App = () => {
+  const logosHerramientas = [
+    { nombre: 'AutoCAD', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/cad' },
+    { nombre: 'LT', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/lt' },
+    { nombre: 'BIM', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/mundo' },
+    { nombre: 'C3D', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/c3d' },
+    { nombre: 'Cad-A', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/cast' },
+    { nombre: 'Oracle', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/oracle' },
+    { nombre: 'ProjectW', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/sap' },
+    { nombre: 'SAP', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/sap200' },
+    { nombre: 'MAN', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/man' }
+  ]
+
+  return (
+    <div className="app">
+      <Herramientas logos={logosHerramientas} />
+    </div>
+  )
+}
+
+export default App

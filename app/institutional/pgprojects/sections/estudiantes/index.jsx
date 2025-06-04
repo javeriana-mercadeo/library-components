@@ -1,208 +1,150 @@
-'use client'
+import React from 'react'
+import './styles.scss';
 
-import { useEffect } from 'react'
-import Btn from '@library/components/contain/btn'
-import Container from '@library/components/container/Container'
 
-import script from './script.js'
-import './styles.scss'
+class StudentSlider extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentSlide: 0,
+      students: [
+        {
+          name: 'Elena Ramírez',
+          position: 'Chief Innovation Officer',
+          company: 'Tesla',
+          logo: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/tesla',
+          image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/estudiante-uno'
+        },
+        {
+          name: 'Ricardo Fernández',
+          position: 'Vicepresidente de Estrategia Global',
+          company: 'Google',
+          logo: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/google',
+          image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/estudiante-dos'
+        },
+        {
+          name: 'Elena Ramírez',
+          position: 'Chief Innovation Officer',
+          company: 'Tesla',
+          logo: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/tesla',
+          image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/estudiante-uno'
+        },
+        {
+          name: 'Ricardo Fernández',
+          position: 'Vicepresidente de Estrategia Global',
+          company: 'Google',
+          logo: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/google',
+          image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3'
+        },
+        {
+          name: 'Valeria López',
+          position: 'Directora de Desarrollo de Negocios',
+          company: 'Microsoft',
+          logo: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/microsoft',
+          image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/estudiante-tres'
+        }
+      ]
+    }
+    this.autoSlideInterval = null
+  }
 
-const MateriasSemestre = () => {
-  // Ejecutar el script cuando el componente se monta
-  useEffect(() => {
-    script()
-  }, [])
+  componentDidMount() {
+    this.startAutoSlide()
+  }
 
-  return (
-    <Container>
-      <div id="section-two" className="section-dos">
-        <div className="container subjects-carousel">
-          <h2 className="text-align-movil subjects-carousel__title">Materias por Semestre</h2>
-          <p className="text-align-movil">
-            El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
-          </p>
+  componentWillUnmount() {
+    this.stopAutoSlide()
+  }
 
-          <a
-            href="ruta/al/archivo.pdf"
-            download="Plan-de-Estudios.pdf"
-            className="button-plan text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 flex items-center gap-2"
-            aria-label="Descargar Plan de Estudios en formato PDF">
-            Descargar Plan de Estudios
-            <i className="ph ph-download" aria-hidden="true"></i>
-          </a>
+  startAutoSlide = () => {
+    this.autoSlideInterval = setInterval(this.nextSlide, 5000)
+  }
 
-          <div className="container swiper">
-            <div className="card-wrapper subjects-swiper">
-              {/* Card slides container */}
-              <div className="card-list swiper-wrapper" role="list">
-                {/* Semestre 1 - Año 1 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 1</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 1</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Diferencial
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Álgebra Lineal
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Mecánica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Química de Materiales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Geometría Descriptiva
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Introducción a la Ingeniería
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería I
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
+  stopAutoSlide = () => {
+    if (this.autoSlideInterval) {
+      clearInterval(this.autoSlideInterval)
+    }
+  }
+
+  nextSlide = () => {
+    this.setState(prevState => ({
+      currentSlide: (prevState.currentSlide + 1) % this.state.students.length
+    }))
+  }
+
+  prevSlide = () => {
+    this.setState(prevState => ({
+      currentSlide: prevState.currentSlide === 0 ? this.state.students.length - 1 : prevState.currentSlide - 1
+    }))
+  }
+
+  goToSlide = index => {
+    this.setState({
+      currentSlide: index
+    })
+  }
+
+  getSlideClass = index => {
+    const { currentSlide, students } = this.state
+    const totalSlides = students.length
+
+    if (index === currentSlide) {
+      return 'active'
+    }
+
+    const nextIndex = (currentSlide + 1) % totalSlides
+    const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides
+    const nextNextIndex = (currentSlide + 2) % totalSlides
+    const prevPrevIndex = (currentSlide - 2 + totalSlides) % totalSlides
+
+    if (index === nextIndex) return 'next'
+    if (index === prevIndex) return 'prev'
+    if (index === nextNextIndex) return 'next-next'
+    if (index === prevPrevIndex) return 'prev-prev'
+
+    return ''
+  }
+
+  render() {
+    const { students, currentSlide } = this.state
+
+    return (
+      <div className="slider-container" onMouseEnter={this.stopAutoSlide} onMouseLeave={this.startAutoSlide}>
+        <h2 className="slider-title">Estudiantes</h2>
+
+        <div className="slider-content">
+          <button className="slider-arrow prev-arrow" onClick={this.prevSlide}>
+            &lt;
+          </button>
+
+          <div className="slider-cards">
+            {students.map((student, index) => (
+              <div key={index} className={`student-card ${this.getSlideClass(index)}`}>
+                <div className="student-image">
+                  <img src={student.image} alt={student.name} />
                 </div>
-
-                {/* Semestre 2 - Año 1 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 1</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 2</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Integral
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Álgebra Abstracta
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Eléctrica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Programación en C
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Ecuaciones Diferenciales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Probabilidad y Estadística
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería II
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Semestre 1 - Año 2 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 2</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 1</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Cálculo Vectorial
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Métodos Numéricos
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Física Moderna
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Diseño Digital
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Mecánica de Materiales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Electricidad y Magnetismo
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería III
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Semestre 2 - Año 2 */}
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <div className="card-header">
-                      <span className="badge">Año 2</span>
-                    </div>
-                    <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 2</h3>
-                    <ul className="subjects-list">
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Análisis Complejo
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Sistemas de Control
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Electrónica Analógica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Termodinámica
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Fundamentos de Redes
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Procesamiento de Señales
-                      </li>
-                      <li>
-                        <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería IV
-                      </li>
-                    </ul>
-                    <div className="content-credits">
-                      <span className="credits">
-                        <strong>17</strong> Créditos
-                      </span>
-                    </div>
-                  </div>
+                <div className="student-info">
+                  <h3>{student.name}</h3>
+                  <p>{student.position}</p>
+                  <img src={student.logo} alt={student.company} className="company-logo" />
                 </div>
               </div>
-
-              {/* Paginación */}
-              <div className="swiper-pagination subjects-pagination" role="tablist" aria-label="Control de páginas del carrusel"></div>
-
-              {/* Botones de navegación */}
-              <button className="swiper-slide-button subjects-prev" aria-label="Ir al slide anterior" type="button">
-                <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
-              </button>
-              <button className="swiper-slide-button subjects-next" aria-label="Ir al siguiente slide" type="button">
-                <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
-              </button>
-            </div>
+            ))}
           </div>
+
+          <button className="slider-arrow next-arrow" onClick={this.nextSlide}>
+            &gt;
+          </button>
+        </div>
+
+        <div className="slider-dots">
+          {students.map((_, index) => (
+            <span key={index} className={`dot ${index === currentSlide ? 'active' : ''}`} onClick={() => this.goToSlide(index)}></span>
+          ))}
         </div>
       </div>
-    </Container>
-  )
+    )
+  }
 }
-export default MateriasSemestre
+
+export default StudentSlider

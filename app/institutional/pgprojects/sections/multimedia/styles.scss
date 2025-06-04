@@ -1,257 +1,224 @@
 @use '@styles/autoload' as *;
 
-.hero-carousel {
+.slider-section{
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.carousel-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 1200px;
+  h1 {
+    color: #454F59;
+    font-weight: 700;
+    padding: 50px;
+    text-align: center;
+    font-size: clamp(1.25rem, 2vw + 1rem, 1.875rem);
+  }
+}
+
+.image-slider-container {
+  background-image: url('https://www.javeriana.edu.co/recursosdb/d/info-prg/fondo-2');
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  height: 688px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 20px;
+  background-repeat: no-repeat;
+  background-size: cover; 
+  background-position: center;
+}
+@media (max-width: 1200px) {
+  .image-slider-container {
+    border-radius: 0; 
+  }
+}
+.title-gallery {
+  color: #ffffff;
+  font-weight: 700;
+  text-align: left;
+  font-size: clamp(1.5rem, 2.5vw, 3rem);
+  display: flex;
+  align-items: center;
+  justify-items: left;
+  max-width: 1200px;
 
-  .carousel-title {
-    margin-bottom: rem(16px);
-    display: flex;
-    justify-content: center;
+  h1 {
+    max-width: 45%;
+    padding-top: 10%;
+    padding-left: 8%;
+  }
+}
 
-    h1 {
-      color: var(--neutral-400);
-      font-weight: var(--font-weight-bold);
-      padding: rem(50px);
-      text-align: center;
-      font-size: var(--font-size-principal-title);
-    }
+.image-slider {
+  position: relative;
+  overflow: hidden;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.slider-wrapper {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 20px;
+  gap: 15px;
+  background-color: rgba(255, 255, 255, 0.623);
+  margin-bottom: 15px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.slide {
+  flex: 0 0 calc(100% - 15px);
+  scroll-snap-align: start;
+  position: relative;
+
+  @media (min-width: 576px) {
+    flex: 0 0 calc(50% - 15px);
   }
 
-  .main-container {
-    position: relative;
-    width: 100%;
-
-    @supports (aspect-ratio: 1 / 1) {
-      aspect-ratio: 1 / 1;
-
-      @media (min-width: 768px) {
-        aspect-ratio: 3 / 1;
-      }
-    }
-
-    @supports not (aspect-ratio: 1 / 1) {
-      height: 0;
-      padding-bottom: 100%;
-
-      @media (min-width: 768px) {
-        padding-bottom: 33.333%;
-      }
-    }
+  @media (min-width: 992px) {
+    flex: 0 0 calc(33.333% - 15px);
   }
+}
 
-  .carousel-container {
-    position: absolute;
-    top: 0;
-    left: 0;
+.slide-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 10px;
+  overflow: hidden;
+
+  &:hover .slide-image {
+    transform: scale(1.03);
+  }
+}
+.slide-video {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+
+  video {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    object-fit: cover;
   }
 
-  .carousel-slide {
-    position: absolute;
-    top: 0;
-    opacity: 0;
-    display: none;
-    transition: all 0.5s ease-in-out;
-
-    .slide-image {
-      width: 100%;
-      padding-bottom: 100%;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      cursor: pointer;
-      transition: transform 0.4s ease;
-      border-radius: 0;
-
-      &:hover {
-        transform: scale(0.9);
-      }
-
-      .slide-content {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        padding: var(--spacing-lg);
-        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-        color: white;
-        opacity: 0;
-        transform: translateY(rem(20px));
-        transition: all 0.3s ease;
-        pointer-events: none;
-
-        h2 {
-          font-size: rem(28.8px); // 1.8rem
-
-          @media (min-width: 768px) {
-            font-size: rem(22.4px); // 1.4rem
-          }
-        }
-
-        p {
-          font-size: rem(16px); // 1rem
-
-          @media (min-width: 768px) {
-            font-size: rem(14.4px); // 0.9rem
-          }
-        }
-      }
-
-      &:hover .slide-content {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    &.active {
-      display: block;
-      opacity: 1;
-      z-index: 1;
-
-      @media (min-width: 768px) {
-        width: 33.333%;
-        position: absolute;
-
-        &.left {
-          left: 0;
-        }
-
-        &.center {
-          left: 33.333%;
-        }
-
-        &.right {
-          left: 66.666%;
-        }
-      }
-
-      @media (max-width: 767px) {
-        left: 0;
-        width: 100%;
-      }
-    }
+  @media (min-width: 768px) {
+    height: 200px;
   }
 
-  .carousel-controls {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    z-index: 10;
-    padding: 0 rem(10px);
+  @media (min-width: 992px) {
+    height: 176px;
+  }
+}
+
+
+.slide-image {
+  position: relative;
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  border-radius: 10px;
+
+  @media (min-width: 768px) {
+    height: 200px;
   }
 
-  .carousel-control {
-    background: rgba(255, 255, 255, 0.836);
-    color: var(--primary);
-    width: rem(32px);
-    height: rem(32px);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 rem(2px) rem(10px) rgba(0, 0, 0, 0.1);
+  @media (min-width: 992px) {
+    height: 176px;
+  }
+}
+
+.slide-content {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background-color: #fff;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   }
 
-  .carousel-control:hover {
-    background: var(--primary);
-    color: var(--neutral);
-    transform: scale(1.1);
+  .arrow-icon {
+    font-size: 20px;
+    color: #333;
   }
 
-  .carousel-control i {
-    font-size: rem(32px);
-    line-height: 1;
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
+}
 
-  .carousel-indicators {
-    position: absolute;
-    bottom: rem(20px);
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: rem(8px);
-    z-index: 15;
+.prev-button {
+  left: 15px;
+}
 
-    .indicator {
-      width: rem(12px);
-      height: rem(12px);
-      border-radius: 50%;
-      background: rgba(235, 234, 234, 0.6);
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
+.next-button {
+  right: 15px;
+}
 
-      &.active {
-        background: var(--primary-600);
-        transform: scale(1.2);
-      }
+@media (max-width: 575px) {
+  .nav-button {
+    width: 38px;
+    height: 38px;
 
-      &:hover {
-        background: rgba(0, 0, 0, 0.5);
-      }
+    .arrow-icon {
+      font-size: 18px;
     }
   }
 
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .prev-button {
+    left: 10px;
   }
 
-  .modal-content {
-    width: 90%;
-    max-width: rem(1000px);
-    height: 90vh;
-    background: white;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .modal-close {
-    position: absolute;
-    top: rem(10px);
-    right: rem(15px);
-    width: rem(40px);
-    height: rem(40px);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    font-size: rem(32px); // 2rem
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-      background 0.3s ease,
-      transform 0.2s ease;
-    z-index: 10;
-
-    &:hover {
-      background-color: rgba(8, 29, 57, 0.9);
-      transform: scale(1.05);
-    }
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 rem(2px) #ffffffaa;
-    }
+  .next-button {
+    right: 10px;
   }
 }
