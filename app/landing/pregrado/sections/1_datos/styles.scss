@@ -10,7 +10,6 @@
   display: grid;
   width: 100%;
   margin: 0 auto;
-  padding: var(--spacing-xl) var(--spacing-sm);
 
   // ==========================================
   // MOBILE LAYOUT - Una columna, video después del párrafo
@@ -25,7 +24,7 @@
     'details'
     'enrollment';
 
-  @include responsive($breakpoint-md) {
+  @include responsive {
     // ==========================================
     // DESKTOP LAYOUT - Dos columnas, video a la derecha
     // ==========================================
@@ -72,25 +71,8 @@
 
   &_description {
     grid-area: description;
-    margin: var(--spacing-sm) 0;
-
-    strong {
-      color: var(--neutral-200);
-      font-weight: var(--font-weight-medium);
-    }
   }
 
-  // ==========================================
-  // CONTENIDO DEL PROGRAMA
-  // ==========================================
-  &_content {
-    // Remover este contenedor wrapper ya que usamos grid directamente
-    display: contents; // Esto hace que los hijos se comporten como si estuvieran directamente en el grid
-  }
-
-  // ==========================================
-  // DETALLES DEL PROGRAMA
-  // ==========================================
   .program-details {
     grid-area: details;
     align-self: start;
@@ -146,6 +128,7 @@
     overflow: hidden;
     background: var(--neutral-900);
     align-self: start;
+    margin-bottom: var(--spacing-lg);
 
     // Mobile: aspect ratio 16:9 (horizontal)
     aspect-ratio: 16 / 9;
@@ -285,9 +268,6 @@
   // RESPONSIVE EXTREMO - MÓVILES PEQUEÑOS
   // ==========================================
   @media (max-width: 375px) {
-    padding: var(--spacing-md) var(--spacing-sm);
-    gap: var(--spacing-md);
-
     &__media {
       border-radius: var(--border-radius-md);
       max-height: 250px;
@@ -454,39 +434,3 @@
     }
   }
 }
-
-// ==========================================
-// DEBUGGING STYLES (solo en desarrollo)
-// ==========================================
-// Descomenta estas líneas para debugging visual
-/*
-.program-data__media {
-  border: 2px solid red;
-
-  &[data-current-video="mobile"]::after {
-    content: "MOBILE VIDEO";
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(255, 0, 0, 0.8);
-    color: white;
-    padding: 4px 8px;
-    font-size: 12px;
-    z-index: 10;
-    opacity: 1 !important;
-  }
-
-  &[data-current-video="desktop"]::after {
-    content: "DESKTOP VIDEO";
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(0, 0, 255, 0.8);
-    color: white;
-    padding: 4px 8px;
-    font-size: 12px;
-    z-index: 10;
-    opacity: 1 !important;
-  }
-}
-*/

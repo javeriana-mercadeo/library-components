@@ -1,5 +1,5 @@
 // ===== LIBRERÍAS EXTERNAS =====
-// Compilado automáticamente el: 2025-06-03T21:48:26.142Z
+// Compilado automáticamente el: 2025-06-04T13:08:55.420Z
 
 var head = document.getElementsByTagName("head")[0];
 
@@ -16,7 +16,7 @@ for (const weight of ["regular", "thin", "light", "bold", "fill", "duotone"]) {
 // ===== CÓDIGO PERSONALIZADO =====
 
 // ===== IMPORTADO DE: ../utils/main =====
-// Archivo: C:\Users\gavilanm-j\Documents\Desarrollo\Library-components\utils\main.js
+// Archivo: C:\Users\Amaro\OneDrive\Documentos\Trabajos\DMPA - Pontificia Universidad Javeriana\Desarrollo\library-components\utils\main.js
 function main() {
   // ===========================================
   // UTILIDADES GLOBALES
@@ -154,7 +154,7 @@ function main() {
 
 
 // ===== IMPORTADO DE: ../app/_library/components/contain/btn/script.js =====
-// Archivo: C:\Users\gavilanm-j\Documents\Desarrollo\Library-components\app\_library\components\contain\btn\script.js
+// Archivo: C:\Users\Amaro\OneDrive\Documentos\Trabajos\DMPA - Pontificia Universidad Javeriana\Desarrollo\library-components\app\_library\components\contain\btn\script.js
 /**
  * script.js - Efecto de onda optimizado para botones
  * Versión optimizada para mejor rendimiento y compatibilidad SSR
