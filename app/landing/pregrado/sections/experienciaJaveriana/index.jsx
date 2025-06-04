@@ -4,6 +4,8 @@ import { useEffect } from 'react'
 import Paragraph from '@library/components/contain/paragraph'
 import Container from '@/app/_library/components/container/Container.jsx'
 
+import linkedInImg from './assets/linkedin.svg'
+
 import script from './script.js'
 import './styles.scss'
 
@@ -39,8 +41,8 @@ const ExperienciaJaveriana = () => {
       type: 'testimonial',
       text: 'Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.',
       user: {
-        name: 'Carlos Gómez',
-        job: 'Urbanista en CityScape',
+        name: 'Anamaría López',
+        job: 'Gerente de estrategia en GlobalCorp',
         avatar: 'https://gravatar.com/images/homepage/avatar-07.png',
         linkedin: '#'
       }
@@ -54,9 +56,9 @@ const ExperienciaJaveriana = () => {
       type: 'testimonial',
       text: 'Mi paso por la Javeriana fue clave para llegar a donde estoy. Ahora trabajo en diseño urbano, creando ciudades más inclusivas.',
       user: {
-        name: 'Carlos Gómez',
-        job: 'Urbanista en CityScape',
-        avatar: './assets/carlos-gomez.png',
+        name: 'Isabella Martínez',
+        job: 'Economista',
+        avatar: 'https://pfpmaker.com/images/ai/examples/first/results/result-pic-1.png',
         linkedin: '#'
       }
     }
@@ -90,7 +92,7 @@ const ExperienciaJaveriana = () => {
           <Paragraph className="testimonial-job">{user.job}</Paragraph>
         </div>
         <a href={user.linkedin} className="testimonial-linkedin">
-          <img src="./assets/linkedin.svg" alt="LinkedIn" />
+          <i class="ph ph-linkedin-logo"></i>
         </a>
       </div>
     </div>

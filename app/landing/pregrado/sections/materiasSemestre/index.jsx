@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from 'react'
 import Container from '@library/components/container/Container'
-import Btn from '@library/components/contain/btn'
 
 import script from './script.js'
 import './styles.scss'
@@ -37,8 +36,8 @@ const MateriasSemestre = () => {
             type="button"
             data-lfr-editable-id="btn"
             data-lfr-editable-type="text">
-            <span class="btn-text">Descargar Plan de Estudios</span>
-            <span class="btn-icon btn-icon-end"><i className="ph ph-download" aria-hidden="true"></i></span>
+            <span className="btn-text">Descargar Plan de Estudios</span>
+            <span className="btn-icon btn-icon-end"><i className="ph ph-download" aria-hidden="true"></i></span>
           </button>
 
           {/* <a

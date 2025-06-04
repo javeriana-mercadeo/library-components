@@ -86,11 +86,11 @@ background-color: var(--background-100);
 }
 
 .testimonial-text {
-  font-size: 1rem;
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-weight-bold);
   line-height: 1.4;
   flex-grow: 1; // Ocupa el espacio disponible
   display: flex;
-  align-items: center;
   color:var(--neutral);
 }
 
@@ -101,6 +101,10 @@ background-color: var(--background-100);
   gap: 10px;
   width: 100%;
   margin-top: auto; // Empuja hacia abajo
+
+  i{
+    font-size:var(--icon-size-md);
+  }
 }
 
 .testimonial-avatar {
@@ -126,12 +130,12 @@ background-color: var(--background-100);
 
 .testimonial-name {
   font-size: 0.8rem;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
   margin: 0;
 }
 
 .testimonial-job {
-  font-size: 0.7rem;
+  font-size: var(--font-size-small);
   margin: 0;
   opacity: 0.8;
 }
@@ -157,7 +161,7 @@ background-color: var(--background-100);
 .experience-carousel__image {
   width: 100%;
   height: 100%;
-  border-radius: 10px;
+  border-radius: var(--border-radius-lg);
   object-fit: cover;
   min-width: 220px;
   max-width: 270px;
@@ -173,7 +177,7 @@ background-color: var(--background-100);
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: var(--border-radius-md);
 }
 
 // Tarjeta de Instagram
@@ -182,14 +186,14 @@ background-color: var(--background-100);
   align-items: center;
   
   .instagram-media {
-    height: 100% !important;
-    max-height: none !important;
-    min-height: 100% !important;
-    max-width: 270px !important;
-    min-width: 220px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
+    height: 100% ;
+    max-height: none;
+    min-height: 100%;
+    max-width: 270px;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 
@@ -223,8 +227,8 @@ background-color: var(--background-100);
 }
 
 .swiper-slide-button i {
-  font-size: 2rem;
-  color: #007bff;
+  font-size: var(--icon-size-lg);
+  color: var(--primary);
   z-index: 100;
 }
 
