@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types'
 
-import './paragraph.scss'
-
 const Paragraph = ({ children, className, id }) => {
   return (
     <lfr-editable id={`paragraph-${id}`} type="rich-text" className={className ? `paragraph ${className}` : 'paragraph'}>
