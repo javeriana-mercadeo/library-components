@@ -33,7 +33,7 @@ const MateriasSemestre = () => {
 
           <button
             data-dmpa-element-id="btn"
-            class="btn btn-primary btn-outline btn-md"
+            className="btn btn-primary btn-outline btn-md"
             type="button"
             data-lfr-editable-id="btn"
             data-lfr-editable-type="text">
