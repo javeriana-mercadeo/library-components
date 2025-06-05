@@ -189,7 +189,7 @@
   .caption-neutral {
     // Variante default - solo texto sin contenedor
     &.caption-default {
-      color: var(--neutral-600);
+      color: var(--neutral-500);
       background-color: transparent;
       padding: 0;
       border: none;
@@ -404,7 +404,7 @@
   @include dark-theme {
     // Preservar modificadores en tema oscuro también
     &.caption-default {
-      color: $color-300;
+      color: $color-500;
 
       &.caption-bold {
         font-weight: var(--font-weight-bold) !important;
@@ -421,7 +421,7 @@
     }
 
     &.caption-solid {
-      color: $color-300;
+      color: $color-500;
       background-color: $color-900;
 
       &.caption-bold {

@@ -5,125 +5,84 @@ import Container from '@library/components/container'
 import Title from '@/app/_library/components/contain/title'
 import Caption from '@/app/_library/components/contain/caption'
 import Paragraph from '@/app/_library/components/contain/paragraph'
-import ProgramDetails from './components/ProgramDetails'
+import Btn from '@/app/_library/components/contain/btn'
+import ProgramDetail from './components/ProgramDetail.jsx'
+
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'
 
-const Datos = () => {
-  const elementName = info.id
+const DatosProgramaVideo = () => {
+  const elementName = info.id || 'datos-programa-video'
   const baseClass = 'program-data'
 
-  // Inicializar script del video
+  // Inicializar script cuando el componente se monta
   useEffect(() => {
     script()
   }, [])
 
   // Configuración de todos los detalles del programa
-  const programDetails = [
+  const details = [
     {
+      id: 'data-puj-title-graduation',
       icon: 'ph-graduation-cap',
       label: 'Título',
-      value: 'Ingeniero Civil',
+      value: 'Cargando título...',
       type: 'normal'
     },
     {
+      id: 'data-puj-academic-level',
       icon: 'ph-student',
       label: 'Nivel Académico',
-      value: 'Pregrado',
+      value: 'Cargando nivel académico...',
       type: 'normal'
     },
     {
+      id: 'data-puj-duration',
       icon: 'ph-calendar-dots',
       label: 'Duración',
-      value: 'Ocho (8) semestres',
+      value: 'Cargando duración...',
       type: 'normal'
     },
     {
+      id: 'data-puj-modality',
       icon: 'ph-sun',
       label: 'Modalidad',
-      value: 'Presencial / Diurna',
+      value: 'Cargando modalidad...',
       type: 'normal'
     },
     {
+      id: 'data-puj-price',
       icon: 'ph-piggy-bank',
       label: 'Inversión Semestre',
-      value: '$18,059,000 Semestral*',
-      type: 'modal',
-      modalContent: (
-        <div>
-          <p>
-            <strong>Detalles de la inversión semestral:</strong>
-          </p>
-          <ul>
-            <li>
-              Matrícula: <span className="highlight">$16,059,000</span>
-            </li>
-            <li>
-              Seguro estudiantil: <span className="highlight">$150,000</span>
-            </li>
-            <li>
-              Carné universitario: <span className="highlight">$50,000</span>
-            </li>
-            <li>
-              Bienestar universitario: <span className="highlight">$1,800,000</span>
-            </li>
-          </ul>
-          <p>
-            <strong>Descuentos disponibles:</strong>
-          </p>
-          <ul>
-            <li>Hermanos estudiando: 10% de descuento</li>
-            <li>Excelencia académica: Hasta 20% de descuento</li>
-            <li>Situación socioeconómica: Evaluación individual</li>
-          </ul>
-          <p>*Los valores pueden variar según política institucional vigente.</p>
-        </div>
-      )
+      value: 'Cargando inversión...',
+      type: 'normal'
     },
     {
-      icon: 'ph-money',
-      label: 'Costo Inscripción',
-      value: '$150,000',
+      id: 'horarios-programa',
+      icon: 'ph-clock',
+      label: 'Horarios',
+      value: 'Lunes a viernes: 7:00 a 11:00 a.m.',
       type: 'modal',
       modalContent: (
-        <div>
+        <Paragraph className={`${baseClass}__modal-content`} id={`${elementName}-horarios-modal`}>
           <p>
-            <strong>Información del proceso de inscripción:</strong>
+            <strong>Jornada de atención:</strong>
           </p>
-          <p>El costo de inscripción incluye:</p>
           <ul>
-            <li>Procesamiento de documentos</li>
-            <li>Evaluación de admisión</li>
-            <li>Entrevista personal (si aplica)</li>
-            <li>Certificado de admisión</li>
+            <li>
+              <strong>Lunes a viernes:</strong> 7:00 a.m. a 11:00 a.m.
+            </li>
+            <li>
+              <strong>Sábados:</strong> 8:00 a.m. a 12:00 p.m. (solo con cita previa)
+            </li>
           </ul>
           <p>
-            <strong>Importante:</strong> Este valor <span className="highlight">NO es reembolsable</span> y debe pagarse antes de la fecha
-            límite de inscripción.
+            Si necesitas atención en un horario diferente, por favor comunícate con nosotros con antelación para agendar una cita
+            personalizada.
           </p>
-          <p>Métodos de pago disponibles: PSE, tarjeta de crédito, consignación bancaria.</p>
-        </div>
+        </Paragraph>
       )
-    },
-    {
-      icon: 'ph-calendar-check',
-      label: 'Fechas de cierre de inscripciones',
-      type: 'dates',
-      dates: [
-        {
-          period: 'Segundo semestre 2025',
-          date: '30 de enero de 2025'
-        },
-        {
-          period: 'Primer semestre 2026',
-          date: '30 de junio de 2025'
-        },
-        {
-          period: 'Segundo semestre 2026',
-          date: '30 de enero de 2026'
-        }
-      ]
     }
   ]
 
@@ -131,8 +90,9 @@ const Datos = () => {
     <Container id={elementName} className={baseClass}>
       {/* === FACULTAD === */}
       <Caption
-        elementId={`${baseClass}-faculty`}
+        data-puj-faculty="true"
         className={`${baseClass}_faculty`}
+        id={`${elementName}-faculty`}
         color="primary"
         size="md"
         bold={true}
@@ -141,13 +101,19 @@ const Datos = () => {
       </Caption>
 
       {/* === TÍTULO === */}
-      <Title elementId="programName" className={`${baseClass}_title`} id={`${elementName}-title`} size="3xl">
+      <Title hierarchy="h1" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-title`}>
         <span className="lead">Ingeniería Civil:</span> Construyendo el Futuro Sostenible de Colombia
       </Title>
 
       {/* === SNIES === */}
-      <Caption elementId={`${baseClass}-snies`} className={`${baseClass}_snies`} color="neutral" size="md" isEditable={false}>
-        SNIES 959
+      <Caption
+        data-puj-snies="true"
+        className={`${baseClass}_snies`}
+        id={`${elementName}-snies`}
+        color="neutral"
+        size="md"
+        isEditable={false}>
+        Cargando SNIES...
       </Caption>
 
       {/* === DESCRIPCIÓN === */}
@@ -158,24 +124,85 @@ const Datos = () => {
       </Paragraph>
 
       {/* === VIDEOS RESPONSIVOS === */}
-      <div className={`${baseClass}__media`} data-video-mobile="HxlTZ8DQAaY" data-video-desktop="IWZvfiu3gX4" data-breakpoint="768">
+      <div className={`${baseClass}_media`} data-video-mobile="HxlTZ8DQAaY" data-video-desktop="IWZvfiu3gX4" data-breakpoint="768">
         {/* Placeholder para videos que se cargarán via JavaScript */}
       </div>
 
       {/* === DETALLES DEL PROGRAMA === */}
-      <ProgramDetails details={programDetails} />
+      <div className="program-details">
+        {details.map((detail, index) => (
+          <ProgramDetail key={detail.id || `detail-${index}`} {...detail} />
+        ))}
+      </div>
 
-      {/* === INFORMACIÓN DE INSCRIPCIÓN === */}
-      <div className={`${baseClass}__enrollment`}>
-        <a href="#" className={`${baseClass}__enrollment-link`}>
+      {/* === FECHAS DE INSCRIPCIÓN === */}
+      <div className="program-dates-container">
+        <div className="program-dates program-dates--dates">
+          <div className="program-dates_icon">
+            <i className="ph ph-calendar-check"></i>
+          </div>
+
+          <div className="program-dates_content">
+            <Caption className="program-dates_label" color="neutral" size="md" isEditable={false}>
+              Fechas de cierre de inscripciones
+            </Caption>
+
+            <div data-puj-registration-dates="true" className="program-dates_dates">
+              {/* Las fechas se cargarán dinámicamente via JavaScript */}
+              <div className="program-dates_date-item">
+                <Paragraph className="program-dates_date-period" color="neutral" size="md" bold={true} isEditable={false}>
+                  Cargando fechas...
+                </Paragraph>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Btn
+          id={`${elementName}-enrollment-link`}
+          className="program-data_enrollment-link mt-6"
+          href="#"
+          variant="flat"
+          startIcon={<i className="ph ph-hand-pointing"></i>}
+          size="sm">
           Conoce el proceso de inscripción
-        </a>
-        <p className={`${baseClass}__enrollment-note`}>
+        </Btn>
+      </div>
+
+      {/* === INFORMACIÓN LEGAL === */}
+      <div className={`${baseClass}_enrollment`}>
+        <Paragraph id={`${elementName}-enrollment-note`} className={`${baseClass}_enrollment-note`} size="sm">
           *Aspirantes 2025: El valor de matrícula corresponde al costo fijado para el año 2025.
-        </p>
+        </Paragraph>
+
+        <div className={`${baseClass}_enrollment-note-container`}>
+          <Paragraph data-puj-snies="true" className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
+            Cargando SNIES...
+          </Paragraph>
+
+          <Paragraph id={`${elementName}-enrollment-legal-note`} className={`${baseClass}_enrollment-note`} size="sm">
+            {' '}
+            | Resolución de Registro Calificado: 9406 del 27 de mayo de 2022, vigente hasta el 27 de mayo de 2030. | Resolución de
+            Acreditación de Alta Calidad: 9406 del 27 de mayo del 2022, vigente por 8 años, hasta el 27 de mayo de 2030. | Duración del
+            programa:{' '}
+          </Paragraph>
+
+          <Paragraph data-puj-duration="true" className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
+            Cargando duración...
+          </Paragraph>
+
+          <Paragraph className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
+            {' '}
+            / Lugar donde se oferta:{' '}
+          </Paragraph>
+
+          <Paragraph data-puj-location="true" className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
+            Cargando lugar...
+          </Paragraph>
+        </div>
       </div>
     </Container>
   )
 }
 
-export default Datos
+export default DatosProgramaVideo

@@ -95,8 +95,9 @@ $btn-ripple-duration: 0.6s;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      width: rem(20px);
-      height: rem(20px);
+      width: var(--icon-size-sm);
+      height: var(--icon-size-sm);
+      font-size: var(--icon-size-sm);
 
       svg,
       i {
@@ -118,8 +119,9 @@ $btn-ripple-duration: 0.6s;
       font-size: rem(12px);
 
       .btn-icon {
-        width: rem(14px);
-        height: rem(14px);
+        width: var(--icon-size-xs);
+        height: var(--icon-size-xs);
+        font-size: var(--icon-size-xs);
       }
     }
 

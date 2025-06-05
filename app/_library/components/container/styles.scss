@@ -4,12 +4,16 @@
   .container {
     width: 100%;
     max-width: var(--max-width);
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg);
     margin: 0 auto;
 
     // Responsive adjustments
     @include responsive {
-      padding: var(--spacing-md) var(--spacing-lg);
+      padding: var(--spacing-lg) var(--spacing-lg);
+    }
+
+    @include liferay-edit-mode {
+      width: min-content;
     }
 
     // Variantes de ancho máximo
