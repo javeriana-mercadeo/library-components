@@ -1,0 +1,7 @@
+import Splash from '@/app/_library/components/splash'
+
+export default function ThankYouPage() {
+  return (
+    <div>page</div>
+  )
+}
