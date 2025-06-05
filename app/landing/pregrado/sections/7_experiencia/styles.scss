@@ -24,14 +24,16 @@ background-color: var(--background-100);
   font-size: var(--font-size-title);
   color: var(--neutral-100);
   width: 100%;
-  padding-bottom: 25px; // Aumentado de 15px a 25px
+  padding-bottom: 25px;
+  text-align: center;
 }
 
 .experience-carousel__description {
   color: var(--neutral-500);
-  width: 80%;
+  width: 45%;
   text-align: center;
-  margin-bottom: 30px; // Agregado margen inferior
+  margin: 0 auto;
+  margin-bottom: var(--spacing-xl);
 }
 
 .card-item-7{
