@@ -1,12 +1,51 @@
+// ==========================================
+// TIPOGRAFÍA
+// ==========================================
 @use '../abstracts/functions' as *;
 
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-$font-family: 'Raleway', serif;
 
 :root {
-  /* ### Tamaños de iconos ### */
-  --font-family: 'Raleway', serif;
+  // ==========================================
+  // FUENTE BASE
+  // ==========================================
+  --font-family: 'Raleway', sans-serif;
 
+  // ==========================================
+  // TAMAÑOS DE FUENTE
+  // ==========================================
+  --font-size-principal-title: #{rem(36px)};
+  --font-size-title: #{rem(28px)};
+  --font-size-subtitle: #{rem(22px)};
+  --font-size-caption: #{rem(18px)};
+  --font-size-paragraph: #{rem(14px)};
+  --font-size-small: #{rem(11px)};
+  --font-size-xs: #{rem(9px)};
+
+  // ==========================================
+  // PESOS
+  // ==========================================
+  --font-weight-thin: 100;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  // ==========================================
+  // ALTURA DE LÍNEA
+  // ==========================================
+  --line-height-base: 1.5;
+  --line-height-heading: 1.2;
+
+  // ==========================================
+  // ESPACIADO ENTRE LETRAS
+  // ==========================================
+  --letter-spacing-normal: normal;
+  --letter-spacing-wide: 0.05em;
+
+  // ==========================================
+  // ICONOS
+  // ==========================================
   --icon-size-2xs: #{rem(12px)};
   --icon-size-xs: #{rem(14px)};
   --icon-size-sm: #{rem(18px)};
@@ -16,28 +55,4 @@ $font-family: 'Raleway', serif;
   --icon-size-2xl: #{rem(52px)};
   --icon-size-3xl: #{rem(68px)};
   --icon-logo-big: #{rem(160px)};
-
-  /* ### Tamaños de fuente ### */
-
-  /* 📌 Títulos */
-  --font-size-principal-title: #{rem(36px)};
-  --font-size-title: #{rem(28px)};
-  --font-size-subtitle: #{rem(22px)};
-  --font-size-caption: #{rem(18px)};
-
-  /* 📌 Texto de párrafo estándar */
-  --font-size-paragraph: #{rem(14px)};
-
-  /* 📌 Tamaños pequeños (notas, info secundaria) */
-  --font-size-small: #{rem(11px)};
-  --font-size-xs: #{rem(9px)};
-
-  /* ### Grosor ### */
-
-  /* 📌 Peso de la fuente */
-  --font-weight-thin: 100;
-  --font-weight-light: 300;
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-bold: 700;
 }

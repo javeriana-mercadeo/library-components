@@ -1,5 +1,11 @@
-/* Elementos solo visibles en edición */
+// ==========================================
+// LIFERAY - OVERRIDES
+// ==========================================
+@use '../abstracts/functions' as *;
 
+// ==========================================
+// MODO EDICIÓN
+// ==========================================
 .public-page .element-edit-liferay {
   display: none;
 }
@@ -8,14 +14,15 @@
   display: initial;
 }
 
-/* Estilos del tema de liferay */
-
+// ==========================================
+// PAGINACIÓN BASE
+// ==========================================
 .pagination {
-  border-radius: 0.25rem;
+  border-radius: rem(4px);
   display: flex;
   flex-wrap: wrap;
   list-style: none;
-  margin-bottom: 0.5rem;
+  margin-bottom: rem(8px);
   padding-left: 0;
 }
 
@@ -23,238 +30,204 @@
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-}
 
-@media (max-width: 767.98px) {
-  .pagination-bar {
+  @media (max-width: 767.98px) {
     flex-direction: column;
     justify-content: center;
-  }
 
-  .pagination-bar .pagination {
-    margin-top: 0.5rem;
+    .pagination {
+      margin-top: rem(8px);
+    }
   }
 }
 
+// ==========================================
+// ELEMENTOS DE PAGINACIÓN
+// ==========================================
 .pagination-items-per-page {
-  margin-bottom: 0.5rem;
-}
+  margin-bottom: rem(8px);
 
-.pagination-items-per-page > a,
-.pagination-items-per-page > button {
-  align-items: center;
-  border-color: #dee2e6;
-  border-radius: 0.25rem;
-  border-style: solid;
-  border-width: 0.0625rem;
-  color: #007bff;
-  display: inline-flex;
-  height: 2.375rem;
-  justify-content: center;
-  line-height: 1.25;
-  padding-bottom: 0.5rem;
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  padding-top: 0.5rem;
-  text-decoration: none;
-}
+  > a,
+  > button {
+    align-items: center;
+    border: rem(1px) solid #dee2e6;
+    border-radius: rem(4px);
+    color: var(--primary-600);
+    display: inline-flex;
+    height: rem(38px);
+    justify-content: center;
+    line-height: 1.25;
+    padding: rem(8px) rem(12px);
+    text-decoration: none;
+    transition: all 0.2s ease;
 
-.pagination-items-per-page > a:hover,
-.pagination-items-per-page > button:hover {
-  background-color: #e9ecef;
-  border-color: #dee2e6;
-  color: #0056b3;
-}
+    // Estados
+    &:hover {
+      background-color: var(--neutral-900);
+      border-color: var(--neutral-700);
+      color: var(--primary-700);
+    }
 
-.pagination-items-per-page > a.focus,
-.pagination-items-per-page > a:focus,
-.pagination-items-per-page > button.focus,
-.pagination-items-per-page > button:focus {
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  outline: 0;
-}
+    &:focus,
+    &.focus {
+      box-shadow: 0 0 0 rem(3px) rgba(var(--primary-rgb), 0.25);
+      outline: 0;
+    }
 
-.pagination-items-per-page > a:active,
-.pagination-items-per-page > button:active {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: #fff;
-}
+    &:active,
+    &.active {
+      background-color: var(--primary-600);
+      border-color: var(--primary-600);
+      color: var(--neutral-1000);
+    }
 
-.pagination-items-per-page > a.active,
-.pagination-items-per-page > button.active {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: #fff;
-}
+    &:disabled,
+    &.disabled {
+      background-color: var(--neutral-1000);
+      border-color: var(--neutral-700);
+      color: var(--neutral-500);
+      cursor: not-allowed;
+      opacity: 1;
+      pointer-events: auto;
+    }
 
-.pagination-items-per-page > a:disabled,
-.pagination-items-per-page > a.disabled,
-.pagination-items-per-page > button:disabled,
-.pagination-items-per-page > button.disabled {
-  background-color: #fff;
-  border-color: #dee2e6;
-  box-shadow: none;
-  color: #6c757d;
-  cursor: not-allowed;
-  opacity: 1;
-  pointer-events: auto;
-}
+    &[aria-expanded='true'],
+    &.show {
+      background-color: var(--primary-600);
+      border-color: var(--primary-600);
+      color: var(--neutral-1000);
+    }
 
-.pagination-items-per-page > a[aria-expanded='true'],
-.pagination-items-per-page > a.show,
-.pagination-items-per-page > button[aria-expanded='true'],
-.pagination-items-per-page > button.show {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: #fff;
-}
+    // Elementos internos
+    > .c-inner {
+      margin: rem(-8px) rem(-12px);
+    }
 
-.pagination-items-per-page > a > .c-inner,
-.pagination-items-per-page > button > .c-inner {
-  margin-bottom: -0.5rem;
-  margin-left: -0.75rem;
-  margin-right: -0.75rem;
-  margin-top: -0.5rem;
-}
+    .lexicon-icon {
+      margin-left: rem(2px);
+      margin-top: rem(2px);
+    }
+  }
 
-.pagination-items-per-page > a .lexicon-icon,
-.pagination-items-per-page > button .lexicon-icon {
-  margin-left: 0.125rem;
-  margin-top: 0.125rem;
-}
+  &.disabled > a,
+  &.disabled > button {
+    background-color: var(--neutral-1000);
+    border-color: var(--neutral-700);
+    color: var(--neutral-500);
+    cursor: not-allowed;
+    opacity: 1;
+    pointer-events: auto;
+  }
 
-.pagination-items-per-page.disabled > a,
-.pagination-items-per-page.disabled > button {
-  background-color: #fff;
-  border-color: #dee2e6;
-  box-shadow: none;
-  color: #6c757d;
-  cursor: not-allowed;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-@media (max-width: 767.98px) {
-  .pagination-items-per-page + .pagination-results {
-    margin-left: auto;
+  @media (max-width: 767.98px) {
+    + .pagination-results {
+      margin-left: auto;
+    }
   }
 }
 
+// ==========================================
+// RESULTADOS
+// ==========================================
 .pagination-results {
-  border-color: transparent;
-  border-style: solid;
-  border-width: 0.0625rem;
+  border: rem(1px) solid transparent;
   line-height: 1.25;
-  margin-bottom: 0.5rem;
+  margin-bottom: rem(8px);
   margin-right: auto;
   max-width: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: rem(8px) rem(12px);
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
 
-.pagination-sm .page-link {
-  font-size: 0.875rem;
-  height: 1.9375rem;
-  line-height: 1;
-  padding-bottom: 0.25rem;
-  padding-right: 0.5rem;
-  padding-left: 0.5rem;
-  padding-top: 0.25rem;
+// ==========================================
+// VARIANTES DE TAMAÑO
+// ==========================================
+
+// Pequeña
+.pagination-sm {
+  .page-link {
+    font-size: rem(14px);
+    height: rem(31px);
+    line-height: 1;
+    padding: rem(4px) rem(8px);
+
+    > .c-inner {
+      margin: rem(-4px) rem(-8px);
+    }
+  }
+
+  .page-item:first-child .page-link,
+  .page-link-first {
+    border-radius: rem(3px) 0 0 rem(3px);
+  }
+
+  .page-item:last-child .page-link,
+  .page-link-last {
+    border-radius: 0 rem(3px) rem(3px) 0;
+  }
+
+  .pagination-items-per-page {
+    border-radius: rem(3px);
+
+    > a,
+    > button {
+      font-size: rem(14px);
+      height: rem(31px);
+      line-height: 1;
+      padding: rem(4px) rem(12px);
+
+      > .c-inner {
+        margin: rem(-4px) rem(-12px);
+      }
+    }
+
+    + .pagination-results {
+      font-size: rem(14px);
+      line-height: 1;
+      padding: rem(4px) rem(12px);
+    }
+  }
 }
 
-.pagination-sm .page-link > .c-inner {
-  margin-bottom: -0.25rem;
-  margin-left: -0.5rem;
-  margin-right: -0.5rem;
-  margin-top: -0.25rem;
-}
+// Grande
+.pagination-lg {
+  .page-link {
+    font-size: rem(20px);
+    height: rem(56px);
+    line-height: 1;
+    padding: rem(12px) rem(24px);
 
-.pagination-sm .page-item:first-child .page-link,
-.pagination-sm .page-link-first {
-  border-bottom-left-radius: 0.2rem;
-  border-top-left-radius: 0.2rem;
-}
+    > .c-inner {
+      margin: rem(-12px) rem(-24px);
+    }
+  }
 
-.pagination-sm .page-item:last-child .page-link,
-.pagination-sm .page-link-last {
-  border-bottom-right-radius: 0.2rem;
-  border-top-right-radius: 0.2rem;
-}
+  .page-item:first-child .page-link,
+  .page-link-first {
+    border-radius: rem(5px) 0 0 rem(5px);
+  }
 
-.pagination-sm .pagination-items-per-page {
-  border-radius: 0.2rem;
-}
+  .page-item:last-child .page-link,
+  .page-link-last {
+    border-radius: 0 rem(5px) rem(5px) 0;
+  }
 
-.pagination-sm .pagination-items-per-page > a,
-.pagination-sm .pagination-items-per-page > button {
-  font-size: 0.875rem;
-  height: 1.9375rem;
-  line-height: 1;
-  padding-bottom: 0.25rem;
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  padding-top: 0.25rem;
-}
+  .pagination-items-per-page {
+    border-radius: rem(5px);
 
-.pagination-sm .pagination-items-per-page > a > .c-inner,
-.pagination-sm .pagination-items-per-page > button > .c-inner {
-  margin-bottom: -0.25rem;
-  margin-left: -0.75rem;
-  margin-right: -0.75rem;
-  margin-top: -0.25rem;
-}
+    > a,
+    > button {
+      font-size: rem(20px);
+      height: rem(56px);
+      line-height: 1;
+      padding: rem(12px);
+    }
 
-.pagination-sm .pagination-items-per-page + .pagination-results {
-  font-size: 0.875rem;
-  line-height: 1;
-  padding: 0.25rem 0.75rem;
-}
-
-.pagination-lg .page-link {
-  font-size: 1.25rem;
-  height: 3.5rem;
-  line-height: 1;
-  padding-bottom: 0.75rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  padding-top: 0.75rem;
-}
-
-.pagination-lg .page-link > .c-inner {
-  margin-bottom: -0.75rem;
-  margin-left: -1.5rem;
-  margin-right: -1.5rem;
-  margin-top: -0.75rem;
-}
-
-.pagination-lg .page-item:first-child .page-link,
-.pagination-lg .page-link-first {
-  border-bottom-left-radius: 0.3rem;
-  border-top-left-radius: 0.3rem;
-}
-
-.pagination-lg .page-item:last-child .page-link,
-.pagination-lg .page-link-last {
-  border-bottom-right-radius: 0.3rem;
-  border-top-right-radius: 0.3rem;
-}
-
-.pagination-lg .pagination-items-per-page {
-  border-radius: 0.3rem;
-}
-
-.pagination-lg .pagination-items-per-page > a,
-.pagination-lg .pagination-items-per-page > button {
-  font-size: 1.25rem;
-  height: 3.5rem;
-  line-height: 1;
-  padding: 0.75rem 0.75rem;
-}
-
-.pagination-lg .pagination-items-per-page + .pagination-results {
-  font-size: 1.25rem;
-  line-height: 1;
-  padding: 0.75rem 0.75rem;
+    + .pagination-results {
+      font-size: rem(20px);
+      line-height: 1;
+      padding: rem(12px);
+    }
+  }
 }

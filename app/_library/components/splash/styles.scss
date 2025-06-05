@@ -32,7 +32,7 @@ $logo-size: rem(140px);
   // Visuales
   opacity: 1;
   background: radial-gradient(circle, $splash-gradient-light-center 40%, $splash-gradient-light-edge 60%);
-  transition: opacity $transition ease-in-out;
+  transition: opacity var(--transition) ease-in-out;
 
   // Tema oscuro
   @include dark-theme {
@@ -59,7 +59,7 @@ $logo-size: rem(140px);
       width: var(--icon-logo-big);
       width: $logo-size;
       opacity: 0;
-      animation: fadeIn $transition ease-in-out forwards;
+      animation: fadeIn var(--transition) ease-in-out forwards;
     }
 
     // Manejo de temas para los logos
@@ -130,5 +130,5 @@ $logo-size: rem(140px);
 
 // Estado oculto
 .hidden {
-  animation: fadeOut $transition ease-in-out forwards;
+  animation: fadeOut var(--transition) ease-in-out forwards;
 }

@@ -4,14 +4,14 @@
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: $spacing-lg;
-  padding: $spacing-md 0;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md) 0;
   text-align: left;
 
   &__item {
     display: flex;
     align-items: flex-start;
-    gap: $spacing-md;
+    gap: var(--spacing-md);
   }
 
   &__icon_container {
@@ -21,28 +21,28 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: $primary-color;
+    background-color: var(--primary);
   }
 
   .ph {
-    color: $text-light;
+    color: var(--neutral-1100);
     font-size: 22px;
   }
 
   &__label {
-    font-size: $font-size-small;
-    color: $gray-700;
+    font-size: var(--font-size-small);
+    color: var(--neutral-700);
   }
 
   &__value {
-    font-size: $font-size-p;
-    font-weight: $font-weight-bold;
-    color: $color-text;
+    font-size: var(--font-size-paragraph);
+    font-weight: var(--font-weight-bold);
+    color: var(--neutral-100);
   }
 
   &__note {
-    font-size: $font-size-small;
-    color: $gray-500;
+    font-size: var(--font-size-small);
+    color: var(--neutral-500);
     margin-top: 12px;
   }
 

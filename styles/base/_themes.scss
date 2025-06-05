@@ -1,25 +1,87 @@
 // ==========================================
-// NÚCLEO DEL SISTEMA DE TEMAS OPTIMIZADO
+// SISTEMA DE TEMAS MODULAR
 // ==========================================
 @use 'sass:map';
-@use 'sass:string';
 @use 'sass:meta';
 @use '../abstracts/colors' as *;
-@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
 
-// Inicializar todos los temas de forma optimizada
-@include initialize-themes;
-
-// Aplicar variantes de componentes basadas en temas
-@mixin apply-component-variants($base-class, $mixin-ref) {
-  @each $theme-name, $theme-values in $colors-theme {
-    [data-theme='#{$theme-name}'] {
-      @each $color-name, $color-values in $theme-values {
-        .#{$base-class}-#{$color-name} {
-          @include meta.apply($mixin-ref, ($color-values));
+// ==========================================
+// GENERACIÓN DE TEMAS BASE
+// ==========================================
+@mixin generate-base-theme($theme-name, $theme-colors) {
+  @if $theme-name == 'light' {
+    :root {
+      --theme-base: 'light';
+      @each $color-name, $color-values in $theme-colors {
+        @each $variant, $value in $color-values {
+          @if $variant != '' {
+            --#{$color-name}-#{$variant}: #{$value};
+          } @else {
+            --#{$color-name}: #{$value};
+          }
+        }
+      }
+    }
+  } @else {
+    [data-theme-base='#{$theme-name}'] {
+      --theme-base: '#{$theme-name}';
+      @each $color-name, $color-values in $theme-colors {
+        @each $variant, $value in $color-values {
+          @if $variant != '' {
+            --#{$color-name}-#{$variant}: #{$value};
+          } @else {
+            --#{$color-name}: #{$value};
+          }
         }
       }
     }
   }
 }
 
+// ==========================================
+// GENERACIÓN DE OVERRIDES DE FACULTAD
+// ==========================================
+@mixin generate-faculty-overrides($faculty-name, $faculty-colors, $is-dark: false) {
+  [data-theme-faculty='#{$faculty-name}'] {
+    --theme-faculty: '#{$faculty-name}';
+
+    @each $color-name, $color-value in $faculty-colors {
+      $color-scale: generate-color-scale($color-value, $is-dark);
+
+      @each $variant, $value in $color-scale {
+        @if $variant != '' {
+          --#{$color-name}-#{$variant}: #{$value};
+        } @else {
+          --#{$color-name}: #{$value};
+        }
+      }
+    }
+  }
+}
+
+// ==========================================
+// INICIALIZACIÓN COMPLETA
+// ==========================================
+@mixin initialize-modular-themes {
+  // Temas base
+  @include generate-base-theme('light', $base-theme-light);
+  @include generate-base-theme('dark', $base-theme-dark);
+
+  // Facultades - Light
+  @each $faculty-name, $faculty-colors in $faculty-colors {
+    @include generate-faculty-overrides($faculty-name, $faculty-colors, false);
+  }
+
+  // Facultades - Dark
+  [data-theme-base='dark'] {
+    @each $faculty-name, $faculty-colors in $faculty-colors {
+      @include generate-faculty-overrides($faculty-name, $faculty-colors, true);
+    }
+  }
+}
+
+// ==========================================
+// ACTIVAR SISTEMA
+// ==========================================
+@include initialize-modular-themes;

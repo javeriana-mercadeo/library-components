@@ -1,229 +1,185 @@
 @use '@styles/autoload' as *;
 
-#section-four{
+#section-four {
   background-color: var(--background-100);
-  padding-top: 30px;
+  padding-top: rem(30px);
   display: flex;
   align-items: center;
   justify-content: center;
-  color:var(--neutral-variant-900);
+  color: var(--neutral-variant-900);
   margin: 0 auto;
 
-  p{
+  p {
     color: var(--neutral-400);
+    text-align: left;
   }
 
-.p-4{
-  border: none;
-}
-p{
-  text-align: left;
-}
-.text-gray-900{
-  margin: 0;
-}
-
-.why-javeriana__header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.section-four-title{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .why-javeriana__title {
-    gap: 8px;
-    width: fit-content;
-    font-size: var(--font-size-title);
-    font-weight: var(--font-weight-bold);
-    color:var(--neutral-100);
+  .p-4 {
+    border: none;
   }
-}
-.why-javeriana {
-  padding-top: $spacing-lg;
-  margin: 0px;
-  max-width: $max-width;
-  text-align: center;
 
-  &__image {
-    order: 0;
-    flex: 1;
+  .text-gray-900 {
+    margin: 0;
+  }
+
+  .why-javeriana__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .section-four-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .why-javeriana__title {
+      gap: rem(8px);
+      width: fit-content;
+      font-size: var(--font-size-title);
+      font-weight: var(--font-weight-bold);
+      color: var(--neutral-100);
+    }
+  }
+
+  .why-javeriana {
+    padding-top: var(--spacing-lg);
+    margin: 0;
+    max-width: var(--max-width);
     text-align: center;
 
-    img {
-      max-width: 100%;
-      max-height: 550px;
-      min-height: 450px;
-      object-fit: cover;
-      border-radius: $border-radius-md;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-  }
-
-  &__container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    margin-top: $spacing-lg;
-    padding-bottom: 25px;
-    width: fit-content;
-    gap: 30px;
-
-    .border{
-      padding: 5px;
-    }
-
-    @media (max-width: $breakpoint-lg) {
-      flex-direction: column;
+    &__container {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-    }
-  }
+      justify-content: center;
+      gap: 0;
+      margin-top: var(--spacing-lg);
+      padding-bottom: rem(25px);
+      width: 100vw;
 
-  &__column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-
-
-    @media (max-width: $breakpoint-md) {
-      font-weight: $font-weight-regular;
-    
-      .why-javeriana__column {
-        width: 90vw;
-        color:var(--neutral-variant-900);
-        margin: 0 auto;
+      .border {
+        padding: rem(5px);
       }
-
-      .why-javeriana__container{
-        width: 100vw;
-        gap: 0;
-      }
-      button{
-        width: 25%;
-      }
-  }
-
-  &__text {
-    font-size: $font-size-small;
-    color: $gray-400;
-    max-height: 0px;
-    overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
-
-    &.expanded {
-      max-height: none;
     }
 
-    @media (min-width: $breakpoint-md) {
-      max-height: none;
-      overflow: visible;
+    &__column {
+      flex: 1;
       display: flex;
       flex-direction: column;
-    
-    
-      
+      gap: 0;
+      width: 90vw;
+      color: var(--neutral-variant-900);
+      margin: 0 auto;
     }
-  }
 
-  // Botón de "Leer Más / Leer Menos"
+    &__image {
+      order: 1;
+      flex: 1;
+      text-align: center;
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: rem(10px);
+
+      img {
+        max-width: 70%;
+        height: rem(300px);
+        object-fit: cover;
+        border-radius: var(--border-radius-md);
+        box-shadow: 0 rem(4px) rem(8px) rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &__text {
+      font-size: var(--font-size-small);
+      color: var(--neutral-400);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+
+      &.expanded {
+        max-height: none;
+      }
+    }
+
     &__toggle {
-
-
-    @media (max-width: $breakpoint-md) {
       display: flex;
       background: none;
       border: none;
-      font-size: $font-size-small;
-      color: $text-dark;
+      font-size: var(--font-size-small);
+      color: var(--neutral-100);
       cursor: pointer;
-      font-weight: bold; 
-      border: none; 
-    }
-    
-    &-text{
-      background-color: none;
-    }
-  }
+      font-weight: var(--font-weight-bold);
 
-  &__image {
-    flex: 1;
-    text-align: center;
-    width: fit-content;
-    @media (max-width: $breakpoint-md) {
-      order: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      
-  
-    }
-  
-    @media (min-width: $breakpoint-md) {
-      order: 0;
-    }
-    .why-javeriana__image{
-      img{
-        width: 50px;
-        height: auto;
+      &-text {
+        background-color: transparent;
       }
     }
-  }}  
-  @media (max-width: 992px) {
-    .why-javeriana__image{
-      order: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    img {
-      max-width: 70%; 
-      height: 300px;
-      object-fit: cover;
+
+    @include responsive($breakpoint-md) {
+      &__text {
+        max-height: none;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+      }
+
+      &__image {
+        order: 0;
+
+        img {
+          max-width: 100%;
+          max-height: rem(550px);
+          min-height: rem(450px);
+        }
+      }
+    }
+
+    @include responsive($breakpoint-lg) {
+      &__container {
+        flex-direction: row;
+        gap: rem(30px);
+        width: fit-content;
+      }
+
+      &__column {
+        width: auto;
+      }
+
+      &__toggle {
+        display: none;
+      }
     }
   }
-  }}
+}
 
-  /* Reglas CSS para el acordeón */
+// ==========================================
+// ACCORDION RESPONSIVE
+// ==========================================
 
-/* En móviles, ocultar contenido por defecto */
-@media (max-width: 1023px) {
-  .accordion-content {
-    display: none;
-  }
-  
-  .accordion-content:not(.hidden) {
+.accordion-content {
+  display: none;
+  transition: all 0.3s ease-in-out;
+
+  &:not(.hidden) {
     display: block;
   }
 }
 
-/* En desktop, mostrar contenido por defecto y ocultar botones */
-@media (min-width: 1024px) {
+[data-accordion-target] {
+  cursor: pointer;
+}
+
+@include responsive($breakpoint-xl) {
   .accordion-content {
     display: block !important;
-    margin-bottom: 1.5rem;
+    margin-bottom: rem(24px);
   }
-  
+
   [data-accordion-target] {
     display: none !important;
   }
-}
-
-/* Transiciones suaves */
-.accordion-content {
-  transition: all 0.3s ease-in-out;
-}
-
-/* Asegurar que los botones tengan el cursor pointer */
-[data-accordion-target] {
-  cursor: pointer;
 }

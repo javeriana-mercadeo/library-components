@@ -303,8 +303,7 @@
     }
   }
 
-  // ⚡ APLICAR SOLO COLORES BÁSICOS OPTIMIZADOS
-  @include css-var-color-variants('paragraph', meta.get-mixin('paragraph-color-styles'));
+  @include colors-variants('paragraph', meta.get-mixin('paragraph-color-styles'));
 }
 
 // ===========================================
