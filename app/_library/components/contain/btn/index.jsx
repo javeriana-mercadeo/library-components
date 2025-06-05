@@ -7,7 +7,8 @@ import script from './script.js'
  * Compatible con todas las variantes de HeroUI
  *
  * @param {Object} props - Propiedades del componente
- * @param {string} [props.id] - Identificador único del elemento
+ * @param {string} [props.id] - Identificador único del elemento (para Liferay)
+ * @param {string} [props.elementId] - ID específico para interacciones JavaScript
  * @param {string} [props.className=''] - Clases CSS adicionales
  * @param {React.ReactNode} [props.children='Soy un botón'] - Contenido del elemento
  * @param {string} [props.href] - URL de destino (convierte el elemento en <a>)
@@ -27,6 +28,7 @@ import script from './script.js'
  */
 export default function Btn({
   id,
+  elementId,
   className = '',
   children = 'Soy un botón',
   href,
@@ -117,17 +119,20 @@ export default function Btn({
     baseProps.disabled = disabled
   }
 
-  // Agregar propiedades según si es editable o no
+  // ==========================================
+  // CONFIGURACIÓN DE IDs
+  // ==========================================
+
+  // 1. ID de elemento para JavaScript (prioritario si existe)
+  if (elementId) {
+    baseProps.id = elementId
+  }
+
+  // 2. ID de Liferay (separado del ID de elemento)
   if (isEditable) {
-    // Modo editable para Liferay
     const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
     baseProps['data-lfr-editable-id'] = editableId
     baseProps['data-lfr-editable-type'] = isLink ? 'link' : 'text'
-  } else {
-    // Modo no editable - usar id HTML normal
-    if (id) {
-      baseProps.id = id
-    }
   }
 
   // Renderizar contenido interno

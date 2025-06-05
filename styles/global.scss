@@ -12,6 +12,7 @@
 @use '@library/components/contain/btn/styles.scss' as *;
 @use '@library/components/contain/title/styles.scss' as *;
 @use '@library/components/contain/caption/styles.scss' as *;
+@use '@library/components/contain/paragraph/styles.scss' as *;
 
 @use '@library/components/logo_institucional/styles.scss' as *;
 
@@ -19,6 +20,7 @@
 @include logo;
 @include title;
 @include caption;
+@include paragraph;
 
 @include general-btn;
 
@@ -47,10 +49,8 @@ html {
     position: relative;
     overflow-x: hidden;
     min-height: 100vh;
-    height: 100%;
-
-    background: var(--background-100);
-    background-position: fixed;
+    height: fit-content;
+    background-color: var(--background-100);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
@@ -75,8 +75,6 @@ html {
       min-height: 100vh;
       height: 100%;
       flex-grow: 1;
-
-      padding-top: 5rem;
     }
   }
 }

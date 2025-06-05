@@ -95,8 +95,9 @@ $btn-ripple-duration: 0.6s;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      width: rem(20px);
-      height: rem(20px);
+      width: var(--icon-size-sm);
+      height: var(--icon-size-sm);
+      font-size: var(--icon-size-sm);
 
       svg,
       i {
@@ -118,8 +119,9 @@ $btn-ripple-duration: 0.6s;
       font-size: rem(12px);
 
       .btn-icon {
-        width: rem(14px);
-        height: rem(14px);
+        width: var(--icon-size-xs);
+        height: var(--icon-size-xs);
+        font-size: var(--icon-size-xs);
       }
     }
 
@@ -178,30 +180,22 @@ $btn-ripple-duration: 0.6s;
   }
 
   // Aplicar los estilos temáticos a cada combinación de botón y color
-  @include theme-variants-component('btn', meta.get-mixin('button-themes'));
+  @include css-var-color-variants('btn', meta.get-mixin('button-themes'));
 }
 
 // ===========================================
 // MIXIN DE TEMAS POR COLOR
 // ===========================================
 @mixin button-themes($color-values, $color-name) {
-  // Extraer colores del mapa
-  $base-color: if(map.has-key($color-values, 600), map.get($color-values, 600), map.get($color-values, ''));
-  $hover-color: if(map.has-key($color-values, 700), map.get($color-values, 700), $base-color);
-  $active-color: if(map.has-key($color-values, 800), map.get($color-values, 800), $hover-color);
-
   // Variables CSS que se adaptan automáticamente por tema
   $color: var(--#{$color-name});
-  $color-50: var(--#{$color-name}-50);
-  $color-100: var(--#{$color-name}-100);
-  $color-200: var(--#{$color-name}-200);
   $color-300: var(--#{$color-name}-300);
   $color-400: var(--#{$color-name}-400);
   $color-500: var(--#{$color-name}-500);
   $color-600: var(--#{$color-name}-600);
   $color-700: var(--#{$color-name}-700);
   $color-800: var(--#{$color-name}-800);
-  $color-900: var(--#{$color-name}-900);
+  $color-rgb: var(--#{$color-name}-rgb);
 
   // Variables para texto
   $text-on-color: var(--neutral-1000);
@@ -241,21 +235,21 @@ $btn-ripple-duration: 0.6s;
   // VARIANTE: FADED (translúcido con backdrop-filter)
   // ===========================================
   &.btn-faded {
-    background: color.change($base-color, $alpha: 0.1);
+    background: rgba($color-rgb, 0.1);
     color: $color-600;
     backdrop-filter: blur(8px) saturate(150%);
     -webkit-backdrop-filter: blur(8px) saturate(150%);
     box-shadow: none;
-    border: rem(2px) solid color.change($base-color, $alpha: 0.2);
+    border: rem(2px) solid rgba($color-rgb, 0.2);
 
     &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
-      background: color.change($base-color, $alpha: 0.25);
-      border-color: color.change($base-color, $alpha: 0.3);
+      background: rgba($color-rgb, 0.25);
+      border-color: rgba($color-rgb, 0.3);
       transform: $btn-transform-hover;
     }
 
     &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
-      background: color.change($base-color, $alpha: 0.35);
+      background: rgba($color-rgb, 0.35);
       transform: $btn-transform-active;
     }
 
@@ -266,7 +260,7 @@ $btn-ripple-duration: 0.6s;
     }
 
     .btn-ripple-effect {
-      background: color.change($base-color, $alpha: 0.4);
+      background: rgba($color-rgb, 0.4);
     }
   }
 
@@ -298,7 +292,7 @@ $btn-ripple-duration: 0.6s;
     }
 
     .btn-ripple-effect {
-      background: color.change($base-color, $alpha: 0.2);
+      background: rgba($color-rgb, 0.2);
     }
   }
 
@@ -312,13 +306,13 @@ $btn-ripple-duration: 0.6s;
     border: rem(1px) solid transparent;
 
     &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
-      background: color.change($base-color, $alpha: 0.18);
+      background: rgba($color-rgb, 0.18);
       color: $color-800;
       transform: $btn-transform-hover;
     }
 
     &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
-      background: color.change($base-color, $alpha: 0.25);
+      background: rgba($color-rgb, 0.25);
       transform: $btn-transform-active;
     }
 
@@ -329,7 +323,7 @@ $btn-ripple-duration: 0.6s;
     }
 
     .btn-ripple-effect {
-      background: color.change($base-color, $alpha: 0.3);
+      background: rgba($color-rgb, 0.3);
     }
   }
 
@@ -337,19 +331,19 @@ $btn-ripple-duration: 0.6s;
   // VARIANTE: FLAT (menos énfasis que light)
   // ===========================================
   &.btn-flat {
-    background: color.change($base-color, $alpha: 0.18);
+    background: rgba($color-rgb, 0.18);
     color: $color-600;
     box-shadow: $btn-shadow-flat;
     border: rem(1px) solid transparent;
 
     &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
-      background: color.change($base-color, $alpha: 0.2);
+      background: rgba($color-rgb, 0.2);
       color: $color-700;
       transform: $btn-transform-hover;
     }
 
     &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
-      background: color.change($base-color, $alpha: 0.23);
+      background: rgba($color-rgb, 0.23);
       transform: $btn-transform-active;
     }
 
@@ -360,7 +354,7 @@ $btn-ripple-duration: 0.6s;
     }
 
     .btn-ripple-effect {
-      background: color.change($base-color, $alpha: 0.25);
+      background: rgba($color-rgb, 0.25);
     }
   }
 
@@ -392,7 +386,7 @@ $btn-ripple-duration: 0.6s;
     }
 
     .btn-ripple-effect {
-      background: color.change($base-color, $alpha: 0.2);
+      background: rgba($color-rgb, 0.2);
     }
   }
 
@@ -402,17 +396,17 @@ $btn-ripple-duration: 0.6s;
   &.btn-shadow {
     background: $color-600;
     color: $text-on-color;
-    box-shadow: 0 rem(4px) rem(14px) color.change($base-color, $alpha: 0.4);
+    box-shadow: 0 rem(4px) rem(14px) rgba($color-rgb, 0.4);
 
     &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
       background: $color-700;
-      box-shadow: 0 rem(8px) rem(25px) color.change($base-color, $alpha: 0.35);
+      box-shadow: 0 rem(8px) rem(25px) rgba($color-rgb, 0.35);
       transform: translateY(rem(-2px));
     }
 
     &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
       background: $color-800;
-      box-shadow: 0 rem(4px) rem(14px) color.change($base-color, $alpha: 0.4);
+      box-shadow: 0 rem(4px) rem(14px) rgba($color-rgb, 0.4);
       transform: translateY(0);
     }
 
@@ -420,7 +414,7 @@ $btn-ripple-duration: 0.6s;
       box-shadow:
         0 0 0 rem(2px) var(--background-100),
         0 0 0 rem(4px) $color-300,
-        0 rem(4px) rem(14px) color.change($base-color, $alpha: 0.4);
+        0 rem(4px) rem(14px) rgba($color-rgb, 0.4);
     }
 
     .btn-ripple-effect {
@@ -432,9 +426,6 @@ $btn-ripple-duration: 0.6s;
   // AJUSTES PARA MODO OSCURO
   // ===========================================
   @include dark-theme {
-    // Extraer color para modo oscuro
-    $dark-color: if(map.has-key($color-values, 300), map.get($color-values, 300), $base-color);
-
     &.btn-solid {
       background: $color-500;
       color: var(--neutral-100);
@@ -450,7 +441,7 @@ $btn-ripple-duration: 0.6s;
 
     &.btn-faded {
       color: $color-700;
-      border: rem(2px) solid color.change($base-color, $alpha: 0.3);
+      border: rem(2px) solid rgba($color-rgb, 0.3);
     }
 
     &.btn-bordered {

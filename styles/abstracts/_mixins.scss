@@ -146,3 +146,50 @@
   line-height: $line-height;
   font-family: $font-family-primary;
 }
+
+// ==========================================
+// MIXIN OPTIMIZADO PARA COMPONENTES
+// ==========================================
+
+/**
+ * Aplica estilos de color básicos a un componente
+ * Solo genera primary, secondary, tertiary, neutral, success, warning, danger
+ * Con soporte automático para tema oscuro
+ */
+@mixin basic-color-variants($base-class, $mixin-ref) {
+  // Generar variantes de colores básicos para tema claro
+  @each $color-name, $color-values in $basic-colors-map {
+    .#{$base-class}-#{$color-name} {
+      @include meta.apply($mixin-ref, $color-values, $color-name);
+    }
+  }
+
+  // Generar variantes para tema oscuro
+  @include dark-theme {
+    @each $color-name, $color-values in $basic-dark-colors {
+      .#{$base-class}-#{$color-name} {
+        @include meta.apply($mixin-ref, $color-values, $color-name);
+      }
+    }
+  }
+}
+
+// ==========================================
+// MIXIN USANDO VARIABLES CSS (RECOMENDADO)
+// ==========================================
+
+/**
+ * Versión optimizada que usa variables CSS
+ * No genera código adicional, solo usa las variables ya existentes
+ * MUCHO más eficiente y ligero
+ */
+@mixin css-var-color-variants($base-class, $mixin-ref) {
+  // Lista de colores a generar
+  $color-names: ('primary', 'secondary', 'tertiary', 'neutral', 'success', 'warning', 'danger');
+
+  @each $color-name in $color-names {
+    .#{$base-class}-#{$color-name} {
+      @include meta.apply($mixin-ref, null, $color-name);
+    }
+  }
+}
