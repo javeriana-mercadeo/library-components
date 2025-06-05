@@ -1,6 +1,6 @@
 'use client'
 
-import Container from '@library/components/container/Container'
+import Container from '@library/components/container'
 import LogoBlanco from '@library/components/logo_institucional_blanco'
 import UniversidadTour from '../../../../../assets/pieDePagina/universidad-tour.gif'
 import Vigilada from '../../../../../assets/pieDePagina/vigilada.png'

@@ -1,0 +1,267 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use '@styles/autoload' as *;
+
+@mixin caption {
+  // Clase base común para todos los captions
+  .caption {
+    display: block;
+    margin: 0;
+    font-family: var(--font-family);
+    line-height: 1.4;
+    transition: all 0.2s ease-in-out;
+
+    // Tamaños de caption
+    &.caption-xs {
+      font-size: var(--font-size-xs);
+      margin-bottom: rem(4px);
+    }
+
+    &.caption-sm {
+      font-size: var(--font-size-small);
+      margin-bottom: rem(6px);
+    }
+
+    &.caption-md {
+      font-size: var(--font-size-paragraph);
+      margin-bottom: rem(8px);
+    }
+
+    &.caption-lg {
+      font-size: var(--font-size-caption);
+      margin-bottom: rem(10px);
+    }
+
+    &.caption-xl {
+      font-size: var(--font-size-subtitle);
+      margin-bottom: rem(12px);
+    }
+
+    // Alineaciones
+    &.caption-left {
+      text-align: left;
+    }
+
+    &.caption-center {
+      text-align: center;
+    }
+
+    &.caption-right {
+      text-align: right;
+    }
+
+    // Modificadores de texto
+    &.caption-uppercase {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    &.caption-italic {
+      font-style: italic;
+    }
+
+    &.caption-bold {
+      font-weight: var(--font-weight-bold);
+    }
+
+    // Elementos internos comunes
+    strong {
+      font-weight: var(--font-weight-bold);
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    // Enlaces dentro del caption
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: rem(2px);
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  // Variaciones especiales para el color neutral
+  .caption-neutral {
+    // Variante default - solo texto sin contenedor
+    &.caption-default {
+      color: var(--neutral-600);
+      background-color: transparent;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      font-weight: var(--font-weight-regular);
+    }
+
+    // Sobrescribir estilos para neutral en cualquier tema
+    &.caption-solid {
+      color: var(--neutral-200);
+      background-color: var(--neutral-800);
+    }
+
+    &.caption-outline {
+      color: var(--neutral-400);
+      border-color: var(--neutral-600);
+    }
+
+    &.caption-subtle {
+      color: var(--neutral-500);
+      background-color: var(--neutral-900);
+    }
+
+    &.caption-accent {
+      color: var(--neutral-300);
+
+      &::before {
+        background: linear-gradient(90deg, var(--neutral-500), transparent);
+      }
+    }
+
+    @include dark-theme {
+      // Variante default en tema oscuro
+      &.caption-default {
+        color: var(--neutral-300);
+      }
+
+      &.caption-solid {
+        color: var(--neutral-200);
+        background-color: var(--neutral-700);
+      }
+
+      &.caption-outline {
+        color: var(--neutral-400);
+        border-color: var(--neutral-500);
+      }
+
+      &.caption-subtle {
+        color: var(--neutral-300);
+        background-color: var(--neutral-800);
+      }
+
+      &.caption-accent {
+        color: var(--neutral-200);
+
+        &::before {
+          background: linear-gradient(90deg, var(--neutral-400), transparent);
+        }
+      }
+    }
+  }
+
+  // Aplicar los estilos temáticos a cada combinación de caption y color
+  @include theme-variants-component('caption', meta.get-mixin('caption-theme-style'));
+}
+
+@mixin caption-theme-style($color-values, $color-name) {
+  // Valores para modo claro
+  $solid-color: if(map.has-key($color-values, 600), map.get($color-values, 600), map.get($color-values, ''));
+  $solid-bg: if(map.has-key($color-values, 100), map.get($color-values, 100), rgba($solid-color, 0.1));
+  $outline-color: if(map.has-key($color-values, 500), map.get($color-values, 500), $solid-color);
+  $subtle-bg: if(map.has-key($color-values, 50), map.get($color-values, 50), rgba($solid-color, 0.05));
+  $accent-color: if(map.has-key($color-values, 700), map.get($color-values, 700), $solid-color);
+  $default-color: if(map.has-key($color-values, 600), map.get($color-values, 600), $solid-color);
+
+  // Estilo para variante default - solo texto sin contenedor
+  &.caption-default {
+    color: $default-color;
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    font-weight: var(--font-weight-regular);
+  }
+
+  // Estilo para variante solid
+  &.caption-solid {
+    color: $solid-color;
+    background-color: $solid-bg;
+    padding: rem(4px) rem(8px);
+    border-radius: rem(4px);
+    font-weight: var(--font-weight-medium);
+  }
+
+  // Estilo para variante outline
+  &.caption-outline {
+    color: $outline-color;
+    border: rem(1px) solid $outline-color;
+    background-color: transparent;
+    padding: rem(3px) rem(7px);
+    border-radius: rem(4px);
+    font-weight: var(--font-weight-medium);
+  }
+
+  // Estilo para variante subtle
+  &.caption-subtle {
+    color: $solid-color;
+    background-color: $subtle-bg;
+    padding: rem(2px) rem(6px);
+    border-radius: rem(3px);
+    font-weight: var(--font-weight-regular);
+    opacity: 0.9;
+  }
+
+  // Estilo para variante accent
+  &.caption-accent {
+    color: $accent-color;
+    position: relative;
+    font-weight: var(--font-weight-bold);
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: rem(-2px);
+      left: 0;
+      width: 100%;
+      height: rem(2px);
+      background: linear-gradient(90deg, $accent-color, transparent);
+      border-radius: rem(1px);
+    }
+  }
+
+  // Estilos para tema oscuro
+  @include dark-theme {
+    $dark-color: if(map.has-key($color-values, 300), map.get($color-values, 300), map.get($color-values, ''));
+    $dark-bg: if(map.has-key($color-values, 900), map.get($color-values, 900), rgba($dark-color, 0.15));
+    $dark-outline: if(map.has-key($color-values, 400), map.get($color-values, 400), $dark-color);
+    $dark-subtle: if(map.has-key($color-values, 950), map.get($color-values, 950), rgba($dark-color, 0.08));
+    $dark-accent: if(map.has-key($color-values, 200), map.get($color-values, 200), $dark-color);
+    $dark-default: if(map.has-key($color-values, 300), map.get($color-values, 300), $dark-color);
+
+    // Estilo para variante default en tema oscuro
+    &.caption-default {
+      color: $dark-default;
+    }
+
+    // Estilo para variante solid en tema oscuro
+    &.caption-solid {
+      color: $dark-color;
+      background-color: $dark-bg;
+    }
+
+    // Estilo para variante outline en tema oscuro
+    &.caption-outline {
+      color: $dark-outline;
+      border-color: $dark-outline;
+    }
+
+    // Estilo para variante subtle en tema oscuro
+    &.caption-subtle {
+      color: $dark-color;
+      background-color: $dark-subtle;
+    }
+
+    // Estilo para variante accent en tema oscuro
+    &.caption-accent {
+      color: $dark-accent;
+
+      &::before {
+        background: linear-gradient(90deg, $dark-accent, transparent);
+      }
+    }
+  }
+}

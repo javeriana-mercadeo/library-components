@@ -29,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* <!-- Flowbite CSS --> */}
         <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
         {/* Utilidades globales - DEBE CARGARSE PRIMERO */}
         <title>Librería de componentes</title>
       </head>
@@ -50,6 +51,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               .forEach((link) => link.remove());
           });
         </script> */}
+
+        {/* <!-- Swiper JS --> */}
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
         {/* <!-- Iconos Phosphor --> */}
         <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>

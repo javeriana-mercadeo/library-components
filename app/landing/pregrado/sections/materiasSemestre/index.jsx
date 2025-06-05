@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import Container from '@library/components/container/Container'
+import { useEffect } from 'react'
+import Container from '@library/components/container'
 
 import script from './script.js'
 import './styles.scss'
@@ -210,7 +210,7 @@ const MateriasSemestre = () => {
               <div className="swiper-pagination subjects-pagination" role="tablist" aria-label="Control de páginas del carrusel"></div>
 
               {/* Botones de navegación */}
-              
+
               <button
                 className="swiper-slide-button subjects-prev" aria-label="Ir al slide anterior" type="button">
                 <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>

@@ -65,8 +65,8 @@
 // DARK THEME
 // ------------------------------------------
 @mixin dark-theme {
-  [data-theme*='-dark'] &,
-  [data-theme='dark'] & {
+  html[data-theme*='-dark'] &,
+  html[data-theme='dark'] & {
     @content;
   }
 }
@@ -99,7 +99,7 @@
   // Estilos por defecto (sin tema explícito)
   @each $color-name, $color-values in $colors-map {
     .#{$base-class}-#{$color-name} {
-      @include meta.apply($mixin-ref, ($color-values));
+      @include meta.apply($mixin-ref, $color-values, $color-name);
     }
   }
 
@@ -108,7 +108,7 @@
     [data-theme='#{$theme-name}'] {
       @each $color-name, $color-values in $theme-values {
         .#{$base-class}-#{$color-name} {
-          @include meta.apply($mixin-ref, ($color-values));
+          @include meta.apply($mixin-ref, $color-values, $color-name);
         }
       }
     }
@@ -146,21 +146,3 @@
   line-height: $line-height;
   font-family: $font-family-primary;
 }
-
-// CONTRASTE AUTOMÁTICO DE TEXTO
-// ------------------------------------------
-@mixin auto-text-contrast($property, $background-var) {
-  #{$property}: var(--neutral-100);
-
-  @include dark-theme {
-    #{$property}: var(--neutral-1000);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    & {
-      #{$property}: var(--neutral-1000);
-    }
-  }
-}
-
-

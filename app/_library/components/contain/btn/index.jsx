@@ -4,7 +4,7 @@ import script from './script.js'
 
 /**
  * Componente de botón/enlace reutilizable con estilos configurables
- * El efecto de onda se aplica a través de un script externo
+ * Compatible con todas las variantes de HeroUI
  *
  * @param {Object} props - Propiedades del componente
  * @param {string} [props.id] - Identificador único del elemento
@@ -13,7 +13,7 @@ import script from './script.js'
  * @param {string} [props.href] - URL de destino (convierte el elemento en <a>)
  * @param {('button'|'submit'|'reset')} [props.type='button'] - Tipo de botón HTML (solo para buttons)
  * @param {('primary'|'secondary'|'tertiary'|'success'|'warning'|'danger')} [props.color='primary'] - Color del elemento
- * @param {('solid'|'outline'|'ghost'|'link')} [props.variant='solid'] - Variante de estilo del elemento
+ * @param {('solid'|'faded'|'bordered'|'light'|'flat'|'ghost'|'shadow')} [props.variant='solid'] - Variante de estilo del elemento
  * @param {React.ReactNode} [props.startIcon] - Icono que aparece al inicio del elemento
  * @param {React.ReactNode} [props.endIcon] - Icono que aparece al final del elemento
  * @param {boolean} [props.fullWidth=false] - Si el elemento debe ocupar todo el ancho disponible
@@ -22,6 +22,7 @@ import script from './script.js'
  * @param {boolean} [props.isEditable=true] - Si el elemento es editable en Liferay
  * @param {string} [props.target] - Target del enlace (_blank, _self, etc.)
  * @param {Function} [props.onClick] - Función a ejecutar al hacer clic
+ * @param {number} [props.radius] - Radio de borde personalizado
  * @returns {JSX.Element} Botón o enlace renderizado con los estilos aplicados
  */
 export default function Btn({
@@ -40,30 +41,39 @@ export default function Btn({
   onClick,
   isEditable = true,
   target,
+  radius,
   ...otherProps
 }) {
-  // Constante para el nombre base del elemento (facilita cambios futuros)
+  // Constante para el nombre base del elemento
   const ELEMENT_NAME = 'btn'
+
+  // Validar variantes disponibles (HeroUI compatible)
+  const validVariants = ['solid', 'faded', 'bordered', 'light', 'flat', 'ghost', 'shadow']
+  const finalVariant = validVariants.includes(variant) ? variant : 'solid'
 
   // Determinar si es un enlace o un botón
   const isLink = !!href
 
-  // Construcción de clases CSS usando un objeto para mejor legibilidad
-  const classes = {
-    base: ELEMENT_NAME,
-    color: color ? `${ELEMENT_NAME}-${color}` : '',
-    variant: variant ? `${ELEMENT_NAME}-${variant}` : '',
-    size: size ? `${ELEMENT_NAME}-${size}` : '',
-    fullWidth: fullWidth ? `${ELEMENT_NAME}-full-width` : '',
-    custom: className
-  }
-
-  // Filtrado y unión de clases, eliminando valores vacíos
-  const finalClassName = Object.values(classes).filter(Boolean).join(' ')
+  // Construcción de clases CSS usando template más limpio
+  const classNames = [
+    ELEMENT_NAME,
+    `${ELEMENT_NAME}-${color}`,
+    `${ELEMENT_NAME}-${finalVariant}`,
+    size !== 'md' ? `${ELEMENT_NAME}-${size}` : null,
+    fullWidth ? `${ELEMENT_NAME}-full-width` : null,
+    disabled ? `${ELEMENT_NAME}-disabled` : null,
+    className
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   // Manejar el evento onClick
   const handleClick = event => {
-    if (onClick && !disabled) {
+    if (disabled) {
+      event.preventDefault()
+      return
+    }
+    if (onClick) {
       onClick(event)
     }
   }
@@ -76,8 +86,10 @@ export default function Btn({
   const baseProps = {
     ...otherProps,
     'data-dmpa-element-id': 'btn',
-    className: finalClassName,
-    onClick: handleClick
+    className: classNames,
+    onClick: handleClick,
+    'aria-disabled': disabled,
+    ...(radius && { style: { '--btn-radius': `${radius}px`, ...otherProps.style } })
   }
 
   // Propiedades específicas para enlaces
@@ -92,6 +104,12 @@ export default function Btn({
     // Para enlaces externos, agregar rel por seguridad
     if (target === '_blank') {
       baseProps.rel = 'noopener noreferrer'
+    }
+
+    // Para enlaces deshabilitados
+    if (disabled) {
+      baseProps.href = undefined
+      baseProps.tabIndex = -1
     }
   } else {
     // Propiedades específicas para botones
