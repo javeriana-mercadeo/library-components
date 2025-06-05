@@ -23,7 +23,7 @@ const Perfiles = () => {
           <section className="program-profile">
             <Title className="program-profile__title">
               {' '}
-              <h2>Este programa es para ti si...</h2>
+              Este programa es para ti si...
             </Title>
 
             <div className="program-profile__accordion">
