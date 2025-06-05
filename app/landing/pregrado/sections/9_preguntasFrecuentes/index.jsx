@@ -20,7 +20,7 @@ const PreguntasFrecuentes = () => {
       <Container className="container faq">
         <div>
           <Title className="faq__title">
-            <h2>Preguntas Frecuentes</h2>
+            Preguntas Frecuentes
           </Title>
           <div className="faq__container">
             {/* Primera pregunta expandida por defecto */}

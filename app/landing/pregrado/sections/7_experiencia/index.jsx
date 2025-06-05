@@ -110,7 +110,7 @@ const Experiencia = () => {
   const VideoCard = ({ src, link }) => (
     <a href={link} className="card-link-video">
       <div className="video-card-7">
-        <video src={src} className="experience-carousel__video" autoPlay="true" loop="true" muted="true" playsInline />
+        <video src={src} className="experience-carousel__video" autoPlay={true} loop={true} muted={true} playsInline />
       </div>
     </a>
   )

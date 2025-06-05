@@ -18,9 +18,7 @@ const Footer = () => {
               <div className="footer__left">
                 <LogoBlanco alt="Logo Pontificia Universidad Javeriana" className="footer__logo light" isEditable={false} />
                 <Title className="footer__title">
-                  <h5>
                     Explora nuestro campus <br /> y su tecnología de punta.
-                  </h5>
                 </Title>
               </div>
               <div className="footer__middle">
