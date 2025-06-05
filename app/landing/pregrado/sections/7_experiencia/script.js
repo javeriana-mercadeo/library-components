@@ -11,13 +11,11 @@ export default function swiperExperience (){
         // Cargar CSS
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
         link.id = 'swiper-css';
         document.head.appendChild(link);
 
         // Cargar JS
         const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
         script.async = true;
         script.id = 'swiper-js';
         
@@ -65,7 +63,7 @@ export default function swiperExperience (){
     if (window.Swiper) {
       window.experienceSwiper = new window.Swiper('.experience-swiper', {
         loop: true,
-        spaceBetween: 2,
+        spaceBetween: 20,
         // Pagination bullets
         pagination: {
           el: '.experience-pagination',
@@ -90,7 +88,7 @@ export default function swiperExperience (){
             spaceBetween: 10,
           },
           1280: { 
-            slidesPerView: 5,
+            slidesPerView: 4,
             spaceBetween: 20,
           }
         }
@@ -108,4 +106,6 @@ export default function swiperExperience (){
       window.experienceSwiper = null;
     }
   };
+
+  alert('Hola');
 }

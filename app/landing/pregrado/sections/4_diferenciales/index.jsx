@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import Container from '@library/components/container/Container'
+import Container from '@library/components/container'
 import Paragraph from '@library/components/contain/paragraph'
 
 import whyJaverianaImg from '../../../../../assets/whyJaveriana/why-javeriana.png'
