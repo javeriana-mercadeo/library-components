@@ -7,13 +7,14 @@ $font-family: 'Raleway', serif;
   /* ### Tamaños de iconos ### */
   --font-family: 'Raleway', serif;
 
-  --icon-size-xs: #{rem(12px)};
+  --icon-size-2xs: #{rem(12px)};
+  --icon-size-xs: #{rem(14px)};
   --icon-size-sm: #{rem(18px)};
   --icon-size-md: #{rem(24px)};
-  --icon-size-lg: #{rem(32px)};
-  --icon-size-xl: #{rem(48px)};
-  --icon-size-xxl: #{rem(64px)};
-  --icon-size-xxxl: #{rem(96px)};
+  --icon-size-lg: #{rem(36px)};
+  --icon-size-xl: #{rem(40px)};
+  --icon-size-2xl: #{rem(52px)};
+  --icon-size-3xl: #{rem(68px)};
   --icon-logo-big: #{rem(160px)};
 
   /* ### Tamaños de fuente ### */
@@ -28,8 +29,8 @@ $font-family: 'Raleway', serif;
   --font-size-paragraph: #{rem(14px)};
 
   /* 📌 Tamaños pequeños (notas, info secundaria) */
-  --font-size-small: #{rem(10px)};
-  --font-size-xs: #{rem(8px)};
+  --font-size-small: #{rem(11px)};
+  --font-size-xs: #{rem(9px)};
 
   /* ### Grosor ### */
 

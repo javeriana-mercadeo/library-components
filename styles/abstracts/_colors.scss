@@ -602,3 +602,29 @@ $colors-theme: (
     'danger': generate-color-scale(map.get($color-base, 'danger'), true)
   )
 );
+
+// ==========================================
+// COLORES BÁSICOS OPTIMIZADOS
+// ==========================================
+
+// Solo los colores esenciales que se usan en componentes
+$basic-colors-map: (
+  'primary': map.get($colors-map, 'primary'),
+  'secondary': map.get($colors-map, 'secondary'),
+  'tertiary': map.get($colors-map, 'tertiary'),
+  'neutral': map.get($colors-map, 'neutral'),
+  'success': map.get($colors-map, 'success'),
+  'warning': map.get($colors-map, 'warning'),
+  'danger': map.get($colors-map, 'danger')
+);
+
+// Tema oscuro básico (solo para los colores esenciales)
+$basic-dark-colors: (
+  'primary': map.get(map.get($colors-theme, 'dark'), 'primary'),
+  'secondary': map.get(map.get($colors-theme, 'dark'), 'secondary'),
+  'tertiary': map.get(map.get($colors-theme, 'dark'), 'tertiary'),
+  'neutral': map.get(map.get($colors-theme, 'dark'), 'neutral'),
+  'success': map.get(map.get($colors-theme, 'dark'), 'success'),
+  'warning': map.get(map.get($colors-theme, 'dark'), 'warning'),
+  'danger': map.get(map.get($colors-theme, 'dark'), 'danger')
+);

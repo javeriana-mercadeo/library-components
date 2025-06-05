@@ -27,7 +27,7 @@ $title-sizes: (
     desktop: var(--font-size-paragraph)
   ),
   'lg': (
-    mobile: calc(var(--font-size-caption) * 0.9),
+    mobile: calc(var(--font-size-caption) * 1.1),
     desktop: var(--font-size-caption)
   ),
   'xl': (
@@ -64,6 +64,7 @@ $title-weights: (
     margin: 0;
     padding: 0;
     font: inherit;
+    color: var(--neutral-200);
 
     // Estilos propios del componente
     font-family: $title-font-family;
@@ -72,6 +73,16 @@ $title-weights: (
     transition: $title-transition;
     word-wrap: break-word;
     hyphens: auto;
+
+    // Estilos para modo de edición de Liferay
+    @include liferay-edit-mode {
+      &:empty::before {
+        content: attr(data-lfr-editable-id);
+        opacity: 0.5;
+        font-style: italic;
+        display: block;
+      }
+    }
 
     // Tamaños usando el mapa - Mobile First
     @each $size, $values in $title-sizes {
@@ -157,6 +168,12 @@ $title-weights: (
         outline-offset: rem(2px);
         border-radius: rem(4px);
       }
+
+      @include dark-theme {
+        &.title-clickable:hover {
+          color: var(--neutral-100);
+        }
+      }
     }
 
     // Estados especiales
@@ -168,75 +185,46 @@ $title-weights: (
     &.title-with-shadow {
       text-shadow: 0 rem(1px) rem(3px) rgba(0, 0, 0, 0.3);
     }
-
-    // Estilos para modo de edición de Liferay
-    @include liferay-edit-mode {
-      &:empty::before {
-        content: attr(data-lfr-editable-id);
-        opacity: 0.5;
-        font-style: italic;
-        display: block;
-      }
-    }
   }
 
   // Aplicar los estilos temáticos a cada combinación de título y color
-  @include theme-variants-component('title', meta.get-mixin('title-themes'));
+  @include css-var-color-variants('title', meta.get-mixin('title-color-styles'));
 }
 
 // ===========================================
 // MIXIN DE TEMAS POR COLOR
 // ===========================================
-@mixin title-themes($color-values, $color-name) {
-  // Variables CSS que se adaptan automáticamente por tema
-  $color: var(--#{$color-name});
-  $color-300: var(--#{$color-name}-300);
-  $color-600: var(--#{$color-name}-600);
-  $color-700: var(--#{$color-name}-700);
+@mixin title-color-styles($color-values, $color-name) {
+  // Usar variables CSS que se adaptan automáticamente por tema
+  color: var(--#{$color-name}-600);
 
-  // Color base según el tipo de color
-  @if $color-name == 'neutral' {
-    color: var(--neutral-100); // Texto principal para neutral
-  } @else {
-    color: $color-600; // Color temático para otros colores
-  }
+  // Estados interactivos
+  &.title-clickable {
+    cursor: pointer;
+    transition: color 0.3s ease;
 
-  // Hover state para títulos clickeables
-  &.title-clickable:hover {
-    @if $color-name == 'neutral' {
-      color: var(--neutral-200);
-    } @else {
-      color: $color-700;
+    &:hover {
+      color: var(--#{$color-name}-700);
+    }
+
+    &:focus-visible {
+      outline: rem(2px) solid var(--#{$color-name}-400);
+      outline-offset: rem(2px);
+      border-radius: rem(4px);
+    }
+
+    &:active {
+      color: var(--#{$color-name}-800);
     }
   }
 
-  // Focus state para títulos clickeables
-  &.title-clickable:focus-visible {
-    @if $color-name == 'neutral' {
-      box-shadow:
-        0 0 0 rem(2px) var(--background-100),
-        0 0 0 rem(4px) var(--neutral-400);
-    } @else {
-      box-shadow:
-        0 0 0 rem(2px) var(--background-100),
-        0 0 0 rem(4px) $color-300;
-    }
+  // Modificadores especiales
+  &.title-muted {
+    color: var(--#{$color-name}-400);
   }
 
-  // Estilos para tema oscuro
-  @include dark-theme {
-    @if $color-name == 'neutral' {
-      color: var(--neutral-200); // Texto principal en modo oscuro
-
-      &.title-clickable:hover {
-        color: var(--neutral-100);
-      }
-    } @else {
-      color: $color-300; // Color temático más claro en modo oscuro
-
-      &.title-clickable:hover {
-        color: var(--#{$color-name}-500);
-      }
-    }
+  &.title-strong {
+    color: var(--#{$color-name}-700);
+    font-weight: var(--font-weight-bold);
   }
 }

@@ -6,11 +6,12 @@ import PropTypes from 'prop-types'
  *
  * @param {Object} props - Propiedades del componente
  * @param {string} [props.id] - Identificador único del elemento (requerido para Liferay)
+ * @param {string} [props.elementId] - ID específico para interacciones JavaScript (independiente de Liferay)
  * @param {string} [props.className=''] - Clases CSS adicionales
  * @param {React.ReactNode} [props.children='Soy un título'] - Contenido del título
  * @param {('h1'|'h2'|'h3'|'h4'|'h5'|'h6')} [props.hierarchy='h2'] - Jerarquía semántica del título
  * @param {('xs'|'sm'|'md'|'lg'|'xl'|'2xl'|'3xl')} [props.size='lg'] - Tamaño visual del título
- * @param {('primary'|'secondary'|'tertiary'|'neutral'|'success'|'warning'|'danger')} [props.color='neutral'] - Color del título
+ * @param {('primary'|'secondary'|'tertiary'|'success'|'warning'|'danger')} [props.color='neutral'] - Color del título
  * @param {('left'|'center'|'right')} [props.align='left'] - Alineación del texto
  * @param {('light'|'regular'|'medium'|'semibold'|'bold'|'extrabold')} [props.weight='medium'] - Peso de la fuente
  * @param {boolean} [props.uppercase=false] - Si el texto debe estar en mayúsculas
@@ -22,11 +23,12 @@ import PropTypes from 'prop-types'
  */
 const Title = ({
   id,
+  elementId,
   className = '',
   children = 'Soy un título',
   hierarchy = 'h2',
   size = 'lg',
-  color = 'neutral',
+  color = '',
   align = 'left',
   weight = 'medium',
   uppercase = false,
@@ -54,7 +56,7 @@ const Title = ({
   // Construcción de clases CSS usando template más limpio
   const classNames = [
     ELEMENT_NAME,
-    `${ELEMENT_NAME}-${color}`,
+    color ? `${ELEMENT_NAME}-${color}` : null,
     `${ELEMENT_NAME}-${finalSize}`,
     align !== 'left' ? `${ELEMENT_NAME}-${align}` : null,
     weight !== 'medium' ? `${ELEMENT_NAME}-${finalWeight}` : null,
@@ -88,27 +90,29 @@ const Title = ({
       })
   }
 
-  // Configurar elemento HTML según jerarquía
-  const TitleTag = finalHierarchy
+  // ==========================================
+  // CONFIGURACIÓN DE IDs
+  // ==========================================
 
-  // Agregar propiedades según si es editable o no
+  if (elementId) {
+    baseProps.id = elementId
+  }
+
   if (isEditable) {
-    // Modo editable para Liferay
     const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
     baseProps['data-lfr-editable-id'] = editableId
     baseProps['data-lfr-editable-type'] = 'rich-text'
-  } else {
-    // Modo no editable - usar id HTML normal
-    if (id) {
-      baseProps.id = id
-    }
   }
+
+  // Configurar elemento HTML según jerarquía
+  const TitleTag = finalHierarchy
 
   return <TitleTag {...baseProps}>{children}</TitleTag>
 }
 
 Title.propTypes = {
   id: PropTypes.string,
+  elementId: PropTypes.string,
   className: PropTypes.string,
   children: PropTypes.node.isRequired,
   hierarchy: PropTypes.oneOf(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']),

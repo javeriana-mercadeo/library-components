@@ -4,14 +4,13 @@
 
 // Dimensiones y layout
 // ------------------------------------------
-$max-width: 1440px;
 $base-font-size: 16px;
-$break-point: 800px;
 $border-radius: 15px;
 $transition: 0.3s;
 
 // Breakpoints
 // ------------------------------------------
+$breakpoint-xs: 428px;
 $breakpoint-sm: 576px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
