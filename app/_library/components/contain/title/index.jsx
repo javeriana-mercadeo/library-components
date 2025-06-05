@@ -96,28 +96,14 @@ const Title = ({
   // CONFIGURACIÓN DE IDs
   // ==========================================
 
-  // 1. ID de elemento para JavaScript (prioritario si existe)
   if (elementId) {
     baseProps.id = elementId
-    // Agregar data attribute para facilitar selección
-    baseProps['data-element-id'] = elementId
   }
 
-  // 2. ID de Liferay (separado del ID de elemento)
   if (isEditable) {
-    // Modo editable para Liferay - usa el ID prop para Liferay
     const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
     baseProps['data-lfr-editable-id'] = editableId
     baseProps['data-lfr-editable-type'] = 'rich-text'
-  } else if (!elementId && id) {
-    // Solo si NO hay elementId, usar el id prop como ID HTML
-    baseProps.id = id
-  }
-
-  // 3. Data attribute adicional para debugging
-  if (process.env.NODE_ENV === 'development') {
-    baseProps['data-component'] = ELEMENT_NAME
-    if (id) baseProps['data-liferay-id'] = id
   }
 
   // Configurar elemento HTML según jerarquía

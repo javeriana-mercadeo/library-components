@@ -5,14 +5,14 @@
 // ------------------------------------------
 :root {
   // Ancho máximo del contenedor
-  --max-width: #{rem(1520px)};
+  --max-width: #{rem(1340px)};
   --max-width-sm: #{rem(576px)};
   --max-width-md: #{rem(768px)};
   --max-width-lg: #{rem(992px)};
   --max-width-xl: #{rem(1200px)};
-  --max-width-2xl: #{rem(1400px)};
 
   // Espaciados
+  --spacing-2xs: #{rem(4px)};
   --spacing-xs: #{rem(8px)};
   --spacing-sm: #{rem(12px)};
   --spacing-md: #{rem(16px)};

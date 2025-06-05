@@ -101,22 +101,13 @@ const Caption = ({
   // 1. ID de elemento para JavaScript (prioritario si existe)
   if (elementId) {
     baseProps.id = elementId
-    baseProps['data-element-id'] = elementId
   }
 
   // 2. ID de Liferay (separado del ID de elemento)
   if (isEditable) {
     const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
     baseProps['data-lfr-editable-id'] = editableId
-    baseProps['data-lfr-editable-type'] = 'rich-text'
-  } else if (!elementId && id) {
-    baseProps.id = id
-  }
-
-  // 3. Data attributes adicionales para debugging
-  if (process.env.NODE_ENV === 'development') {
-    baseProps['data-component'] = ELEMENT_NAME
-    if (id) baseProps['data-liferay-id'] = id
+    baseProps['data-lfr-editable-type'] = 'text'
   }
 
   return <span {...baseProps}>{children}</span>

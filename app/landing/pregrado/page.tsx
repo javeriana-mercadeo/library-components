@@ -24,10 +24,10 @@ export default function Profesional() {
         <Encabezado />
       </ViewComponent> */}
 
-      <Datos />
-      {/* <ViewComponent path={`${basePath}/sections/Datos`}>
+      {/* <Datos /> */}
+      <ViewComponent path={`${basePath}/sections/1_datos`}>
         <Datos />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/*  <PlanEstudio /> */}
       <ViewComponent path={`${basePath}/sections/PlanEstudio`}>

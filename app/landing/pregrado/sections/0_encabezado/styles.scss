@@ -41,7 +41,8 @@ body.menu-open {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-xs) var(--spacing-md);
+    padding-top: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
     gap: var(--spacing-md);
     width: 100%;
 

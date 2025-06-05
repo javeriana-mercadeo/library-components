@@ -1,18 +1,19 @@
 @use '@styles/autoload' as *;
-@use './components/programDetails.scss' as *;
+@use './components/programDetail.scss' as *;
 
-@include programDetails;
+@include programDetail;
 
 // ==========================================
-// PROGRAMA DATA VIDEO - CSS GRID LAYOUT
+// PROGRAMA DATA VIDEO - ASPECT RATIO EXACTO CON CSS
 // ==========================================
 .program-data {
   display: grid;
-  width: 100%;
-  margin: 0 auto;
+  margin-top: rem(86px);
+  padding-top: var(--spacing-2xl);
+  padding-bottom: var(--spacing-md);
 
   // ==========================================
-  // MOBILE LAYOUT - Una columna, video después del párrafo
+  // MOBILE LAYOUT
   // ==========================================
   grid-template-columns: 1fr;
   grid-template-areas:
@@ -22,12 +23,11 @@
     'description'
     'video'
     'details'
+    'dates'
     'enrollment';
 
   @include responsive {
-    // ==========================================
-    // DESKTOP LAYOUT - Dos columnas, video a la derecha
-    // ==========================================
+    gap: var(--spacing-xs);
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       'faculty video'
@@ -35,17 +35,38 @@
       'snies video'
       'description video'
       'details video'
-      'enrollment video';
-    padding: var(--spacing-3xl) var(--spacing-md);
-    gap: var(--spacing-xl);
+      'dates enrollment';
+    column-gap: var(--spacing-lg);
+    align-items: start;
   }
 
   @include responsive($breakpoint-lg) {
-    // ==========================================
-    // DESKTOP GRANDE - Proporción 60/40
-    // ==========================================
-    grid-template-columns: 3fr 2fr;
-    max-width: 1200px;
+    grid-template-areas:
+      'faculty video'
+      'title video'
+      'snies video'
+      'description video'
+      'details video'
+      'dates enrollment';
+  }
+
+  @include responsive($breakpoint-xl) {
+    grid-template-areas:
+      'faculty video'
+      'title video'
+      'snies video'
+      'description video'
+      'details video'
+      'dates video'
+      'enrollment enrollment';
+  }
+
+  @include dark-theme {
+    margin-top: rem(76px);
+  }
+
+  @include liferay-edit-mode {
+    margin-top: rem(0px);
   }
 
   // ==========================================
@@ -57,11 +78,16 @@
 
   &_title {
     grid-area: title;
+    font-size: var(--font-size-subtitle) !important;
     font-weight: var(--font-weight-bold);
 
     .lead {
       color: var(--primary);
       font-weight: var(--font-weight-bold);
+    }
+
+    @include responsive {
+      font-size: var(--font-size-principal-title) !important;
     }
   }
 
@@ -78,73 +104,158 @@
     align-self: start;
   }
 
-  // ==========================================
-  // SECCIÓN DE INSCRIPCIÓN
-  // ==========================================
-  &__enrollment {
-    grid-area: enrollment;
-    align-self: end;
+  .program-dates-container {
+    grid-area: dates;
+    align-self: start;
 
-    &-link {
-      @include text-style(var(--font-size-paragraph), var(--font-weight-regular));
-      color: var(--primary-600);
-      text-decoration: none;
-      display: block;
-      margin-bottom: var(--spacing-md);
-      transition: all 0.3s ease;
+    .program-dates {
+      display: flex;
+      align-items: start;
+      margin-bottom: var(--spacing-sm);
 
-      &:hover {
-        text-decoration: underline;
-        color: var(--primary-500);
+      // Ícono del detalle
+      &_icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--icon-size-xl);
+        height: var(--icon-size-xl);
+        font-size: var(--icon-size-md);
+        border-radius: 50%;
+        background-color: var(--primary-600);
+        color: var(--neutral);
+        flex-shrink: 0;
       }
 
-      &:focus {
-        outline: rem(2px) solid var(--primary-400);
-        outline-offset: rem(2px);
-        border-radius: var(--border-radius-xs);
+      // Contenido del detalle
+      &_content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      // Label del detalle
+      &_label {
+        font-size: var(--font-size-paragraph);
+        margin-bottom: rem(0px);
+        margin-left: var(--spacing-sm);
+      }
+
+      // Valor del detalle
+      &_value {
+        font-size: var(--font-size-paragraph);
+        margin-bottom: 0;
+        margin-left: var(--spacing-sm);
+      }
+
+      // Contenedor de fechas
+      &--dates {
+        align-items: start;
+
+        @include responsive {
+          grid-column: 1 / -1;
+        }
+      }
+
+      &_dates {
+        display: flex;
+        align-items: start;
+        justify-content: start;
+        flex-direction: column;
+        gap: var(--spacing-2xs);
+        margin-bottom: 0;
+        margin-left: var(--spacing-sm);
+      }
+
+      &_date-item > * {
+        display: inline;
+      }
+
+      &_date-period {
+        font-size: var(--font-size-paragraph);
+        margin: 0;
+      }
+
+      &_date-value {
+        font-size: var(--font-size-paragraph);
+        margin: 0;
       }
     }
+  }
 
-    &-note {
-      @include text-style(var(--font-size-small), var(--font-weight-regular));
-      color: var(--neutral-400);
-      font-style: italic;
-      margin: 0;
-      padding: rem(8px) rem(12px);
-      background: var(--neutral-900);
-      border-radius: var(--border-radius-sm);
-      border-left: rem(3px) solid var(--warning-500);
+  &_enrollment {
+    grid-area: enrollment;
+    align-self: end;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--spacing-2xs);
+    padding-bottom: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    border-top: 1px solid var(--neutral-900);
+
+    @include responsive {
+      align-items: center;
+      justify-content: center;
+      margin-top: var(--spacing-lg);
+      text-align: center;
+      border-top: none;
+    }
+
+    @include responsive($breakpoint-xl) {
+      border-top: 1px solid var(--neutral-900);
+    }
+
+    &-note-container {
+      display: inline;
+      line-height: 1.2;
+
+      & > * {
+        display: inline;
+      }
     }
   }
 
   // ==========================================
-  // VIDEO/MEDIA CONTAINER
+  // VIDEO/MEDIA CONTAINER - ASPECT RATIO EXACTO
   // ==========================================
-  &__media {
+  &_media {
     grid-area: video;
-    width: 100%;
     position: relative;
-    border-radius: var(--border-radius-lg);
     overflow: hidden;
     background: var(--neutral-900);
-    align-self: start;
+    border-radius: var(--border-radius-lg);
+
+    // MÓVIL: Aspecto 1:1 (cuadrado) - crece hasta 428px
+    aspect-ratio: 1 / 1;
+    width: clamp(280px, 90vw, 428px); // Crece de 280px hasta 428px máximo
+    height: clamp(280px, 90vw, 428px); // Misma altura para mantener 1:1
+
+    // Centrar en móvil
+    justify-self: center;
+    margin-top: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
 
-    // Mobile: aspect ratio 16:9 (horizontal)
-    aspect-ratio: 16 / 9;
-    max-height: 300px;
+    @include responsive {
+      // DESKTOP: Aspecto 612:880 (0.6955) - crece proporcionalmente
+      aspect-ratio: 612 / 880; // Relación exacta de tus medidas
 
-    @include responsive($breakpoint-md) {
-      // Desktop: aspect ratio 9:16 (vertical)
-      aspect-ratio: 9 / 16;
-      max-height: none;
+      // Ancho: crece desde 300px hasta 612px máximo
+
+      // Altura: se calcula automáticamente por aspect-ratio
+      // pero limitamos con max-height por seguridad
       height: auto;
-      min-height: 400px;
-      align-self: stretch;
-    }
+      max-height: 880px;
 
-    @include responsive($breakpoint-lg) {
-      min-height: 500px;
+      // Posicionamiento
+      justify-self: center;
+      align-self: start;
+      margin-top: 0;
+      margin-bottom: 0;
+
+      // Asegurar que no se estire más allá de los límites
+      min-width: 300px;
+      min-height: calc(300px / (612 / 880)); // ≈ 431px mínimo
     }
 
     // GPU acceleration y optimizaciones
@@ -205,17 +316,17 @@
   }
 
   // ==========================================
-  // IFRAME DEL VIDEO - BASE
+  // IFRAME DEL VIDEO - MANTIENE RELACIÓN EXACTA
   // ==========================================
   &__iframe {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     border: none;
-    transform: translate(-50%, -50%);
-    object-fit: cover;
+    object-fit: cover; // Mantiene proporciones del video original
+    object-position: center; // Centra el contenido
     will-change: auto;
     backface-visibility: hidden;
     pointer-events: none;
@@ -227,112 +338,105 @@
       opacity: 1;
     }
 
-    // Optimización para móviles
-    @media (max-width: $breakpoint-md) {
-      transform: translate(-50%, -50%) translate3d(0, 0, 0);
-    }
-
-    // ==========================================
     // MODIFICADOR MOBILE
-    // ==========================================
     &--mobile {
-      // Por defecto visible en mobile, se oculta con JS en desktop
       display: block;
 
-      // Asegurar aspect ratio 16:9
-      width: 100%;
-      height: 100%;
+      @include responsive {
+        display: none;
+      }
     }
 
-    // ==========================================
     // MODIFICADOR DESKTOP
-    // ==========================================
     &--desktop {
-      // Por defecto oculto, se muestra con JS en desktop
       display: none;
 
-      // Escalar para llenar contenedor vertical en desktop
-      @include responsive($breakpoint-md) {
-        width: 150%;
-        height: 150%;
-      }
-
-      @include responsive($breakpoint-lg) {
-        width: 150%;
-        height: 150%;
+      @include responsive {
+        display: block;
+        object-fit: cover;
+        object-position: center;
       }
     }
   }
 
   // ==========================================
-  // RESPONSIVE EXTREMO - MÓVILES PEQUEÑOS
+  // BREAKPOINTS ESPECÍFICOS PARA CRECIMIENTO GRADUAL
   // ==========================================
-  @media (max-width: 375px) {
-    &__media {
+
+  // Móviles muy pequeños
+  @media (max-width: 320px) {
+    &_media {
+      width: 280px;
+      height: 280px; // Mantiene 1:1
       border-radius: var(--border-radius-md);
-      max-height: 250px;
     }
+  }
 
-    &_title {
-      @include text-style(rem(20px), var(--font-weight-bold));
+  // Móviles pequeños
+  @media (min-width: 321px) and (max-width: 375px) {
+    &_media {
+      width: clamp(280px, 85vw, 350px);
+      height: clamp(280px, 85vw, 350px); // Mantiene 1:1
     }
+  }
 
-    &__enrollment {
-      &-note {
-        padding: rem(6px) rem(8px);
-        font-size: rem(11px);
-      }
+  // Móviles medianos a grandes
+  @media (min-width: 376px) and (max-width: 767px) {
+    &_media {
+      width: clamp(350px, 90vw, 428px);
+      height: clamp(350px, 90vw, 428px); // Mantiene 1:1
+    }
+  }
+
+  // Tablets grandes (1024px - 1200px)
+  @media (min-width: 1024px) and (max-width: 1200px) {
+    &_media {
+      width: clamp(400px, 38vw, 520px);
+      // Altura se calcula automáticamente: ≈ 575px a 748px
     }
   }
 
   // ==========================================
-  // TABLET - Layout intermedio
+  // FALLBACKS Y VALIDACIONES
   // ==========================================
-  @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
-    &__media {
-      max-height: 350px;
+
+  // Asegurar que siempre respete los máximos
+  &_media {
+    // Móvil: nunca más de 428x428
+    @media (max-width: 767px) {
+      max-width: 428px !important;
+      max-height: 428px !important;
+    }
+
+    // Desktop: nunca más de 612x880
+    @media (min-width: 768px) {
+      max-width: 612px !important;
+      max-height: 880px !important;
     }
   }
 
   // ==========================================
-  // MEJORAS DE ACCESIBILIDAD
+  // DEBUGGING (solo en desarrollo)
   // ==========================================
-  @media (prefers-reduced-motion: reduce) {
-    &__media {
-      &::after {
-        transition: none;
-      }
 
-      &::before {
-        animation: none;
-      }
-    }
+  // Descomenta para debugging
+  /*
+  &_media {
+    border: 2px dashed red;
 
-    &__iframe {
-      transition: none;
-    }
-
-    &__enrollment-link {
-      transition: none;
+    &::before {
+      content: attr(style);
+      position: absolute;
+      top: -25px;
+      left: 0;
+      background: rgba(255, 0, 0, 0.8);
+      color: white;
+      padding: 2px 6px;
+      font-size: 10px;
+      z-index: 100;
     }
   }
-
-  // ==========================================
-  // MODO ALTO CONTRASTE
-  // ==========================================
-  @media (prefers-contrast: high) {
-    &__media {
-      border: rem(2px) solid var(--neutral-200);
-
-      &::after {
-        background: rgba(0, 0, 0, 0.2);
-      }
-    }
-
-    &__enrollment-note {
-      border-left-width: rem(4px);
-    }
-  }
+  */
 
   // ==========================================
   // PRINT STYLES
@@ -340,7 +444,7 @@
   @media print {
     display: block !important;
 
-    &__media {
+    &_media {
       display: none;
     }
 
@@ -370,26 +474,13 @@
   }
 }
 
-@keyframes contentFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(rem(20px));
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 // ==========================================
 // ESTADOS DE CARGA Y OPTIMIZACIONES
 // ==========================================
 .program-data {
   // Estado de carga inicial
   &:not(.loaded) {
-    .program-data__media {
-      opacity: 0.8;
-
+    .program-data_media {
       &::before {
         opacity: 1 !important;
       }
@@ -398,14 +489,14 @@
 
   // Estado completamente cargado
   &.loaded {
-    .program-data__media {
+    .program-data_media {
       opacity: 1;
       transition: opacity 0.5s ease-in-out;
     }
   }
 
   // Estado cuando los videos están listos
-  &__media.responsive-video-ready {
+  &_media.responsive-video-ready {
     &::before {
       opacity: 0;
       animation: none;
@@ -415,15 +506,13 @@
   // Optimizaciones para conexiones lentas
   &[data-connection='slow'] {
     .program-data__iframe {
-      // Mostrar controles en conexiones lentas
       pointer-events: auto;
     }
   }
 
   // Optimizaciones para dispositivos con poca memoria
   &[data-performance='low'] {
-    .program-data__media {
-      // Reducir calidad de animaciones
+    .program-data_media {
       &::after {
         transition: none;
       }
@@ -431,6 +520,41 @@
 
     .program-data__iframe {
       transition: opacity 0.2s ease;
+    }
+  }
+}
+
+// ==========================================
+// SOPORTE PARA NAVEGADORES SIN ASPECT-RATIO
+// ==========================================
+@supports not (aspect-ratio: 1/1) {
+  .program-data_media {
+    // Fallback usando padding-bottom
+
+    @media (max-width: 767px) {
+      // Móvil: 1:1
+      &::before {
+        content: '';
+        display: block;
+        padding-bottom: 100%; // 1:1 ratio
+      }
+    }
+
+    @media (min-width: 768px) {
+      // Desktop: 612:880 = 143.79%
+      &::before {
+        content: '';
+        display: block;
+        padding-bottom: 143.79%; // 880/612 * 100
+      }
+    }
+
+    .program-data__iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   }
 }
