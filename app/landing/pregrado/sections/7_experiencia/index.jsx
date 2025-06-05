@@ -1,21 +1,28 @@
 'use client'
 
 import { useEffect } from 'react'
+import Title from '@/app/_library/components/contain/title'
 import Paragraph from '@library/components/contain/paragraph'
 import Container from '@/app/_library/components/container'
 
 import linkedInImg from './assets/linkedin.svg'
 
 import script from './script.js'
+import info from './info.json'
 import './styles.scss'
 
 const Experiencia = () => {
+
+    // Base para IDs únicos
+  const base = 'experiencia-javeriana'
+  const elementName = info.id || 'experience-carousel'
+  const baseClass = 'experience-carousel'
+
   useEffect(() => {
     script()
   }, [])
 
-  // Base para IDs únicos
-  const base = 'experiencia-javeriana'
+  {/* <h2 className="experience-carousel__title">Vive la Experiencia Javeriana</h2> */}
 
   // Datos del carrusel
   const carouselData = [
@@ -79,7 +86,7 @@ const Experiencia = () => {
   // Componente para renderizar testimonial
   const TestimonialCard = ({ text, user, index }) => (
     <div className="testimonial-card">
-      <Paragraph className="testimonial-text" id={`${base}-testimonial-text-${index}`}>
+      <Paragraph className="testimonial-text" id={`${elementName}-testimonial-text-${index}`}>
         {text}
       </Paragraph>
       <div className="testimonial-user">
@@ -88,7 +95,7 @@ const Experiencia = () => {
         </div>
         <div className="testimonial-info">
           <h4 className="testimonial-name">{user.name}</h4>
-          <Paragraph className="testimonial-job" id={`${base}-testimonial-job-${index}`}>
+          <Paragraph className="testimonial-job" id={`${elementName}-testimonial-job-${index}`}>
             {user.job}
           </Paragraph>
         </div>
@@ -125,8 +132,11 @@ const Experiencia = () => {
   return (
     <section id="section-seven">
       <Container className="container experience-carousel">
-        <h2 className="experience-carousel__title">Vive la Experiencia Javeriana</h2>
-        <Paragraph className="experience-carousel__description" id={`${base}-description`}>
+
+        <Title hierarchy="h2" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-title`}>
+          Vive la Experiencia Javeriana
+        </Title>
+        <Paragraph className={`${baseClass}__description`} id={`${elementName}-description`}>
           Descubre historias inspiradoras, momentos únicos y experiencias de nuestros estudiantes a través de sus palabras, imágenes y
           videos.
         </Paragraph>
