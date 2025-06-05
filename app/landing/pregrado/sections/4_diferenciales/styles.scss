@@ -1,229 +1,248 @@
 @use '@styles/autoload' as *;
 
-#section-four{
+#section-four {
   background-color: var(--background-100);
-  padding-top: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color:var(--neutral-variant-900);
-  margin: 0 auto;
+  padding-block: $spacing-xl;
+  color: var(--neutral-variant-900);
 
-  p{
+  p {
     color: var(--neutral-400);
-  }
-
-.p-4{
-  border: none;
-}
-p{
-  text-align: left;
-}
-.text-gray-900{
-  margin: 0;
-}
-
-.why-javeriana__header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.section-four-title{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .why-javeriana__title {
-    gap: 8px;
-    width: fit-content;
-    font-size: var(--font-size-title);
-    font-weight: var(--font-weight-bold);
-    color:var(--neutral-100);
+    text-align: left;
+    margin: 0;
   }
 }
+
 .why-javeriana {
-  padding-top: $spacing-lg;
-  margin: 0px;
   max-width: $max-width;
-  text-align: center;
+  margin: 0 auto;
+  padding-inline: $spacing-md;
 
-  &__image {
-    order: 0;
-    flex: 1;
+  // Header section
+  .section-header {
     text-align: center;
+    margin-bottom: $spacing-xl;
 
-    img {
-      max-width: 100%;
-      max-height: 550px;
-      min-height: 450px;
-      object-fit: cover;
-      border-radius: $border-radius-md;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .why-javeriana__title {
+      font-size: var(--font-size-title);
+      font-weight: var(--font-weight-bold);
+      color: var(--neutral-100);
+      margin: 0;
     }
   }
 
-  &__container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    margin-top: $spacing-lg;
-    padding-bottom: 25px;
-    width: fit-content;
-    gap: 30px;
+  // Main content container
+  &__content {
+    width: 100%;
+  }
 
-    .border{
-      padding: 5px;
+  // Grid layout
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas: "left-column image right-column";
+    gap: $spacing-lg;
+    align-items: stretch;
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: 1fr;
+      grid-template-areas: 
+        "left-column"
+        "right-column" 
+        "image";
+      gap: $spacing-md;
+      align-items: start;
+    }
+  }
+
+  // Columns
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    &--first {
+      grid-area: left-column;
+    }
+
+    &--second {
+      grid-area: right-column;
+    }
+  }
+
+  // Image container
+  &__image-container {
+    grid-area: image;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    min-width: 300px;
+
+    @media (min-width: $breakpoint-lg) {
+      height: 100%;
     }
 
     @media (max-width: $breakpoint-lg) {
-      flex-direction: column;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-
-  &__column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-
-
-    @media (max-width: $breakpoint-md) {
-      font-weight: $font-weight-regular;
-    
-      .why-javeriana__column {
-        width: 90vw;
-        color:var(--neutral-variant-900);
-        margin: 0 auto;
-      }
-
-      .why-javeriana__container{
-        width: 100vw;
-        gap: 0;
-      }
-      button{
-        width: 25%;
-      }
-  }
-
-  &__text {
-    font-size: $font-size-small;
-    color: $gray-400;
-    max-height: 0px;
-    overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
-
-    &.expanded {
-      max-height: none;
-    }
-
-    @media (min-width: $breakpoint-md) {
-      max-height: none;
-      overflow: visible;
-      display: flex;
-      flex-direction: column;
-    
-    
-      
-    }
-  }
-
-  // Botón de "Leer Más / Leer Menos"
-    &__toggle {
-
-
-    @media (max-width: $breakpoint-md) {
-      display: flex;
-      background: none;
-      border: none;
-      font-size: $font-size-small;
-      color: $text-dark;
-      cursor: pointer;
-      font-weight: bold; 
-      border: none; 
-    }
-    
-    &-text{
-      background-color: none;
+      order: 3;
+      margin-top: $spacing-md;
+      align-items: flex-start;
     }
   }
 
   &__image {
-    flex: 1;
-    text-align: center;
-    width: fit-content;
+    width: 100%;
+    object-fit: cover;
+    border-radius: $border-radius-md;
+
+    @media (min-width: $breakpoint-lg) {
+      max-width: 400px;
+      height: 100%;
+      min-height: 100%;
+    }
+
+    @media (max-width: $breakpoint-lg) {
+      max-width: 80%;
+      height: auto;
+      min-height: 250px;
+      max-height: 350px;
+    }
+
     @media (max-width: $breakpoint-md) {
-      order: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      
-  
+      max-width: 90%;
+      min-height: 200px;
+      max-height: 300px;
     }
-  
-    @media (min-width: $breakpoint-md) {
-      order: 0;
-    }
-    .why-javeriana__image{
-      img{
-        width: 50px;
-        height: auto;
-      }
-    }
-  }}  
-  @media (max-width: 992px) {
-    .why-javeriana__image{
-      order: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    img {
-      max-width: 70%; 
-      height: 300px;
-      object-fit: cover;
-    }
-  }
-  }}
-
-  /* Reglas CSS para el acordeón */
-
-/* En móviles, ocultar contenido por defecto */
-@media (max-width: 1023px) {
-  .accordion-content {
-    display: none;
-  }
-  
-  .accordion-content:not(.hidden) {
-    display: block;
   }
 }
 
-/* En desktop, mostrar contenido por defecto y ocultar botones */
-@media (min-width: 1024px) {
+// Accordion styles
+.accordion-item {
+  background-color: transparent;
+  // margin-bottom: $spacing-sm;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm;
+  cursor: pointer;
+
+  @media (min-width: $breakpoint-lg) {
+    cursor: default;
+  }
+}
+
+.accordion-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  flex: 1;
+}
+
+.accordion-icon {
+  font-size: 1.5rem;
+  color: var(--neutral-variant-900);
+  flex-shrink: 0;
+}
+
+.accordion-title {
+  font-weight: var(--font-weight-semibold);
+  color: var(--neutral-variant-900);
+  margin-bottom:0 !important;
+}
+
+.accordion-toggle {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  background: none;
+  border: none;
+  font-weight: var(--font-weight-bold);
+  color: var(--neutral-variant-900);
+  cursor: pointer;
+  padding: $spacing-xs;
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @media (min-width: $breakpoint-lg) {
+    display: none;
+  }
+}
+
+.toggle-text {
+  font-size: 0.875rem;
+}
+
+.toggle-icon {
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.accordion-content {
+  padding: 0;
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// Responsive accordion behavior
+@media (max-width: $breakpoint-lg - 1px) {
+  .accordion-content {
+    display: none;
+    width: 90%;
+    margin: 0 auto;
+
+    &:not(.hidden) {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+  }
+
+  .accordion-toggle {
+    display: flex;
+  }
+}
+
+@media (min-width: $breakpoint-lg) {
   .accordion-content {
     display: block !important;
-    margin-bottom: 1.5rem;
   }
-  
-  [data-accordion-target] {
+
+  .accordion-toggle {
     display: none !important;
   }
 }
 
-/* Transiciones suaves */
-.accordion-content {
-  transition: all 0.3s ease-in-out;
+// Animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Asegurar que los botones tengan el cursor pointer */
-[data-accordion-target] {
-  cursor: pointer;
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .accordion-content,
+  .toggle-icon {
+    transition: none;
+    animation: none;
+  }
 }
