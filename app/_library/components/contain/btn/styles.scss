@@ -180,7 +180,7 @@ $btn-ripple-duration: 0.6s;
   }
 
   // Aplicar los estilos temáticos a cada combinación de botón y color
-  @include css-var-color-variants('btn', meta.get-mixin('button-themes'));
+  @include colors-variants('btn', meta.get-mixin('button-themes'));
 }
 
 // ===========================================

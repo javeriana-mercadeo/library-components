@@ -187,8 +187,7 @@ $title-weights: (
     }
   }
 
-  // Aplicar los estilos temáticos a cada combinación de título y color
-  @include css-var-color-variants('title', meta.get-mixin('title-color-styles'));
+  @include colors-variants('title', meta.get-mixin('title-color-styles'));
 }
 
 // ===========================================

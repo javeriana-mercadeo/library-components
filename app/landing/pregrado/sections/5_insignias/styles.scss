@@ -1,142 +1,262 @@
 @use '@styles/autoload' as *;
 
-#section-five{
-    padding-top:25px;
-    padding-bottom: 25px;
-    background-color: var(--background-100);
+#section-five {
+  padding-top: rem(25px);
+  padding-bottom: rem(25px);
+  background-color: var(--background-100);
 
-.academic-carousel__title{
+  .academic-carousel__title {
     font-size: var(--font-size-title);
     font-weight: var(--font-weight-bold);
     width: fit-content;
-    color:var(--neutral-100);
-}
+    color: var(--neutral-100);
+  }
 
-.academic-carousel {
+  .academic-carousel {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     max-width: rem(1200px);
-}
+  }
 
-h1 {
-    font-size: $font-size-h2;
-    padding: 20px;
-    margin: 20px 0px;
-}
+  h1 {
+    font-size: var(--font-size-title);
+    padding: rem(20px);
+    margin: rem(20px) 0;
+  }
 
-.slider {
+  .slider {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
     width: 100%;
     overflow: hidden;
-    border-radius: 16px;
-    backdrop-filter: blur(7.4px);
-    -webkit-backdrop-filter: blur(7.4px);
+    border-radius: rem(16px);
+    backdrop-filter: blur(rem(7.4px));
+    -webkit-backdrop-filter: blur(rem(7.4px));
     position: relative;
-    padding: 20px;
+    padding: rem(20px);
     margin: auto;
 
     &::before,
     &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        width: 100px; /* 🔹 Ajusta el ancho del efecto */
-        height: 100%;
-        z-index: 2;
-        pointer-events: none; /* 🔹 Permite clics en el slider */
+      content: '';
+      position: absolute;
+      top: 0;
+      width: rem(100px);
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
     }
 
-    /* 🔹 Efecto de niebla a la izquierda */
+    // Efecto de niebla a la izquierda
     &::before {
-        left: 0;
-        background: linear-gradient(to right, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
+      left: 0;
+      background: linear-gradient(to right, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
     }
 
-    /* 🔹 Efecto de niebla a la derecha */
+    // Efecto de niebla a la derecha
     &::after {
-        right: 0;
-        background: linear-gradient(to left, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
+      right: 0;
+      background: linear-gradient(to left, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
     }
 
-    /* Pausar animación al hacer hover en el slider */
+    // 🎯 HOVER: Ralentizar animación en lugar de pausar
     &:hover .slider-track {
-        animation-play-state: paused;
+      animation-duration: 150s; // 5x más lento (30s → 150s)
     }
-}
+  }
 
-/* Contenedor que se moverá con la animación */
-.slider-track {
+  // ==========================================
+  // SLIDER TRACK CON RALENTIZACIÓN
+  // ==========================================
+  .slider-track {
     display: flex;
-    gap: 30px;
+    gap: rem(30px);
+    // 🚀 Velocidad normal: 30 segundos
     animation: scrolling 30s linear infinite;
     width: max-content;
-}
+    // 🎨 Transición suave del cambio de velocidad
+    transition: animation-duration 0.5s ease-out;
+  }
 
-.slider-items {
+  .slider-items {
     display: flex;
     justify-content: center;
     align-items: stretch;
-    gap: 30px;
+    gap: rem(30px);
     width: max-content;
     height: auto;
     flex-shrink: 0;
-}
 
-.slider-items--original {
-    animation: none;
-}
+    // Remover animaciones individuales (ya están en el track)
+    &--original,
+    &--duplicate,
+    &--third,
+    &--fourth,
+    &--fifth {
+      animation: none;
+    }
+  }
 
-.slider-items--duplicate {
-    animation: none;
-}
-
-.slider-items--third {
-    animation: none;
-}
-
-.slider-items--fourth {
-    animation: none;
-}
-
-.slider-items--fifth {
-    animation: none;
-}
-
-/* Animación ajustada para 5 grupos completos */
-@keyframes scrolling {
+  // Animación optimizada
+  @keyframes scrolling {
     0% {
-        transform: translateX(0);
+      transform: translateX(0);
     }
     100% {
-        transform: translateX(-20%);
+      transform: translateX(-20%);
     }
-}
+  }
 
-.img-logos{
+  // ==========================================
+  // LOGOS CON EFECTOS DE COLOR Y HOVER
+  // ==========================================
+  .img-logos {
     display: flex;
     align-items: center;
     flex-direction: column;
     height: auto;
-    max-width: 200px;
-}
+    max-width: rem(200px);
+    // 🎯 Preparar para efectos de hover
+    transition: transform 0.3s ease;
+    cursor: pointer;
 
-.slider-items img {
-    width: 150px;
-    height: auto;
-    margin: 20px;
-    object-fit: cover;
-    filter: grayscale(100%);
-}
-.slider-items p{
-    font-size: 0.7rem;
-    width: 100%;
-    text-align: center;
-    justify-self: unset;
-    color:var(--neutral-100);
-}
+    // 🎨 Efecto hover individual del logo
+    &:hover {
+      transform: translateY(rem(-5px)); // Levantar ligeramente
+    }
+  }
+
+  .slider-items {
+    img {
+      width: rem(150px);
+      height: auto;
+      margin: rem(20px);
+      object-fit: cover;
+      // 🎨 Estado inicial: escala de grises
+      filter: grayscale(100%) brightness(0.8);
+      transition:
+        filter 0.4s ease,
+        transform 0.3s ease;
+      border-radius: rem(8px);
+
+      // 🌈 HOVER INDIVIDUAL: Logo adquiere color
+      .img-logos:hover & {
+        filter: grayscale(0%) brightness(1.1); // Color completo + brillo
+        transform: scale(1.05); // Pequeño zoom
+      }
+
+      // 🎯 HOVER DEL SLIDER: Todos los logos adquieren color
+      .slider:hover & {
+        filter: grayscale(0%) brightness(1); // Color pero sin brillo extra
+      }
+    }
+
+    p {
+      font-size: rem(11.2px); // 0.7rem convertido
+      width: 100%;
+      text-align: center;
+      color: var(--neutral-100);
+      transition: color 0.3s ease;
+      margin: 0;
+
+      // 📝 Texto más visible cuando logo tiene hover
+      .img-logos:hover & {
+        color: var(--primary-600);
+        font-weight: var(--font-weight-medium);
+      }
+    }
+  }
+
+  // ==========================================
+  // EFECTOS ADICIONALES DE PULIDO
+  // ==========================================
+
+  // 🎭 Efecto sutil de pausa visual
+  &:hover {
+    .slider::before,
+    .slider::after {
+      opacity: 0.7; // Reducir niebla durante hover
+      transition: opacity 0.3s ease;
+    }
+  }
+
+  // 📱 RESPONSIVE: Ajustar en móviles
+  @media (max-width: $breakpoint-md) {
+    .slider-track {
+      gap: rem(20px); // Menor espacio en móvil
+    }
+
+    .slider-items {
+      gap: rem(20px);
+
+      img {
+        width: rem(120px); // Logos más pequeños
+        margin: rem(15px);
+      }
+
+      p {
+        font-size: rem(10px);
+      }
+    }
+
+    // En móvil: ralentizar menos para mejor UX
+    .slider:hover .slider-track {
+      animation-duration: 90s; // 3x más lento en lugar de 5x
+    }
+  }
+
+  // ==========================================
+  // VARIANTES DE VELOCIDAD (OPCIONAL)
+  // ==========================================
+
+  // Si quieres diferentes niveles de ralentización
+  .slider {
+    // Variables CSS para control dinámico
+    --normal-speed: 30s;
+    --hover-speed: 150s;
+
+    .slider-track {
+      animation-duration: var(--normal-speed);
+    }
+
+    &:hover .slider-track {
+      animation-duration: var(--hover-speed);
+    }
+
+    // 🎛️ Velocidades alternativas (usa una de estas clases)
+    &.speed-fast {
+      --normal-speed: 20s;
+      --hover-speed: 80s;
+    }
+
+    &.speed-slow {
+      --normal-speed: 45s;
+      --hover-speed: 200s;
+    }
+  }
+
+  // ==========================================
+  // ANIMACIÓN MEJORADA PARA MEJOR LOOP
+  // ==========================================
+
+  // Si tienes problemas con el loop, usa esta versión:
+  @keyframes scrollingSmooth {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  // Para usar la versión mejorada, cambia la animación:
+  /*
+  .slider-track {
+    animation: scrollingSmooth 30s linear infinite;
+  }
+  */
 }

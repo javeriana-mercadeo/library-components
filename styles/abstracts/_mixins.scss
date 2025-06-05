@@ -1,195 +1,85 @@
 // ==========================================
-// MIXINS OPTIMIZADOS PARA TEMAS
+// MIXINS
 // ==========================================
 @use 'sass:meta';
 @use 'sass:map';
 @use 'variables' as *;
 @use 'colors' as *;
 
-// GENERAR VARIABLES BASE (tema light por defecto)
-// ------------------------------------------
-@mixin generate-base-vars($colors-map) {
-  :root {
-    --theme: 'light';
+// ==========================================
+// TEMAS - SELECTORES
+// ==========================================
+@mixin dark-theme {
+  [data-theme-base='dark'] & {
+    @content;
+  }
+}
 
-    @each $color-name, $color-values in $colors-map {
-      @each $variant, $value in $color-values {
-        @if $variant != '' {
-          --#{$color-name}-#{$variant}: #{$value};
-        } @else {
-          --#{$color-name}: #{$value};
-        }
-      }
+@mixin faculty-theme($faculty-name) {
+  [data-theme-faculty='#{$faculty-name}'] & {
+    @content;
+  }
+}
+
+@mixin combined-theme($base: null, $faculty: null) {
+  $selector: '';
+
+  @if $base and $faculty {
+    $selector: '[data-theme-base="#{$base}"][data-theme-faculty="#{$faculty}"]';
+  } @else if $base {
+    $selector: '[data-theme-base="#{$base}"]';
+  } @else if $faculty {
+    $selector: '[data-theme-faculty="#{$faculty}"]';
+  }
+
+  @if $selector != '' {
+    #{$selector} & {
+      @content;
     }
   }
 }
 
-// GENERAR TEMA ESPECÍFICO (agrupado en un solo bloque)
-// ------------------------------------------
-@mixin generate-theme($theme-name, $theme-colors) {
-  :root[data-theme='#{$theme-name}'] {
-    --theme: '#{$theme-name}';
-
-    @each $color-name, $color-values in $theme-colors {
-      @each $variant, $value in $color-values {
-        @if $variant != '' {
-          --#{$color-name}-#{$variant}: #{$value};
-        } @else {
-          --#{$color-name}: #{$value};
-        }
-      }
-    }
-  }
-}
-
-// INICIALIZAR TODOS LOS TEMAS DE FORMA OPTIMIZADA
-// ------------------------------------------
-@mixin initialize-themes {
-  // 1. Generar variables base (tema light)
-  @include generate-base-vars($colors-map);
-
-  // 2. Generar cada tema específico en bloques separados
-  @each $theme-name, $theme-colors in $colors-theme {
-    @include generate-theme($theme-name, $theme-colors);
-  }
-}
-
+// ==========================================
 // RESPONSIVE
-// ------------------------------------------
+// ==========================================
 @mixin responsive($break_point: $breakpoint-md) {
   @media (min-width: $break_point) {
     @content;
   }
 }
 
-// DARK THEME
-// ------------------------------------------
-@mixin dark-theme {
-  html[data-theme*='-dark'] &,
-  html[data-theme='dark'] & {
-    @content;
-  }
-}
-
-// TRANSICIONES
-// ------------------------------------------
-@mixin hover-transition {
-  transition: $transition ease;
-
-  &:hover {
-    transition: $transition ease;
-  }
-}
-
-// LIFERAY EDIT MODE
-// ------------------------------------------
-@mixin liferay-edit-mode {
-  .has-edit-mode-menu & {
-    @content;
-  }
-
-  .signed-in & {
-    @content;
-  }
-}
-
-// APLICAR VARIANTES DE COMPONENTES POR TEMA
-// ------------------------------------------
-@mixin theme-variants-component($base-class, $mixin-ref) {
-  // Estilos por defecto (sin tema explícito)
-  @each $color-name, $color-values in $colors-map {
-    .#{$base-class}-#{$color-name} {
-      @include meta.apply($mixin-ref, $color-values, $color-name);
-    }
-  }
-
-  // Estilos para cada tema con [data-theme="..."]
-  @each $theme-name, $theme-values in $colors-theme {
-    [data-theme='#{$theme-name}'] {
-      @each $color-name, $color-values in $theme-values {
-        .#{$base-class}-#{$color-name} {
-          @include meta.apply($mixin-ref, $color-values, $color-name);
-        }
-      }
-    }
-  }
-}
-
-// RESPONSIVE BREAKPOINTS
-// ------------------------------------------
-@mixin respond-to($breakpoint) {
-  @if $breakpoint == sm {
-    @media (min-width: $breakpoint-sm) {
-      @content;
-    }
-  } @else if $breakpoint == md {
-    @media (min-width: $breakpoint-md) {
-      @content;
-    }
-  } @else if $breakpoint == lg {
-    @media (min-width: $breakpoint-lg) {
-      @content;
-    }
-  } @else if $breakpoint == xl {
-    @media (min-width: $breakpoint-xl) {
-      @content;
-    }
-  }
-}
-
-// TEXTO STYLING
-// ------------------------------------------
-@mixin text-style($size, $weight: $font-weight-regular, $spacing: $letter-spacing-normal, $line-height: $line-height-base) {
-  font-size: $size;
-  font-weight: $weight;
-  letter-spacing: $spacing;
-  line-height: $line-height;
-  font-family: $font-family-primary;
-}
-
 // ==========================================
-// MIXIN OPTIMIZADO PARA COMPONENTES
+// COMPONENTES - COLORES
 // ==========================================
-
-/**
- * Aplica estilos de color básicos a un componente
- * Solo genera primary, secondary, tertiary, neutral, success, warning, danger
- * Con soporte automático para tema oscuro
- */
-@mixin basic-color-variants($base-class, $mixin-ref) {
-  // Generar variantes de colores básicos para tema claro
-  @each $color-name, $color-values in $basic-colors-map {
-    .#{$base-class}-#{$color-name} {
-      @include meta.apply($mixin-ref, $color-values, $color-name);
-    }
-  }
-
-  // Generar variantes para tema oscuro
-  @include dark-theme {
-    @each $color-name, $color-values in $basic-dark-colors {
-      .#{$base-class}-#{$color-name} {
-        @include meta.apply($mixin-ref, $color-values, $color-name);
-      }
-    }
-  }
-}
-
-// ==========================================
-// MIXIN USANDO VARIABLES CSS (RECOMENDADO)
-// ==========================================
-
-/**
- * Versión optimizada que usa variables CSS
- * No genera código adicional, solo usa las variables ya existentes
- * MUCHO más eficiente y ligero
- */
-@mixin css-var-color-variants($base-class, $mixin-ref) {
-  // Lista de colores a generar
+@mixin colors-variants($base-class, $mixin-ref) {
   $color-names: ('primary', 'secondary', 'tertiary', 'neutral', 'success', 'warning', 'danger');
 
   @each $color-name in $color-names {
     .#{$base-class}-#{$color-name} {
       @include meta.apply($mixin-ref, null, $color-name);
     }
+  }
+}
+
+// ==========================================
+// UTILIDADES
+// ==========================================
+@mixin text-style(
+  $size,
+  $weight: var(--font-weight-regular),
+  $spacing: var(--letter-spacing-normal),
+  $line-height: var(--line-height-base)
+) {
+  font-size: $size;
+  font-weight: $weight;
+  letter-spacing: $spacing;
+  line-height: $line-height;
+  font-family: var(--font-family);
+}
+
+@mixin liferay-edit-mode {
+  .has-edit-mode-menu &,
+  .signed-in & {
+    @content;
   }
 }

@@ -9,7 +9,12 @@ export default function btnReturn() {
   return (
     <div className="flex gap-4 items-center btnReturn">
       <Link href="/">
-        <Button isIconOnly aria-label="Like" className="btnReturn">
+        <Button
+          className="shadow-lg btnReturn"
+          isIconOnly
+          variant="shadow"
+          color="primary"
+          aria-label="Like">
           <i className="ph-fill ph-house"></i>
         </Button>
       </Link>

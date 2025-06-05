@@ -118,6 +118,7 @@
     &.caption-clamp-2 {
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -125,6 +126,7 @@
     &.caption-clamp-3 {
       display: -webkit-box;
       -webkit-line-clamp: 3;
+      line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -281,7 +283,7 @@
   }
 
   // Aplicar los estilos temáticos a cada combinación de caption y color
-  @include theme-variants-component('caption', meta.get-mixin('caption-theme-style'));
+  @include colors-variants('caption', meta.get-mixin('caption-theme-style'));
 }
 
 @mixin caption-theme-style($color-values, $color-name) {
