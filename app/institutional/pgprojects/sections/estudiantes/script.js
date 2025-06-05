@@ -1,63 +1,65 @@
-export default function swiperCarousel() {
-  // Función para cargar Swiper dinámicamente
-  const loadSwiper = async () => {
-    // Verificar si Swiper ya está cargado
-    if (typeof window !== 'undefined' && !window.Swiper) {
-      // Crear y agregar el script de Swiper
-      const script = document.createElement('script')
-      script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'
-      script.async = true
+// Datos de estudiantes
+export const studentsData = [
+  {
+    name: 'Elena Ramírez',
+    position: 'Chief Innovation Officer',
+    company: 'Tesla',
+    logo: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/tesla',
+    image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/estudiante-uno'
+  },
+  {
+    name: 'Ricardo Fernández',
+    position: 'Vicepresidente de Estrategia Global',
+    company: 'Google',
+    logo: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/google',
+    image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/estudiante-dos'
+  },
+  {
+    name: 'Elena Ramírez',
+    position: 'Chief Innovation Officer',
+    company: 'Tesla',
+    logo: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/tesla',
+    image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/estudiante-uno'
+  },
+  {
+    name: 'Ricardo Fernández',
+    position: 'Vicepresidente de Estrategia Global',
+    company: 'Google',
+    logo: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/google',
+    image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3'
+  },
+  {
+    name: 'Valeria López',
+    position: 'Directora de Desarrollo de Negocios',
+    company: 'Microsoft',
+    logo: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/microsoft',
+    image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/estudiante-tres'
+  }
+]
 
-      script.onload = () => {
-        initializeSwiper()
-      }
+// Funciones para el manejo del slider
+export const getNextSlide = (currentSlide, totalSlides) => {
+  return (currentSlide + 1) % totalSlides
+}
 
-      document.head.appendChild(script)
+export const getPrevSlide = (currentSlide, totalSlides) => {
+  return currentSlide === 0 ? totalSlides - 1 : currentSlide - 1
+}
 
-      // También cargar los estilos CSS
-      const link = document.createElement('link')
-      link.rel = 'stylesheet'
-      link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
-      document.head.appendChild(link)
-    } else if (window.Swiper) {
-      // Si Swiper ya está cargado, inicializar directamente
-      initializeSwiper()
-    }
+export const getSlideClass = (index, currentSlide, totalSlides) => {
+  if (index === currentSlide) {
+    return 'active'
   }
 
-  // Función para inicializar Swiper
-  const initializeSwiper = () => {
-    if (window.Swiper) {
-      new window.Swiper('.subjects-swiper', {
-        loop: true,
-        spaceBetween: 30,
-        // Pagination bullets
-        pagination: {
-          el: '.subjects-pagination',
-          clickable: true,
-          dynamicBullets: true
-        },
-        // Navigation arrows
-        navigation: {
-          nextEl: '.subjects-next',
-          prevEl: '.subjects-prev'
-        },
-        // Responsive breakpoints
-        breakpoints: {
-          0: {
-            slidesPerView: 1
-          },
-          768: {
-            slidesPerView: 2
-          },
-          1024: {
-            slidesPerView: 3
-          }
-        }
-      })
-    }
-  }
+  const nextIndex = (currentSlide + 1) % totalSlides
+  const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides
+  const nextNextIndex = (currentSlide + 2) % totalSlides
+  const prevPrevIndex = (currentSlide - 2 + totalSlides) % totalSlides
 
-  // Ejecutar la carga de Swiper
-  loadSwiper()
+  if (index === nextIndex) return 'next'
+  if (index === prevIndex) return 'prev'
+  if (index === nextNextIndex) return 'next-next'
+  if (index === prevPrevIndex) return 'prev-prev'
+
+  return ''
 }

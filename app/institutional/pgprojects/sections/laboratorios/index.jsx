@@ -46,7 +46,7 @@ const Laboratorios = () => {
   return (
     <Container className="lab-slider-container">
       <div >
-       <Title className="lab-slider-title"> <h2 >Laboratorios</h2></Title>
+       <Title className="lab-slider-title"> <h1 >Laboratorios</h1></Title>
 
         <div className="lab-slider-content">
           <div

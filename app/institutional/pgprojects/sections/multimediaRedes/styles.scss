@@ -1,331 +1,259 @@
 @use '@styles/autoload' as *;
 
-.multimedia-section {
+.section-dos {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  overflow: hidden;
-  
-
-
-  h1 {
-    color: #454F59;
-    font-weight: 700;
-    padding: 50px;
-    text-align: center;
-    font-size: clamp(1.25rem, 2vw + 1rem, 1.875rem);
-  }
 }
 
-.cards-slider-container {
-  width: 100%;
+.subjects-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   position: relative;
-  margin: 0 auto;
 
-  .cards-slider-wrapper {
-    width: 100%;
+
+  .subjects-carousel__title {
+    font-size: $font-size-h2;
+    font-weight: $font-weight-bold;
+    width: fit-content;
+  }
+  
+ 
+  .button-plan {
+    color: $primary-color;
+    padding: rem(15px);
+    font-weight: 600;
+    border: 1px solid $primary-color;
+
+    i {
+      padding-left: rem(10px);
+      size: rem(16px);
+    }
+  }
+  
+  .card-wrapper {
+    max-width: rem(1100px);
+    margin: 0 rem(60px) rem(35px);
+    padding: rem(20px) rem(10px);
     overflow: hidden;
-    padding: 0 20px;
-    box-sizing: border-box;
   }
 
-  .cards-track {
-    display: grid;
-    gap: 10px;
-    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-    width: 100%;
+  .swiper-backface-hidden .swiper-slide {
+    margin-top: rem(20px);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    height: auto;
   }
 
-  .card {
-    width: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    background-color: white;
+  .card-list {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+  }
+
+  .card-item {
     display: flex;
     flex-direction: column;
-
-    @media (max-width: 767px) {
-      max-width: 280px;
-      margin: 0 auto;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 12px;
-
-      .institution-info {
-        display: flex;
-        align-items: center;
-
-        .institution-logo {
-          width: 25px;
-          height: 25px;
-          border-radius: 50%;
-          background-color: #0a5597;
-          color: white;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 11px;
-          font-weight: bold;
-          margin-right: 8px;
-
-          @media (max-width: 767px) {
-            width: 22px;
-            height: 22px;
-            font-size: 10px;
-          }
-        }
-
-        .institution-name {
-          font-size: 14px;
-          font-weight: 500;
-
-          @media (max-width: 767px) {
-            font-size: 13px;
-          }
-
-          .faculty-name {
-            font-size: 12px;
-            color: #666;
-            font-weight: normal;
-
-            @media (max-width: 767px) {
-              font-size: 11px;
-            }
-          }
-        }
-      }
-
-      .more-options {
-        cursor: pointer;
-        font-weight: bold;
-      }
-    }
-
-    .card-content {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-
-      &.aspect-ratio-5-4 {
-        &::before {
-          content: '';
-          display: block;
-          padding-top: 125%;
-        }
-
-        @media (max-width: 767px) {
-          height: auto;
-          max-height: 350px;
-
-          &::before {
-            padding-top: 125%;
-          }
-        }
-
-        img {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
-    }
-
-    .card-footer {
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-
-      @media (max-width: 767px) {
-        padding: 8px 10px;
-      }
-
-      .action-button {
-        background: none;
-        border: none;
-        padding: 8px;
-        margin-right: 15px;
-        cursor: pointer;
-
-        @media (max-width: 767px) {
-          padding: 6px;
-          margin-right: 12px;
-        }
-
-        svg {
-          width: 22px;
-          height: 22px;
-          color: #333;
-
-          @media (max-width: 767px) {
-            width: 18px;
-            height: 18px;
-          }
-        }
-
-        &:hover svg {
-          color: #0a5597;
-        }
-      }
-    }
+    width: 100%;
+    min-height: rem(500px);
   }
 
-  .slider-control {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 36px;
-    height: 36px;
-    background: rgba(255, 255, 255, 0.8);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 10;
+  .card-list .card-item .card-link {
+    display: flex;
+    flex-direction: column;
+    background: $text-light;
+    user-select: none;
+    border-radius: rem(12px);
+    text-decoration: none;
+    border: 1px solid $gray-900;
+    box-shadow: 0 rem(10px) rem(10px) rgba(0, 0, 0, 0.06);
+    transition: 0.2s ease;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-list .card-item .card-link:active {
+    cursor: grabbing;
+  }
+
+  .card-list .card-item .card-link:hover {
+    border: 1px solid;
+    border-color: var(--primary);
+    box-shadow: 0px rem(4px) rem(10px) rgba(0, 0, 0, 0.351);
+  }
+
+  .card-list .card-link .card-image {
+    width: 100%;
+    border-radius: rem(10px);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .title-subjects {
+    margin-bottom: rem(8px);
+    border-bottom: rem(0.8px) solid $gray-900;
+    font-size: $font-size-p;
+    font-weight: $font-weight-bold;
+    letter-spacing: $letter-spacing-normal;
+    color: $gray-100;
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .card-list .card-link .badge {
+    color: $text-light;
+    width: fit-content;
+    padding: rem(8px) rem(16px);
+    font-size: $font-size-small;
+    border-radius: rem(50px);
+    font-weight: $font-weight-bold;
+    background: var(--primary);
+    text-align: left;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: rem(10px);
+  }
 
-    @media (max-width: 767px) {
-      width: 30px;
-      height: 30px;
+  .subjects-list {
+    list-style: none;
+    padding-top: rem(5px);
+    margin: 0;
+    padding-bottom: rem(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-self: start;
+  }
+
+  .subjects-list li {
+    color: $gray-500;
+    margin-bottom: rem(8px);
+    display: flex;
+    align-items: center;
+    font-size: $font-size-p;
+    font-weight: $font-weight-regular;
+
+    i {
+      font-size: rem(20px);
+      margin-right: rem(8px);
+      color: var(--primary);
     }
+  }
 
-    svg {
-      width: 20px;
-      height: 20px;
-      color: #333;
-
-      @media (max-width: 767px) {
-        width: 16px;
-        height: 16px;
-      }
+  .content-credits {
+    font-size: rem(18px);
+    border-top: rem(0.8px) solid $gray-900;
+    font-weight: bold;
+    color: $gray-800;
+    padding-top: rem(10px);
+    align-self: end;
+    width: 100%;
+    margin-top: auto;
+    
+    strong {
+      color: $gray-500;
     }
+  }
 
-    &.prev {
-      left: 5px;
-    }
+  .card-wrapper .swiper-pagination-bullet {
+    height: rem(13px);
+    width: rem(13px);
+    opacity: 0.5;
+    background: $primary-color;
+  }
+  
+  .card-wrapper .swiper-pagination-bullet-active {
+    opacity: 1;
+  }
 
-    &.next {
-      right: 5px;
+  .swiper-slide-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: rem(50px);
+    height: rem(50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    i {
+      font-size: rem(32px);
+      color: $primary-color;
+      z-index: 100;
     }
 
     &:hover {
-      background: white;
+      transform: translateY(-50%) scale(1.1);
     }
   }
 
-  .slider-indicators {
+  .subjects-prev {
+    left: rem(2px);
+  }
+
+  .subjects-next {
+    right: rem(2px);
+  }
+
+  // Instagram embed específico
+  .instagram-embed {
+    width: 100%;
     display: flex;
     justify-content: center;
-    gap: 8px;
-    margin-top: 15px;
-
-    .indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: #ccc;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-
-      &.active {
-        background-color: #0a5597;
-      }
+    align-items: center;
+    min-height: rem(400px);
+    
+    .instagram-media {
+      margin: 0 auto !important;
+      max-width: 100% !important;
+      width: 100% !important;
     }
   }
-}
 
-@media (min-width: 768px) {
-  .cards-slider-container {
-    .cards-slider-wrapper {
-      padding: 0 30px;
+  @media (max-width: $breakpoint-sm) {
+    .text-align-movil {
+      text-align: left;
+      width: 100%;
+    }
+    
+    .button-plan {
+      width: 98%;
+      display: flex;
+      text-align: center;
+      justify-content: center;
     }
 
-    .slider-control {
-      &.prev {
-        left: 10px;
-      }
+    .swiper-slide-button {
+      width: rem(40px);
+      height: rem(40px);
 
-      &.next {
-        right: 10px;
-      }
-    }
-  }
-}
-
-@media (min-width: 992px) {
-  .cards-slider-container {
-    .cards-slider-wrapper {
-      padding: 0 40px;
-    }
-
-    .card {
-      .card-header {
-        padding: 12px 15px;
-
-        .institution-logo {
-          width: 35px;
-          height: 35px;
-        }
-
-        .institution-name {
-          font-size: 15px;
-
-          .faculty-name {
-            font-size: 13px;
-          }
-        }
-      }
-
-      .card-footer {
-        padding: 12px 15px;
+      i {
+        font-size: rem(24px);
       }
     }
 
-    .slider-control {
-      width: 44px;
-      height: 44px;
-
-      svg {
-        width: 24px;
-        height: 24px;
-      }
-
-      &.prev {
-        left: 15px;
-      }
-
-      &.next {
-        right: 15px;
-      }
+    .card-item {
+      height: rem(450px) !important;
+      min-height: rem(450px) !important;
     }
   }
-}
 
-@media (min-width: 1200px) {
-  .cards-slider-container {
-    .cards-track {
-      gap: 15px;
+  @media (max-width: $breakpoint-sm) {
+    .card-wrapper {
+      margin: 0 rem(10px) rem(25px);
     }
-
-    .card {
-      .card-header {
-        padding: 15px;
-      }
-
-      .card-footer {
-        padding: 15px;
-      }
+    
+    .card-wrapper .swiper-slide-button {
+      display: none;
     }
   }
 }
