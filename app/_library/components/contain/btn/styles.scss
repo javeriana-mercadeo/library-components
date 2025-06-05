@@ -1,0 +1,496 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:color';
+@use '@styles/autoload' as *;
+
+// ===========================================
+// VARIABLES GLOBALES DEL COMPONENTE
+// ===========================================
+$btn-border-width: rem(2px);
+$btn-border-radius: rem(12px);
+$btn-transition: all 0.25s ease-in-out;
+$btn-font-weight: 500;
+$btn-line-height: 1.5;
+$btn-gap: rem(8px);
+
+// Tamaños de padding
+$btn-padding-sm: rem(6px) rem(14px);
+$btn-padding-md: rem(8px) rem(18px);
+$btn-padding-lg: rem(14px) rem(26px);
+
+// Escalas de fuente
+$btn-font-scale-sm: 0.875;
+$btn-font-scale-md: 1;
+$btn-font-scale-lg: 1.125;
+
+// Sombras específicas por variante
+$btn-shadow-solid:
+  0 rem(1px) rem(3px) rgba(0, 0, 0, 0.12),
+  0 rem(1px) rem(2px) rgba(0, 0, 0, 0.24);
+$btn-shadow-bordered: none;
+$btn-shadow-light: none;
+$btn-shadow-flat: none;
+$btn-shadow-faded: 0 rem(4px) rem(18px) rgba(0, 0, 0, 0.25);
+$btn-shadow-ghost: none;
+$btn-shadow-shadow: 0 rem(4px) rem(14px);
+
+// Transformaciones
+$btn-transform-hover: translateY(rem(-2px));
+$btn-transform-active: translateY(0);
+$btn-transform-shadow: translateY(rem(-1px));
+
+// Opacidades para variantes
+$btn-opacity-faded: 0.25;
+$btn-opacity-light: 0.15;
+$btn-opacity-flat: 0.1;
+$btn-opacity-ghost: 0.05;
+$btn-opacity-disabled: 0.5;
+
+// Efecto ripple
+$btn-ripple-size: rem(180px);
+$btn-ripple-offset: rem(-90px);
+$btn-ripple-duration: 0.6s;
+
+// ===========================================
+// MIXIN PRINCIPAL
+// ===========================================
+@mixin general-btn {
+  // Clase base común para todos los botones
+  .btn {
+    // Reset de estilos base
+    appearance: none;
+    outline: none;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+
+    // Estilos propios del componente
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $btn-gap;
+    min-width: rem(64px);
+    min-height: rem(40px);
+
+    font-weight: $btn-font-weight;
+    line-height: $btn-line-height;
+    font-size: rem(14px); // Tamaño base específico
+    border-radius: var(--btn-radius, #{$btn-border-radius});
+    padding: $btn-padding-md;
+    transition: $btn-transition;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top; // Alineación consistente
+
+    // Estilos para iconos
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: rem(20px);
+      height: rem(20px);
+
+      svg,
+      i {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .btn-text {
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+
+    // Variantes de tamaño
+    &.btn-sm {
+      min-height: rem(32px);
+      padding: $btn-padding-sm;
+      font-size: rem(12px);
+
+      .btn-icon {
+        width: rem(14px);
+        height: rem(14px);
+      }
+    }
+
+    &.btn-lg {
+      min-height: rem(48px);
+      padding: $btn-padding-lg;
+      font-size: rem(16px);
+
+      .btn-icon {
+        width: rem(20px);
+        height: rem(20px);
+      }
+    }
+
+    // Botón de ancho completo
+    &.btn-full-width {
+      width: 100%;
+    }
+
+    // Estados del botón
+    &:disabled,
+    &.btn-disabled,
+    &[aria-disabled='true'] {
+      opacity: $btn-opacity-disabled;
+      pointer-events: none;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    // Focus state
+    &:focus-visible {
+      outline: rem(2px) solid transparent;
+      outline-offset: rem(2px);
+      z-index: 10;
+    }
+
+    // Efecto de onda al hacer clic
+    .btn-ripple-effect {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple $btn-ripple-duration linear;
+      pointer-events: none;
+      width: $btn-ripple-size;
+      height: $btn-ripple-size;
+      margin-top: $btn-ripple-offset;
+      margin-left: $btn-ripple-offset;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+  }
+
+  // Aplicar los estilos temáticos a cada combinación de botón y color
+  @include theme-variants-component('btn', meta.get-mixin('button-themes'));
+}
+
+// ===========================================
+// MIXIN DE TEMAS POR COLOR
+// ===========================================
+@mixin button-themes($color-values, $color-name) {
+  // Extraer colores del mapa
+  $base-color: if(map.has-key($color-values, 600), map.get($color-values, 600), map.get($color-values, ''));
+  $hover-color: if(map.has-key($color-values, 700), map.get($color-values, 700), $base-color);
+  $active-color: if(map.has-key($color-values, 800), map.get($color-values, 800), $hover-color);
+
+  // Variables CSS que se adaptan automáticamente por tema
+  $color: var(--#{$color-name});
+  $color-50: var(--#{$color-name}-50);
+  $color-100: var(--#{$color-name}-100);
+  $color-200: var(--#{$color-name}-200);
+  $color-300: var(--#{$color-name}-300);
+  $color-400: var(--#{$color-name}-400);
+  $color-500: var(--#{$color-name}-500);
+  $color-600: var(--#{$color-name}-600);
+  $color-700: var(--#{$color-name}-700);
+  $color-800: var(--#{$color-name}-800);
+  $color-900: var(--#{$color-name}-900);
+
+  // Variables para texto
+  $text-on-color: var(--neutral-1000);
+  $text-on-light: var(--neutral-100);
+  $text-primary: $color-600;
+
+  // ===========================================
+  // VARIANTE: SOLID (estilo por defecto de HeroUI)
+  // ===========================================
+  &.btn-solid {
+    background: $color-600;
+    color: $text-on-color;
+    box-shadow: $btn-shadow-solid;
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-700;
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-800;
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: FADED (translúcido con backdrop-filter)
+  // ===========================================
+  &.btn-faded {
+    background: color.change($base-color, $alpha: 0.1);
+    color: $color-600;
+    backdrop-filter: blur(8px) saturate(150%);
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
+    box-shadow: none;
+    border: rem(2px) solid color.change($base-color, $alpha: 0.2);
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: color.change($base-color, $alpha: 0.25);
+      border-color: color.change($base-color, $alpha: 0.3);
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: color.change($base-color, $alpha: 0.35);
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: color.change($base-color, $alpha: 0.4);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: BORDERED (solo borde)
+  // ===========================================
+  &.btn-bordered {
+    background: transparent;
+    color: $text-primary;
+    border: rem(2px) solid $color-600;
+    box-shadow: $btn-shadow-bordered;
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      border-color: $color-400;
+      color: $color-700;
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      border-color: $color-500;
+      color: $color-800;
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: color.change($base-color, $alpha: 0.2);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: LIGHT (fondo muy sutil)
+  // ===========================================
+  &.btn-light {
+    background: transparent;
+    color: $color-600;
+    box-shadow: $btn-shadow-light;
+    border: rem(1px) solid transparent;
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: color.change($base-color, $alpha: 0.18);
+      color: $color-800;
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: color.change($base-color, $alpha: 0.25);
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: color.change($base-color, $alpha: 0.3);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: FLAT (menos énfasis que light)
+  // ===========================================
+  &.btn-flat {
+    background: color.change($base-color, $alpha: 0.18);
+    color: $color-600;
+    box-shadow: $btn-shadow-flat;
+    border: rem(1px) solid transparent;
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: color.change($base-color, $alpha: 0.2);
+      color: $color-700;
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: color.change($base-color, $alpha: 0.23);
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: color.change($base-color, $alpha: 0.25);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: GHOST (solo texto, sin fondo)
+  // ===========================================
+  &.btn-ghost {
+    background: transparent;
+    color: $text-primary;
+    border: rem(2px) solid $color-600;
+    box-shadow: $btn-shadow-ghost;
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-700;
+      color: $text-on-color;
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-800;
+      color: $text-on-color;
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: color.change($base-color, $alpha: 0.2);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: SHADOW (con sombra prominente)
+  // ===========================================
+  &.btn-shadow {
+    background: $color-600;
+    color: $text-on-color;
+    box-shadow: 0 rem(4px) rem(14px) color.change($base-color, $alpha: 0.4);
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-700;
+      box-shadow: 0 rem(8px) rem(25px) color.change($base-color, $alpha: 0.35);
+      transform: translateY(rem(-2px));
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-800;
+      box-shadow: 0 rem(4px) rem(14px) color.change($base-color, $alpha: 0.4);
+      transform: translateY(0);
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300,
+        0 rem(4px) rem(14px) color.change($base-color, $alpha: 0.4);
+    }
+
+    .btn-ripple-effect {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  // ===========================================
+  // AJUSTES PARA MODO OSCURO
+  // ===========================================
+  @include dark-theme {
+    // Extraer color para modo oscuro
+    $dark-color: if(map.has-key($color-values, 300), map.get($color-values, 300), $base-color);
+
+    &.btn-solid {
+      background: $color-500;
+      color: var(--neutral-100);
+
+      &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-400;
+      }
+
+      &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-600;
+      }
+    }
+
+    &.btn-faded {
+      color: $color-700;
+      border: rem(2px) solid color.change($base-color, $alpha: 0.3);
+    }
+
+    &.btn-bordered {
+      color: $color-700;
+      border-color: $color-500;
+    }
+
+    &.btn-light {
+      color: $color-700;
+    }
+
+    &.btn-flat {
+      color: $color-700;
+    }
+
+    &.btn-ghost {
+      color: $color-700;
+
+      &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-400;
+        color: var(--neutral-100);
+      }
+
+      &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-600;
+        color: var(--neutral-100);
+      }
+    }
+
+    &.btn-shadow {
+      background: $color-500;
+      color: var(--neutral-100);
+
+      &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-400;
+      }
+
+      &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-600;
+      }
+    }
+  }
+}

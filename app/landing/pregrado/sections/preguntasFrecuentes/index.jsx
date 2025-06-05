@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import Container from '@library/components/container/Container'
+import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
 
 import script from './script.js'
@@ -18,8 +18,10 @@ const PreguntasFrecuentes = () => {
   return (
     <section id="section-eleven">
       <Container className="container faq">
-        <div >
-          <Title className="faq__title"><h2 >Preguntas Frecuentes</h2></Title>
+        <div>
+          <Title className="faq__title">
+            <h2>Preguntas Frecuentes</h2>
+          </Title>
           <div className="faq__container">
             {/* Primera pregunta expandida por defecto */}
             <div className="faq__item active">

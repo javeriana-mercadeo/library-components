@@ -1,6 +1,21 @@
 @use '@styles/autoload' as *;
 @use './components/modalForm/styles.scss' as *;
 
+// ===========================================
+// BODY MODIFICATIONS
+// ===========================================
+// Prevenir scroll del body cuando el menú está activo
+body.menu-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+
+  // Cuando el menú está abierto, siempre mostrar el header
+  .header--hidden {
+    transform: translateY(0) !important;
+  }
+}
+
 .header {
   position: fixed;
   top: 0;
@@ -338,20 +353,5 @@
   to {
     opacity: 1;
     transform: translateX(0);
-  }
-}
-
-// ===========================================
-// BODY MODIFICATIONS
-// ===========================================
-// Prevenir scroll del body cuando el menú está activo
-body.menu-open {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-
-  // Cuando el menú está abierto, siempre mostrar el header
-  .header--hidden {
-    transform: translateY(0) !important;
   }
 }

@@ -8,11 +8,19 @@
 
 // 2. Componentes globales
 // ------------------------------------------
-@use '@library/components/contain/btn/style.scss' as *;
-@use '@library/components/logo_institucional/style.scss' as *;
+@use '@library/components/container/styles.scss' as *;
+@use '@library/components/contain/btn/styles.scss' as *;
+@use '@library/components/contain/title/styles.scss' as *;
+@use '@library/components/contain/caption/styles.scss' as *;
+
+@use '@library/components/logo_institucional/styles.scss' as *;
+
+@include container;
+@include logo;
+@include title;
+@include caption;
 
 @include general-btn;
-@include logo;
 
 // 4. Estilos globales específicos
 // ------------------------------------------
@@ -46,6 +54,23 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
+    // Media queries globales
+    @include responsive {
+      background-attachment: scroll;
+    }
+
+    // Personalización del scroll
+    &::-webkit-scrollbar {
+      width: rem(7px);
+      background-color: var(--neutral-700);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--primary-600);
+      border-radius: rem(5px);
+      height: 40%;
+    }
+
     .global-container {
       min-height: 100vh;
       height: 100%;
@@ -53,24 +78,5 @@ html {
 
       padding-top: 5rem;
     }
-  }
-
-  // Personalización del scroll
-  body::-webkit-scrollbar {
-    width: rem(7px);
-    background-color: var(--neutral-700);
-  }
-
-  body::-webkit-scrollbar-thumb {
-    background-color: var(--primary-600);
-    border-radius: rem(5px);
-    height: 40%;
-  }
-}
-
-// Media queries globales
-@include responsive {
-  html body {
-    background-attachment: scroll;
   }
 }

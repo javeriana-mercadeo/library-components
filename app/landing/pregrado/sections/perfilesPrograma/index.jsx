@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import Container from '@library/components/container/Container'
+import Container from '@library/components/container'
 import Paragraph from '@library/components/contain/paragraph'
 import Title from '@library/components/contain/title'
 import perfilIngresoImg from '../../../../../assets/perfiles/perfil-ingreso.png'
@@ -11,6 +11,7 @@ import script from './script.js'
 import './styles.scss'
 
 const PerfilesPrograma = () => {
+  const base = 'perfiles-programa'
   useEffect(() => {
     script()
   }, [])
@@ -41,7 +42,7 @@ const PerfilesPrograma = () => {
                   <img src={perfilIngresoImg.src} alt="Perfil de Ingreso" className="program-profile__image" />
                 </div>
                 <div className="p-content">
-                  <Paragraph>
+                  <Paragraph id={`${base}-parrafo`} isEditable={true}>
                     <p>
                       Esperamos que los aspirantes al programa de Ingeniería Civil de la Universidad Javeriana tengan interés en diseñar,
                       construir y gestionar proyectos de infraestructura que transformen la sociedad de manera sostenible.
@@ -94,7 +95,7 @@ const PerfilesPrograma = () => {
                   <img src={perfilEgresoImg.src} alt="Perfil de Egreso" className="program-profile__image" />
                 </div>
                 <div className="p-content">
-                  <Paragraph>
+                  <Paragraph id={`${base}-parrafo-2`} isEditable={true}>
                     <p>
                       Los egresados de Ingeniería Civil de la Universidad Javeriana son profesionales capacitados para diseñar, construir y
                       gestionar proyectos de infraestructura con un enfoque sostenible y ético.
@@ -120,7 +121,7 @@ const PerfilesPrograma = () => {
                       <div className="program-profile__icon-container">
                         <i className="ph ph-check-circle"></i>
                       </div>
-                      <Paragraph className="program-profile__text"> 
+                      <Paragraph className="program-profile__text">
                         <p >
                           Integran factores sociales, económicos y ambientales en la toma de decisiones.
                         </p>
@@ -155,7 +156,7 @@ const PerfilesPrograma = () => {
                 </div>
 
                 <div className="p-content">
-                  <Paragraph>
+                  <Paragraph id={`${base}-parrafo-3`} isEditable={true}>
                     <p>
                       La carrera de Ingeniería Civil en la Universidad Javeriana se distingue por su enfoque innovador y compromiso con la
                       sostenibilidad.

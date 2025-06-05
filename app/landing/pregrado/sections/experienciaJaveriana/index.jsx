@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import Paragraph from '@library/components/contain/paragraph'
-import Container from '@/app/_library/components/container/Container.jsx'
+import Container from '@/app/_library/components/container'
 
 import linkedInImg from './assets/linkedin.svg'
 
@@ -13,6 +13,9 @@ const ExperienciaJaveriana = () => {
   useEffect(() => {
     script()
   }, [])
+
+  // Base para IDs únicos
+  const base = 'experiencia-javeriana'
 
   // Datos del carrusel
   const carouselData = [
@@ -68,19 +71,15 @@ const ExperienciaJaveriana = () => {
   const ImageCard = ({ src, alt, link }) => (
     <a href={link} className="card-link-7">
       <div className="image-card-7">
-        <img 
-          src={src} 
-          alt={alt} 
-          className="experience-carousel__image" 
-        />
+        <img src={src} alt={alt} className="experience-carousel__image" />
       </div>
     </a>
   )
 
   // Componente para renderizar testimonial
-  const TestimonialCard = ({ text, user }) => (
+  const TestimonialCard = ({ text, user, index }) => (
     <div className="testimonial-card">
-      <Paragraph className="testimonial-text">
+      <Paragraph className="testimonial-text" id={`${base}-testimonial-text-${index}`}>
         {text}
       </Paragraph>
       <div className="testimonial-user">
@@ -89,7 +88,9 @@ const ExperienciaJaveriana = () => {
         </div>
         <div className="testimonial-info">
           <h4 className="testimonial-name">{user.name}</h4>
-          <Paragraph className="testimonial-job">{user.job}</Paragraph>
+          <Paragraph className="testimonial-job" id={`${base}-testimonial-job-${index}`}>
+            {user.job}
+          </Paragraph>
         </div>
         <a href={user.linkedin} className="testimonial-linkedin">
           <i className="ph ph-linkedin-logo"></i>
@@ -102,13 +103,7 @@ const ExperienciaJaveriana = () => {
   const VideoCard = ({ src, link }) => (
     <a href={link} className="card-link-video">
       <div className="video-card-7">
-        <video
-          src={src}
-          className="experience-carousel__video"
-          autoPlay
-          muted
-          playsInline
-        />
+        <video src={src} className="experience-carousel__video" autoPlay muted playsInline />
       </div>
     </a>
   )
@@ -119,7 +114,7 @@ const ExperienciaJaveriana = () => {
       case 'image':
         return <ImageCard key={index} {...item} />
       case 'testimonial':
-        return <TestimonialCard key={index} {...item} />
+        return <TestimonialCard key={index} {...item} index={index} />
       case 'video':
         return <VideoCard key={index} {...item} />
       default:
@@ -128,33 +123,33 @@ const ExperienciaJaveriana = () => {
   }
 
   return (
-      <section id="section-seven">
-        <Container className="container experience-carousel">
-          <h2 className="experience-carousel__title">Vive la Experiencia Javeriana</h2>
-          <Paragraph className="experience-carousel__description">
-            Descubre historias inspiradoras, momentos únicos y experiencias de nuestros estudiantes a través de sus palabras,
-            imágenes y videos.
-          </Paragraph>
-          <div className="container swiper">
-            <div className="card-wrapper experience-swiper">
-              <ul className="card-list-7 swiper-wrapper">
-                {carouselData.map((item, index) => (
-                  <li key={index} className="card-item-7 swiper-slide">
-                    {renderCard(item, index)}
-                  </li>
-                ))}
-              </ul>
-              {/* Botones de navegación */}
-              <div className="swiper-slide-button experience-prev">
-                <i className="ph ph-arrow-circle-left"></i>
-              </div>
-              <div className="swiper-slide-button experience-next">
-                <i className="ph ph-arrow-circle-right"></i>
-              </div>
+    <section id="section-seven">
+      <Container className="container experience-carousel">
+        <h2 className="experience-carousel__title">Vive la Experiencia Javeriana</h2>
+        <Paragraph className="experience-carousel__description" id={`${base}-description`}>
+          Descubre historias inspiradoras, momentos únicos y experiencias de nuestros estudiantes a través de sus palabras, imágenes y
+          videos.
+        </Paragraph>
+        <div className="container swiper">
+          <div className="card-wrapper experience-swiper">
+            <ul className="card-list-7 swiper-wrapper">
+              {carouselData.map((item, index) => (
+                <li key={index} className="card-item-7 swiper-slide">
+                  {renderCard(item, index)}
+                </li>
+              ))}
+            </ul>
+            {/* Botones de navegación */}
+            <div className="swiper-slide-button experience-prev">
+              <i className="ph ph-arrow-circle-left"></i>
+            </div>
+            <div className="swiper-slide-button experience-next">
+              <i className="ph ph-arrow-circle-right"></i>
             </div>
           </div>
-        </Container>
-      </section>
+        </div>
+      </Container>
+    </section>
   )
 }
 
