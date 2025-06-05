@@ -4,6 +4,19 @@
 
 background-color: var(--background-100); 
 
+// Contenedores principales con altura completa
+.testimonial-card,
+.image-card-7,
+.video-card-7,
+.instagram-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
 .experience-carousel__title {
   width: fit-content;
   font-size: var(--font-size-title);
@@ -22,14 +35,125 @@ background-color: var(--background-100);
 }
 
 .card-item-7{
-  
-  height: auto;
-  background-color: blue;
+  height: 360px;
 
   .testimonial-card{
-    border: solid 2px red;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--border-radius-lg);
+    background-color: var(--primary);
+    height: 100%;
+    padding: 20px;
 
+    :nth-child(1){
+      font-size: var(--font-size-paragraph);
+      font-weight: var(--font-weight-bold);
+      color: var(--neutral);
+    }
+
+    .testimonial-user{
+      display: flex;
+      align-items: center;
+      margin-top: auto;
+      width: 100%;
+
+      .testimonial-avatar{
+        width: 25%;
+        display: flex;
+        justify-content: center;
+        img{
+        height: 58.5px;
+        border-radius: 100%;
+        }
+      }
+
+      .testimonial-info{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 60%;
+        height: 100%;
+
+        :nth-child(1){
+          font-size: var(--font-size-paragraph);
+          font-weight: var(--font-weight-bold);
+          color: var(--neutral);
+        }
+
+        :nth-child(2){
+          font-size: var(--font-size-small);
+          font-weight: var(--font-weight-regular);
+          color: var(--neutral);
+        }
+
+        .paragraph.paragraph-md{
+          margin-bottom: 0;
+        }
+      }
+
+      .testimonial-linkedin{
+        margin: 0 auto;
+        margin-top: auto;
+        
+        i{
+          font-size: var(--icon-size-md);
+          font-weight: var( --font-weight-thin);
+        }
+      }
+    }
   }
+
+  .card-link-7{
+
+    height: 100%;
+
+    .experience-carousel__image {
+      width: 100%;
+      height: 360px;
+      border-radius: var(--border-radius-lg);
+      object-fit: cover;
+      object-position: center; 
+    }
+  }
+
+  .experience-carousel__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 17px;
+  }
+}
+
+.swiper-slide-button i {
+    font-size: var(--icon-size-lg);
+    color: var(--primary);
+    z-index: 100;
+}
+
+// // Botones de navegación
+.swiper-slide-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.experience-prev {
+  left: 1px;
+}
+
+.experience-next {
+  right: 1px;
 }
 
 // .container .swiper {
@@ -64,19 +188,6 @@ background-color: var(--background-100);
 //   height: 320px;
 //   max-width: 270px;
 //   min-width: 220px;
-// }
-
-// Contenedores principales con altura completa
-// .testimonial-card,
-// .image-card-7,
-// .video-card-7,
-// .instagram-card {
-//   width: 100%;
-//   height: 100%;
-//   display: flex;
-//   flex-direction: column;
-//   border-radius: 20px;
-//   overflow: hidden;
 // }
 
 // // Tarjeta de testimonial
@@ -166,14 +277,7 @@ background-color: var(--background-100);
 //   align-items: center;
 // }
 
-// .experience-carousel__image {
-//   width: 100%;
-//   height: 100%;
-//   border-radius: var(--border-radius-lg);
-//   object-fit: cover;
-//   min-width: 220px;
-//   max-width: 270px;
-// }
+
 
 // // Tarjeta de video
 // .video-card-7 {
@@ -181,12 +285,7 @@ background-color: var(--background-100);
 //   align-items: center;
 // }
 
-// .experience-carousel__video {
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover;
-//   border-radius: var(--border-radius-md);
-// }
+
 
 // // Tarjeta de Instagram
 // .instagram-card {
@@ -216,41 +315,13 @@ background-color: var(--background-100);
 //   flex-direction: column;
 // }
 
-// // Botones de navegación
-// .swiper-slide-button {
-//   position: absolute;
-//   top: 50%;
-//   transform: translateY(-50%);
-//   z-index: 10;
-//   width: 50px;
-//   height: 50px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   border-radius: 50%;
-//   cursor: pointer;
-//   transition: all 0.3s ease;
-//   background: rgba(255, 255, 255, 0.9);
-//   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-// }
 
-// .swiper-slide-button i {
-//   font-size: var(--icon-size-lg);
-//   color: var(--primary);
-//   z-index: 100;
-// }
 
 // .swiper-slide-button:hover {
 //   transform: translateY(-50%) scale(1.1);
 // }
 
-// .experience-prev {
-//   left: 5px;
-// }
 
-// .experience-next {
-//   right: 5px;
-// }
 
 // .card-wrapper .experience-swiper {
 //   max-width: 1200px;
