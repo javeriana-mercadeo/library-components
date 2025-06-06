@@ -2,12 +2,10 @@
 
 import { useEffect } from 'react'
 import Container from '@library/components/container'
-import Paragraph from '@library/components/contain/paragraph'
 import Title from '@library/components/contain/title'
+import Paragraph from '@library/components/contain/paragraph'
 import Btn from '@library/components/contain/btn'
 import Image from '@library/components/contain/image'
-import perfilIngresoImg from '../../../../../assets/perfiles/perfil-ingreso.png'
-import perfilEgresoImg from '../../../../../assets/perfiles/perfil-egreso.png'
 
 import script from './script.js'
 import info from './info.json'

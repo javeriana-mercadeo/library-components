@@ -1,146 +1,242 @@
-export default () => {
-  const MOBILE_BREAKPOINT = 1024;
-  let isInitialized = false;
+// ===========================================
+// SISTEMA DE ACORDEÓN RESPONSIVO - DIFERENCIALES
+// ===========================================
 
-  function isMobileView() {
-    return window.innerWidth < MOBILE_BREAKPOINT;
-  }
+const AccordionSystem = {
+  config: {
+    mobileBreakpoint: 1024,
+    buttonSelector: '[data-accordion-target]',
+    contentSelector: '.why-javeriana__accordion-content',
+    itemSelector: '.why-javeriana__accordion-item',
+    toggleSelector: '.why-javeriana__accordion-toggle',
+    iconSelector: '.toggle-icon',
+    textSelector: '.toggle-text',
+    hiddenClass: 'hidden',
+    expandedAttribute: 'aria-expanded',
+    animationDuration: 300
+  },
 
-  function initAccordion() {
-    if (isInitialized) return;
+  init() {
+    Logger.debug('Inicializando sistema de acordeón responsivo...')
 
-    const accordionButtons = document.querySelectorAll("[data-accordion-target]");
-    
-    if (accordionButtons.length === 0) {
-      // DOM not ready yet, try again later
-      setTimeout(initAccordion, 100);
-      return;
+    // Verificar que existe el DOM
+    const accordionItems = document.querySelectorAll(this.config.itemSelector)
+
+    if (accordionItems.length === 0) {
+      Logger.warning('No se encontraron elementos del acordeón')
+      return false
     }
 
-    setupAccordionBehavior();
-    attachEventListeners();
-    isInitialized = true;
-  }
+    // Configurar comportamiento inicial
+    this.setupAccordionBehavior()
 
-  function setupAccordionBehavior() {
-    const accordionButtons = document.querySelectorAll("[data-accordion-target]");
-    
-    accordionButtons.forEach(button => {
-      const targetId = button.getAttribute("data-accordion-target");
-      const content = document.querySelector(targetId);
-      
-      if (!content) return;
+    // Configurar eventos
+    this.attachEventListeners()
 
-      if (isMobileView()) {
-        // Mobile: hide content, show buttons
-        content.classList.add("hidden");
-        button.style.display = "flex";
-        resetButtonState(button);
-      } else {
-        // Desktop: show content, hide buttons
-        content.classList.remove("hidden");
-        button.style.display = "none";
+    // Configurar responsive listener
+    this.setupResponsiveListener()
+
+    Logger.success(`Acordeón inicializado: ${accordionItems.length} items`)
+    return true
+  },
+
+  isMobileView() {
+    return window.innerWidth < this.config.mobileBreakpoint
+  },
+
+  setupAccordionBehavior() {
+    const buttons = document.querySelectorAll(this.config.buttonSelector)
+
+    buttons.forEach(button => {
+      const targetId = button.getAttribute('data-accordion-target')
+      const content = document.querySelector(targetId)
+
+      if (!content) {
+        Logger.warning(`Contenido del acordeón no encontrado: ${targetId}`)
+        return
       }
-    });
-  }
 
-  function resetButtonState(button) {
-    const icon = button.querySelector(".toggle-icon");
-    const text = button.querySelector(".toggle-text");
-    
-    if (text) text.textContent = "Leer Más";
+      if (this.isMobileView()) {
+        // Móvil: ocultar contenido, mostrar botones
+        content.classList.add(this.config.hiddenClass)
+        button.style.display = 'flex'
+        this.resetButtonState(button)
+      } else {
+        // Desktop: mostrar contenido, ocultar botones
+        content.classList.remove(this.config.hiddenClass)
+        button.style.display = 'none'
+      }
+    })
+  },
+
+  resetButtonState(button) {
+    const icon = button.querySelector(this.config.iconSelector)
+    const text = button.querySelector(this.config.textSelector)
+
+    if (text) text.textContent = 'Leer Más'
     if (icon) {
-      icon.classList.remove("ph-minus");
-      icon.classList.add("ph-plus");
+      icon.classList.remove('ph-minus')
+      icon.classList.add('ph-plus')
     }
-    
-    button.setAttribute("aria-expanded", "false");
-  }
 
-  function toggleAccordion(button) {
-    const targetId = button.getAttribute("data-accordion-target");
-    const content = document.querySelector(targetId);
-    
-    if (!content) return;
+    button.setAttribute(this.config.expandedAttribute, 'false')
+  },
 
-    const isHidden = content.classList.contains("hidden");
-    const icon = button.querySelector(".toggle-icon");
-    const text = button.querySelector(".toggle-text");
-    
-    // Toggle content visibility
-    content.classList.toggle("hidden");
-    
-    // Update button state
+  toggleAccordion(button) {
+    const targetId = button.getAttribute('data-accordion-target')
+    const content = document.querySelector(targetId)
+
+    if (!content) {
+      Logger.error(`Contenido no encontrado: ${targetId}`)
+      return
+    }
+
+    const isHidden = content.classList.contains(this.config.hiddenClass)
+    const icon = button.querySelector(this.config.iconSelector)
+    const text = button.querySelector(this.config.textSelector)
+
+    // Alternar visibilidad del contenido
     if (isHidden) {
-      // Opening
-      text.textContent = "Leer Menos";
-      icon.classList.remove("ph-plus");
-      icon.classList.add("ph-minus");
-      button.setAttribute("aria-expanded", "true");
+      // Abriendo
+      this.openAccordionItem(content, button, icon, text)
     } else {
-      // Closing
-      text.textContent = "Leer Más";
-      icon.classList.remove("ph-minus");
-      icon.classList.add("ph-plus");
-      button.setAttribute("aria-expanded", "false");
+      // Cerrando
+      this.closeAccordionItem(content, button, icon, text)
     }
-  }
+  },
 
-  function attachEventListeners() {
-    // Remove existing listeners by cloning buttons
-    const accordionButtons = document.querySelectorAll("[data-accordion-target]");
-    
-    accordionButtons.forEach(button => {
-      const newButton = button.cloneNode(true);
-      button.parentNode.replaceChild(newButton, button);
-    });
+  openAccordionItem(content, button, icon, text) {
+    // Animación de entrada suave
+    content.style.opacity = '0'
+    content.style.transform = 'translateY(-10px)'
+    content.classList.remove(this.config.hiddenClass)
 
-    // Add new listeners
-    const newButtons = document.querySelectorAll("[data-accordion-target]");
-    
+    // Actualizar estado del botón
+    if (text) text.textContent = 'Leer Menos'
+    if (icon) {
+      icon.classList.remove('ph-plus')
+      icon.classList.add('ph-minus')
+    }
+    button.setAttribute(this.config.expandedAttribute, 'true')
+
+    // Animar entrada
+    TimingUtils.delay(() => {
+      content.style.transition = `opacity ${this.config.animationDuration}ms ease, transform ${this.config.animationDuration}ms ease`
+      content.style.opacity = '1'
+      content.style.transform = 'translateY(0)'
+    }, 10)
+
+    // Limpiar estilos después de la animación
+    TimingUtils.delay(() => {
+      content.style.transition = ''
+      content.style.transform = ''
+      content.style.opacity = ''
+    }, this.config.animationDuration + 50)
+  },
+
+  closeAccordionItem(content, button, icon, text) {
+    // Actualizar estado del botón
+    if (text) text.textContent = 'Leer Más'
+    if (icon) {
+      icon.classList.remove('ph-minus')
+      icon.classList.add('ph-plus')
+    }
+    button.setAttribute(this.config.expandedAttribute, 'false')
+
+    // Animar salida
+    content.style.transition = `opacity ${this.config.animationDuration}ms ease, transform ${this.config.animationDuration}ms ease`
+    content.style.opacity = '0'
+    content.style.transform = 'translateY(-10px)'
+
+    // Ocultar después de la animación
+    TimingUtils.delay(() => {
+      content.classList.add(this.config.hiddenClass)
+      content.style.transition = ''
+      content.style.transform = ''
+      content.style.opacity = ''
+    }, this.config.animationDuration)
+  },
+
+  attachEventListeners() {
+    // Limpiar eventos existentes clonando botones
+    const buttons = document.querySelectorAll(this.config.buttonSelector)
+
+    buttons.forEach(button => {
+      // Clonar para remover eventos anteriores
+      const newButton = button.cloneNode(true)
+      if (button.parentNode) {
+        button.parentNode.replaceChild(newButton, button)
+      }
+    })
+
+    // Agregar nuevos eventos
+    const newButtons = document.querySelectorAll(this.config.buttonSelector)
+
     newButtons.forEach(button => {
-      button.addEventListener("click", (e) => {
-        e.preventDefault();
-        
-        if (!isMobileView()) return;
-        
-        toggleAccordion(button);
-      });
-    });
-  }
+      EventManager.add(button, 'click', e => {
+        e.preventDefault()
 
-  // Debounced resize handler
-  let resizeTimeout;
-  function handleResize() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      setupAccordionBehavior();
-    }, 150);
-  }
+        // Solo funcionar en vista móvil
+        if (!this.isMobileView()) return
 
-  function cleanup() {
-    window.removeEventListener("resize", handleResize);
-    isInitialized = false;
-  }
+        this.toggleAccordion(button)
+      })
 
-  // Initialize based on document state
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAccordion);
-  } else {
-    // DOM is already loaded
-    initAccordion();
-  }
+      // Accesibilidad con teclado
+      EventManager.add(button, 'keydown', e => {
+        if ((e.key === 'Enter' || e.key === ' ') && this.isMobileView()) {
+          e.preventDefault()
+          this.toggleAccordion(button)
+        }
+      })
+    })
+  },
 
-  // Backup initialization
-  window.addEventListener('load', () => {
-    if (!isInitialized) {
-      setTimeout(initAccordion, 50);
+  setupResponsiveListener() {
+    let resizeTimeout
+
+    const handleResize = () => {
+      clearTimeout(resizeTimeout)
+      resizeTimeout = TimingUtils.delay(() => {
+        this.setupAccordionBehavior()
+      }, 150)
     }
-  });
 
-  // Add resize listener
-  window.addEventListener("resize", handleResize);
+    EventManager.add(window, 'resize', handleResize)
+  }
+}
 
-  // Return cleanup function
-  return cleanup;
-};
+// ===========================================
+// INICIALIZACIÓN PRINCIPAL
+// ===========================================
+const DiferencialesSystem = {
+  init() {
+    Logger.debug('🚀 Inicializando sistema de diferenciales...')
+
+    const systems = {
+      accordion: AccordionSystem.init()
+    }
+
+    const activeSystems = Object.entries(systems)
+      .filter(([_, isActive]) => isActive)
+      .map(([name]) => name)
+
+    Logger.success(`✅ Diferenciales iniciado - ${activeSystems.length} sistemas activos: ${activeSystems.join(', ')}`)
+    return systems
+  }
+}
+
+// ===========================================
+// AUTO-INICIALIZACIÓN
+// ===========================================
+export default () => {
+  DOMHelpers.isReady(() => {
+    DiferencialesSystem.init()
+  })
+
+  // Exponer para debugging
+  if (typeof window !== 'undefined') {
+    window.AccordionSystem = AccordionSystem
+    window.DiferencialesSystem = DiferencialesSystem
+  }
+}

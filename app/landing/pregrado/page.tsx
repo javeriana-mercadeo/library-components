@@ -6,26 +6,27 @@ import PlanEstudio from './sections/2_planEstudio'
 import Perfiles from './sections/3_perfiles'
 import Diferenciales from './sections/4_diferenciales'
 import Insignias from './sections/5_insignias'
-//import Insignias from './sections/6_insignias'
+import Docentes from './sections/6_docentes'
 import Experiencia from './sections/7_experiencia'
 import Cita from './sections/8_cita'
 import PreguntasFrecuentes from './sections/9_preguntasFrecuentes'
-import Footer from './sections/10_footer'
+//import Relacionados from './sections/10_relacionados'
+import Footer from './sections/11_footer'
 
 export default function Profesional() {
   const basePath = '/landing/pregrado'
 
   return (
     <>
-      <Encabezado />
-      {/* <ViewComponent path={`${basePath}/sections/encabezado`}>
+      {/* <Encabezado /> */}
+      <ViewComponent path={`${basePath}/sections/encabezado`}>
         <Encabezado />
-      </ViewComponent> */}
+      </ViewComponent>
 
-      <Datos />
-      {/* <ViewComponent path={`${basePath}/sections/1_datos`}>
+      {/* <Datos /> */}
+      <ViewComponent path={`${basePath}/sections/1_datos`}>
         <Datos />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/* <PlanEstudio /> */}
       <ViewComponent path={`${basePath}/sections/2_planEstudio`}>
@@ -38,32 +39,42 @@ export default function Profesional() {
       </ViewComponent>
 
       {/* <Diferenciales /> */}
-      <ViewComponent path={`${basePath}/sections/Diferenciales`}>
+      <ViewComponent path={`${basePath}/sections/4_diferenciales`}>
         <Diferenciales />
       </ViewComponent>
 
       {/* <Insignias /> */}
-      <ViewComponent path={`${basePath}/sections/Insignias`}>
+      <ViewComponent path={`${basePath}/sections/5_insignias`}>
         <Insignias />
       </ViewComponent>
 
+      {/* <Docentes /> */}
+      <ViewComponent path={`${basePath}/sections/6_docentes`}>
+        <Docentes />
+      </ViewComponent>
+
       {/* <Experiencia /> */}
-      <ViewComponent path={`${basePath}/sections/experiencia`}>
+      <ViewComponent path={`${basePath}/sections/7_experiencia`}>
         <Experiencia />
       </ViewComponent>
 
       {/* <Cita /> */}
-      <ViewComponent path={`${basePath}/sections/citaDirector`}>
+      <ViewComponent path={`${basePath}/sections/8_cita`}>
         <Cita />
       </ViewComponent>
 
       {/*  <PreguntasFrecuentes /> */}
-      <ViewComponent path={`${basePath}/sections/preguntasFrecuentes`}>
+      <ViewComponent path={`${basePath}/sections/9_preguntasFrecuentes`}>
         <PreguntasFrecuentes />
       </ViewComponent>
 
+      {/*  <Relacionados /> */}
+      {/* <ViewComponent path={`${basePath}/sections/10_relacionados`}>
+        <Relacionados />
+      </ViewComponent> */}
+
       {/* <Footer /> */}
-      <ViewComponent path={`${basePath}/sections/Footer`}>
+      <ViewComponent path={`${basePath}/sections/11_footer`}>
         <Footer />
       </ViewComponent>
     </>

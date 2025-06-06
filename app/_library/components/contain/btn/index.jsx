@@ -4,7 +4,7 @@ import script from './script.js'
 
 /**
  * Componente de botón/enlace reutilizable con estilos configurables
- * Compatible con todas las variantes de HeroUI
+ * Compatible con todas las variantes de HeroUI + nueva variante 'link'
  *
  * @param {Object} props - Propiedades del componente
  * @param {string} [props.id] - Identificador único del elemento (para Liferay)
@@ -14,7 +14,7 @@ import script from './script.js'
  * @param {string} [props.href] - URL de destino (convierte el elemento en <a>)
  * @param {('button'|'submit'|'reset')} [props.type='button'] - Tipo de botón HTML (solo para buttons)
  * @param {('primary'|'secondary'|'tertiary'|'success'|'warning'|'danger')} [props.color='primary'] - Color del elemento
- * @param {('solid'|'faded'|'bordered'|'light'|'flat'|'ghost'|'shadow')} [props.variant='solid'] - Variante de estilo del elemento
+ * @param {('solid'|'faded'|'bordered'|'light'|'flat'|'ghost'|'shadow'|'link')} [props.variant='solid'] - Variante de estilo del elemento
  * @param {React.ReactNode} [props.startIcon] - Icono que aparece al inicio del elemento
  * @param {React.ReactNode} [props.endIcon] - Icono que aparece al final del elemento
  * @param {boolean} [props.fullWidth=false] - Si el elemento debe ocupar todo el ancho disponible
@@ -49,20 +49,24 @@ export default function Btn({
   // Constante para el nombre base del elemento
   const ELEMENT_NAME = 'btn'
 
-  // Validar variantes disponibles (HeroUI compatible)
-  const validVariants = ['solid', 'faded', 'bordered', 'light', 'flat', 'ghost', 'shadow']
+  // Validar variantes disponibles (HeroUI compatible + nueva variante 'link')
+  const validVariants = ['solid', 'faded', 'bordered', 'light', 'flat', 'ghost', 'shadow', 'link']
   const finalVariant = validVariants.includes(variant) ? variant : 'solid'
 
   // Determinar si es un enlace o un botón
   const isLink = !!href
+
+  // Para la variante 'link', no aplicar el efecto ripple
+  const shouldApplyRipple = finalVariant !== 'link'
 
   // Construcción de clases CSS usando template más limpio
   const classNames = [
     ELEMENT_NAME,
     `${ELEMENT_NAME}-${color}`,
     `${ELEMENT_NAME}-${finalVariant}`,
-    size !== 'md' ? `${ELEMENT_NAME}-${size}` : null,
-    fullWidth ? `${ELEMENT_NAME}-full-width` : null,
+    // Para variante 'link', no aplicar clases de tamaño ni fullWidth
+    finalVariant !== 'link' && size !== 'md' ? `${ELEMENT_NAME}-${size}` : null,
+    finalVariant !== 'link' && fullWidth ? `${ELEMENT_NAME}-full-width` : null,
     disabled ? `${ELEMENT_NAME}-disabled` : null,
     className
   ]
@@ -81,17 +85,22 @@ export default function Btn({
   }
 
   useEffect(() => {
-    script()
-  }, [])
+    // Solo aplicar el script (efecto ripple) si no es variante 'link'
+    if (shouldApplyRipple) {
+      script()
+    }
+  }, [shouldApplyRipple])
 
   // Configurar propiedades base
   const baseProps = {
     ...otherProps,
-    'data-dmpa-element-id': 'btn',
+    // Solo agregar data-dmpa-element-id si necesita efecto ripple
+    ...(shouldApplyRipple && { 'data-dmpa-element-id': 'btn' }),
     className: classNames,
     onClick: handleClick,
     'aria-disabled': disabled,
-    ...(radius && { style: { '--btn-radius': `${radius}px`, ...otherProps.style } })
+    // Solo aplicar radius personalizado si no es variante 'link'
+    ...(finalVariant !== 'link' && radius && { style: { '--btn-radius': `${radius}px`, ...otherProps.style } })
   }
 
   // Propiedades específicas para enlaces

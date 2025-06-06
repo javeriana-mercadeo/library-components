@@ -24,7 +24,11 @@ const Footer = () => {
               <div className="footer__middle">
                 <div className="footer__video">
                   <div className="footer__mp4">
-                    <img src={UniversidadTour.src} alt="Tour virtual universidad" className="video-gif" />
+                    <img
+                      src="https://www.javeriana.edu.co/recursosdb/d/info-prg/captura-de-pantalla-2025-06-06-040044"
+                      alt="Tour virtual universidad"
+                      className="video-gif"
+                    />
                     <a
                       href="https://www.javeriana.edu.co/tour-virtual-javeriana/index.htm"
                       target="_blank"
@@ -73,7 +77,11 @@ const Footer = () => {
 
             <div className="footer__bottom">
               <div className="footer__vigilada">
-                <img src={Vigilada.src} alt="Logo vigilada por el Ministerio de Educación" className="footer__logoV" />
+                <img
+                  src="https://www.javeriana.edu.co/recursosdb/d/info-prg/vigilada"
+                  alt="Logo vigilada por el Ministerio de Educación"
+                  className="footer__logoV"
+                />
                 <p className="footer__info">
                   Sujeta a inspección y vigilancia por parte del Ministerio de Educación Nacional (Artículo 39 del decreto 1295 de 2010).
                 </p>

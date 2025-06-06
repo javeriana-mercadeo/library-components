@@ -1,51 +1,45 @@
 'use client'
 
+import { useEffect } from 'react'
 import Container from '@library/components/container'
-import altaCalidadImg from './assets/alta-calidad.png'
-import impactRankingsImg from './assets/impact-rankings.png'
-import mercoImg from './assets/merco.png'
-import obetImg from './assets/qs-ranking.png'
-import qsRankingImg from './assets/qs-ranking.png'
-import theAcreditadaImg from './assets/The-acreditada.png'
+import Title from '@library/components/contain/title'
 
+import script from './script.js'
 import './styles.scss'
 
 const Insignias = () => {
-  // Datos de reconocimientos organizados en un array
+  useEffect(() => {
+    script()
+  }, [])
+
   const reconocimientos = [
     {
-      id: 1,
-      src: altaCalidadImg.src,
+      src: 'https://www.javeriana.edu.co/recursosdb/1372208/12527648/logo-ranking-the-latin-america.png',
       alt: 'Acreditación de Alta Calidad',
       description: 'Acreditación Institucional de Alta Calidad por 10 años (2020)'
     },
     {
-      id: 2,
-      src: impactRankingsImg.src,
+      src: 'https://www.javeriana.edu.co/recursosdb/1372208/12527648/alta_calidad.png',
       alt: 'Impact Rankings',
       description: '1er en Colombia por nuestro compromiso con los ODS (2023).'
     },
     {
-      id: 3,
-      src: mercoImg.src,
+      src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-qs-empleabilidad-lp',
       alt: 'Merco',
       description: '1er en el sector educativo de Colombia (2023).'
     },
     {
-      id: 4,
-      src: qsRankingImg.src,
+      src: 'https://www.javeriana.edu.co/recursosdb/1372208/12527648/merco-img.png',
       alt: 'QS Ranking',
       description: '3ra en empleabilidad de nuestros graduados'
     },
     {
-      id: 5,
-      src: theAcreditadaImg.src,
+      src: 'https://www.javeriana.edu.co/recursosdb/1372208/12527648/THE+Impact+Rankings+2024_COL_RGB.jpg',
       alt: 'THE Ranking',
       description: 'Tercer lugar en Colombia y 36 en Latinoamérica entre 230 instituciones.'
     },
     {
-      id: 6,
-      src: obetImg.src,
+      src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-qs-by-subject-lp',
       alt: 'ABET',
       description: 'Acreditados en ABET.'
     }
@@ -54,49 +48,15 @@ const Insignias = () => {
   return (
     <section id="section-five">
       <Container className="container academic-carousel">
-        <h2 className="academic-carousel__title">Reconocimientos Académicos</h2>
+        <Title className="academic-carousel__title" size="lg" weight="bold">
+          Reconocimientos Académicos
+        </Title>
         <div className="slider">
           <div className="slider-track">
-            {/* Primer grupo de tarjetas */}
+            {/* Solo el grupo original - JS creará los duplicados */}
             <div className="slider-items slider-items--original">
-              {reconocimientos.map(reconocimiento => (
-                <div key={reconocimiento.id} className="img-logos">
-                  <img src={reconocimiento.src} alt={reconocimiento.alt} />
-                  <p>{reconocimiento.description}</p>
-                </div>
-              ))}
-            </div>
-            {/* Segundo grupo de tarjetas (duplicado para efecto infinito) */}
-            <div className="slider-items slider-items--duplicate">
-              {reconocimientos.map(reconocimiento => (
-                <div key={`duplicate-${reconocimiento.id}`} className="img-logos">
-                  <img src={reconocimiento.src} alt={reconocimiento.alt} />
-                  <p>{reconocimiento.description}</p>
-                </div>
-              ))}
-            </div>
-            {/* Tercer grupo para mayor fluidez */}
-            <div className="slider-items slider-items--third">
-              {reconocimientos.map(reconocimiento => (
-                <div key={`third-${reconocimiento.id}`} className="img-logos">
-                  <img src={reconocimiento.src} alt={reconocimiento.alt} />
-                  <p>{reconocimiento.description}</p>
-                </div>
-              ))}
-            </div>
-            {/* Cuarto grupo para aún más fluidez */}
-            <div className="slider-items slider-items--fourth">
-              {reconocimientos.map(reconocimiento => (
-                <div key={`fourth-${reconocimiento.id}`} className="img-logos">
-                  <img src={reconocimiento.src} alt={reconocimiento.alt} />
-                  <p>{reconocimiento.description}</p>
-                </div>
-              ))}
-            </div>
-            {/* Quinto grupo para máxima fluidez */}
-            <div className="slider-items slider-items--fifth">
-              {reconocimientos.map(reconocimiento => (
-                <div key={`fifth-${reconocimiento.id}`} className="img-logos">
+              {reconocimientos.map((reconocimiento, index) => (
+                <div key={index} className="img-logos">
                   <img src={reconocimiento.src} alt={reconocimiento.alt} />
                   <p>{reconocimiento.description}</p>
                 </div>

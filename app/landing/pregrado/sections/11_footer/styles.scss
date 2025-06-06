@@ -3,18 +3,16 @@
 #footer {
   .color-container-footer {
     background-color: #1d2124;
-    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin: 0 auto;
   }
 
   .footer {
+    width: 100%;
     color: var(--neutral);
     padding: var(--spacing-xl) var(--spacing-md);
-
 
     // breakpoint-md (menor a 768px)
     @media (max-width: $breakpoint-md) {
@@ -90,6 +88,7 @@
     }
 
     &__title {
+      color: var(--neutral);
       font-size: var(--font-size-title);
       font-weight: var(--font-weight-bold);
       margin-bottom: var(--spacing-xs);
@@ -403,5 +402,3 @@
     }
   }
 }
-
-
