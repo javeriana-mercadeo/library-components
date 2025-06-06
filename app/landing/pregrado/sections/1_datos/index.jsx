@@ -166,6 +166,7 @@ const DatosProgramaVideo = () => {
           </div>
 
           <Btn
+            target="_blank"
             id={`${elementName}-enrollment-link`}
             className="program-data_enrollment-link mt-6"
             href="#"

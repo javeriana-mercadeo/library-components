@@ -5,6 +5,10 @@
   padding-bottom: rem(25px);
   background-color: var(--background-100);
 
+  @include dark-theme {
+    background-color: var(--background-200);
+  }
+
   .academic-carousel__title {
     font-size: var(--font-size-title);
     font-weight: var(--font-weight-bold);
@@ -55,17 +59,20 @@
     &::before {
       left: 0;
       background: linear-gradient(to right, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
+
+      @include dark-theme {
+        background: linear-gradient(to right, var(--background-200) 0%, rgba(255, 255, 255, 0) 100%);
+      }
     }
 
     // Efecto de niebla a la derecha
     &::after {
       right: 0;
       background: linear-gradient(to left, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
-    }
 
-    // 🎯 HOVER: Ralentizar animación en lugar de pausar
-    &:hover .slider-track {
-      animation-duration: 150s; // 5x más lento (30s → 150s)
+      @include dark-theme {
+        background: linear-gradient(to left, var(--background-200) 0%, rgba(255, 255, 255, 0) 100%);
+      }
     }
   }
 
@@ -206,36 +213,6 @@
     // En móvil: ralentizar menos para mejor UX
     .slider:hover .slider-track {
       animation-duration: 90s; // 3x más lento en lugar de 5x
-    }
-  }
-
-  // ==========================================
-  // VARIANTES DE VELOCIDAD (OPCIONAL)
-  // ==========================================
-
-  // Si quieres diferentes niveles de ralentización
-  .slider {
-    // Variables CSS para control dinámico
-    --normal-speed: 30s;
-    --hover-speed: 150s;
-
-    .slider-track {
-      animation-duration: var(--normal-speed);
-    }
-
-    &:hover .slider-track {
-      animation-duration: var(--hover-speed);
-    }
-
-    // 🎛️ Velocidades alternativas (usa una de estas clases)
-    &.speed-fast {
-      --normal-speed: 20s;
-      --hover-speed: 80s;
-    }
-
-    &.speed-slow {
-      --normal-speed: 45s;
-      --hover-speed: 200s;
     }
   }
 

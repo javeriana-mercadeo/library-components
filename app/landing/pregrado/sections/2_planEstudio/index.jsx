@@ -5,9 +5,9 @@
 
 import { useEffect } from 'react'
 import Container from '@library/components/container'
-import Title from '@/app/_library/components/contain/title/index.jsx'
-import Paragraph from '@/app/_library/components/contain/paragraph'
-import Btn from '@/app/_library/components/contain/btn'
+import Title from '@library/components/contain/title'
+import Paragraph from '@library/components/contain/paragraph'
+import Btn from '@library/components/contain/btn'
 
 import info from './info.json'
 import script from './script.js'
@@ -162,7 +162,7 @@ const PlanEstudio = () => {
             <span className={`${baseClass}_badge ${baseClass}_badge`}>{year}</span>
           </div>
 
-          <Title hierarchy="h3" className={`${baseClass}_semester-title`} size="lg" weight="bold" isEditable={false}>
+          <Title hierarchy="h2" className={`${baseClass}_semester-title`} size="lg" weight="bold" isEditable={false}>
             {semester}
           </Title>
 
@@ -194,7 +194,12 @@ const PlanEstudio = () => {
           El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
         </Paragraph>
 
-        <Btn id={`${elementName}-btn`} href="#" variant="bordered" endIcon={<i className="ph ph-download" aria-hidden="true"></i>}>
+        <Btn
+          id={`${elementName}-btn`}
+          href="#"
+          target="_blank"
+          variant="bordered"
+          endIcon={<i className="ph ph-download" aria-hidden="true"></i>}>
           Descargar Plan de estudios
         </Btn>
 

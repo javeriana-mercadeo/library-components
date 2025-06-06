@@ -6,7 +6,6 @@
   justify-content: center;
   width: 100%;
   background-color: var(--primary);
-  padding: 30px 20px;
 
   .meeting-container {
     display: flex;
@@ -21,27 +20,23 @@
     }
 
     .caption {
-      text-align: center;
-      font-size: rem(20px);
-      color: var(--neutral-1000);
+      margin: 0;
+      color: var(--neutral);
     }
 
-    .btn.btn-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 8px;
-      border-radius: 8px;
-      font-size: 16px;
-      color: var(--neutral-1000);
-      border: 1px solid var(--neutral-1000);
-      text-decoration: none;
-      transition: var(--transition) ease;
+    .meeting-btn {
+      color: var(--neutral);
+      border-color: var(--neutral);
 
       &:hover {
-        background-color: var(--neutral-1000);
         color: var(--primary);
-        transition: var(--transition) ease;
+        background-color: var(--neutral);
+        border-color: var(--neutral);
+      }
+
+      @include dark-theme {
+        color: var(--neutral);
+        border-color: var(--neutral);
       }
     }
   }

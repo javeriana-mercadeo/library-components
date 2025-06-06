@@ -189,6 +189,8 @@ $btn-ripple-duration: 0.6s;
 @mixin button-themes($color-values, $color-name) {
   // Variables CSS que se adaptan automáticamente por tema
   $color: var(--#{$color-name});
+  $color-100: var(--#{$color-name}-100);
+  $color-200: var(--#{$color-name}-200);
   $color-300: var(--#{$color-name}-300);
   $color-400: var(--#{$color-name}-400);
   $color-500: var(--#{$color-name}-500);
@@ -419,6 +421,102 @@ $btn-ripple-duration: 0.6s;
 
     .btn-ripple-effect {
       background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  // ===========================================
+  // NUEVA VARIANTE: LINK (sin padding, sin efecto de onda)
+  // ===========================================
+  &.btn-link {
+    background: transparent;
+    color: $text-primary;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    min-height: auto;
+    min-width: auto;
+    font-size: inherit;
+    font-weight: inherit;
+    border-radius: 0;
+    overflow: visible;
+
+    // Deshabilitar efecto ripple completamente
+    &::before,
+    &::after {
+      display: none !important;
+    }
+
+    .btn-ripple-effect {
+      display: none !important;
+    }
+
+    // Estados de interacción más sutiles
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      color: $color-700;
+      text-decoration-thickness: rem(2px); // Subrayado más grueso en hover
+      transform: none; // Sin transformación
+      background: transparent;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      color: $color-800;
+      transform: none; // Sin transformación
+      background: transparent;
+    }
+
+    &:focus-visible {
+      outline: rem(2px) solid $color-400;
+      outline-offset: rem(2px);
+      border-radius: rem(2px); // Pequeño border radius solo para el focus
+      box-shadow: none;
+      text-decoration: none; // Sin subrayado en focus para mejor legibilidad
+    }
+
+    // Iconos en variante link
+    .btn-icon {
+      width: auto;
+      height: auto;
+      font-size: inherit;
+
+      // Ajustar spacing entre icono y texto
+      &.btn-icon-start {
+        margin-right: rem(4px);
+      }
+
+      &.btn-icon-end {
+        margin-left: rem(4px);
+      }
+    }
+
+    // Estados disabled más sutiles
+    &:disabled,
+    &.btn-disabled,
+    &[aria-disabled='true'] {
+      opacity: 0.6;
+      text-decoration: none;
+      color: currentColor;
+      cursor: not-allowed;
+    }
+  }
+
+  // ===========================================
+  // AJUSTES PARA MODO OSCURO - VARIANTE LINK
+  // ===========================================
+  @include dark-theme {
+    &.btn-link {
+      color: $color-300;
+
+      &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        color: $color-200;
+      }
+
+      &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        color: $color-100;
+      }
+
+      &:focus-visible {
+        outline-color: $color-400;
+      }
     }
   }
 
