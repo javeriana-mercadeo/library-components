@@ -45,16 +45,6 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
   &_carousel {
     width: 100%;
     position: relative;
-    // AJUSTADO: Padding para contener los botones dentro
-    padding: 0 rem(60px);
-
-    @include responsive($breakpoint-sm) {
-      padding: 0 rem(50px); // Suficiente espacio en móvil
-    }
-
-    @include responsive($breakpoint-xl) {
-      padding: 0 rem(70px); // Más espacio en desktop
-    }
   }
 
   &_wrapper {
@@ -468,16 +458,5 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
   .swiper-pagination {
     position: static !important;
     margin-top: var(--spacing-md);
-  }
-}
-
-// ==========================================
-// CONTENEDOR EXTERIOR - SIN OVERFLOW
-// ==========================================
-.plan-estudio_container {
-  // REMOVIDO: overflow hidden que causaba problemas
-
-  .plan-estudio_carousel {
-    // REMOVIDO: márgenes adicionales ya que el padding del carrusel los maneja
   }
 }

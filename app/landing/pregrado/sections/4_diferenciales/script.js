@@ -1,112 +1,146 @@
 export default () => {
-  // Función principal del acordeón
-  function initAccordion() {
-    function handleAccordion() {
-      const isMobile = window.innerWidth < 1024; // lg breakpoint
-      
-      document.querySelectorAll("[data-accordion-target]").forEach(button => {
-        const targetId = button.getAttribute("data-accordion-target");
-        const content = document.querySelector(targetId);
-        
-        if (!content) return; // Salir si no encuentra el contenido
-        
-        if (isMobile) {
-          // En móviles: mostrar botones, ocultar contenido inicialmente
-          content.classList.add("hidden");
-          button.classList.remove("hidden");
-          button.style.display = "flex";
-          
-          // Resetear estado del botón
-          const icon = button.querySelector("i");
-          const text = button.querySelector("span");
-          if (icon && text) {
-            text.textContent = "Leer Más";
-            icon.classList.remove("ph-minus");
-            icon.classList.add("ph-plus");
-          }
-        } else {
-          // En desktop: ocultar botones, mostrar contenido
-          content.classList.remove("hidden");
-          button.style.display = "none";
-        }
-      });
-    }
+  const MOBILE_BREAKPOINT = 1024;
+  let isInitialized = false;
 
-    function addClickListeners() {
-      // Remover listeners existentes
-      document.querySelectorAll("[data-accordion-target]").forEach(button => {
-        const newButton = button.cloneNode(true);
-        button.parentNode.replaceChild(newButton, button);
-      });
-      
-      // Agregar nuevos listeners
-      document.querySelectorAll("[data-accordion-target]").forEach(button => {
-        button.addEventListener("click", (e) => {
-          e.preventDefault();
-          
-          const isMobile = window.innerWidth < 1024;
-          if (!isMobile) return;
-          
-          const targetId = button.getAttribute("data-accordion-target");
-          const content = document.querySelector(targetId);
-          
-          if (!content) return;
-          
-          // Toggle del contenido
-          content.classList.toggle("hidden");
-          
-          // Cambiar texto e icono
-          const icon = button.querySelector("i");
-          const text = button.querySelector("span");
-          
-          if (content.classList.contains("hidden")) {
-            text.textContent = "Leer Más";
-            icon.classList.remove("ph-minus");
-            icon.classList.add("ph-plus");
-          } else {
-            text.textContent = "Leer Menos";
-            icon.classList.remove("ph-plus");
-            icon.classList.add("ph-minus");
-          }
-        });
-      });
-    }
-
-    // Función que ejecuta todo
-    function setupAccordion() {
-      handleAccordion();
-      addClickListeners();
-    }
-
-    // Debounce para resize
-    let resizeTimeout;
-    function handleResize() {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(setupAccordion, 100);
-    }
-
-    // Ejecutar setup inicial
-    setupAccordion();
-    
-    // Listener para resize
-    window.addEventListener("resize", handleResize);
-    
-    // Cleanup function (opcional, para remover listeners si es necesario)
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+  function isMobileView() {
+    return window.innerWidth < MOBILE_BREAKPOINT;
   }
 
-  // Múltiples formas de asegurar que el DOM esté listo
+  function initAccordion() {
+    if (isInitialized) return;
+
+    const accordionButtons = document.querySelectorAll("[data-accordion-target]");
+    
+    if (accordionButtons.length === 0) {
+      // DOM not ready yet, try again later
+      setTimeout(initAccordion, 100);
+      return;
+    }
+
+    setupAccordionBehavior();
+    attachEventListeners();
+    isInitialized = true;
+  }
+
+  function setupAccordionBehavior() {
+    const accordionButtons = document.querySelectorAll("[data-accordion-target]");
+    
+    accordionButtons.forEach(button => {
+      const targetId = button.getAttribute("data-accordion-target");
+      const content = document.querySelector(targetId);
+      
+      if (!content) return;
+
+      if (isMobileView()) {
+        // Mobile: hide content, show buttons
+        content.classList.add("hidden");
+        button.style.display = "flex";
+        resetButtonState(button);
+      } else {
+        // Desktop: show content, hide buttons
+        content.classList.remove("hidden");
+        button.style.display = "none";
+      }
+    });
+  }
+
+  function resetButtonState(button) {
+    const icon = button.querySelector(".toggle-icon");
+    const text = button.querySelector(".toggle-text");
+    
+    if (text) text.textContent = "Leer Más";
+    if (icon) {
+      icon.classList.remove("ph-minus");
+      icon.classList.add("ph-plus");
+    }
+    
+    button.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleAccordion(button) {
+    const targetId = button.getAttribute("data-accordion-target");
+    const content = document.querySelector(targetId);
+    
+    if (!content) return;
+
+    const isHidden = content.classList.contains("hidden");
+    const icon = button.querySelector(".toggle-icon");
+    const text = button.querySelector(".toggle-text");
+    
+    // Toggle content visibility
+    content.classList.toggle("hidden");
+    
+    // Update button state
+    if (isHidden) {
+      // Opening
+      text.textContent = "Leer Menos";
+      icon.classList.remove("ph-plus");
+      icon.classList.add("ph-minus");
+      button.setAttribute("aria-expanded", "true");
+    } else {
+      // Closing
+      text.textContent = "Leer Más";
+      icon.classList.remove("ph-minus");
+      icon.classList.add("ph-plus");
+      button.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  function attachEventListeners() {
+    // Remove existing listeners by cloning buttons
+    const accordionButtons = document.querySelectorAll("[data-accordion-target]");
+    
+    accordionButtons.forEach(button => {
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+    });
+
+    // Add new listeners
+    const newButtons = document.querySelectorAll("[data-accordion-target]");
+    
+    newButtons.forEach(button => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        
+        if (!isMobileView()) return;
+        
+        toggleAccordion(button);
+      });
+    });
+  }
+
+  // Debounced resize handler
+  let resizeTimeout;
+  function handleResize() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      setupAccordionBehavior();
+    }, 150);
+  }
+
+  function cleanup() {
+    window.removeEventListener("resize", handleResize);
+    isInitialized = false;
+  }
+
+  // Initialize based on document state
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAccordion);
   } else {
-    // DOM ya está cargado
+    // DOM is already loaded
     initAccordion();
   }
-  
-  // Backup: también ejecutar en window.load por si acaso
+
+  // Backup initialization
   window.addEventListener('load', () => {
-    setTimeout(initAccordion, 100);
+    if (!isInitialized) {
+      setTimeout(initAccordion, 50);
+    }
   });
-}
+
+  // Add resize listener
+  window.addEventListener("resize", handleResize);
+
+  // Return cleanup function
+  return cleanup;
+};
