@@ -1,240 +1,359 @@
 @use '@styles/autoload' as *;
 
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$profile-border-radius: var(--border-radius-xl);
+$profile-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$profile-icon-size: rem(32px);
+$profile-image-max-size: rem(550px);
+
+// ==========================================
+// CONTENEDOR PRINCIPAL
+// ==========================================
 .color-container {
   background-color: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100vw;
   padding-top: var(--spacing-xl);
   padding-bottom: var(--spacing-xl);
 }
 
+// ==========================================
+// COMPONENTE PRINCIPAL
+// ==========================================
 .program-profile {
   background-color: var(--primary);
   color: var(--neutral-1000);
-  padding: var(--spacing-md);
-  text-align: left;
-
-  width: 100%;
-  max-width: rem(1200px);
   height: auto;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-
   padding: var(--spacing-md) var(--spacing-xl);
   margin: 0 auto;
 
+  // ==========================================
+  // TÍTULO PRINCIPAL
+  // ==========================================
   &__title {
     font-size: var(--font-size-title);
     font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
     text-align: center;
     color: var(--neutral);
+
+    @include responsive($breakpoint-md) {
+      font-size: var(--font-size-principal-title);
+      margin-bottom: var(--spacing-xl);
+    }
   }
 
-  &__content-item {
-    display: grid;
-    grid-template-columns: 1.3fr 1.1fr;
-    grid-template-rows: auto auto;
-    grid-template-areas:
-      'imagen contenido'
-      'imagen lista';
-    column-gap: rem(30px);
-    row-gap: rem(20px);
-    align-items: start;
-    max-width: rem(1200px);
-    margin: 0 auto;
-    align-items: center;
-  }
-
-  .program-profile__image_content {
-    grid-area: imagen;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
-    overflow: hidden;
-  }
-
-  .program-profile__image {
-    width: 100%;
-    max-width: rem(550px);
-    max-height: rem(500px);
-    object-fit: contain;
-    border-radius: var(--border-radius-xl);
-    padding: 0;
-    width: 100%;
-    height: 95%;
-    object-fit: cover;
-  }
-
-  .p-content {
+  // ==========================================
+  // ACORDEÓN
+  // ==========================================
+  &__accordion {
     display: flex;
     flex-direction: column;
-    color: var(--neutral);
-  }
-
-  .program-profile__text-content {
-    grid-area: contenido;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     gap: var(--spacing-lg);
   }
 
-  .program-profile__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    max-width: rem(600px);
-    margin: 0;
-  }
-
-  .program-profile__item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    color: var(--neutral);
-    font-size: var(--font-size-paragraph);
-  }
-
-  .hidden {
-    display: none !important;
-  }
-
+  // ==========================================
+  // BOTONES DEL ACORDEÓN - ESTILO PESTAÑAS
+  // ==========================================
   &__buttons {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: var(--spacing-md);
-  }
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: var(--spacing-lg);
+    border-bottom: rem(1px) solid rgba(var(--neutral-rgb), 0.2);
 
-  // MEDIA QUERY PARA PANTALLAS PEQUEÑAS
-  @media (max-width: $breakpoint-lg) {
-    .program-profile__content-item {
-      display: flex;
-      flex-direction: column;
+    @include responsive($breakpoint-md) {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
     }
-
-    .program-profile {
-      display: flex;
-      flex-direction: column;
-    }
-
-    &__buttons {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-sm);
-      margin-bottom: var(--spacing-md);
-    }
-  }
-
-  &__accordion-item {
-    border: rem(1px) solid var(--primary);
-    background: var(--primary);
-    border-radius: var(--border-radius-lg);
-    overflow: hidden;
-    margin-bottom: var(--spacing-md);
   }
 
   &__accordion-button {
-    background: var(--primary);
-    color: var(--neutral-700);
-    font-style: var(--font-size-caption);
+    background: transparent;
+    color: rgba(var(--neutral-rgb), 0.5); // Texto gris por defecto
+    font-size: var(--font-size-caption);
     font-weight: var(--font-weight-bold);
-    padding: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-xl);
     text-align: center;
-    width: 100%;
     border: none;
+    border-radius: 0;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: rem(1px) solid var(--neutral-700);
-    transition: background 0.3s ease;
+    transition: $profile-transition;
+    min-height: rem(48px);
+    position: relative;
+    border-bottom: rem(2px) solid transparent;
 
-    &:hover,
-    &.active {
-      color: var(--neutral);
-      border-bottom: rem(1px) solid var(--neutral);
+    // Línea inferior invisible por defecto
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: rem(-1px); // Ajustado para alinearse con el borde
+      left: 0;
+      right: 0;
+      height: rem(2px);
+      background: var(--neutral); // Línea blanca
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: center;
     }
 
-    @include dark-theme {
-      color: var(--neutral-1000);
-      border-bottom: rem(1px) solid var(--neutral-1000);
+    // Estado hover (solo para botones inactivos)
+    &:hover:not(.active) {
+      color: rgba(var(--neutral-rgb), 0.7);
+      background: rgba(var(--neutral-rgb), 0.05);
+    }
 
-      &:hover,
+    // Estado activo - texto blanco con línea inferior
+    &.active {
+      color: var(--neutral); // Texto completamente blanco
+
+      &::after {
+        transform: scaleX(1); // Mostrar línea inferior
+      }
+    }
+
+    // Estado de focus para accesibilidad
+    &:focus-visible {
+      outline: rem(2px) solid var(--neutral);
+      outline-offset: rem(2px);
+    }
+
+    // Tema oscuro
+    @include dark-theme {
+      color: rgba(var(--neutral-1000-rgb), 0.5);
+
+      &:hover:not(.active) {
+        color: rgba(var(--neutral-1000-rgb), 0.7);
+      }
+
       &.active {
-        color: var(--neutral);
-        border-bottom: rem(1px) solid var(--neutral);
+        color: var(--neutral); // Mantener blanco en tema oscuro también
+      }
+    }
+
+    // Responsive para móvil
+    @media (max-width: $breakpoint-md) {
+      padding: var(--spacing-sm) var(--spacing-md);
+      font-size: var(--font-size-paragraph);
+
+      &::after {
+        bottom: rem(-1px);
+        height: rem(2px);
       }
     }
   }
 
-  &__accordion-content {
-    background: var(--primary);
-    color: var(--neutral-1000);
-    padding: var(--spacing-md);
-    text-align: left;
-    display: none;
-  }
+  // ==========================================
+  // CONTENIDO DEL ACORDEÓN
+  // ==========================================
+  &__content-item {
+    display: grid;
+    align-items: start;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+    opacity: 1;
+    transition: $profile-transition;
 
-  &__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    max-width: rem(600px);
-    margin: 0 auto;
-    text-align: left;
-    padding-top: rem(20px);
-  }
 
-  &__item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    color: var(--neutral-1000);
-    font-size: var(--font-size-paragraph);
-  }
+    @include responsive($breakpoint-lg) {
+      grid-template-columns: 1.3fr 1.1fr;
+      gap: rem(30px);
+      align-items: center;
+    }
 
-  &__icon-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: rem(32px);
-    height: rem(32px);
-
-    i {
-      font-size: rem(27px);
-      color: var(--neutral);
+    // Estado oculto
+    &.hidden {
+      display: none;
     }
   }
 
-  &__text {
-    margin: 0;
-    flex: 1;
-  }
-
-  &__container {
-    display: flex;
-    gap: var(--spacing-md);
-    justify-content: center;
-  }
-
+  // ==========================================
+  // IMAGEN
+  // ==========================================
   &__image_content {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     width: 100%;
+    height: 100%;
+    order: 1;
+
+    @include responsive($breakpoint-lg) {
+      order: 0;
+    }
   }
 
   &__image {
-    display: block;
-    padding-bottom: rem(15px);
+    width: 100%;
+    max-width: $profile-image-max-size;
+    height: auto;
+    object-fit: cover;
+    border-radius: $profile-border-radius;
+    box-shadow: 0 rem(8px) rem(24px) rgba(0, 0, 0, 0.15);
+    transition: $profile-transition;
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 rem(12px) rem(32px) rgba(0, 0, 0, 0.2);
+    }
+
+    @include responsive($breakpoint-lg) {
+      max-height: rem(500px);
+    }
+  }
+
+  // ==========================================
+  // LISTA DE CARACTERÍSTICAS
+  // ==========================================
+  .paragraph {
+    color: var(--neutral);
+    height: 100%;
+  }
+
+  // ==========================================
+  // RESPONSIVE - MOBILE
+  // ==========================================
+  @media (max-width: $breakpoint-lg) {
+    padding: var(--spacing-md);
+
+    &__content-item {
+      text-align: center;
+
+      @include responsive($breakpoint-md) {
+        text-align: left;
+      }
+    }
+
+    &__buttons {
+      gap: var(--spacing-xs);
+    }
+
+    &__accordion-button {
+      padding: var(--spacing-sm) var(--spacing-md);
+      font-size: var(--font-size-paragraph);
+      min-height: rem(44px);
+    }
+
+    &__image {
+      max-width: rem(400px);
+    }
+
+    &__list {
+      gap: var(--spacing-sm);
+    }
+
+    &__item {
+      align-items: center;
+      text-align: left;
+    }
+  }
+
+  // ==========================================
+  // RESPONSIVE - MOBILE SMALL
+  // ==========================================
+  @media (max-width: $breakpoint-sm) {
+    &__image {
+      max-width: rem(320px);
+    }
+
+    &__icon-container {
+      width: rem(28px);
+      height: rem(28px);
+
+      i {
+        font-size: rem(20px);
+      }
+    }
+  }
+
+  // ==========================================
+  // ANIMACIONES
+  // ==========================================
+  &__content-item {
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+
+    &:not(.hidden) {
+      animation-name: fadeInUp;
+    }
+  }
+
+  // ==========================================
+  // ESTADOS DE LOADING (OPCIONAL)
+  // ==========================================
+  &[data-loading='true'] {
+    .program-profile__image {
+      background: linear-gradient(90deg, var(--neutral-800) 25%, var(--neutral-700) 50%, var(--neutral-800) 75%);
+      background-size: 200% 100%;
+      animation: profileLoading 1.5s infinite;
+    }
+  }
+}
+
+// ==========================================
+// ANIMACIONES KEYFRAMES
+// ==========================================
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(rem(20px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes profileLoading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// ==========================================
+// MEJORAS DE ACCESIBILIDAD
+// ==========================================
+@media (prefers-reduced-motion: reduce) {
+  .program-profile {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+// ==========================================
+// PRINT STYLES
+// ==========================================
+@media print {
+  .program-profile {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+
+    &__buttons {
+      display: none;
+    }
+
+    &__content-item {
+      display: block !important;
+      page-break-inside: avoid;
+
+      &.hidden {
+        display: block !important;
+      }
+    }
   }
 }

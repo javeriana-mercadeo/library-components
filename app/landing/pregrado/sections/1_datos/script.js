@@ -35,7 +35,6 @@ const ResponsiveVideoSystem = {
     try {
       const dataVideoDesktop = configuration['codeVideoDesktop'] // Tomada de liferay
       const dataVideoMobile = configuration['codeVideoMobile'] // Tomada de liferay
-      Logger.debug('🎬 Inicializando sistema de video responsivo...')
 
       // Buscar contenedores de video responsivo
       const videoContainers = document.querySelectorAll('.program-data_media[data-video-mobile][data-video-desktop]')
@@ -45,7 +44,7 @@ const ResponsiveVideoSystem = {
       }
 
       if (videoContainers.length === 0) {
-        Logger.debug('No se encontraron videos para cargar')
+        Logger.warning('No se encontraron videos para cargar')
         return false
       }
 
@@ -56,11 +55,8 @@ const ResponsiveVideoSystem = {
 
       // Setup responsive listener
       this.setupResponsiveListener()
-
-      Logger.success(`Videos responsivos cargados: ${videoContainers.length}`)
       return true
     } catch (error) {
-      // Ignorar el error silenciosamente
       console.warn(error.message)
     }
   },
@@ -92,8 +88,6 @@ const ResponsiveVideoSystem = {
     // Marcar como listo
     container.classList.add('responsive-video-ready')
     container.setAttribute('data-breakpoint', breakpoint)
-
-    Logger.debug(`Videos configurados - Mobile: ${mobileVideoId}, Desktop: ${desktopVideoId}`)
   },
 
   createVideoIframe(videoId, type) {
@@ -117,7 +111,6 @@ const ResponsiveVideoSystem = {
 
     // Event listeners
     EventManager.add(iframe, 'load', () => {
-      Logger.success(`Video ${type} (${videoId}) cargado correctamente`)
       iframe.style.opacity = '1'
     })
 
@@ -139,12 +132,10 @@ const ResponsiveVideoSystem = {
       mobileIframe.style.display = 'block'
       desktopIframe.style.display = 'none'
       container.setAttribute('data-current-video', 'mobile')
-      Logger.debug('Video mobile activado')
     } else {
       mobileIframe.style.display = 'none'
       desktopIframe.style.display = 'block'
       container.setAttribute('data-current-video', 'desktop')
-      Logger.debug('Video desktop activado')
     }
   },
 
@@ -176,7 +167,6 @@ const ResponsiveVideoSystem = {
         iframe.src = currentSrc.replace('autoplay=1', 'autoplay=0')
       }
     })
-    Logger.debug('Videos pausados para ahorro de batería')
   },
 
   // Función para reanudar videos
@@ -189,7 +179,6 @@ const ResponsiveVideoSystem = {
         iframe.src = currentSrc.replace('autoplay=0', 'autoplay=1')
       }
     })
-    Logger.debug('Videos reanudados')
   }
 }
 
@@ -520,8 +509,6 @@ const DOMUpdater = {
 
       // Insertar directamente en el contenedor
       container.innerHTML = html
-
-      Logger.success('Fechas de inscripción actualizadas correctamente')
       return true
     } catch (error) {
       Logger.error('Error al procesar fechas de inscripción:', error)
@@ -536,8 +523,6 @@ const DOMUpdater = {
 
 const ModalSystem = {
   init() {
-    Logger.debug('Inicializando sistema de modales...')
-
     // Buscar todos los elementos que pueden activar modales
     const modalTriggers = document.querySelectorAll('[data-modal-target]')
 
@@ -550,7 +535,6 @@ const ModalSystem = {
       this.setupModalTrigger(trigger)
     })
 
-    Logger.success(`Modales configurados: ${modalTriggers.length}`)
     return true
   },
 
@@ -613,19 +597,12 @@ const ModalSystem = {
 
 const ProgramDataSystem = {
   init() {
-    Logger.debug('Inicializando sistema de datos del programa...')
-
-    // Configurar listener para datos del programa
     this.setupDataListener()
-
-    Logger.success('Sistema de datos del programa inicializado')
     return true
   },
 
   setupDataListener() {
-    // Evento de carga de datos
     document.addEventListener('data_load-program', event => {
-      Logger.debug('Datos del programa recibidos', event.detail)
       this.processData(event.detail.dataProgram)
     })
   },
@@ -711,8 +688,6 @@ const ProgramDataSystem = {
         automation: { ...window.statusPage.automation, ...automationUpdates }
       }
     }
-
-    Logger.success('Datos del programa procesados correctamente', automationUpdates)
   }
 }
 
@@ -722,8 +697,6 @@ const ProgramDataSystem = {
 
 const DatosProgramaVideoSystem = {
   async init() {
-    Logger.debug('🚀 Inicializando sistema Datos Programa Video...')
-
     try {
       // Inicializar sistemas
       const systems = {
@@ -741,8 +714,6 @@ const DatosProgramaVideoSystem = {
       const activeSystems = Object.entries(systems)
         .filter(([_, isActive]) => isActive)
         .map(([name]) => name)
-
-      Logger.success(`✅ Datos Programa Video iniciado - ${activeSystems.length} sistemas activos: ${activeSystems.join(', ')}`)
       return systems
     } catch (error) {
       Logger.error('Error al inicializar Datos Programa Video:', error)
@@ -766,8 +737,6 @@ const DatosProgramaVideoSystem = {
   setupCleanup() {
     // Cleanup al cambiar página
     window.addEventListener('beforeunload', () => {
-      Logger.debug('🧹 Limpiando sistema Datos Programa Video...')
-
       // Restaurar overflow del body
       document.body.style.overflow = ''
 
