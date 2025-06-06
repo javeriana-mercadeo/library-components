@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Utilidades globales - DEBE CARGARSE PRIMERO */}
         <title>Librería de componentes</title>
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <Providers themeProps={{ attribute: 'data-theme' }}>
           <ClientSideUtils />
           <div className="relative flex flex-col">

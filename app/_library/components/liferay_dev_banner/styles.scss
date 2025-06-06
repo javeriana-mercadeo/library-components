@@ -1,0 +1,223 @@
+@use '@styles/autoload' as *;
+
+// ===========================================
+// MIXIN PRINCIPAL DEL DEV BANNER
+// ===========================================
+@mixin liferay-dev-banner {
+  .dev-banner {
+    // Solo visible en modo desarrollo de Liferay
+    display: none;
+
+    @include only-dev-mode {
+      display: flex;
+    }
+
+    @include liferay-edit-mode {
+      display: block;
+    }
+
+    position: relative;
+    margin: var(--spacing-sm) 0;
+    border-radius: var(--border-radius-md);
+    border: rem(1px) solid;
+    overflow: hidden;
+
+    // Contenedor interno
+    &__container {
+      display: flex;
+      align-items: center;
+      padding: var(--spacing-sm) var(--spacing-md);
+      gap: var(--spacing-sm);
+      min-height: rem(48px);
+    }
+
+    // Icono
+    &__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: var(--icon-size-sm);
+      height: var(--icon-size-sm);
+
+      i {
+        font-size: var(--icon-size-sm);
+      }
+    }
+
+    // Contenido
+    &__content {
+      flex: 1;
+      font-size: var(--font-size-small);
+      line-height: 1.4;
+      font-weight: var(--font-weight-medium);
+
+      // Estilos para elementos internos
+      p {
+        margin: 0;
+        font-size: inherit;
+        line-height: inherit;
+      }
+
+      strong {
+        font-weight: var(--font-weight-bold);
+      }
+
+      code {
+        background: rgba(0, 0, 0, 0.1);
+        padding: rem(2px) rem(4px);
+        border-radius: rem(3px);
+        font-family: monospace;
+        font-size: 0.9em;
+      }
+    }
+
+    // ===========================================
+    // VARIANTES DE COLOR
+    // ===========================================
+
+    // Info (azul) - por defecto
+    &--info {
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: rgba(var(--primary-rgb), 0.3);
+      color: var(--primary-700);
+
+      .dev-banner__icon i {
+        color: var(--primary-600);
+      }
+
+      .dev-banner__content code {
+        background: rgba(var(--primary-rgb), 0.15);
+        color: var(--primary-800);
+      }
+
+      @include dark-theme {
+        background: rgba(var(--primary-rgb), 0.15);
+        border-color: rgba(var(--primary-rgb), 0.4);
+
+        .dev-banner__content code {
+          background: rgba(var(--primary-rgb), 0.2);
+        }
+      }
+    }
+
+    // Warning (amarillo)
+    &--warning {
+      background: rgba(var(--warning-rgb), 0.1);
+      border-color: rgba(var(--warning-rgb), 0.3);
+      color: var(--warning-700);
+
+      .dev-banner__icon i {
+        color: var(--warning-600);
+      }
+
+      .dev-banner__content code {
+        background: rgba(var(--warning-rgb), 0.15);
+        color: var(--warning-800);
+      }
+
+      @include dark-theme {
+        background: rgba(var(--warning-rgb), 0.15);
+        border-color: rgba(var(--warning-rgb), 0.4);
+
+        .dev-banner__content code {
+          background: rgba(var(--warning-rgb), 0.2);
+        }
+      }
+    }
+
+    // Error (rojo)
+    &--error {
+      background: rgba(var(--danger-rgb), 0.1);
+      border-color: rgba(var(--danger-rgb), 0.3);
+      color: var(--danger-700);
+
+      .dev-banner__icon i {
+        color: var(--danger-600);
+      }
+
+      .dev-banner__content code {
+        background: rgba(var(--danger-rgb), 0.15);
+        color: var(--danger-800);
+      }
+
+      @include dark-theme {
+        background: rgba(var(--danger-rgb), 0.15);
+        border-color: rgba(var(--danger-rgb), 0.4);
+
+        .dev-banner__content code {
+          background: rgba(var(--danger-rgb), 0.2);
+        }
+      }
+    }
+
+    // Success (verde)
+    &--success {
+      background: rgba(var(--success-rgb), 0.1);
+      border-color: rgba(var(--success-rgb), 0.3);
+      color: var(--success-700);
+
+      .dev-banner__icon i {
+        color: var(--success-600);
+      }
+
+      .dev-banner__content code {
+        background: rgba(var(--success-rgb), 0.15);
+        color: var(--success-800);
+      }
+
+      @include dark-theme {
+        background: rgba(var(--success-rgb), 0.15);
+        border-color: rgba(var(--success-rgb), 0.4);
+
+        .dev-banner__content code {
+          background: rgba(var(--success-rgb), 0.2);
+        }
+      }
+    }
+
+    // ===========================================
+    // RESPONSIVE
+    // ===========================================
+    @media (max-width: $breakpoint-sm) {
+      .dev-banner__container {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        min-height: rem(40px);
+      }
+
+      .dev-banner__content {
+        font-size: rem(12px);
+      }
+
+      .dev-banner__icon {
+        width: var(--icon-size-xs);
+        height: var(--icon-size-xs);
+
+        i {
+          font-size: var(--icon-size-xs);
+        }
+      }
+    }
+
+    // ===========================================
+    // ANIMACIÓN SUTIL
+    // ===========================================
+    &:not(.no-animation) {
+      animation: devBannerSlideIn 0.3s ease-out;
+    }
+  }
+}
+
+// ===========================================
+// ANIMACIÓN DE ENTRADA
+// ===========================================
+@keyframes devBannerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(rem(-10px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

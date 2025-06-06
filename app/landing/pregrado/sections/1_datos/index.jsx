@@ -2,10 +2,10 @@
 
 import { useEffect } from 'react'
 import Container from '@library/components/container'
-import Title from '@/app/_library/components/contain/title'
-import Caption from '@/app/_library/components/contain/caption'
-import Paragraph from '@/app/_library/components/contain/paragraph'
-import Btn from '@/app/_library/components/contain/btn'
+import Title from '@library/components/contain/title'
+import Caption from '@library/components/contain/caption'
+import Paragraph from '@library/components/contain/paragraph'
+import Btn from '@library/components/contain/btn'
 import ProgramDetail from './components/ProgramDetail.jsx'
 
 import script from './script.js'
@@ -59,6 +59,13 @@ const DatosProgramaVideo = () => {
       type: 'normal'
     },
     {
+      id: 'data-puj-clock',
+      icon: 'ph-clock',
+      label: 'Horarios',
+      value: 'Cargando horarios...',
+      type: 'normal'
+    }
+    /* {
       id: 'horarios-programa',
       icon: 'ph-clock',
       label: 'Horarios',
@@ -83,125 +90,126 @@ const DatosProgramaVideo = () => {
           </p>
         </Paragraph>
       )
-    }
+    } */
   ]
 
   return (
-    <Container id={elementName} className={baseClass}>
-      {/* === FACULTAD === */}
-      <Caption
-        data-puj-faculty="true"
-        className={`${baseClass}_faculty`}
-        id={`${elementName}-faculty`}
-        color="primary"
-        size="md"
-        bold={true}
-        isEditable={false}>
-        Facultad de Ingeniería
-      </Caption>
+    <div className={baseClass}>
+      <Container id={elementName} className={`${baseClass}_container`}>
+        {/* === FACULTAD === */}
+        <div className={`${baseClass}_faculty-container`}>
+          <Caption className={`${baseClass}_faculty`} color="primary" size="md" bold={true} isEditable={false}>
+            Facultad de{' '}
+          </Caption>
+          <Caption data-puj-faculty="true" className={`${baseClass}_faculty`} color="primary" size="md" bold={true} isEditable={false}>
+            Cargando facultad...
+          </Caption>
+        </div>
 
-      {/* === TÍTULO === */}
-      <Title hierarchy="h1" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-title`}>
-        <span className="lead">Ingeniería Civil:</span> Construyendo el Futuro Sostenible de Colombia
-      </Title>
+        {/* === TÍTULO === */}
+        <Title hierarchy="h1" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-title`}>
+          <span className="lead">Ingeniería Civil:</span> Construyendo el Futuro Sostenible de Colombia
+        </Title>
 
-      {/* === SNIES === */}
-      <Caption
-        data-puj-snies="true"
-        className={`${baseClass}_snies`}
-        id={`${elementName}-snies`}
-        color="neutral"
-        size="md"
-        isEditable={false}>
-        Cargando SNIES...
-      </Caption>
+        {/* === SNIES === */}
+        <Caption
+          data-puj-snies="true"
+          className={`${baseClass}_snies`}
+          id={`${elementName}-snies`}
+          color="neutral"
+          size="md"
+          isEditable={false}>
+          Cargando SNIES...
+        </Caption>
 
-      {/* === DESCRIPCIÓN === */}
-      <Paragraph className={`${baseClass}_description`} id={`${elementName}-description`}>
-        Diseña y gestiona proyectos de infraestructura civil con un <strong>enfoque sostenible y responsable con el medio ambiente</strong>.
-        Aprende a optimizar recursos considerando aspectos técnicos, económicos y éticos. En nuestra carrera de Ingeniería Civil, elige
-        entre distintos énfasis según tu interés y accede a laboratorios y tecnología de vanguardia para potenciar tu aprendizaje.
-      </Paragraph>
+        {/* === DESCRIPCIÓN === */}
+        <Paragraph className={`${baseClass}_description`} id={`${elementName}-description`}>
+          Diseña y gestiona proyectos de infraestructura civil con un{' '}
+          <strong>enfoque sostenible y responsable con el medio ambiente</strong>. Aprende a optimizar recursos considerando aspectos
+          técnicos, económicos y éticos. En nuestra carrera de Ingeniería Civil, elige entre distintos énfasis según tu interés y accede a
+          laboratorios y tecnología de vanguardia para potenciar tu aprendizaje.
+        </Paragraph>
 
-      {/* === VIDEOS RESPONSIVOS === */}
-      <div className={`${baseClass}_media`} data-video-mobile="HxlTZ8DQAaY" data-video-desktop="IWZvfiu3gX4" data-breakpoint="768">
-        {/* Placeholder para videos que se cargarán via JavaScript */}
-      </div>
+        {/* === VIDEOS RESPONSIVOS === */}
+        <div className={`${baseClass}_media`} data-video-mobile="HxlTZ8DQAaY" data-video-desktop="IWZvfiu3gX4" data-breakpoint="768">
+          {/* Placeholder para videos que se cargarán via JavaScript */}
+        </div>
 
-      {/* === DETALLES DEL PROGRAMA === */}
-      <div className="program-details">
-        {details.map((detail, index) => (
-          <ProgramDetail key={detail.id || `detail-${index}`} {...detail} />
-        ))}
-      </div>
+        {/* === DETALLES DEL PROGRAMA === */}
+        <div className="program-details">
+          {details.map((detail, index) => (
+            <ProgramDetail key={detail.id || `detail-${index}`} {...detail} />
+          ))}
+        </div>
 
-      {/* === FECHAS DE INSCRIPCIÓN === */}
-      <div className="program-dates-container">
-        <div className="program-dates program-dates--dates">
-          <div className="program-dates_icon">
-            <i className="ph ph-calendar-check"></i>
-          </div>
+        {/* === FECHAS DE INSCRIPCIÓN === */}
+        <div className="program-dates-container">
+          <div className="program-dates program-dates--dates">
+            <div className="program-dates_icon">
+              <i className="ph ph-calendar-check"></i>
+            </div>
 
-          <div className="program-dates_content">
-            <Caption className="program-dates_label" color="neutral" size="md" isEditable={false}>
-              Fechas de cierre de inscripciones
-            </Caption>
+            <div className="program-dates_content">
+              <Caption className="program-dates_label" color="neutral" size="md" isEditable={false}>
+                Fechas de cierre de inscripciones
+              </Caption>
 
-            <div data-puj-registration-dates="true" className="program-dates_dates">
-              {/* Las fechas se cargarán dinámicamente via JavaScript */}
-              <div className="program-dates_date-item">
-                <Paragraph className="program-dates_date-period" color="neutral" size="md" bold={true} isEditable={false}>
-                  Cargando fechas...
-                </Paragraph>
+              <div data-puj-registration-dates="true" className="program-dates_dates">
+                {/* Las fechas se cargarán dinámicamente via JavaScript */}
+                <div className="program-dates_date-item">
+                  <Paragraph className="program-dates_date-period" color="neutral" size="md" bold={true} isEditable={false}>
+                    Cargando fechas...
+                  </Paragraph>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <Btn
-          id={`${elementName}-enrollment-link`}
-          className="program-data_enrollment-link mt-6"
-          href="#"
-          variant="flat"
-          startIcon={<i className="ph ph-hand-pointing"></i>}
-          size="sm">
-          Conoce el proceso de inscripción
-        </Btn>
-      </div>
+          <Btn
+            id={`${elementName}-enrollment-link`}
+            className="program-data_enrollment-link mt-6"
+            href="#"
+            variant="flat"
+            startIcon={<i className="ph ph-hand-pointing"></i>}
+            size="sm">
+            Conoce el proceso de inscripción
+          </Btn>
 
-      {/* === INFORMACIÓN LEGAL === */}
-      <div className={`${baseClass}_enrollment`}>
-        <Paragraph id={`${elementName}-enrollment-note`} className={`${baseClass}_enrollment-note`} size="sm">
-          *Aspirantes 2025: El valor de matrícula corresponde al costo fijado para el año 2025.
-        </Paragraph>
-
-        <div className={`${baseClass}_enrollment-note-container`}>
-          <Paragraph data-puj-snies="true" className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
-            Cargando SNIES...
-          </Paragraph>
-
-          <Paragraph id={`${elementName}-enrollment-legal-note`} className={`${baseClass}_enrollment-note`} size="sm">
-            {' '}
-            | Resolución de Registro Calificado: 9406 del 27 de mayo de 2022, vigente hasta el 27 de mayo de 2030. | Resolución de
-            Acreditación de Alta Calidad: 9406 del 27 de mayo del 2022, vigente por 8 años, hasta el 27 de mayo de 2030. | Duración del
-            programa:{' '}
-          </Paragraph>
-
-          <Paragraph data-puj-duration="true" className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
-            Cargando duración...
-          </Paragraph>
-
-          <Paragraph className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
-            {' '}
-            / Lugar donde se oferta:{' '}
-          </Paragraph>
-
-          <Paragraph data-puj-location="true" className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
-            Cargando lugar...
+          <Paragraph id={`${elementName}-enrollment-note`} className={`${baseClass}_enrollment-note`} size="sm">
+            *Aspirantes 2025: El valor de matrícula corresponde al costo fijado para el año 2025.
           </Paragraph>
         </div>
-      </div>
-    </Container>
+
+        {/* === INFORMACIÓN LEGAL === */}
+        <div className={`${baseClass}_enrollment`}>
+          <div className={`${baseClass}_enrollment-note-container`}>
+            <Paragraph data-puj-snies="true" className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
+              Cargando SNIES...
+            </Paragraph>
+
+            <Paragraph id={`${elementName}-enrollment-legal-note`} className={`${baseClass}_enrollment-note`} size="sm">
+              {' '}
+              | Resolución de Registro Calificado: 9406 del 27 de mayo de 2022, vigente hasta el 27 de mayo de 2030. | Resolución de
+              Acreditación de Alta Calidad: 9406 del 27 de mayo del 2022, vigente por 8 años, hasta el 27 de mayo de 2030. | Duración del
+              programa:{' '}
+            </Paragraph>
+
+            <Paragraph data-puj-duration="true" className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
+              Cargando duración...
+            </Paragraph>
+
+            <Paragraph className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
+              {' '}
+              / Lugar donde se oferta:{' '}
+            </Paragraph>
+
+            <Paragraph data-puj-location="true" className={`${baseClass}_enrollment-note`} size="sm" isEditable={false}>
+              Cargando lugar...
+            </Paragraph>
+          </div>
+        </div>
+      </Container>
+    </div>
   )
 }
 

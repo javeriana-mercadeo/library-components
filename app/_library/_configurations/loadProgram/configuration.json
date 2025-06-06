@@ -1,0 +1,19 @@
+{
+  "fieldSets": [
+    {
+      "fields": [
+        {
+          "name": "codeProgram",
+          "label": "Código del programa",
+          "description": "Mediante este código se llenará la información estructurada desde PeopleSoft",
+          "type": "text",
+          "typeOptions": {
+            "placeholder": "Código programa"
+          },
+          "dataType": "string",
+          "defaultValue": ""
+        }
+      ]
+    }
+  ]
+}

@@ -440,25 +440,25 @@ $btn-ripple-duration: 0.6s;
     }
 
     &.btn-faded {
-      color: $color-700;
+      color: $color-800;
       border: rem(2px) solid rgba($color-rgb, 0.3);
     }
 
     &.btn-bordered {
-      color: $color-700;
+      color: $color-800;
       border-color: $color-500;
     }
 
     &.btn-light {
-      color: $color-700;
+      color: $color-800;
     }
 
     &.btn-flat {
-      color: $color-700;
+      color: $color-800;
     }
 
     &.btn-ghost {
-      color: $color-700;
+      color: $color-800;
 
       &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
         background: $color-400;

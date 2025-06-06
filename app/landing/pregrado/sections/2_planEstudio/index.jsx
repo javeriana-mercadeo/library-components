@@ -1,212 +1,218 @@
+// ==========================================
+// COMPONENTE REACT CON DATOS DINÁMICOS
+// ==========================================
 'use client'
 
 import { useEffect } from 'react'
 import Container from '@library/components/container'
+import Title from '@/app/_library/components/contain/title/index.jsx'
+import Paragraph from '@/app/_library/components/contain/paragraph'
+import Btn from '@/app/_library/components/contain/btn'
 
+import info from './info.json'
 import script from './script.js'
 import './styles.scss'
 
 const PlanEstudio = () => {
-  // Ejecutar el script cuando el componente se monta
+  const elementName = info.id || 'planEstudio'
+  const baseClass = 'plan-estudio'
+
   useEffect(() => {
     script()
   }, [])
 
+  // ==========================================
+  // DATOS DINÁMICOS DE LOS SEMESTRES
+  // ==========================================
+  const semesters = [
+    {
+      year: 'Año 1',
+      semester: 'Semestre 1',
+      credits: 18,
+      subjects: [
+        'Matemáticas I',
+        'Introducción a la Ingeniería',
+        'Física I',
+        'Química General',
+        'Comunicación Escrita',
+        'Fundamentos de Programación'
+      ]
+    },
+    {
+      year: 'Año 1',
+      semester: 'Semestre 2',
+      credits: 18,
+      subjects: [
+        'Matemáticas II',
+        'Física II',
+        'Algoritmos y Estructuras de Datos',
+        'Química Orgánica',
+        'Historia de la Tecnología',
+        'Expresión Gráfica'
+      ]
+    },
+    {
+      year: 'Año 2',
+      semester: 'Semestre 3',
+      credits: 19,
+      subjects: [
+        'Cálculo Multivariable',
+        'Programación Orientada a Objetos',
+        'Física Moderna',
+        'Probabilidad y Estadística',
+        'Ingeniería de Software I',
+        'Sistemas Digitales'
+      ]
+    },
+    {
+      year: 'Año 2',
+      semester: 'Semestre 4',
+      credits: 20,
+      subjects: [
+        'Ecuaciones Diferenciales',
+        'Bases de Datos',
+        'Arquitectura de Computadores',
+        'Ingeniería de Software II',
+        'Ética Profesional',
+        'Electiva I'
+      ]
+    },
+    {
+      year: 'Año 3',
+      semester: 'Semestre 5',
+      credits: 20,
+      subjects: [
+        'Análisis Numérico',
+        'Redes de Computadores',
+        'Desarrollo Web',
+        'Sistemas Operativos',
+        'Gestión de Proyectos',
+        'Electiva II'
+      ]
+    },
+    {
+      year: 'Año 3',
+      semester: 'Semestre 6',
+      credits: 20,
+      subjects: [
+        'Simulación de Sistemas',
+        'Inteligencia Artificial',
+        'Seguridad Informática',
+        'Diseño de Interfaces',
+        'Optativa Humanística',
+        'Electiva III'
+      ]
+    },
+    {
+      year: 'Año 4',
+      semester: 'Semestre 7',
+      credits: 18,
+      subjects: [
+        'Arquitectura de Software',
+        'Ingeniería Económica',
+        'Big Data y Analítica',
+        'Pruebas de Software',
+        'Electiva IV',
+        'Proyecto Integrador I'
+      ]
+    },
+    {
+      year: 'Año 4',
+      semester: 'Semestre 8',
+      credits: 18,
+      subjects: [
+        'Ingeniería de Requisitos',
+        'Cloud Computing',
+        'Computación Gráfica',
+        'Legislación Informática',
+        'Electiva V',
+        'Proyecto Integrador II'
+      ]
+    },
+    {
+      year: 'Año 5',
+      semester: 'Semestre 9',
+      credits: 16,
+      subjects: ['Práctica Profesional', 'Gestión de la Innovación', 'Electiva VI', 'Seminario de Investigación', 'Trabajo de Grado I']
+    },
+    {
+      year: 'Año 5',
+      semester: 'Semestre 10',
+      credits: 16,
+      subjects: [
+        'Electiva VII',
+        'Auditoría de Sistemas',
+        'Taller de Portafolio',
+        'Trabajo de Grado II',
+        'Seminario de Actualización Tecnológica'
+      ]
+    }
+  ]
+
+  // ==========================================
+  // FUNCIÓN PARA RENDERIZAR UNA CARD
+  // ==========================================
+  const renderSemesterCard = (semesterData, index) => {
+    const { year, semester, credits, subjects } = semesterData
+
+    return (
+      <div key={index} className={`${baseClass}_slide swiper-slide`} role="listitem">
+        <div className={`${baseClass}_card`}>
+          <div className={`${baseClass}_card-header`}>
+            <span className={`${baseClass}_badge ${baseClass}_badge`}>{year}</span>
+          </div>
+
+          <Title hierarchy="h3" className={`${baseClass}_semester-title`} size="lg" weight="bold" isEditable={false}>
+            {semester}
+          </Title>
+
+          <ul className={`${baseClass}_subjects`}>
+            {subjects.map((subject, subjectIndex) => (
+              <li key={`${index}-subject-${subjectIndex}`}>
+                <i className="ph ph-check" aria-hidden="true"></i>
+                {subject}
+              </li>
+            ))}
+          </ul>
+
+          <div className={`${baseClass}_credits`}>
+            <strong>{credits}</strong> Crédito{credits !== 1 ? 's' : ''}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <section id="section-two" className="section-dos">
-      <Container className="container subjects-carousel">
-        <h2 className="text-align-movil subjects-carousel__title">Materias por Semestre</h2>
-        <p className="text-align-movil">
+    <section className={`${baseClass}_container`}>
+      <Container id={elementName} className={baseClass}>
+        <Title weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
+          Materias por Semestre
+        </Title>
+
+        <Paragraph id={`${elementName}-description`} align="center">
           El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
-        </p>
+        </Paragraph>
 
-        <button
-          data-dmpa-element-id="btn"
-          className="btn btn-primary btn-outline btn-md"
-          type="button"
-          data-lfr-editable-id="btn"
-          data-lfr-editable-type="text">
-          <span className="btn-text">Descargar Plan de Estudios</span>
-          <span className="btn-icon btn-icon-end">
-            <i className="ph ph-download" aria-hidden="true"></i>
-          </span>
-        </button>
+        <Btn id={`${elementName}-btn`} href="#" variant="bordered" endIcon={<i className="ph ph-download" aria-hidden="true"></i>}>
+          Descargar Plan de estudios
+        </Btn>
 
-        {/* <a
-            href="ruta/al/archivo.pdf"
-            download="Plan-de-Estudios.pdf"
-            className="button-plan text-blue-700 hover:text-white border border-blue-700  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 flex items-center gap-2"
-            aria-label="Descargar Plan de Estudios en formato PDF">
-            Descargar Plan de Estudios
-            <i className="ph ph-download" aria-hidden="true"></i>
-          </a> */}
-
-        <div className="container swiper">
-          <div className="card-wrapper subjects-swiper">
-            {/* Card slides container */}
-            <div className="card-list swiper-wrapper" role="list">
-              {/* Semestre 1 - Año 1 */}
-              <div className="card-item swiper-slide" role="listitem">
-                <div className="card-link">
-                  <div className="card-header">
-                    <span className="badge">Año 1</span>
-                  </div>
-                  <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 1</h3>
-                  <ul className="subjects-list">
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Cálculo Diferencial
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Álgebra Lineal
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Física Mecánica
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Química de Materiales
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Geometría Descriptiva
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Introducción a la Ingeniería
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería I
-                    </li>
-                  </ul>
-                  <div className="content-credits">
-                    <span className="credits">
-                      <strong>17</strong> Créditos
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Semestre 2 - Año 1 */}
-              <div className="card-item swiper-slide" role="listitem">
-                <div className="card-link">
-                  <div className="card-header">
-                    <span className="badge">Año 1</span>
-                  </div>
-                  <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 2</h3>
-                  <ul className="subjects-list">
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Cálculo Integral
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Álgebra Abstracta
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Física Eléctrica
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Programación en C
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Ecuaciones Diferenciales
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Probabilidad y Estadística
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería II
-                    </li>
-                  </ul>
-                  <div className="content-credits">
-                    <span className="credits">
-                      <strong>17</strong> Créditos
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Semestre 1 - Año 2 */}
-              <div className="card-item swiper-slide" role="listitem">
-                <div className="card-link">
-                  <div className="card-header">
-                    <span className="badge">Año 2</span>
-                  </div>
-                  <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 1</h3>
-                  <ul className="subjects-list">
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Cálculo Vectorial
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Métodos Numéricos
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Física Moderna
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Diseño Digital
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Mecánica de Materiales
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Electricidad y Magnetismo
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería III
-                    </li>
-                  </ul>
-                  <div className="content-credits">
-                    <span className="credits">
-                      <strong>17</strong> Créditos
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Semestre 2 - Año 2 */}
-              <div className="card-item swiper-slide" role="listitem">
-                <div className="card-link">
-                  <div className="card-header">
-                    <span className="badge">Año 2</span>
-                  </div>
-                  <h3 className="title-subjects mb-2 text-2xl font-bold tracking-tight text-gray-900">Semestre 2</h3>
-                  <ul className="subjects-list">
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Análisis Complejo
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Sistemas de Control
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Electrónica Analógica
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Termodinámica
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Fundamentos de Redes
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Procesamiento de Señales
-                    </li>
-                    <li>
-                      <i className="ph ph-check" aria-hidden="true"></i> Proyecto de Diseño en Ingeniería IV
-                    </li>
-                  </ul>
-                  <div className="content-credits">
-                    <span className="credits">
-                      <strong>17</strong> Créditos
-                    </span>
-                  </div>
-                </div>
-              </div>
+        <div className={`${baseClass}_carousel swiper`}>
+          <div className={`${baseClass}_wrapper subjects-swiper`}>
+            <div className={`${baseClass}_slides swiper-wrapper`} role="list">
+              {/* ✅ GENERAR CARDS DINÁMICAMENTE */}
+              {semesters.map((semesterData, index) => renderSemesterCard(semesterData, index))}
             </div>
 
             {/* Paginación */}
-            <div className="swiper-pagination subjects-pagination" role="tablist" aria-label="Control de páginas del carrusel"></div>
+            <div className={`swiper-pagination ${baseClass}_pagination`} role="tablist" aria-label="Control de páginas del carrusel"></div>
 
             {/* Botones de navegación */}
-
-            <button className="swiper-slide-button subjects-prev" aria-label="Ir al slide anterior" type="button">
+            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label="Ir al slide anterior" type="button">
               <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
             </button>
-            <button className="swiper-slide-button subjects-next" aria-label="Ir al siguiente slide" type="button">
+            <button className={`swiper-slide-button ${baseClass}_next`} aria-label="Ir al siguiente slide" type="button">
               <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
             </button>
           </div>
@@ -215,4 +221,5 @@ const PlanEstudio = () => {
     </section>
   )
 }
+
 export default PlanEstudio

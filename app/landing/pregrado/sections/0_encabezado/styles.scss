@@ -22,7 +22,7 @@ body.menu-open {
   left: 0;
   width: 100%;
   background-color: var(--neutral-variant-blue-200);
-  z-index: 9999;
+  z-index: 9998;
   box-shadow: rem(0px) rem(4px) rem(6px) rgba(0, 0, 0, 0.1);
   min-height: 70px;
   transition: transform 0.3s ease;
@@ -30,6 +30,25 @@ body.menu-open {
   // Header oculto al hacer scroll (opcional)
   &--hidden {
     transform: translateY(-100%);
+  }
+
+  @include dark-theme {
+    position: relative;
+    background-color: var(--background-200);
+    box-shadow: rem(0px) rem(4px) rem(6px) rgba(0, 0, 0, 0.2);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(var(--primary-100-rgb), 0.2);
+      pointer-events: none;
+    }
+  }
+
+  @include only-dev-mode {
+    position: relative;
+    z-index: 1;
   }
 
   @include liferay-edit-mode {

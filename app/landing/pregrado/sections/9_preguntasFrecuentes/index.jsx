@@ -19,9 +19,7 @@ const PreguntasFrecuentes = () => {
     <section id="section-eleven">
       <Container className="container faq">
         <div>
-          <Title className="faq__title">
-            <h2>Preguntas Frecuentes</h2>
-          </Title>
+          <Title className="faq__title">Preguntas Frecuentes</Title>
           <div className="faq__container">
             {/* Primera pregunta expandida por defecto */}
             <div className="faq__item active">

@@ -16,6 +16,7 @@
 @use '@library/components/contain/caption/styles.scss' as *;
 @use '@library/components/contain/paragraph/styles.scss' as *;
 @use '@library/components/logo_institucional/styles.scss' as *;
+@use '@library/components/liferay_dev_banner/styles.scss' as *;
 
 @include container;
 @include logo;
@@ -23,6 +24,7 @@
 @include caption;
 @include paragraph;
 @include general-btn;
+@include liferay-dev-banner;
 
 // ==========================================
 // ELEMENTOS BASE

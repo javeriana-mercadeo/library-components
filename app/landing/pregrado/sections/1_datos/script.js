@@ -32,31 +32,42 @@ const ResponsiveVideoSystem = {
   },
 
   init() {
-    Logger.debug('🎬 Inicializando sistema de video responsivo...')
+    try {
+      const dataVideoDesktop = configuration['codeVideoDesktop'] // Tomada de liferay
+      const dataVideoMobile = configuration['codeVideoMobile'] // Tomada de liferay
+      Logger.debug('🎬 Inicializando sistema de video responsivo...')
 
-    // Buscar contenedores de video responsivo
-    const videoContainers = document.querySelectorAll('.program-data_media[data-video-mobile][data-video-desktop]')
+      // Buscar contenedores de video responsivo
+      const videoContainers = document.querySelectorAll('.program-data_media[data-video-mobile][data-video-desktop]')
 
-    if (videoContainers.length === 0) {
-      Logger.debug('No se encontraron videos responsivos para cargar')
-      return false
+      if (!dataVideoDesktop && !dataVideoMobile) {
+        Logger.warning('no se encontraron videos configurados')
+      }
+
+      if (videoContainers.length === 0) {
+        Logger.debug('No se encontraron videos para cargar')
+        return false
+      }
+
+      // Inicializar cada contenedor
+      videoContainers.forEach(container => {
+        this.initializeResponsiveVideo(container, dataVideoMobile, dataVideoDesktop)
+      })
+
+      // Setup responsive listener
+      this.setupResponsiveListener()
+
+      Logger.success(`Videos responsivos cargados: ${videoContainers.length}`)
+      return true
+    } catch (error) {
+      // Ignorar el error silenciosamente
+      console.warn(error.message)
     }
-
-    // Inicializar cada contenedor
-    videoContainers.forEach(container => {
-      this.initializeResponsiveVideo(container)
-    })
-
-    // Setup responsive listener
-    this.setupResponsiveListener()
-
-    Logger.success(`Videos responsivos cargados: ${videoContainers.length}`)
-    return true
   },
 
-  initializeResponsiveVideo(container) {
-    const mobileVideoId = container.dataset.videoMobile
-    const desktopVideoId = container.dataset.videoDesktop
+  initializeResponsiveVideo(container, dataVideoMobile, dataVideoDesktop) {
+    const mobileVideoId = dataVideoMobile || container.dataset.videoMobile
+    const desktopVideoId = dataVideoDesktop || container.dataset.videoDesktop
     const breakpoint = parseInt(container.dataset.breakpoint) || this.config.defaultBreakpoint
 
     if (!mobileVideoId || !desktopVideoId) {
@@ -624,6 +635,7 @@ const ProgramDataSystem = {
       facultad,
       programa,
       costo,
+      jornada,
       snies,
       tituloOtorgado,
       grado,
@@ -673,8 +685,13 @@ const ProgramDataSystem = {
     }
 
     if (costo) {
-      DOMUpdater.updateElementsText('data-puj-price', DataFormatter.formatCurrencyCOP(costo))
+      DOMUpdater.updateElementsText('data-puj-price', `*${DataFormatter.formatCurrencyCOP(costo)}`)
       automationUpdates.price = true
+    }
+
+    if (jornada) {
+      DOMUpdater.updateElementsText('data-puj-clock', DataFormatter.formatProgramName(jornada))
+      automationUpdates.schedule = true
     }
 
     if (datosFechaCierreInscripcion && Array.isArray(datosFechaCierreInscripcion)) {

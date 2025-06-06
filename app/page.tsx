@@ -4,11 +4,14 @@ import { useState } from 'react'
 import { Card, CardBody, CardFooter, Tabs, Tab, Button, Divider } from '@heroui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import LoadTheme from '@library/_configurations/loadTheme'
+import LoadProgram from '@library/_configurations/loadProgram'
+import Container from '@library/components/container'
+import Splash from '@library/components/splash'
 
-import './style.scss'
-import Splash from './_library/components/splash'
+import ViewComponent from './_components/viewComponent/viewComponent'
 import GlobalAssetsViewer from './_components/globalAssetsViewe/globalAssetsViewer'
-import Container from './_library/components/container'
+import './style.scss'
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState('landing-pages')
@@ -48,13 +51,15 @@ export default function Home() {
     }
   ]
 
+  // Configuraciones disponibles del sistema - ELIMINADO
+  // const configSections = [...]
+
   const navigateToComponent = (section: string): void => {
     router.push(`/components/view?path=${section}`)
   }
 
   return (
     <>
-      <Splash />
       <div className="w-full px-4 py-8 flex flex-col items-center bg-[var(--background-100)]">
         <div className="text-center mb-8">
           <h1 className="text-[var(--neutral-200)] text-4xl font-bold mb-2">Biblioteca de Componentes</h1>
@@ -243,7 +248,48 @@ export default function Home() {
           )}
         </div>
 
-        <div className="min-h-screen bg-[var(--background-100)] py-8">
+        {/* Sección de Componentes de Configuración */}
+        <div className="bg-[var(--background-100)] py-8 w-full">
+          <Container className="max-w-6xl">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-[var(--neutral-200)] mb-2">Componentes de Configuración</h1>
+              <p className="text-[var(--neutral-400)] max-w-2xl mx-auto">
+                Área de trabajo para componentes de configuración y herramientas de desarrollo.
+              </p>
+            </div>
+
+            {/* Contenedor para componentes */}
+            <div className="p-6 bg-[var(--background-200)] rounded-lg border border-[var(--neutral-700)] min-h-[400px]">
+              <div className="flex items-start gap-3 mb-4">
+                <i className="ph ph-code text-[var(--primary-600)] mt-1 text-xl"></i>
+                <div className="text-sm">
+                  <p className="font-medium text-[var(--neutral-200)] mb-1">🛠️ Área de Componentes</p>
+                  <p className="text-[var(--neutral-400)]">
+                    Agrega tus componentes de configuración aquí. Se renderizarán automáticamente dentro de este contenedor.
+                  </p>
+                </div>
+              </div>
+
+              {/* Contenedor donde se renderizan los componentes */}
+              <div className="component-container bg-[var(--background-100)] rounded-lg p-4 border border-[var(--neutral-800)] min-h-[300px]">
+                <ViewComponent path="/_configurations/components/loadTheme">
+                  <LoadTheme />
+                </ViewComponent>
+
+                <ViewComponent path="/_configurations/components/loadProgram">
+                  <LoadProgram />
+                </ViewComponent>
+
+                <ViewComponent path="/_library/components/splash">
+                  <Splash />
+                </ViewComponent>
+              </div>
+            </div>
+          </Container>
+        </div>
+
+        <div className="bg-[var(--background-100)] py-8">
           <Container className="max-w-6xl">
             {/* Header */}
             <div className="text-center mb-8">
