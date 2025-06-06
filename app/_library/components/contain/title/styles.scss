@@ -71,8 +71,8 @@ $title-weights: (
     line-height: $title-line-height;
     margin-bottom: $title-margin-bottom;
     transition: $title-transition;
-    word-wrap: break-word;
-    hyphens: auto;
+    word-break: normal;
+    overflow-wrap: normal;
 
     // Estilos para modo de edición de Liferay
     @include liferay-edit-mode {

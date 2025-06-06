@@ -9,11 +9,7 @@
 
     // Responsive adjustments
     @include responsive {
-      padding: var(--spacing-lg) var(--spacing-lg);
-    }
-
-    @include liferay-edit-mode {
-      width: min-content;
+      padding: var(--spacing-lg) var(--spacing-xl);
     }
 
     // Variantes de ancho máximo

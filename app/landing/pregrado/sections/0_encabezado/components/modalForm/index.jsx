@@ -4,7 +4,12 @@ import Title from '@library/components/contain/title'
 const ModalForm = () => {
   return (
     <div className="modal-overlay" id="modal-overlay">
-      <div className="contact-modal" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div
+        className="contact-modal justify-center items-center"
+        id="contact-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title">
         {/* Imagen lateral - Solo visible en desktop */}
         <div
           className="modal-image"
@@ -17,7 +22,7 @@ const ModalForm = () => {
         <div className="modal-form-container">
           {/* Header del Modal */}
           <div className="modal-header">
-            <Title hierarchy="h3" size="2xl" weight="bold" isEditable={false} color='primary' id="modal-title">
+            <Title hierarchy="h3" size="2xl" weight="bold" isEditable={false} color="primary" id="modal-title">
               ¿Tienes dudas?
             </Title>
             <p className="modal-header__subtitle">Déjanos tus datos y te contactaremos para brindarte toda la información.</p>

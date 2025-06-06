@@ -1,13 +1,10 @@
 'use client'
 
 import { useEffect } from 'react'
-import Image from 'next/image' // Mejor manejo de imágenes con Next.js
+import Logo from '@library/components/logo_institucional'
+import LiferayDevBanner from '@library/components/liferay_dev_banner'
 import script from './script'
 import './styles.scss'
-
-// Importaciones de recursos
-import logo from '@assets/logos/logo-jave-v-blue.svg'
-import logoDark from '@assets/logos/logo-jave-v-white.svg'
 
 // SVG del spinner extraído a un componente separado para mejorar legibilidad
 const LoadingSpinner = () => (
@@ -34,21 +31,23 @@ const Splash = () => {
   }, [])
 
   return (
-    <div id="splash" role="alert" aria-live="assertive" aria-label="Cargando contenido">
-      <div className="splash-content">
-        {/* Logo (cambia automáticamente en modo oscuro vía CSS) */}
-        <Image className="logo" src={logo} alt="Logo Javeriana" width={160} height={60} />
-        <Image className="logo-dark" src={logoDark} alt="Logo Javeriana" width={160} height={60} />
+    <>
+      <LiferayDevBanner icon="ph ph-info" variant="info">
+        El Splash se está cargando correctamente.
+      </LiferayDevBanner>
 
-        {/* Indicador de carga */}
-        <div className="spinner-container">
-          <div className="spinner">
-            <LoadingSpinner />
+      <div id="splash" role="alert" aria-live="assertive" aria-label="Cargando contenido">
+        <div className="splash-content">
+          <Logo orientation="vertical" />
+          <div className="spinner-container">
+            <div className="spinner">
+              <LoadingSpinner />
+            </div>
+            <span>Cargando...</span>
           </div>
-          <span>Cargando...</span>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

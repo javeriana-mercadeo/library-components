@@ -18,19 +18,18 @@ export default function Profesional() {
 
   return (
     <>
-      {/* <Splash /> */}
       <Encabezado />
       {/* <ViewComponent path={`${basePath}/sections/encabezado`}>
         <Encabezado />
       </ViewComponent> */}
 
-      {/* <Datos /> */}
-      <ViewComponent path={`${basePath}/sections/1_datos`}>
+      <Datos />
+      {/* <ViewComponent path={`${basePath}/sections/1_datos`}>
         <Datos />
-      </ViewComponent>
+      </ViewComponent> */}
 
-      {/*  <PlanEstudio /> */}
-      <ViewComponent path={`${basePath}/sections/PlanEstudio`}>
+      {/* <PlanEstudio /> */}
+      <ViewComponent path={`${basePath}/sections/2_planEstudio`}>
         <PlanEstudio />
       </ViewComponent>
 

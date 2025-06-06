@@ -1,7 +1,7 @@
 @use '@styles/autoload' as *;
 
 // Variables específicas del componente
-$splash-z-index: 2000;
+$splash-z-index: 9999;
 $splash-gradient-light-center: var(--background-100);
 $splash-gradient-light-edge: var(--primary-200);
 $splash-gradient-dark-center: var(--background-200);
@@ -21,8 +21,8 @@ $logo-size: rem(140px);
   z-index: $splash-z-index;
 
   // Dimensiones
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
 
   // Diseño de contenido
   display: flex;
@@ -33,6 +33,16 @@ $logo-size: rem(140px);
   opacity: 1;
   background: radial-gradient(circle, $splash-gradient-light-center 40%, $splash-gradient-light-edge 60%);
   transition: opacity var(--transition) ease-in-out;
+
+  @include liferay-edit-mode {
+    position: initial;
+    display: none;
+  }
+
+  @include only-dev-mode {
+    position: initial;
+    display: none;
+  }
 
   // Tema oscuro
   @include dark-theme {
@@ -57,23 +67,7 @@ $logo-size: rem(140px);
     .logo,
     .logo-dark {
       width: var(--icon-logo-big);
-      width: $logo-size;
-      opacity: 0;
-      animation: fadeIn var(--transition) ease-in-out forwards;
-    }
-
-    // Manejo de temas para los logos
-    .logo-dark {
-      display: none;
-    }
-
-    @include dark-theme {
-      .logo {
-        display: none;
-      }
-      .logo-dark {
-        display: block;
-      }
+      max-width: var(--icon-logo-big);
     }
 
     // Contenedor del spinner

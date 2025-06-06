@@ -12,8 +12,7 @@ import info from './info.json'
 import './styles.scss'
 
 const Experiencia = () => {
-
-    // Base para IDs únicos
+  // Base para IDs únicos
   const base = 'experiencia-javeriana'
   const elementName = info.id || 'experience-carousel'
   const baseClass = 'experience-carousel'
@@ -22,7 +21,9 @@ const Experiencia = () => {
     script()
   }, [])
 
-  {/* <h2 className="experience-carousel__title">Vive la Experiencia Javeriana</h2> */}
+  {
+    /* <h2 className="experience-carousel__title">Vive la Experiencia Javeriana</h2> */
+  }
 
   // Datos del carrusel
   const carouselData = [
@@ -110,7 +111,7 @@ const Experiencia = () => {
   const VideoCard = ({ src, link }) => (
     <a href={link} className="card-link-video">
       <div className="video-card-7">
-        <video src={src} className="experience-carousel__video" autoPlay="true" loop="true" muted="true" playsInline />
+        <video src={src} className="experience-carousel__video" autoPlay={true} loop={true} muted={true} playsInline />
       </div>
     </a>
   )
@@ -132,7 +133,6 @@ const Experiencia = () => {
   return (
     <section id="section-seven">
       <Container className="container experience-carousel">
-
         <Title hierarchy="h2" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-title`}>
           Vive la Experiencia Javeriana
         </Title>

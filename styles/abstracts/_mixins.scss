@@ -83,3 +83,9 @@
     @content;
   }
 }
+
+@mixin only-dev-mode {
+  [data-env='development'] & {
+    @content;
+  }
+}
