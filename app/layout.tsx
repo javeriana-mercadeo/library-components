@@ -45,11 +45,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Providers>
 
         {/* <script>
-          document.addEventListener("DOMContentLoaded", function () {
+          const isEditMode = document.body.classList.contains('has-edit-mode-menu');
+          const isSignedIn = document.body.classList.contains('signed-in');
+
+          if (!isEditMode && !isSignedIn) {
             document
               .querySelectorAll("link.lfr-css-file")
               .forEach((link) => link.remove());
-          });
+          }
         </script> */}
 
         {/* <!-- Swiper JS --> */}

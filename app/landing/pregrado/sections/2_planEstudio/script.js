@@ -1,18 +1,14 @@
 export default () => {
   const initializeSwiper = () => {
-    console.log('🔄 Inicializando Swiper para plan de estudio')
-
     // Destruir instancia existente si existe
     if (window.planEstudioSwiper) {
       window.planEstudioSwiper.destroy(true, true)
     }
 
-    // ✅ CORREGIDO: Buscar el elemento con la nueva clase
+    // Buscar el elemento con la nueva clase
     const element = document.querySelector('.plan-estudio_wrapper')
     if (!element) {
       console.warn('Elemento .plan-estudio_wrapper no encontrado')
-
-      // Fallback: intentar con la clase anterior por compatibilidad
       const fallbackElement = document.querySelector('.subjects-swiper')
       if (!fallbackElement) {
         console.error('Ningún elemento swiper encontrado')
@@ -21,18 +17,16 @@ export default () => {
       console.log('📦 Usando elemento fallback: .subjects-swiper')
     }
 
-    // ✅ CORREGIDO: Contar slides con la nueva clase
+    // Contar slides con la nueva clase
     const slides = document.querySelectorAll('.plan-estudio_slide')
     const totalSlides = slides.length
-
-    console.log(`📊 Total de slides encontrados: ${totalSlides}`)
 
     if (!window.Swiper) {
       console.error('Swiper no está disponible')
       return
     }
 
-    // ✅ CORREGIDO: Usar la nueva clase como selector
+    // Usar la nueva clase como selector
     const swiperSelector = element ? '.plan-estudio_wrapper' : '.subjects-swiper'
 
     window.planEstudioSwiper = new window.Swiper(swiperSelector, {
@@ -41,7 +35,7 @@ export default () => {
       watchOverflow: true,
       centeredSlides: false,
       grabCursor: true,
-      // 🔧 NUEVO: Forzar que siempre permita navegación si hay más de 1 slide
+      // Forzar que siempre permita navegación si hay más de 1 slide
       allowTouchMove: totalSlides > 1,
 
       pagination: {
@@ -61,7 +55,7 @@ export default () => {
         hiddenClass: 'swiper-button-hidden'
       },
 
-      // ✅ OPTIMIZADO: Breakpoints mejorados
+      // Breakpoints mejorados
       breakpoints: {
         0: {
           slidesPerView: 1,
@@ -87,7 +81,6 @@ export default () => {
 
       on: {
         init: function () {
-          console.log('🚀 Swiper inicializado')
           updateNavigationVisibility(this, totalSlides)
           updatePaginationVisibility(this, totalSlides)
           updateButtonStates(this)
@@ -113,7 +106,6 @@ export default () => {
         },
         slideChange: function () {
           updateButtonStates(this)
-          console.log(`📍 Slide actual: ${this.activeIndex + 1}/${totalSlides}`)
         },
         reachBeginning: function () {
           updateButtonStates(this)
@@ -134,12 +126,10 @@ export default () => {
       return
     }
 
-    // ✅ CORREGIDO: Lógica mejorada
+    // Lógica mejorada
     // Si hay más de 1 slide, siempre mostrar los botones
     // Los botones individuales se controlarán en updateButtonStates
     const needsNavigation = totalSlides > 1
-
-    console.log(`📱 Total slides: ${totalSlides}, Necesita navegación: ${needsNavigation}`)
 
     if (needsNavigation) {
       // Mostrar contenedor de botones
@@ -150,10 +140,7 @@ export default () => {
       prevBtn.classList.add('show-navigation')
       prevBtn.classList.remove('swiper-button-hidden')
       prevBtn.setAttribute('aria-hidden', 'false')
-
-      // Los estados individuales se manejan en updateButtonStates
       updateButtonStates(swiper)
-      console.log('✅ Navegación habilitada')
     } else {
       // Solo si hay 1 slide o menos, ocultar completamente
       nextBtn.classList.remove('show-navigation')
@@ -174,20 +161,11 @@ export default () => {
 
     if (!nextBtn || !prevBtn) return
 
-    // 🔧 NUEVO: Verificar si los botones deben estar activos
+    // Verificar si los botones deben estar activos
     const isBeginning = swiper.isBeginning
     const isEnd = swiper.isEnd
     const allowSlideNext = swiper.allowSlideNext
     const allowSlidePrev = swiper.allowSlidePrev
-
-    console.log(`🎯 Estados Swiper:`, {
-      isBeginning,
-      isEnd,
-      allowSlideNext,
-      allowSlidePrev,
-      activeIndex: swiper.activeIndex,
-      slidesLength: swiper.slides.length
-    })
 
     // Botón anterior
     if (isBeginning || !allowSlidePrev) {
@@ -215,7 +193,7 @@ export default () => {
       nextBtn.setAttribute('aria-disabled', 'false')
     }
 
-    // 🔧 NUEVO: Asegurar visibilidad si la navegación está habilitada
+    // Asegurar visibilidad si la navegación está habilitada
     if (nextBtn.classList.contains('show-navigation')) {
       nextBtn.style.visibility = 'visible'
       nextBtn.style.display = 'flex'
@@ -234,7 +212,7 @@ export default () => {
       return
     }
 
-    // ✅ CORREGIDO: Mostrar paginación si hay más de 1 slide
+    // Mostrar paginación si hay más de 1 slide
     const needsPagination = totalSlides > 1
 
     if (needsPagination) {
@@ -248,7 +226,6 @@ export default () => {
         bullet.style.display = 'block'
       })
 
-      console.log('✅ Paginación visible')
     } else {
       pagination.style.display = 'none'
       pagination.classList.add('swiper-pagination-hidden')
@@ -261,7 +238,6 @@ export default () => {
     if (typeof window !== 'undefined' && window.Swiper) {
       initializeSwiper()
     } else {
-      console.log('⏳ Esperando que Swiper se cargue...')
       setTimeout(checkAndInit, 300)
     }
   }

@@ -1,5 +1,4 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-import Splash from '@/app/_library/components/splash'
 
 import Encabezado from './sections/0_encabezado'
 import Datos from './sections/1_datos'
@@ -34,7 +33,7 @@ export default function Profesional() {
       </ViewComponent>
 
       {/* <Perfiles /> */}
-      <ViewComponent path={`${basePath}/sections/perfiles`}>
+      <ViewComponent path={`${basePath}/sections/3_perfiles`}>
         <Perfiles />
       </ViewComponent>
 
