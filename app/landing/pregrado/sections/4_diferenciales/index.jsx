@@ -4,193 +4,120 @@ import { useEffect } from 'react'
 import Container from '@library/components/container'
 import Paragraph from '@library/components/contain/paragraph'
 
-import whyJaverianaImg from '../../../../../assets/whyJaveriana/why-javeriana.png'
+import whyJaverianaImg from '../../../../../app/landing/pregrado/sections/4_diferenciales/assets/estudiantes.png'
 
 import script from './script.js'
 import './styles.scss'
 
 const Diferenciales = () => {
-  // Ejecutar el script cuando el componente se monta
   useEffect(() => {
     script()
   }, [])
 
+  const diferencialesData = [
+    {
+      id: 'accordion-open',
+      targetId: 'accordion-open-body-1',
+      icon: 'ph-graduation-cap',
+      title: 'Doble titulación',
+      content: 'Tendrás la posibilidad de obtener la doble titulación con universidades como el Politécnico de Turín, Politécnico de Milán y Paris Tech.'
+    },
+    {
+      id: 'accordion-open-1',
+      targetId: 'accordion-body-1',
+      icon: 'ph-books',
+      title: 'Múltiple programa',
+      content: 'Tendrás la posibilidad de hacer dos o más carreras simultáneamente, de acuerdo con tus intereses profesionales.'
+    },
+    {
+      id: 'accordion-open-2',
+      targetId: 'accordion-body-2',
+      icon: 'ph-user-circle',
+      title: 'Consejería Académica',
+      content: 'Te acompañamos con apoyo académico y personal, guiados por un profesor que ofrece estrategias personalizadas para tu bienestar integral.'
+    },
+    {
+      id: 'accordion-open-3',
+      targetId: 'accordion-body-3',
+      icon: 'ph-star',
+      title: 'Validación RIBA',
+      content: 'Reconocimiento del Royal Institute of British Architects, destacando la calidad del programa y abriendo oportunidades internacionales.'
+    },
+    {
+      id: 'accordion-open-4',
+      targetId: 'accordion-body-4',
+      icon: 'ph-lightbulb',
+      title: 'Experiencia directa',
+      content: 'Aprende a través de experiencias prácticas y formación personalizada, enfocada en tus intereses y desarrollo individual.'
+    },
+    {
+      id: 'accordion-open-5',
+      targetId: 'accordion-body-5',
+      icon: 'ph-globe',
+      title: 'Actividades nacionales e internacionales',
+      content: 'Realiza cursos en España, Italia, México y más; participa en concursos globales y haz tu práctica preprofesional en cualquier parte del mundo.'
+    }
+  ]
+
+  const AccordionItem = ({ item, isFirstColumn }) => (
+    <div 
+      id={item.id} 
+      data-accordion="open" 
+      className={`accordion-item ${isFirstColumn ? 'first-column' : 'second-column'}`}
+    >
+      <div className="accordion-header">
+        <div className="accordion-title-wrapper">
+          <i className={`ph ${item.icon} accordion-icon`}></i>
+          <Paragraph className="accordion-title" isEditable={true}>
+            {item.title}
+          </Paragraph>
+        </div>
+
+        <button
+          type="button"
+          className="accordion-toggle"
+          data-accordion-target={`#${item.targetId}`}
+          aria-expanded="false"
+          aria-controls={item.targetId}
+        >
+          <span className="toggle-text">Leer Más</span>
+          <i className="ph ph-plus toggle-icon"></i>
+        </button>
+      </div>
+
+      <div id={item.targetId} className="accordion-content">
+        <p>{item.content}</p>
+      </div>
+    </div>
+  )
+
   return (
     <section id="section-four">
       <Container className="container why-javeriana">
-        <div className="section-four-title">
+        <header className="section-header">
           <h2 className="why-javeriana__title">¿Por qué elegir la Javeriana?</h2>
-        </div>
+        </header>
 
-        <div className="why-javeriana__container">
-          <div className="why-javeriana__column">
-            <div id="accordion-open" data-accordion="open" className="border p-4 rounded-lg">
-              {/* Título e Ícono */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <i className="ph ph-graduation-cap text-2xl"></i>
-                  <Paragraph className="font-semibold" isEditable={true}>
-                    Doble titulación
-                  </Paragraph>
-                </div>
-
-                {/* Botón solo en mobile */}
-                <button
-                  type="button"
-                  className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
-                  data-accordion-target="#accordion-open-body-1"
-                  aria-expanded="false"
-                  aria-controls="accordion-open-body-1">
-                  <span className="toggle-text">Leer Más</span>
-                  <i className="ph ph-plus"></i>
-                </button>
-              </div>
-
-              {/* Contenido */}
-              <div id="accordion-open-body-1" className="mt-2 accordion-content">
-                <p>
-                  Tendrás la posibilidad de obtener la doble titulación con universidades como el Politécnico de Turín, Politécnico de Milán
-                  y Paris Tech.
-                </p>
-              </div>
+        <div className="why-javeriana__content">
+          <div className="why-javeriana__grid">
+            <div className="why-javeriana__column why-javeriana__column--first">
+              {diferencialesData.slice(0, 3).map((item) => (
+                <AccordionItem key={item.id} item={item} isFirstColumn={true} />
+              ))}
             </div>
 
-            {/* Múltiple programa */}
-            <div id="accordion-open-1" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <i className="ph ph-books text-2xl"></i>
-                  <p className="font-semibold">Múltiple programa</p>
-                </div>
-
-                {/* Botón solo en mobile */}
-                <button
-                  type="button"
-                  className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
-                  data-accordion-target="#accordion-body-1"
-                  aria-expanded="false"
-                  aria-controls="accordion-body-1">
-                  <span className="toggle-text">Leer Más</span>
-                  <i className="ph ph-plus"></i>
-                </button>
-              </div>
-
-              <div id="accordion-body-1" className="mt-2 accordion-content">
-                <p>Tendrás la posibilidad de hacer dos o más carreras simultáneamente, de acuerdo con tus intereses profesionales.</p>
-              </div>
+            <div className="why-javeriana__image-container">
+              <img 
+                src={whyJaverianaImg.src} 
+                alt="Estudiantes de la Universidad Javeriana" 
+                className="why-javeriana__image"
+              />
             </div>
 
-            {/* Consejería Académica */}
-            <div id="accordion-open-2" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <i className="ph ph-user-circle text-2xl"></i>
-                  <p className="font-semibold">Consejería Académica</p>
-                </div>
-
-                <button
-                  type="button"
-                  className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
-                  data-accordion-target="#accordion-body-2"
-                  aria-expanded="false"
-                  aria-controls="accordion-body-2">
-                  <span className="toggle-text">Leer Más</span>
-                  <i className="ph ph-plus"></i>
-                </button>
-              </div>
-
-              <div id="accordion-body-2" className="mt-2 accordion-content">
-                <p>
-                  Te acompañamos con apoyo académico y personal, guiados por un profesor que ofrece estrategias personalizadas para tu
-                  bienestar integral.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="why-javeriana__image">
-            <img src={whyJaverianaImg.src} alt="Estudiantes en laboratorio" />
-          </div>
-
-          <div className="why-javeriana__column">
-            {/* Validación RIBA */}
-            <div id="accordion-open-3" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <i className="ph ph-star text-2xl"></i>
-                  <p className="font-semibold">Validación RIBA</p>
-                </div>
-
-                <button
-                  type="button"
-                  className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
-                  data-accordion-target="#accordion-body-3"
-                  aria-expanded="false"
-                  aria-controls="accordion-body-3">
-                  <span className="toggle-text">Leer Más</span>
-                  <i className="ph ph-plus"></i>
-                </button>
-              </div>
-
-              <div id="accordion-body-3" className="mt-2 accordion-content">
-                <p>
-                  Reconocimiento del Royal Institute of British Architects, destacando la calidad del programa y abriendo oportunidades
-                  internacionales.
-                </p>
-              </div>
-            </div>
-
-            {/* Experiencia directa */}
-            <div id="accordion-open-4" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <i className="ph ph-lightbulb text-2xl"></i>
-                  <p className="font-semibold">Experiencia directa</p>
-                </div>
-
-                <button
-                  type="button"
-                  className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
-                  data-accordion-target="#accordion-body-4"
-                  aria-expanded="false"
-                  aria-controls="accordion-body-4">
-                  <span className="toggle-text">Leer Más</span>
-                  <i className="ph ph-plus"></i>
-                </button>
-              </div>
-
-              <div id="accordion-body-4" className="mt-2 accordion-content">
-                <p>
-                  Aprende a través de experiencias prácticas y formación personalizada, enfocada en tus intereses y desarrollo individual.
-                </p>
-              </div>
-            </div>
-
-            {/* Actividades nacionales e internacionales */}
-            <div id="accordion-open-5" data-accordion="open" className="border border-gray-200 p-4 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <i className="ph ph-globe text-2xl"></i>
-                  <p className="font-semibold">Actividades nacionales e internacionales</p>
-                </div>
-
-                <button
-                  type="button"
-                  className="flex items-center font-bold gap-2 focus:outline-none transition-all lg:hidden"
-                  data-accordion-target="#accordion-body-5"
-                  aria-expanded="false"
-                  aria-controls="accordion-body-5">
-                  <span className="toggle-text">Leer Más</span>
-                  <i className="ph ph-plus"></i>
-                </button>
-              </div>
-
-              <div id="accordion-body-5" className="mt-2 accordion-content">
-                <p>
-                  Realiza cursos en España, Italia, México y más; participa en concursos globales y haz tu práctica preprofesional en
-                  cualquier parte del mundo.
-                </p>
-              </div>
+            <div className="why-javeriana__column why-javeriana__column--second">
+              {diferencialesData.slice(3, 6).map((item) => (
+                <AccordionItem key={item.id} item={item} isFirstColumn={false} />
+              ))}
             </div>
           </div>
         </div>
@@ -198,4 +125,5 @@ const Diferenciales = () => {
     </section>
   )
 }
+
 export default Diferenciales

@@ -127,6 +127,11 @@
   .program-details {
     grid-area: details;
     align-self: start;
+    margin-bottom: var(--spacing-md);
+
+    @include responsive {
+      margin-bottom: 0;
+    }
   }
 
   .program-dates-container {
