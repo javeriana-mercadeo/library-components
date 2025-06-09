@@ -23,7 +23,7 @@ const Relacionados = () => {
       id: 1,
       name: 'Especialización en Gerencia de Proyectos de Tecnologías de la Información',
       faculty: 'Facultad de Ingeniería',
-      image: './assets/images/program1.jpg',
+      image: 'https://s1.elespanol.com/2023/01/11/omicrono/defensa-y-espacio/732937376_230080590_1706x1280.jpg',
       url: '/programa/especializacion-gerencia-proyectos-ti',
       alt: 'Especialización en Gerencia de Proyectos TI'
     },
@@ -31,7 +31,7 @@ const Relacionados = () => {
       id: 2,
       name: 'Pregrado en Ingeniería de Sistemas',
       faculty: 'Facultad de Ingeniería',
-      image: './assets/images/program2.jpg',
+      image: 'https://www.marketingdirecto.com/wp-content/uploads/2022/02/software.jpg',
       url: '/programa/pregrado-ingenieria-sistemas',
       alt: 'Pregrado en Ingeniería de Sistemas'
     },
@@ -39,7 +39,7 @@ const Relacionados = () => {
       id: 3,
       name: 'Pregrado en Ingeniería Industrial',
       faculty: 'Facultad de Ingeniería',
-      image: './assets/images/program3.jpg',
+      image: 'https://smodin.io/blog/wp-content/uploads/2024/09/ai-writing-tool-2.png',
       url: '/programa/pregrado-ingenieria-industrial',
       alt: 'Pregrado en Ingeniería Industrial'
     },
@@ -47,7 +47,17 @@ const Relacionados = () => {
       id: 4,
       name: 'Pregrado en Ingeniería Mecatrónica',
       faculty: 'Facultad de Ingeniería',
-      image: './assets/images/program4.jpg',
+      image:
+        'https://assets.isu.pub/document-structure/230714134545-9e4b4e9f580b5fc27e41ba9afdfee404/v1/6045ce86bd15988a15d94806470c7747.jpeg',
+      url: '/programa/pregrado-ingenieria-mecatronica',
+      alt: 'Pregrado en Ingeniería Mecatrónica'
+    },
+    {
+      id: 5,
+      name: 'Pregrado en Ingeniería Mecatrónica',
+      faculty: 'Facultad de Ingeniería',
+      image:
+        'https://assets.isu.pub/document-structure/230714134545-9e4b4e9f580b5fc27e41ba9afdfee404/v1/6045ce86bd15988a15d94806470c7747.jpeg',
       url: '/programa/pregrado-ingenieria-mecatronica',
       alt: 'Pregrado en Ingeniería Mecatrónica'
     }
@@ -78,7 +88,7 @@ const Relacionados = () => {
           data-lfr-editable-id={`program-link-${index}`}
           data-lfr-editable-type="link"
           aria-label={`Ver detalles del programa: ${program.name}`}>
-          Ver Programa →
+          Ver Programa <i className="ph ph-arrow-up-right"></i>
         </a>
       </div>
     </div>
@@ -95,33 +105,39 @@ const Relacionados = () => {
           Conoce otros programas que complementan tus intereses y expanden tus oportunidades académicas y profesionales.
         </Paragraph>
 
-        <div className={`${baseClass}__carousel swiper`}>
-          <div className={`${baseClass}__wrapper related-programs-swiper`}>
-            <div className={`${baseClass}__slides swiper-wrapper card-list`} role="list">
-              {programsData.map((program, index) => (
-                <div key={program.id} className={`${baseClass}__slide swiper-slide card-item`} role="listitem">
-                  <ProgramCard program={program} index={index} />
-                </div>
-              ))}
+        {/* CONTENEDOR PRINCIPAL CON BOTONES DESFASADOS */}
+        <div className={`${baseClass}__carousel-container`}>
+          {/* Botón Anterior - FUERA del carousel */}
+          <button
+            className={`swiper-slide-button ${baseClass}__prev related-programs-prev`}
+            aria-label="Ver programas anteriores"
+            type="button">
+            <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
+          </button>
+
+          {/* Carousel */}
+          <div className={`${baseClass}__carousel swiper`}>
+            <div className={`${baseClass}__wrapper related-programs-swiper`}>
+              <div className={`${baseClass}__slides swiper-wrapper card-list`} role="list">
+                {programsData.map((program, index) => (
+                  <div key={program.id} className={`${baseClass}__slide swiper-slide card-item`} role="listitem">
+                    <ProgramCard program={program} index={index} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Paginación - DENTRO del carousel */}
+              <div
+                className={`swiper-pagination ${baseClass}__pagination related-programs-pagination`}
+                role="tablist"
+                aria-label="Control de páginas del carrusel"></div>
             </div>
-
-            {/* Paginación */}
-            <div
-              className={`swiper-pagination ${baseClass}__pagination related-programs-pagination`}
-              role="tablist"
-              aria-label="Control de páginas del carrusel"></div>
-
-            {/* Botones de navegación */}
-            <button
-              className={`swiper-slide-button ${baseClass}__prev related-programs-prev`}
-              aria-label="Ver programas anteriores"
-              type="button">
-              <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
-            </button>
-            <button className={`swiper-slide-button ${baseClass}__next related-programs-next`} aria-label="Ver más programas" type="button">
-              <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
-            </button>
           </div>
+
+          {/* Botón Siguiente - FUERA del carousel */}
+          <button className={`swiper-slide-button ${baseClass}__next related-programs-next`} aria-label="Ver más programas" type="button">
+            <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+          </button>
         </div>
       </Container>
     </section>
