@@ -32,13 +32,15 @@ export default () => {
     console.log(`🎯 Inicializando Swiper de Programas Relacionados con ${totalSlides} slides`)
 
     window.relatedProgramsSwiper = new window.Swiper(swiperSelector, {
-      loop: totalSlides > 3, // Solo hacer loop si hay más de 3 slides
+      loop: true, // Siempre infinito
+      loopAdditionalSlides: 2, // Slides adicionales para mejor loop
+      loopedSlides: totalSlides, // Especificar número de slides para el loop
       spaceBetween: 20,
-      watchOverflow: true,
+      watchOverflow: false, // Desactivar para permitir loop siempre
       centeredSlides: false,
       grabCursor: true,
-      // Forzar que siempre permita navegación si hay más de 1 slide
-      allowTouchMove: totalSlides > 1,
+      allowTouchMove: true, // Siempre permitir navegación táctil
+      resistanceRatio: 0, // Sin resistencia en los bordes
 
       pagination: {
         el: '.related-programs-pagination',
@@ -61,11 +63,11 @@ export default () => {
       breakpoints: {
         0: {
           slidesPerView: 1,
-          spaceBetween: 15,
+          spaceBetween: 20,
           centeredSlides: true
         },
         576: {
-          slidesPerView: Math.min(1.2, totalSlides),
+          slidesPerView: 1,
           spaceBetween: 20,
           centeredSlides: false
         },
@@ -88,7 +90,7 @@ export default () => {
 
       on: {
         init: function () {
-          console.log('✅ Swiper de Programas Relacionados inicializado')
+          console.log('✅ Swiper infinito de Programas Relacionados inicializado')
           updateNavigationVisibility(this, totalSlides)
           updatePaginationVisibility(this, totalSlides)
           updateButtonStates(this)
@@ -116,12 +118,6 @@ export default () => {
         slideChange: function () {
           updateButtonStates(this)
           announceSlideChange(this)
-        },
-        reachBeginning: function () {
-          updateButtonStates(this)
-        },
-        reachEnd: function () {
-          updateButtonStates(this)
         }
       }
     })
@@ -179,48 +175,53 @@ export default () => {
 
     if (!nextBtn || !prevBtn) return
 
-    // Verificar estados del swiper
-    const isBeginning = swiper.isBeginning
-    const isEnd = swiper.isEnd
-    const allowSlideNext = swiper.allowSlideNext
-    const allowSlidePrev = swiper.allowSlidePrev
+    // Con loop infinito, los botones SIEMPRE están activos
+    // Solo verificamos si hay múltiples slides para mostrar navegación
+    const totalRealSlides = swiper.slides.filter(slide => 
+      !slide.classList.contains('swiper-slide-duplicate')
+    ).length
 
-    // Botón anterior
-    if (isBeginning || !allowSlidePrev) {
-      prevBtn.classList.add('swiper-button-disabled')
-      prevBtn.style.opacity = '0.4'
-      prevBtn.style.pointerEvents = 'none'
-      prevBtn.setAttribute('aria-disabled', 'true')
-      prevBtn.setAttribute('title', 'No hay programas anteriores')
-    } else {
+    if (totalRealSlides > 1) {
+      // Botón anterior - SIEMPRE activo con loop infinito
       prevBtn.classList.remove('swiper-button-disabled')
       prevBtn.style.opacity = '1'
       prevBtn.style.pointerEvents = 'auto'
       prevBtn.setAttribute('aria-disabled', 'false')
       prevBtn.setAttribute('title', 'Ver programas anteriores')
-    }
 
-    // Botón siguiente
-    if (isEnd || !allowSlideNext) {
-      nextBtn.classList.add('swiper-button-disabled')
-      nextBtn.style.opacity = '0.4'
-      nextBtn.style.pointerEvents = 'none'
-      nextBtn.setAttribute('aria-disabled', 'true')
-      nextBtn.setAttribute('title', 'No hay más programas')
-    } else {
+      // Botón siguiente - SIEMPRE activo con loop infinito
       nextBtn.classList.remove('swiper-button-disabled')
       nextBtn.style.opacity = '1'
       nextBtn.style.pointerEvents = 'auto'
       nextBtn.setAttribute('aria-disabled', 'false')
       nextBtn.setAttribute('title', 'Ver más programas')
+
+      console.log('🎮 Botones de navegación activos (loop infinito)')
+    } else {
+      // Solo deshabilitar si hay 1 slide o menos
+      prevBtn.classList.add('swiper-button-disabled')
+      prevBtn.style.opacity = '0.4'
+      prevBtn.style.pointerEvents = 'none'
+      prevBtn.setAttribute('aria-disabled', 'true')
+      prevBtn.setAttribute('title', 'Solo hay un programa')
+
+      nextBtn.classList.add('swiper-button-disabled')
+      nextBtn.style.opacity = '0.4'
+      nextBtn.style.pointerEvents = 'none'
+      nextBtn.setAttribute('aria-disabled', 'true')
+      nextBtn.setAttribute('title', 'Solo hay un programa')
+
+      console.log('❌ Botones deshabilitados (solo 1 slide)')
     }
 
     // Asegurar visibilidad si la navegación está habilitada
     if (nextBtn.classList.contains('show-navigation')) {
       nextBtn.style.visibility = 'visible'
+      nextBtn.style.display = 'flex'
     }
     if (prevBtn.classList.contains('show-navigation')) {
       prevBtn.style.visibility = 'visible'
+      prevBtn.style.display = 'flex'
     }
   }
 
@@ -273,7 +274,7 @@ export default () => {
   const getSlidesPerView = (breakpoint, totalSlides) => {
     const breakpointConfig = {
       '0': 1,
-      '576': Math.min(1.2, totalSlides),
+      '576': 1,
       '768': Math.min(2, totalSlides),
       '1024': Math.min(3, totalSlides),
       '1280': Math.min(4, totalSlides)
@@ -311,8 +312,9 @@ export default () => {
   }
 
   const announceSlideChange = (swiper) => {
+    // Con loop infinito, usar realIndex para el índice real
     const currentSlide = swiper.realIndex + 1
-    const totalSlides = swiper.slides.length
+    const totalSlides = swiper.slides.filter(slide => !slide.classList.contains('swiper-slide-duplicate')).length
     
     // Crear anuncio para lectores de pantalla
     const announcement = `Programa ${currentSlide} de ${totalSlides}`
@@ -333,6 +335,8 @@ export default () => {
     }
     
     liveRegion.textContent = announcement
+    
+    console.log(`🎯 Slide actual: ${currentSlide}/${totalSlides} (realIndex: ${swiper.realIndex}, activeIndex: ${swiper.activeIndex})`)
   }
 
   const checkAndInit = () => {
