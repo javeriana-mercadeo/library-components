@@ -3,386 +3,507 @@
 // ==========================================
 // VARIABLES DEL COMPONENTE
 // ==========================================
-$related-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-$related-border-radius: var(--border-radius-md);
-$related-card-height: rem(380px);
-$related-card-width: rem(270px);
-$related-button-size: rem(50px);
-$mobile-breakpoint: 768px;
+$plan-card-border-radius: rem(12px);
+$plan-card-padding: rem(18px);
+$plan-card-min-height: rem(500px);
+$plan-card-max-width: rem(320px);
+$plan-transition: all 0.2s ease;
+$plan-badge-border-radius: rem(50px);
+$plan-badge-padding: rem(8px) rem(16px);
 
-// ==========================================
-// CONTENEDOR PRINCIPAL
-// ==========================================
-#section-ten {
-  background-color: var(--background-100);
-  padding-block: var(--spacing-xl);
-  overflow: hidden;
+// Navegación - OPTIMIZADO
+$nav-button-size: rem(50px);
+$nav-button-size-mobile: rem(40px);
+$nav-bullet-size: rem(13px);
+$nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
 
-  @include dark-theme {
-    background-color: var(--background-200);
-  }
+
+.related-programs__slides{
+  height: 386px;
 }
 
-// ==========================================
-// COMPONENTE PRINCIPAL
-// ==========================================
-.related-programs {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding-inline: var(--spacing-md);
-
-  @include responsive($breakpoint-md) {
-    padding-inline: var(--spacing-sm);
-  }
-
-  // ==========================================
-  // HEADER DE LA SECCIÓN
-  // ==========================================
-  &__title {
-    font-size: var(--font-size-title);
-    font-weight: var(--font-weight-bold);
-    text-align: center;
-    margin-bottom: var(--spacing-sm);
-    color: var(--neutral-200);
-
-    @include responsive($breakpoint-md) {
-      font-size: var(--font-size-principal-title);
-    }
-
-    @include dark-theme {
-      color: var(--neutral-100);
-    }
-  }
-
-  &__description {
-    font-size: var(--font-size-paragraph);
-    text-align: center;
-    margin-bottom: var(--spacing-xl);
-    color: var(--neutral-400);
-    max-width: rem(600px);
-    margin-left: auto;
-    margin-right: auto;
-
-    @include dark-theme {
-      color: var(--neutral-300);
-    }
-  }
-
-  // ==========================================
-  // CONTENEDOR SWIPER
-  // ==========================================
-  &__swiper-container {
-    position: relative;
-    overflow: visible;
-    padding-bottom: var(--spacing-lg);
-  }
-
-  // ==========================================
-  // WRAPPER DEL CARRUSEL
-  // ==========================================
-  .related-programs-swiper {
-    overflow: visible;
-    position: relative;
-    padding-inline: var(--spacing-md);
-
-    @include responsive($breakpoint-md) {
-      padding-inline: var(--spacing-sm);
-    }
-  }
-
-  .card-wrapper {
-    position: relative;
-  }
-
-  .card-list {
-    display: flex;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  // ==========================================
-  // TARJETAS INDIVIDUALES
-  // ==========================================
-  .card-item {
-    flex-shrink: 0;
-    height: auto;
-  }
-
-  .card-link {
-    display: block;
-    text-decoration: none;
-    transition: $related-transition;
-    border-radius: $related-border-radius;
-    overflow: hidden;
-
-    &:hover {
-      transform: translateY(rem(-8px));
-      box-shadow: 0 rem(20px) rem(40px) rgba(0, 0, 0, 0.15);
-    }
-
-    &:focus-visible {
-      outline: rem(2px) solid var(--primary-400);
-      outline-offset: rem(2px);
-    }
-  }
-
-  &__item {
-    position: relative;
-    width: $related-card-width;
-    height: $related-card-height;
-    border-radius: $related-border-radius;
-    overflow: hidden;
-    background-color: var(--neutral-800);
-    transition: $related-transition;
-
-    @media (max-width: $mobile-breakpoint) {
-      width: rem(250px);
-      height: rem(350px);
-    }
-  }
-
-  &__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: $related-transition;
-
-    .card-link:hover & {
-      transform: scale(1.05);
-    }
-  }
-
-  &__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.1) 20%,
-      rgba(0, 0, 0, 0.6) 70%,
-      rgba(0, 0, 0, 0.8) 100%
-    );
-    z-index: 1;
-  }
-
-  &__content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: var(--spacing-md);
-    color: var(--neutral);
-    z-index: 2;
-  }
-
-  &__name {
-    font-size: var(--font-size-paragraph);
-    font-weight: var(--font-weight-semibold);
-    margin-bottom: var(--spacing-xs);
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  &__faculty {
-    font-size: var(--font-size-caption);
-    color: rgba(var(--neutral-rgb), 0.8);
-    margin-bottom: var(--spacing-sm);
-  }
-
-  &__link {
-    font-size: var(--font-size-caption);
-    color: var(--neutral);
-    text-decoration: none;
-    font-weight: var(--font-weight-medium);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    transition: $related-transition;
-
-    &:hover {
-      color: var(--primary-300);
-      transform: translateX(rem(4px));
-    }
-  }
-
-  // ==========================================
-  // BOTONES DE NAVEGACIÓN
-  // ==========================================
-  .swiper-slide-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    width: $related-button-size;
-    height: $related-button-size;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    cursor: pointer;
-    background: var(--neutral);
-    box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.15);
-    transition: $related-transition;
-    border: none;
-
-    i {
-      font-size: rem(24px);
-      color: var(--primary-600);
-      transition: $related-transition;
-    }
-
-    &:hover {
-      transform: translateY(-50%) scale(1.1);
-      box-shadow: 0 rem(6px) rem(20px) rgba(0, 0, 0, 0.2);
-
-      i {
-        color: var(--primary-700);
-      }
-    }
-
-    &:focus-visible {
-      outline: rem(2px) solid var(--primary-400);
-      outline-offset: rem(2px);
-    }
-
-    @include dark-theme {
-      background: var(--neutral-800);
-      box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.3);
-
-      i {
-        color: var(--primary-400);
-      }
-
-      &:hover i {
-        color: var(--primary-300);
-      }
-    }
-  }
-
-  .related-programs-prev {
-    left: rem(-25px);
-
-    @media (max-width: $mobile-breakpoint) {
-      left: rem(10px);
-    }
-  }
-
-  .related-programs-next {
-    right: rem(-25px);
-
-    @media (max-width: $mobile-breakpoint) {
-      right: rem(10px);
-    }
-  }
-
-  // ==========================================
-  // PAGINACIÓN
-  // ==========================================
-  .related-programs-pagination {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-xs);
-    margin-top: var(--spacing-lg);
-
-    .swiper-pagination-bullet {
-      width: rem(12px);
-      height: rem(12px);
-      border-radius: 50%;
-      background: var(--neutral-600);
-      opacity: 0.4;
-      cursor: pointer;
-      transition: $related-transition;
-
-      &:hover {
-        opacity: 0.6;
-        transform: scale(1.1);
-      }
-
-      @include dark-theme {
-        background: var(--neutral-400);
-      }
-    }
-
-    .swiper-pagination-bullet-active {
-      background: var(--primary-600);
-      opacity: 1;
-      transform: scale(1.2);
-
-      @include dark-theme {
-        background: var(--primary-400);
-      }
-    }
-  }
+.card-wrapper{
+  display: flex;
+  
 }
 
-// ==========================================
-// RESPONSIVE - MOBILE
-// ==========================================
-@media (max-width: $mobile-breakpoint) {
-  .related-programs {
-    .swiper-slide-button {
-      width: rem(40px);
-      height: rem(40px);
-
-      i {
-        font-size: rem(20px);
-      }
-    }
-
-    &__item {
-      width: rem(220px);
-      height: rem(320px);
-    }
-
-    &__content {
-      padding: var(--spacing-sm);
-    }
-
-    &__name {
-      font-size: var(--font-size-caption);
-    }
-  }
+.card-item{
+  display: flex;
+  background-color: green;
+  height: auto !important;
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
 }
 
-// ==========================================
-// MEJORAS DE ACCESIBILIDAD
-// ==========================================
-@media (prefers-reduced-motion: reduce) {
-  .related-programs {
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+.card-link{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  border-radius: var(--border-radius-lg);
 }
 
-// ==========================================
-// PRINT STYLES
-// ==========================================
-@media print {
-  .related-programs {
-    .swiper-slide-button,
-    .related-programs-pagination {
-      display: none !important;
-    }
-
-    .card-list {
-      flex-direction: column;
-      gap: var(--spacing-md);
-    }
-
-    &__item {
-      width: 100%;
-      height: auto;
-      page-break-inside: avoid;
-    }
-  }
+.related-programs__item{
+  margin-top: auto;
 }
+
+.related-programs__image::before{
+  background-color: red;
+}
+
+//==========================================
+// BOTONES DE NAVEGACIÓN
+// ==========================================
+// .swiper-slide-button {
+//   position: absolute;
+//   top: 50%;
+//   transform: translateY(-50%);
+//   z-index: 10;
+//   width: $nav-button-size;
+//   height: $nav-button-size;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   border-radius: 50%;
+//   cursor: pointer;
+//   background: var(--neutral);
+//   box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.15);
+//   transition: $related-transition;
+//   border: none;
+
+//   i {
+//     font-size: rem(24px);
+//     color: var(--primary-600);
+//     transition: $related-transition;
+//   }
+
+//   &:hover {
+//     transform: translateY(-50%) scale(1.1);
+//     box-shadow: 0 rem(6px) rem(20px) rgba(0, 0, 0, 0.2);
+
+//     i {
+//       color: var(--primary-700);
+//     }
+//   }
+
+//   &:focus-visible {
+//     outline: rem(2px) solid var(--primary-400);
+//     outline-offset: rem(2px);
+//   }
+
+//   @include dark-theme {
+//     background: var(--neutral-800);
+//     box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.3);
+
+//     i {
+//       color: var(--primary-400);
+//     }
+
+//     &:hover i {
+//       color: var(--primary-300);
+//     }
+//   }
+// }
+
+// // ==========================================
+// // VARIABLES DEL COMPONENTE
+// // ==========================================
+// $related-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+// $related-border-radius: var(--border-radius-md);
+// $related-card-height: rem(380px);
+// $related-card-width: rem(270px);
+// $related-button-size: rem(50px);
+// $mobile-breakpoint: 768px;
+
+// // ==========================================
+// // CONTENEDOR PRINCIPAL
+// // ==========================================
+// #section-ten {
+//   background-color: var(--background-100);
+//   padding-block: var(--spacing-xl);
+//   overflow: hidden;
+
+//   @include dark-theme {
+//     background-color: var(--background-200);
+//   }
+// }
+
+// // ==========================================
+// // COMPONENTE PRINCIPAL
+// // ==========================================
+// .related-programs {
+//   max-width: var(--max-width);
+//   margin: 0 auto;
+//   padding-inline: var(--spacing-md);
+
+//   @include responsive($breakpoint-md) {
+//     padding-inline: var(--spacing-sm);
+//   }
+
+//   // ==========================================
+//   // HEADER DE LA SECCIÓN
+//   // ==========================================
+//   &__title {
+//     font-size: var(--font-size-title);
+//     font-weight: var(--font-weight-bold);
+//     text-align: center;
+//     margin-bottom: var(--spacing-sm);
+//     color: var(--neutral-200);
+
+//     @include responsive($breakpoint-md) {
+//       font-size: var(--font-size-principal-title);
+//     }
+
+//     @include dark-theme {
+//       color: var(--neutral-100);
+//     }
+//   }
+
+//   &__description {
+//     font-size: var(--font-size-paragraph);
+//     text-align: center;
+//     margin-bottom: var(--spacing-xl);
+//     color: var(--neutral-400);
+//     max-width: rem(600px);
+//     margin-left: auto;
+//     margin-right: auto;
+
+//     @include dark-theme {
+//       color: var(--neutral-300);
+//     }
+//   }
+
+//   // ==========================================
+//   // CONTENEDOR SWIPER
+//   // ==========================================
+//   &__swiper-container {
+//     position: relative;
+//     overflow: visible;
+//     padding-bottom: var(--spacing-lg);
+//   }
+
+//   // ==========================================
+//   // WRAPPER DEL CARRUSEL
+//   // ==========================================
+//   .related-programs-swiper {
+//     overflow: visible;
+//     position: relative;
+//     padding-inline: var(--spacing-md);
+
+//     @include responsive($breakpoint-md) {
+//       padding-inline: var(--spacing-sm);
+//     }
+//   }
+
+//   .card-wrapper {
+//     position: relative;
+//   }
+
+//   .card-list {
+//     display: flex;
+//     margin: 0;
+//     padding: 0;
+//     list-style: none;
+//   }
+
+//   // ==========================================
+//   // TARJETAS INDIVIDUALES - CORREGIDAS
+//   // ==========================================
+//   .card-item {
+//     flex-shrink: 0;
+//     height: auto;
+//     width: $related-card-width;
+
+//     @media (max-width: $mobile-breakpoint) {
+//       width: 100%;
+//       max-width: rem(280px);
+//       margin: 0 auto;
+//     }
+//   }
+
+//   .card-link {
+//     display: block;
+//     text-decoration: none;
+//     transition: $related-transition;
+//     border-radius: $related-border-radius;
+//     overflow: hidden;
+//     width: 100%;
+//     height: $related-card-height;
+
+//     @media (max-width: $mobile-breakpoint) {
+//       height: rem(350px);
+//     }
+
+//     &:hover {
+//       transform: translateY(rem(-8px));
+//       box-shadow: 0 rem(20px) rem(40px) rgba(0, 0, 0, 0.15);
+//     }
+
+//     &:focus-visible {
+//       outline: rem(2px) solid var(--primary-400);
+//       outline-offset: rem(2px);
+//     }
+//   }
+
+//   &__item {
+//     position: relative;
+//     width: 100%;
+//     height: 100%;
+//     border-radius: $related-border-radius;
+//     overflow: hidden;
+//     background-color: var(--neutral-800);
+//     transition: $related-transition;
+//     display: block;
+//   }
+
+//   &__image {
+//     width: 100%;
+//     height: 100%;
+//     object-fit: cover;
+//     transition: $related-transition;
+
+//     .card-link:hover & {
+//       transform: scale(1.05);
+//     }
+//   }
+
+//   &__overlay {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     background: linear-gradient(
+//       180deg,
+//       rgba(0, 0, 0, 0) 0%,
+//       rgba(0, 0, 0, 0.1) 20%,
+//       rgba(0, 0, 0, 0.6) 70%,
+//       rgba(0, 0, 0, 0.8) 100%
+//     );
+//     z-index: 1;
+//   }
+
+//   &__content {
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     right: 0;
+//     padding: var(--spacing-md);
+//     color: var(--neutral);
+//     z-index: 2;
+//   }
+
+//   &__name {
+//     font-size: var(--font-size-paragraph);
+//     font-weight: var(--font-weight-semibold);
+//     margin-bottom: var(--spacing-xs);
+//     line-height: 1.3;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 2;
+//     -webkit-box-orient: vertical;
+//     overflow: hidden;
+//   }
+
+//   &__faculty {
+//     font-size: var(--font-size-caption);
+//     color: rgba(var(--neutral-rgb), 0.8);
+//     margin-bottom: var(--spacing-sm);
+//   }
+
+//   &__link {
+//     font-size: var(--font-size-caption);
+//     color: var(--neutral);
+//     text-decoration: none;
+//     font-weight: var(--font-weight-medium);
+//     display: inline-flex;
+//     align-items: center;
+//     gap: var(--spacing-xs);
+//     transition: $related-transition;
+
+//     &:hover {
+//       color: var(--primary-300);
+//       transform: translateX(rem(4px));
+//     }
+//   }
+
+//   // ==========================================
+//   // BOTONES DE NAVEGACIÓN
+//   // ==========================================
+//   .swiper-slide-button {
+//     position: absolute;
+//     top: 50%;
+//     transform: translateY(-50%);
+//     z-index: 10;
+//     width: $related-button-size;
+//     height: $related-button-size;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     border-radius: 50%;
+//     cursor: pointer;
+//     background: var(--neutral);
+//     box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.15);
+//     transition: $related-transition;
+//     border: none;
+
+//     i {
+//       font-size: rem(24px);
+//       color: var(--primary-600);
+//       transition: $related-transition;
+//     }
+
+//     &:hover {
+//       transform: translateY(-50%) scale(1.1);
+//       box-shadow: 0 rem(6px) rem(20px) rgba(0, 0, 0, 0.2);
+
+//       i {
+//         color: var(--primary-700);
+//       }
+//     }
+
+//     &:focus-visible {
+//       outline: rem(2px) solid var(--primary-400);
+//       outline-offset: rem(2px);
+//     }
+
+//     @include dark-theme {
+//       background: var(--neutral-800);
+//       box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.3);
+
+//       i {
+//         color: var(--primary-400);
+//       }
+
+//       &:hover i {
+//         color: var(--primary-300);
+//       }
+//     }
+//   }
+
+//   .related-programs-prev {
+//     left: rem(-25px);
+
+//     @media (max-width: $mobile-breakpoint) {
+//       left: rem(10px);
+//     }
+//   }
+
+//   .related-programs-next {
+//     right: rem(-25px);
+
+//     @media (max-width: $mobile-breakpoint) {
+//       right: rem(10px);
+//     }
+//   }
+
+//   // ==========================================
+//   // PAGINACIÓN
+//   // ==========================================
+//   .related-programs-pagination {
+//     display: flex;
+//     justify-content: center;
+//     gap: var(--spacing-xs);
+//     margin-top: var(--spacing-lg);
+
+//     .swiper-pagination-bullet {
+//       width: rem(12px);
+//       height: rem(12px);
+//       border-radius: 50%;
+//       background: var(--neutral-600);
+//       opacity: 0.4;
+//       cursor: pointer;
+//       transition: $related-transition;
+
+//       &:hover {
+//         opacity: 0.6;
+//         transform: scale(1.1);
+//       }
+
+//       @include dark-theme {
+//         background: var(--neutral-400);
+//       }
+//     }
+
+//     .swiper-pagination-bullet-active {
+//       background: var(--primary-600);
+//       opacity: 1;
+//       transform: scale(1.2);
+
+//       @include dark-theme {
+//         background: var(--primary-400);
+//       }
+//     }
+//   }
+
+//   // ==========================================
+//   // ESTADO VACÍO
+//   // ==========================================
+//   &__empty {
+//     text-align: center;
+//     padding: var(--spacing-xl);
+//     color: var(--neutral-400);
+
+//     @include dark-theme {
+//       color: var(--neutral-300);
+//     }
+//   }
+// }
+
+// // ==========================================
+// // RESPONSIVE - MOBILE
+// // ==========================================
+// @media (max-width: $mobile-breakpoint) {
+//   .related-programs {
+//     .swiper-slide-button {
+//       width: rem(40px);
+//       height: rem(40px);
+
+//       i {
+//         font-size: rem(20px);
+//       }
+//     }
+
+//     &__content {
+//       padding: var(--spacing-sm);
+//     }
+
+//     &__name {
+//       font-size: var(--font-size-caption);
+//     }
+//   }
+// }
+
+// // ==========================================
+// // MEJORAS DE ACCESIBILIDAD
+// // ==========================================
+// @media (prefers-reduced-motion: reduce) {
+//   .related-programs {
+//     * {
+//       animation-duration: 0.01ms !important;
+//       animation-iteration-count: 1 !important;
+//       transition-duration: 0.01ms !important;
+//     }
+//   }
+// }
+
+// // ==========================================
+// // PRINT STYLES
+// // ==========================================
+// @media print {
+//   .related-programs {
+//     .swiper-slide-button,
+//     .related-programs-pagination {
+//       display: none !important;
+//     }
+
+//     .card-list {
+//       flex-direction: column;
+//       gap: var(--spacing-md);
+//     }
+
+//     &__item {
+//       width: 100%;
+//       height: auto;
+//       page-break-inside: avoid;
+//     }
+//   }
+// }
