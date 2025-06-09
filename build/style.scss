@@ -1,1 +1,446 @@
-@use '../styles/global.scss' as *;
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$related-card-border-radius: var(--border-radius);
+$related-card-width: rem(270px);
+$related-card-height: rem(380px);
+$related-transition: var(--transition);
+
+// Navegación
+$nav-button-size: rem(50px);
+$nav-button-size-mobile: rem(40px);
+$nav-bullet-size: rem(13px);
+
+// Breakpoints (si no están en autoload)
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+#section-ten {
+  // ==========================================
+  // CONTENEDOR PRINCIPAL
+  // ==========================================
+  .related-programs_container {
+    width: 100%;
+    background-color: var(--background-100);
+
+    @include dark-theme {
+      background-color: var(--background-200);
+    }
+  }
+
+  .related-programs {
+    display: flex;
+    text-align: center;
+    padding: var(--spacing-lg);
+    background-color: var(--background-100);
+    margin: 0 auto;
+    max-width: var(--max-width);
+    align-items: center;
+    flex-direction: column;
+
+    @include responsive($breakpoint-md) {
+      padding: 0 var(--spacing-sm);
+      text-align: center;
+    }
+
+    @include dark-theme {
+      background-color: var(--background-200);
+    }
+
+    // ==========================================
+    // HEADER DE LA SECCIÓN
+    // ==========================================
+    &__title {
+      font-size: var(--font-size-title);
+      font-weight: var(--font-weight-bold);
+      margin-bottom: var(--spacing-sm);
+      color: var(--neutral-100);
+      width: fit-content;
+
+      @include dark-theme {
+        color: var(--neutral-100);
+      }
+    }
+
+    &__description {
+      font-size: var(--font-size-paragraph);
+      margin-bottom: var(--spacing-lg);
+      color: var(--neutral-500);
+      text-align: center;
+      width: fit-content;
+
+      @include dark-theme {
+        color: var(--neutral-400);
+      }
+    }
+
+    // ==========================================
+    // CARRUSEL - BASADO EN EL EJEMPLO QUE FUNCIONA
+    // ==========================================
+    &__carousel {
+      width: 100%;
+      position: relative;
+
+      .swiper {
+        overflow: visible;
+        position: relative;
+      }
+    }
+
+    &__wrapper {
+      margin: 0 0 var(--spacing-2xl) 0;
+      padding: var(--spacing-lg) var(--spacing-md);
+      overflow: hidden;
+      position: relative;
+
+      @include responsive($breakpoint-md) {
+        padding: 0 var(--spacing-sm);
+      }
+
+      @include responsive($breakpoint-xl) {
+        margin: 0 auto;
+        max-width: rem(1400px);
+      }
+    }
+
+    // ==========================================
+    // SLIDES Y TARJETAS
+    // ==========================================
+    &__slides {
+      display: flex;
+      align-items: stretch !important;
+    }
+
+    &__slide {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center;
+      justify-content: center;
+      height: auto !important;
+
+      // Swiper optimizations
+      margin-top: var(--spacing-lg);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+
+      @include responsive($breakpoint-md) {
+        flex: 0 0 80%;
+      }
+    }
+
+    // ==========================================
+    // TARJETA DE PROGRAMA - CORREGIDA
+    // ==========================================
+    &__program-card {
+      position: relative;
+      width: $related-card-width;
+      height: $related-card-height;
+      border-radius: $related-card-border-radius;
+      overflow: hidden;
+      text-align: left;
+      scroll-snap-align: center;
+      transition: $related-transition;
+
+      @include responsive($breakpoint-md) {
+        width: 100%;
+        max-width: rem(300px);
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--btn-shadow-hover);
+
+        @include dark-theme {
+          box-shadow: var(--btn-shadow-hover-dark);
+        }
+      }
+    }
+
+    &__overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(44, 86, 151, 0) 19.88%, var(--primary) 84.25%);
+      z-index: 1;
+    }
+
+    &__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &__content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: var(--spacing-md);
+      color: var(--neutral);
+      z-index: 2;
+    }
+
+    &__name {
+      font-size: var(--font-size-paragraph);
+      font-weight: var(--font-weight-bold);
+      margin-bottom: var(--spacing-sm);
+      color: var(--neutral);
+    }
+
+    &__faculty {
+      font-size: var(--font-size-small);
+      color: var(--neutral);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    &__link {
+      font-size: var(--font-size-small);
+      color: var(--neutral);
+      text-decoration: none;
+      font-weight: var(--font-weight-bold);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    // ==========================================
+    // PAGINACIÓN - BASADA EN EL EJEMPLO
+    // ==========================================
+    &__pagination {
+      position: relative;
+      margin-top: var(--spacing-lg);
+      text-align: center;
+      min-height: var(--spacing-lg);
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-xs);
+
+      .swiper-pagination-bullet {
+        height: rem(8px);
+        width: rem(8px);
+        opacity: 0.4;
+        background: var(--primary);
+        border-radius: 50%;
+        border: none;
+        margin: 0 !important;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &.swiper-pagination-bullet-active {
+          opacity: 1;
+          transform: scale(1.6);
+          background: var(--primary-600);
+          width: rem(12px);
+          height: rem(12px);
+        }
+
+        &:hover:not(.swiper-pagination-bullet-active) {
+          opacity: 0.7;
+          transform: scale(1.2);
+        }
+      }
+
+      &.swiper-pagination-hidden {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translateY(var(--spacing-md));
+      }
+    }
+
+    // ==========================================
+    // BOTONES DE NAVEGACIÓN - CORREGIDOS
+    // ==========================================
+    &__prev,
+    &__next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: $nav-button-size;
+      height: $nav-button-size;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(rem(8px));
+      border: rem(1px) solid var(--neutral-700);
+      box-shadow: var(--btn-shadow-hover);
+      transition: all var(--btn-transition-duration) ease;
+
+      @include responsive($breakpoint-md) {
+        width: $nav-button-size-mobile;
+        height: $nav-button-size-mobile;
+      }
+
+      i {
+        font-size: var(--icon-size-md);
+        color: var(--primary);
+        transition: all var(--btn-transition-duration) ease;
+
+        @include responsive($breakpoint-md) {
+          font-size: var(--icon-size-sm);
+        }
+      }
+
+      &:hover {
+        transform: translateY(-50%) scale(1.05);
+        background: rgba(var(--primary-rgb), 0.1);
+        border-color: var(--primary-500);
+        box-shadow: 0 rem(4px) rem(12px) rgba(var(--primary-rgb), 0.2);
+
+        i {
+          color: var(--primary-600);
+        }
+      }
+
+      &:disabled,
+      &.swiper-button-disabled {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translateY(-50%) scale(0.8);
+      }
+
+      &.swiper-button-hidden {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        display: none !important;
+      }
+
+      @include responsive($breakpoint-md) {
+        display: none;
+      }
+
+      @include dark-theme {
+        background-color: rgba(var(--background-200-rgb), 0.95);
+        border-color: var(--neutral-600);
+
+        &:hover {
+          background-color: rgba(var(--primary-rgb), 0.15);
+          border-color: var(--primary-400);
+        }
+      }
+    }
+
+    &__prev {
+      left: var(--spacing-md);
+
+      @include responsive($breakpoint-md) {
+        left: var(--spacing-md);
+      }
+    }
+
+    &__next {
+      right: var(--spacing-md);
+
+      @include responsive($breakpoint-md) {
+        right: var(--spacing-md);
+      }
+    }
+  }
+}
+
+// ==========================================
+// CLASES ESPECÍFICAS DEL SWIPER
+// ==========================================
+.related-programs-swiper {
+  overflow: visible;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.card-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: var(--max-width-xl);
+  margin: 0 auto;
+  padding: var(--spacing-lg) var(--spacing-md);
+  overflow: hidden;
+}
+
+.card-list.swiper-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+// ==========================================
+// CLASES GLOBALES DE SWIPER
+// ==========================================
+.swiper {
+  overflow: visible;
+
+  &.swiper-container-lock {
+    .swiper-slide-button {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .swiper-pagination {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  }
+
+  .swiper-slide-button,
+  .swiper-pagination {
+    transition: all var(--btn-transition-duration) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .swiper-pagination {
+    position: static !important;
+    margin-top: var(--spacing-md);
+  }
+}
+
+.swiper-backface-hidden .swiper-slide {
+  margin-top: var(--spacing-lg);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// ==========================================
+// RESPONSIVE
+// ==========================================
+@include responsive(768px) {
+  #section-ten .related-programs {
+    &__prev,
+    &__next {
+      display: none;
+    }
+
+    &__pagination {
+      margin-top: var(--spacing-xl);
+
+      .swiper-pagination-bullet {
+        width: var(--spacing-md);
+        height: var(--spacing-md);
+        margin: 0 var(--spacing-2xs) !important;
+      }
+    }
+  }
+}
