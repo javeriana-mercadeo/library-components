@@ -1,0 +1,462 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$plan-card-border-radius: rem(12px);
+$plan-card-padding: rem(18px);
+$plan-card-min-height: rem(500px);
+$plan-card-max-width: rem(320px);
+$plan-transition: all 0.2s ease;
+$plan-badge-border-radius: rem(50px);
+$plan-badge-padding: rem(8px) rem(16px);
+
+// Navegación - OPTIMIZADO
+$nav-button-size: rem(50px);
+$nav-button-size-mobile: rem(40px);
+$nav-bullet-size: rem(13px);
+$nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
+
+// ==========================================
+// MIXIN PRINCIPAL
+// ==========================================
+
+.plan-estudio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  // ==========================================
+  // CONTENEDOR PRINCIPAL
+  // ==========================================
+  &_container {
+    width: 100%;
+    background-color: var(--background-100);
+
+    @include dark-theme {
+      background-color: var(--background-200);
+    }
+  }
+
+  // ==========================================
+  // CARRUSEL - OPTIMIZADO
+  // ==========================================
+  &_carousel {
+    width: 100%;
+    position: relative;
+  }
+
+  &_wrapper {
+    margin: 0 0 rem(35px) 0;
+    padding: rem(20px) rem(10px);
+    overflow: hidden;
+    position: relative;
+
+    @include responsive($breakpoint-sm) {
+      margin: 0 0 rem(25px) 0;
+      padding: rem(10px) rem(5px);
+    }
+
+    @include responsive($breakpoint-xl) {
+      margin: 0 auto;
+      max-width: rem(1400px); // AUMENTADO para mostrar 4 cards
+    }
+  }
+
+  // ==========================================
+  // SLIDES Y TARJETAS (MANTENER ESTILO)
+  // ==========================================
+  &_slides {
+    align-items: stretch !important;
+  }
+
+  &_slide {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: $plan-card-min-height;
+
+    // Swiper optimizations
+    margin-top: rem(20px);
+    align-items: stretch;
+    justify-content: center;
+
+    @include responsive($breakpoint-sm) {
+      min-height: rem(450px) !important;
+    }
+  }
+
+  &_card {
+    display: flex;
+    flex-direction: column;
+    background: var(--background-100);
+    padding: $plan-card-padding;
+    user-select: none;
+    border-radius: $plan-card-border-radius;
+    text-decoration: none;
+    border: rem(1px) solid var(--neutral-700);
+    transition: $plan-transition;
+    width: 100%;
+    height: 100%;
+    max-width: $plan-card-max-width;
+    margin: 0 auto;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &:hover {
+      border: rem(1px) solid var(--primary);
+      box-shadow: 0 rem(2px) rem(2px) rgba(0, 0, 0, 0.3);
+    }
+
+    @include dark-theme {
+      background: var(--background-100);
+      border-color: var(--neutral-700);
+
+      &:hover {
+        border-color: var(--primary);
+      }
+    }
+  }
+
+  // ==========================================
+  // ELEMENTOS DE LA TARJETA (MANTENER)
+  // ==========================================
+  &_card-header {
+    margin-bottom: rem(10px);
+  }
+
+  &_badge {
+    color: var(--neutral);
+    width: fit-content;
+    padding: $plan-badge-padding;
+    font-size: var(--font-size-small);
+    border-radius: $plan-badge-border-radius;
+    font-weight: var(--font-weight-bold);
+    background: var(--primary);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: rem(10px);
+  }
+
+  &_semester-title {
+    margin-bottom: rem(8px);
+    border-bottom: rem(1px) solid var(--neutral-900);
+    font-size: var(--font-size-paragraph);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: normal;
+    color: var(--neutral-100);
+    text-align: left;
+    max-width: 100%;
+    padding-bottom: rem(8px);
+
+    @include dark-theme {
+      color: var(--neutral-100);
+      border-bottom-color: var(--neutral-900);
+    }
+  }
+
+  &_subjects {
+    list-style: none;
+    padding-top: rem(5px);
+    margin: 0;
+    padding-bottom: rem(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-self: start;
+
+    li {
+      color: var(--neutral-100);
+      margin-bottom: rem(8px);
+      display: flex;
+      align-items: center;
+      font-size: var(--font-size-paragraph);
+      font-weight: var(--font-weight-regular);
+
+      @include dark-theme {
+        color: var(--neutral-100);
+      }
+
+      i {
+        font-size: rem(20px);
+        margin-right: rem(8px);
+        color: var(--primary);
+      }
+    }
+  }
+
+  &_credits {
+    font-size: rem(18px);
+    border-top: rem(1px) solid var(--neutral-900);
+    font-weight: bold;
+    color: var(--neutral-800);
+    padding-top: rem(10px);
+    align-self: end;
+    width: 100%;
+    margin-top: auto;
+
+    @include dark-theme {
+      border-top-color: var(--neutral-900);
+      color: var(--neutral-800);
+    }
+
+    strong {
+      color: var(--neutral-500);
+
+      @include dark-theme {
+        color: var(--neutral-500);
+      }
+    }
+  }
+
+  // ==========================================
+  // PAGINACIÓN - ESTILO DINÁMICO COMO EN LA IMAGEN
+  // ==========================================
+  &_pagination {
+    position: relative;
+    margin-top: rem(20px); // REDUCIDO: Más cerca del carrusel
+    text-align: center;
+    min-height: rem(20px);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: rem(6px); // REDUCIDO: Espaciado más compacto
+
+    .swiper-pagination-bullet {
+      height: rem(8px); // REDUCIDO: Círculos más pequeños
+      width: rem(8px);
+      opacity: 0.4; // REDUCIDO: Menos opacidad para inactivos
+      background: var(--primary);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); // Transición suave
+      border-radius: 50%;
+      border: none;
+      margin: 0 !important;
+      cursor: pointer;
+
+      &.swiper-pagination-bullet-active {
+        opacity: 1;
+        transform: scale(1.6); // AUMENTADO: Más grande el activo
+        background: var(--primary-600);
+        width: rem(12px); // NUEVO: Activo más grande
+        height: rem(12px);
+      }
+
+      &:hover:not(.swiper-pagination-bullet-active) {
+        opacity: 0.7;
+        transform: scale(1.2); // Hover sutil en inactivos
+      }
+    }
+
+    // NUEVO: Solo ocultar cuando realmente no se necesite
+    &.swiper-pagination-hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateY(rem(10px));
+    }
+  }
+
+  // ==========================================
+  // BOTONES DE NAVEGACIÓN - DENTRO DEL CONTENEDOR
+  // ==========================================
+  &_prev,
+  &_next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: $nav-button-size;
+    height: $nav-button-size;
+    display: none; // CAMBIADO: Por defecto ocultos
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(rem(8px));
+    border: rem(1px) solid var(--neutral-700);
+    box-shadow: 0 rem(2px) rem(8px) rgba(0, 0, 0, 0.15);
+
+    @include responsive($breakpoint-sm) {
+      width: $nav-button-size-mobile;
+      height: $nav-button-size-mobile;
+    }
+
+    i {
+      font-size: rem(24px); // REDUCIDO: Íconos más pequeños
+      color: var(--primary);
+      z-index: 100;
+      transition: all 0.3s ease;
+
+      @include responsive($breakpoint-sm) {
+        font-size: rem(20px);
+      }
+    }
+
+    &:hover {
+      transform: translateY(-50%) scale(1.05);
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary-500);
+      box-shadow: 0 rem(4px) rem(12px) rgba(var(--primary-rgb), 0.2);
+
+      i {
+        color: var(--primary-600);
+      }
+    }
+
+    // Estados de Swiper mejorados
+    &.swiper-button-disabled {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateY(-50%) scale(0.8);
+    }
+
+    &.swiper-button-hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      display: none !important;
+    }
+
+    // NUEVO: Clase para mostrar cuando sea necesario
+    &.show-navigation {
+      display: flex !important;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &_prev {
+    // AJUSTADO: Posición dentro del padding del carrusel
+    left: rem(10px);
+
+    @include responsive($breakpoint-sm) {
+      left: rem(0px);
+    }
+  }
+
+  &_next {
+    // AJUSTADO: Posición dentro del padding del carrusel
+    right: rem(10px);
+
+    @include responsive($breakpoint-sm) {
+      right: rem(0px);
+    }
+  }
+
+  // ==========================================
+  // RESPONSIVE - MOBILE FIRST OPTIMIZADO
+  // ==========================================
+
+  // Móviles pequeños (hasta 576px)
+  @media (max-width: 576px) {
+    &_prev,
+    &_next {
+      &.swiper-button-hidden,
+      .swiper-container-lock & {
+        display: none !important;
+      }
+    }
+
+    &_pagination {
+      margin-top: rem(20px);
+
+      .swiper-pagination-bullet {
+        width: rem(10px);
+        height: rem(10px);
+        margin: 0 rem(3px) !important;
+      }
+    }
+  }
+
+  // ==========================================
+  // OPTIMIZACIONES PARA POCOS SLIDES
+  // ==========================================
+  .swiper-container-lock & {
+    &_slides {
+      justify-content: center;
+    }
+
+    &_wrapper {
+      padding: rem(20px) 0;
+    }
+
+    &_pagination {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  }
+
+  // ==========================================
+  // TEMA OSCURO - MEJORADO
+  // ==========================================
+  @include dark-theme {
+    &_prev,
+    &_next {
+      background-color: rgba(var(--background-200-rgb), 0.95);
+      border-color: var(--neutral-600);
+
+      &:hover {
+        background-color: rgba(var(--primary-rgb), 0.15);
+        border-color: var(--primary-400);
+      }
+
+      &.swiper-button-disabled {
+        background-color: rgba(var(--neutral-rgb), 0.2);
+        border-color: var(--neutral-800);
+      }
+    }
+
+    &_pagination {
+      .swiper-pagination-bullet {
+        background: var(--primary-400);
+
+        &.swiper-pagination-bullet-active {
+          background: var(--primary-300);
+        }
+      }
+    }
+  }
+}
+
+// ==========================================
+// CLASES GLOBALES DE SWIPER - OPTIMIZADAS
+// ==========================================
+.swiper {
+  // NUEVO: Asegurar que el overflow esté bien manejado
+  overflow: visible;
+
+  &.swiper-container-lock {
+    .swiper-slide-button {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .swiper-pagination {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  }
+
+  .swiper-slide-button,
+  .swiper-pagination {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  // NUEVO: Asegurar que la paginación tenga espacio
+  .swiper-pagination {
+    position: static !important;
+    margin-top: var(--spacing-md);
+  }
+}
