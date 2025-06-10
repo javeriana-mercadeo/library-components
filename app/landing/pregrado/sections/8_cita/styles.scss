@@ -1,0 +1,43 @@
+@use '@styles/autoload' as *;
+
+.meeting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: var(--primary);
+
+  .meeting-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1400px;
+
+    @include responsive {
+      flex-direction: row;
+    }
+
+    .caption {
+      margin: 0;
+      color: var(--neutral);
+    }
+
+    .meeting-btn {
+      color: var(--neutral);
+      border-color: var(--neutral);
+
+      &:hover {
+        color: var(--primary);
+        background-color: var(--neutral);
+        border-color: var(--neutral);
+      }
+
+      @include dark-theme {
+        color: var(--neutral);
+        border-color: var(--neutral);
+      }
+    }
+  }
+}
