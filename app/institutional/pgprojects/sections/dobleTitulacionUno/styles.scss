@@ -7,14 +7,13 @@
 
   .content-wrapper {
     width: 100%;
-    max-width: 1200px;
     margin: 0 auto;
   }
 
   .main-title {
-    color: #454F59;
-    font-weight: 700;
-    padding: 50px;
+    color: var(--neutral-400);
+    font-weight: var(--font-weight-bold);
+    padding: rem(50px);
     text-align: center;
     font-size: clamp(1.25rem, 2vw + 1rem, 1.875rem); 
   }
@@ -22,14 +21,14 @@
   .hero-section {
     position: relative;
     width: 100%;
-    height: 700px;
+    height: rem(700px);
     background-image: url('https://www.javeriana.edu.co/recursosdb/d/info-prg/fondobiblioteca');
     background-size: cover;
     background-position: center;
-    border-radius: 12px;
+    border-radius: rem(12px);
     overflow: hidden;
-    margin-bottom: 40px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: rem(40px);
+    box-shadow: 0 rem(4px) rem(10px) rgba(0, 0, 0, 0.1);
 
     .overlay {
       position: absolute;
@@ -40,9 +39,7 @@
       background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
       display: flex;
       align-items: center;
-      padding: 20px;
-      display: flex;
-      align-items: center;
+      padding: rem(20px);
       justify-content: center;
     }
 
@@ -51,16 +48,16 @@
       color: white;
 
       .hero-title {
-        font-size: 36px;
+        font-size: var(--font-size-principal-title);
         font-weight: bold;
-        margin-bottom: 16px;
-        max-width: 600px;
+        margin-bottom: rem(16px);
+        max-width: rem(600px);
       }
 
       .hero-description {
-        font-size: 16px;
-        max-width: 550px;
-        margin-bottom: 30px;
+        font-size: rem(16px);
+        max-width: rem(550px);
+        margin-bottom: rem(30px);
         line-height: 1.6;
       }
     }
@@ -68,7 +65,8 @@
 
   .cards-container {
     display: flex;
-    gap: 16px;
+    gap: rem(16px);
+    padding-top: rem(20px);
 
     @media (max-width: 768px) {
       flex-direction: column;
@@ -80,45 +78,46 @@
 
   .info-card {
     background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 8px;
-    padding: 20px;
+    border-radius: rem(8px);
+    padding: rem(20px);
     flex: 1;
     height: auto;
-    max-width: 200px;
-    backdrop-filter: blur(3px);
+    max-width: rem(200px);
+    backdrop-filter: blur(rem(3px));
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease;
 
     &:hover {
-      transform: translateY(-5px);
+      transform: translateY(rem(-5px));
     }
 
     .card-title {
-      font-size: 18px;
+      font-size: var(--font-size-caption);
       font-weight: bold;
-      margin-bottom: 12px;
+      margin-bottom: rem(12px);
       color: white;
     }
 
     .card-description {
-      font-size: 14px;
+      font-size: var(--font-size-paragraph);
       line-height: 1.5;
       color: rgba(255, 255, 255, 0.9);
     }
   }
 }
+
 @media (max-width: 768px) {
   .double-titulacion-container {
     .hero-section {
       height: auto;
-      min-height: 800px;
+      min-height: rem(800px);
       border-radius: 0;
-      padding: 20px;
+      padding: rem(20px);
     }
 
     .hero-content {
       .hero-title {
-        font-size: 28px;
+        font-size: var(--font-size-title);
       }
     }
 
@@ -128,7 +127,7 @@
 
     .info-card {
       max-width: 80%;
-      min-width: 200px;
+      min-width: rem(200px);
     }
   }
 }

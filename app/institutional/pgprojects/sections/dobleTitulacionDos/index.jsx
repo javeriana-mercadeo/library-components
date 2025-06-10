@@ -1,6 +1,9 @@
 'use client'
 import React, { Component, createRef } from 'react'
 import './styles.scss'
+import Title from '../../../../_library/components/contain/title'
+import Paragraph from '../../../../_library/components/contain/paragraph'
+import Container from '@library/components/container/Container'
 
 class DobleTitulacion2 extends Component {
   constructor(props) {
@@ -52,89 +55,101 @@ class DobleTitulacion2 extends Component {
   render() {
     return (
       <div className="doble-titulacion-container" ref={this.containerRef}>
-        <div className="content-wrapper">
-          <h1 className="main-title">Doble Titulación 2</h1>
+        <Container className="content-wrapper">
+          <div>
+            <Title className="main-title">
+              <h1>Doble Titulación 2</h1>
+            </Title>
 
-          <div className="two-column-layout">
-            <div className="left-column">
-              <div className="university-building">
-                <div className="overlay-content">
-                  <h2 className="overlay-title">Internacionaliza tu MBA y amplía tu visión global</h2>
+            <div className="two-column-layout">
+              <div className="left-column">
+                <div className="university-building">
+                  <div className="overlay-content">
+                    <h2 className="overlay-title">Internacionaliza tu MBA y amplía tu visión global</h2>
+
+                    <img
+                      src="https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-tres"
+                      alt="Universidad Pompeu Fabra - Edificio"
+                      className="university-image mobile-only"
+                    />
+
+                    <Paragraph className="overlay-description">
+                      {' '}
+                      <p>
+                        Vive experiencias académicas en el extranjero que potencian tu perfil profesional y amplían tus oportunidades
+                        laborales.
+                      </p>
+                    </Paragraph>
+                  </div>
 
                   <img
                     src="https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-tres"
                     alt="Universidad Pompeu Fabra - Edificio"
-                    className="university-image mobile-only"
-                  />
-
-                  <p className="overlay-description">
-                    Vive experiencias académicas en el extranjero que potencian tu perfil profesional y amplían tus oportunidades laborales.
-                  </p>
-                </div>
-
-                <img
-                  src="https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-tres"
-                  alt="Universidad Pompeu Fabra - Edificio"
-                  className="university-image desktop-only"
-                />
-              </div>
-            </div>
-
-            <div className="right-column" ref={this.rightColumnRef}>
-              <div className="header-section">
-                <div className="title-section">
-                  <h2 className="section-title">Esquema de Doble Titulación</h2>
-                  <p className="university-info">con la Universidad Pompeu Fabra - Barcelona School of Management (BSM)</p>
-                </div>
-
-                <div className="logo-container">
-                  <img
-                    src="https://www.javeriana.edu.co/recursosdb/d/info-prg/logobarcelona"
-                    alt="Barcelona School of Management"
-                    className="university-logo"
-                  />
-                  <img
-                    src="https://www.javeriana.edu.co/recursosdb/d/info-prg/logoUPF"
-                    alt="Universidad Pompeu Fabra"
-                    className="university-logo"
+                    className="university-image desktop-only"
                   />
                 </div>
               </div>
 
-              <div className="scroll-container">
-                <div className="program-items">
-                  <div className="program-item">
-                    <img
-                      src="https://www.javeriana.edu.co/recursosdb/d/info-prg/tutulacion-uno"
-                      alt="Campus Universitario"
-                      className="program-image"
-                    />
-                    <div className="program-info">
-                      <h3 className="program-title">Misiones Internacionales:</h3>
-                      <p className="program-description">
-                        Dos experiencias académicas en innovación, estrategia y emprendimiento, incluidas en la matrícula.
-                      </p>
-                    </div>
+              <div className="right-column" ref={this.rightColumnRef}>
+                <div className="header-section">
+                  <div className="title-section">
+                    <h2 className="section-title">Esquema de Doble Titulación</h2>
+                    <Paragraph className="university-info">
+                      {' '}
+                      <p>con la Universidad Pompeu Fabra - Barcelona School of Management (BSM)</p>
+                    </Paragraph>
                   </div>
 
-                  <div className="program-item">
+                  <div className="logo-container">
                     <img
-                      src="https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-dos"
-                      alt="Aula de clases"
-                      className="program-image"
+                      src="https://www.javeriana.edu.co/recursosdb/d/info-prg/logobarcelona"
+                      alt="Barcelona School of Management"
+                      className="university-logo"
                     />
-                    <div className="program-info">
-                      <h3 className="program-title">Summer Business School:</h3>
-                      <p className="program-description">
-                        Programa intersemestral con docentes internacionales para complementar tu formación.
-                      </p>
+                    <img
+                      src="https://www.javeriana.edu.co/recursosdb/d/info-prg/logoUPF"
+                      alt="Universidad Pompeu Fabra"
+                      className="university-logo"
+                    />
+                  </div>
+                </div>
+
+                <div className="scroll-container">
+                  <div className="program-items">
+                    <div className="program-item">
+                      <img
+                        src="https://www.javeriana.edu.co/recursosdb/d/info-prg/tutulacion-uno"
+                        alt="Campus Universitario"
+                        className="program-image"
+                      />
+                      <div className="program-info">
+                        <h3 className="program-title">Misiones Internacionales:</h3>
+                        <Paragraph className="program-description">
+                          {' '}
+                          <p>Dos experiencias académicas en innovación, estrategia y emprendimiento, incluidas en la matrícula.</p>
+                        </Paragraph>
+                      </div>
+                    </div>
+
+                    <div className="program-item">
+                      <img
+                        src="https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-dos"
+                        alt="Aula de clases"
+                        className="program-image"
+                      />
+                      <div className="program-info">
+                        <h3 className="program-title">Summer Business School:</h3>
+                        <Paragraph className="program-description">
+                          <p>Programa intersemestral con docentes internacionales para complementar tu formación.</p>
+                        </Paragraph>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </div>
     )
   }

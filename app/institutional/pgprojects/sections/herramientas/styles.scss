@@ -2,44 +2,46 @@
 
 .tools-container {
   width: 100%;
-  padding: 60px 20px;
-  background-color: #ffffff;
+  padding: rem(60px) rem(20px);
+  background-color: var(--neutral);
 
   .tools-titulo {
     text-align: center;
-    font-size: clamp(1.5rem, 2vw + 1rem, 1.875rem);
-    font-weight: 700;
-    color: #454f59;
-    margin-bottom: 40px;
+    font-size: var(--font-size-principal-title);
+    font-weight: var(--font-weight-bold);
+    color: var(--neutral-400);
+    display: flex;
+    padding-bottom: rem(50px);
+    justify-content: center;
   }
 
   .tools-content {
-    max-width: 1200px;
     margin: 0 auto;
     display: flex;
 
     .tools-texto {
       width: 100%;
-      max-width: 500px;
-      margin-bottom: 50px;
+      max-width: rem(500px);
+      margin-bottom: rem(50px);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
+      padding-right: rem(25px);
 
       h2 {
-        font-size: clamp(1.3rem, 2vw + 1rem, 1.75rem);
-        font-weight: 700;
-        color: #22272b;
-        margin-bottom: 20px;
-        width: 80%;
+        font-size: var(--font-size-title);
+        font-weight: var(--font-weight-bold);
+        color: var( --neutral-200);
+        margin-bottom: rem(16px);
+        width: 100%;
       }
 
       p {
-        font-size: 16px;
+        font-size: var(--font-size-paragraph);
         line-height: 1.6;
-        color: #454f59;
-        width: 80%;
+        color: var(--neutral-400);
+        width: 100%;
       }
     }
 
@@ -47,38 +49,39 @@
       width: 100%;
       display: flex;
       justify-content: center;
-      gap: 15px;
-      padding-top: 60px;
+      gap: rem(15px);
+      padding-top: rem(60px);
+
       .columna-logos {
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: rem(15px);
         position: relative;
 
         &.offset {
-          margin-top: -60px;
+          margin-top: rem(-60px);
         }
 
         .logo-item {
           background-color: #eeefef;
-          border-radius: 10px;
-          padding: 20px;
-          width: 120px;
-          height: 120px;
+          border-radius: rem(10px);
+          padding: rem(20px);
+          width: rem(120px);
+          height: rem(120px);
           display: flex;
           align-items: center;
           justify-content: center;
           transition: all 0.3s ease;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 rem(2px) rem(10px) rgba(0, 0, 0, 0.05);
 
           &:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transform: translateY(rem(-8px));
+            box-shadow: 0 rem(8px) rem(20px) rgba(0, 0, 0, 0.12);
           }
 
           img {
             max-width: 80%;
-            max-height: 60px;
+            max-height: rem(60px);
             object-fit: contain;
           }
         }
@@ -87,37 +90,35 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .tools-container {
-    padding: 40px 15px;
+    padding: rem(40px) rem(15px);
 
     .tools-content {
       display: flex;
       flex-direction: column;
+
       .tools-texto {
         max-width: 100%;
 
-        h2 {
-          font-size: 28px;
-        }
       }
 
       .tools-logos-grid {
         flex-wrap: wrap;
-        gap: 20px;
-        padding-top: 40px;
+        gap: rem(20px);
+        padding-top: rem(40px);
 
         .columna-logos {
-          gap: 30px;
+          gap: rem(30px);
 
           &.offset {
-            margin-top: -40px;
+            margin-top: rem(-40px);
           }
 
           .logo-item {
-            width: 100px;
-            height: 100px;
-            padding: 15px;
+            width: rem(100px);
+            height: rem(100px);
+            padding: rem(15px);
           }
         }
       }
@@ -129,17 +130,17 @@
   .tools-container {
     .tools-content {
       .tools-logos-grid {
-        padding-top: 20px;
+        padding-top: rem(20px);
 
         .columna-logos {
           &.offset {
-            margin-top: -20px;
+            margin-top: rem(-20px);
           }
 
           .logo-item {
-            width: 80px;
-            height: 80px;
-            padding: 12px;
+            width: rem(80px);
+            height: rem(80px);
+            padding: rem(12px);
           }
         }
       }
