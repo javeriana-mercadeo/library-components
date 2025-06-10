@@ -126,9 +126,4 @@ export default function main() {
   window.EventManager = EventManager
   window.TimingUtils = TimingUtils
   window.Validators = Validators
-
-  // Inicialización
-  DOMHelpers.isReady(() => {
-    Logger.success('Utilidades globales cargadas')
-  })
 }
