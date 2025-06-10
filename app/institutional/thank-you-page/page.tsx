@@ -38,6 +38,9 @@ export default function ThankYouPage() {
         </Paragraph>
         <div className={`${baseClass}__card-info-main`}>
           <div className={`${baseClass}__card-info`}>
+            <div>
+              <i className="ph ph-panorama"></i>
+            </div>
             <Title hierarchy="h3" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-`}>
               Explora nuestro tour virtual y conoce la universidad.
             </Title>
@@ -56,8 +59,11 @@ export default function ThankYouPage() {
             </Btn>
           </div>
           <div className={`${baseClass}__card-info`}>
+            <div>
+              <i className="ph ph-calendar-dots"></i>
+            </div>
             <Title hierarchy="h3" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-`}>
-              Explora nuestro tour virtual y conoce la universidad.
+              Eventos, actividades y apoyo para tu futuro académico.
             </Title>
             <Paragraph id={`${elementName}-tour-info`} className={`${baseClass}_enrollment-note`} size="sm">
               Recorre cada espacio de nuestra universidad sin moverte de casa. Conoce los lugares donde vivirás experiencias inolvidables.
@@ -74,8 +80,11 @@ export default function ThankYouPage() {
             </Btn>
           </div>
           <div className={`${baseClass}__card-info`}>
+            <div>
+              <i className="ph ph-telegram-logo"></i>
+            </div>
             <Title hierarchy="h3" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-`}>
-              Explora nuestro tour virtual y conoce la universidad.
+              Estamos aquí para responder todas tus preguntas.
             </Title>
             <Paragraph id={`${elementName}-tour-info`} className={`${baseClass}_enrollment-note`} size="sm">
               Recorre cada espacio de nuestra universidad sin moverte de casa. Conoce los lugares donde vivirás experiencias inolvidables.
@@ -94,7 +103,7 @@ export default function ThankYouPage() {
         </div>
         <div>
           <Btn id="registration-btn" isEditable={false}>
-            ¡Inscríbete Ahora!
+            Ver más programas
           </Btn>
         </div>
       </div>
