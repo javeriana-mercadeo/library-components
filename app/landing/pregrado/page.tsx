@@ -10,7 +10,7 @@ import Docentes from './sections/6_docentes'
 import Experiencia from './sections/7_experiencia'
 import Cita from './sections/8_cita'
 import PreguntasFrecuentes from './sections/9_preguntasFrecuentes'
-//import Relacionados from './sections/10_relacionados'
+import Relacionados from './sections/10_relacionados'
 import Footer from './sections/11_footer'
 
 export default function Profesional() {
@@ -69,9 +69,9 @@ export default function Profesional() {
       </ViewComponent>
 
       {/*  <Relacionados /> */}
-      {/* <ViewComponent path={`${basePath}/sections/10_relacionados`}>
+      <ViewComponent path={`${basePath}/sections/10_relacionados`}>
         <Relacionados />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/* <Footer /> */}
       <ViewComponent path={`${basePath}/sections/11_footer`}>
