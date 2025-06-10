@@ -1,12 +1,12 @@
 // ==========================================
-/// SISTEMA DE COLORES
+// SISTEMA DE COLORES
 // ==========================================
 @use 'sass:map';
 @use 'functions' as *;
 
-// PALETA DE COLORES BASE
-// ------------------------------------------
-// Colores base para generar las escalas
+// ==========================================
+// COLORES BASE
+// ==========================================
 $color-base: (
   'primary': #2c5697,
   'primary-dark': #2c5697,
@@ -14,20 +14,7 @@ $color-base: (
   'tertiary': #359c36,
   'tertiary-dark': #5dc85e,
   'background': #1e1e1e,
-  'neutral': (
-    '': #ffffff,
-    '100': #1d2125,
-    '200': #22272b,
-    '300': #2c333a,
-    '400': #454f59,
-    '500': #596773,
-    '600': #8c9bab,
-    '700': #9fadbc,
-    '800': #b6c2cf,
-    '900': #c7d1db,
-    '1000': #eeefef,
-    '1100': #f2f2f2
-  ),
+  'neutral-base': #ffffff,
   'neutral-variant': #96937f,
   'neutral-variant-blue': #eeefef,
   'success': #28a368,
@@ -35,15 +22,35 @@ $color-base: (
   'danger': #ff1200
 );
 
-// ESCALAS DE COLORES GENERADAS
-// ------------------------------------------
-// Genera las escalas de colores para el tema base
-$colors-map: (
+// ==========================================
+// ESCALA NEUTRAL
+// ==========================================
+$neutral-colors-base: (
+  '': #ffffff,
+  100: #1d2125,
+  200: #22272b,
+  300: #2c333a,
+  400: #454f59,
+  500: #596773,
+  600: #8c9bab,
+  700: #9fadbc,
+  800: #b6c2cf,
+  900: #c7d1db,
+  1000: #eeefef,
+  1100: #f2f2f2
+);
+
+$neutral-colors: add-rgb-to-color-map($neutral-colors-base);
+
+// ==========================================
+// TEMA LIGHT (BASE)
+// ==========================================
+$base-theme-light: (
   'primary': generate-color-scale(map.get($color-base, 'primary')),
   'secondary': generate-color-scale(map.get($color-base, 'secondary')),
   'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
   'background': generate-color-scale(map.get($color-base, 'background')),
-  'neutral': map.get($color-base, 'neutral'),
+  'neutral': $neutral-colors,
   'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
   'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
   'success': generate-color-scale(map.get($color-base, 'success')),
@@ -51,548 +58,139 @@ $colors-map: (
   'danger': generate-color-scale(map.get($color-base, 'danger'))
 );
 
-// DEFINICIÓN DE TEMAS
-// ------------------------------------------
-// Configuración de temas para facultades y variantes oscuras
-$colors-theme: (
-  // Tema oscuro base (se aplica a todas las variantes dark)
-  'dark':
-    (
-      'primary': generate-color-scale(map.get($color-base, 'primary-dark'), true),
-      'secondary': generate-color-scale(map.get($color-base, 'secondary'), true),
-      'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-      'background': generate-color-scale(map.get($color-base, 'background'), true),
-      'neutral': invert-color-map(map.get($color-base, 'neutral')),
-      'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-      'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-      'success': generate-color-scale(map.get($color-base, 'success'), true),
-      'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-      'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-    ),
+// ==========================================
+// TEMA DARK
+// ==========================================
+$base-theme-dark: (
+  'primary': generate-color-scale(map.get($color-base, 'primary-dark'), true),
+  'secondary': generate-color-scale(map.get($color-base, 'secondary'), true),
+  'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
+  'background': generate-color-scale(map.get($color-base, 'background'), true),
+  'neutral': add-rgb-to-color-map(invert-color-map($neutral-colors-base)),
+  'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+  'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
+  'success': generate-color-scale(map.get($color-base, 'success'), true),
+  'warning': generate-color-scale(map.get($color-base, 'warning'), true),
+  'danger': generate-color-scale(map.get($color-base, 'danger'), true)
+);
 
-  // Temas por facultad - modo claro
-  // ----------------------------------------
-  'arquitectura-diseno':
-    (
-      'primary': generate-color-scale(#653383),
-      'secondary': generate-color-scale(#00559a),
-      'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
-      'background': generate-color-scale(map.get($color-base, 'background')),
-      'neutral': map.get($color-base, 'neutral'),
-      'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-      'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-      'success': generate-color-scale(map.get($color-base, 'success')),
-      'warning': generate-color-scale(map.get($color-base, 'warning')),
-      'danger': generate-color-scale(map.get($color-base, 'danger'))
-    ),
-
+// ==========================================
+// COLORES POR FACULTAD
+// ==========================================
+$faculty-colors: (
+  'arquitectura-diseno': (
+    'primary': #653383,
+    'secondary': #00559a
+  ),
   'artes': (
-    'primary': generate-color-scale(#6f45e9),
-    'secondary': generate-color-scale(#ff4b78),
-    'tertiary': generate-color-scale(#2c5595),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #6f45e9,
+    'secondary': #ff4b78,
+    'tertiary': #2c5595
   ),
-
   'ciencias': (
-    'primary': generate-color-scale(#008aa2),
-    'secondary': generate-color-scale(#f6bd30),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #008aa2,
+    'secondary': #f6bd30
   ),
-
   'ciencias-economicas-administrativas': (
-    'primary': generate-color-scale(#4a7ed8),
-    'secondary': generate-color-scale(#371f75),
-    'tertiary': generate-color-scale(#ff4e30),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #4a7ed8,
+    'secondary': #371f75,
+    'tertiary': #ff4e30
   ),
-
   'ciencias-juridicas': (
-    'primary': generate-color-scale(#2c5595),
-    'secondary': generate-color-scale(#f6bd30),
-    'tertiary': generate-color-scale(#c6c6c6),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #2c5595,
+    'secondary': #f6bd30,
+    'tertiary': #c6c6c6
   ),
-
   'ciencias-politicas-relaciones-internacionales': (
-    'primary': generate-color-scale(#008874),
-    'secondary': generate-color-scale(#f6bd30),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #008874,
+    'secondary': #f6bd30
   ),
-
   'ciencias-sociales': (
-    'primary': generate-color-scale(#003d7a, true),
-    'secondary': generate-color-scale(#73d9fc, true),
-    'tertiary': generate-color-scale(#3e2580, true),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #003d7a,
+    'secondary': #73d9fc,
+    'tertiary': #3e2580
   ),
-
   'comunicacion-lenguaje': (
-    'primary': generate-color-scale(#8048a9),
-    'secondary': generate-color-scale(#73d9fc),
-    'tertiary': generate-color-scale(#2c5595),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #8048a9,
+    'secondary': #73d9fc,
+    'tertiary': #2c5595
   ),
-
   'derecho-canonico': (
-    'primary': generate-color-scale(#2c5595),
-    'secondary': generate-color-scale(#f6bd30),
-    'tertiary': generate-color-scale(#f2f2f2),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #2c5595,
+    'secondary': #f6bd30,
+    'tertiary': #f2f2f2
   ),
-
   'educacion': (
-    'primary': generate-color-scale(#a1bfff),
-    'secondary': generate-color-scale(#2a2a68),
-    'tertiary': generate-color-scale(#f47abd),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #a1bfff,
+    'secondary': #2a2a68,
+    'tertiary': #f47abd
   ),
-
   'enfermeria': (
-    'primary': generate-color-scale(#018ab9),
-    'secondary': generate-color-scale(#ffcd00),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #018ab9,
+    'secondary': #ffcd00
   ),
-
   'estudios-ambientales-rurales': (
-    'primary': generate-color-scale(#abc80e),
-    'secondary': generate-color-scale(#2dcad1),
-    'tertiary': generate-color-scale(#029be2),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #abc80e,
+    'secondary': #2dcad1,
+    'tertiary': #029be2
   ),
-
   'filosofia': (
-    'primary': generate-color-scale(#004c8f),
-    'secondary': generate-color-scale(#c08300),
-    'tertiary': generate-color-scale(#f2f2f2),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #004c8f,
+    'secondary': #c08300,
+    'tertiary': #f2f2f2
   ),
-
   'ingenieria': (
-    'primary': generate-color-scale(#026fc1),
-    'secondary': generate-color-scale(#029be1),
-    'tertiary': generate-color-scale(#339e36),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #026fc1,
+    'secondary': #029be1,
+    'tertiary': #339e36
   ),
-
   'instituto-pensar': (
-    'primary': generate-color-scale(#00b3ab),
-    'secondary': generate-color-scale(#ff6b17),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #00b3ab,
+    'secondary': #ff6b17
   ),
-
   'instituto-salud-publica': (
-    'primary': generate-color-scale(#a74731),
-    'secondary': generate-color-scale(#c28069),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #a74731,
+    'secondary': #c28069
   ),
-
   'medicina': (
-    'primary': generate-color-scale(#2b9cd2),
-    'secondary': generate-color-scale(#f6bd30),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #2b9cd2,
+    'secondary': #f6bd30
   ),
-
   'odontologia': (
-    'primary': generate-color-scale(#32abbf),
-    'secondary': generate-color-scale(#32abbf),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #32abbf,
+    'secondary': #32abbf
   ),
-
   'psicologia': (
-    'primary': generate-color-scale(#029be1),
-    'secondary': generate-color-scale(#f6bd30),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
+    'primary': #029be1,
+    'secondary': #f6bd30
   ),
-
   'teologia': (
-    'primary': generate-color-scale(#004c8f),
-    'secondary': generate-color-scale(#c08300),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
-    'background': generate-color-scale(map.get($color-base, 'background')),
-    'neutral': map.get($color-base, 'neutral'),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
-    'success': generate-color-scale(map.get($color-base, 'success')),
-    'warning': generate-color-scale(map.get($color-base, 'warning')),
-    'danger': generate-color-scale(map.get($color-base, 'danger'))
-  ),
-
-  // Temas por facultad - modo oscuro
-  // ----------------------------------------
-  'arquitectura-diseno-dark':
-    (
-      'primary': generate-color-scale(#653383, true),
-      'secondary': generate-color-scale(#00559a, true),
-      'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-      'background': generate-color-scale(map.get($color-base, 'background'), true),
-      'neutral': invert-color-map(map.get($color-base, 'neutral')),
-      'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-      'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-      'success': generate-color-scale(map.get($color-base, 'success'), true),
-      'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-      'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-    ),
-
-  'artes-dark': (
-    'primary': generate-color-scale(#6f45e9, true),
-    'secondary': generate-color-scale(#ff4b78, true),
-    'tertiary': generate-color-scale(#2c5595, true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'ciencias-dark': (
-    'primary': generate-color-scale(#008aa2, true),
-    'secondary': generate-color-scale(#f6bd30, true),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'ciencias-economicas-administrativas-dark': (
-    'primary': generate-color-scale(#4a7ed8, true),
-    'secondary': generate-color-scale(#371f75, true),
-    'tertiary': generate-color-scale(#ff4e30, true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'ciencias-juridicas-dark': (
-    'primary': generate-color-scale(#2c5595, true),
-    'secondary': generate-color-scale(#f6bd30, true),
-    'tertiary': generate-color-scale(#c6c6c6, true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'ciencias-politicas-relaciones-internacionales-dark': (
-    'primary': generate-color-scale(#008874, true),
-    'secondary': generate-color-scale(#f6bd30, true),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'ciencias-sociales-dark': (
-    'primary': generate-color-scale(#003d7a),
-    'secondary': generate-color-scale(#73d9fc),
-    'tertiary': generate-color-scale(#3e2580),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'comunicacion-lenguaje-dark': (
-    'primary': generate-color-scale(#8048a9, true),
-    'secondary': generate-color-scale(#73d9fc, true),
-    'tertiary': generate-color-scale(#2c5595, true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'derecho-canonico-dark': (
-    'primary': generate-color-scale(#2c5595, true),
-    'secondary': generate-color-scale(#f6bd30, true),
-    'tertiary': generate-color-scale(#f2f2f2, true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'educacion-dark': (
-    'primary': generate-color-scale(#a1bfff, true),
-    'secondary': generate-color-scale(#2a2a68, true),
-    'tertiary': generate-color-scale(#f47abd, true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'enfermeria-dark': (
-    'primary': generate-color-scale(#018ab9, true),
-    'secondary': generate-color-scale(#ffcd00, true),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'estudios-ambientales-rurales-dark': (
-    'primary': generate-color-scale(#abc80e, true),
-    'secondary': generate-color-scale(#2dcad1, true),
-    'tertiary': generate-color-scale(#029be2, true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'filosofia-dark': (
-    'primary': generate-color-scale(#004c8f, true),
-    'secondary': generate-color-scale(#c08300, true),
-    'tertiary': generate-color-scale(#f2f2f2, true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'ingenieria-dark': (
-    'primary': generate-color-scale(#026fc1, true),
-    'secondary': generate-color-scale(#029be1, true),
-    'tertiary': generate-color-scale(#339e36, true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'instituto-pensar-dark': (
-    'primary': generate-color-scale(#00b3ab, true),
-    'secondary': generate-color-scale(#ff6b17, true),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'instituto-salud-publica-dark': (
-    'primary': generate-color-scale(#a74731, true),
-    'secondary': generate-color-scale(#c28069, true),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'medicina-dark': (
-    'primary': generate-color-scale(#2b9cd2, true),
-    'secondary': generate-color-scale(#f6bd30, true),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'odontologia-dark': (
-    'primary': generate-color-scale(#32abbf, true),
-    'secondary': generate-color-scale(#32abbf, true),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'psicologia-dark': (
-    'primary': generate-color-scale(#029be1, true),
-    'secondary': generate-color-scale(#f6bd30, true),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
-  ),
-
-  'teologia-dark': (
-    'primary': generate-color-scale(#004c8f, true),
-    'secondary': generate-color-scale(#c08300, true),
-    'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
-    'background': generate-color-scale(map.get($color-base, 'background'), true),
-    'neutral': invert-color-map(map.get($color-base, 'neutral')),
-    'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
-    'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
-    'success': generate-color-scale(map.get($color-base, 'success'), true),
-    'warning': generate-color-scale(map.get($color-base, 'warning'), true),
-    'danger': generate-color-scale(map.get($color-base, 'danger'), true)
+    'primary': #004c8f,
+    'secondary': #c08300
   )
+);
+
+// ==========================================
+// COMPATIBILIDAD (COMPONENTES EXISTENTES)
+// ==========================================
+$colors-map: $base-theme-light;
+
+$basic-colors-map: (
+  'primary': map.get($base-theme-light, 'primary'),
+  'secondary': map.get($base-theme-light, 'secondary'),
+  'tertiary': map.get($base-theme-light, 'tertiary'),
+  'neutral': map.get($base-theme-light, 'neutral'),
+  'success': map.get($base-theme-light, 'success'),
+  'warning': map.get($base-theme-light, 'warning'),
+  'danger': map.get($base-theme-light, 'danger')
+);
+
+$basic-dark-colors: (
+  'primary': map.get($base-theme-dark, 'primary'),
+  'secondary': map.get($base-theme-dark, 'secondary'),
+  'tertiary': map.get($base-theme-dark, 'tertiary'),
+  'neutral': map.get($base-theme-dark, 'neutral'),
+  'success': map.get($base-theme-dark, 'success'),
+  'warning': map.get($base-theme-dark, 'warning'),
+  'danger': map.get($base-theme-dark, 'danger')
 );

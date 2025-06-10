@@ -1,0 +1,120 @@
+@use '@styles/autoload' as *;
+
+@mixin image {
+  // Clase base para todas las imágenes
+  .image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    transition: all 0.3s ease;
+
+    // ==========================================
+    // ESTADO CLICKEABLE
+    // ==========================================
+    &.image-clickable {
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        opacity: 0.9;
+        transform: scale(1.02);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+
+      &:focus {
+        outline: rem(2px) solid var(--primary-500);
+        outline-offset: rem(2px);
+        border-radius: rem(4px);
+      }
+    }
+
+    // ==========================================
+    // ESTADO EDITABLE EN LIFERAY
+    // ==========================================
+    @include liferay-edit-mode {
+      &[data-lfr-editable-id] {
+        border: rem(2px) dashed var(--primary-400);
+        padding: rem(4px);
+        border-radius: rem(4px);
+        background: rgba(var(--primary-rgb), 0.02);
+
+        &:hover {
+          border-color: var(--primary-600);
+          background: rgba(var(--primary-rgb), 0.05);
+        }
+
+        &:focus {
+          border-style: solid;
+          outline: none;
+          box-shadow: 0 0 0 rem(2px) rgba(var(--primary-rgb), 0.3);
+        }
+      }
+    }
+
+    // ==========================================
+    // RESPONSIVE
+    // ==========================================
+    // En móviles, reducir un poco las transformaciones
+    @media (max-width: $breakpoint-sm) {
+      &.image-clickable:hover {
+        transform: scale(1.01);
+      }
+    }
+
+    // ==========================================
+    // ESTADOS DE CARGA
+    // ==========================================
+    &[data-loading='true'] {
+      background: linear-gradient(90deg, var(--neutral-800) 25%, var(--neutral-700) 50%, var(--neutral-800) 75%);
+      background-size: 200% 100%;
+      animation: imageLoading 1.5s infinite;
+      min-height: rem(200px);
+      border-radius: rem(4px);
+    }
+
+    // Error de carga
+    &[data-error='true'] {
+      background: var(--neutral-800);
+      border: rem(1px) solid var(--danger-500);
+      color: var(--danger-500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: rem(200px);
+
+      &::after {
+        content: '⚠️ Error al cargar imagen';
+        font-size: var(--font-size-small);
+      }
+    }
+  }
+}
+
+// ==========================================
+// ANIMACIONES
+// ==========================================
+@keyframes imageLoading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// ==========================================
+// MEJORAS DE ACCESIBILIDAD
+// ==========================================
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    transition: none !important;
+    animation: none !important;
+
+    &.image-clickable:hover {
+      transform: none !important;
+    }
+  }
+}

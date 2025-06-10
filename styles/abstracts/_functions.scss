@@ -9,16 +9,21 @@
 @use 'sass:string';
 @use 'variables' as *;
 
-// MEDIDAS RELATIVAS
-// ----------------------------------------------------
-// Función para convertir píxeles a rem
+// ==========================================
+// MEDIDAS
+// ==========================================
 @function rem($pixels) {
   @return #{calc($pixels / $base-font-size)}rem;
 }
 
-// CONVERSIÓN DE COLORES
-// ----------------------------------------------------
-// Función para convertir un color HSL a RGB
+// ==========================================
+// COLORES - CONVERSIÓN
+// ==========================================
+@function color-to-rgb($color) {
+  @return #{color.channel($color, 'red', $space: rgb)}, #{color.channel($color, 'green', $space: rgb)},
+    #{color.channel($color, 'blue', $space: rgb)};
+}
+
 @function hsl-to-rgb($color) {
   @return rgb(
     round(color.channel($color, 'red', $space: rgb)),
@@ -27,66 +32,100 @@
   );
 }
 
-// INVERSIÓN DE COLORES
-// ----------------------------------------------------
-// Función para invertir solo los valores de un mapa
+// ==========================================
+// COLORES - INVERSIÓN
+// ==========================================
 @function invert-color-map($input-map) {
-  $reversed-map: ();
-  $keys: map.keys($input-map);
-  $values: map.values($input-map);
-  $reversed-values: ();
-
-  @for $i from list.length($values) through 1 {
-    $reversed-values: list.append($reversed-values, list.nth($values, $i));
+  @if $input-map == null {
+    @error "invert-color-map(): $input-map no puede ser null";
+  }
+  @if meta.type-of($input-map) != 'map' {
+    @error "invert-color-map(): $input-map debe ser un mapa";
   }
 
-  @for $j from 1 through list.length($keys) {
-    $key: list.nth($keys, $j);
+  $reversed-map: ();
+  $empty-key-value: null;
+
+  // Guardar clave vacía si existe
+  @if map.has-key($input-map, '') {
+    $empty-key-value: map.get($input-map, '');
+  }
+
+  // Crear listas excluyendo clave vacía
+  $filtered-keys: ();
+  $filtered-values: ();
+
+  @each $key, $value in $input-map {
+    @if $key != '' {
+      $filtered-keys: list.append($filtered-keys, $key);
+      $filtered-values: list.append($filtered-values, $value);
+    }
+  }
+
+  // Invertir valores
+  $reversed-values: ();
+  @for $i from list.length($filtered-values) through 1 {
+    $reversed-values: list.append($reversed-values, list.nth($filtered-values, $i));
+  }
+
+  // Crear mapa invertido
+  @for $j from 1 through list.length($filtered-keys) {
+    $key: list.nth($filtered-keys, $j);
     $value: list.nth($reversed-values, $j);
     $reversed-map: map.set($reversed-map, $key, $value);
+  }
+
+  // Restaurar clave vacía
+  @if $empty-key-value != null {
+    $reversed-map: map.set($reversed-map, '', $empty-key-value);
   }
 
   @return $reversed-map;
 }
 
-// ESCALAS DE COLORES
-// ----------------------------------------------------
-// Generador de escala de colores (parametrizable)
+// ==========================================
+// COLORES - ESCALAS
+// ==========================================
 @function generate-color-scale($base-color, $inverted: false) {
   $hue: color.channel($base-color, 'hue', $space: hsl);
   $saturation: color.channel($base-color, 'saturation', $space: hsl);
   $color-scale: ();
 
+  // Color base
   $color-scale: map.set($color-scale, '', $base-color);
+  $color-scale: map.set($color-scale, 'rgb', color-to-rgb($base-color));
 
-  @if $inverted {
-    $lightness-steps: invert-color-map($lightness-steps);
-    @each $step, $light in $lightness-steps {
-      $hsl-color: hsl($hue, $saturation, $light);
-      $color-value: hsl-to-rgb($hsl-color);
-      $color-scale: map.set($color-scale, $step, $color-value);
-    }
-  } @else {
-    @each $step, $light in $lightness-steps {
-      $hsl-color: hsl($hue, $saturation, $light);
-      $color-value: hsl-to-rgb($hsl-color);
-      $color-scale: map.set($color-scale, $step, $color-value);
-    }
+  $steps: if($inverted, invert-color-map($lightness-steps), $lightness-steps);
+
+  @each $step, $light in $steps {
+    $hsl-color: hsl($hue, $saturation, $light);
+    $color-value: hsl-to-rgb($hsl-color);
+    $color-scale: map.set($color-scale, $step, $color-value);
+    $color-scale: map.set($color-scale, '#{$step}-rgb', color-to-rgb($color-value));
   }
 
   @return $color-scale;
 }
 
-// EXTRACCIÓN DE COLORES
-// ----------------------------------------------------
-// Extractor de color de la base de colores
-@function extract-color($color-name) {
-  @return map.get($color-base, $color-name);
+@function add-rgb-to-color-map($color-map) {
+  $map-with-rgb: ();
+
+  @each $variant, $color in $color-map {
+    $map-with-rgb: map.set($map-with-rgb, $variant, $color);
+
+    @if $variant != '' {
+      $map-with-rgb: map.set($map-with-rgb, '#{$variant}-rgb', color-to-rgb($color));
+    } @else {
+      $map-with-rgb: map.set($map-with-rgb, 'rgb', color-to-rgb($color));
+    }
+  }
+
+  @return $map-with-rgb;
 }
 
-// LUMINANCIA
-// ----------------------------------------------------
-// Función para calcular la luminancia de un color
+// ==========================================
+// COLORES - CONTRASTE
+// ==========================================
 @function luminance($color) {
   $r: math.div(color.channel($color, 'red', $space: rgb), 255);
   $g: math.div(color.channel($color, 'green', $space: rgb), 255);
@@ -102,78 +141,29 @@
   @return list.nth($adjusted, 1) * 0.2126 + list.nth($adjusted, 2) * 0.7152 + list.nth($adjusted, 3) * 0.0722;
 }
 
-// CONTRASTE DE TEXTO
-// ----------------------------------------------------
-// Función para determinar si el texto debe ser blanco o negro
 @function text-contrast($background-color) {
   @if meta.type-of($background-color) != 'color' {
     @error "El valor `#{$background-color}` no es un color válido.";
   }
 
   $bg-luminance: luminance($background-color);
-  $white-contrast: math.div(1 + 0.05, $bg-luminance + 0.05);
-  $black-contrast: math.div($bg-luminance + 0.05, 0 + 0.05);
 
-  // Si la luminancia del fondo es muy alta (> 0.85), forzamos el texto a ser negro
-  @if $bg-luminance > 0.55 {
-    @return var(--neutral-100);
-  } @else {
-    @return var(--neutral-1000);
-  }
+  @return if($bg-luminance > 0.55, var(--neutral-100), var(--neutral-1000));
 }
 
-@function text-contrast-byVarName($background-color) {
-  @if meta.type-of($background-color) != 'color' {
-    // Determinar si el tema es oscuro o claro basado en el nombre de la variable
-    @if string.index($background-color, '--neutral-') and string.index($background-color, '-100') {
-      @return var(--neutral-1000);
-    } @else if string.index($background-color, '-500') or string.index($background-color, '-800') {
-      @return var(--neutral-100);
-    } @else if string.index($background-color, '') {
-      @return var(--neutral-100);
-    } @else {
-      @return var(--neutral-1000);
-    }
-  }
-
-  // Para valores de color reales, usa el cálculo de luminancia
-  $bg-luminance: luminance($background-color);
-
-  @if $bg-luminance > 0.45 {
-    @return var(--neutral-100);
-  } @else {
-    @return var(--neutral-1000);
-  }
+// ==========================================
+// UTILIDADES
+// ==========================================
+@function extract-color($color-name) {
+  @return map.get($color-base, $color-name);
 }
-
-// FUNCIÓN PARA ACCEDER A LOS COLORES SEMÁNTICOS
-// ------------------------------------------
-// Permite usar los colores semánticos de forma programática
-@function semantic-color($name) {
-  @if map.has-key($semantic-colors, $name) {
-    @return map.get($semantic-colors, $name);
-  }
-
-  @error "Color semántico '#{$name}' no encontrado en $semantic-colors";
-}
-
-// FUNCIÓN PARA ACCEDER A LOS COLORES DEL TEMA
-// ------------------------------------------
-// Permite usar los colores del tema de forma programática
 
 @function deep-merge($map1, $map2) {
   $result: $map1;
 
   @each $key, $value in $map2 {
     $existing: map.get($result, $key);
-
-    $new-value: if(
-      meta.type-of($existing) == 'map' and meta.type-of($value) == 'map',
-      deep-merge($existing, $value),
-      // merge recursivo
-      $value
-    );
-
+    $new-value: if(meta.type-of($existing) == 'map' and meta.type-of($value) == 'map', deep-merge($existing, $value), $value);
     $result: map.merge(
       $result,
       (

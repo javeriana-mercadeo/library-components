@@ -1,76 +1,99 @@
 // ==========================================
-// RESET Y NORMALIZACIÓN
+// RESET COMPATIBLE CON TAILWIND
+// ==========================================
+@use '../abstracts/functions' as *;
+
+// ==========================================
+// RESET SELECTIVO
 // ==========================================
 
-// Reset básico para consistencia entre navegadores
-* {
-  margin: revert-layer;
-  padding: revert-layer;
-  box-sizing: border-box;
-  font-family: 'Raleway', serif;
-  font-weight: 500;
+// Solo elementos que Tailwind no resetea o necesitan ajustes específicos
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
-// Fuentes para código
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+// Variables CSS base para nuestro sistema
+body {
+  font-family: var(--font-family);
+  transition: background-color var(--transition) ease;
 }
 
-// Eliminar estilos de lista
-ul,
-ol {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+// ==========================================
+// ELEMENTOS ESPECÍFICOS DEL PROYECTO
+// ==========================================
+
+// Solo estilos que necesitamos y que no chocan con Tailwind
+code:not(.hljs) {
+  font-family: 'Courier New', Consolas, Monaco, monospace;
+  font-size: var(--font-size-small);
+  background: var(--neutral-900);
+  padding: rem(2px) rem(4px);
+  border-radius: var(--border-radius-xs);
 }
 
-// Links sin decoración por defecto
-a {
-  text-decoration: none;
-  color: inherit;
-  transition: color 0.3s ease;
+// ==========================================
+// ACCESIBILIDAD
+// ==========================================
+
+// Focus específico para nuestro sistema
+:focus-visible:not(.focus\:outline-none):not([class*='focus:']) {
+  outline: rem(2px) solid var(--primary-500);
+  outline-offset: rem(2px);
+  border-radius: var(--border-radius-xs);
 }
 
-// Imágenes responsivas por defecto
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-// Formularios normalizados
-button,
-input,
-select,
-textarea {
-  font-family: inherit;
-  font-size: 100%;
-  line-height: 1.15;
-  margin: 0;
-}
-
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-// Eliminar outline por defecto (mantener accesibilidad)
-:focus-visible {
-  outline: 2px solid var(--primary-500);
-  outline-offset: 2px;
-}
-
-// Accesibilidad: elementos ocultos pero accesibles para lectores de pantalla
+// Screen reader only (mejorado)
 .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+  position: absolute !important;
+  width: rem(1px) !important;
+  height: rem(1px) !important;
+  padding: 0 !important;
+  margin: rem(-1px) !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// ==========================================
+// COMPONENTES ESPECÍFICOS
+// ==========================================
+
+// Solo para elementos de nuestro sistema de componentes
+[data-component] {
+  font-family: var(--font-family);
+}
+
+// Elementos editables de Liferay
+lfr-editable {
+  display: block;
+  min-height: rem(20px);
+}
+
+lfr-editable:empty::before {
+  content: attr(data-lfr-editable-id);
+  opacity: 0.5;
+  font-style: italic;
+  color: var(--neutral-500);
+}
+
+// ==========================================
+// UTILIDADES NO CONFLICTIVAS
+// ==========================================
+
+// Respeta las preferencias de movimiento del usuario
+@media (prefers-reduced-motion: reduce) {
+  *:not([class*='animate-']):not([class*='transition-']) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Hidden mejorado (solo si Tailwind no lo maneja)
+[hidden]:not(.block):not(.inline):not(.flex):not(.grid) {
+  display: none !important;
 }
