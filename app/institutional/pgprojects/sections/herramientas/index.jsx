@@ -1,6 +1,8 @@
 import React from 'react'
-import './styles.scss';
-
+import './styles.scss'
+import Title from '../../../../_library/components/contain/title'
+import Paragraph from '../../../../_library/components/contain/paragraph'
+import Container from '@library/components/container/Container'
 
 const organizarLogos = logos => {
   if (!logos || logos.length === 0) return []
@@ -34,30 +36,37 @@ const Herramientas = ({ logos = [] }) => {
   const logosOrganizados = organizarLogos(logos)
 
   return (
-    <section className="tools-container">
-      <h1 className="tools-titulo">Herramientas</h1>
-      <div className="tools-content">
-        <div className="tools-texto">
-          <h2>Lorem ipsum dolor sit amet</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur. Eget id cursus eget at congue turpis. Volutpat odio nisi dictum in congue. Suspendisse
-            diam pellentesque volutpat donec consequat tempor et quis sed. Leo sit donec scelerisque vitae risus senectus dignissim.
-          </p>
-        </div>
+    <Container className="tools-container">
+      <section>
+        <Title className="tools-titulo">
+          <h1>Herramientas</h1>
+        </Title>
+        <div className="tools-content">
+          <div className="tools-texto">
+            <h2>Lorem ipsum dolor sit amet</h2>
+            <Paragraph>
+              <p>
+                Lorem ipsum dolor sit amet consectetur. Eget id cursus eget at congue turpis. Volutpat odio nisi dictum in congue.
+                Suspendisse diam pellentesque volutpat donec consequat tempor et quis sed. Leo sit donec scelerisque vitae risus senectus
+                dignissim.
+              </p>
+            </Paragraph>
+          </div>
 
-        <div className="tools-logos-grid">
-          {logosOrganizados.map((columna, columnaIndex) => (
-            <div key={`columna-${columnaIndex}`} className={`columna-logos ${columnaIndex % 2 === 1 ? 'offset' : ''}`}>
-              {columna.map((logo, logoIndex) => (
-                <div key={`logo-${columnaIndex}-${logoIndex}`} className="logo-item">
-                  <img src={logo.imagen} alt={logo.nombre} />
-                </div>
-              ))}
-            </div>
-          ))}
+          <div className="tools-logos-grid">
+            {logosOrganizados.map((columna, columnaIndex) => (
+              <div key={`columna-${columnaIndex}`} className={`columna-logos ${columnaIndex % 2 === 1 ? 'offset' : ''}`}>
+                {columna.map((logo, logoIndex) => (
+                  <div key={`logo-${columnaIndex}-${logoIndex}`} className="logo-item">
+                    <img src={logo.imagen} alt={logo.nombre} />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </Container>
   )
 }
 
