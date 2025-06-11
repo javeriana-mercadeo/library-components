@@ -46,21 +46,16 @@ const Laboratorios = () => {
   return (
     <Container className="lab-slider-container">
       <div>
-        <Title className="lab-slider-title">
-          {' '}
-          <h1>Laboratorios</h1>
-        </Title>
+        <Title className="lab-slider-title">Laboratorios</Title>
 
         <div className="lab-slider-content">
           <div className="lab-slider-text" style={{}}>
             <h3>Lorem ipsum dolor sit amet consectetur.</h3>
             <Paragraph>
               {' '}
-              <p>
-                Lorem ipsum dolor sit amet consectetur. Eget mi quam sit turpis. Arcu pulvinar sit ut nibh ultricies risus enim. Est tellus
-                pretium consequat erat. Fermentum integer augue lectus semper imperdiet justo commodo pharetra a. Odio aliquam metus vitae
-                amet velit convallis.
-              </p>
+              Lorem ipsum dolor sit amet consectetur. Eget mi quam sit turpis. Arcu pulvinar sit ut nibh ultricies risus enim. Est tellus
+              pretium consequat erat. Fermentum integer augue lectus semper imperdiet justo commodo pharetra a. Odio aliquam metus vitae
+              amet velit convallis.
             </Paragraph>
 
             <div style={navContainerStyle} className="lab-slider-navigation">

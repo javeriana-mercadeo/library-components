@@ -3,7 +3,9 @@ import React, { Component, createRef } from 'react'
 import './styles.scss'
 import Title from '../../../../_library/components/contain/title'
 import Paragraph from '../../../../_library/components/contain/paragraph'
-import Container from '@library/components/container/Container'
+import Container from '@library/components/container' 
+
+
 
 class DobleTitulacion2 extends Component {
   constructor(props) {
@@ -57,9 +59,7 @@ class DobleTitulacion2 extends Component {
       <div className="doble-titulacion-container" ref={this.containerRef}>
         <Container className="content-wrapper">
           <div>
-            <Title className="main-title">
-              <h1>Doble Titulación 2</h1>
-            </Title>
+            <Title className="main-title">Doble Titulación 2</Title>
 
             <div className="two-column-layout">
               <div className="left-column">
@@ -74,11 +74,8 @@ class DobleTitulacion2 extends Component {
                     />
 
                     <Paragraph className="overlay-description">
-                      {' '}
-                      <p>
-                        Vive experiencias académicas en el extranjero que potencian tu perfil profesional y amplían tus oportunidades
-                        laborales.
-                      </p>
+                      Vive experiencias académicas en el extranjero que potencian tu perfil profesional y amplían tus oportunidades
+                      laborales.
                     </Paragraph>
                   </div>
 
@@ -95,8 +92,7 @@ class DobleTitulacion2 extends Component {
                   <div className="title-section">
                     <h2 className="section-title">Esquema de Doble Titulación</h2>
                     <Paragraph className="university-info">
-                      {' '}
-                      <p>con la Universidad Pompeu Fabra - Barcelona School of Management (BSM)</p>
+                      con la Universidad Pompeu Fabra - Barcelona School of Management (BSM)
                     </Paragraph>
                   </div>
 
@@ -125,8 +121,7 @@ class DobleTitulacion2 extends Component {
                       <div className="program-info">
                         <h3 className="program-title">Misiones Internacionales:</h3>
                         <Paragraph className="program-description">
-                          {' '}
-                          <p>Dos experiencias académicas en innovación, estrategia y emprendimiento, incluidas en la matrícula.</p>
+                          Dos experiencias académicas en innovación, estrategia y emprendimiento, incluidas en la matrícula.
                         </Paragraph>
                       </div>
                     </div>
@@ -140,7 +135,7 @@ class DobleTitulacion2 extends Component {
                       <div className="program-info">
                         <h3 className="program-title">Summer Business School:</h3>
                         <Paragraph className="program-description">
-                          <p>Programa intersemestral con docentes internacionales para complementar tu formación.</p>
+                          Programa intersemestral con docentes internacionales para complementar tu formación.
                         </Paragraph>
                       </div>
                     </div>
