@@ -27,24 +27,25 @@ export default function ThankYouPage() {
       </div>
       <div className={`${baseClass}__content`}>
         <Btn href="#" target="_blank" variant="link" size="md" className={`${baseClass}__card-link`} id={`$elementName`} isEditable={false}>
+          <i className="ph ph-arrow-bend-up-left"></i>
           Volver al programa
         </Btn>
         <Title hierarchy="h1" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}`}>
           ¡Gracias por tu interés en ser parte de la Universidad Javeriana!
         </Title>
-        <Paragraph id={`${elementName}-enrollment-note`} className={`${baseClass}_enrollment-note`} size="sm">
-          Tu solicitud ha sido recibida, y muy pronto uno de nuestros asesores se pondrá en contacto contigo para brindarte toda la
-          información que necesitas.
+        <Paragraph id={`${elementName}-enrollment-note`} className={`${baseClass}_enrollment-note`}>
+          Tu solicitud ha sido recibida, y <strong>muy pronto uno de nuestros asesores se pondrá en contacto contigo</strong> para brindarte
+          toda la información que necesitas.
         </Paragraph>
         <div className={`${baseClass}__card-info-main`}>
           <div className={`${baseClass}__card-info`}>
-            <div>
+            <div className={`${baseClass}__card-info-icon`}>
               <i className="ph ph-panorama"></i>
             </div>
             <Title hierarchy="h3" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-`}>
               Explora nuestro tour virtual y conoce la universidad.
             </Title>
-            <Paragraph id={`${elementName}-tour-info`} className={`${baseClass}_enrollment-note`} size="sm">
+            <Paragraph id={`${elementName}-tour-info`} className={`${baseClass}_enrollment-note`}>
               Recorre cada espacio de nuestra universidad sin moverte de casa. Conoce los lugares donde vivirás experiencias inolvidables.
             </Paragraph>
             <Btn
@@ -59,14 +60,14 @@ export default function ThankYouPage() {
             </Btn>
           </div>
           <div className={`${baseClass}__card-info`}>
-            <div>
+            <div className={`${baseClass}__card-info-icon`}>
               <i className="ph ph-calendar-dots"></i>
             </div>
             <Title hierarchy="h3" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-`}>
               Eventos, actividades y apoyo para tu futuro académico.
             </Title>
-            <Paragraph id={`${elementName}-tour-info`} className={`${baseClass}_enrollment-note`} size="sm">
-              Recorre cada espacio de nuestra universidad sin moverte de casa. Conoce los lugares donde vivirás experiencias inolvidables.
+            <Paragraph id={`${elementName}-tour-info`} className={`${baseClass}_enrollment-note`}>
+              Charlas, talleres y ferias académicas diseñadas para ti. Descubre becas, financiación y mucho más.
             </Paragraph>
             <Btn
               href="#"
@@ -80,14 +81,14 @@ export default function ThankYouPage() {
             </Btn>
           </div>
           <div className={`${baseClass}__card-info`}>
-            <div>
+            <div className={`${baseClass}__card-info-icon`}>
               <i className="ph ph-telegram-logo"></i>
             </div>
             <Title hierarchy="h3" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-`}>
               Estamos aquí para responder todas tus preguntas.
             </Title>
-            <Paragraph id={`${elementName}-tour-info`} className={`${baseClass}_enrollment-note`} size="sm">
-              Recorre cada espacio de nuestra universidad sin moverte de casa. Conoce los lugares donde vivirás experiencias inolvidables.
+            <Paragraph id={`${elementName}-tour-info`} className={`${baseClass}_enrollment-note`}>
+              Contáctanos por correo o teléfono para recibir información sobre becas, financiación y admisiones.
             </Paragraph>
             <Btn
               href="#"
@@ -101,7 +102,7 @@ export default function ThankYouPage() {
             </Btn>
           </div>
         </div>
-        <div>
+        <div className={`${baseClass}__btn-main`}>
           <Btn id="registration-btn" isEditable={false}>
             Ver más programas
           </Btn>
