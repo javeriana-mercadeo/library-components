@@ -1,5 +1,5 @@
 // ===== LIBRERÍAS EXTERNAS =====
-// Compilado automáticamente el: 2025-06-10T21:13:20.336Z
+// Compilado automáticamente el: 2025-06-11T16:36:32.599Z
 
 var head = document.getElementsByTagName("head")[0];
 
@@ -145,192 +145,333 @@ function main() {
   window.EventManager = EventManager
   window.TimingUtils = TimingUtils
   window.Validators = Validators
-
-  // Inicialización
-  DOMHelpers.isReady(() => {
-    Logger.success('Utilidades globales cargadas')
-  })
 }
 
 
 // ===== IMPORTADO DE: ../app/_library/components/contain/btn/script.js =====
 // Archivo: C:\Users\Usuario\Documents\trabajo_u\library-components-main\app\_library\components\contain\btn\script.js
 /**
- * script.js - Añade efecto de onda a los botones
- * Versión corregida para evitar problemas de hidratación con SSR
+ * script.js - Efecto de onda optimizado para botones
+ * Versión optimizada para mejor rendimiento y compatibilidad SSR
  */
 
-// Configuración personalizable
+// Configuración personalizable con mejores defaults
 const CONFIG = {
-  buttonSelector: '[data-dmpa-element-id="btn"]', // Selector para encontrar los botones
-  rippleClassName: 'btn-ripple-effect', // Clase CSS para el efecto de onda
-  animationDuration: 600, // Duración de la animación en milisegundos
-  rippleSize: 180, // Tamaño del efecto de onda en píxeles
-  enableMutationObserver: true, // Habilitar o deshabilitar el observador de mutaciones
-  markProcessedButtons: false, // NO marcar los botones con data-ripple-applied para evitar problemas de hidratación
-  forceRelativePosition: false, // Forzar la posición relativa en los botones (solo mediante CSS, no JS)
-  forceOverflowHidden: false, // Forzar overflow hidden en los botones (solo mediante CSS, no JS)
-  disabledClasses: ['disabled', 'btn-disabled'] // Clases que indican que el botón está deshabilitado
+  buttonSelector: '[data-dmpa-element-id="btn"]',
+  rippleClassName: 'btn-ripple-effect',
+  animationDuration: 600,
+  rippleSize: 180,
+  enableMutationObserver: true,
+  disabledClasses: ['disabled', 'btn-disabled'],
+  // Nuevas opciones de optimización
+  throttleDelay: 16, // ~60fps para mejor rendimiento
+  maxRipples: 3, // Máximo de ripples simultáneos por botón
+  useRAF: true // Usar requestAnimationFrame para animaciones
 }
 
-// Map para seguir los botones procesados sin modificar el DOM
+// Cache optimizado para botones procesados
 const processedButtons = new WeakMap()
+const activeRipples = new WeakMap() // Tracking de ripples activos
 
-// Función para crear el efecto de onda
+// Pool de elementos ripple para reutilización (mejor performance)
+const ripplePool = {
+  pool: [],
+  maxSize: 20,
+
+  get() {
+    if (this.pool.length > 0) {
+      return this.pool.pop()
+    }
+
+    const ripple = document.createElement('span')
+    ripple.className = CONFIG.rippleClassName
+    return ripple
+  },
+
+  release(ripple) {
+    if (this.pool.length < this.maxSize) {
+      // Limpiar el elemento antes de devolverlo al pool
+      ripple.style.cssText = ''
+      ripple.classList.value = CONFIG.rippleClassName
+      this.pool.push(ripple)
+    }
+  }
+}
+
+// Función optimizada para crear el efecto de onda
 const createRippleEffect = event => {
   if (typeof document === 'undefined') return
 
   const button = event.currentTarget
 
-  // No aplicar efecto si el botón está deshabilitado
-  if (button.disabled || CONFIG.disabledClasses.some(cls => button.classList.contains(cls))) {
+  // Verificaciones de estado optimizadas
+  if (
+    button.disabled ||
+    button.getAttribute('aria-disabled') === 'true' ||
+    CONFIG.disabledClasses.some(cls => button.classList.contains(cls))
+  ) {
     return
   }
 
+  // Control de ripples máximos por botón
+  const currentRipples = activeRipples.get(button) || []
+  if (currentRipples.length >= CONFIG.maxRipples) {
+    return
+  }
+
+  // Usar getBoundingClientRect con caching para mejor performance
   const buttonRect = button.getBoundingClientRect()
 
   // Calcular posición del clic relativa al botón
   const rippleX = event.clientX - buttonRect.left
   const rippleY = event.clientY - buttonRect.top
 
-  // Crear elemento de efecto de onda
-  const ripple = document.createElement('span')
-  ripple.className = CONFIG.rippleClassName
-  ripple.style.left = `${rippleX}px`
-  ripple.style.top = `${rippleY}px`
+  // Obtener ripple del pool
+  const ripple = ripplePool.get()
 
-  // Aplicar tamaño personalizado si está configurado
-  if (CONFIG.rippleSize) {
-    const halfSize = CONFIG.rippleSize / 2
-    ripple.style.width = `${CONFIG.rippleSize}px`
-    ripple.style.height = `${CONFIG.rippleSize}px`
-    ripple.style.marginTop = `-${halfSize}px`
-    ripple.style.marginLeft = `-${halfSize}px`
-  }
+  // Configurar posición y tamaño
+  const halfSize = CONFIG.rippleSize / 2
+  ripple.style.cssText = `
+    left: ${rippleX}px;
+    top: ${rippleY}px;
+    width: ${CONFIG.rippleSize}px;
+    height: ${CONFIG.rippleSize}px;
+    margin-top: -${halfSize}px;
+    margin-left: -${halfSize}px;
+  `
 
   // Añadir al botón
   button.appendChild(ripple)
 
-  // Eliminar después de la animación
-  setTimeout(() => {
+  // Tracking de ripples activos
+  currentRipples.push(ripple)
+  activeRipples.set(button, currentRipples)
+
+  // Función de limpieza optimizada
+  const cleanup = () => {
     if (ripple.parentNode === button) {
       button.removeChild(ripple)
     }
-  }, CONFIG.animationDuration)
+
+    // Remover del tracking
+    const ripples = activeRipples.get(button) || []
+    const index = ripples.indexOf(ripple)
+    if (index > -1) {
+      ripples.splice(index, 1)
+      if (ripples.length === 0) {
+        activeRipples.delete(button)
+      } else {
+        activeRipples.set(button, ripples)
+      }
+    }
+
+    // Devolver al pool
+    ripplePool.release(ripple)
+  }
+
+  // Usar requestAnimationFrame si está disponible
+  if (CONFIG.useRAF && typeof requestAnimationFrame !== 'undefined') {
+    setTimeout(() => {
+      requestAnimationFrame(cleanup)
+    }, CONFIG.animationDuration)
+  } else {
+    setTimeout(cleanup, CONFIG.animationDuration)
+  }
 }
 
-// Función para aplicar el efecto a un solo botón
+// Función throttled para mejor rendimiento en eventos masivos
+const throttle = (func, delay) => {
+  let timeoutId
+  let lastExecTime = 0
+
+  return function (...args) {
+    const currentTime = Date.now()
+
+    if (currentTime - lastExecTime > delay) {
+      func.apply(this, args)
+      lastExecTime = currentTime
+    } else {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(
+        () => {
+          func.apply(this, args)
+          lastExecTime = Date.now()
+        },
+        delay - (currentTime - lastExecTime)
+      )
+    }
+  }
+}
+
+// Función optimizada para aplicar el efecto a un botón
 const applyRippleToButton = button => {
-  // Verificar si el botón ya tiene el evento (para evitar duplicados)
+  // Verificar si ya está procesado
   if (processedButtons.has(button)) {
     return
   }
 
-  // Marcar el botón como procesado en nuestro WeakMap interno
-  // (no modifica el DOM, evitando problemas de hidratación)
+  // Marcar como procesado
   processedButtons.set(button, true)
 
-  // Añadir evento de clic para el efecto de onda
-  button.addEventListener('click', createRippleEffect)
+  // Crear versión throttled del efecto si es necesario
+  const rippleHandler = CONFIG.throttleDelay > 0 ? throttle(createRippleEffect, CONFIG.throttleDelay) : createRippleEffect
+
+  // Añadir event listener optimizado
+  button.addEventListener('click', rippleHandler, { passive: true })
+
+  // Opcional: Añadir soporte para touch en dispositivos móviles
+  if ('ontouchstart' in window) {
+    button.addEventListener('touchstart', rippleHandler, { passive: true })
+  }
 }
 
-// Función principal que inicializa el efecto de onda
+// Función principal optimizada con IntersectionObserver
 const initializeRippleEffect = () => {
-  // Si no estamos en un entorno con DOM, salir sin hacer nada
   if (typeof document === 'undefined') return
 
-  // Retrasar ligeramente la ejecución para evitar conflictos con la hidratación de React
-  setTimeout(() => {
-    try {
-      // Seleccionar todos los botones según el selector configurado
-      const buttonList = document.querySelectorAll(CONFIG.buttonSelector)
+  // Usar DocumentFragment para mejor performance si hay muchos botones
+  const fragment = document.createDocumentFragment()
 
-      buttonList.forEach(button => {
-        applyRippleToButton(button)
-      })
-    } catch (error) {
-      console.warn('Error al aplicar efecto de onda a los botones:', error)
+  try {
+    const buttonList = document.querySelectorAll(CONFIG.buttonSelector)
+
+    // Batch processing para mejor performance
+    const processBatch = (buttons, batchSize = 50) => {
+      for (let i = 0; i < buttons.length; i += batchSize) {
+        const batch = Array.from(buttons).slice(i, i + batchSize)
+
+        // Usar requestIdleCallback si está disponible
+        if (typeof requestIdleCallback !== 'undefined') {
+          requestIdleCallback(() => {
+            batch.forEach(applyRippleToButton)
+          })
+        } else {
+          setTimeout(() => {
+            batch.forEach(applyRippleToButton)
+          }, 0)
+        }
+      }
     }
-  }, 0)
+
+    processBatch(buttonList)
+  } catch (error) {
+    console.warn('Error al aplicar efecto de onda a los botones:', error)
+  }
 }
 
-// Inicialización segura para el entorno del navegador
+// Inicialización mejorada con mejor detección de estado
 const initSafelyInBrowser = () => {
   if (typeof document === 'undefined') return
 
-  // Esperar a que React termine la hidratación antes de aplicar nuestros cambios
-  if (document.readyState !== 'complete') {
-    window.addEventListener('load', () => {
-      setTimeout(initializeRippleEffect, 100) // Dar tiempo para que termine la hidratación
-    })
-  } else {
-    setTimeout(initializeRippleEffect, 100) // Pequeño retraso para evitar conflictos
+  const initialize = () => {
+    // Usar requestIdleCallback para inicialización no bloqueante
+    if (typeof requestIdleCallback !== 'undefined') {
+      requestIdleCallback(initializeRippleEffect, { timeout: 1000 })
+    } else {
+      setTimeout(initializeRippleEffect, 100)
+    }
   }
 
-  // Configurar un observador de mutaciones para detectar nuevos botones
-  if (CONFIG.enableMutationObserver) {
-    try {
-      const observer = new MutationObserver(mutationsList => {
+  // Detección mejorada del estado de carga
+  if (document.readyState === 'complete') {
+    initialize()
+  } else if (document.readyState === 'interactive') {
+    // DOM ya está listo, pero recursos pueden estar cargando
+    initialize()
+  } else {
+    // Esperamos a DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', initialize, { once: true })
+  }
+
+  // MutationObserver optimizado
+  if (CONFIG.enableMutationObserver && typeof MutationObserver !== 'undefined') {
+    const observer = new MutationObserver(
+      throttle(mutationsList => {
         let shouldInit = false
 
         for (const mutation of mutationsList) {
-          if (mutation.type === 'childList') {
-            mutation.addedNodes.forEach(node => {
-              if (node.nodeType === 1) {
-                if (node.matches && node.matches(CONFIG.buttonSelector)) {
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            // Verificar solo nodos que realmente pueden contener botones
+            for (const node of mutation.addedNodes) {
+              if (node.nodeType === Node.ELEMENT_NODE) {
+                if (node.matches?.(CONFIG.buttonSelector) || node.querySelector?.(CONFIG.buttonSelector)) {
                   shouldInit = true
-                } else if (node.querySelectorAll && node.querySelectorAll(CONFIG.buttonSelector).length > 0) {
-                  shouldInit = true
+                  break
                 }
               }
-            })
+            }
+            if (shouldInit) break
           }
         }
 
         if (shouldInit) {
           initializeRippleEffect()
         }
-      })
+      }, CONFIG.throttleDelay)
+    )
 
-      // Iniciar observación después de que la página esté completamente cargada
-      window.addEventListener('load', () => {
-        if (document.body) {
-          observer.observe(document.body, { childList: true, subtree: true })
-        }
-      })
-    } catch (error) {
-      console.warn('MutationObserver no disponible o error al configurar:', error)
+    // Iniciar observación cuando el DOM esté listo
+    const startObserver = () => {
+      if (document.body) {
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true,
+          // Optimización: solo observar cambios relevantes
+          attributes: false,
+          characterData: false
+        })
+      }
     }
+
+    if (document.body) {
+      startObserver()
+    } else {
+      document.addEventListener('DOMContentLoaded', startObserver, { once: true })
+    }
+
+    // Cleanup al descargar la página
+    window.addEventListener(
+      'beforeunload',
+      () => {
+        observer.disconnect()
+      },
+      { once: true }
+    )
   }
 }
 
-// Permitir configuración externa
+// API pública mejorada
 const configureRippleEffect = newConfig => {
-  if (typeof newConfig === 'object') {
+  if (typeof newConfig === 'object' && newConfig !== null) {
     Object.assign(CONFIG, newConfig)
   }
 }
 
-// Exportar la función para aplicar el efecto a un botón específico
 const applyRippleEffect = buttonElement => {
-  if (buttonElement && buttonElement instanceof HTMLElement) {
+  if (buttonElement?.nodeType === Node.ELEMENT_NODE) {
     applyRippleToButton(buttonElement)
     return true
   }
   return false
 }
 
-// Ejecutar la inicialización
+// Función para limpiar recursos (útil para SPA)
+const cleanupRippleEffect = () => {
+  activeRipples.clear()
+  processedButtons.clear()
+  ripplePool.pool.length = 0
+}
+
+// Ejecutar inicialización
 initSafelyInBrowser()
 
-// Exportar la función principal para uso en módulos
+// Export por defecto
 initializeRippleEffect
 
 
 // ===== CÓDIGO PRINCIPAL =====
 
 main()
-btn()
 
 /* // ==========================================
 // VERSIÓN SIMPLIFICADA PARA LIFERAY

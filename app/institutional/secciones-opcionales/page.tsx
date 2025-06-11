@@ -13,10 +13,10 @@ export default function SeccionesOpcionales() {
   const basePath = '/institutional/pgProjects'
   return (
     <>
-      <Proyectos />
-      {/* <ViewComponent path={`${basePath}/sections/proyectos`}>
+     {/* <Proyectos />*/}
+       <ViewComponent path={`${basePath}/sections/proyectos`}>
         <Proyectos />
-      </ViewComponent> */}
+      </ViewComponent> 
 
       <Laboratorios />
       {/* <ViewComponent path={`${basePath}/sections/laboratorios`}>

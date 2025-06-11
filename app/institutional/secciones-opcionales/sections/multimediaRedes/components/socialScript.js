@@ -2,9 +2,7 @@ export default function initializeSocialEmbeds() {
   // Función para cargar el script de Instagram
   const loadInstagramScript = () => {
     return new Promise((resolve) => {
-      // Verificar si el script ya existe
       if (!document.querySelector('script[src*="instagram.com/embed.js"]')) {
-        // Crear y cargar el script de Instagram
         const script = document.createElement('script')
         script.src = 'https://www.instagram.com/embed.js'
         script.async = true
@@ -21,7 +19,6 @@ export default function initializeSocialEmbeds() {
         
         document.body.appendChild(script)
       } else {
-        // Si ya existe, solo procesar los embeds
         if (window.instgrm && window.instgrm.Embeds) {
           window.instgrm.Embeds.process()
         }
@@ -33,9 +30,7 @@ export default function initializeSocialEmbeds() {
   // Función para cargar el script de TikTok
   const loadTikTokScript = () => {
     return new Promise((resolve) => {
-      // Verificar si el script ya existe
       if (!document.querySelector('script[src*="tiktok.com/embed.js"]')) {
-        // Crear y cargar el script de TikTok
         const script = document.createElement('script')
         script.src = 'https://www.tiktok.com/embed.js'
         script.async = true
@@ -52,7 +47,6 @@ export default function initializeSocialEmbeds() {
         
         document.body.appendChild(script)
       } else {
-        // Si ya existe y está disponible globalmente
         if (window.tiktokEmbed) {
           window.tiktokEmbed.loadAll()
         }
@@ -80,14 +74,13 @@ export default function initializeSocialEmbeds() {
 
   // Función para reinicializar cuando se actualice el carrusel
   const reinitializeOnSlideChange = () => {
-    // Observer para detectar cambios en el DOM (útil para carruseles)
     const observer = new MutationObserver((mutations) => {
       let shouldReinitialize = false
       
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
           mutation.addedNodes.forEach((node) => {
-            if (node.nodeType === 1) { // Element node
+            if (node.nodeType === 1) {
               if (node.querySelector && 
                   (node.querySelector('.instagram-media') || 
                    node.querySelector('.tiktok-embed'))) {
@@ -103,7 +96,6 @@ export default function initializeSocialEmbeds() {
       }
     })
 
-    // Observar cambios en el contenedor del carrusel
     const carouselContainer = document.querySelector('.subjects-swiper')
     if (carouselContainer) {
       observer.observe(carouselContainer, {
@@ -130,7 +122,7 @@ export default function initializeSocialEmbeds() {
       // Configurar observer para cambios dinámicos
       reinitializeOnSlideChange()
 
-      console.log('Social embeds inicializados correctamente')
+      console.log('Social embeds nativos inicializados correctamente')
     } catch (error) {
       console.error('Error inicializando social embeds:', error)
     }
@@ -145,12 +137,12 @@ export default function initializeSocialEmbeds() {
     tiktokScripts.forEach(script => script.remove())
   }
 
-  // Función para forzar actualización de embeds (útil para llamar desde fuera)
+  // Función para forzar actualización de embeds
   const forceUpdate = () => {
     processEmbeds()
   }
 
-  // Exponer funciones útiles globalmente si no existen
+  // Exponer funciones útiles globalmente
   if (typeof window !== 'undefined') {
     window.socialEmbeds = window.socialEmbeds || {
       forceUpdate,
@@ -161,11 +153,9 @@ export default function initializeSocialEmbeds() {
 
   // Inicializar todo
   if (typeof window !== 'undefined') {
-    // Esperar un poco para asegurar que el DOM esté listo
     setTimeout(initializeAll, 100)
   }
 
-  // Retornar funciones útiles para el componente
   return {
     forceUpdate,
     cleanup,
