@@ -23,7 +23,7 @@ const SocialEmbed = ({ url, type = 'auto' }) => {
   // Determinar el tipo de embed
   const embedType = type === 'auto' ? detectSocialType(url) : type
 
-  // Renderizar Instagram Embed
+  // Renderizar Instagram Embed NATIVO
   const renderInstagramEmbed = () => {
     const postId = extractInstagramId(url)
     if (!postId) return <div>URL de Instagram inválida</div>
@@ -33,7 +33,8 @@ const SocialEmbed = ({ url, type = 'auto' }) => {
         <blockquote 
           className="instagram-media" 
           data-instgrm-permalink={url}
-          data-instgrm-version="14" 
+          data-instgrm-version="14"
+          data-instgrm-captioned
           style={{
             background: '#FFF',
             border: 0,
@@ -159,7 +160,7 @@ const SocialEmbed = ({ url, type = 'auto' }) => {
     )
   }
 
-  // Renderizar TikTok Embed
+  // Renderizar TikTok Embed NATIVO
   const renderTikTokEmbed = () => {
     const videoId = extractTikTokId(url)
     if (!videoId) return <div>URL de TikTok inválida</div>
@@ -174,65 +175,19 @@ const SocialEmbed = ({ url, type = 'auto' }) => {
             maxWidth: '605px',
             minWidth: '325px',
             margin: '0 auto',
-            backgroundColor: '#fff',
-            borderRadius: '8px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-            padding: '16px',
-            textAlign: 'center'
+            backgroundColor: 'transparent',
+            border: 'none',
+            padding: 0
           }}
         >
-          <section style={{ marginBottom: '16px' }}>
+          <section>
             <a 
               target="_blank" 
-              title="TikTok"
+              title={`@username`}
               href={url}
               rel="noopener noreferrer"
-              style={{
-                textDecoration: 'none',
-                color: '#000',
-                fontFamily: 'Arial, sans-serif'
-              }}
             >
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                marginBottom: '12px' 
-              }}>
-                <svg 
-                  width="24" 
-                  height="24" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  style={{ marginRight: '8px' }}
-                >
-                  <path 
-                    fillRule="evenodd" 
-                    clipRule="evenodd" 
-                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.64 6.43c-.96 0-1.74-.78-1.74-1.74 0-.96.78-1.74 1.74-1.74.96 0 1.74.78 1.74 1.74 0 .96-.78 1.74-1.74 1.74zm-1.1 1.55v4.28c0 .41-.34.75-.75.75s-.75-.34-.75-.75V9.98c0-.41.34-.75.75-.75s.75.34.75.75z" 
-                    fill="#ff0050"
-                  />
-                </svg>
-                <span style={{ 
-                  fontSize: '16px', 
-                  fontWeight: 'bold' 
-                }}>
-                  Ver en TikTok
-                </span>
-              </div>
-              <div style={{
-                width: '100%',
-                height: '200px',
-                backgroundColor: '#f8f8f8',
-                borderRadius: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '14px',
-                color: '#666'
-              }}>
-                Video de TikTok
-              </div>
+              Ver en TikTok
             </a>
           </section>
         </blockquote>

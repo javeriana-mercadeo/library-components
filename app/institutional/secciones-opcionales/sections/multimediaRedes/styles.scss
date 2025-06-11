@@ -17,18 +17,6 @@
     width: fit-content;
   }
 
-  .button-plan {
-    color: var(--primary);
-    padding: rem(15px);
-    font-weight: 600;
-    border: 1px solid var(--primary);
-
-    i {
-      padding-left: rem(10px);
-      size: rem(16px);
-    }
-  }
-
   .card-wrapper {
     max-width: rem(1100px);
     margin: 0 rem(60px) rem(35px);
@@ -84,80 +72,6 @@
     box-shadow: 0px rem(4px) rem(10px) rgba(0, 0, 0, 0.351);
   }
 
-  .card-list .card-link .card-image {
-    width: 100%;
-    border-radius: rem(10px);
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-  }
-
-  .title-subjects {
-    margin-bottom: rem(8px);
-    border-bottom: rem(0.8px) solid var(--background);
-    font-size: var(--font-size-paragraph);
-    font-weight: var(--font-weight-bold);
-    letter-spacing: var(--letter-spacing-normal);
-    color: var(--background-100);
-    text-align: left;
-    max-width: 100%;
-  }
-
-  .card-list .card-link .badge {
-    color: var(--neutral);
-    width: fit-content;
-    padding: rem(8px) rem(16px);
-    font-size: var(--font-size-small);
-    border-radius: rem(50px);
-    font-weight: var(--font-weight-bold);
-    background: var(--primary);
-    text-align: left;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: rem(10px);
-  }
-
-  .subjects-list {
-    list-style: none;
-    padding-top: rem(5px);
-    margin: 0;
-    padding-bottom: rem(10px);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-self: start;
-  }
-
-  .subjects-list li {
-    color: var(--background-500);
-    margin-bottom: rem(8px);
-    display: flex;
-    align-items: center;
-    font-size: var(--font-size-paragraph);
-    font-weight: var(--font-weight-regular);
-
-    i {
-      font-size: rem(20px);
-      margin-right: rem(8px);
-      color: var(--primary);
-    }
-  }
-
-  .content-credits {
-    font-size: rem(18px);
-    border-top: rem(0.8px) solid var(--background);
-    font-weight: bold;
-    color: var(--background-800);
-    padding-top: rem(10px);
-    align-self: end;
-    width: 100%;
-    margin-top: auto;
-
-    strong {
-      color: var(--background-500);
-    }
-  }
-
   .card-wrapper .swiper-pagination-bullet {
     height: rem(13px);
     width: rem(13px);
@@ -202,34 +116,7 @@
     right: rem(2px);
   }
 
-  // Instagram embed específico
-  .instagram-embed {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: rem(400px);
-
-    .instagram-media {
-      margin: 0 auto !important;
-      max-width: 100% !important;
-      width: 100% !important;
-    }
-  }
-
   @media (max-width: $breakpoint-sm) {
-    .text-align-movil {
-      text-align: left;
-      width: 100%;
-    }
-
-    .button-plan {
-      width: 98%;
-      display: flex;
-      text-align: center;
-      justify-content: center;
-    }
-
     .swiper-slide-button {
       width: rem(40px);
       height: rem(40px);
