@@ -1,16 +1,29 @@
 'use client'
 
 import { useEffect } from 'react'
-import Container from '@library/components/container' 
+import Container from '@library/components/container'
 
-import Post from './components/post'
+import SocialEmbed from './components/SocialEmbed'
 
-import script from './script.js'
+import swiperScript from './script.js'
+import socialScript from './components/socialScript.js'
 import './styles.scss'
 
 const Multimedia = () => {
+  // Array de URLs de redes sociales - aquí puedes agregar las URLs que necesites
+  const socialUrls = [
+    'https://www.instagram.com/reel/DKUvIluyJEJ/?utm_source=ig_embed&utm_campaign=loading',
+    'https://www.tiktok.com/@elpal4/video/7192001549596413189?is_from_webapp=1&sender_device=pc&web_id=7514531579344668166',
+    'https://www.instagram.com/reel/DKPc0JPu_4P/?utm_source=ig_web_copy_link&igsh=bmJuaTJkd3R4NWk4',
+    'https://www.tiktok.com/@unijaveriana/video/7484274989944884535?is_from_webapp=1&sender_device=pc&web_id=7514531579344668166'
+  ]
+
   useEffect(() => {
-    script()
+    // Inicializar Swiper
+    swiperScript()
+
+    // Inicializar Social Embeds
+    socialScript()
   }, [])
 
   return (
@@ -24,29 +37,13 @@ const Multimedia = () => {
             <div className="card-wrapper subjects-swiper">
               {/* Card slides container */}
               <div className="card-list swiper-wrapper" role="list">
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <Post />
+                {socialUrls.map((url, index) => (
+                  <div key={index} className="card-item swiper-slide" role="listitem">
+                    <div className="card-link">
+                      <SocialEmbed url={url} type="auto" />
+                    </div>
                   </div>
-                </div>
-
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <Post />
-                  </div>
-                </div>
-
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <Post />
-                  </div>
-                </div>
-
-                <div className="card-item swiper-slide" role="listitem">
-                  <div className="card-link">
-                    <Post />
-                  </div>
-                </div>
+                ))}
               </div>
 
               {/* Paginación */}
@@ -66,4 +63,5 @@ const Multimedia = () => {
     </Container>
   )
 }
+
 export default Multimedia
