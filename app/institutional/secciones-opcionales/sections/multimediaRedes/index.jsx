@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect } from 'react'
-import Container from '@library/components/container'
+import Container from '@library/components/container' 
+
 import Post from './components/post'
 
 import script from './script.js'

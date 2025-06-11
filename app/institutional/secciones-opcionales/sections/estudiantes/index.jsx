@@ -63,7 +63,7 @@ class StudentSlider extends React.Component {
       <Container className="slider-container">
         <div onMouseEnter={this.stopAutoSlide} onMouseLeave={this.startAutoSlide}>
           <Title className="slider-title">
-            <h2>Estudiantes</h2>
+            Estudiantes
           </Title>
 
           <div className="slider-content">

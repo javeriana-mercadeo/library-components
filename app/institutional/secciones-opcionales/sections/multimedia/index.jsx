@@ -46,18 +46,12 @@ class ImageSlider extends Component {
     return (
       <div className="slider-section">
         <div>
-          <Title className="carousel-title">
-            {' '}
-            <h1>Multimedia</h1>{' '}
-          </Title>
+          <Title className="carousel-title">Multimedia</Title>
         </div>
         <Container className="image-slider-container">
           <div>
             <div>
-              <Title className="title-gallery">
-                {' '}
-                <h1>Lorem ipsum dolor sit amet consectetur.</h1>
-              </Title>
+              <Title className="title-gallery">Lorem ipsum dolor sit amet consectetur.</Title>
             </div>
 
             <div className="image-slider">
