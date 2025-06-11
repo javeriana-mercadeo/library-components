@@ -1,44 +1,65 @@
 @use '@styles/autoload' as *;
 
-.thanks__main{
+.thanks__main {
   display: flex;
 
-  .thanks__content{
+  .thanks__content {
     display: flex;
     flex-direction: column;
     width: 70%;
     padding: 50px;
+    align-items: baseline;
   }
 
-  _itle{
-    font-size: var(--font-size-subtitle) !important;
-    font-weight: var(--font-weight-bold);
+  .thanks__card-link {
+    margin-bottom: 30px;
   }
 
-  .thanks__pic{
+  .thanks__pic {
     width: 30%;
-    img{
+    img {
       object-fit: cover;
       height: 800px;
     }
   }
 
-  h1{
-    font-size: var(--font-size-subtitle) !important;
+  h1 {
+    font-size: var(--font-size-title) !important;
     font-weight: var(--font-weight-bold);
   }
 
-  .thanks__card-info-main{
+  .thanks__card-info-main {
     display: flex;
     flex-direction: row;
     gap: 20px;
     flex-wrap: wrap;
   }
 
-  .thanks__card-info{
+  .thanks__card-info {
     width: 257px;
     padding: 15px;
     border-radius: 20px;
     border: solid 1px var(--neutral-700);
+  }
+
+  .thanks__card-info-icon {
+    width: 38.1px;
+    height: 38.1px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary);
+    color: var(--neutral);
+    margin-bottom: 10px;
+
+    i {
+      font-size: var(--icon-size-sm);
+    }
+  }
+
+  .thanks__btn-main {
+    display: flex;
+    margin-top: 30px;
   }
 }
