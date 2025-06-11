@@ -28,6 +28,11 @@
     font-weight: var(--font-weight-bold);
   }
 
+  h3 {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-caption);
+  }
+
   .thanks__card-info-main {
     display: flex;
     flex-direction: row;
@@ -36,10 +41,19 @@
   }
 
   .thanks__card-info {
+    display: flex;
+    flex-direction: column;
     width: 257px;
     padding: 15px;
     border-radius: 20px;
     border: solid 1px var(--neutral-700);
+    align-items: baseline;
+
+    .btn-primary.btn-link {
+      margin-top: auto;
+      font-size: var(--font-size-paragraph);
+      font-weight: var(--font-weight-bold);
+    }
   }
 
   .thanks__card-info-icon {
@@ -49,7 +63,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--primary);
+    background-color: var(--primary-600);
     color: var(--neutral);
     margin-bottom: 10px;
 
