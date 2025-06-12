@@ -6,8 +6,8 @@ import Btn from '@library/components/contain/btn'
 
 import thanksImg from './assets/53593052f5a8a0826aa368dad23a6c16182a1c37.jpg'
 
-import info from './info.json'
 import './styles.scss'
+import info from './info.json'
 
 export default function ThankYouPage() {
   const elementName = info.id || 'thank-you-page'

@@ -8,9 +8,9 @@ export default function ThankYouPage() {
 
   return (
     <>
-      {/* <ViewComponent path={`${basePath}/sections/encabezado`}>
+      <ViewComponent path={`${basePath}/sections/encabezado`}>
         <Encabezado />
-      </ViewComponent> */}
+      </ViewComponent>
 
       <ViewComponent path={`${basePath}/sections/1_contenido`}>
         <Contenido />
