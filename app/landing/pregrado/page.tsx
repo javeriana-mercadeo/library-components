@@ -68,11 +68,7 @@ export default function Profesional() {
         <PreguntasFrecuentes />
       </ViewComponent>
 
-<<<<<<< HEAD
       {/* <Relacionados /> */}
-=======
-      {/*  <Relacionados /> */}
->>>>>>> a89d6be8e1a6b9a96ff1ca7507ba8541e64a12f3
       <ViewComponent path={`${basePath}/sections/10_relacionados`}>
         <Relacionados />
       </ViewComponent>
