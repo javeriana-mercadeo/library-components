@@ -282,6 +282,12 @@
     margin-top: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
 
+    // GPU acceleration y optimizaciones
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    contain: layout style paint;
+
     @include responsive {
       aspect-ratio: 612 / 880;
       height: auto;
@@ -302,12 +308,6 @@
     @include responsive($breakpoint-xl) {
       justify-self: end;
     }
-
-    // GPU acceleration y optimizaciones
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    contain: layout style paint;
 
     // Estados de carga
     &:not(.responsive-video-ready) {

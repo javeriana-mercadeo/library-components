@@ -1,10 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.ignoreWarnings = [/Hydration failed/, /server rendered HTML didn't match/]
+  experimental: {
+    turbo: {}
+  },
+
+  logging: {
+    fetches: {
+      fullUrl: false
     }
-    return config
   }
 }
 

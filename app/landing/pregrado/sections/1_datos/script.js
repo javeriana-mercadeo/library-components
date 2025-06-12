@@ -631,7 +631,7 @@ const ProgramDataSystem = {
     }
 
     if (programa) {
-      DOMUpdater.updateElementsText('data-puj-program', DataFormatter.formatProgramName(programa))
+      DOMUpdater.updateElementsText('data-puj-name', `${DataFormatter.formatProgramName(programa)}:`)
       automationUpdates.program = true
     }
 

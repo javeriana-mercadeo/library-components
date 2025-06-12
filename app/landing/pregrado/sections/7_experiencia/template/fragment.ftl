@@ -19,3 +19,13 @@
     <lfr-widget-web-content id="widget1"></lfr-widget-web-content>
   </div>
 </section>
+
+<div
+                    class="experience-carousel__card-link">
+                    <div class="experience-carousel__video-card">
+                      <div class="experience-carousel__video-container"
+                        data-video-id=""
+                        data-video-options="">
+                      </div>
+                    </div>
+                  </div>

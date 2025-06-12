@@ -3,308 +3,284 @@
 // ==========================================
 // VARIABLES DEL COMPONENTE
 // ==========================================
-$profile-border-radius: var(--border-radius-xl);
-$profile-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-$profile-icon-size: rem(32px);
-$profile-image-max-size: rem(550px);
+$profile-bg-color: #4b7bec;
+$profile-text-color: #ffffff;
+$profile-tab-inactive: rgba(255, 255, 255, 0.5);
+$profile-tab-hover: rgba(255, 255, 255, 0.7);
+$profile-tab-active-bg: rgba(255, 255, 255, 0.1);
+$profile-content-text: #ffffff;
+$profile-border-radius: rem(12px);
+$profile-transition: all 0.3s ease;
 
 // ==========================================
-// CONTENEDOR PRINCIPAL
+// SECCIÓN CONTENEDOR
 // ==========================================
-.color-container {
-  background-color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: var(--spacing-xl);
-  padding-bottom: var(--spacing-xl);
+.program-profile-section {
+  background-color: $profile-bg-color;
+  padding: rem(80px) 0;
+  min-height: 100vh;
 }
 
 // ==========================================
 // COMPONENTE PRINCIPAL
 // ==========================================
 .program-profile {
-  background-color: var(--primary);
-  color: var(--neutral-1000);
-  height: auto;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  padding: var(--spacing-md) var(--spacing-xl);
+  width: 100%;
+  max-width: rem(1200px);
   margin: 0 auto;
 
   // ==========================================
-  // TÍTULO PRINCIPAL
+  // TÍTULO
   // ==========================================
   &__title {
-    font-size: var(--font-size-title);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-lg);
+    color: $profile-text-color;
+    margin-bottom: rem(60px);
+    font-size: rem(48px);
+    font-weight: 600;
     text-align: center;
-    color: var(--neutral);
 
     @include responsive($breakpoint-md) {
-      font-size: var(--font-size-principal-title);
-      margin-bottom: var(--spacing-xl);
+      font-size: rem(56px);
+    }
+
+    @include responsive($breakpoint-sm) {
+      font-size: rem(36px);
+      margin-bottom: rem(40px);
     }
   }
 
   // ==========================================
-  // ACORDEÓN
+  // CONTENEDOR DE TABS
   // ==========================================
-  &__accordion {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
+  &__tabs-container {
+    background-color: transparent;
   }
 
   // ==========================================
-  // BOTONES DEL ACORDEÓN - ESTILO PESTAÑAS
+  // NAVEGACIÓN DE TABS
   // ==========================================
-  &__buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin-bottom: var(--spacing-lg);
-    border-bottom: rem(1px) solid rgba(var(--neutral-rgb), 0.2);
-
-    @include responsive($breakpoint-md) {
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-    }
+  &__tabs-nav {
+    background-color: transparent;
+    margin-bottom: rem(50px);
   }
 
-  &__accordion-button {
-    background: transparent;
-    color: rgba(var(--neutral-rgb), 0.5); // Texto gris por defecto
-    font-size: var(--font-size-caption);
-    font-weight: var(--font-weight-bold);
-    padding: var(--spacing-md) var(--spacing-xl);
-    text-align: center;
+  &__tabs-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: rem(8px);
+    justify-content: center;
+    border-bottom: rem(1px) solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0;
+  }
+
+  &__tab-button {
+    background: none;
     border: none;
-    border-radius: 0;
+    color: $profile-tab-inactive;
+    font-size: rem(18px);
+    font-weight: 400;
+    padding: rem(12px) rem(32px) rem(16px);
     cursor: pointer;
     transition: $profile-transition;
-    min-height: rem(48px);
     position: relative;
-    border-bottom: rem(2px) solid transparent;
+    white-space: nowrap;
+    border-radius: 0;
 
-    // Línea inferior invisible por defecto
+    // Línea inferior para tab activa
     &::after {
       content: '';
       position: absolute;
-      bottom: rem(-1px); // Ajustado para alinearse con el borde
+      bottom: rem(-1px);
       left: 0;
       right: 0;
-      height: rem(2px);
-      background: var(--neutral); // Línea blanca
+      height: rem(3px);
+      background-color: $profile-text-color;
       transform: scaleX(0);
       transition: transform 0.3s ease;
-      transform-origin: center;
     }
 
-    // Estado hover (solo para botones inactivos)
+    // Hover state
     &:hover:not(.active) {
-      color: rgba(var(--neutral-rgb), 0.7);
-      background: rgba(var(--neutral-rgb), 0.05);
+      color: $profile-tab-hover;
     }
 
-    // Estado activo - texto blanco con línea inferior
+    // Active state
     &.active {
-      color: var(--neutral); // Texto completamente blanco
+      color: $profile-text-color;
+      font-weight: 500;
 
       &::after {
-        transform: scaleX(1); // Mostrar línea inferior
+        transform: scaleX(1);
       }
     }
 
-    // Estado de focus para accesibilidad
+    // Focus para accesibilidad
     &:focus-visible {
-      outline: rem(2px) solid var(--neutral);
+      outline: rem(2px) solid $profile-text-color;
       outline-offset: rem(2px);
+      border-radius: rem(4px);
     }
 
-    // Tema oscuro
-    @include dark-theme {
-      color: rgba(var(--neutral-1000-rgb), 0.5);
-
-      &:hover:not(.active) {
-        color: rgba(var(--neutral-1000-rgb), 0.7);
-      }
-
-      &.active {
-        color: var(--neutral); // Mantener blanco en tema oscuro también
-      }
+    @include responsive($breakpoint-md) {
+      font-size: rem(16px);
+      padding: rem(12px) rem(24px) rem(16px);
     }
 
-    // Responsive para móvil
-    @media (max-width: $breakpoint-md) {
-      padding: var(--spacing-sm) var(--spacing-md);
-      font-size: var(--font-size-paragraph);
-
-      &::after {
-        bottom: rem(-1px);
-        height: rem(2px);
-      }
+    @include responsive($breakpoint-sm) {
+      font-size: rem(14px);
+      padding: rem(10px) rem(16px) rem(14px);
     }
   }
 
   // ==========================================
-  // CONTENIDO DEL ACORDEÓN
+  // CONTENIDO DE TABS
   // ==========================================
-  &__content-item {
-    display: grid;
-    align-items: start;
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
-    align-items: start;
-    opacity: 1;
-    transition: $profile-transition;
+  &__tabs-content {
+    padding: 0;
+  }
 
+  &__tab-panel {
+    animation: fadeIn 0.3s ease-in-out;
 
-    @include responsive($breakpoint-lg) {
-      grid-template-columns: 1.3fr 1.1fr;
-      gap: rem(30px);
-      align-items: center;
-    }
-
-    // Estado oculto
     &.hidden {
       display: none;
+    }
+  }
+
+  &__content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: rem(40px);
+    align-items: start;
+
+    @include responsive($breakpoint-lg) {
+      grid-template-columns: auto 1fr;
+      gap: rem(50px);
+      align-items: center;
     }
   }
 
   // ==========================================
   // IMAGEN
   // ==========================================
-  &__image_content {
+  &__image-container {
     display: flex;
     justify-content: center;
-    align-items: start;
-    width: 100%;
-    height: 100%;
-    order: 1;
+    overflow: hidden; // Importante para contener el zoom
+    border-radius: $profile-border-radius;
 
     @include responsive($breakpoint-lg) {
-      order: 0;
+      justify-content: flex-start;
     }
   }
 
+  // Aplicar zoom a las imágenes del componente
   &__image {
     width: 100%;
-    max-width: $profile-image-max-size;
+    max-width: rem(400px);
     height: auto;
-    object-fit: cover;
     border-radius: $profile-border-radius;
-    box-shadow: 0 rem(8px) rem(24px) rgba(0, 0, 0, 0.15);
-    transition: $profile-transition;
+    object-fit: cover;
+    aspect-ratio: 4/3;
+    transition:
+      transform 0.3s ease,
+      filter 0.3s ease;
+    will-change: transform;
 
-    &:hover {
-      transform: scale(1.02);
-      box-shadow: 0 rem(12px) rem(32px) rgba(0, 0, 0, 0.2);
+    // Aplicar el zoom hover
+    &.image:hover {
+      transform: scale(1.05);
+      filter: brightness(1.02);
     }
 
     @include responsive($breakpoint-lg) {
-      max-height: rem(500px);
-    }
-  }
-
-  // ==========================================
-  // LISTA DE CARACTERÍSTICAS
-  // ==========================================
-  .paragraph {
-    color: var(--neutral);
-    height: 100%;
-  }
-
-  // ==========================================
-  // RESPONSIVE - MOBILE
-  // ==========================================
-  @media (max-width: $breakpoint-lg) {
-    padding: var(--spacing-md);
-
-    &__content-item {
-      text-align: center;
-
-      @include responsive($breakpoint-md) {
-        text-align: left;
-      }
+      max-width: rem(450px);
     }
 
-    &__buttons {
-      gap: var(--spacing-xs);
-    }
-
-    &__accordion-button {
-      padding: var(--spacing-sm) var(--spacing-md);
-      font-size: var(--font-size-paragraph);
-      min-height: rem(44px);
-    }
-
-    &__image {
-      max-width: rem(400px);
-    }
-
-    &__list {
-      gap: var(--spacing-sm);
-    }
-
-    &__item {
-      align-items: center;
-      text-align: left;
-    }
-  }
-
-  // ==========================================
-  // RESPONSIVE - MOBILE SMALL
-  // ==========================================
-  @media (max-width: $breakpoint-sm) {
-    &__image {
+    @include responsive($breakpoint-sm) {
       max-width: rem(320px);
     }
+  }
 
-    &__icon-container {
-      width: rem(28px);
-      height: rem(28px);
+  // ==========================================
+  // TEXTO
+  // ==========================================
+  &__text-container {
+    max-width: rem(700px);
+  }
 
-      i {
-        font-size: rem(20px);
+  &__paragraph {
+    color: $profile-content-text;
+    line-height: 1.7;
+
+    p {
+      margin-bottom: rem(24px);
+      font-size: rem(16px);
+      color: inherit;
+      opacity: 0.95;
+      font-weight: 300;
+    }
+
+    h3 {
+      margin-top: rem(32px);
+      margin-bottom: rem(24px);
+      font-size: rem(20px);
+      color: $profile-text-color;
+      font-weight: 600;
+
+      strong {
+        font-weight: 600;
       }
     }
-  }
 
-  // ==========================================
-  // ANIMACIONES
-  // ==========================================
-  &__content-item {
-    animation-duration: 0.5s;
-    animation-fill-mode: both;
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: rem(16px);
 
-    &:not(.hidden) {
-      animation-name: fadeInUp;
-    }
-  }
+      li {
+        position: relative;
+        padding-left: rem(32px);
+        color: inherit;
+        font-size: rem(15px);
+        line-height: 1.6;
+        opacity: 0.9;
+        font-weight: 300;
 
-  // ==========================================
-  // ESTADOS DE LOADING (OPCIONAL)
-  // ==========================================
-  &[data-loading='true'] {
-    .program-profile__image {
-      background: linear-gradient(90deg, var(--neutral-800) 25%, var(--neutral-700) 50%, var(--neutral-800) 75%);
-      background-size: 200% 100%;
-      animation: profileLoading 1.5s infinite;
+        // Icono de check
+        &::before {
+          content: '✓';
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: rem(20px);
+          height: rem(20px);
+          background-color: rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: rem(12px);
+          font-weight: bold;
+          color: $profile-text-color;
+        }
+      }
     }
   }
 }
 
 // ==========================================
-// ANIMACIONES KEYFRAMES
+// ANIMACIONES
 // ==========================================
-@keyframes fadeInUp {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(rem(20px));
+    transform: translateY(rem(10px));
   }
   to {
     opacity: 1;
@@ -312,24 +288,39 @@ $profile-image-max-size: rem(550px);
   }
 }
 
-@keyframes profileLoading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
+// ==========================================
+// ACCESIBILIDAD - Reducir movimiento
+// ==========================================
+@media (prefers-reduced-motion: reduce) {
+  .program-profile {
+    &__tab-button::after {
+      transition: none;
+    }
+
+    &__tab-panel {
+      animation: none;
+    }
   }
 }
 
 // ==========================================
-// MEJORAS DE ACCESIBILIDAD
+// MODO OSCURO (opcional)
 // ==========================================
-@media (prefers-reduced-motion: reduce) {
-  .program-profile {
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+
+.program-profile {
+  @include dark-theme {
+    &-section {
+      background-color: darken($profile-bg-color, 10%);
+    }
+
+    &__tab-button {
+      &.active {
+        color: $profile-text-color;
+      }
+    }
+
+    &__paragraph {
+      color: $profile-content-text;
     }
   }
 }
@@ -339,20 +330,29 @@ $profile-image-max-size: rem(550px);
 // ==========================================
 @media print {
   .program-profile {
-    background: white !important;
-    color: black !important;
-    box-shadow: none !important;
+    &-section {
+      background: white !important;
+      padding: rem(20px) !important;
+    }
 
-    &__buttons {
+    &__tabs-nav {
       display: none;
     }
 
-    &__content-item {
+    &__tab-panel {
       display: block !important;
       page-break-inside: avoid;
+      margin-bottom: rem(40px);
 
-      &.hidden {
-        display: block !important;
+      &:not(:first-child) {
+        &::before {
+          content: attr(aria-labelledby);
+          display: block;
+          font-size: rem(24px);
+          font-weight: bold;
+          margin-bottom: rem(20px);
+          color: black;
+        }
       }
     }
   }

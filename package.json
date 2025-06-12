@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "format": "prettier --write . && eslint --fix .",
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbo",
     "build": "next build",
     "build:js": "npx rollup -c",
     "build:sass": "sass --no-source-map --load-path=app/library/_general --load-path=styles build/styles.scss:dist/styles.css --update",
