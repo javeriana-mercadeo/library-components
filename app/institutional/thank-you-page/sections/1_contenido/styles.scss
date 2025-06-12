@@ -4,11 +4,14 @@
   display: flex;
 
   .thanks__content {
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-    padding: 50px;
-    align-items: baseline;
+    width: 90%;
+    @include responsive {
+      display: flex;
+      flex-direction: column;
+      width: 70%;
+      padding: 50px;
+      align-items: baseline;
+    }
   }
 
   .thanks__card-link {
@@ -16,10 +19,12 @@
   }
 
   .thanks__pic {
-    width: 30%;
-    img {
-      object-fit: cover;
-      height: 100vh;
+    @include responsive {
+      width: 30%;
+      img {
+        object-fit: cover;
+        height: 100vh;
+      }
     }
   }
 
