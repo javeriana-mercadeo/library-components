@@ -3,8 +3,8 @@
 // ==========================================
 // VARIABLES DEL COMPONENTE
 // ==========================================
-$profile-bg-color: #4b7bec;
-$profile-text-color: #ffffff;
+$profile-bg-color: var(--primary);
+$profile-text-color: var(--neutral);
 $profile-tab-inactive: rgba(255, 255, 255, 0.5);
 $profile-tab-hover: rgba(255, 255, 255, 0.7);
 $profile-tab-active-bg: rgba(255, 255, 255, 0.1);
@@ -12,60 +12,20 @@ $profile-content-text: #ffffff;
 $profile-border-radius: rem(12px);
 $profile-transition: all 0.3s ease;
 
-// ==========================================
-// SECCIÓN CONTENEDOR
-// ==========================================
 .program-profile-section {
-  background-color: $profile-bg-color;
-  padding: rem(80px) 0;
-  min-height: 100vh;
+  background-color: var(--primary);
+  padding: var(--spacing-md) 0;
 }
 
-// ==========================================
-// COMPONENTE PRINCIPAL
-// ==========================================
 .program-profile {
-  width: 100%;
-  max-width: rem(1200px);
-  margin: 0 auto;
-
-  // ==========================================
-  // TÍTULO
-  // ==========================================
-  &__title {
-    color: $profile-text-color;
-    margin-bottom: rem(60px);
-    font-size: rem(48px);
-    font-weight: 600;
-    text-align: center;
-
-    @include responsive($breakpoint-md) {
-      font-size: rem(56px);
-    }
-
-    @include responsive($breakpoint-sm) {
-      font-size: rem(36px);
-      margin-bottom: rem(40px);
-    }
-  }
-
-  // ==========================================
-  // CONTENEDOR DE TABS
-  // ==========================================
-  &__tabs-container {
-    background-color: transparent;
-  }
-
-  // ==========================================
-  // NAVEGACIÓN DE TABS
-  // ==========================================
   &__tabs-nav {
-    background-color: transparent;
-    margin-bottom: rem(50px);
+//    background-color: transparent;
+    margin-bottom: var(--spacing-2xl);
   }
 
   &__tabs-list {
     display: flex;
+    flex-direction: column;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -73,12 +33,21 @@ $profile-transition: all 0.3s ease;
     justify-content: center;
     border-bottom: rem(1px) solid rgba(255, 255, 255, 0.2);
     padding-bottom: 0;
+
+    @include responsive($breakpoint-md) {
+      flex-direction: row;
+    }
+
+    li {
+      width: 100%;
+    }
   }
 
   &__tab-button {
+    width: 100%;
     background: none;
     border: none;
-    color: $profile-tab-inactive;
+    color: var(--neutral-800);
     font-size: rem(18px);
     font-weight: 400;
     padding: rem(12px) rem(32px) rem(16px);
@@ -87,6 +56,10 @@ $profile-transition: all 0.3s ease;
     position: relative;
     white-space: nowrap;
     border-radius: 0;
+
+    @include dark-theme {
+      color: var(--neutral-300);
+    }
 
     // Línea inferior para tab activa
     &::after {
@@ -152,12 +125,12 @@ $profile-transition: all 0.3s ease;
   &__content-wrapper {
     display: grid;
     grid-template-columns: 1fr;
-    gap: rem(40px);
+    gap: var(--spacing-lg);
     align-items: start;
 
     @include responsive($breakpoint-lg) {
-      grid-template-columns: auto 1fr;
-      gap: rem(50px);
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-2xl);
       align-items: center;
     }
   }
@@ -179,7 +152,7 @@ $profile-transition: all 0.3s ease;
   // Aplicar zoom a las imágenes del componente
   &__image {
     width: 100%;
-    max-width: rem(400px);
+    max-width: rem(600px);
     height: auto;
     border-radius: $profile-border-radius;
     object-fit: cover;
@@ -193,14 +166,6 @@ $profile-transition: all 0.3s ease;
     &.image:hover {
       transform: scale(1.05);
       filter: brightness(1.02);
-    }
-
-    @include responsive($breakpoint-lg) {
-      max-width: rem(450px);
-    }
-
-    @include responsive($breakpoint-sm) {
-      max-width: rem(320px);
     }
   }
 
@@ -309,10 +274,6 @@ $profile-transition: all 0.3s ease;
 
 .program-profile {
   @include dark-theme {
-    &-section {
-      background-color: darken($profile-bg-color, 10%);
-    }
-
     &__tab-button {
       &.active {
         color: $profile-text-color;
