@@ -90,19 +90,8 @@ const Perfiles = () => {
   ]
 
   return (
-    <section id="section-three" className={`${baseClass}-section`}>
+    <section className={`${baseClass}-section`}>
       <Container id={elementName} className={baseClass}>
-        <Title
-          className={`${baseClass}__title`}
-          id={`${elementName}-title`}
-          hierarchy="h2"
-          size="2xl"
-          weight="bold"
-          align="center"
-          color="white">
-          Este programa es para ti si...
-        </Title>
-
         <div className={`${baseClass}__tabs-container`}>
           {/* Tabs navigation */}
           <div className={`${baseClass}__tabs-nav`}>
@@ -141,18 +130,10 @@ const Perfiles = () => {
                 aria-labelledby={`${tab.id}-tab`}>
                 <div className={`${baseClass}__content-wrapper`}>
                   <div className={`${baseClass}__image-container`}>
-                    <Image
-                      id={`${elementName}-image-${tab.id}`}
-                      src={tab.image}
-                      alt={tab.alt}
-                      className={`${baseClass}__image`}
-                      loading="lazy"
-                    />
+                    <Image src={tab.image} alt={tab.alt} className={`${baseClass}__image`} isEditable={false} />
                   </div>
                   <div className={`${baseClass}__text-container`}>
-                    <Paragraph id={`${elementName}-paragraph-${tab.id}`} className={`${baseClass}__paragraph`}>
-                      {tab.content}
-                    </Paragraph>
+                    <Paragraph className={`${baseClass}__paragraph`} isEditable={false} >{tab.content}</Paragraph>
                   </div>
                 </div>
               </div>
