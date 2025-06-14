@@ -1,4 +1,6 @@
 'use client'
+import ViewComponent from '@/app/_components/viewComponent/viewComponent'
+
 import Proyectos from './sections/proyectos'
 import Laboratorios from './sections/laboratorios'
 import Estudiantes from './sections/estudiantes'
@@ -7,10 +9,10 @@ import MultimediaRedes from './sections/multimediaRedes'
 import DobleTitulacionUno from './sections/dobleTitulacionUno'
 import DobleTitulacionDos from './sections/dobleTitulacionDos'
 import Herramientas from './sections/herramientas'
-import ViewComponent from '@/app/_components/viewComponent/viewComponent'
+
 
 export default function SeccionesOpcionales() {
-  const basePath = '/institutional/pgProjects'
+  const basePath = '/institutional/secciones-opcionales'
   return (
     <>
      {/* <Proyectos />*/}
@@ -18,40 +20,40 @@ export default function SeccionesOpcionales() {
         <Proyectos />
       </ViewComponent> 
 
-      <Laboratorios />
-      {/* <ViewComponent path={`${basePath}/sections/laboratorios`}>
+     {/* <Laboratorios />*/}
+       <ViewComponent path={`${basePath}/sections/laboratorios`}>
         <Laboratorios/>
-      </ViewComponent> */}
+      </ViewComponent> 
 
-      <Estudiantes />
-      {/* <ViewComponent path={`${basePath}/sections/estudiantes`}>
+      {/* <Estudiantes />*/}
+      <ViewComponent path={`${basePath}/sections/estudiantes`}>
         <Estudiantes />
-      </ViewComponent> */}
+      </ViewComponent> 
 
-      <Multimedia />
-      {/* <ViewComponent path={`${basePath}/sections/multimedia`}>
+     {/* <Multimedia />*/}
+       <ViewComponent path={`${basePath}/sections/multimedia`}>
         <Multimedia />
-      </ViewComponent> */}
+      </ViewComponent> 
 
-      <MultimediaRedes />
-      {/* <ViewComponent path={`${basePath}/sections/multimediaRedes`}>
+      {/*  <MultimediaRedes />*/}
+     <ViewComponent path={`${basePath}/sections/multimediaRedes`}>
         <MultimediaRedes />
-      </ViewComponent> */}
+      </ViewComponent> 
 
-      <DobleTitulacionUno />
-      {/* <ViewComponent path={`${basePath}/sections/dobleTitulacionUno`}>
+     {/* <DobleTitulacionUno />*/}
+       <ViewComponent path={`${basePath}/sections/dobleTitulacionUno`}>
         <DobleTitulacionUno />
-      </ViewComponent> */}
+      </ViewComponent> 
 
-      <DobleTitulacionDos />
-      {/* <ViewComponent path={`${basePath}/sections/dobleTitulacionDos`}>
+       {/* <DobleTitulacionDos />*/}
+     <ViewComponent path={`${basePath}/sections/dobleTitulacionDos`}>
         <DobleTitulacionDos />
-      </ViewComponent> */}
+      </ViewComponent> 
 
-      <Herramientas />
-      {/* <ViewComponent path={`${basePath}/sections/herramientas`}>
+     {/* <Herramientas />*/}
+       <ViewComponent path={`${basePath}/sections/herramientas`}>
         <Herramientas />
-      </ViewComponent> */}
+      </ViewComponent> 
     </>
   )
 }
