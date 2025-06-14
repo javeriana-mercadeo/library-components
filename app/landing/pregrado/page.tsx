@@ -12,6 +12,7 @@ import Cita from './sections/8_cita'
 import PreguntasFrecuentes from './sections/9_preguntasFrecuentes'
 import Relacionados from './sections/10_relacionados'
 import Footer from './sections/11_footer'
+import Herramientas from './sections/herramientas'
 
 export default function Profesional() {
   const basePath = '/landing/pregrado'
@@ -76,6 +77,10 @@ export default function Profesional() {
       {/* <Footer /> */}
       <ViewComponent path={`${basePath}/sections/11_footer`}>
         <Footer />
+      </ViewComponent>
+
+      <ViewComponent path={`${basePath}/sections/herramientas`}>
+        <Herramientas />
       </ViewComponent>
     </>
   )
