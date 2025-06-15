@@ -53,10 +53,10 @@ const StudentSlider = () => {
     // Usar setTimeout para ejecutar después del render
     setTimeout(() => {
       try {
-        console.log('🟡 Ejecutando script del slider desde JSX...')
+        console.log('Ejecutando script del slider desde JSX...')
         script()
       } catch (error) {
-        console.error('💥 Error ejecutando script:', error)
+        console.error('Error ejecutando script:', error)
       }
     }, 100)
   }
@@ -64,58 +64,30 @@ const StudentSlider = () => {
   return (
     <section id={elementName}>
       <Container className="slider-container">
-        <Title
-          className="slider-title"
-          id={`${elementName}-title`}
-          hierarchy="h2"
-          size="2xl"
-          weight="bold"
-          align="center"
-          color="neutral">
+        <Title className="slider-title">
           Estudiantes
         </Title>
 
         <div className="slider-content" id={`${elementName}-content`}>
           <div className="carousel-controls">
-            <button 
-              className="carousel-control prev" 
-              id={`${elementName}-prev`}
-              aria-label="Anterior estudiante"
-              type="button">
+            <button className="carousel-control prev" id={`${elementName}-prev`} aria-label="Anterior estudiante" type="button">
               <i className="ph ph-arrow-circle-left"></i>
             </button>
-            <button 
-              className="carousel-control next" 
-              id={`${elementName}-next`}
-              aria-label="Siguiente estudiante"
-              type="button">
+            <button className="carousel-control next" id={`${elementName}-next`} aria-label="Siguiente estudiante" type="button">
               <i className="ph ph-arrow-circle-right"></i>
             </button>
           </div>
 
           <div className="slider-cards" id={`${elementName}-cards`}>
             {studentsData.map((student, index) => (
-              <div 
-                key={`student-${index}`} 
-                className="student-card" 
-                id={`${elementName}-card-${index}`}
-                data-index={index}>
+              <div key={`student-${index}`} className="student-card" id={`${elementName}-card-${index}`} data-index={index}>
                 <div className="student-image">
-                  <Image
-                    id={`${elementName}-image-${index}`}
-                    src={student.image}
-                    alt={student.name}
-                  />
+                  <Image id={`${elementName}-image-${index}`} src={student.image} alt={student.name} />
                 </div>
                 <div className="student-info">
                   <h3 id={`${elementName}-name-${index}`}>{student.name}</h3>
                   <p id={`${elementName}-position-${index}`}>{student.position}</p>
-                  <Image
-                    id={`${elementName}-logo-${index}`}
-                    src={student.logo}
-                    alt={student.company}
-                    className="company-logo"
-                  />
+                  <Image id={`${elementName}-logo-${index}`} src={student.logo} alt={student.company} className="company-logo" />
                 </div>
               </div>
             ))}
@@ -124,15 +96,14 @@ const StudentSlider = () => {
 
         <div className="slider-dots" id={`${elementName}-dots`}>
           {studentsData.map((_, index) => (
-            <span 
-              key={`dot-${index}`} 
-              className="dot" 
+            <span
+              key={`dot-${index}`}
+              className="dot"
               id={`${elementName}-dot-${index}`}
               data-slide={index}
               role="button"
               tabIndex={0}
-              aria-label={`Ir al estudiante ${index + 1}`}>
-            </span>
+              aria-label={`Ir al estudiante ${index + 1}`}></span>
           ))}
         </div>
       </Container>

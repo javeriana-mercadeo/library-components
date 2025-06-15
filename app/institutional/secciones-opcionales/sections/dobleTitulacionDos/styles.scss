@@ -2,10 +2,10 @@
 
 .doble-titulacion-container {
   width: 100%;
-  display: flex;
-  justify-content: center;
   height: 100vh;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
 
   @media (max-width: 768px) {
     height: auto;
@@ -15,24 +15,38 @@
 
   .content-wrapper {
     width: 100%;
-    margin: 0 auto;
-    height: calc(100vh - rem(80px)); 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 
     @media (max-width: 768px) {
       height: auto;
+      display: block; // Display block para flujo normal
+    }
+
+    > div {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      @media (max-width: 768px) {
+        height: auto;
+        display: block; // Display block para flujo normal
+      }
     }
   }
 
   .main-title {
     color: var(--neutral-400);
-    font-weight:var(--font-weight-bold);
-    padding: rem(50px);
+    font-weight: var(--font-weight-bold);
+    padding: rem(30px) rem(50px);
     text-align: center;
     font-size: var(--font-size-principal-title);
+    flex-shrink: 0;
 
     @media (max-width: 768px) {
       font-size: rem(24px);
-      margin: rem(20px) 0;
+      padding: rem(20px) 0;
     }
   }
 
@@ -40,25 +54,55 @@
     display: flex;
     gap: rem(20px);
     width: 100%;
-    height: calc(100% - rem(60px)); 
+    flex: 1;
+    min-height: 0; // CRÍTICO para flex
 
     @media (max-width: 768px) {
       flex-direction: column;
-      height: auto;
-      gap: rem(30px);
+      gap: 0; // Sin rem() para valor 0
+      flex: none;
     }
   }
 
   .left-column {
     flex: 0 0 45%;
     height: 100%;
-    position: relative;
+
+    @media (max-width: 768px) {
+      flex: none;
+      height: auto;
+      position: static; // Quitar cualquier posicionamiento fijo
+    }
+
+    // Título que solo se muestra en móvil - fuera del overlay
+    .mobile-title-outside {
+      display: none; // Oculto en desktop
+
+      @media (max-width: 768px) {
+        display: block;
+        font-size: var(--font-size-subtitle);
+        font-weight: bold;
+        color: #333;
+        text-align: left;
+        margin-bottom: rem(15px);
+        padding: 0 rem(15px);
+        line-height: 1.3;
+      }
+    }
 
     .university-building {
       position: relative;
       height: 100%;
       border-radius: rem(8px);
       overflow: hidden;
+
+      @media (max-width: 768px) {
+        height: auto;
+        position: relative;
+        overflow: hidden;
+        border-radius: rem(8px);
+        margin: rem(15px) 0;
+      }
 
       .university-image {
         width: 100%;
@@ -72,6 +116,23 @@
 
         &.desktop-only {
           display: block;
+        }
+
+        @media (max-width: 768px) {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 3 / 4;
+          object-fit: cover;
+          border-radius: rem(8px);
+          display: block;
+
+          &.mobile-only {
+            display: block;
+          }
+
+          &.desktop-only {
+            display: none;
+          }
         }
       }
 
@@ -98,15 +159,14 @@
         }
 
         .overlay-description {
+          color: white;
           font-size: rem(16px);
           line-height: 1.6;
           max-width: 80%;
           text-shadow: rem(1px) rem(1px) rem(3px) rgba(0, 0, 0, 0.5);
         }
-      }
 
-      @media (max-width: 768px) {
-        .overlay-content {
+        @media (max-width: 768px) {
           position: static;
           background: transparent;
           align-items: flex-start;
@@ -130,64 +190,91 @@
             text-shadow: none;
           }
         }
-
-        .university-image {
-          height: auto;
-          max-height: rem(800px);
-          aspect-ratio: 3 / 4;
-          border-radius: rem(8px);
-          margin: rem(15px) 0;
-
-          &.mobile-only {
-            display: block;
-          }
-
-          &.desktop-only {
-            display: none;
-          }
-        }
       }
     }
   }
 
   .right-column {
     flex: 1;
-    height: 100%;
-    overflow-y: auto;
-    padding-right: rem(20px);
+    height: 100%; // ALTURA FIJA
+    overflow: hidden; // La columna no hace scroll, solo el contenido interno
 
     @media (max-width: 768px) {
       height: auto;
-      overflow-y: visible;
-      padding-right: 0;
+      flex: none;
+      overflow: visible;
     }
 
-    .header-section {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: rem(20px);
-      flex-direction: column;
-      gap: rem(20px);
+    .scroll-container {
+      height: 100%; // TOMA TODA LA ALTURA
+      overflow-y: auto; // SCROLL VERTICAL
+      overflow-x: hidden;
+      padding-right: rem(10px);
+
+      @media (max-width: 768px) {
+        overflow: visible;
+        height: auto;
+        padding-right: 0;
+      }
+
+      // Scrollbar personalizada
+      &::-webkit-scrollbar {
+        width: rem(6px);
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(241, 241, 241, 0.3);
+        border-radius: rem(3px);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(193, 193, 193, 0.6);
+        border-radius: rem(3px);
+
+        &:hover {
+          background: rgba(168, 168, 168, 0.8);
+        }
+      }
+
+      // Para Firefox
+      scrollbar-width: thin;
+      scrollbar-color: rgba(193, 193, 193, 0.6) rgba(241, 241, 241, 0.3);
+    }
+
+          .header-section {
+      margin-bottom: rem(25px);
+      padding-top: rem(20px);
       width: 90%;
 
       @media (max-width: 768px) {
-        width: 100%;
-        margin-bottom: rem(15px);
-        display: none;
+        display: none; // Ocultar completamente en móvil
       }
 
       .title-section {
+        margin-bottom: rem(15px);
+
+        @media (max-width: 768px) {
+          display: none; // Ocultar en móvil
+        }
+
         .section-title {
           font-size: rem(18px);
           color: var(--secondary);
           margin-bottom: rem(8px);
           font-weight: 600;
+
+          @media (max-width: 768px) {
+            display: none; // Ocultar en móvil
+          }
         }
 
         .university-info {
           font-size: var(--font-size-paragraph);
           color: #666;
+
+          @media (max-width: 768px) {
+            display: none; // Ocultar en móvil
+          }
         }
       }
 
@@ -195,53 +282,30 @@
         display: flex;
         gap: rem(15px);
 
+        @media (max-width: 768px) {
+          display: none; // Ocultar logos en móvil
+        }
+
         .university-logo {
           height: rem(35px);
           object-fit: contain;
 
           @media (max-width: 768px) {
-            height: rem(25px);
+            display: none; // Ocultar logos en móvil
           }
         }
-      }
-    }
-
-    .scroll-container {
-      width: 100%;
-
-      @media (max-width: 768px) {
-        overflow-x: visible;
-        overflow-y: visible;
-      }
-
-      &::-webkit-scrollbar {
-        height: rem(6px);
-      }
-
-      &::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: rem(3px);
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: rem(3px);
-      }
-
-      &::-webkit-scrollbar-thumb:hover {
-        background: #a8a8a8;
       }
     }
 
     .program-items {
       display: flex;
       flex-direction: column;
-      gap: rem(20px);
-      padding-bottom: rem(10px);
-      min-width: 100%;
+      gap: rem(25px);
+      padding: rem(10px) 0 rem(80px) 0; // Padding extra al final
 
       @media (max-width: 768px) {
-        gap: rem(30px);
+        gap: rem(25px);
+        padding: rem(15px) 0; // Padding normal en móvil
       }
     }
 
@@ -253,16 +317,16 @@
 
       .program-image {
         width: 100%;
-        height: rem(600px);
+        height: rem(500px); // Altura reducida para más contenido
         object-fit: cover;
         border-radius: rem(15px);
 
         @media (max-width: 1200px) {
-          height: rem(650px);
+          height: rem(550px);
         }
 
         @media (max-width: 992px) {
-          height: rem(700px);
+          height: rem(600px);
         }
 
         @media (max-width: 768px) {
@@ -279,7 +343,7 @@
       }
 
       .program-info {
-        padding: rem(15px);
+        padding: rem(20px) rem(15px);
         background-color: var(--neutral);
 
         @media (max-width: 768px) {
@@ -289,20 +353,20 @@
         .program-title {
           font-size: rem(16px);
           font-weight: 600;
-          margin-bottom: rem(8px);
+          margin-bottom: rem(10px);
           color: #333;
 
           @media (max-width: 768px) {
             font-size: rem(16px);
             text-align: left;
-            margin-top: 0;
+            margin-top: 0; // Sin rem() para valor 0
           }
         }
 
         .program-description {
           font-size: var(--font-size-paragraph);
-          color: #666;
-          line-height: 1.5;
+          color: white;
+          line-height: 1.6;
 
           @media (max-width: 768px) {
             text-align: left;

@@ -68,7 +68,6 @@ const Herramientas = () => {
         <Title
           className="tools-titulo"
           id={`${elementName}-title`}
-          hierarchy="h2"
           size="2xl"
           weight="bold"
           align="center"
