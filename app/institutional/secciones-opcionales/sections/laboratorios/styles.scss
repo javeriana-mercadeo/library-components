@@ -10,7 +10,7 @@
     text-align: center;
     font-size: var(--font-size-principal-title);
   }
-  .paragraph-lab{
+  .paragraph-lab {
     width: 90%;
   }
 
@@ -58,12 +58,15 @@
     z-index: 10;
     align-items: center;
     justify-content: center;
+    margin-top: 40px;
 
     .nav-button {
-      width: rem(32px);
-      height: rem(32px);
+      pointer-events: all;
+      width: rem(40px);
+      height: rem(40px);
       border-radius: 50%;
-      color: white;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--primary);
       border: none;
       display: flex;
       align-items: center;
@@ -74,24 +77,16 @@
       position: relative;
 
       &:hover {
-        background-color: var(--primary);
-        box-shadow: 0 rem(6px) rem(10px) rgba(0, 0, 0, 0.15);
+        background: var(--primary);
+        color: white;
+        transform: scale(1.1);
       }
-
-      &:focus {
-        outline: none;
-        box-shadow:
-          0 0 0 rem(3px) var(--primary),
-          0 rem(4px) rem(6px) rgba(0, 0, 0, 0.1);
-      }
-
-      &:active {
-        transform: translateY(rem(1px));
-        box-shadow: 0 rem(2px) rem(4px) rgba(0, 0, 0, 0.1);
+      i {
+        font-size: rem(32px);
+        line-height: 1;
       }
 
       span {
-        font-size: rem(18px);
         line-height: 1;
         position: relative;
         top: rem(-1px);
@@ -168,7 +163,7 @@
       align-items: center;
       margin-bottom: 0;
 
-       .subtitle-lab {
+      .subtitle-lab {
         text-align: left;
       }
 

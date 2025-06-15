@@ -2,15 +2,16 @@
 
 .slider-container {
   padding: 20px;
-}
+
 
 .slider-title {
-  color: var(--neutral-300);
+  font-size: var(--font-size-principal-title);
+  color: var(--neutral-400);
   font-weight: var(--font-weight-bold);
   padding: rem(50px);
   text-align: center;
-  font-size: var(--font-size-principal-title);
-}
+  
+}}
 
 .slider-content {
   position: relative;
