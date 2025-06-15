@@ -1,144 +1,524 @@
 @use '@styles/autoload' as *;
 
-.section-dos {
-  width: 100%;
-}
+// ==========================================
+// VARIABLES DEL COMPONENTE SOCIAL
+// ==========================================
+$social-card-border-radius: rem(16px);
+$social-card-padding: rem(15px);
+$social-card-min-height: rem(450px);
+$social-card-max-width: rem(400px);
+$social-transition: all 0.3s ease;
+$social-header-padding: rem(12px) rem(16px);
 
-.subjects-carousel {
+// Navegación - OPTIMIZADO PARA SOCIAL
+$nav-button-size: rem(50px);
+$nav-button-size-mobile: rem(40px);
+$nav-bullet-size: rem(13px);
+$nav-button-offset: rem(25px);
+
+// ==========================================
+// MIXIN PRINCIPAL - CARRUSEL SOCIAL
+// ==========================================
+
+.social-carousel {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  position: relative;
 
-  .subjects-carousel__title {
-    font-size: var(--font-size-h2);
-    font-weight: var(--font-weight-bold);
-    width: fit-content;
+  // ==========================================
+  // CONTENEDOR PRINCIPAL
+  // ==========================================
+  &_container {
+    width: 100%;
+    background-color: var(--background-100);
+    padding: rem(40px) 0;
+
+    @include dark-theme {
+      background-color: var(--background-200);
+    }
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(30px) 0;
+    }
   }
 
-  .card-wrapper {
-    max-width: rem(1100px);
-    margin: 0 rem(60px) rem(35px);
-    padding: rem(20px) rem(10px);
+  // ==========================================
+  // CARRUSEL - OPTIMIZADO PARA POSTS SOCIALES
+  // ==========================================
+  &_carousel {
+    width: 100%;
+    position: relative;
+    margin-top: rem(30px);
+  }
+
+  &_wrapper {
+    margin: 0 0 rem(35px) 0;
+    padding: rem(20px) rem(15px);
     overflow: hidden;
+    position: relative;
+
+    @include responsive($breakpoint-sm) {
+      margin: 0 0 rem(25px) 0;
+      padding: rem(15px) rem(10px);
+    }
+
+    @include responsive($breakpoint-xl) {
+      margin: 0 auto;
+      max-width: rem(1200px); // Ajustado para posts sociales
+    }
   }
 
-  .swiper-backface-hidden .swiper-slide {
+  // ==========================================
+  // SLIDES Y TARJETAS SOCIALES
+  // ==========================================
+  &_slides {
+    align-items: stretch !important;
+  }
+
+  &_slide {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: $social-card-min-height;
+
+    // Swiper optimizations
     margin-top: rem(20px);
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    display: flex;
     align-items: stretch;
-    justify-content: center;
-    height: auto;
+    justify-content: flex-start;
+
+    @include responsive($breakpoint-sm) {
+      min-height: rem(400px) !important;
+    }
   }
 
-  .card-list {
-    display: flex;
-    align-items: stretch;
-    height: 100%;
-  }
-
-  .card-item {
+  &_card {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    min-height: rem(500px);
-  }
-
-  .card-list .card-item .card-link {
-    display: flex;
-    flex-direction: column;
-    background: var(--neutral);
+    background: var(--background-100);
+    padding: $social-card-padding;
     user-select: none;
-    border-radius: rem(12px);
+    border-radius: $social-card-border-radius;
     text-decoration: none;
-    border: 1px solid var(--background);
-    box-shadow: 0 rem(10px) rem(10px) rgba(0, 0, 0, 0.06);
-    transition: 0.2s ease;
+    border: rem(1px) solid var(--neutral-800);
+    transition: $social-transition;
     width: 100%;
     height: 100%;
+    max-width: $social-card-max-width;
+    margin: 0 auto;
+    box-shadow: 0 rem(4px) rem(8px) rgba(0, 0, 0, 0.1);
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &:hover {
+      border: rem(1px) solid var(--primary);
+      box-shadow: 0 rem(8px) rem(24px) rgba(0, 0, 0, 0.15);
+      transform: translateY(rem(-2px));
+    }
+
+    @include dark-theme {
+      background: var(--background-100);
+      border-color: var(--neutral-700);
+      box-shadow: 0 rem(4px) rem(8px) rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        border-color: var(--primary);
+        box-shadow: 0 rem(8px) rem(24px) rgba(0, 0, 0, 0.3);
+      }
+    }
   }
 
-  .card-list .card-item .card-link:active {
-    cursor: grabbing;
+  // ==========================================
+  // HEADER DE LA TARJETA SOCIAL
+  // ==========================================
+  &_post-header {
+    display: flex;
+    align-items: center;
+    gap: rem(8px);
+    padding: $social-header-padding;
+    margin: rem(-15px) rem(-15px) rem(12px) rem(-15px);
+    background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+    border-radius: $social-card-border-radius $social-card-border-radius 0 0;
+    color: white;
+    font-weight: var(--font-weight-semibold);
+
+    i {
+      font-size: rem(20px);
+      color: white;
+    }
   }
 
-  .card-list .card-item .card-link:hover {
-    border: 1px solid;
-    border-color: var(--primary);
-    box-shadow: 0px rem(4px) rem(10px) rgba(0, 0, 0, 0.351);
+  &_social-label {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-bold);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: rem(0.5px);
   }
 
-  .card-wrapper .swiper-pagination-bullet {
-    height: rem(13px);
-    width: rem(13px);
-    opacity: 0.5;
-    background: var(--primary);
+  // ==========================================
+  // CONTENIDO DEL POST
+  // ==========================================
+  &_post-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    overflow: hidden;
+
+    // Estilos para los embeds de Instagram
+    .instagram-media {
+      margin: 0 !important;
+      max-width: 100% !important;
+      min-width: auto !important;
+      width: 100% !important;
+      border-radius: rem(8px) !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    // Responsividad para embeds
+    @include responsive($breakpoint-sm) {
+      .instagram-media {
+        min-height: rem(300px);
+      }
+    }
   }
 
-  .card-wrapper .swiper-pagination-bullet-active {
-    opacity: 1;
+  // ==========================================
+  // FALLBACK PARA POSTS SIN JAVASCRIPT
+  // ==========================================
+  &_fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: rem(40px) rem(20px);
+    text-align: center;
+    background: var(--neutral-900);
+    border-radius: rem(8px);
+    min-height: rem(200px);
+
+    p {
+      color: var(--neutral-500);
+      margin-bottom: rem(16px);
+      font-size: var(--font-size-paragraph);
+    }
+
+    a {
+      color: var(--primary);
+      font-weight: var(--font-weight-semibold);
+      text-decoration: none;
+      padding: rem(8px) rem(16px);
+      border: rem(1px) solid var(--primary);
+      border-radius: rem(4px);
+      transition: $social-transition;
+
+      &:hover {
+        background: var(--primary);
+        color: white;
+      }
+    }
+
+    @include dark-theme {
+      background: var(--neutral-800);
+
+      p {
+        color: var(--neutral-400);
+      }
+    }
   }
 
-  .swiper-slide-button {
+  // ==========================================
+  // PAGINACIÓN - ESTILO MODERNO PARA SOCIAL
+  // ==========================================
+  &_pagination {
+    position: relative;
+    margin-top: rem(25px);
+    text-align: center;
+    min-height: rem(20px);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: rem(8px);
+
+    .swiper-pagination-bullet {
+      height: rem(10px);
+      width: rem(10px);
+      opacity: 0.3;
+      background: var(--primary);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 50%;
+      border: none;
+      margin: 0 !important;
+      cursor: pointer;
+
+      &.swiper-pagination-bullet-active {
+        opacity: 1;
+        transform: scale(1.4);
+        background: var(--primary-600);
+        width: rem(14px);
+        height: rem(14px);
+      }
+
+      &:hover:not(.swiper-pagination-bullet-active) {
+        opacity: 0.6;
+        transform: scale(1.1);
+      }
+    }
+
+    &.swiper-pagination-hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateY(rem(10px));
+    }
+  }
+
+  // ==========================================
+  // BOTONES DE NAVEGACIÓN - DISEÑO SOCIAL
+  // ==========================================
+  &_prev,
+  &_next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
-    width: rem(50px);
-    height: rem(50px);
-    display: flex;
+    width: $nav-button-size;
+    height: $nav-button-size;
+    display: none;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(rem(10px));
+    background: rgba(255, 255, 255, 0.9);
+    border: rem(2px) solid var(--neutral-300);
+    box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.15);
+
+    @include responsive($breakpoint-sm) {
+      width: $nav-button-size-mobile;
+      height: $nav-button-size-mobile;
+    }
 
     i {
-      font-size: rem(32px);
+      font-size: rem(24px);
       color: var(--primary);
       z-index: 100;
+      transition: all 0.3s ease;
+
+      @include responsive($breakpoint-sm) {
+        font-size: rem(20px);
+      }
     }
 
     &:hover {
       transform: translateY(-50%) scale(1.1);
-    }
-  }
-
-  .subjects-prev {
-    left: rem(2px);
-  }
-
-  .subjects-next {
-    right: rem(2px);
-  }
-
-  @media (max-width: $breakpoint-sm) {
-    .swiper-slide-button {
-      width: rem(40px);
-      height: rem(40px);
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 rem(6px) rem(16px) rgba(var(--primary-rgb), 0.3);
 
       i {
-        font-size: rem(24px);
+        color: white;
       }
     }
 
-    .card-item {
-      height: rem(450px) !important;
-      min-height: rem(450px) !important;
+    // Estados de Swiper mejorados
+    &.swiper-button-disabled {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateY(-50%) scale(0.8);
+    }
+
+    &.swiper-button-hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      display: none !important;
+    }
+
+    &.show-navigation {
+      display: flex !important;
+      opacity: 1;
+      visibility: visible;
     }
   }
 
-  @media (max-width: $breakpoint-sm) {
-    .card-wrapper {
-      margin: 0 rem(10px) rem(25px);
+  &_prev {
+    left: rem(15px);
+
+    @include responsive($breakpoint-sm) {
+      left: rem(5px);
+    }
+  }
+
+  &_next {
+    right: rem(15px);
+
+    @include responsive($breakpoint-sm) {
+      right: rem(5px);
+    }
+  }
+
+  // ==========================================
+  // RESPONSIVE - MOBILE FIRST OPTIMIZADO
+  // ==========================================
+
+  // Móviles pequeños (hasta 576px)
+  @media (max-width: 576px) {
+    &_prev,
+    &_next {
+      &.swiper-button-hidden,
+      .swiper-container-lock & {
+        display: none !important;
+      }
     }
 
-    .card-wrapper .swiper-slide-button {
-      display: none;
+    &_pagination {
+      margin-top: rem(20px);
+
+      .swiper-pagination-bullet {
+        width: rem(8px);
+        height: rem(8px);
+        margin: 0 rem(4px) !important;
+      }
     }
+
+    &_card {
+      max-width: 100%;
+      margin: 0;
+    }
+  }
+
+  // Tablets (768px - 1023px)
+  @media (min-width: 768px) and (max-width: 1023px) {
+    &_card {
+      max-width: rem(350px);
+    }
+  }
+
+  // Desktop (1024px+)
+  @media (min-width: 1024px) {
+    &_card {
+      max-width: $social-card-max-width;
+    }
+  }
+
+  // ==========================================
+  // OPTIMIZACIONES PARA POCOS SLIDES
+  // ==========================================
+  .swiper-container-lock & {
+    &_slides {
+      justify-content: center;
+    }
+
+    &_wrapper {
+      padding: rem(20px) 0;
+    }
+
+    &_pagination {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  }
+
+  // ==========================================
+  // TEMA OSCURO - MEJORADO PARA SOCIAL
+  // ==========================================
+  @include dark-theme {
+    &_prev,
+    &_next {
+      background-color: rgba(var(--background-200-rgb), 0.95);
+      border-color: var(--neutral-600);
+
+      &:hover {
+        background-color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      &.swiper-button-disabled {
+        background-color: rgba(var(--neutral-rgb), 0.2);
+        border-color: var(--neutral-800);
+      }
+    }
+
+    &_pagination {
+      .swiper-pagination-bullet {
+        background: var(--primary-400);
+
+        &.swiper-pagination-bullet-active {
+          background: var(--primary-300);
+        }
+      }
+    }
+
+    &_fallback {
+      a {
+        border-color: var(--primary-400);
+        color: var(--primary-400);
+
+        &:hover {
+          background: var(--primary-400);
+          color: var(--background-100);
+        }
+      }
+    }
+  }
+}
+
+// ==========================================
+// CLASES GLOBALES DE SWIPER - OPTIMIZADAS PARA SOCIAL
+// ==========================================
+.swiper {
+  overflow: visible;
+
+  &.swiper-container-lock {
+    .swiper-slide-button {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .swiper-pagination {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  }
+
+  .swiper-slide-button,
+  .swiper-pagination {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .swiper-pagination {
+    position: static !important;
+    margin-top: var(--spacing-md);
+  }
+}
+
+// ==========================================
+// ESTILOS ESPECÍFICOS PARA EMBEDS DE INSTAGRAM
+// ==========================================
+.instagram-media {
+  // Forzar que los embeds se ajusten al contenedor
+  max-width: 100% !important;
+  min-width: auto !important;
+
+  // Mejorar la responsividad
+  @include responsive($breakpoint-sm) {
+    min-height: rem(300px) !important;
+  }
+
+  @include responsive($breakpoint-md) {
+    min-height: rem(400px) !important;
   }
 }
