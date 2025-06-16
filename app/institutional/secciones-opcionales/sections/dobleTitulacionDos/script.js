@@ -1,13 +1,12 @@
-// Función única exportada por defecto para el scroll
 export default function scrollLogic() {
-  console.log('Scroll Logic iniciado')
+  console.log('Scroll Logic iniciado - Mobile First')
 
-  // Función principal que maneja todo el comportamiento de scroll
   const initializeScrollBehavior = () => {
-    // Solo aplicar en desktop
+    // Solo aplicar scroll personalizado en desktop
     if (window.innerWidth <= 768) {
-      console.log('Dispositivo móvil detectado, scroll deshabilitado')
-      // En móvil, asegurar que no hay propiedades de scroll forzadas
+      console.log('Dispositivo móvil - scroll nativo habilitado')
+      
+      // Asegurar que no hay propiedades de scroll forzadas en móvil
       const scrollContainer = document.querySelector('#scroll-container')
       if (scrollContainer) {
         scrollContainer.style.overflow = 'visible'
@@ -17,12 +16,14 @@ export default function scrollLogic() {
       return
     }
 
+    console.log('Dispositivo desktop - configurando scroll personalizado')
+
     const container = document.querySelector('#doble-titulacion-container')
     const rightColumn = document.querySelector('#right-column-scroll')
     const scrollContainer = document.querySelector('#scroll-container')
 
     if (!container || !rightColumn || !scrollContainer) {
-      console.warn('Elementos no encontrados para scroll:', {
+      console.warn('Elementos requeridos no encontrados:', {
         container: !!container,
         rightColumn: !!rightColumn,
         scrollContainer: !!scrollContainer
@@ -30,32 +31,29 @@ export default function scrollLogic() {
       return
     }
 
-    console.log('Elementos encontrados, configurando scroll...')
-
-    // Configurar propiedades de scroll en el contenedor
+    // Configurar propiedades de scroll para desktop
     scrollContainer.style.overflowY = 'auto'
     scrollContainer.style.overflowX = 'hidden'
     scrollContainer.style.height = '100%'
     scrollContainer.style.maxHeight = 'calc(100vh - 300px)'
 
-    // Función de manejo del wheel
     const handleWheel = (e) => {
       const isMouseOverRightColumn = rightColumn.contains(e.target)
       const deltaY = e.deltaY
 
       // Si el mouse está sobre la columna derecha, permitir scroll normal
       if (isMouseOverRightColumn) {
-        console.log('Mouse sobre columna derecha, permitiendo scroll normal')
+        console.log('Mouse sobre columna derecha, scroll normal')
         return
       }
 
-      // Obtener información de scroll
+      // Información de scroll
       const scrollTop = scrollContainer.scrollTop
       const scrollHeight = scrollContainer.scrollHeight
       const clientHeight = scrollContainer.clientHeight
       const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5
 
-      console.log('Scroll info:', {
+      console.log('Scroll interceptado:', {
         scrollTop,
         scrollHeight,
         clientHeight,
@@ -63,21 +61,21 @@ export default function scrollLogic() {
         deltaY
       })
 
-      // Si hay scroll hacia abajo y no estamos al final
+      // Interceptar scroll hacia abajo si no estamos al final
       if (deltaY > 0 && !isAtBottom) {
         e.preventDefault()
         scrollContainer.scrollBy({ 
-          top: deltaY * 2, // Multiplicar para scroll más rápido
+          top: deltaY * 2,
           behavior: 'auto' 
         })
-        console.log('Scroll interceptado y aplicado')
+        console.log('Scroll aplicado a columna derecha')
       }
     }
 
-    // Función de resize
+    // Función de resize para reconfigurar
     const handleResize = () => {
       console.log('Resize detectado')
-      // Remover listener anterior
+      // Limpiar listener anterior
       container.removeEventListener('wheel', handleWheel)
       
       // Reinicializar después de un delay
@@ -86,25 +84,30 @@ export default function scrollLogic() {
       }, 100)
     }
 
+    // Limpiar listeners anteriores si existen
+    if (window.scrollCleanup) {
+      window.scrollCleanup()
+    }
+
     // Agregar event listeners
     container.addEventListener('wheel', handleWheel, { passive: false })
     window.addEventListener('resize', handleResize)
 
-    console.log('Event listeners agregados')
+    console.log('Event listeners agregados correctamente')
 
-    // Función de limpieza (exponer globalmente para cleanup)
-    window.cleanupScrollLogic = () => {
+    // Función de limpieza
+    window.scrollCleanup = () => {
       container.removeEventListener('wheel', handleWheel)
       window.removeEventListener('resize', handleResize)
       console.log('Scroll logic limpiado')
     }
 
-    // Verificar que el scroll container tenga contenido suficiente
+    // Verificar contenido scrolleable
     setTimeout(() => {
       const scrollHeight = scrollContainer.scrollHeight
       const clientHeight = scrollContainer.clientHeight
       
-      console.log('Verificación de contenido:', {
+      console.log('Verificación de scroll:', {
         scrollHeight,
         clientHeight,
         hasScroll: scrollHeight > clientHeight
@@ -113,17 +116,17 @@ export default function scrollLogic() {
       if (scrollHeight <= clientHeight) {
         console.warn('El contenido no es suficiente para activar scroll')
       } else {
-        console.log('✅ Scroll activado correctamente')
+        console.log('✅ Scroll configurado correctamente')
       }
     }, 500)
   }
 
-  // Función para esperar a que los elementos estén disponibles
+  // Esperar a que los elementos estén disponibles
   const waitForElements = () => {
     let attempts = 0
     const maxAttempts = 20
 
-    const check = () => {
+    const checkElements = () => {
       attempts++
       const container = document.querySelector('#doble-titulacion-container')
       const rightColumn = document.querySelector('#right-column-scroll')
@@ -134,13 +137,13 @@ export default function scrollLogic() {
         initializeScrollBehavior()
       } else if (attempts < maxAttempts) {
         console.log(`Intento ${attempts}/${maxAttempts} - Esperando elementos...`)
-        setTimeout(check, 100)
+        setTimeout(checkElements, 100)
       } else {
         console.error('No se pudieron encontrar los elementos después de', maxAttempts, 'intentos')
       }
     }
 
-    check()
+    checkElements()
   }
 
   // Inicializar cuando el DOM esté listo
@@ -150,21 +153,24 @@ export default function scrollLogic() {
     waitForElements()
   }
 
-  // Exponer función de debug globalmente
+  // Función de debug
   window.debugScrollLogic = () => {
     const container = document.querySelector('#doble-titulacion-container')
     const rightColumn = document.querySelector('#right-column-scroll')
     const scrollContainer = document.querySelector('#scroll-container')
 
     console.log('Debug Scroll Logic:', {
+      windowWidth: window.innerWidth,
+      isMobile: window.innerWidth <= 768,
       container: !!container,
       rightColumn: !!rightColumn,
       scrollContainer: !!scrollContainer,
       scrollHeight: scrollContainer?.scrollHeight,
       clientHeight: scrollContainer?.clientHeight,
+      canScroll: scrollContainer ? scrollContainer.scrollHeight > scrollContainer.clientHeight : false,
       overflowY: scrollContainer ? getComputedStyle(scrollContainer).overflowY : 'N/A'
     })
   }
 
-  console.log('Scroll Logic configurado. Usa window.debugScrollLogic() para debug')
+  console.log('Scroll Logic configurado. Debug: window.debugScrollLogic()')
 }

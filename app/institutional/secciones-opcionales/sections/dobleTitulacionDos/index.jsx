@@ -1,21 +1,18 @@
-'use client'
 import React from 'react'
 import './styles.scss'
 import Title from '../../../../_library/components/contain/title'
 import Paragraph from '../../../../_library/components/contain/paragraph'
 import Container from '@library/components/container'
-// Importar la función de scroll
 import scrollLogic from './script.js'
 
 const DobleTitulacion2 = () => {
-  // Ejecutar la lógica de scroll cuando se renderiza
+  // Ejecutar scroll logic solo en cliente
   if (typeof window !== 'undefined') {
     setTimeout(() => {
       scrollLogic()
     }, 100)
   }
 
-  // Datos para renderizar
   const programItems = [
     {
       id: 1,
@@ -31,78 +28,52 @@ const DobleTitulacion2 = () => {
       title: 'Summer Business School:',
       description: 'Programa intersemestral con docentes internacionales para complementar tu formación.'
     },
-    {
-      id: 3,
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/tutulacion-uno',
-      alt: 'Intercambio Académico',
-      title: 'Intercambio Académico:',
-      description: 'Experimenta la educación internacional con programas de intercambio en universidades prestigiosas.'
-    },
-    {
-      id: 4,
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-dos',
-      alt: 'Networking Internacional',
-      title: 'Networking Global:',
-      description: 'Construye una red de contactos internacionales que impulse tu carrera profesional.'
-    },
-    {
-      id: 5,
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/tutulacion-uno',
-      alt: 'Certificaciones',
-      title: 'Certificaciones Internacionales:',
-      description: 'Obtén certificaciones reconocidas mundialmente que validen tus competencias.'
-    },
-    {
-      id: 6,
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-dos',
-      alt: 'Investigación',
-      title: 'Proyectos de Investigación:',
-      description: 'Participa en investigaciones conjuntas con universidades europeas.'
-    }
   ]
 
   return (
     <div className="doble-titulacion-container" id="doble-titulacion-container">
       <Container className="content-wrapper">
         <div>
-          <Title className="main-title">Doble Titulación 2</Title>
+          {/* Título principal con ID único */}
+          <Title className="main-title" id="dt2-main-title">Doble Titulación 2</Title>
 
           <div className="two-column-layout">
+            {/* Columna izquierda - Hero section */}
             <div className="left-column">
-              {/* Título solo para móvil - fuera del overlay */}
-              <h2 className="mobile-title-outside">Internacionaliza tu MBA y amplía tu visión global</h2>
+              {/* Título móvil fuera del overlay con ID único */}
+              <h2 className="mobile-title-outside" id="dt2-mobile-title">
+                Internacionaliza tu MBA y amplía tu visión global
+              </h2>
               
               <div className="university-building">
-                {/* Imagen de desktop */}
                 <img
                   src="https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-tres"
                   alt="Universidad Pompeu Fabra - Edificio"
-                  className="university-image desktop-only"
-                />
-                
-                {/* Imagen de móvil */}
-                <img
-                  src="https://www.javeriana.edu.co/recursosdb/d/info-prg/titulacion-tres"
-                  alt="Universidad Pompeu Fabra - Edificio"
-                  className="university-image mobile-only"
+                  className="university-image"
                 />
 
-                {/* Overlay sobre ambas imágenes */}
+                {/* Overlay con contenido */}
                 <div className="overlay-content">
-                  <h2 className="overlay-title">Internacionaliza tu MBA y amplía tu visión global</h2>
-                  <Paragraph className="overlay-description">
+                  <h2 className="overlay-title" id="dt2-overlay-title">
+                    Internacionaliza tu MBA y amplía tu visión global
+                  </h2>
+                  <Paragraph className="overlay-description-principal" id="dt2-overlay-description">
                     Vive experiencias académicas en el extranjero que potencian tu perfil profesional y amplían tus oportunidades laborales.
                   </Paragraph>
                 </div>
               </div>
             </div>
 
+            {/* Columna derecha - Contenido con scroll */}
             <div className="right-column" id="right-column-scroll">
               <div className="scroll-container" id="scroll-container">
+                {/* Header section - solo desktop */}
                 <div className="header-section">
                   <div className="title-section">
-                    <h2 className="section-title">Esquema de Doble Titulación</h2>
-                    <Paragraph className="university-info">
+                    <h2 className="section-title" id="dt2-section-title">
+                      Esquema de Doble Titulación
+                    </h2>
+                    <Paragraph className="university-info" id="dt2-university-info">
                       con la Universidad Pompeu Fabra - Barcelona School of Management (BSM)
                     </Paragraph>
                   </div>
@@ -121,6 +92,7 @@ const DobleTitulacion2 = () => {
                   </div>
                 </div>
 
+                {/* Items del programa */}
                 <div className="program-items">
                   {programItems.map((item) => (
                     <div key={item.id} className="program-item">
@@ -130,8 +102,10 @@ const DobleTitulacion2 = () => {
                         className="program-image"
                       />
                       <div className="program-info">
-                        <h3 className="program-title">{item.title}</h3>
-                        <Paragraph className="program-description">
+                        <h3 className="program-title" id={`dt2-program-title-${item.id}`}>
+                          {item.title}
+                        </h3>
+                        <Paragraph className="program-description" id={`dt2-program-description-${item.id}`}>
                           {item.description}
                         </Paragraph>
                       </div>
