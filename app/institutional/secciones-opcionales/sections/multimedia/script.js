@@ -36,59 +36,78 @@ export default () => {
     }
 
     // ==========================================
-    // FUNCIÓN PARA REPRODUCIR VIDEO
+    // FUNCIÓN PARA CREAR IFRAME AUTOMÁTICO
     // ==========================================
-    window.playVideo = index => {
-      const item = mediaContent[index]
-      if (item && item.type === 'youtube') {
-        const slide = document.querySelector('.multimedia-slider_main-swiper .swiper-slide-active')
-        if (!slide) return
+    const createAutoplayIframe = videoId => {
+      const iframe = document.createElement('iframe')
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&rel=0&showinfo=0&modestbranding=1&disablekb=1`
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+      iframe.allowFullscreen = false
+      iframe.style.width = '100%'
+      iframe.style.height = '100%'
+      iframe.style.border = 'none'
+      iframe.style.pointerEvents = 'none' // Evita interacción directa
+      return iframe
+    }
 
-        const overlay = slide.querySelector('.multimedia-slider_video-overlay')
-        const img = slide.querySelector('img')
-
-        if (overlay && img) {
-          // Ocultar overlay
-          overlay.style.display = 'none'
-
-          // Crear iframe de YouTube
-          const iframe = document.createElement('iframe')
-          iframe.src = `https://www.youtube.com/embed/${item.videoId}?autoplay=1&rel=0`
-          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-          iframe.allowFullscreen = true
-          iframe.style.width = '100%'
-          iframe.style.height = '100%'
-          iframe.style.border = 'none'
-
-          // Reemplazar imagen con iframe
-          slide.replaceChild(iframe, img)
+    // ==========================================
+    // FUNCIÓN PARA PAUSAR VIDEO
+    // ==========================================
+    const pauseVideo = iframe => {
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
+        } catch (e) {
+          console.warn('No se pudo pausar el video:', e)
         }
       }
     }
 
     // ==========================================
-    // FUNCIÓN PARA RESTAURAR VIDEOS
+    // FUNCIÓN PARA REPRODUCIR VIDEO
     // ==========================================
-    const restoreVideoSlides = () => {
-      const slides = document.querySelectorAll('.multimedia-slider_main-swiper .swiper-slide')
-      slides.forEach((slide, index) => {
-        const realIndex = index % mediaContent.length
+    const playVideo = iframe => {
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*')
+        } catch (e) {
+          console.warn('No se pudo reproducir el video:', e)
+        }
+      }
+    }
+
+    // ==========================================
+    // FUNCIÓN PARA MANEJAR VIDEOS EN SLIDES
+    // ==========================================
+    const handleVideoSlides = () => {
+      const activeSlide = document.querySelector('.multimedia-slider_main-swiper .swiper-slide-active')
+      const allSlides = document.querySelectorAll('.multimedia-slider_main-swiper .swiper-slide')
+
+      allSlides.forEach((slide, index) => {
+        const slideIndex = parseInt(slide.dataset.slideIndex) || index
+        const realIndex = slideIndex % mediaContent.length
         const item = mediaContent[realIndex]
 
         if (item && item.type === 'youtube') {
-          const overlay = slide.querySelector('.multimedia-slider_video-overlay')
           const iframe = slide.querySelector('iframe')
 
-          if (iframe && overlay) {
-            // Mostrar overlay nuevamente
-            overlay.style.display = 'flex'
-
-            // Recrear imagen
-            const img = document.createElement('img')
-            img.src = item.thumbnail
-            img.alt = item.title
-
-            slide.replaceChild(img, iframe)
+          if (slide === activeSlide) {
+            // Slide activo - reproducir
+            if (!iframe) {
+              // Crear iframe si no existe
+              const img = slide.querySelector('img')
+              if (img) {
+                const newIframe = createAutoplayIframe(item.videoId)
+                slide.replaceChild(newIframe, img)
+              }
+            } else {
+              playVideo(iframe)
+            }
+          } else {
+            // Slide inactivo - pausar
+            if (iframe) {
+              pauseVideo(iframe)
+            }
           }
         }
       })
@@ -133,22 +152,23 @@ export default () => {
       },
       on: {
         slideChange: function () {
-          // Pausar todos los videos cuando se cambie de slide
-          const iframes = document.querySelectorAll('.multimedia-slider_main-swiper iframe')
-          iframes.forEach(iframe => {
-            const src = iframe.src
-            if (src.includes('autoplay=1')) {
-              iframe.src = src.replace('autoplay=1', 'autoplay=0')
-            }
-          })
-
-          // Restaurar overlays en slides de video
+          // Manejar videos en el cambio de slide
           setTimeout(() => {
-            restoreVideoSlides()
+            handleVideoSlides()
           }, 100)
         },
         init: function () {
+          // Agregar índices a los slides para tracking
+          const slides = document.querySelectorAll('.multimedia-slider_main-swiper .swiper-slide')
+          slides.forEach((slide, index) => {
+            slide.dataset.slideIndex = index
+          })
+
           updateNavigationVisibility()
+          // Manejar videos en la inicialización
+          setTimeout(() => {
+            handleVideoSlides()
+          }, 200)
         },
         update: function () {
           updateNavigationVisibility()
