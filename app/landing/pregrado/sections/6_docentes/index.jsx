@@ -49,6 +49,13 @@ const Docentes = () => {
       profileUrl: '#'
     },
     {
+      name: 'Nelson',
+      title: 'Ph.D. Ingeniería',
+      image:
+        'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773759/Preview-1000x0/CarolinaEugeniaOrtizVelilla.png?t=1719869726614',
+      profileUrl: '#'
+    },
+    {
       name: 'Nelson Obregón Neira',
       title: 'Ph.D. Ingeniería, Universidad de los Andes, Bogotá',
       image:

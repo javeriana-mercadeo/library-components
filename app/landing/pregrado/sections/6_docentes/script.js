@@ -14,7 +14,6 @@ export default () => {
         console.error('Ningún elemento swiper encontrado')
         return
       }
-      console.log('📦 Usando elemento fallback: .expert-swiper')
     }
 
     // Contar slides
@@ -30,8 +29,8 @@ export default () => {
     const swiperSelector = element ? '.expert-carousel_wrapper' : '.expert-swiper'
 
     window.expertSwiper = new window.Swiper(swiperSelector, {
-      loop: totalSlides > 4, // Solo loop si hay más de 4 slides
-      spaceBetween: 10,
+      loop: false,
+      spaceBetween: 20,
       watchOverflow: true,
       centeredSlides: false,
       grabCursor: true,
@@ -63,7 +62,11 @@ export default () => {
           spaceBetween: 20
         },
         1200: {
-          slidesPerView: Math.min(4, totalSlides),
+          slidesPerView: Math.min(5, totalSlides),
+          spaceBetween: 20
+        },
+        1440: {
+          slidesPerView: Math.min(6, totalSlides),
           spaceBetween: 20
         }
       },
@@ -72,19 +75,35 @@ export default () => {
         init: function () {
           equalizeHeights()
           updateNavigationVisibility(this, totalSlides)
+          updateButtonStates(this)
         },
         update: function () {
           equalizeHeights()
           updateNavigationVisibility(this, totalSlides)
+          updateButtonStates(this)
         },
         resize: function () {
           setTimeout(() => {
             equalizeHeights()
             updateNavigationVisibility(this, totalSlides)
+            updateButtonStates(this)
           }, 100)
+        },
+        breakpoint: function () {
+          setTimeout(() => {
+            updateNavigationVisibility(this, totalSlides)
+            updateButtonStates(this)
+          }, 150)
         },
         slideChange: function () {
           equalizeHeights()
+          updateButtonStates(this)
+        },
+        reachBeginning: function () {
+          updateButtonStates(this)
+        },
+        reachEnd: function () {
+          updateButtonStates(this)
         }
       }
     })
@@ -118,31 +137,81 @@ export default () => {
       return
     }
 
-    // Si hay 4 o menos slides en desktop, ocultar botones
-    const currentBreakpoint = window.innerWidth
-    let maxVisibleSlides = 1
+    // Obtener los slides visibles actuales desde la instancia de swiper
+    const slidesPerView = swiper.params.slidesPerView === 'auto' ? swiper.slidesPerViewDynamic() : swiper.params.slidesPerView
 
-    if (currentBreakpoint >= 1024) {
-      maxVisibleSlides = 4
-    } else if (currentBreakpoint >= 768) {
-      maxVisibleSlides = 3
-    } else if (currentBreakpoint >= 550) {
-      maxVisibleSlides = 2
-    }
-
-    const needsNavigation = totalSlides > maxVisibleSlides
+    // Si todos los slides son visibles, ocultar navegación
+    const needsNavigation = totalSlides > slidesPerView
 
     if (needsNavigation) {
-      nextBtn.style.display = 'flex'
-      prevBtn.style.display = 'flex'
+      // Mostrar contenedor de botones
+      nextBtn.classList.add('show-navigation')
+      nextBtn.classList.remove('swiper-button-hidden')
       nextBtn.setAttribute('aria-hidden', 'false')
+
+      prevBtn.classList.add('show-navigation')
+      prevBtn.classList.remove('swiper-button-hidden')
       prevBtn.setAttribute('aria-hidden', 'false')
+
+      updateButtonStates(swiper)
     } else {
-      nextBtn.style.display = 'none'
-      prevBtn.style.display = 'none'
+      // Ocultar completamente si todos los slides son visibles
+      nextBtn.classList.remove('show-navigation')
+      nextBtn.classList.add('swiper-button-hidden')
       nextBtn.setAttribute('aria-hidden', 'true')
+
+      prevBtn.classList.remove('show-navigation')
+      prevBtn.classList.add('swiper-button-hidden')
       prevBtn.setAttribute('aria-hidden', 'true')
-      console.log('❌ Navegación deshabilitada (todos los slides visibles)')
+    }
+  }
+
+  const updateButtonStates = swiper => {
+    const nextBtn = document.querySelector('.expert-carousel_next') || document.querySelector('.expert-next')
+    const prevBtn = document.querySelector('.expert-carousel_prev') || document.querySelector('.expert-prev')
+
+    if (!nextBtn || !prevBtn) return
+
+    // Verificar si los botones deben estar activos
+    const isBeginning = swiper.isBeginning
+    const isEnd = swiper.isEnd
+    const allowSlideNext = swiper.allowSlideNext
+    const allowSlidePrev = swiper.allowSlidePrev
+
+    // Botón anterior
+    if (isBeginning || !allowSlidePrev) {
+      prevBtn.classList.add('swiper-button-disabled')
+      prevBtn.style.opacity = '0.3'
+      prevBtn.style.pointerEvents = 'none'
+      prevBtn.setAttribute('aria-disabled', 'true')
+    } else {
+      prevBtn.classList.remove('swiper-button-disabled')
+      prevBtn.style.opacity = '1'
+      prevBtn.style.pointerEvents = 'auto'
+      prevBtn.setAttribute('aria-disabled', 'false')
+    }
+
+    // Botón siguiente
+    if (isEnd || !allowSlideNext) {
+      nextBtn.classList.add('swiper-button-disabled')
+      nextBtn.style.opacity = '0.3'
+      nextBtn.style.pointerEvents = 'none'
+      nextBtn.setAttribute('aria-disabled', 'true')
+    } else {
+      nextBtn.classList.remove('swiper-button-disabled')
+      nextBtn.style.opacity = '1'
+      nextBtn.style.pointerEvents = 'auto'
+      nextBtn.setAttribute('aria-disabled', 'false')
+    }
+
+    // Asegurar visibilidad si la navegación está habilitada
+    if (nextBtn.classList.contains('show-navigation')) {
+      nextBtn.style.visibility = 'visible'
+      nextBtn.style.display = 'flex'
+    }
+    if (prevBtn.classList.contains('show-navigation')) {
+      prevBtn.style.visibility = 'visible'
+      prevBtn.style.display = 'flex'
     }
   }
 
@@ -156,7 +225,6 @@ export default () => {
 
   checkAndInit()
 
-  // Re-ejecutar cuando cambie el tamaño de ventana
   let resizeTimeout
   window.addEventListener('resize', () => {
     if (resizeTimeout) {
