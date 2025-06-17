@@ -1,6 +1,3 @@
-'use client'
-
-import { useEffect } from 'react'
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
 import Paragraph from '@library/components/contain/paragraph'
@@ -12,36 +9,6 @@ import './styles.scss'
 
 const Herramientas = () => {
   const elementName = info.id || 'herramientas'
-  const baseClass = 'tools'
-
-  // Función para organizar logos en columnas
-  const organizarLogos = logos => {
-    if (!logos || logos.length === 0) return []
-
-    const totalLogos = logos.length
-    let columnasTotal
-
-    if (totalLogos <= 3) {
-      columnasTotal = totalLogos
-    } else if (totalLogos <= 6) {
-      columnasTotal = 3
-    } else if (totalLogos <= 9) {
-      columnasTotal = 3
-    } else {
-      columnasTotal = 4
-    }
-
-    const columnas = Array(columnasTotal)
-      .fill()
-      .map(() => [])
-
-    logos.forEach((logo, index) => {
-      const columnaIndex = index % columnasTotal
-      columnas[columnaIndex].push(logo)
-    })
-
-    return columnas
-  }
 
   // Datos de los logos
   const logosHerramientas = [
@@ -56,11 +23,8 @@ const Herramientas = () => {
     { nombre: 'MAN', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/man' }
   ]
 
-  const logosOrganizados = organizarLogos(logosHerramientas)
-
-  useEffect(() => {
-    script()
-  }, [])
+  // Ejecutar script al cargar (Liferay manejará el ciclo de vida)
+  script()
 
   return (
     <section id={elementName}>
@@ -85,18 +49,19 @@ const Herramientas = () => {
             </Paragraph>
           </div>
 
+          {/* Grid que será reorganizado automáticamente en hexágono */}
           <div className="tools-logos-grid">
-            {logosOrganizados.map((columna, columnaIndex) => (
-              <div key={`columna-${columnaIndex}`} className={`columna-logos ${columnaIndex % 2 === 1 ? 'offset' : ''}`}>
-                {columna.map((logo, logoIndex) => (
-                  <div key={`logo-${columnaIndex}-${logoIndex}`} className="logo-item">
-                    <Image
-                      id={`${elementName}-logo-${columnaIndex}-${logoIndex}`}
-                      src={logo.imagen}
-                      alt={logo.nombre}
-                    />
-                  </div>
-                ))}
+            {logosHerramientas.map((logo, index) => (
+              <div 
+                key={`logo-${index}`} 
+                className="logo-item"
+                title={logo.nombre}
+              >
+                <Image
+                  id={`${elementName}-logo-${index}`}
+                  src={logo.imagen}
+                  alt={logo.nombre}
+                />
               </div>
             ))}
           </div>
