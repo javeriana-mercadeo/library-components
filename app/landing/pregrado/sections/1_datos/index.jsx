@@ -107,8 +107,11 @@ const DatosProgramaVideo = () => {
         </div>
 
         {/* === TÍTULO === */}
-        <Title hierarchy="h1" data-puj-name="true" className={`${baseClass}_title`} id={`${elementName}-title`}>
-          <span className="lead">Ingeniería Civil:</span> Construyendo el Futuro Sostenible de Colombia
+        <Title hierarchy="h1" isEditable={false} className={`${baseClass}_title`}>
+          <Caption id={`${elementName}_title-program`} className={`${baseClass}_title-program`} data-puj-name="true">
+            Ingeniería Civil:
+          </Caption>{' '}
+          <Caption id={`${elementName}_title-secondary`}>Construyendo el Futuro Sostenible de Colombia</Caption>
         </Title>
 
         {/* === SNIES === */}
@@ -188,7 +191,7 @@ const DatosProgramaVideo = () => {
               Cargando SNIES...
             </Paragraph>
 
-            <Paragraph id={`${elementName}-enrollment-legal-note`} className={`${baseClass}_enrollment-note`} size="sm">
+            <Paragraph id={`${elementName}-enrollment-legal`} className={`${baseClass}_enrollment-note`} size="sm">
               {' '}
               | Resolución de Registro Calificado: 9406 del 27 de mayo de 2022, vigente hasta el 27 de mayo de 2030. | Resolución de
               Acreditación de Alta Calidad: 9406 del 27 de mayo del 2022, vigente por 8 años, hasta el 27 de mayo de 2030.

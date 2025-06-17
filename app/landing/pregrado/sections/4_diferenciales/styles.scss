@@ -70,7 +70,6 @@ $mobile-breakpoint: 1024px;
         'left-column'
         'right-column'
         'image';
-      gap: var(--spacing-md);
       align-items: start;
     }
   }
@@ -81,7 +80,6 @@ $mobile-breakpoint: 1024px;
   &__column {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
 
     &--first {
       grid-area: left-column;
@@ -146,7 +144,7 @@ $mobile-breakpoint: 1024px;
     background-color: transparent;
     border-radius: $accordion-border-radius;
     transition: $diferenciales-transition;
-    padding: var(--spacing-sm);
+    padding: var(--spacing-xs);
 
     &:hover {
       background-color: rgba(var(--neutral-rgb), 0.02);
@@ -201,7 +199,7 @@ $mobile-breakpoint: 1024px;
     }
   }
 
-  &__icon {
+  &__icon i {
     font-size: rem(20px);
     color: var(--primary-600);
     transition: $diferenciales-transition;

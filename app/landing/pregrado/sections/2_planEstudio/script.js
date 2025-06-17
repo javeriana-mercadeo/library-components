@@ -14,7 +14,6 @@ export default () => {
         console.error('Ningún elemento swiper encontrado')
         return
       }
-      console.log('📦 Usando elemento fallback: .subjects-swiper')
     }
 
     // Contar slides con la nueva clase
@@ -150,8 +149,6 @@ export default () => {
       prevBtn.classList.remove('show-navigation')
       prevBtn.classList.add('swiper-button-hidden')
       prevBtn.setAttribute('aria-hidden', 'true')
-
-      console.log('❌ Navegación deshabilitada (1 slide o menos)')
     }
   }
 
@@ -230,7 +227,6 @@ export default () => {
       pagination.style.display = 'none'
       pagination.classList.add('swiper-pagination-hidden')
       pagination.setAttribute('aria-hidden', 'true')
-      console.log('❌ Paginación oculta (1 slide)')
     }
   }
 

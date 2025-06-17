@@ -15,11 +15,14 @@ $profile-transition: all 0.3s ease;
 .program-profile-section {
   background-color: var(--primary);
   padding: var(--spacing-md) 0;
+
+  @include responsive($breakpoint-lg) {
+    padding: var(--spacing-xl) 0;
+  }
 }
 
 .program-profile {
   &__tabs-nav {
-//    background-color: transparent;
     margin-bottom: var(--spacing-2xl);
   }
 
@@ -96,6 +99,12 @@ $profile-transition: all 0.3s ease;
       border-radius: rem(4px);
     }
 
+    // Estados deshabilitados
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     @include responsive($breakpoint-md) {
       font-size: rem(16px);
       padding: rem(12px) rem(24px) rem(16px);
@@ -120,6 +129,11 @@ $profile-transition: all 0.3s ease;
     &.hidden {
       display: none;
     }
+
+    // Asegurar que el contenido sea accesible cuando está visible
+    &:not(.hidden) {
+      display: block;
+    }
   }
 
   &__content-wrapper {
@@ -141,7 +155,7 @@ $profile-transition: all 0.3s ease;
   &__image-container {
     display: flex;
     justify-content: center;
-    overflow: hidden; // Importante para contener el zoom
+    overflow: hidden;
     border-radius: $profile-border-radius;
 
     @include responsive($breakpoint-lg) {
@@ -149,10 +163,10 @@ $profile-transition: all 0.3s ease;
     }
   }
 
-  // Aplicar zoom a las imágenes del componente
   &__image {
     width: 100%;
     max-width: rem(600px);
+    max-height: rem(360px);
     height: auto;
     border-radius: $profile-border-radius;
     object-fit: cover;
@@ -163,7 +177,7 @@ $profile-transition: all 0.3s ease;
     will-change: transform;
 
     // Aplicar el zoom hover
-    &.image:hover {
+    &:hover {
       transform: scale(1.05);
       filter: brightness(1.02);
     }
@@ -240,6 +254,23 @@ $profile-transition: all 0.3s ease;
 }
 
 // ==========================================
+// UTILIDADES DE ACCESIBILIDAD
+// ==========================================
+
+// Screen reader only - para elementos que solo deben ser leídos por lectores de pantalla
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ==========================================
 // ANIMACIONES
 // ==========================================
 @keyframes fadeIn {
@@ -258,20 +289,30 @@ $profile-transition: all 0.3s ease;
 // ==========================================
 @media (prefers-reduced-motion: reduce) {
   .program-profile {
-    &__tab-button::after {
-      transition: none;
+    &__tab-button {
+      &::after {
+        transition: none;
+      }
     }
 
     &__tab-panel {
       animation: none;
     }
+
+    &__image {
+      transition: none;
+
+      &:hover {
+        transform: none;
+        filter: none;
+      }
+    }
   }
 }
 
 // ==========================================
-// MODO OSCURO (opcional)
+// MODO OSCURO
 // ==========================================
-
 .program-profile {
   @include dark-theme {
     &__tab-button {
@@ -314,6 +355,17 @@ $profile-transition: all 0.3s ease;
           margin-bottom: rem(20px);
           color: black;
         }
+      }
+    }
+
+    &__paragraph {
+      color: black !important;
+
+      h3,
+      p,
+      li {
+        color: black !important;
+        opacity: 1 !important;
       }
     }
   }

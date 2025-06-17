@@ -1,11 +1,13 @@
 'use client'
 
+import { useEffect } from 'react'
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
 import Paragraph from '@library/components/contain/paragraph'
 import Image from '@library/components/contain/image'
 
 import info from './info.json'
+import script from './script.js'
 import './styles.scss'
 
 const Perfiles = () => {
@@ -71,37 +73,35 @@ const Perfiles = () => {
       content: (
         <>
           <p>
-            Esperamos que los aspirantes al programa de Ingeniería Civil de la Universidad Javeriana tengan interés en diseñar, construir y
-            gestionar proyectos de infraestructura que transformen la sociedad de manera sostenible.
+            Los egresados de Ingeniería Civil tienen un amplio campo de acción profesional en el sector público y privado, contribuyendo al
+            desarrollo sostenible de la sociedad.
           </p>
           <h3>
-            <strong>Tu carrera es Ingeniería Civil si:</strong>
+            <strong>Campos de desempeño profesional:</strong>
           </h3>
           <ul>
-            <li>Te apasiona la solución de problemas en el diseño, construcción y operación de infraestructura civil.</li>
-            <li>Tienes habilidades en matemáticas, análisis y resolución de problemas.</li>
-            <li>Te interesa la sostenibilidad y el impacto ambiental de las construcciones.</li>
-            <li>Disfrutas el trabajo en equipo en proyectos multidisciplinarios.</li>
-            <li>Quieres contribuir al desarrollo de ciudades y comunidades más eficientes y seguras.</li>
+            <li>Diseño y construcción de obras civiles: edificaciones, carreteras, puentes y sistemas de infraestructura.</li>
+            <li>Gerencia y dirección de proyectos de construcción e infraestructura.</li>
+            <li>Consultoría en ingeniería estructural, geotécnica, hidráulica y ambiental.</li>
+            <li>Investigación y desarrollo en nuevas tecnologías de construcción sostenible.</li>
+            <li>Gestión de recursos hídricos y sistemas de saneamiento urbano y rural.</li>
           </ul>
         </>
       )
     }
   ]
 
+  useEffect(() => {
+    script()
+  }, [])
+
   return (
     <section className={`${baseClass}-section`}>
       <Container id={elementName} className={baseClass}>
         <div className={`${baseClass}__tabs-container`}>
-          {/* Tabs navigation */}
-          <div className={`${baseClass}__tabs-nav`}>
-            <ul
-              className={`${baseClass}__tabs-list`}
-              id="profile-tabs"
-              data-tabs-toggle="#profile-tabs-content"
-              data-tabs-active-classes="active"
-              data-tabs-inactive-classes=""
-              role="tablist">
+          {/* Navegación de tabs */}
+          <div className={`${baseClass}__tabs-nav`} role="tablist" aria-label="Perfiles del programa">
+            <ul className={`${baseClass}__tabs-list`}>
               {profileTabs.map((tab, index) => (
                 <li key={tab.id} role="presentation">
                   <button
@@ -111,7 +111,8 @@ const Perfiles = () => {
                     type="button"
                     role="tab"
                     aria-controls={`${tab.id}-panel`}
-                    aria-selected={index === 0 ? 'true' : 'false'}>
+                    aria-selected={index === 0 ? 'true' : 'false'}
+                    tabIndex={index === 0 ? 0 : -1}>
                     {tab.label}
                   </button>
                 </li>
@@ -119,21 +120,24 @@ const Perfiles = () => {
             </ul>
           </div>
 
-          {/* Tabs content */}
-          <div id="profile-tabs-content" className={`${baseClass}__tabs-content`}>
+          {/* Contenido de las tabs */}
+          <div className={`${baseClass}__tabs-content`}>
             {profileTabs.map((tab, index) => (
               <div
                 key={tab.id}
                 className={`${baseClass}__tab-panel ${index !== 0 ? 'hidden' : ''}`}
                 id={`${tab.id}-panel`}
                 role="tabpanel"
-                aria-labelledby={`${tab.id}-tab`}>
+                aria-labelledby={`${tab.id}-tab`}
+                aria-hidden={index !== 0 ? 'true' : 'false'}>
                 <div className={`${baseClass}__content-wrapper`}>
                   <div className={`${baseClass}__image-container`}>
                     <Image src={tab.image} alt={tab.alt} className={`${baseClass}__image`} isEditable={false} />
                   </div>
                   <div className={`${baseClass}__text-container`}>
-                    <Paragraph className={`${baseClass}__paragraph`} isEditable={false} >{tab.content}</Paragraph>
+                    <div className={`${baseClass}__paragraph`}>
+                      {tab.content}
+                    </div>
                   </div>
                 </div>
               </div>

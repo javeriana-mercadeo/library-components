@@ -7,6 +7,7 @@ import Paragraph from '@library/components/contain/paragraph'
 import Caption from '@library/components/contain/caption'
 import Btn from '@library/components/contain/btn'
 import Image from '@library/components/contain/image'
+import Icon from '@library/components/contain/icon'
 
 import script from './script.js'
 import info from './info.json'
@@ -61,13 +62,27 @@ const Diferenciales = () => {
       title: 'Actividades nacionales e internacionales',
       content:
         'Realiza cursos en España, Italia, México y más; participa en concursos globales y haz tu práctica preprofesional en cualquier parte del mundo.'
+    },
+    {
+      id: 'diferencial-7',
+      icon: 'ph-map-pin', // Cambié el icono para diferenciarlo
+      title: 'Red de egresados global',
+      content: 'Conecta con una red internacional de más de 15,000 egresados javerianos trabajando en empresas líderes alrededor del mundo.'
+    },
+    {
+      id: 'diferencial-8',
+      icon: 'ph-certificate', // Cambié el icono para diferenciarlo
+      title: 'Certificaciones internacionales',
+      content: 'Obtén certificaciones reconocidas mundialmente que potencian tu perfil profesional y abren nuevas oportunidades laborales.'
     }
   ]
 
   // Componente reutilizable para cada item del acordeón
-  const AccordionItem = ({ item, index, isFirstColumn }) => {
-    const itemId = `${elementName}-item-${index + 1}`
-    const contentId = `${elementName}-content-${index + 1}`
+  const AccordionItem = ({ item, globalIndex, isFirstColumn }) => {
+    // Usar globalIndex para mantener numeración secuencial única
+    const itemNumber = globalIndex + 1
+    const itemId = `${elementName}-item-${itemNumber}`
+    const contentId = `${elementName}-content-${itemNumber}`
 
     return (
       <div className={`${baseClass}__accordion-item`} data-accordion="open" data-column={isFirstColumn ? 'first' : 'second'}>
@@ -75,10 +90,15 @@ const Diferenciales = () => {
         <div className={`${baseClass}__accordion-header`}>
           <div className={`${baseClass}__title-wrapper`}>
             <div className={`${baseClass}__icon-container`}>
-              <i className={`ph ${item.icon} ${baseClass}__icon`} aria-hidden="true"></i>
+              <Icon id={`${baseClass}-icons-${globalIndex}`} icon={item.icon} size="sm" color="primary" className={`${baseClass}__icon`} />
             </div>
 
-            <Caption id={`${itemId}-title`} className={`${baseClass}__accordion-title`} size="lg" weight="semibold" color="neutral">
+            <Caption
+              id={`caption-${elementName}-item-${itemNumber}-title`}
+              className={`${baseClass}__accordion-title`}
+              size="lg"
+              weight="semibold"
+              color="neutral">
               {item.title}
             </Caption>
           </div>
@@ -112,14 +132,7 @@ const Diferenciales = () => {
       <Container id={elementName} className={`${baseClass}__container`}>
         {/* Header de la sección */}
         <header className={`${baseClass}__header`}>
-          <Title
-            id={`${elementName}-title`}
-            className={`${baseClass}__title`}
-            hierarchy="h2"
-            size="2xl"
-            weight="bold"
-            align="center"
-            color="neutral">
+          <Title id={`title-${elementName}-title`} className={`${baseClass}__title`} weight="semibold" size="2xl" align="center">
             ¿Por qué elegir la Javeriana?
           </Title>
         </header>
@@ -129,15 +142,15 @@ const Diferenciales = () => {
           <div className={`${baseClass}__grid`}>
             {/* Primera columna */}
             <div className={`${baseClass}__column ${baseClass}__column--first`}>
-              {diferencialesData.slice(0, 3).map((item, index) => (
-                <AccordionItem key={item.id} item={item} index={index} isFirstColumn={true} />
+              {diferencialesData.slice(0, 4).map((item, index) => (
+                <AccordionItem key={item.id} item={item} globalIndex={index} isFirstColumn={true} />
               ))}
             </div>
 
             {/* Contenedor de imagen central */}
             <div className={`${baseClass}__image-container`}>
               <Image
-                id={`${elementName}-image`}
+                id={`image-${elementName}-image`}
                 src="https://www.javeriana.edu.co/recursosdb/d/info-prg/banner-web-maestria-en-innovacion-en-la-construccion-1-"
                 alt="Estudiantes de la Universidad Javeriana"
                 className={`${baseClass}__image`}
@@ -146,8 +159,13 @@ const Diferenciales = () => {
 
             {/* Segunda columna */}
             <div className={`${baseClass}__column ${baseClass}__column--second`}>
-              {diferencialesData.slice(3, 6).map((item, index) => (
-                <AccordionItem key={item.id} item={item} index={index + 3} isFirstColumn={false} />
+              {diferencialesData.slice(4, 8).map((item, index) => (
+                <AccordionItem
+                  key={item.id}
+                  item={item}
+                  globalIndex={index + 4} // ✅ CORREGIDO: ahora es +4 en lugar de +3
+                  isFirstColumn={false}
+                />
               ))}
             </div>
           </div>

@@ -9,13 +9,13 @@ $plan-card-min-height: rem(500px);
 $plan-card-max-width: rem(320px);
 $plan-transition: all 0.2s ease;
 $plan-badge-border-radius: rem(50px);
-$plan-badge-padding: rem(8px) rem(16px);
+$plan-badge-padding: var(--spacing-xs) var(--spacing-md);
 
 // Navegación - OPTIMIZADO
 $nav-button-size: rem(50px);
 $nav-button-size-mobile: rem(40px);
 $nav-bullet-size: rem(13px);
-$nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
+$nav-button-offset: rem(25px);
 
 // ==========================================
 // MIXIN PRINCIPAL
@@ -48,19 +48,109 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
   }
 
   &_wrapper {
-    margin: 0 0 rem(35px) 0;
-    padding: rem(20px) rem(10px);
     overflow: hidden;
     position: relative;
+    padding: var(--spacing-lg) var(--spacing-sm);
+    margin: 0 0 var(--spacing-xl) 0;
+    margin-top: var(--spacing-2xl);
 
     @include responsive($breakpoint-sm) {
-      margin: 0 0 rem(25px) 0;
-      padding: rem(10px) rem(5px);
+      margin: 0 0 var(--spacing-lg) 0;
+      padding: var(--spacing-sm) var(--spacing-2xl);
+      margin-top: var(--spacing-sm);
+    }
+
+    @include responsive($breakpoint-md) {
+      padding: var(--spacing-xs) var(--spacing-2xl);
+      margin-top: var(--spacing-md);
+    }
+
+    @include responsive($breakpoint-lg) {
+      padding: var(--spacing-xs) var(--spacing-3xl);
+      margin-top: var(--spacing-xl);
     }
 
     @include responsive($breakpoint-xl) {
       margin: 0 auto;
-      max-width: rem(1400px); // AUMENTADO para mostrar 4 cards
+      padding: var(--spacing-xs) var(--spacing-3xl);
+      margin-top: var(--spacing-lg);
+    }
+  }
+
+  // ==========================================
+  // CONTENEDOR CON GRADIENTES DINÁMICOS
+  // ==========================================
+  &_carousel {
+    width: 100%;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: rem(40px);
+      z-index: 10;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    &::before {
+      left: 0;
+      background: linear-gradient(
+        to right,
+        var(--background-100) 0%,
+        rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+        transparent 100%
+      );
+    }
+
+    &::after {
+      right: 0;
+      background: linear-gradient(
+        to left,
+        var(--background-100) 0%,
+        rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+        transparent 100%
+      );
+    }
+
+    @include dark-theme {
+      &::before {
+        background: linear-gradient(
+          to right,
+          var(--background-200) 0%,
+          rgba(var(--background-200-rgb, 0, 0, 0), 0.9) 40%,
+          transparent 100%
+        );
+      }
+
+      &::after {
+        background: linear-gradient(to left, var(--background-200) 0%, rgba(var(--background-200-rgb, 0, 0, 0), 0.9) 40%, transparent 100%);
+      }
+    }
+
+    &.show-left-fade::before {
+      opacity: 1;
+    }
+
+    &.show-right-fade::after {
+      opacity: 1;
+    }
+
+    &.show-both-fades {
+      &::before,
+      &::after {
+        opacity: 1;
+      }
+    }
+
+    @include responsive($breakpoint-2xl) {
+      &::before,
+      &::after {
+        width: rem(80px);
+      }
     }
   }
 
@@ -76,14 +166,12 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
     flex-direction: column !important;
     height: auto !important;
     min-height: $plan-card-min-height;
-
-    // Swiper optimizations
     margin-top: rem(20px);
     align-items: stretch;
     justify-content: center;
 
     @include responsive($breakpoint-sm) {
-      min-height: rem(450px) !important;
+      min-height: rem(420px) !important;
     }
   }
 
@@ -215,44 +303,64 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
   }
 
   // ==========================================
-  // PAGINACIÓN - ESTILO DINÁMICO COMO EN LA IMAGEN
+  // PAGINACIÓN - ESTILO DINÁMICO MEJORADO
   // ==========================================
   &_pagination {
     position: relative;
-    margin-top: rem(20px); // REDUCIDO: Más cerca del carrusel
+    margin-top: rem(20px);
     text-align: center;
     min-height: rem(20px);
     display: flex !important;
     align-items: center;
     justify-content: center;
-    gap: rem(6px); // REDUCIDO: Espaciado más compacto
+    gap: rem(6px);
+
+    @include responsive($breakpoint-sm) {
+      margin-top: rem(32px);
+      padding: rem(16px) 0;
+      background: rgba(var(--background-100-rgb, 255, 255, 255), 0.05);
+      border-radius: rem(32px);
+      backdrop-filter: blur(8px);
+    }
 
     .swiper-pagination-bullet {
-      height: rem(8px); // REDUCIDO: Círculos más pequeños
+      height: rem(8px);
       width: rem(8px);
-      opacity: 0.4; // REDUCIDO: Menos opacidad para inactivos
+      opacity: 0.4;
       background: var(--primary);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); // Transición suave
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 50%;
       border: none;
       margin: 0 !important;
       cursor: pointer;
 
+      @include responsive($breakpoint-sm) {
+        width: rem(12px);
+        height: rem(12px);
+        margin: 0 rem(4px) !important;
+        opacity: 0.6;
+      }
+
       &.swiper-pagination-bullet-active {
         opacity: 1;
-        transform: scale(1.6); // AUMENTADO: Más grande el activo
+        transform: scale(1.6);
         background: var(--primary-600);
-        width: rem(12px); // NUEVO: Activo más grande
+        width: rem(12px);
         height: rem(12px);
+
+        @include responsive($breakpoint-sm) {
+          width: rem(16px);
+          height: rem(16px);
+          transform: scale(1.4);
+        }
       }
 
       &:hover:not(.swiper-pagination-bullet-active) {
         opacity: 0.7;
-        transform: scale(1.2); // Hover sutil en inactivos
+        transform: scale(1.2);
       }
     }
 
-    // NUEVO: Solo ocultar cuando realmente no se necesite
     &.swiper-pagination-hidden {
       opacity: 0 !important;
       visibility: hidden !important;
@@ -262,17 +370,17 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
   }
 
   // ==========================================
-  // BOTONES DE NAVEGACIÓN - DENTRO DEL CONTENEDOR
+  // BOTONES DE NAVEGACIÓN - MEJORADOS
   // ==========================================
   &_prev,
   &_next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 10;
+    z-index: 11;
     width: $nav-button-size;
     height: $nav-button-size;
-    display: none; // CAMBIADO: Por defecto ocultos
+    display: none;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
@@ -283,14 +391,15 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
     backdrop-filter: blur(rem(8px));
     border: rem(1px) solid var(--neutral-700);
     box-shadow: 0 rem(2px) rem(8px) rgba(0, 0, 0, 0.15);
+    background-color: rgba(var(--background-100-rgb, 255, 255, 255), 0.95);
 
     @include responsive($breakpoint-sm) {
-      width: $nav-button-size-mobile;
-      height: $nav-button-size-mobile;
+      width: rem(40px);
+      height: rem(40px);
     }
 
     i {
-      font-size: rem(24px); // REDUCIDO: Íconos más pequeños
+      font-size: rem(24px);
       color: var(--primary);
       z-index: 100;
       transition: all 0.3s ease;
@@ -311,7 +420,6 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
       }
     }
 
-    // Estados de Swiper mejorados
     &.swiper-button-disabled {
       opacity: 0 !important;
       visibility: hidden !important;
@@ -326,54 +434,44 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
       display: none !important;
     }
 
-    // NUEVO: Clase para mostrar cuando sea necesario
     &.show-navigation {
-      display: flex !important;
-      opacity: 1;
-      visibility: visible;
+      @include responsive($breakpoint-sm) {
+        display: flex !important;
+        opacity: 1;
+        visibility: visible;
+      }
     }
   }
 
   &_prev {
-    // AJUSTADO: Posición dentro del padding del carrusel
-    left: rem(10px);
+    left: rem(8px);
 
     @include responsive($breakpoint-sm) {
-      left: rem(0px);
+      left: rem(8px);
+    }
+
+    @include responsive($breakpoint-md) {
+      left: rem(16px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      left: rem(24px);
     }
   }
 
   &_next {
-    // AJUSTADO: Posición dentro del padding del carrusel
-    right: rem(10px);
+    right: rem(8px);
 
     @include responsive($breakpoint-sm) {
-      right: rem(0px);
-    }
-  }
-
-  // ==========================================
-  // RESPONSIVE - MOBILE FIRST OPTIMIZADO
-  // ==========================================
-
-  // Móviles pequeños (hasta 576px)
-  @media (max-width: 576px) {
-    &_prev,
-    &_next {
-      &.swiper-button-hidden,
-      .swiper-container-lock & {
-        display: none !important;
-      }
+      right: rem(8px);
     }
 
-    &_pagination {
-      margin-top: rem(20px);
+    @include responsive($breakpoint-md) {
+      right: rem(16px);
+    }
 
-      .swiper-pagination-bullet {
-        width: rem(10px);
-        height: rem(10px);
-        margin: 0 rem(3px) !important;
-      }
+    @include responsive($breakpoint-lg) {
+      right: rem(24px);
     }
   }
 
@@ -394,6 +492,15 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
       visibility: hidden !important;
       pointer-events: none !important;
     }
+
+    &_carousel {
+      @include responsive($breakpoint-xl) {
+        &::before,
+        &::after {
+          opacity: 0 !important;
+        }
+      }
+    }
   }
 
   // ==========================================
@@ -402,6 +509,7 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
   @include dark-theme {
     &_prev,
     &_next {
+      z-index: 11;
       background-color: rgba(var(--background-200-rgb), 0.95);
       border-color: var(--neutral-600);
 
@@ -432,7 +540,6 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
 // CLASES GLOBALES DE SWIPER - OPTIMIZADAS
 // ==========================================
 .swiper {
-  // NUEVO: Asegurar que el overflow esté bien manejado
   overflow: visible;
 
   &.swiper-container-lock {
@@ -454,7 +561,6 @@ $nav-button-offset: rem(25px); // Nuevo: offset para no cortar botones
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  // NUEVO: Asegurar que la paginación tenga espacio
   .swiper-pagination {
     position: static !important;
     margin-top: var(--spacing-md);
