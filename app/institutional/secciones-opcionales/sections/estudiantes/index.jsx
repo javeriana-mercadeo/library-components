@@ -64,9 +64,7 @@ const StudentSlider = () => {
   return (
     <section id={elementName}>
       <Container className="slider-container">
-        <Title className="slider-title">
-          Estudiantes
-        </Title>
+        <Title className="slider-title">Estudiantes</Title>
 
         <div className="slider-content" id={`${elementName}-content`}>
           <div className="carousel-controls">
@@ -87,7 +85,9 @@ const StudentSlider = () => {
                 <div className="student-info">
                   <h3 id={`${elementName}-name-${index}`}>{student.name}</h3>
                   <p id={`${elementName}-position-${index}`}>{student.position}</p>
-                  <Image id={`${elementName}-logo-${index}`} src={student.logo} alt={student.company} className="company-logo" />
+                  <div className="company-logo">
+                    <Image className="imglogoC" id={`${elementName}-logo-${index}`} src={student.logo} alt={student.company}  />
+                  </div>
                 </div>
               </div>
             ))}
