@@ -49,12 +49,16 @@ export default () => {
           slidesPerView: 1,
           spaceBetween: 10
         },
-        550: {
+        428: {
           slidesPerView: Math.min(2, totalSlides),
           spaceBetween: 10
         },
-        768: {
+        576: {
           slidesPerView: Math.min(3, totalSlides),
+          spaceBetween: 10
+        },
+        768: {
+          slidesPerView: Math.min(4, totalSlides),
           spaceBetween: 15
         },
         1024: {

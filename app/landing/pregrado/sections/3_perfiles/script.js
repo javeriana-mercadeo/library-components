@@ -153,27 +153,6 @@ export default () => {
     }
   }
 
-  // Utilidad para manejar redimensionamiento de ventana
-  let resizeTimeout
-  window.addEventListener('resize', () => {
-    if (resizeTimeout) {
-      clearTimeout(resizeTimeout)
-    }
-
-    resizeTimeout = setTimeout(() => {
-      // Verificar si hay tabs activas después del resize
-      const activeButtons = document.querySelectorAll('.program-profile__tab-button.active')
-      activeButtons.forEach(button => {
-        // Asegurar que la tab activa siga visible correctamente
-        button.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'center'
-        })
-      })
-    }, 250)
-  })
-
   // API pública para controlar las tabs programáticamente
   if (!window.ProfileTabs) {
     window.ProfileTabs = {
