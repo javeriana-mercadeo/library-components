@@ -99,6 +99,8 @@ $mobile-breakpoint: 1024px;
     justify-content: center;
     align-items: stretch;
     min-width: rem(300px);
+    overflow: hidden;
+    border-radius: var(--border-radius-md);
 
     @media (min-width: $mobile-breakpoint) {
       height: 100%;

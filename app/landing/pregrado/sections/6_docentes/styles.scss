@@ -75,7 +75,6 @@ $nav-button-size-mobile: rem(40px);
   }
 
   &_wrapper {
-    margin: 0 0 rem(35px) 0;
     padding: rem(8px) rem(10px);
     overflow: hidden;
     position: relative;
@@ -168,7 +167,7 @@ $nav-button-size-mobile: rem(40px);
     height: rem(160px) !important;
     object-fit: cover;
     object-position: center;
-    border-radius: rem(10px);
+    border-radius: 50%;
     transition: $expert-transition;
     flex-shrink: 0;
     margin: 0 auto;
@@ -221,6 +220,14 @@ $nav-button-size-mobile: rem(40px);
     align-self: flex-start;
     font-size: rem(13px) !important;
     color: var(--neutral) !important;
+
+    &:hover {
+      color: var(--neutral-800) !important;
+
+      @include dark-theme {
+        color: var(--neutral-400) !important;
+      }
+    }
   }
 
   // ==========================================
@@ -318,18 +325,10 @@ $nav-button-size-mobile: rem(40px);
     transition: all 0.3s ease;
     opacity: 1;
     visibility: visible;
-    backdrop-filter: blur(rem(8px));
-    border: rem(1px) solid var(--neutral-700);
+    backdrop-filter: blur(rem(10px));
+    border: rem(2px) solid rgba(var(--neutral-700-rgb), 0.4);
     box-shadow: 0 rem(2px) rem(8px) rgba(0, 0, 0, 0.15);
-    background: rgba(255, 255, 255, 0.95);
-
-    // Ocultos en móvil
-    @media (max-width: 575px) {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
+    background: rgba(var(--primary-700-rgb), 0.3);
 
     // Visibles en tablet y desktop
     @include responsive($breakpoint-sm) {
@@ -339,7 +338,7 @@ $nav-button-size-mobile: rem(40px);
 
     i {
       font-size: rem(24px);
-      color: var(--primary);
+      color: var(--neutral);
       z-index: 100;
       transition: all 0.3s ease;
 
@@ -353,9 +352,12 @@ $nav-button-size-mobile: rem(40px);
       background: rgba(var(--primary-rgb), 0.1);
       border-color: var(--primary-500);
       box-shadow: 0 rem(4px) rem(12px) rgba(var(--primary-rgb), 0.2);
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: translateY(-50%) scale(1.05);
 
       i {
-        color: var(--primary-600);
+        color: var(--neutral);
       }
     }
 
