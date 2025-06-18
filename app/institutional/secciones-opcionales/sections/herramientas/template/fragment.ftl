@@ -1,3 +1,12 @@
+<link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/cad" />
+<link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/lt" />
+<link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/mundo" />
+<link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/c3d" />
+<link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/cast" />
+<link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/oracle" />
+<link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/sap" />
+<link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/sap200" />
+<link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/man" />
 <section id="herramientas">
     <div class="container tools-container">
         <h2

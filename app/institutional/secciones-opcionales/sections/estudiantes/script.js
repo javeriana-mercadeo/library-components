@@ -1,9 +1,7 @@
-// script.js - Student Slider para repositorio local
-// Compatible con React y Liferay
-
 function createStudentSlider(options = {}) {
+  // Verificar entorno de navegador
   if (typeof window === 'undefined') {
-    console.warn('Student Slider: No se puede ejecutar en entorno servidor');
+    console.warn('Student Slider: No disponible en servidor');
     return null;
   }
 
@@ -14,6 +12,9 @@ function createStudentSlider(options = {}) {
     sliderId: 'student-slider',
     autoSlideInterval: 5000,
     manualNavigationDelay: 5000,
+    touchSensitivity: 30,
+    touchMaxVerticalMovement: 100,
+    touchDebounce: 300,
     waitElementMaxAttempts: 10,
     waitElementInterval: 100,
     initDelay: 100
@@ -22,17 +23,23 @@ function createStudentSlider(options = {}) {
   const config = { ...defaultConfig, ...options };
   const SLIDER_NAMESPACE = `studentSlider_${config.sliderId}_${Date.now()}`;
 
+  // Estado del slider
   let sliderState = {
     currentSlide: 0,
     autoSlideInterval: null,
     studentsCount: 0,
     isManualNavigation: false,
     manualNavigationTimeout: null,
-    isInitialized: false
+    isInitialized: false,
+    lastTouchTime: 0
   };
 
   // Función para buscar elementos con reintentos
-  const waitForElement = (selector, maxAttempts = config.waitElementMaxAttempts, interval = config.waitElementInterval) => {
+  const waitForElement = (
+    selector,
+    maxAttempts = config.waitElementMaxAttempts,
+    interval = config.waitElementInterval
+  ) => {
     return new Promise((resolve, reject) => {
       let attempts = 0;
 
@@ -56,7 +63,7 @@ function createStudentSlider(options = {}) {
     });
   };
 
-  // Funciones del slider
+  // Funciones auxiliares del slider
   const getNextSlide = (current, total) => (current + 1) % total;
   const getPrevSlide = (current, total) => (current === 0 ? total - 1 : current - 1);
 
@@ -104,7 +111,6 @@ function createStudentSlider(options = {}) {
     }
   };
 
-  // Declarar stopAutoSlide ANTES de startAutoSlide para evitar referencias
   const stopAutoSlide = () => {
     if (sliderState.autoSlideInterval) {
       clearInterval(sliderState.autoSlideInterval);
@@ -181,10 +187,8 @@ function createStudentSlider(options = {}) {
     try {
       console.log('Iniciando Student Slider Module...');
 
-      // Esperar a que el slider esté disponible
       const sliderContainer = await waitForElement(`#${config.sliderId}`);
 
-      // Contar estudiantes
       const cards = document.querySelectorAll('.student-card');
       sliderState.studentsCount = cards.length;
 
@@ -199,53 +203,65 @@ function createStudentSlider(options = {}) {
         const prevButton = document.querySelector(`#${config.sliderId}-prev`);
         const nextButton = document.querySelector(`#${config.sliderId}-next`);
 
-        // Solo vincular eventos en entorno Liferay (sin React)
+        // Para React: Los eventos se manejan en el JSX
+        // Para vanilla JS: configurar eventos aquí
         if (typeof React === 'undefined') {
           if (prevButton && nextButton) {
             prevButton.onclick = null;
             nextButton.onclick = null;
 
-            prevButton.addEventListener('click', e => {
-              e.preventDefault();
-              e.stopImmediatePropagation();
-              prevSlide(true);
-            }, { passive: false });
+            prevButton.addEventListener(
+              'click',
+              e => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                prevSlide(true);
+              },
+              { passive: false }
+            );
 
-            nextButton.addEventListener('click', e => {
-              e.preventDefault();
-              e.stopImmediatePropagation();
-              nextSlide(true);
-            }, { passive: false });
+            nextButton.addEventListener(
+              'click',
+              e => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                nextSlide(true);
+              },
+              { passive: false }
+            );
 
-            console.log('Controles configurados para Liferay');
+            console.log('Controles configurados para Vanilla JS');
           }
-        } else {
-          console.log('Controles manejados por React');
-        }
 
-        // Configurar dots
-        const dots = document.querySelectorAll('.slider-dots .dot');
-        if (typeof React === 'undefined') {
+          // Configurar dots para vanilla JS
+          const dots = document.querySelectorAll('.slider-dots .dot');
           dots.forEach((dot, index) => {
             dot.onclick = null;
-            dot.addEventListener('click', e => {
-              e.preventDefault();
-              e.stopImmediatePropagation();
-              goToSlide(index, true);
-            }, { passive: false });
+            dot.addEventListener(
+              'click',
+              e => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                goToSlide(index, true);
+              },
+              { passive: false }
+            );
           });
-        }
 
-        if (dots.length > 0) {
-          console.log(`${dots.length} dots configurados`);
+          if (dots.length > 0) {
+            console.log(`${dots.length} dots configurados para Vanilla JS`);
+          }
+        } else {
+          console.log('Eventos manejados por React');
         }
       };
 
       // Configurar eventos globales
       const setupGlobalEvents = () => {
-        // Hover en el contenido
-        const sliderContent = document.querySelector(`#${config.sliderId}-content`) || 
-                             document.querySelector(`#${config.sliderId}`);
+        const sliderContent =
+          document.querySelector(`#${config.sliderId}-content`) ||
+          document.querySelector(`#${config.sliderId}`);
+
         if (sliderContent) {
           sliderContent.addEventListener('mouseenter', stopAutoSlide);
           sliderContent.addEventListener('mouseleave', () => {
@@ -274,74 +290,115 @@ function createStudentSlider(options = {}) {
         document.addEventListener('keydown', handleKeydown);
         window[SLIDER_NAMESPACE + '_keydownHandler'] = handleKeydown;
 
-        // Soporte táctil para móviles
+        // Configurar eventos táctiles
         const setupTouchEvents = () => {
-          let touchStartX = 0;
-          let touchStartY = 0;
-          let touchEndX = 0;
-          let touchEndY = 0;
-          let isTouch = false;
+          let touchData = {
+            startX: 0,
+            startY: 0,
+            currentX: 0,
+            currentY: 0,
+            startTime: 0,
+            isTouching: false,
+            hasMoved: false
+          };
 
           const handleTouchStart = e => {
-            if (e.touches.length > 1) return; // Solo un dedo
-            
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-            isTouch = true;
-            
-            // Pausar auto-slide durante el touch
+            if (e.touches.length !== 1) return;
+
+            const touch = e.touches[0];
+            touchData = {
+              startX: touch.clientX,
+              startY: touch.clientY,
+              currentX: touch.clientX,
+              currentY: touch.clientY,
+              startTime: Date.now(),
+              isTouching: true,
+              hasMoved: false
+            };
+
             stopAutoSlide();
+            console.log('Touch start:', touchData.startX, touchData.startY);
           };
 
           const handleTouchMove = e => {
-            if (!isTouch || e.touches.length > 1) return;
-            
-            // Prevenir scroll vertical si hay swipe horizontal
-            const touchCurrentX = e.touches[0].clientX;
-            const touchCurrentY = e.touches[0].clientY;
-            const deltaX = Math.abs(touchCurrentX - touchStartX);
-            const deltaY = Math.abs(touchCurrentY - touchStartY);
-            
-            if (deltaX > deltaY && deltaX > 10) {
+            if (!touchData.isTouching || e.touches.length !== 1) return;
+
+            const touch = e.touches[0];
+            touchData.currentX = touch.clientX;
+            touchData.currentY = touch.clientY;
+
+            const deltaX = Math.abs(touchData.currentX - touchData.startX);
+            const deltaY = Math.abs(touchData.currentY - touchData.startY);
+
+            if (deltaX > 5 || deltaY > 5) {
+              touchData.hasMoved = true;
+            }
+
+            if (deltaX > deltaY && deltaX > config.touchSensitivity / 2) {
               e.preventDefault();
+              console.log('Previniendo scroll, deltaX:', deltaX, 'deltaY:', deltaY);
             }
           };
 
           const handleTouchEnd = e => {
-            if (!isTouch) return;
-            
-            touchEndX = e.changedTouches[0].clientX;
-            touchEndY = e.changedTouches[0].clientY;
-            
-            const deltaX = touchEndX - touchStartX;
-            const deltaY = touchEndY - touchStartY;
+            if (!touchData.isTouching) return;
+
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchData.startTime;
+
+            if (touchEndTime - sliderState.lastTouchTime < config.touchDebounce) {
+              console.log('Touch ignorado por debounce');
+              touchData.isTouching = false;
+              return;
+            }
+
+            const deltaX = touchData.currentX - touchData.startX;
+            const deltaY = touchData.currentY - touchData.startY;
             const absDeltaX = Math.abs(deltaX);
             const absDeltaY = Math.abs(deltaY);
-            
-            // Verificar que es un swipe horizontal
-            if (absDeltaX > absDeltaY && absDeltaX > 50) {
+
+            console.log('Touch end - deltaX:', deltaX, 'deltaY:', deltaY, 'duration:', touchDuration);
+
+            const isValidSwipe =
+              touchData.hasMoved &&
+              absDeltaX > config.touchSensitivity &&
+              absDeltaX > absDeltaY &&
+              absDeltaY < config.touchMaxVerticalMovement &&
+              touchDuration < 1000;
+
+            if (isValidSwipe) {
+              sliderState.lastTouchTime = touchEndTime;
+
               if (deltaX > 0) {
-                // Swipe derecha = slide anterior
+                console.log('Swipe derecha - slide anterior');
                 prevSlide(true);
               } else {
-                // Swipe izquierda = siguiente slide
+                console.log('Swipe izquierda - siguiente slide');
                 nextSlide(true);
               }
+            } else {
+              console.log('Swipe no válido:', {
+                hasMoved: touchData.hasMoved,
+                absDeltaX,
+                absDeltaY,
+                touchDuration,
+                isValidSwipe
+              });
+
+              setTimeout(() => {
+                if (!sliderState.isManualNavigation && sliderState.isInitialized) {
+                  startAutoSlide();
+                }
+              }, 500);
             }
-            
-            isTouch = false;
-            
-            // Reanudar auto-slide después de un delay
-            setTimeout(() => {
-              if (!sliderState.isManualNavigation && sliderState.isInitialized) {
-                startAutoSlide();
-              }
-            }, 1000);
+
+            touchData.isTouching = false;
           };
 
           const handleTouchCancel = () => {
-            isTouch = false;
-            // Reanudar auto-slide
+            console.log('Touch cancelado');
+            touchData.isTouching = false;
+
             setTimeout(() => {
               if (!sliderState.isManualNavigation && sliderState.isInitialized) {
                 startAutoSlide();
@@ -349,22 +406,42 @@ function createStudentSlider(options = {}) {
             }, 500);
           };
 
-          // Agregar eventos táctiles al contenedor del slider
           const touchArea = sliderContent || sliderContainer;
+
           if (touchArea) {
-            touchArea.addEventListener('touchstart', handleTouchStart, { passive: false });
+            // Remover eventos existentes
+            const existingHandlers = {
+              start: window[SLIDER_NAMESPACE + '_touchStartHandler'],
+              move: window[SLIDER_NAMESPACE + '_touchMoveHandler'],
+              end: window[SLIDER_NAMESPACE + '_touchEndHandler'],
+              cancel: window[SLIDER_NAMESPACE + '_touchCancelHandler']
+            };
+
+            Object.values(existingHandlers).forEach(handler => {
+              if (handler) {
+                touchArea.removeEventListener('touchstart', handler);
+                touchArea.removeEventListener('touchmove', handler);
+                touchArea.removeEventListener('touchend', handler);
+                touchArea.removeEventListener('touchcancel', handler);
+              }
+            });
+
+            // Agregar nuevos eventos
+            touchArea.addEventListener('touchstart', handleTouchStart, { passive: true });
             touchArea.addEventListener('touchmove', handleTouchMove, { passive: false });
             touchArea.addEventListener('touchend', handleTouchEnd, { passive: true });
             touchArea.addEventListener('touchcancel', handleTouchCancel, { passive: true });
-            
-            // Guardar referencias para limpieza
+
+            // Guardar referencias
             window[SLIDER_NAMESPACE + '_touchStartHandler'] = handleTouchStart;
             window[SLIDER_NAMESPACE + '_touchMoveHandler'] = handleTouchMove;
             window[SLIDER_NAMESPACE + '_touchEndHandler'] = handleTouchEnd;
             window[SLIDER_NAMESPACE + '_touchCancelHandler'] = handleTouchCancel;
             window[SLIDER_NAMESPACE + '_touchArea'] = touchArea;
-            
-            console.log('Eventos táctiles configurados');
+
+            console.log('Eventos táctiles configurados en:', touchArea.id || touchArea.className);
+          } else {
+            console.warn('No se pudo encontrar área táctil para el slider');
           }
         };
 
@@ -417,22 +494,17 @@ function createStudentSlider(options = {}) {
       setupGlobalEvents();
       setupLazyLoading();
 
-      // Marcar como inicializado
       sliderState.isInitialized = true;
-
-      // Inicializar estado visual
       updateSlideClasses();
 
-      // Iniciar auto-slide después de un pequeño delay
+      // Iniciar auto-slide
       setTimeout(() => {
         if (sliderState.isInitialized) {
           startAutoSlide();
         }
       }, 1000);
 
-      // Guardar referencia global
       window[SLIDER_NAMESPACE] = sliderState;
-
       console.log('Student Slider Module inicializado correctamente');
 
       return sliderInstance;
@@ -479,7 +551,7 @@ function createStudentSlider(options = {}) {
         touchArea.removeEventListener('touchmove', touchMoveHandler);
         touchArea.removeEventListener('touchend', touchEndHandler);
         touchArea.removeEventListener('touchcancel', touchCancelHandler);
-        
+
         delete window[SLIDER_NAMESPACE + '_touchArea'];
         delete window[SLIDER_NAMESPACE + '_touchStartHandler'];
         delete window[SLIDER_NAMESPACE + '_touchMoveHandler'];
@@ -522,7 +594,7 @@ function createStudentSlider(options = {}) {
     // Limpieza
     destroy: cleanup,
 
-    // Inicialización manual para React
+    // Inicialización manual
     init: initializeSlider,
 
     // Reinicialización
@@ -535,17 +607,16 @@ function createStudentSlider(options = {}) {
         studentsCount: 0,
         isManualNavigation: false,
         manualNavigationTimeout: null,
-        isInitialized: false
+        isInitialized: false,
+        lastTouchTime: 0
       };
       return await initializeSlider();
     }
   };
 
-  // Auto-inicializar SOLO en contexto Liferay (sin React)
+  // Auto-inicialización para contexto vanilla JS
   if (typeof React === 'undefined' && typeof document !== 'undefined') {
-    // Múltiples estrategias de inicialización para Liferay
     const executeInit = () => {
-      // Estrategia 1: DOM ready
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
           setTimeout(initializeSlider, config.initDelay);
@@ -554,22 +625,22 @@ function createStudentSlider(options = {}) {
         setTimeout(initializeSlider, config.initDelay);
       }
 
-      // Estrategia 2: Liferay ready (si está disponible)
-      if (typeof window.Liferay !== 'undefined' && window.Liferay.on) {
-        window.Liferay.on('allPortletsReady', () => {
+      // Next.js ready
+      if (typeof window !== 'undefined' && window.next) {
+        window.addEventListener('load', () => {
           setTimeout(initializeSlider, config.initDelay + 100);
         });
       }
 
-      // Estrategia 3: MutationObserver para contenido dinámico
+      // MutationObserver para contenido dinámico
       if ('MutationObserver' in window) {
         const observer = new MutationObserver(mutations => {
           const sliderAdded = mutations.some(mutation =>
             Array.from(mutation.addedNodes).some(
               node =>
                 node.nodeType === 1 &&
-                (node.id === config.sliderId || 
-                 (node.querySelector && node.querySelector(`#${config.sliderId}`)))
+                (node.id === config.sliderId ||
+                  (node.querySelector && node.querySelector(`#${config.sliderId}`)))
             )
           );
 
@@ -584,25 +655,22 @@ function createStudentSlider(options = {}) {
           subtree: true
         });
 
-        // Auto-desconectar después de 15 segundos
         setTimeout(() => {
           if (observer) observer.disconnect();
         }, 15000);
       }
     };
 
-    // Ejecutar inicialización solo en Liferay
     executeInit();
   }
 
-  // Retornar instancia del slider
   return sliderInstance;
 }
 
-// Para contexto Liferay: exponer globalmente
-if (typeof window !== 'undefined' && typeof React === 'undefined') {
+// Para uso en Next.js/React: exponer globalmente solo si no es servidor
+if (typeof window !== 'undefined') {
   window.createStudentSlider = createStudentSlider;
 }
 
-// UNA SOLA FUNCIÓN EXPORTADA para React
+// Export para ES6 modules
 export default createStudentSlider;

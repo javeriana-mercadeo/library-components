@@ -222,7 +222,7 @@ export default function swiperCarousel() {
           columna.style.justifyContent = 'center'
           columna.style.alignItems = 'center'
           columna.style.minHeight = '300px'
-          columna.style.paddingTop = '50px' // Ajuste para alinear con la columna central
+          columna.style.paddingTop = '50px' 
           columna.style.marginTop = '0px'
         }
       } else {
