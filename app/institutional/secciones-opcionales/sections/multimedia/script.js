@@ -1,156 +1,237 @@
-export class ImageSliderLogic {
-  constructor(component) {
-    this.component = component
-    
-    // Datos para las slides
-    this.slides = [
-      {
-        id: 1,
-        type: 'video',
-        videoUrl: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/multimedia-mp41',
-        title: 'Video 1'
-      },
-      {
-        id: 2,
-        type: 'video',
-        videoUrl: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/multimedia-mp44',
-        title: 'Video 2'
-      },
-      {
-        id: 3,
-        type: 'youtube',
-        youtubeUrl: 'https://www.youtube.com/watch?v=xV8jjDRgSyM',
-        title: 'YouTube Video'
-      },
-      {
-        id: 4,
-        type: 'image',
-        image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-        title: 'Imagen 1'
-      },
-      {
-        id: 5,
-        type: 'image',
-        image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-        title: 'Imagen 2'
-      },
-      {
-        id: 6,
-        type: 'image',
-        image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-        title: 'Imagen 3'
-      }
-    ]
-
-    // Bind methods
-    this.handleResize = this.handleResize.bind(this)
-    this.handleScroll = this.handleScroll.bind(this)
-    this.handleKeyDown = this.handleKeyDown.bind(this)
-    this.goToSlide = this.goToSlide.bind(this)
-  }
-
-  getYouTubeEmbedUrl(url) {
-    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
-    const match = url.match(regExp)
-    return match && match[2].length === 11 ? `https://www.youtube.com/embed/${match[2]}` : null
-  }
-
-  componentDidMount() {
-    window.addEventListener('resize', this.handleResize)
-    document.addEventListener('keydown', this.handleKeyDown)
-    this.calculateDimensions()
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize)
-    document.removeEventListener('keydown', this.handleKeyDown)
-
-    if (this.component.scrollTimeout) {
-      clearTimeout(this.component.scrollTimeout)
+export default () => {
+  const initializeMultimediaSlider = () => {
+    // Destruir instancias existentes si existen
+    if (window.multimediaMainSwiper) {
+      window.multimediaMainSwiper.destroy(true, true)
     }
-  }
+    if (window.multimediaThumbsSwiper) {
+      window.multimediaThumbsSwiper.destroy(true, true)
+    }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.slidesPerView !== this.component.state.slidesPerView) {
-      const maxIndex = this.slides.length - this.component.state.slidesPerView
-      if (this.component.state.currentIndex > maxIndex) {
-        this.component.setState({ currentIndex: maxIndex })
+    // Verificar que Swiper esté disponible
+    if (!window.Swiper) {
+      console.error('Swiper no está disponible')
+      return
+    }
+
+    // Buscar elementos
+    const mainElement = document.querySelector('.multimedia-slider_main-swiper')
+    const thumbsElement = document.querySelector('.multimedia-slider_thumbs-swiper')
+
+    if (!mainElement || !thumbsElement) {
+      console.warn('Elementos del slider multimedia no encontrados')
+      return
+    }
+
+    // Obtener datos del contenido multimedia
+    let mediaContent = []
+    try {
+      const dataScript = document.getElementById('multimedia-data')
+      if (dataScript) {
+        mediaContent = JSON.parse(dataScript.textContent)
+      }
+    } catch (error) {
+      console.error('Error al parsear datos multimedia:', error)
+      return
+    }
+
+    // ==========================================
+    // FUNCIÓN PARA CREAR IFRAME AUTOMÁTICO
+    // ==========================================
+    const createAutoplayIframe = videoId => {
+      const iframe = document.createElement('iframe')
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&rel=0&showinfo=0&modestbranding=1&disablekb=1`
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+      iframe.allowFullscreen = false
+      iframe.style.width = '100%'
+      iframe.style.height = '100%'
+      iframe.style.border = 'none'
+      iframe.style.pointerEvents = 'none' // Evita interacción directa
+      return iframe
+    }
+
+    // ==========================================
+    // FUNCIÓN PARA PAUSAR VIDEO
+    // ==========================================
+    const pauseVideo = iframe => {
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
+        } catch (e) {
+          console.warn('No se pudo pausar el video:', e)
+        }
       }
     }
-  }
 
-  getSlidesPerView() {
-    if (typeof window !== 'undefined') {
-      if (window.innerWidth >= 992) {
-        return 3
-      } else if (window.innerWidth >= 576) {
-        return 2
-      } else {
-        return 1
+    // ==========================================
+    // FUNCIÓN PARA REPRODUCIR VIDEO
+    // ==========================================
+    const playVideo = iframe => {
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*')
+        } catch (e) {
+          console.warn('No se pudo reproducir el video:', e)
+        }
       }
     }
-    return 3
-  }
 
-  calculateDimensions() {
-    if (this.component.sliderWrapperRef.current) {
-      const slideElements = this.component.sliderWrapperRef.current.querySelectorAll('.slide')
-      if (slideElements.length > 0) {
-        const slideWidth = slideElements[0].offsetWidth
-        const computedStyle = window.getComputedStyle(this.component.sliderWrapperRef.current)
-        const slideGap = parseInt(computedStyle.gap) || 15
+    // ==========================================
+    // FUNCIÓN PARA MANEJAR VIDEOS EN SLIDES
+    // ==========================================
+    const handleVideoSlides = () => {
+      const activeSlide = document.querySelector('.multimedia-slider_main-swiper .swiper-slide-active')
+      const allSlides = document.querySelectorAll('.multimedia-slider_main-swiper .swiper-slide')
 
-        this.component.setState({ slideWidth, slideGap })
-      }
-    }
-  }
+      allSlides.forEach((slide, index) => {
+        const slideIndex = parseInt(slide.dataset.slideIndex) || index
+        const realIndex = slideIndex % mediaContent.length
+        const item = mediaContent[realIndex]
 
-  handleResize() {
-    const slidesPerView = this.getSlidesPerView()
-    this.component.setState({ slidesPerView }, () => {
-      this.calculateDimensions()
-    })
-  }
+        if (item && item.type === 'youtube') {
+          const iframe = slide.querySelector('iframe')
 
-  handleScroll() {
-    if (this.component.scrollTimeout) {
-      clearTimeout(this.component.scrollTimeout)
-    }
-
-    this.component.scrollTimeout = setTimeout(() => {
-      if (this.component.sliderWrapperRef.current) {
-        const { slideWidth, slideGap } = this.component.state
-        const totalSlideWidth = slideWidth + slideGap
-        const scrollPosition = this.component.sliderWrapperRef.current.scrollLeft
-
-        const newIndex = Math.round(scrollPosition / totalSlideWidth)
-        this.component.setState({ currentIndex: newIndex })
-      }
-    }, 150)
-  }
-
-  handleKeyDown(e) {
-    if (e.key === 'ArrowLeft') {
-      this.goToSlide(this.component.state.currentIndex - 1)
-    } else if (e.key === 'ArrowRight') {
-      this.goToSlide(this.component.state.currentIndex + 1)
-    }
-  }
-
-  goToSlide(index) {
-    const maxIndex = this.slides.length - this.component.state.slidesPerView
-    const newIndex = Math.max(0, Math.min(index, maxIndex))
-
-    this.component.setState({ currentIndex: newIndex })
-
-    if (this.component.sliderWrapperRef.current) {
-      const { slideWidth, slideGap } = this.component.state
-      const scrollPosition = newIndex * (slideWidth + slideGap)
-
-      this.component.sliderWrapperRef.current.scrollTo({
-        left: scrollPosition,
-        behavior: 'smooth'
+          if (slide === activeSlide) {
+            // Slide activo - reproducir
+            if (!iframe) {
+              // Crear iframe si no existe
+              const img = slide.querySelector('img')
+              if (img) {
+                const newIframe = createAutoplayIframe(item.videoId)
+                slide.replaceChild(newIframe, img)
+              }
+            } else {
+              playVideo(iframe)
+            }
+          } else {
+            // Slide inactivo - pausar
+            if (iframe) {
+              pauseVideo(iframe)
+            }
+          }
+        }
       })
     }
+
+    // ==========================================
+    // INICIALIZAR SLIDER DE MINIATURAS
+    // ==========================================
+    window.multimediaThumbsSwiper = new window.Swiper('.multimedia-slider_thumbs-swiper', {
+      spaceBetween: 10,
+      slidesPerView: 6,
+      freeMode: true,
+      watchSlidesProgress: true,
+      navigation: {
+        nextEl: '.multimedia-slider_thumbs-next',
+        prevEl: '.multimedia-slider_thumbs-prev'
+      },
+      breakpoints: {
+        320: {
+          slidesPerView: 3
+        },
+        480: {
+          slidesPerView: 4
+        },
+        768: {
+          slidesPerView: 5
+        },
+        1024: {
+          slidesPerView: 6
+        }
+      }
+    })
+
+    // ==========================================
+    // INICIALIZAR SLIDER PRINCIPAL
+    // ==========================================
+    window.multimediaMainSwiper = new window.Swiper('.multimedia-slider_main-swiper', {
+      spaceBetween: 10,
+      loop: true,
+      thumbs: {
+        swiper: window.multimediaThumbsSwiper
+      },
+      on: {
+        slideChange: function () {
+          // Manejar videos en el cambio de slide
+          setTimeout(() => {
+            handleVideoSlides()
+          }, 100)
+        },
+        init: function () {
+          // Agregar índices a los slides para tracking
+          const slides = document.querySelectorAll('.multimedia-slider_main-swiper .swiper-slide')
+          slides.forEach((slide, index) => {
+            slide.dataset.slideIndex = index
+          })
+
+          updateNavigationVisibility()
+          // Manejar videos en la inicialización
+          setTimeout(() => {
+            handleVideoSlides()
+          }, 200)
+        },
+        update: function () {
+          updateNavigationVisibility()
+        }
+      }
+    })
+
+    // ==========================================
+    // FUNCIÓN PARA ACTUALIZAR VISIBILIDAD DE NAVEGACIÓN
+    // ==========================================
+    const updateNavigationVisibility = () => {
+      const totalSlides = mediaContent.length
+      const nextBtn = document.querySelector('.multimedia-slider_thumbs-next')
+      const prevBtn = document.querySelector('.multimedia-slider_thumbs-prev')
+
+      if (!nextBtn || !prevBtn) return
+
+      // Mostrar botones solo si hay más slides que los visibles
+      const slidesPerView = window.multimediaThumbsSwiper.params.slidesPerView
+      const needsNavigation = totalSlides > slidesPerView
+
+      if (needsNavigation) {
+        nextBtn.style.display = 'flex'
+        prevBtn.style.display = 'flex'
+        nextBtn.style.opacity = '1'
+        prevBtn.style.opacity = '1'
+      } else {
+        nextBtn.style.display = 'none'
+        prevBtn.style.display = 'none'
+      }
+    }
   }
+
+  // ==========================================
+  // INICIALIZACIÓN
+  // ==========================================
+  const checkAndInit = () => {
+    if (typeof window !== 'undefined' && window.Swiper) {
+      // Esperar un poco para asegurar que el DOM esté listo
+      setTimeout(initializeMultimediaSlider, 100)
+    } else {
+      setTimeout(checkAndInit, 300)
+    }
+  }
+
+  checkAndInit()
+
+  // ==========================================
+  // MANEJAR RESIZE
+  // ==========================================
+  let resizeTimeout
+  window.addEventListener('resize', () => {
+    if (resizeTimeout) {
+      clearTimeout(resizeTimeout)
+    }
+
+    resizeTimeout = setTimeout(() => {
+      if (window.multimediaMainSwiper) {
+        window.multimediaMainSwiper.update()
+      }
+      if (window.multimediaThumbsSwiper) {
+        window.multimediaThumbsSwiper.update()
+      }
+    }, 250)
+  })
 }
