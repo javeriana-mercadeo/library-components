@@ -36,6 +36,13 @@ const Docentes = () => {
       profileUrl: '#'
     },
     {
+      name: 'Nelson',
+      title: 'Ph.D. Ingeniería',
+      image:
+        'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773759/Preview-1000x0/CarolinaEugeniaOrtizVelilla.png?t=1719869726614',
+      profileUrl: '#'
+    },
+    {
       name: 'Daniel Mauricio Ruiz Valencia',
       title: 'Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá',
       image:
@@ -46,13 +53,6 @@ const Docentes = () => {
       name: 'Jaime Andrés Lara',
       title: 'Ph.D. (c) Ingeniería, Universidad de los Andes, Bogotá',
       image: 'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461',
-      profileUrl: '#'
-    },
-    {
-      name: 'Nelson',
-      title: 'Ph.D. Ingeniería',
-      image:
-        'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773759/Preview-1000x0/CarolinaEugeniaOrtizVelilla.png?t=1719869726614',
       profileUrl: '#'
     },
     {
