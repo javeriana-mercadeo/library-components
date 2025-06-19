@@ -272,7 +272,8 @@ $nav-button-size-mobile: rem(30px);
     position: relative;
 
     @include responsive($breakpoint-sm) {
-      height: rem(100px);
+      height: rem(110px);
+      margin-top: 10px;
     }
 
     @include dark-theme {
@@ -292,7 +293,7 @@ $nav-button-size-mobile: rem(30px);
 
       @include responsive($breakpoint-sm) {
         width: rem(80px);
-        height: rem(60px);
+        height: rem(100px);
       }
 
       &:hover {
@@ -492,4 +493,12 @@ $nav-button-size-mobile: rem(30px);
       display: none !important;
     }
   }
+}
+
+.swiper-free-mode > .swiper-wrapper {
+  margin-top: 5px;
+}
+
+.thumbs-wrapper {
+  padding-top: 5px;
 }
