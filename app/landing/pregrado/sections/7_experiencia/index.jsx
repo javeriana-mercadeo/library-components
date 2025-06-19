@@ -4,10 +4,12 @@ import { useEffect } from 'react'
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
 import Paragraph from '@library/components/contain/paragraph'
+import Image from '@/app/_library/components/contain/image/index.jsx'
 
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'
+import Icon from '@/app/_library/components/contain/icon/index.jsx'
 
 const Experiencia = () => {
   const elementName = info.id || 'experiencia'
@@ -26,17 +28,24 @@ const Experiencia = () => {
       link: '#'
     },
     {
+      type: 'video',
+      orientation: 'vertical',
+      videoId: 'coJHjliTbKM'
+    },
+    {
       type: 'testimonial',
       text: 'Actualmente me desempeño en la organización Terpel en el área de Inteligencia de Negocios. Mis funciones en la compañía son hacer estudios de mercado y encontrar oportunidades de mejora.',
       user: {
         name: 'Carlos Gómez',
         job: 'Analista de Negocios en Terpel',
-        avatar: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/avatar-1',
+        avatar:
+          'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773710/Preview-1000x0/CarlosAlbertoHerna%CC%81ndez.png?t=1719869232728',
         linkedin: '#'
       }
     },
     {
       type: 'video',
+      orientation: 'horizontal',
       videoId: 'IWZvfiu3gX4',
       link: '#'
     },
@@ -46,27 +55,23 @@ const Experiencia = () => {
       user: {
         name: 'Anamaría López',
         job: 'Gerente de Estrategia en GlobalCorp',
-        avatar: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/avatar-2',
+        avatar:
+          'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461',
         linkedin: '#'
       }
+    },
+    {
+      type: 'video',
+      orientation: 'vertical',
+      videoId: 'wUmYyNrVjfg'
     }
   ]
 
   // Componente para renderizar imagen
-  const ImageCard = ({ src, alt, link, index }) => (
-    <a
-      href={link}
-      className={`${baseClass}__card-link`}
-      data-lfr-editable-id={`experience-image-link-${index}`}
-      data-lfr-editable-type="link">
+  const ImageCard = ({ src, alt, link }) => (
+    <a href={link} target="" className={`${baseClass}__card-link`}>
       <div className={`${baseClass}__image-card`}>
-        <img
-          src={src}
-          alt={alt}
-          className={`${baseClass}__image`}
-          data-lfr-editable-id={`experience-image-${index}`}
-          data-lfr-editable-type="image"
-        />
+        <Image src={src} alt={alt} className={`${baseClass}__image`} isEditable={false} />
       </div>
     </a>
   )
@@ -79,7 +84,7 @@ const Experiencia = () => {
       </Paragraph>
       <div className={`${baseClass}__testimonial-user`}>
         <div className={`${baseClass}__testimonial-avatar`}>
-          <img src={user.avatar} alt={user.name} data-lfr-editable-id={`experience-avatar-${index}`} data-lfr-editable-type="image" />
+          <Image src={user.avatar} alt={user.name} data-lfr-editable-id={`experience-avatar-${index}`} data-lfr-editable-type="image" />
         </div>
         <div className={`${baseClass}__testimonial-info`}>
           <h4 className={`${baseClass}__testimonial-name`} data-lfr-editable-id={`experience-name-${index}`} data-lfr-editable-type="text">
@@ -89,31 +94,35 @@ const Experiencia = () => {
             {user.job}
           </Paragraph>
         </div>
-        <a
-          href={user.linkedin}
-          className={`${baseClass}__testimonial-linkedin`}
-          data-lfr-editable-id={`experience-linkedin-${index}`}
-          data-lfr-editable-type="link">
-          <i className="ph ph-linkedin-logo"></i>
+        <a href={user.linkedin} className={`${baseClass}__testimonial-linkedin`} target="_blank" rel="noopener noreferrer">
+          <Icon icon="ph-linkedin-logo" isEditable={false} size="xs" />
         </a>
       </div>
     </div>
   )
 
-  // Componente para renderizar video
-  const VideoCard = ({ videoId, link, index }) => (
-    <a
-      href={link}
-      className={`${baseClass}__card-link`}
-      data-lfr-editable-id={`experience-video-link-${index}`}
-      data-lfr-editable-type="link">
-      <div className={`${baseClass}__video-card`}>
-        <div className={`${baseClass}__video-container`} data-video-id={videoId}>
-          {/* El video se cargará via JavaScript */}
+  // Componente simplificado para videos sin miniatura
+  const VideoCard = ({ videoId, orientation, index }) => {
+    const aspectRatio = orientation === 'vertical' ? '9/16' : '16/9'
+    const isFirstVideo = index === 0
+    const isHorizontal = orientation === 'horizontal'
+
+    return (
+      <div
+        className={`${baseClass}__video-card ${baseClass}__video-card--${orientation} ${isHorizontal ? `${baseClass}__video-card--double-width` : ''}`}>
+        <div
+          className={`${baseClass}__video-container`}
+          data-video-id={videoId}
+          data-video-orientation={orientation}
+          data-is-first-video={isFirstVideo}
+          style={{
+            aspectRatio: aspectRatio
+          }}>
+          {/* El video se cargará directamente desde el script */}
         </div>
       </div>
-    </a>
-  )
+    )
+  }
 
   // Función para renderizar el tipo de card correcto
   const renderCard = (item, index) => {

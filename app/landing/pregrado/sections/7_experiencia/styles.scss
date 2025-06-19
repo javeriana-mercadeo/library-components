@@ -3,8 +3,8 @@
 // ==========================================
 // VARIABLES DEL COMPONENTE
 // ==========================================
-$experience-border-radius: rem(20px);
-$experience-card-height: rem(360px);
+$experience-border-radius: rem(16px);
+$experience-card-height: rem(450px);
 $experience-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 $experience-nav-size: rem(50px);
 $experience-nav-size-mobile: rem(40px);
@@ -60,18 +60,21 @@ $experience-nav-size-mobile: rem(40px);
   }
 
   &__wrapper {
-    margin: 0 0 rem(35px) 0;
-    padding: rem(20px) rem(10px);
+    margin: 0 auto rem(35px);
+    padding: rem(20px) rem(40px);
     overflow: hidden;
     position: relative;
 
+    @include responsive($breakpoint-md) {
+      padding: rem(20px) rem(30px);
+    }
+
     @include responsive($breakpoint-sm) {
-      margin: 0 0 rem(25px) 0;
-      padding: rem(10px) rem(5px);
+      margin: 0 auto rem(25px);
+      padding: rem(10px) rem(15px);
     }
 
     @include responsive($breakpoint-xl) {
-      margin: 0 auto;
       max-width: rem(1400px);
     }
   }
@@ -84,12 +87,21 @@ $experience-nav-size-mobile: rem(40px);
     display: flex !important;
     flex-direction: column !important;
     height: $experience-card-height !important;
-    margin-top: rem(20px);
     align-items: stretch;
     justify-content: center;
 
+    // Slide con video horizontal - doble ancho en desktop
+    &.swiper-slide-double-width {
+      @include responsive($breakpoint-md) {
+        // El ancho se maneja dinámicamente en JavaScript
+        .experience-carousel__video-card {
+          width: 100%;
+        }
+      }
+    }
+
     @include responsive($breakpoint-sm) {
-      height: rem(320px) !important;
+      height: rem(400px) !important;
     }
   }
 
@@ -118,8 +130,12 @@ $experience-nav-size-mobile: rem(40px);
   // ==========================================
   &__testimonial-card {
     background-color: var(--primary);
-    padding: var(--spacing-lg);
+    padding: rem(32px);
     justify-content: space-between;
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(24px);
+    }
 
     @include dark-theme {
       background-color: var(--primary-600);
@@ -127,17 +143,22 @@ $experience-nav-size-mobile: rem(40px);
   }
 
   &__testimonial-text {
-    font-size: var(--font-size-paragraph);
+    font-size: rem(18px);
     font-weight: var(--font-weight-medium);
     color: var(--neutral);
-    line-height: 1.5;
+    line-height: 1.6;
     margin-bottom: auto;
 
-    // Limitar texto a 4 líneas
+    // Limitar texto a 6 líneas en desktop
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
     overflow: hidden;
+
+    @include responsive($breakpoint-sm) {
+      font-size: rem(16px);
+      -webkit-line-clamp: 5;
+    }
   }
 
   &__testimonial-user {
@@ -233,273 +254,94 @@ $experience-nav-size-mobile: rem(40px);
   }
 
   // ==========================================
-  // VIDEO CARD
+  // VIDEO CARD - MEJORADO
   // ==========================================
   &__video-card {
     height: 100%;
     position: relative;
-    background: var(--neutral-900);
-  }
-
-  &__video-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    border-radius: $experience-border-radius;
-
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      object-fit: cover;
-    }
-  }
-
-  // ==========================================
-  // PAGINACIÓN
-  // ==========================================
-  &__pagination {
-    position: relative;
-    margin-top: rem(20px);
-    text-align: center;
-    min-height: rem(20px);
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: rem(6px);
-
-    .swiper-pagination-bullet {
-      height: rem(8px);
-      width: rem(8px);
-      opacity: 0.4;
-      background: var(--primary);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border-radius: 50%;
-      border: none;
-      margin: 0 !important;
-      cursor: pointer;
-
-      &.swiper-pagination-bullet-active {
-        opacity: 1;
-        transform: scale(1.6);
-        background: var(--primary-600);
-        width: rem(12px);
-        height: rem(12px);
-      }
-
-      &:hover:not(.swiper-pagination-bullet-active) {
-        opacity: 0.7;
-        transform: scale(1.2);
-      }
-    }
-
-    &.swiper-pagination-hidden {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-      transform: translateY(rem(10px));
-    }
-  }
-
-  // ==========================================
-  // BOTONES DE NAVEGACIÓN
-  // ==========================================
-  &__prev,
-  &__next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    width: $experience-nav-size;
-    height: $experience-nav-size;
+    background: #000;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.9);
-    border: rem(1px) solid var(--neutral-700);
-    box-shadow: 0 rem(2px) rem(8px) rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(rem(8px));
 
-    @include responsive($breakpoint-sm) {
-      width: $experience-nav-size-mobile;
-      height: $experience-nav-size-mobile;
-    }
+    // Videos horizontales
+    &--horizontal {
+      .experience-carousel__video-container {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    i {
-      font-size: rem(24px);
-      color: var(--primary);
-      transition: all 0.3s ease;
-
-      @include responsive($breakpoint-sm) {
-        font-size: rem(20px);
+        iframe {
+          width: 100%;
+          height: auto;
+          max-height: rem(270px);
+          aspect-ratio: 16/9;
+        }
       }
     }
 
-    &:hover {
-      background: rgba(255, 255, 255, 1);
-      transform: translateY(-50%) scale(1.05);
-      box-shadow: 0 rem(4px) rem(12px) rgba(var(--primary-rgb), 0.2);
+    // Videos verticales
+    &--vertical {
+      .experience-carousel__video-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-      i {
-        color: var(--primary-600);
-      }
-    }
+        iframe {
+          width: auto;
+          height: 100%;
+          max-width: 100%;
+          aspect-ratio: 9/16;
+        }
 
-    // Estados de Swiper
-    &.swiper-button-disabled {
-      opacity: 0.3 !important;
-      pointer-events: none !important;
-    }
-
-    &.swiper-button-hidden {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-      display: none !important;
-    }
-  }
-
-  &__prev {
-    left: rem(10px);
-
-    @include responsive($breakpoint-sm) {
-      left: rem(0px);
-    }
-  }
-
-  &__next {
-    right: rem(10px);
-
-    @include responsive($breakpoint-sm) {
-      right: rem(0px);
-    }
-  }
-
-  // ==========================================
-  // RESPONSIVE - MOBILE
-  // ==========================================
-  @media (max-width: $breakpoint-sm) {
-    &__slide {
-      height: rem(320px) !important;
-    }
-
-    &__testimonial-card {
-      padding: var(--spacing-md);
-    }
-
-    &__testimonial-text {
-      font-size: var(--font-size-small);
-      -webkit-line-clamp: 3;
-    }
-
-    &__testimonial-avatar img {
-      width: rem(50px);
-      height: rem(50px);
-    }
-
-    &__testimonial-name {
-      font-size: var(--font-size-small);
-    }
-
-    &__testimonial-job {
-      font-size: rem(11px);
-    }
-
-    &__testimonial-linkedin {
-      width: rem(32px);
-      height: rem(32px);
-
-      i {
-        font-size: rem(16px);
-      }
-    }
-  }
-
-  // ==========================================
-  // TEMA OSCURO
-  // ==========================================
-  @include dark-theme {
-    &__prev,
-    &__next {
-      background: rgba(var(--background-200-rgb), 0.95);
-      border-color: var(--neutral-600);
-
-      &:hover {
-        background: rgba(var(--primary-rgb), 0.15);
-        border-color: var(--primary-400);
-      }
-
-      &.swiper-button-disabled {
-        background: rgba(var(--neutral-rgb), 0.2);
-        border-color: var(--neutral-800);
-      }
-    }
-
-    &__pagination {
-      .swiper-pagination-bullet {
-        background: var(--primary-400);
-
-        &.swiper-pagination-bullet-active {
-          background: var(--primary-300);
+        @include responsive($breakpoint-sm) {
+          iframe {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+          }
         }
       }
     }
   }
 
-  // ==========================================
-  // OPTIMIZACIONES PARA POCOS SLIDES
-  // ==========================================
-  .swiper-container-lock & {
-    &__slides {
-      justify-content: center;
-    }
+  &__video-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: $experience-border-radius;
+    background: #000;
+    width: 100%;
+    height: 100%;
 
-    &__wrapper {
-      padding: rem(20px) 0;
-    }
-
-    &__pagination {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
-  }
-}
-
-// ==========================================
-// CLASES GLOBALES DE SWIPER
-// ==========================================
-.swiper {
-  overflow: visible;
-
-  &.swiper-container-lock {
-    .swiper-slide-button {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
-
-    .swiper-pagination {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
+    iframe {
+      position: relative;
+      border: none;
+      border-radius: rem(8px);
     }
   }
 
-  .swiper-slide-button,
-  .swiper-pagination {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+  // Estilos para el primer video (autoplay)
+  .first-video-container {
+    position: relative;
 
-  .swiper-pagination {
-    position: static !important;
-    margin-top: var(--spacing-md);
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: rem(2px) solid var(--primary);
+      border-radius: rem(8px);
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+      pointer-events: none;
+      z-index: 1;
+    }
   }
 }
