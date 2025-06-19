@@ -1,5 +1,5 @@
 // ===== LIBRERÍAS EXTERNAS =====
-// Compilado automáticamente el: 2025-06-17T19:45:55.339Z
+// Compilado automáticamente el: 2025-06-19T20:37:19.641Z
 
 var head = document.getElementsByTagName("head")[0];
 
