@@ -33,12 +33,7 @@ $nav-button-size-mobile: rem(30px);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--background-200);
     color: var(--neutral-100);
-
-    @include dark-theme {
-      background: var(--background-300);
-    }
   }
 
   // ==========================================
@@ -108,10 +103,8 @@ $nav-button-size-mobile: rem(30px);
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.8) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.4) 100%);
     display: flex;
-    align-items: center;
-    justify-content: center;
     padding: rem(30px);
     z-index: 5;
     opacity: 0;
@@ -180,7 +173,7 @@ $nav-button-size-mobile: rem(30px);
   }
 
   &_overlay-content {
-    text-align: center;
+    margin: var(--spacing-2xl);
     max-width: rem(600px);
     color: var(--neutral-100);
 
@@ -190,10 +183,10 @@ $nav-button-size-mobile: rem(30px);
   }
 
   &_overlay-title {
-    font-size: var(--font-size-h3);
+    font-size: var(--font-size-title) !important;
     font-weight: var(--font-weight-bold);
     margin-bottom: rem(15px);
-    color: var(--neutral-100);
+    color: var(--neutral);
     text-shadow: 0 rem(2px) rem(4px) rgba(0, 0, 0, 0.8);
 
     @include responsive($breakpoint-sm) {
@@ -267,17 +260,12 @@ $nav-button-size-mobile: rem(30px);
   // ==========================================
   &_thumbs-swiper {
     height: $multimedia-thumbs-height;
-    background: var(--background-200);
     padding: rem(10px);
     position: relative;
 
     @include responsive($breakpoint-sm) {
       height: rem(110px);
       margin-top: 10px;
-    }
-
-    @include dark-theme {
-      background: var(--background-300);
     }
 
     .swiper-slide {
@@ -325,7 +313,7 @@ $nav-button-size-mobile: rem(30px);
     top: rem(5px);
     right: rem(5px);
     background: rgba(var(--primary-rgb), 0.8);
-    color: var(--neutral-100);
+    color: var(--neutral);
     padding: rem(2px) rem(6px);
     border-radius: rem(4px);
     font-size: rem(10px);
