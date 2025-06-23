@@ -4,10 +4,8 @@
 
 // URLs de las APIs
 const API_ENDPOINTS = {
-  //ubicaciones: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/ubicaciones.json',
-  //codigosPais: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/codigos_pais.json',
-  ubicaciones: '/data/ubicaciones.json',
-  codigosPais: '/data/codigos_pais.json'
+  ubicaciones: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/ubicaciones.json',
+  codigosPais: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/codigos_pais.json'
 }
 
 // Cache para los datos de las APIs
@@ -155,7 +153,7 @@ const APIManager = {
 
       // Procesar datos de ubicaciones
       LOCATION_DATA = this.processLocationData(ubicaciones)
-      COUNTRY_CODES = codigosPais
+      COUNTRY_CODES = this.processCountryCodes(codigosPais)
 
       Logger.success('Datos de ubicaciones y códigos de país cargados correctamente')
       return { ubicaciones: LOCATION_DATA, codigosPais: COUNTRY_CODES }
@@ -170,16 +168,39 @@ const APIManager = {
   processLocationData(ubicaciones) {
     const processed = {}
 
-    // Procesar según la estructura de la API
-    // Asumiendo estructura: { paises: [{ nombre, departamentos: [{ nombre, ciudades: [...] }] }] }
-    if (ubicaciones.paises) {
-      ubicaciones.paises.forEach(pais => {
-        processed[pais.nombre] = {}
+    // Procesar según la estructura real de la API
+    // Estructura: { "COL": { nombre: "Colombia", departamentos: [...] }, "AFG": { nombre: "Afghanistan" }, ... }
+    Object.keys(ubicaciones).forEach(countryCode => {
+      const country = ubicaciones[countryCode]
+      
+      if (country && country.nombre) {
+        const countryName = country.nombre
+        processed[countryName] = {}
 
-        if (pais.departamentos) {
-          pais.departamentos.forEach(depto => {
-            processed[pais.nombre][depto.nombre] = depto.ciudades || []
+        // Solo Colombia tiene departamentos detallados
+        if (country.departamentos && Array.isArray(country.departamentos)) {
+          country.departamentos.forEach(depto => {
+            if (depto.nombre && depto.ciudades) {
+              const cities = depto.ciudades.map(ciudad => ciudad.nombre || ciudad)
+              processed[countryName][depto.nombre] = cities
+            }
           })
+        }
+      }
+    })
+
+    return processed
+  },
+
+  processCountryCodes(codigosPais) {
+    const processed = {}
+
+    // Procesar códigos de país
+    // Estructura: [{ nameES: "Colombia", phoneCode: "57", ... }, ...]
+    if (Array.isArray(codigosPais)) {
+      codigosPais.forEach(country => {
+        if (country.nameES && country.phoneCode) {
+          processed[country.nameES] = `+${country.phoneCode}`
         }
       })
     }
@@ -376,11 +397,13 @@ const FormAnimations = {
 
 const LocationManager = {
   async init() {
-    const paisSelect = document.getElementById('paisResidencia')
-    const departamentoSelect = document.getElementById('departamento')
-    const ciudadSelect = document.getElementById('ciudad')
+    // Buscar elementos por ID de Salesforce o ID genérico
+    const paisSelect = document.getElementById('00N7j000002BY1c') || document.getElementById('paisResidencia')
+    const departamentoSelect = document.getElementById('d00N7j000002BY1h') || document.getElementById('departamento')
+    const ciudadSelect = document.getElementById('00N7j000002BY1i') || document.getElementById('ciudad')
     const locationRow = document.getElementById('location-row')
     const phoneCodeDisplay = document.getElementById('phone-code') // Para mostrar código de país
+    const prefijoSelect = document.getElementById('p00NO4000002lUPh') || document.getElementById('prefijo')
 
     if (!paisSelect || !departamentoSelect || !ciudadSelect) {
       Logger.warning('Elementos de ubicación no encontrados')
@@ -397,8 +420,11 @@ const LocationManager = {
       }
     }
 
-    // Poblar países
+    // Poblar países e indicativos
     this.populateCountries(paisSelect)
+    if (prefijoSelect) {
+      this.populatePhoneCodes(prefijoSelect)
+    }
 
     EventManager.add(paisSelect, 'change', () => {
       this.handleCountryChange(
@@ -426,8 +452,9 @@ const LocationManager = {
       paisSelect.appendChild(firstOption.cloneNode(true))
     }
 
-    // Agregar países desde la API
-    Object.keys(LOCATION_DATA).forEach(country => {
+    // Agregar TODOS los países desde COUNTRY_CODES (que tiene la lista completa)
+    const sortedCountries = Object.keys(COUNTRY_CODES).sort()
+    sortedCountries.forEach(country => {
       const option = document.createElement('option')
       option.value = country
       option.textContent = country
@@ -435,47 +462,72 @@ const LocationManager = {
     })
   },
 
+  populatePhoneCodes(prefijoSelect) {
+    // Limpiar opciones existentes
+    prefijoSelect.innerHTML = ''
+
+    // Agregar indicativos desde COUNTRY_CODES, ordenados por país
+    const sortedCountries = Object.keys(COUNTRY_CODES).sort()
+    sortedCountries.forEach(country => {
+      const phoneCode = COUNTRY_CODES[country]
+      const option = document.createElement('option')
+      option.value = phoneCode
+      option.textContent = `${country} ${phoneCode}`
+      // Si hay banderas disponibles, se podrían agregar aquí
+      prefijoSelect.appendChild(option)
+    })
+
+    // Seleccionar Colombia por defecto si existe
+    if (COUNTRY_CODES['Colombia']) {
+      prefijoSelect.value = COUNTRY_CODES['Colombia']
+    }
+  },
+
   handleCountryChange(country, departamentoSelect, ciudadSelect, locationRow, phoneCodeDisplay) {
     // Limpiar selects
     this.clearSelect(departamentoSelect)
     this.clearSelect(ciudadSelect)
-
-    if (!country || !LOCATION_DATA[country]) {
-      if (locationRow) locationRow.style.display = 'none'
-      if (phoneCodeDisplay) phoneCodeDisplay.textContent = ''
-      return
-    }
 
     // Mostrar código de país si existe el elemento
     if (phoneCodeDisplay && COUNTRY_CODES[country]) {
       phoneCodeDisplay.textContent = COUNTRY_CODES[country]
     }
 
-    // Mostrar fila de ubicación
-    if (locationRow) {
-      locationRow.style.display = 'flex'
+    // Solo mostrar departamentos/ciudades para Colombia
+    if (country === 'Colombia' && LOCATION_DATA[country]) {
+      // Mostrar fila de ubicación
+      if (locationRow) {
+        locationRow.style.display = 'flex'
 
-      // Animar la aparición
-      TimingUtils.delay(() => {
-        locationRow.style.opacity = '1'
-        locationRow.style.transform = 'translateY(0)'
-      }, 10)
+        // Animar la aparición
+        TimingUtils.delay(() => {
+          locationRow.style.opacity = '1'
+          locationRow.style.transform = 'translateY(0)'
+        }, 10)
+      }
+
+      // Poblar departamentos
+      const states = Object.keys(LOCATION_DATA[country])
+      states.forEach(state => {
+        const option = document.createElement('option')
+        option.value = state
+        option.textContent = state
+        departamentoSelect.appendChild(option)
+      })
+
+      departamentoSelect.disabled = false
+
+      // Reinicializar animaciones
+      FormAnimations.setupSelectAnimations(departamentoSelect)
+      FormAnimations.setupSelectAnimations(ciudadSelect)
+    } else {
+      // Ocultar fila de ubicación para otros países
+      if (locationRow) {
+        locationRow.style.display = 'none'
+      }
+      departamentoSelect.disabled = true
+      ciudadSelect.disabled = true
     }
-
-    // Poblar departamentos/estados
-    const states = Object.keys(LOCATION_DATA[country])
-    states.forEach(state => {
-      const option = document.createElement('option')
-      option.value = state
-      option.textContent = state
-      departamentoSelect.appendChild(option)
-    })
-
-    departamentoSelect.disabled = false
-
-    // Reinicializar animaciones
-    FormAnimations.setupSelectAnimations(departamentoSelect)
-    FormAnimations.setupSelectAnimations(ciudadSelect)
   },
 
   handleStateChange(country, state, ciudadSelect) {
@@ -631,25 +683,45 @@ const ContactModal = {
   },
 
   showLoadingState() {
-    const paisSelect = document.getElementById('paisResidencia')
+    const paisSelect = document.getElementById('00N7j000002BY1c') || document.getElementById('paisResidencia')
+    const prefijoSelect = document.getElementById('p00NO4000002lUPh') || document.getElementById('prefijo')
+    
     if (paisSelect) {
       paisSelect.disabled = true
       paisSelect.innerHTML = '<option value="">Cargando países...</option>'
     }
+    
+    if (prefijoSelect) {
+      prefijoSelect.disabled = true
+      prefijoSelect.innerHTML = '<option value="">Cargando indicativos...</option>'
+    }
   },
 
   hideLoadingState() {
-    const paisSelect = document.getElementById('paisResidencia')
+    const paisSelect = document.getElementById('00N7j000002BY1c') || document.getElementById('paisResidencia')
+    const prefijoSelect = document.getElementById('p00NO4000002lUPh') || document.getElementById('prefijo')
+    
     if (paisSelect) {
       paisSelect.disabled = false
+    }
+    
+    if (prefijoSelect) {
+      prefijoSelect.disabled = false
     }
   },
 
   showErrorState(message) {
-    const paisSelect = document.getElementById('paisResidencia')
+    const paisSelect = document.getElementById('00N7j000002BY1c') || document.getElementById('paisResidencia')
+    const prefijoSelect = document.getElementById('p00NO4000002lUPh') || document.getElementById('prefijo')
+    
     if (paisSelect) {
       paisSelect.disabled = false
       paisSelect.innerHTML = `<option value="">Error: ${message}</option>`
+    }
+    
+    if (prefijoSelect) {
+      prefijoSelect.disabled = false
+      prefijoSelect.innerHTML = `<option value="">Error: ${message}</option>`
     }
   },
 
