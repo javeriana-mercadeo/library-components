@@ -22,9 +22,7 @@ const ModalForm = () => {
         <div className="modal-form-container">
           {/* Header del Modal */}
           <div className="modal-header">
-            <button className="modal-header__close btn" id="modal-close" aria-label="Cerrar modal" type="button">
-              
-            </button>
+            <button className="modal-header__close btn" id="modal-close" aria-label="Cerrar modal" type="button"></button>
           </div>
 
           {/* Contenido del Modal */}
@@ -113,14 +111,14 @@ const ModalForm = () => {
                   <label htmlFor="email" className="form-label required">
                     Email
                   </label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    className="form-input" 
-                    placeholder="ejemplo@correo.com" 
-                    required 
-                    autoComplete="email" 
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    className="form-input"
+                    placeholder="ejemplo@correo.com"
+                    required
+                    autoComplete="email"
                   />
                 </div>
               </div>
@@ -132,22 +130,9 @@ const ModalForm = () => {
                     Indicativo
                   </label>
                   <div className="select-wrapper select-prefijo">
-                    <select id="prefijo" name="prefijo" className="form-select select-prefijo-input" required>
-                      <option value="+57" data-flag="🇨🇴">
-                        🇨🇴 +57
-                      </option>
-                      <option value="+1" data-flag="🇺🇸">
-                        🇺🇸 +1
-                      </option>
-                      <option value="+52" data-flag="🇲🇽">
-                        🇲🇽 +52
-                      </option>
-                      <option value="+54" data-flag="🇦🇷">
-                        🇦🇷 +54
-                      </option>
-                      <option value="+34" data-flag="🇪🇸">
-                        🇪🇸 +34
-                      </option>
+                    <select id="p00NO4000002lUPh" name="prefijo" className="form-select select-prefijo-input" required>
+                      <option value="">Cargando indicativos...</option>
+                      {/* Las opciones serán cargadas dinámicamente desde la API por el script.js */}
                     </select>
                   </div>
                 </div>
@@ -156,14 +141,14 @@ const ModalForm = () => {
                   <label htmlFor="telefono" className="form-label required">
                     Teléfono celular
                   </label>
-                  <input 
-                    type="tel" 
-                    id="telefono" 
-                    name="telefono" 
-                    className="form-input" 
-                    placeholder="3001234567" 
-                    required 
-                    autoComplete="tel" 
+                  <input
+                    type="tel"
+                    id="telefono"
+                    name="telefono"
+                    className="form-input"
+                    placeholder="3001234567"
+                    required
+                    autoComplete="tel"
                   />
                 </div>
               </div>
@@ -175,16 +160,9 @@ const ModalForm = () => {
                     País de residencia
                   </label>
                   <div className="select-wrapper">
-                    <select id="paisResidencia" name="paisResidencia" className="form-select" required>
-                      <option value="">Selecciona tu país</option>
-                      <option value="Colombia">Colombia</option>
-                      <option value="Estados Unidos">Estados Unidos</option>
-                      <option value="México">México</option>
-                      <option value="Argentina">Argentina</option>
-                      <option value="España">España</option>
-                      <option value="Chile">Chile</option>
-                      <option value="Perú">Perú</option>
-                      <option value="Ecuador">Ecuador</option>
+                    <select id="00N7j000002BY1c" name="paisResidencia" className="form-select" required>
+                      <option value="">Cargando países...</option>
+                      {/* Las opciones serán cargadas dinámicamente desde la API por el script.js */}
                     </select>
                   </div>
                 </div>
@@ -197,7 +175,7 @@ const ModalForm = () => {
                     Departamento
                   </label>
                   <div className="select-wrapper">
-                    <select id="departamento" name="departamento" className="form-select" required disabled>
+                    <select id="d00N7j000002BY1h" name="departamento" className="form-select" required disabled>
                       <option value="">Selecciona departamento</option>
                     </select>
                   </div>
@@ -208,7 +186,7 @@ const ModalForm = () => {
                     Ciudad
                   </label>
                   <div className="select-wrapper">
-                    <select id="ciudad" name="ciudad" className="form-select" required disabled>
+                    <select id="00N7j000002BY1i" name="ciudad" className="form-select" required disabled>
                       <option value="">Selecciona ciudad</option>
                     </select>
                   </div>
