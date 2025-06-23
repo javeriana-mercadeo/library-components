@@ -754,8 +754,9 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 // ===========================================
 body.modal-open {
   overflow: hidden;
-  position: fixed;
-  width: 100%;
+  // Removemos position: fixed que puede causar problemas de scroll
+  // position: fixed;
+  // width: 100%;
 }
 
 // ===========================================

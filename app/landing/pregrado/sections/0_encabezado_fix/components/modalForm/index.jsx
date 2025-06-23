@@ -44,7 +44,7 @@ const ModalForm = () => {
                   </label>
                   <input
                     type="text"
-                    id="nombres"
+                    id="first_name"
                     name="nombres"
                     className="form-input"
                     placeholder="Ingresa tu nombre"
@@ -62,7 +62,7 @@ const ModalForm = () => {
                   </label>
                   <input
                     type="text"
-                    id="apellidos"
+                    id="last_name"
                     name="apellidos"
                     className="form-input"
                     placeholder="Ingresa tus apellidos"
@@ -79,7 +79,7 @@ const ModalForm = () => {
                     Tipo de documento
                   </label>
                   <div className="select-wrapper">
-                    <select id="tipoDocumento" name="tipoDocumento" className="form-select" required>
+                    <select id="00N7j000002Bl3X" name="tipoDocumento" className="form-select" required>
                       <option value="">Selecciona tipo</option>
                       <option value="CC">Cédula de Ciudadanía</option>
                       <option value="TI">Tarjeta de Identidad</option>
@@ -95,7 +95,7 @@ const ModalForm = () => {
                   </label>
                   <input
                     type="text"
-                    id="numeroDocumento"
+                    id="00N7j000002Bl3V"
                     name="numeroDocumento"
                     className="form-input"
                     placeholder="Número de documento"
@@ -143,7 +143,7 @@ const ModalForm = () => {
                   </label>
                   <input
                     type="tel"
-                    id="telefono"
+                    id="00NO4000002lUPh"
                     name="telefono"
                     className="form-input"
                     placeholder="3001234567"
@@ -200,7 +200,7 @@ const ModalForm = () => {
                     Período de Ingreso
                   </label>
                   <div className="select-wrapper">
-                    <select id="periodoIngreso" name="periodoIngreso" className="form-select" required>
+                    <select id="00N7j000002BY2L" name="periodoIngreso" className="form-select" required>
                       <option value="">Selecciona período</option>
                       <option value="Primer semestre 2025">Primer semestre 2025</option>
                       <option value="Segundo semestre 2025">Segundo semestre 2025</option>
