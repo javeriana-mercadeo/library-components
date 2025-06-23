@@ -728,6 +728,14 @@ const ContactModal = {
   close() {
     Logger.debug('Cerrando modal...')
     
+    // Remover inmediatamente la clase modal-open del body para restaurar scroll
+    DOMHelpers.toggleClasses(document.body, ['modal-open'], false)
+    
+    // Restaurar overflow del body inmediatamente
+    document.body.style.overflow = ''
+    document.body.style.position = ''
+    document.body.style.width = ''
+    
     // Quitar animación
     DOMHelpers.toggleClasses(this.modal, ['active'], false)
 
@@ -735,7 +743,12 @@ const ContactModal = {
     TimingUtils.delay(() => {
       DOMHelpers.toggleClasses(this.modal, ['show'], false)
       DOMHelpers.toggleClasses(this.overlay, ['active'], false)
-      DOMHelpers.toggleClasses(document.body, ['modal-open'], false)
+      // Asegurar que la clase se remueva por segunda vez por seguridad
+      document.body.classList.remove('modal-open')
+      // Restaurar overflow por segunda vez por seguridad
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
     }, 400)
 
     Logger.debug('Modal cerrado')
@@ -967,7 +980,9 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 // Para compatibilidad con diferentes sistemas
-window.initHeaderModal = initHeaderModal
+if (typeof window !== 'undefined') {
+  window.initHeaderModal = initHeaderModal
+}
 
 // Exportar por defecto para Next.js
 export default initHeaderModal
