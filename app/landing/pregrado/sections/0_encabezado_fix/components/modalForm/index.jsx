@@ -48,13 +48,13 @@ const ModalForm = () => {
               <input type="hidden" name="00N5G00000WmhvT" value="Landing Programas" />
               <input type="hidden" name="lead_source" value="Landing Pages" />
               <input type="hidden" name="company" value="NA" />
-
+              <input type="hidden" name="debug" value="1" />​
+              <input type="hidden" name="debugEmail" value="gesalas@javeriana.edu.co" />
               {/* Campos UTM para tracking*/}
               <input type="hidden" name="00N7j000002BKgW" id="utm-source" value="" />
               <input type="hidden" name="00N7j000002BKgb" id="utm-subsource" value="" />
               <input type="hidden" name="00N040000001izt" id="utm-medium" value="" />
               <input type="hidden" name="00N7j000002BfkF" id="utm-campaign" value="" />
-
               {/* Nombres */}
               <div className="form-row">
                 <div className="form-group">
@@ -72,7 +72,6 @@ const ModalForm = () => {
                   />
                 </div>
               </div>
-
               {/* Apellidos */}
               <div className="form-row">
                 <div className="form-group">
@@ -90,7 +89,6 @@ const ModalForm = () => {
                   />
                 </div>
               </div>
-
               {/* Tipo de documento y Número de documento */}
               <div className="form-row">
                 <div className="form-group form-group-half">
@@ -123,7 +121,6 @@ const ModalForm = () => {
                   />
                 </div>
               </div>
-
               {/* Email */}
               <div className="form-row">
                 <div className="form-group">
@@ -141,7 +138,6 @@ const ModalForm = () => {
                   />
                 </div>
               </div>
-
               {/* Teléfono con prefijo */}
               <div className="form-row">
                 <div className="form-group form-group-prefix">
@@ -171,7 +167,6 @@ const ModalForm = () => {
                   />
                 </div>
               </div>
-
               {/* País de residencia */}
               <div className="form-row">
                 <div className="form-group">
@@ -186,7 +181,6 @@ const ModalForm = () => {
                   </div>
                 </div>
               </div>
-
               {/* Departamento y Ciudad - Dinámicos */}
               <div className="form-row location-row" id="location-row" style={{ display: 'none' }}>
                 <div className="form-group form-group-half">
@@ -211,7 +205,6 @@ const ModalForm = () => {
                   </div>
                 </div>
               </div>
-
               {/* Período de ingreso */}
               <div className="form-row">
                 <div className="form-group">
@@ -228,7 +221,6 @@ const ModalForm = () => {
                   </div>
                 </div>
               </div>
-
               {/* Checkbox de términos y condiciones */}
               <div className="terms-group" id="terms-group">
                 <input type="checkbox" id="terms" name="terms" className="terms-checkbox" required />
@@ -252,7 +244,6 @@ const ModalForm = () => {
                   </label>
                 </div>
               </div>
-
               {/* Botón de envío */}
               <div className="form-submit">
                 <Btn type="submit" color="primary" size="lg" fullWidth>
