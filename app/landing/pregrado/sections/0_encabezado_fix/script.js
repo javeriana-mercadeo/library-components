@@ -5,12 +5,16 @@
 // URLs de las APIs
 const API_ENDPOINTS = {
   ubicaciones: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/ubicaciones.json',
-  codigosPais: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/codigos_pais.json'
+  codigosPais: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/codigos_pais.json',
+  programas: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/programas.json',
+  periodos: 'https://www.javeriana.edu.co/recursosdb/1372208/10609114/periodos.json'
 }
 
 // Cache para los datos de las APIs
 let LOCATION_DATA = {}
 let COUNTRY_CODES = {}
+let PROGRAM_URL = ''
+let PERIODS_DATA = []
 
 // ███████████████████████████████████████████████████████████████████████████████
 // █                         SECCIÓN: UTILIDADES BÁSICAS                        █
@@ -25,22 +29,22 @@ const Logger = {
 
 const EventManager = {
   events: new Map(),
-  
+
   add(element, event, handler) {
     if (!element) return false
-    
+
     element.addEventListener(event, handler)
-    
+
     // Guardar para cleanup
     const key = `${element.id || 'element'}-${event}`
     if (!this.events.has(key)) {
       this.events.set(key, [])
     }
     this.events.get(key).push({ element, event, handler })
-    
+
     return true
   },
-  
+
   cleanup() {
     this.events.forEach(eventList => {
       eventList.forEach(({ element, event, handler }) => {
@@ -58,17 +62,17 @@ const DOMHelpers = {
     if (typeof document === 'undefined') {
       return
     }
-    
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', callback)
     } else {
       callback()
     }
   },
-  
+
   toggleClasses(element, classes, add) {
     if (!element || !classes) return
-    
+
     classes.forEach(className => {
       if (add) {
         element.classList.add(className)
@@ -77,7 +81,7 @@ const DOMHelpers = {
       }
     })
   },
-  
+
   createElement(tag, className, textContent) {
     if (typeof document === 'undefined') {
       return null
@@ -99,21 +103,23 @@ const Validators = {
   required(value) {
     return value && value.trim().length > 0
   },
-  
+
   name(value) {
     return value && value.trim().length >= 2 && /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value.trim())
   },
-  
+
   email(value) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    // Regex para validación de email
+    const emailRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return value && emailRegex.test(value.trim())
   },
-  
+
   phone(value) {
     const phoneRegex = /^[\d\s\-\+\(\)]+$/
     return value && value.trim().length >= 7 && phoneRegex.test(value.trim())
   },
-  
+
   document(value) {
     const docRegex = /^\d{6,12}$/
     return value && docRegex.test(value.trim())
@@ -145,18 +151,20 @@ const APIManager = {
 
   async loadLocationData() {
     try {
-      // Cargar ambas APIs en paralelo
-      const [ubicaciones, codigosPais] = await Promise.all([
+      // Cargar APIs en paralelo
+      const [ubicaciones, codigosPais, periodos] = await Promise.all([
         this.fetchData(API_ENDPOINTS.ubicaciones),
-        this.fetchData(API_ENDPOINTS.codigosPais)
+        this.fetchData(API_ENDPOINTS.codigosPais),
+        this.fetchData(API_ENDPOINTS.periodos)
       ])
 
-      // Procesar datos de ubicaciones
+      // Procesar datos
       LOCATION_DATA = this.processLocationData(ubicaciones)
       COUNTRY_CODES = this.processCountryCodes(codigosPais)
+      PERIODS_DATA = this.processPeriodsData(periodos)
 
-      Logger.success('Datos de ubicaciones y códigos de país cargados correctamente')
-      return { ubicaciones: LOCATION_DATA, codigosPais: COUNTRY_CODES }
+      Logger.success('Datos de ubicaciones, códigos de país y períodos cargados correctamente')
+      return { ubicaciones: LOCATION_DATA, codigosPais: COUNTRY_CODES, periodos: PERIODS_DATA }
     } catch (error) {
       Logger.error('Error al cargar datos de ubicaciones:', error)
       // Usar datos de fallback si es necesario
@@ -172,7 +180,7 @@ const APIManager = {
     // Estructura: { "COL": { nombre: "Colombia", departamentos: [...] }, "AFG": { nombre: "Afghanistan" }, ... }
     Object.keys(ubicaciones).forEach(countryCode => {
       const country = ubicaciones[countryCode]
-      
+
       if (country && country.nombre) {
         const countryName = country.nombre
         processed[countryName] = {}
@@ -206,6 +214,58 @@ const APIManager = {
     }
 
     return processed
+  },
+
+  processPeriodsData(periodos) {
+    const processed = []
+
+    // Procesar períodos académicos
+    // Estructura: { "PREG": { "2 semestre de 2025": "PREG2530", ... }, ... }
+    if (periodos && periodos.PREG) {
+      // Usar solo los períodos de pregrado (PREG)
+      Object.entries(periodos.PREG).forEach(([periodo, codigo]) => {
+        processed.push({
+          text: periodo,
+          value: codigo
+        })
+      })
+    }
+
+    Logger.debug(`Períodos procesados: ${processed.length} elementos`)
+    return processed
+  },
+
+  /**
+   * Función para cargar los programas (exacta del example.ftl)
+   **/
+  async getProgramas(codPrograma) {
+    try {
+      Logger.debug(`Buscando programa con código: ${codPrograma}`)
+      const data = await this.fetchData(API_ENDPOINTS.programas)
+
+      // Buscar en la estructura anidada como en example.ftl
+      for (let facultadKey in data) {
+        const facultad = data[facultadKey]
+        for (let programaKey in facultad) {
+          const programas = facultad[programaKey].Programas
+          if (programas && Array.isArray(programas)) {
+            for (let i = 0; i < programas.length; i++) {
+              if (programas[i].Codigo === codPrograma) {
+                PROGRAM_URL = facultad[programaKey].url
+                Logger.success(`Programa encontrado: ${programas[i].Nombre}, URL: ${PROGRAM_URL}`)
+                return PROGRAM_URL
+              }
+            }
+          }
+        }
+      }
+
+      Logger.warning(`Programa con código ${codPrograma} no encontrado`)
+      return null
+    } catch (error) {
+      Logger.error('Error al obtener los programas:', error)
+      throw error
+    }
   },
 
   loadFallbackData() {
@@ -397,13 +457,14 @@ const FormAnimations = {
 
 const LocationManager = {
   async init() {
-    // Buscar elementos por ID de Salesforce o ID genérico
-    const paisSelect = document.getElementById('00N7j000002BY1c') || document.getElementById('paisResidencia')
-    const departamentoSelect = document.getElementById('d00N7j000002BY1h') || document.getElementById('departamento')
-    const ciudadSelect = document.getElementById('00N7j000002BY1i') || document.getElementById('ciudad')
+    // Buscar elementos por ID de Salesforce
+    const paisSelect = document.getElementById('00N7j000002BY1c')
+    const departamentoSelect = document.getElementById('d00N7j000002BY1h')
+    const ciudadSelect = document.getElementById('00N7j000002BY1i')
     const locationRow = document.getElementById('location-row')
     const phoneCodeDisplay = document.getElementById('phone-code') // Para mostrar código de país
-    const prefijoSelect = document.getElementById('p00NO4000002lUPh') || document.getElementById('prefijo')
+    const prefijoSelect = document.getElementById('00NO4000002lUPh')
+    const periodoSelect = document.getElementById('00N7j000002BY2L') // Campo de período
 
     if (!paisSelect || !departamentoSelect || !ciudadSelect) {
       Logger.warning('Elementos de ubicación no encontrados')
@@ -420,20 +481,17 @@ const LocationManager = {
       }
     }
 
-    // Poblar países e indicativos
+    // Poblar países, indicativos y períodos
     this.populateCountries(paisSelect)
     if (prefijoSelect) {
       this.populatePhoneCodes(prefijoSelect)
     }
+    if (periodoSelect) {
+      this.populatePeriods(periodoSelect)
+    }
 
     EventManager.add(paisSelect, 'change', () => {
-      this.handleCountryChange(
-        paisSelect.value,
-        departamentoSelect,
-        ciudadSelect,
-        locationRow,
-        phoneCodeDisplay
-      )
+      this.handleCountryChange(paisSelect.value, departamentoSelect, ciudadSelect, locationRow, phoneCodeDisplay)
     })
 
     EventManager.add(departamentoSelect, 'change', () => {
@@ -453,7 +511,18 @@ const LocationManager = {
     }
 
     // Agregar TODOS los países desde COUNTRY_CODES (que tiene la lista completa)
-    const sortedCountries = Object.keys(COUNTRY_CODES).sort()
+    const allCountries = Object.keys(COUNTRY_CODES)
+    const sortedCountries = []
+    
+    // Poner Colombia primero si existe
+    if (allCountries.includes('Colombia')) {
+      sortedCountries.push('Colombia')
+    }
+    
+    // Agregar el resto de países ordenados alfabéticamente
+    const otherCountries = allCountries.filter(country => country !== 'Colombia').sort()
+    sortedCountries.push(...otherCountries)
+    
     sortedCountries.forEach(country => {
       const option = document.createElement('option')
       option.value = country
@@ -550,6 +619,25 @@ const LocationManager = {
     ciudadSelect.disabled = false
   },
 
+  populatePeriods(periodoSelect) {
+    // Limpiar opciones existentes (excepto la primera)
+    const firstOption = periodoSelect.querySelector('option[value=""]')
+    periodoSelect.innerHTML = ''
+    if (firstOption) {
+      periodoSelect.appendChild(firstOption.cloneNode(true))
+    }
+
+    // Agregar períodos desde PERIODS_DATA
+    PERIODS_DATA.forEach(periodo => {
+      const option = document.createElement('option')
+      option.value = periodo.value
+      option.textContent = periodo.text
+      periodoSelect.appendChild(option)
+    })
+
+    Logger.debug(`Períodos poblados: ${PERIODS_DATA.length} opciones`)
+  },
+
   clearSelect(select) {
     // Mantener la primera opción vacía
     const firstOption = select.querySelector('option[value=""]')
@@ -575,6 +663,7 @@ const ContactModal = {
 
     this.setupEventListeners()
     this.setupFormValidation()
+    this.setupUTMTracking()
 
     Logger.success('Modal de contacto inicializado')
     return true
@@ -640,12 +729,21 @@ const ContactModal = {
           this.validateField(input)
         }
       })
+
+      // Validación especial para email mientras escribe
+      if (input.type === 'email') {
+        EventManager.add(input, 'input', () => {
+          if (input.value.trim() !== '') {
+            this.validateField(input)
+          }
+        })
+      }
     })
   },
 
   async open() {
     Logger.debug('Abriendo modal...')
-    
+
     // Mostrar modal
     DOMHelpers.toggleClasses(this.modal, ['show'], true)
     DOMHelpers.toggleClasses(this.overlay, ['active'], true)
@@ -670,9 +768,7 @@ const ContactModal = {
 
       // Enfocar primer input
       TimingUtils.delay(() => {
-        const firstInput = this.modal.querySelector(
-          'input:not([type="radio"]):not([type="checkbox"])'
-        )
+        const firstInput = this.modal.querySelector('input:not([type="radio"]):not([type="checkbox"])')
         if (firstInput) firstInput.focus()
       }, 300)
     } catch (error) {
@@ -683,14 +779,14 @@ const ContactModal = {
   },
 
   showLoadingState() {
-    const paisSelect = document.getElementById('00N7j000002BY1c') || document.getElementById('paisResidencia')
-    const prefijoSelect = document.getElementById('p00NO4000002lUPh') || document.getElementById('prefijo')
-    
+    const paisSelect = document.getElementById('00N7j000002BY1c')
+    const prefijoSelect = document.getElementById('00NO4000002lUPh')
+
     if (paisSelect) {
       paisSelect.disabled = true
       paisSelect.innerHTML = '<option value="">Cargando países...</option>'
     }
-    
+
     if (prefijoSelect) {
       prefijoSelect.disabled = true
       prefijoSelect.innerHTML = '<option value="">Cargando indicativos...</option>'
@@ -698,27 +794,27 @@ const ContactModal = {
   },
 
   hideLoadingState() {
-    const paisSelect = document.getElementById('00N7j000002BY1c') || document.getElementById('paisResidencia')
-    const prefijoSelect = document.getElementById('p00NO4000002lUPh') || document.getElementById('prefijo')
-    
+    const paisSelect = document.getElementById('00N7j000002BY1c')
+    const prefijoSelect = document.getElementById('00NO4000002lUPh')
+
     if (paisSelect) {
       paisSelect.disabled = false
     }
-    
+
     if (prefijoSelect) {
       prefijoSelect.disabled = false
     }
   },
 
   showErrorState(message) {
-    const paisSelect = document.getElementById('00N7j000002BY1c') || document.getElementById('paisResidencia')
-    const prefijoSelect = document.getElementById('p00NO4000002lUPh') || document.getElementById('prefijo')
-    
+    const paisSelect = document.getElementById('00N7j000002BY1c')
+    const prefijoSelect = document.getElementById('00NO4000002lUPh')
+
     if (paisSelect) {
       paisSelect.disabled = false
       paisSelect.innerHTML = `<option value="">Error: ${message}</option>`
     }
-    
+
     if (prefijoSelect) {
       prefijoSelect.disabled = false
       prefijoSelect.innerHTML = `<option value="">Error: ${message}</option>`
@@ -727,15 +823,15 @@ const ContactModal = {
 
   close() {
     Logger.debug('Cerrando modal...')
-    
+
     // Remover inmediatamente la clase modal-open del body para restaurar scroll
     DOMHelpers.toggleClasses(document.body, ['modal-open'], false)
-    
+
     // Restaurar overflow del body inmediatamente
     document.body.style.overflow = ''
     document.body.style.position = ''
     document.body.style.width = ''
-    
+
     // Quitar animación
     DOMHelpers.toggleClasses(this.modal, ['active'], false)
 
@@ -760,31 +856,35 @@ const ContactModal = {
     let message = ''
 
     switch (name) {
-      case 'nombres':
-      case 'apellidos':
+      case 'first_name':
+      case 'last_name':
         isValid = Validators.name(value)
         message = 'Mínimo 2 caracteres, solo letras'
         break
-      case 'tipoDocumento':
+      case '00N7j000002Bl3X': // Tipo documento
         isValid = Validators.required(value)
         message = 'Selecciona un tipo de documento'
         break
-      case 'numeroDocumento':
+      case '00N7j000002Bl3V': // Número documento
         isValid = Validators.document(value)
         message = 'Entre 6 y 12 dígitos'
         break
-      case 'telefono':
+      case 'mobile': // Teléfono
         isValid = Validators.phone(value)
         message = 'Número de teléfono válido'
         break
+      case '00NO4000002lUPh': // Prefijo
+        isValid = Validators.required(value)
+        message = 'Selecciona un indicativo'
+        break
       case 'email':
         isValid = Validators.email(value)
-        message = 'Correo electrónico válido'
+        message = isValid ? '' : 'Ingrese un correo electrónico válido'
         break
-      case 'paisResidencia':
-      case 'departamento':
-      case 'ciudad':
-      case 'periodoIngreso':
+      case '00N7j000002BY1c': // País
+      case 'd00N7j000002BY1h': // Departamento
+      case '00N7j000002BY1i': // Ciudad
+      case '00N7j000002BY2L': // Período
         isValid = Validators.required(value)
         message = 'Este campo es obligatorio'
         break
@@ -813,10 +913,30 @@ const ContactModal = {
     }
   },
 
-  async handleSubmit() {
-    const formData = new FormData(this.form)
-    const data = Object.fromEntries(formData.entries())
+  setupUTMTracking() {
+    // Capturar parámetros UTM de la URL
+    const urlParams = new URLSearchParams(window.location.search)
 
+    // Llenar campos ocultos con valores UTM o valores por defecto
+    const utmSource = document.getElementById('utm-source')
+    const utmSubsource = document.getElementById('utm-subsource')
+    const utmMedium = document.getElementById('utm-medium')
+    const utmCampaign = document.getElementById('utm-campaign')
+
+    if (utmSource) utmSource.value = urlParams.get('utm_source') || 'Javeriana'
+    if (utmSubsource) utmSubsource.value = urlParams.get('utm_subsource') || 'Organico'
+    if (utmMedium) utmMedium.value = urlParams.get('utm_medium') || 'Landing'
+    if (utmCampaign) utmCampaign.value = urlParams.get('utm_campaign') || 'Mercadeo'
+
+    Logger.debug('UTM tracking configurado', {
+      source: utmSource?.value,
+      subsource: utmSubsource?.value,
+      medium: utmMedium?.value,
+      campaign: utmCampaign?.value
+    })
+  },
+
+  handleSubmit() {
     // Validar todos los campos
     const inputs = this.form.querySelectorAll('input[required], select[required]')
     let isValid = true
@@ -837,35 +957,28 @@ const ContactModal = {
 
     if (!isValid) {
       Logger.warning('Formulario con errores de validación')
-      return
+      return false
     }
 
-    // Simular envío
-    const submitBtn = this.form.querySelector('[type="submit"]')
-    const originalText = submitBtn.textContent
+    // Actualizar retURL antes de enviar (como en example.ftl)
+    const retURL = document.getElementById('retURL')
+    if (retURL) {
+      retURL.value = window.location.href
+    }
 
-    try {
+    // Cambiar estado del botón
+    const submitBtn = this.form.querySelector('[type="submit"]')
+    if (submitBtn) {
       submitBtn.textContent = 'Enviando...'
       submitBtn.disabled = true
-
-      // Simular delay de envío
-      await new Promise(resolve => setTimeout(resolve, 2000))
-
-      Logger.success('Formulario enviado correctamente', data)
-      this.showSuccess()
-
-      // Cerrar modal después de un momento
-      TimingUtils.delay(() => {
-        this.close()
-        this.form.reset()
-      }, 3000)
-    } catch (error) {
-      Logger.error('Error al enviar formulario:', error)
-      this.showError('Ocurrió un error al enviar el formulario. Intenta nuevamente.')
-    } finally {
-      submitBtn.textContent = originalText
-      submitBtn.disabled = false
     }
+
+    Logger.debug('Enviando formulario a Salesforce usando form.submit()...')
+
+    // Envío directo del formulario como en example.ftl
+    this.form.submit()
+
+    return true
   },
 
   showSuccess() {
@@ -874,6 +987,7 @@ const ContactModal = {
         <div class="success-icon">✅</div>
         <p><strong>¡Gracias! Hemos recibido tu información.</strong></p>
         <p>Te contactaremos pronto con más detalles del programa.</p>
+        <p style="font-size: 0.9rem; opacity: 0.8;">Tu solicitud ha sido enviada exitosamente.</p>
       </div>
     `
 

@@ -1,3 +1,434 @@
+<style>
+/*Quitar controles a numeros Importante */
+input[type="number"]::-webkit-inner-combobox,
+input[type="number"]::-webkit-outer-combobox {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Ocultar los controles de incremento y decremento cuando el campo está enfocado */
+input[type="number"]:focus::-webkit-inner-spin-button,
+input[type="number"]:focus::-webkit-outer-spin-button {
+  display: none;
+}
+
+/* Ocultar los controles de incremento y decremento cuando el mouse está encima */
+input[type="number"]:hover::-webkit-inner-spin-button,
+input[type="number"]:hover::-webkit-outer-spin-button {
+  display: none;
+}
+
+.p-md-5 {
+  padding: 1.5rem !important;
+}
+
+.form-group {
+  margin-bottom: 0.6rem;
+}
+
+.form-control {
+  background-clip: border-box;
+  border-color: #ced4da;
+  border-bottom-width: 0.0625rem;
+  border-left-width: 0.0625rem;
+  border-right-width: 0.0625rem;
+  border-top-width: 0.0625rem;
+  height: 2.2rem;
+  min-width: 0;
+}
+
+.error_text {
+  color: red;
+  font-size: smaller;
+}
+
+.formulario_programa {
+  padding: 20px;
+}
+
+.formulario-jave {
+  z-index: 5 !important;
+}
+
+.contenedor-titulo-form h3 {
+  color: #004c8f;
+  font-weight: 600;
+  text-align: center;
+}
+
+.contenedor-titulo-form p {
+  text-align: center;
+}
+
+#boton_enviar1,
+#boton_enviar2 {
+  color: #004c8f !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .contenedor-titulo-form h3 {
+    font-size: 1.3rem;
+  }
+}
+</style>
+<script src="https://www.javeriana.edu.co/recursosdb/1372208/10609114/vueprod.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<div id="app">
+  <div class="formulario_programa">
+    <div class="contenedor-titulo-form">
+      <h3>Conoce más del programa</h3>
+      <p>Déjanos tus datos y te contactaremos para brindarte toda la información.</p>
+    </div>
+    <form
+      action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8"
+      id="form_SF"
+      ref="form_SF"
+      v-on:submit.prevent="validateForm"
+      method="post"
+      class="d-flex flex-column justify-content-around px-4 py-5 p-md-5"
+      novalidate
+      aria-label="Formulario de contacto"
+      class="needs-validation">
+      <input type="hidden" name="oid" value="00Df4000003l8Bf" />
+      <input type="hidden" name="retURL" id="retURL" :value="data.urlPrograma + '?Subsource=' + data.programa" />
+      <!-- <input type="hidden" name="debug" value="1">
+                    <input type="hidden" name="debugEmail" value="@javeriana.edu.co">     -->
+      <!--Nombres y apellidos-->
+      <div class="form-row">
+        <div class="form-group col-6">
+          <input
+            placeholder="*Nombre(s)"
+            id="first_name"
+            v-model="data.first_name"
+            class="form-control border-top-0 border-left-0 border-right-0 rounded-0"
+            maxlength="40"
+            v-on:change="deleteInvalid('first_name')"
+            name="first_name"
+            type="text"
+            :class="{ error: errors.first_name }"
+            required="" />
+          <div class="error_text" v-show="errors.first_name">*Campo obligatorio</div>
+        </div>
+        <div class="form-group col-6">
+          <input
+            placeholder="*Apellidos"
+            id="last_name"
+            v-model="data.last_name"
+            v-on:change="deleteInvalid('last_name')"
+            class="form-control border-top-0 border-left-0 border-right-0 rounded-1 needs-validation"
+            maxlength="80"
+            name="last_name"
+            type="text"
+            required=""
+            :class="{ error: errors.last_name }" />
+          <div class="error_text" v-show="errors.last_name">*Campo obligatorio</div>
+        </div>
+      </div>
+      <!--Documentos de identidad-->
+      <div class="form-row">
+        <div class="form-group col-5">
+          <select
+            id="00N5G00000WmhsT"
+            v-model="data.tipo_doc"
+            v-on:change="deleteInvalid('tipo_doc')"
+            name="00N5G00000WmhsT"
+            class="form-control border-top-0 border-left-0 border-right-0 rounded-1"
+            required=""
+            :class="{ error: errors.tipo_doc }">
+            <option value="">*Tipo de documento</option>
+            <option value="CC">Cédula Ciudadanía</option>
+            <option value="CE">Cédula Extranjería</option>
+            <option value="PA">Pasaporte</option>
+            <option value="TI">Tarjeta Identidad</option>
+            <!-- Agregar opciones aquí -->
+          </select>
+          <div class="error_text" v-show="errors.tipo_doc">*Campo obligatorio</div>
+        </div>
+        <div class="form-group col-7">
+          <input
+            placeholder="*Número de documento"
+            v-on:change="deleteInvalid('numero_doc')"
+            v-model="data.numero_doc"
+            id="00N5G00000WmhsR"
+            class="form-control border-top-0 border-left-0 border-right-0 rounded-1"
+            maxlength="255"
+            name="00N5G00000WmhsR"
+            type="text"
+            required
+            :class="{ error: errors.numero_doc }" />
+          <div class="error_text" v-show="errors.numero_doc">*Campo obligatorio</div>
+        </div>
+      </div>
+      <!--Email y celular-->
+      <div class="form-row">
+        <div class="form-group col-12">
+          <input
+            placeholder="*Email"
+            id="email"
+            v-model="data.email"
+            class="form-control border-top-0 border-left-0 border-right-0 rounded-1"
+            maxlength="80"
+            name="email"
+            type="email"
+            required
+            :class="{ error: errors.email }" />
+          <div class="error_text" v-show="errors.email">Ingrese un correo válido</div>
+        </div>
+      </div>
+      <!--prefijo y celular-->
+      <div class="form-row">
+        <div class="form-group col-3">
+          <div class="select-wrapper" style="width: 100%">
+            <select
+              id="00NJw000002mzb7"
+              name="00NJw000002mzb7"
+              class="prefijoSelect form-control border-top-0 border-left-0 border-right-0 rounded-1"
+              v-model="data.prefijoCel"
+              v-on:change="deleteInvalid('prefijoCel')"
+              required
+              style="font-size: medium; padding: 0px 25px 0px 5px">
+              <option value="">(+) Indicativo</option>
+              <option
+                v-for="pais in prefijoCel"
+                :value="pais.phoneCode"
+                v-bind:style="{ backgroundColor: pais.phoneName === 'Colombia' ? 'aliceBlue' : '', color: pais.phoneName === 'Colombia' ? '#000000' : '', fontWeight: pais.phoneName === 'Colombia' ? '900' : '' }">
+                (+{{ pais.phoneCode }}) {{ pais.phoneName }}
+              </option>
+            </select>
+            <div class="error_text" v-show="errors.prefijoCel">*Seleccione</div>
+          </div>
+        </div>
+        <div class="form-group col-9">
+          <input
+            placeholder="*Teléfono celular"
+            id="mobile"
+            v-model="data.mobile"
+            v-on:change="deleteInvalid('mobile')"
+            class="form-control col-12 border-top-0 border-left-0 border-right-0 rounded-1"
+            name="mobile"
+            type="text"
+            minlength="8"
+            maxlength="15"
+            required
+            :class="{ error: errors.mobile }" />
+          <div class="error_text" v-show="errors.mobile">*Campo obligatorio (entre 8 y 10 caracteres)</div>
+        </div>
+      </div>
+      <!--Lugar de residencia-->
+      <div class="form-row">
+        <!-- Pais -->
+        <div class="form-group col-12">
+          <select
+            v-model="data.pais"
+            v-on:change="deleteInvalid('pais')"
+            class="form-control border-top-0 border-left-0 border-right-0 rounded-1"
+            id="00N5G00000WmhvJ"
+            name="00N5G00000WmhvJ"
+            required
+            :class="{ error: errors.pais }">
+            <option value="">*País de residencia</option>
+            <option
+              v-for="(item, index) in ubicaciones"
+              v-bind:value="index"
+              v-bind:style="(index=='COL') ? 'font-weight: 700;' : '' ">
+              {{ item.nombre }}
+            </option>
+          </select>
+          <div class="error_text" v-show="errors.pais">*Campo obligatorio</div>
+        </div>
+        <!-- Departamento -->
+        <div class="form-group col-md-6 col-sm-12" id="departamentoContainer" v-if="data.pais=='COL'">
+          <select
+            v-model="data.departamento"
+            v-on:change="deleteInvalid('departamento')"
+            class="form-control border-top-0 border-left-0 border-right-0 rounded-1"
+            id="00N5G00000WmhvX"
+            name="00N5G00000WmhvX"
+            :class="{ error: errors.departamento }">
+            <option value="">*Selecciona el departamento</option>
+            <option v-for="(item, index) in ubicaciones[data.pais].departamentos" v-bind:value="item.codigo">
+              {{ item.nombre }}
+            </option>
+          </select>
+          <div class="error_text" v-show="errors.departamento">*Campo obligatorio</div>
+        </div>
+        <!-- Ciudad -->
+        <div
+          class="form-group col-md-6 col-sm-12"
+          id="ciudadContainer"
+          v-if="data.pais=='COL' && data.departamento!=''">
+          <select
+            v-model="data.ciudad"
+            v-on:change="deleteInvalid('ciudad')"
+            class="form-control border-top-0 border-left-0 border-right-0 rounded-1"
+            id="00N5G00000WmhvO"
+            name="00N5G00000WmhvO"
+            v-bind:required="data.pais=='COL'"
+            :class="{ error: errors.ciudad }">
+            <option value="">*Selecciona la Ciudad</option>
+            <option v-for="(item, index) in getCiudades(data.departamento)" v-bind:value="item.codigo">
+              {{ item.nombre }}
+            </option>
+          </select>
+          <div class="error_text" v-show="errors.ciudad">*Campo obligatorio</div>
+        </div>
+      </div>
+      <!--Periodo de Ingreso-->
+      <div class="form-row">
+        <div class="form-group col-12">
+          <select
+            class="form-control validates-as-required border-top-0 border-left-0 border-right-0 rounded-1"
+            id="00N5G00000WmhvI"
+            v-model="data.periodo_esperado"
+            v-on:change="deleteInvalid('periodo_esperado')"
+            :class="{ error: errors.periodo_esperado }"
+            maxlength="20"
+            name="00N5G00000WmhvI"
+            required="">
+            <option value="">*Periodo de Ingreso</option>
+            <option value="PREG2530">Segundo semestre de 2025</option>
+            <option value="PREG2610">Primer semestre de 2026</option>
+            <option value="PREG2630">Segundo semestre de 2026</option>
+            <option value="PREG2710">Primer semestre de 2027</option>
+            -->
+          </select>
+          <div class="error_text" v-show="errors.periodo_esperado">*Campo obligatorio</div>
+        </div>
+      </div>
+      <!--Programa-->
+      <div class="form-row col-12" style="display: none">
+        <div class="col-12">
+          <span class="wpcf7-form-control-wrap">
+            <input
+              id="00N5G00000WmhvV"
+              v-model="data.programa"
+              class="form-control validates-as-required rounded-1 text-dark mb-3"
+              name="00N5G00000WmhvV"
+              :class="{ error: errors.programa }" />
+            <div class="error_text" v-show="errors.programa">Selecciona</div>
+          </span>
+        </div>
+      </div>
+      <!--origen IMPORTANTE debe estar oculto-->
+      <div style="display: none">
+        <div class="form-row">
+          Origen de la Solicitud:<select
+            id="00NJw000001J3Hl"
+            name="00NJw000001J3Hl"
+            v-model="data.origen_sol"
+            title="Origen de la Solicitud">
+            <option selected value="Web to Lead">Web to Lead</option>
+          </select>
+          Fuente autorización datos personales:<select
+            id="00N5G00000WmhvT"
+            name="00N5G00000WmhvT"
+            v-model="data.fuenteAutoriza"
+            title="Fuente autorización datos personales">
+            <option value="Landing Programas">Landing Programas</option>
+          </select>
+          <label for="lead_source">Origen del candidato</label>
+          <select id="lead_source" v-model="data.lead" name="lead_source">
+            <option value="Landing Pages">Landing Pages</option>
+          </select>
+          <label for="company">Compañía</label><input id="company" v-model="data.company" maxlength="40" name="company" size="20" type="text" value="NA" />
+        </div>
+        <!--UTMS-->
+        <div class="form-row">
+          Fuente:<input id="00N5G00000WmhvW" v-model="data.fuente" name="00N5G00000WmhvW" title="Fuente" type="text" />
+          Subfuente:<input
+            id="00N5G00000WmhvZ"
+            v-model="data.subfuente"
+            name="00N5G00000WmhvZ"
+            title="Subfuente"
+            type="text" />
+          Medio
+          <input id="00NJw000001J3g8" v-model="data.medio" name="00NJw000001J3g8" title="Medio" type="text" />
+          Campaña:<input
+            id="00N5G00000Wmi8x"
+            v-model="data.campana"
+            maxlength="255"
+            name="00N5G00000Wmi8x"
+            type="text" />
+        </div>
+      </div>
+      <!--Legales y botón de inscripción-->
+      <div class="form-row col-12 mb-3">
+        <div class="col-12">
+          <span class="d-block text-azul">¿Autoriza usted el tratamiento de sus datos personales de acuerdo con la
+            <a
+              href="https://www.javeriana.edu.co/recursosdb/20125/12161151/politica-de-proteccion-de-datos-personales-universidad-javeriana.pdf"
+              class="text-azul fw-medium text-decoration-underline"
+              target="_blank">autorización de privacidad</a>?</span>
+          <div class="form-check form-check-inline">
+            <input
+              v-on:change="validateAutoriza()"
+              class="form-check-input"
+              type="radio"
+              v-model="data.autoriza"
+              id="00N5G00000WmhvF"
+              name="00N5G00000WmhvF"
+              value="1" />
+            <label class="form-check-label text-azul" for="00N5G00000WmhvF">Sí</label><br />
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              v-on:change="validateAutoriza()"
+              class="form-check-input"
+              type="radio"
+              v-model="data.autoriza"
+              name="00N5G00000WmhvF"
+              id="00N5G00000WmhvF"
+              value="0" />
+            <label class="form-check-label text-azul" for="autorizacion-2">No</label>
+          </div>
+        </div>
+        <div class="col-md-12" id="autorizacionErrorMessage" v-show="errors.autoriza">
+          <p style="color: brown; font-size: 0.8rem">
+            La Pontificia Universidad Javeriana requiere de su autorización para el tratamiento de sus datos personales
+            para continuar con el presente proceso, sin la autorización legalmente no podemos darle continuidad al mismo
+          </p>
+        </div>
+      </div>
+      <!--Botón-->
+      <div class="form-row col-12 mb-3">
+        <div class="col-12">
+          <button
+            id="boton_enviar1"
+            class="btn btn-warning w-50 py-2 text-azul fw-bold shadow my-2 border-0 mx-auto d-block"
+            type="button"
+            style="
+              background-color: #f6bd30;
+              font-size: 1rem;
+              white-space: unset;
+              border-radius: 8rem;
+              color: #ffffff;
+              font-weight: 700;
+            "
+            disabled="disabled">
+            Cargando...
+          </button>
+          <button
+            id="boton_enviar2"
+            class="btn btn-warning w-50 py-2 text-azul fw-bold shadow my-2 border-0 mx-auto d-none"
+            type="submit"
+            v-bind:disabled="formInValid || isSubmitting"
+            style="
+              padding: 0.5rem 1rem;
+              border-radius: 1rem;
+              background-color: #f6bd30;
+              font-size: 1rem;
+              white-space: normal;
+              border-radius: 8rem;
+              color: #ffffff;
+              font-weight: 700;
+            ">
+            Enviar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 <script>
 Liferay.on("allPortletsReady", function() {
   let boton1 = document.getElementById("boton_enviar1");
