@@ -6,9 +6,9 @@
   .lab-slider-title {
     color: var(--neutral-300);
     font-weight: var(--font-weight-bold);
-    padding: rem(32px) rem(16px);
     text-align: center;
     font-size: var(--font-size-principal-title);
+    padding: var(--spacing-xl);
   }
   .paragraph-lab {
     width: 90%;
@@ -149,7 +149,7 @@
     padding: var(--spacing-xs);
 
     .lab-slider-title {
-      padding: rem(50px);
+      padding: var(--spacing-xl);
     }
 
     .lab-slider-content {

@@ -38,14 +38,14 @@
   .main-title {
     color: var(--neutral-400);
     font-weight: var(--font-weight-bold);
-    font-size: rem(24px);
-    padding: rem(20px) 0;
+    font-size: var(--font-size-principal-title);
+    padding: var(--spacing-xl);
     text-align: center;
 
     // Desktop
     @media (min-width: 769px) {
       font-size: var(--font-size-principal-title);
-      padding: rem(30px) rem(50px);
+      padding: var(--spacing-xl);
       flex-shrink: 0;
     }
   }
