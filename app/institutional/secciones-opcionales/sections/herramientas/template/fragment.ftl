@@ -17,7 +17,12 @@
         </h2>
         <div class="tools-content">
             <div class="tools-texto">
-                <h2>Lorem ipsum dolor sit amet</h2>
+                <h2
+                    class="title title-lg"
+                    data-lfr-editable-id="title-herramientas-sub-titleH"
+                    data-lfr-editable-type="rich-text">
+                    Lorem ipsum dolor sit amet
+                </h2>
                 <lfr-editable
                     id="herramientas-paragraph"
                     type="rich-text"

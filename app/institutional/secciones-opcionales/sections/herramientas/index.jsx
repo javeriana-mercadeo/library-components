@@ -41,7 +41,7 @@ const Herramientas = () => {
 
         <div className="tools-content">
           <div className="tools-texto">
-            <h2>Lorem ipsum dolor sit amet</h2>
+          <Title id={`${elementName}-sub-titleH`}> Lorem ipsum dolor sit amet</Title>
             
             <Paragraph id={`${elementName}-paragraph`}>
               Lorem ipsum dolor sit amet consectetur. Eget id cursus eget at congue turpis. Volutpat odio nisi dictum in congue. Suspendisse
