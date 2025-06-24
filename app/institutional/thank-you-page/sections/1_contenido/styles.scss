@@ -1,8 +1,11 @@
 @use '@styles/autoload' as *;
 
 .thanks__main {
+  display: flex;
+  flex-direction: column-reverse;
+  
   @include responsive {
-    display: flex;
+    flex-direction: row;
   }
 
   .thanks__content {
@@ -21,12 +24,24 @@
   }
 
   .thanks__pic {
+    margin-top: var(--spacing-lg);
+    margin-left: calc(-1 * var(--container-padding-x));
+    margin-right: calc(-1 * var(--container-padding-x));
+    width: calc(100% + 2 * var(--container-padding-x));
+    
     @include responsive {
+      margin-top: 0;
+      margin-left: 0;
+      margin-right: 0;
       width: 30%;
       img {
         object-fit: cover;
         height: 100vh;
       }
+    }
+    
+    img {
+      width: 100%;
     }
   }
 
