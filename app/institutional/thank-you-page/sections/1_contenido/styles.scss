@@ -24,15 +24,10 @@
   }
 
   .thanks__pic {
-    margin-top: var(--spacing-lg);
-    margin-left: calc(-1 * var(--container-padding-x));
-    margin-right: calc(-1 * var(--container-padding-x));
-    width: calc(100% + 2 * var(--container-padding-x));
+    display: none;
     
     @include responsive {
-      margin-top: 0;
-      margin-left: 0;
-      margin-right: 0;
+      display: block;
       width: 30%;
       img {
         object-fit: cover;
