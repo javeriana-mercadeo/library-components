@@ -38,26 +38,32 @@ const ModalForm = () => {
             <form
               className="contact-form"
               id="contact-form"
-              action="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8"
+              action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8"
               method="POST"
               noValidate>
               {/* Campos ocultos para Salesforce*/}
               <input type="hidden" name="oid" value="00Df4000003l8Bf" />
               <input type="hidden" name="retURL" id="retURL" value="" />
-              <input type="hidden" name="00NJw000001J3Hl" value="Web to Lead" />
+              <input type="hidden" name="00NJw000001J3Hl" selected value="Web to Lead" />
               <input type="hidden" name="00N5G00000WmhvT" value="Landing Programas" />
               <input type="hidden" name="lead_source" value="Landing Pages" />
               <input type="hidden" name="company" value="NA" />
 
-              {/* Campos UTM para tracking*/}
-              <input type="hidden" name="00N7j000002BKgW" id="utm-source" value="" />
-              <input type="hidden" name="00N7j000002BKgb" id="utm-subsource" value="" />
-              <input type="hidden" name="00N040000001izt" id="utm-medium" value="" />
-              <input type="hidden" name="00N7j000002BfkF" id="utm-campaign" value="" />
+              {/* Campo programa oculto */}
+              <input type="hidden" name="00N5G00000WmhvV" id="programa" value="" />
 
-              {/* Nombres */}
+              {/* Campos UTM para tracking*/}
+              <input type="hidden" name="00N5G00000WmhvW" id="utm-source" value="" />
+              <input type="hidden" name="00N5G00000WmhvZ" id="utm-subsource" value="" />
+              <input type="hidden" name="00NJw000001J3g8" id="utm-medium" value="" />
+              <input type="hidden" name="00N5G00000Wmi8x" id="utm-campaign" value="" />
+
+              <input type="hidden" name="debug" value="1" />
+              <input type="hidden" name="debugEmail" value="DesarrolladorDMPA@javeriana.edu.co" />
+
+              {/* Nombres y Apellidos */}
               <div className="form-row">
-                <div className="form-group">
+                <div className="form-group form-group-half">
                   <label htmlFor="nombres" className="form-label required">
                     Nombre(s)
                   </label>
@@ -71,11 +77,8 @@ const ModalForm = () => {
                     autoComplete="given-name"
                   />
                 </div>
-              </div>
 
-              {/* Apellidos */}
-              <div className="form-row">
-                <div className="form-group">
+                <div className="form-group form-group-half">
                   <label htmlFor="apellidos" className="form-label required">
                     Apellidos
                   </label>
@@ -98,7 +101,7 @@ const ModalForm = () => {
                     Tipo de documento
                   </label>
                   <div className="select-wrapper">
-                    <select id="00N7j000002Bl3X" name="00N7j000002Bl3X" className="form-select" required>
+                    <select id="00N5G00000WmhsT" name="00N5G00000WmhsT" className="form-select" required>
                       <option value="">Selecciona tipo</option>
                       <option value="CC">Cédula de Ciudadanía</option>
                       <option value="TI">Tarjeta de Identidad</option>
@@ -114,8 +117,8 @@ const ModalForm = () => {
                   </label>
                   <input
                     type="text"
-                    id="00N7j000002Bl3V"
-                    name="00N7j000002Bl3V"
+                    id="00N5G00000WmhsR"
+                    name="00N5G00000WmhsR"
                     className="form-input"
                     placeholder="Número de documento"
                     required
@@ -149,7 +152,7 @@ const ModalForm = () => {
                     Indicativo
                   </label>
                   <div className="select-wrapper select-prefijo">
-                    <select id="00NO4000002lUPh" name="00NO4000002lUPh" className="form-select select-prefijo-input" required>
+                    <select id="00NJw000002mzb7" name="00NJw000002mzb7" className="form-select select-prefijo-input" required>
                       <option value="">Cargando indicativos...</option>
                       {/* Las opciones serán cargadas dinámicamente desde la API por el script.js */}
                     </select>
@@ -160,15 +163,7 @@ const ModalForm = () => {
                   <label htmlFor="telefono" className="form-label required">
                     Teléfono celular
                   </label>
-                  <input
-                    type="tel"
-                    id="00NO4000002lUPh"
-                    name="mobile"
-                    className="form-input"
-                    placeholder="3001234567"
-                    required
-                    autoComplete="tel"
-                  />
+                  <input type="tel" id="mobile" name="mobile" className="form-input" placeholder="3001234567" required autoComplete="tel" />
                 </div>
               </div>
 
@@ -179,7 +174,7 @@ const ModalForm = () => {
                     País de residencia
                   </label>
                   <div className="select-wrapper">
-                    <select id="00N7j000002BY1c" name="00N7j000002BY1c" className="form-select" required>
+                    <select id="00N5G00000WmhvJ" name="00N5G00000WmhvJ" className="form-select" required>
                       <option value="">Cargando países...</option>
                       {/* Las opciones serán cargadas dinámicamente desde la API por el script.js */}
                     </select>
@@ -194,7 +189,7 @@ const ModalForm = () => {
                     Departamento
                   </label>
                   <div className="select-wrapper">
-                    <select id="d00N7j000002BY1h" name="d00N7j000002BY1h" className="form-select" required disabled>
+                    <select id="00N5G00000WmhvX" name="00N5G00000WmhvX" className="form-select" required disabled>
                       <option value="">Selecciona departamento</option>
                     </select>
                   </div>
@@ -205,7 +200,7 @@ const ModalForm = () => {
                     Ciudad
                   </label>
                   <div className="select-wrapper">
-                    <select id="00N7j000002BY1i" name="00N7j000002BY1i" className="form-select" required disabled>
+                    <select id="00N5G00000WmhvO" name="00N5G00000WmhvO" className="form-select" required disabled>
                       <option value="">Selecciona ciudad</option>
                     </select>
                   </div>
@@ -219,7 +214,7 @@ const ModalForm = () => {
                     Período de Ingreso
                   </label>
                   <div className="select-wrapper">
-                    <select id="00N7j000002BY2L" name="00N7j000002BY2L" className="form-select" required>
+                    <select id="00N5G00000WmhvI" name="00N5G00000WmhvI" className="form-select" required>
                       <option value="">Selecciona período</option>
                       <option value="Primer semestre 2025">Primer semestre 2025</option>
                       <option value="Segundo semestre 2025">Segundo semestre 2025</option>
@@ -231,8 +226,7 @@ const ModalForm = () => {
 
               {/* Checkbox de términos y condiciones */}
               <div className="terms-group" id="terms-group">
-                <input type="checkbox" id="terms" name="terms" className="terms-checkbox" required />
-                <label htmlFor="terms" className="terms-label">
+                <label className="terms-label">
                   ¿Autoriza usted el tratamiento de sus datos personales de acuerdo con la{' '}
                   <a href="#" className="terms-link">
                     autorización de privacidad
@@ -241,12 +235,12 @@ const ModalForm = () => {
                 </label>
                 <div className="radio-options">
                   <label className="radio-label">
-                    <input type="radio" name="autorizacion" value="si" required />
+                    <input type="radio" name="00N5G00000WmhvF" value="1" required />
                     <span className="radio-custom"></span>
                     Sí
                   </label>
                   <label className="radio-label">
-                    <input type="radio" name="autorizacion" value="no" required />
+                    <input type="radio" name="00N5G00000WmhvF" value="0" required />
                     <span className="radio-custom"></span>
                     No
                   </label>
