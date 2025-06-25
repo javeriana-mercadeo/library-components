@@ -253,7 +253,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &__subtitle {
     font-size: rem(14px);
-    color: var(--neutral);
+    color: var(--neutral-200);
     line-height: 1.6;
     margin-top: rem(8px);
     margin-bottom: 0;
@@ -575,9 +575,9 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     gap: rem(12px);
     margin-top: rem(8px);
     padding: rem(16px);
-    background: rgba(var(--neutral-rgb), 0.02);
-    border-radius: rem(4px);
-    border: rem(1px) solid rgba(var(--neutral-rgb), 0.08);
+    background: transparent;
+    border-radius: 0;
+    border: none;
 
     .terms-checkbox {
       width: rem(18px);
