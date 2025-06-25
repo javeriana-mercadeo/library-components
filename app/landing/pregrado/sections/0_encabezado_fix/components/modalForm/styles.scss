@@ -65,7 +65,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 .contact-modal {
   align-items: normal;
   justify-items: normal;
-  background: var(--background-100);
+  background: var(--neutral-1000);
   border-radius: $modal-border-radius;
   box-shadow: $modal-shadow;
   width: 100%;
@@ -131,7 +131,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--background-100);
+  // background: var(--neutral);
   border-radius: $modal-border-radius;
   min-height: 0;
 
@@ -253,7 +253,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &__subtitle {
     font-size: rem(14px);
-    color: var(--neutral-400);
+    color: var(--neutral);
     line-height: 1.6;
     margin-top: rem(8px);
     margin-bottom: 0;
@@ -375,7 +375,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
     border-bottom: rem(1px) solid var(--neutral-700);
     background: transparent;
-    color: var(--neutral-200);
+    color: var(--neutral-1000);
     font-size: rem(16px);
     font-family: inherit;
     outline: none;
@@ -575,9 +575,9 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     gap: rem(12px);
     margin-top: rem(8px);
     padding: rem(16px);
-    background: var(--neutral-900);
-    border-radius: rem(12px);
-    border: rem(1px) solid var(--neutral-700);
+    background: rgba(var(--neutral-rgb), 0.02);
+    border-radius: rem(4px);
+    border: rem(1px) solid rgba(var(--neutral-rgb), 0.08);
 
     .terms-checkbox {
       width: rem(18px);

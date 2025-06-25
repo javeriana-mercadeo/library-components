@@ -458,13 +458,13 @@ const FormAnimations = {
 const LocationManager = {
   async init() {
     // Buscar elementos por ID de Salesforce
-    const paisSelect = document.getElementById('00N7j000002BY1c')
-    const departamentoSelect = document.getElementById('d00N7j000002BY1h')
-    const ciudadSelect = document.getElementById('00N7j000002BY1i')
+    const paisSelect = document.getElementById('00N5G00000WmhvJ')
+    const departamentoSelect = document.getElementById('00N5G00000WmhvX')
+    const ciudadSelect = document.getElementById('00N5G00000WmhvO')
     const locationRow = document.getElementById('location-row')
     const phoneCodeDisplay = document.getElementById('phone-code') // Para mostrar código de país
-    const prefijoSelect = document.getElementById('00NO4000002lUPh')
-    const periodoSelect = document.getElementById('00N7j000002BY2L') // Campo de período
+    const prefijoSelect = document.getElementById('00NJw000002mzb7')
+    const periodoSelect = document.getElementById('00N5G00000WmhvI') // Campo de período
 
     if (!paisSelect || !departamentoSelect || !ciudadSelect) {
       Logger.warning('Elementos de ubicación no encontrados')
@@ -527,6 +527,12 @@ const LocationManager = {
       const option = document.createElement('option')
       option.value = country
       option.textContent = country
+      
+      // Aplicar negrita a Colombia
+      if (country === 'Colombia') {
+        option.style.fontWeight = 'bold'
+      }
+      
       paisSelect.appendChild(option)
     })
   },
@@ -779,8 +785,8 @@ const ContactModal = {
   },
 
   showLoadingState() {
-    const paisSelect = document.getElementById('00N7j000002BY1c')
-    const prefijoSelect = document.getElementById('00NO4000002lUPh')
+    const paisSelect = document.getElementById('00N5G00000WmhvJ')
+    const prefijoSelect = document.getElementById('00NJw000002mzb7')
 
     if (paisSelect) {
       paisSelect.disabled = true
@@ -794,8 +800,8 @@ const ContactModal = {
   },
 
   hideLoadingState() {
-    const paisSelect = document.getElementById('00N7j000002BY1c')
-    const prefijoSelect = document.getElementById('00NO4000002lUPh')
+    const paisSelect = document.getElementById('00N5G00000WmhvJ')
+    const prefijoSelect = document.getElementById('00NJw000002mzb7')
 
     if (paisSelect) {
       paisSelect.disabled = false
@@ -807,8 +813,8 @@ const ContactModal = {
   },
 
   showErrorState(message) {
-    const paisSelect = document.getElementById('00N7j000002BY1c')
-    const prefijoSelect = document.getElementById('00NO4000002lUPh')
+    const paisSelect = document.getElementById('00N5G00000WmhvJ')
+    const prefijoSelect = document.getElementById('00NJw000002mzb7')
 
     if (paisSelect) {
       paisSelect.disabled = false
@@ -861,11 +867,11 @@ const ContactModal = {
         isValid = Validators.name(value)
         message = 'Mínimo 2 caracteres, solo letras'
         break
-      case '00N7j000002Bl3X': // Tipo documento
+      case '00N5G00000WmhsT': // Tipo documento
         isValid = Validators.required(value)
         message = 'Selecciona un tipo de documento'
         break
-      case '00N7j000002Bl3V': // Número documento
+      case '00N5G00000WmhsR': // Número documento
         isValid = Validators.document(value)
         message = 'Entre 6 y 12 dígitos'
         break
@@ -873,7 +879,7 @@ const ContactModal = {
         isValid = Validators.phone(value)
         message = 'Número de teléfono válido'
         break
-      case '00NO4000002lUPh': // Prefijo
+      case '00NJw000002mzb7': // Prefijo
         isValid = Validators.required(value)
         message = 'Selecciona un indicativo'
         break
@@ -881,10 +887,10 @@ const ContactModal = {
         isValid = Validators.email(value)
         message = isValid ? '' : 'Ingrese un correo electrónico válido'
         break
-      case '00N7j000002BY1c': // País
-      case 'd00N7j000002BY1h': // Departamento
-      case '00N7j000002BY1i': // Ciudad
-      case '00N7j000002BY2L': // Período
+      case '00N5G00000WmhvJ': // País
+      case '00N5G00000WmhvX': // Departamento
+      case '00N5G00000WmhvO': // Ciudad
+      case '00N5G00000WmhvI': // Período
         isValid = Validators.required(value)
         message = 'Este campo es obligatorio'
         break
@@ -922,11 +928,17 @@ const ContactModal = {
     const utmSubsource = document.getElementById('utm-subsource')
     const utmMedium = document.getElementById('utm-medium')
     const utmCampaign = document.getElementById('utm-campaign')
+    const programaField = document.getElementById('programa')
 
     if (utmSource) utmSource.value = urlParams.get('utm_source') || 'Javeriana'
     if (utmSubsource) utmSubsource.value = urlParams.get('utm_subsource') || 'Organico'
     if (utmMedium) utmMedium.value = urlParams.get('utm_medium') || 'Landing'
     if (utmCampaign) utmCampaign.value = urlParams.get('utm_campaign') || 'Mercadeo'
+    
+    // Llenar campo programa si está disponible
+    if (programaField && typeof codPrograma !== 'undefined') {
+      programaField.value = codPrograma
+    }
 
     Logger.debug('UTM tracking configurado', {
       source: utmSource?.value,
@@ -948,7 +960,7 @@ const ContactModal = {
     })
 
     // Validar autorización
-    const autorizacionChecked = this.form.querySelector('input[name="autorizacion"]:checked')
+    const autorizacionChecked = this.form.querySelector('input[name="00N5G00000WmhvF"]:checked')
     if (!autorizacionChecked) {
       isValid = false
       const termsGroup = this.form.querySelector('.terms-group')
