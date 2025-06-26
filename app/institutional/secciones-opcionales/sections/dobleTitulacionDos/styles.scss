@@ -1,6 +1,5 @@
 @use '@styles/autoload' as *;
 
-
 .doble-titulacion-container {
   width: 100%;
   padding: 0 rem(15px);
@@ -13,7 +12,6 @@
     justify-content: center;
     padding: 0;
   }
-
 
   .content-wrapper {
     width: 100%;
@@ -47,6 +45,12 @@
       font-size: var(--font-size-principal-title);
       padding: var(--spacing-xl);
       flex-shrink: 0;
+    }
+  }
+  @include liferay-edit-mode {
+    .main-title {
+      padding: 0px !important;
+      font-size: rem(14px) !important;
     }
   }
 
@@ -83,8 +87,16 @@
       font-weight: var(--font-weight-bold);
       padding-bottom: rem(20px);
 
-       @media (min-width: 769px) {
+      @media (min-width: 769px) {
         display: none;
+      }
+    }
+    @media (min-width: 769px) {
+      @include liferay-edit-mode {
+        .mobile-title-outside {
+          display: block !important;
+          font-size: rem(12px);
+        }
       }
     }
 
@@ -138,6 +150,12 @@
           text-shadow: rem(1px) rem(1px) rem(3px) rgba(0, 0, 0, 0.7);
           margin-bottom: rem(8px);
           line-height: 1.2;
+          color: white;
+        }
+        @include liferay-edit-mode {
+          .overlay-title {
+            font-size: rem(14px);
+          }
         }
 
         .overlay-description {
@@ -146,7 +164,7 @@
           line-height: 1.4;
           text-shadow: rem(1px) rem(1px) rem(2px) rgba(0, 0, 0, 0.7);
         }
-        .overlay-description-principal{
+        .overlay-description-principal {
           color: white;
           font-size: rem(14px);
           line-height: 1.4;
@@ -161,6 +179,7 @@
           .overlay-title {
             font-size: var(--font-size-title);
             text-shadow: rem(2px) rem(2px) rem(4px) rgba(0, 0, 0, 0.5);
+            color: white;
           }
 
           .overlay-description {
@@ -171,6 +190,11 @@
           }
         }
       }
+    }
+  }
+  @include liferay-edit-mode {
+    .overlay-content {
+      padding-bottom: 100px;
     }
   }
 
