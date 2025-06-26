@@ -348,21 +348,10 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   // ===========================================
-  // LABELS CON NUEVA ESTRUCTURA
+  // LABELS OCULTOS
   // ===========================================
   .form-label {
-    font-size: rem(14px);
-    font-weight: 500;
-    color: var(--neutral-300);
-    margin-bottom: rem(6px);
-    display: block;
-
-    // Asterisco para campos requeridos
-    &.required::after {
-      content: ' *';
-      color: var(--danger-500);
-      font-weight: 600;
-    }
+    display: none;
   }
 
   // ===========================================
