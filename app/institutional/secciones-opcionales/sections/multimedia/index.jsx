@@ -1,10 +1,8 @@
-// index.jsx
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
-import Paragraph from '@library/components/contain/paragraph'
 
 import info from './info.json'
 import './styles.scss'
@@ -234,7 +232,7 @@ const MultimediaSlider = () => {
           />
           <iframe
             ref={el => (videoRefs.current[item.videoId] = el)} // Asignar la referencia
-            src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&controls=1&loop=1&playlist=${item.videoId}&rel=0&showinfo=0&modestbranding=1`}
+            src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${item.videoId}&rel=0&showinfo=0&modestbranding=1`}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -273,7 +271,7 @@ const MultimediaSlider = () => {
   return (
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
-        <Title weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
+        <Title className="multimedia-titulo" weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
           Multimedia
         </Title>
 
