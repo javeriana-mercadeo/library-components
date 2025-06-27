@@ -1,0 +1,108 @@
+@use '@styles/autoload' as *;
+// Variables para el menú flotante
+$menu-size: 38px;
+$menu-border-color: #3b5998;
+$menu-bg-color: white;
+$menu-hover-size: 3.6rem;
+$menu-z-index: 1000;
+
+// Estilos específicos para el botón de tema
+.theme-toggle-icon {
+  transition: all 0.2s ease !important;
+}
+
+// Posicionamiento del menú
+.center-menu {
+  position: fixed;
+  top: 142px;
+  left: 10px;
+  width: $menu-size;
+  height: $menu-size;
+  z-index: $menu-z-index;
+
+  // Responsive para móviles
+  @media (max-width: 768px) {
+    top: 100px;
+    left: 20px;
+  }
+
+  .item {
+    cursor: pointer;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: $menu-size;
+    height: $menu-size;
+    background-color: $menu-bg-color;
+    border-radius: 50%;
+    border: 1px solid $menu-border-color;
+    margin: 0;
+    padding: 0;
+
+    // Elemento span para efecto hover
+    span {
+      border-radius: 0;
+      display: block;
+      height: 0;
+      left: 50%;
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      transition: all 0.3s;
+      width: 0;
+    }
+
+    &:hover span {
+      width: $menu-hover-size;
+      height: $menu-hover-size;
+      border-radius: $menu-hover-size;
+      margin: calc(-#{$menu-hover-size} / 2);
+    }
+
+    .icon-button {
+      text-decoration: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $menu-bg-color;
+      border-radius: 50%;
+      border: none;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+
+      &:hover span {
+        width: $menu-hover-size;
+        height: $menu-hover-size;
+        border-radius: $menu-hover-size;
+        margin: calc(-#{$menu-hover-size} / 2);
+      }
+
+      &:focus,
+      &:focus-visible,
+      &:active {
+        outline: none;
+      }
+
+      i {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        z-index: 1;
+        transition: all 0.3s;
+        pointer-events: none; // Evita conflictos con eventos de hover
+      }
+    }
+  }
+}
