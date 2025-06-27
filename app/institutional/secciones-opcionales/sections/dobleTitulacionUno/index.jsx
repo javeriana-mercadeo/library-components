@@ -1,3 +1,4 @@
+// DoubleTitulacion.jsx
 import React from 'react'
 import './styles.scss'
 import Title from '../../../../_library/components/contain/title'
@@ -6,56 +7,58 @@ import Container from '@library/components/container'
 
 const DoubleTitulacion = () => {
   return (
-   
-      <div className="double-titulacion-container">
-        <Container className="content-wrapper"> <div >
-          <Title className="main-title">
-           
-           Doble Titulación 1
-          </Title>
+    <div id="double-degree-section" className="double-titulacion-container">
+      <Container className="content-wrapper">
+        <Title id="double-degree-main-title" className="main-title">
+          Doble Titulación 1
+        </Title>
 
-          <div className="hero-section">
-            <div className="overlay">
-              <div className="hero-content">
-                <h2 className="hero-title">Internacionaliza tu MBA y amplía tu visión global</h2>
-                <Paragraph className="hero-description">
-                  {' '}
-                  
-                    Vive experiencias académicas en el extranjero que potencian tu perfil profesional y amplían tus oportunidades laborales.
-                  
+        <div id="double-degree-hero" className="hero-section">
+          <img 
+            src="https://www.javeriana.edu.co/recursosdb/d/info-prg/fondobiblioteca" 
+            alt="Biblioteca Universidad Javeriana" 
+            className="hero-background-image"
+            onError={(e) => {
+              e.target.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80";
+            }}
+          />
+          <div className="overlay"></div>
+          
+          <div className="hero-content">
+            <h2 id="double-degree-hero-title" className="hero-title">
+              Internacionaliza tu MBA y amplía tu visión global
+            </h2>
+            
+            <Paragraph id="double-degree-hero-description" className="hero-description">
+              Vive experiencias académicas en el extranjero que potencian tu perfil profesional y amplían tus oportunidades laborales.
+            </Paragraph>
+
+            <div id="double-degree-cards" className="cards-container">
+              <div id="international-missions-card" className="info-card">
+                <h3 className="card-title">Misiones Internacionales:</h3>
+                <Paragraph className="card-description">
+                  Dos experiencias académicas en innovación, estrategia y emprendimiento, incluidas en la matrícula.
                 </Paragraph>
+              </div>
 
-                <div className="cards-container">
-                  <div className="info-card">
-                    <h3 className="card-title">Misiones Internacionales:</h3>
-                    <Paragraph className="card-description">
-                      {' '}
-                      Dos experiencias académicas en innovación, estrategia y emprendimiento, incluidas en la matrícula.
-                    </Paragraph>
-                  </div>
+              <div id="summer-business-school-card" className="info-card">
+                <h3 className="card-title">Summer Business School:</h3>
+                <Paragraph className="card-description">
+                  Programa intersemestral con docentes internacionales para complementar tu formación
+                </Paragraph>
+              </div>
 
-                  <div className="info-card">
-                    <h3 className="card-title">Summer Business School:</h3>
-                    <Paragraph className="card-description">
-                      {' '}
-                      Programa intersemestral con docentes internacionales para complementar tu formación
-                    </Paragraph>
-                  </div>
-
-                  <div className="info-card">
-                    <h3 className="card-title">Doble Titulación:</h3>
-                    <Paragraph className="card-description">
-                      {' '}
-                      A partir de 2025, opción de obtener un título adicional con la Universidad Pompeu Fabra en Barcelona.
-                    </Paragraph>
-                  </div>
-                </div>
+              <div id="double-degree-info-card" className="info-card">
+                <h3 className="card-title">Doble Titulación:</h3>
+                <Paragraph className="card-description">
+                  A partir de 2025, opción de obtener un título adicional con la Universidad Pompeu Fabra en Barcelona.
+                </Paragraph>
               </div>
             </div>
           </div>
-        </div> </Container>
-      </div>
-   
+        </div>
+      </Container>
+    </div>
   )
 }
 

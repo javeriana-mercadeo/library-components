@@ -1,7 +1,7 @@
 @use '@styles/autoload' as *;
 
 // ==========================================
-// VARIABLES DEL COMPONENTE
+// VARIABLES DEL COMPONENTE en el local se ve cortado el slider pero en liferay con estas adecuaciones funciona bien 
 // ==========================================
 $multimedia-border-radius: rem(20px);
 $multimedia-main-height: rem(500px);
@@ -15,7 +15,7 @@ $nav-button-size: rem(35px);
 $nav-button-size-mobile: rem(30px);
 
 // ==========================================
-// COMPONENTE PRINCIPAL
+// COMPONENTE PRINCIPAL CON FIXES PARA LIFERAY
 // ==========================================
 .multimedia-slider {
   display: flex;
@@ -23,33 +23,46 @@ $nav-button-size-mobile: rem(30px);
   justify-content: center;
   flex-direction: column;
   padding: rem(20px);
+  overflow: visible; 
+  min-height: auto; 
 
   // ==========================================
-  // CONTENEDOR PRINCIPAL
+  // CONTENEDOR PRINCIPAL - FIXED
   // ==========================================
   &_container {
     width: 100%;
-    min-height: 100vh;
+    min-height: auto; 
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--neutral-100);
+    padding-bottom: rem(32px);
+    overflow: hidden; // Actualizado para evitar scroll horizontal
   }
 
   // ==========================================
-  // CONTENEDOR DEL SLIDER
+  // CONTENEDOR DEL SLIDER - FIXED
   // ==========================================
   &_slider-container {
-    max-width: rem(1200px);
     width: 100%;
     background: var(--background-100);
     border-radius: $multimedia-border-radius;
-    overflow: hidden;
+    overflow: hidden; // Actualizado para evitar scroll horizontal
     margin-top: rem(30px);
+    margin-bottom: rem(32px); 
+    padding-bottom: rem(16px); 
 
     @include dark-theme {
       background: var(--background-100);
     }
+  }
+  
+  .multimedia-titulo {
+    text-align: center;
+    font-size: var(--font-size-principal-title);
+    padding: var(--spacing-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--neutral-400);  
   }
 
   // ==========================================
@@ -113,16 +126,16 @@ $nav-button-size-mobile: rem(30px);
     @include responsive($breakpoint-sm) {
       padding: rem(20px);
     }
+  }
 
-    // Mostrar overlay al hacer hover o cuando el slide esté activo
-    .swiper-slide:hover &,
-    .swiper-slide-active & {
-      opacity: 1;
-    }
+  // Mostrar overlay al hacer hover o cuando el slide esté activo
+  .swiper-slide:hover .multimedia-slider_content-text-overlay,
+  .swiper-slide-active .multimedia-slider_content-text-overlay {
+    opacity: 1;
   }
 
   // ==========================================
-  // OVERLAY PARA VIDEOS (YA NO SE USA PARA PLAY) - MANTENER PARA COMPATIBILIDAD
+  // OVERLAY PARA VIDEOS
   // ==========================================
   &_video-overlay {
     position: absolute;
@@ -144,7 +157,7 @@ $nav-button-size-mobile: rem(30px);
   }
 
   // ==========================================
-  // OVERLAY DE TEXTO ESPECÍFICO PARA VIDEOS (DEPRECADO)
+  // OVERLAY DE TEXTO ESPECÍFICO PARA VIDEOS
   // ==========================================
   &_video-text-overlay {
     position: absolute;
@@ -164,12 +177,12 @@ $nav-button-size-mobile: rem(30px);
     @include responsive($breakpoint-sm) {
       padding: rem(20px);
     }
+  }
 
-    // Mostrar overlay al hacer hover o cuando el slide esté activo
-    .swiper-slide:hover &,
-    .swiper-slide-active & {
-      opacity: 1;
-    }
+  // Mostrar video overlay al hacer hover o cuando el slide esté activo
+  .swiper-slide:hover .multimedia-slider_video-text-overlay,
+  .swiper-slide-active .multimedia-slider_video-text-overlay {
+    opacity: 1;
   }
 
   &_overlay-content {
@@ -256,16 +269,17 @@ $nav-button-size-mobile: rem(30px);
   }
 
   // ==========================================
-  // SLIDER DE MINIATURAS
+  // SLIDER DE MINIATURAS - ACTUALIZADO
   // ==========================================
   &_thumbs-swiper {
-    height: $multimedia-thumbs-height;
     padding: rem(10px);
     position: relative;
+    margin-bottom: rem(16px);
+    overflow: hidden; // Actualizado para evitar scroll horizontal
 
     @include responsive($breakpoint-sm) {
-      height: rem(110px);
       margin-top: 10px;
+      margin-bottom: rem(24px);
     }
 
     .swiper-slide {
@@ -321,26 +335,28 @@ $nav-button-size-mobile: rem(30px);
   }
 
   // ==========================================
-  // BOTONES DE NAVEGACIÓN DE MINIATURAS
+  // BOTONES DE NAVEGACIÓN - CENTRADO VERTICAL Y EXTREMOS
   // ==========================================
   &_thumbs-next,
   &_thumbs-prev {
-    color: var(--neutral-100);
-    background: rgba(0, 0, 0, 0.8);
+    color: var(--primary);
+    background: rgba(255, 255, 255, 0.9);
     width: $nav-button-size;
     height: $nav-button-size;
     border-radius: 50%;
     transition: $multimedia-transition;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-top: 0;
-    z-index: 30;
     border: none;
     cursor: pointer;
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 rem(2px) rem(10px) rgba(0, 0, 0, 0.15);
+    pointer-events: all;
+    z-index: 40;
+    // Centrado vertical
+    top: 50%;
+    transform: translateY(-50%);
 
     @include responsive($breakpoint-sm) {
       width: $nav-button-size-mobile;
@@ -348,17 +364,23 @@ $nav-button-size-mobile: rem(30px);
     }
 
     i {
-      font-size: rem(14px);
-      color: var(--neutral-100);
+      font-size: rem(16px);
+      color: var(--primary);
+      line-height: 1;
 
       @include responsive($breakpoint-sm) {
-        font-size: rem(12px);
+        font-size: rem(14px);
       }
     }
 
     &:hover {
-      background: rgba(var(--primary-rgb), 0.9);
+      background: var(--primary);
+      color: white;
       transform: translateY(-50%) scale(1.1);
+      
+      i {
+        color: white;
+      }
     }
 
     &.swiper-button-disabled {
@@ -376,7 +398,22 @@ $nav-button-size-mobile: rem(30px);
   }
 
   // ==========================================
-  // RESPONSIVE
+  // MANTENER CENTRADO EN MOBILE
+  // ==========================================
+  @media (max-width: 575px) {
+    &_thumbs-next,
+    &_thumbs-prev {
+      top: 50%;
+      transform: translateY(-50%);
+      
+      &:hover {
+        transform: translateY(-50%) scale(1.1);
+      }
+    }
+  }
+
+  // ==========================================
+  // RESPONSIVE GENERAL
   // ==========================================
   @include responsive($breakpoint-sm) {
     padding: rem(10px);
@@ -384,37 +421,29 @@ $nav-button-size-mobile: rem(30px);
     &_slider-container {
       margin: rem(10px);
     }
-
-    &_thumbs-next,
-    &_thumbs-prev {
-      bottom: rem(40px);
-      top: auto;
-      transform: none;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-    }
-
-    &_thumbs-next {
-      right: rem(15px);
-    }
-
-    &_thumbs-prev {
-      left: rem(15px);
-    }
   }
 
   // ==========================================
-  // TEMA OSCURO
+  // TEMA OSCURO ACTUALIZADO
   // ==========================================
   @include dark-theme {
     &_thumbs-next,
     &_thumbs-prev {
       background: rgba(var(--background-200-rgb), 0.9);
+      color: var(--primary);
+
+      i {
+        color: var(--primary);
+      }
 
       &:hover {
-        background: rgba(var(--primary-rgb), 0.9);
+        background: var(--primary);
+        color: white;
+        transform: translateY(-50%) scale(1.1);
+
+        i {
+          color: white;
+        }
       }
     }
 
@@ -472,18 +501,68 @@ $nav-button-size-mobile: rem(30px);
 }
 
 // ==========================================
+// FIXES ESPECÍFICOS PARA PORTLETS DE LIFERAY
+// ==========================================
+.portlet-content,
+.portlet-body {
+  overflow: visible !important;
+  min-height: auto !important;
+}
+
+#content,
+.container-fluid,
+.container {
+  overflow: visible !important;
+}
+
+.multimedia-slider-wrapper,
+.component-wrapper {
+  overflow: visible !important;
+  min-height: auto !important;
+  padding-bottom: rem(32px);
+}
+
+// ==========================================
+// ALTURA MÍNIMA CALCULADA
+// ==========================================
+.multimedia-slider_container {
+  min-height: calc(#{$multimedia-main-height} + #{$multimedia-thumbs-height} + #{rem(64px)}) !important;
+  
+  @include responsive($breakpoint-sm) {
+    min-height: calc(#{rem(550px)} + #{rem(110px)} + #{rem(64px)}) !important;
+  }
+}
+
+// ==========================================
 // CLASES GLOBALES DE SWIPER
 // ==========================================
-.swiper {
-  &-container-lock {
-    .multimedia-slider_thumbs-next,
-    .multimedia-slider_thumbs-prev {
-      display: none !important;
-    }
+.swiper-container-lock {
+  .multimedia-slider_thumbs-next,
+  .multimedia-slider_thumbs-prev {
+    display: none !important;
   }
 }
 
 .swiper-free-mode > .swiper-wrapper {
   margin-top: 5px;
   padding-top: 5px;
+}
+
+// ==========================================
+// CLASE DE DEBUGGING
+// ==========================================
+.debug-multimedia-slider {
+  border: 2px solid red !important;
+  background: rgba(255, 0, 0, 0.1) !important;
+  
+  .multimedia-slider_thumbs-swiper {
+    border: 2px solid blue !important;
+    background: rgba(0, 0, 255, 0.1) !important;
+  }
+  
+  .multimedia-slider_thumbs-next,
+  .multimedia-slider_thumbs-prev {
+    border: 2px solid green !important;
+    background: rgba(0, 255, 0, 0.8) !important;
+  }
 }
