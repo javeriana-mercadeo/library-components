@@ -42,6 +42,14 @@ $nav-button-offset: rem(25px);
       padding: rem(30px) 0;
     }
   }
+   .title-multimediaR {
+    display: flex;
+    justify-content: center;
+    color: var(--neutral-300);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    font-size: var(--font-size-principal-title);
+  }
 
   // ==========================================
   // CARRUSEL - OPTIMIZADO PARA POSTS SOCIALES
@@ -65,7 +73,7 @@ $nav-button-offset: rem(25px);
 
     @include responsive($breakpoint-xl) {
       margin: 0 auto;
-      max-width: rem(1200px); // Ajustado para posts sociales
+      max-width: rem(1200px);
     }
   }
 
@@ -82,7 +90,6 @@ $nav-button-offset: rem(25px);
     height: auto !important;
     min-height: $social-card-min-height;
 
-    // Swiper optimizations
     margin-top: rem(20px);
     align-items: stretch;
     justify-content: flex-start;
@@ -169,7 +176,6 @@ $nav-button-offset: rem(25px);
     width: 100%;
     overflow: hidden;
 
-    // Estilos para los embeds de Instagram
     .instagram-media {
       margin: 0 !important;
       max-width: 100% !important;
@@ -180,7 +186,6 @@ $nav-button-offset: rem(25px);
       box-shadow: none !important;
     }
 
-    // Responsividad para embeds
     @include responsive($breakpoint-sm) {
       .instagram-media {
         min-height: rem(300px);
@@ -233,17 +238,27 @@ $nav-button-offset: rem(25px);
   }
 
   // ==========================================
-  // PAGINACIÓN - ESTILO MODERNO PARA SOCIAL
+  // PAGINACIÓN - CENTRADO PERFECTO CON ESPACIADO
   // ==========================================
   &_pagination {
     position: relative;
-    margin-top: rem(25px);
-    text-align: center;
+    margin-top: rem(40px);
+    text-align: center !important;
     min-height: rem(20px);
-    display: flex !important;
+    display: none; // Inicialmente oculto, JS lo controlará
     align-items: center;
-    justify-content: center;
+    justify-content: center !important;
     gap: rem(8px);
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    @include responsive($breakpoint-sm) {
+      margin-top: rem(30px);
+    }
 
     .swiper-pagination-bullet {
       height: rem(10px);
@@ -253,8 +268,9 @@ $nav-button-offset: rem(25px);
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 50%;
       border: none;
-      margin: 0 !important;
+      margin: 0 rem(4px) !important;
       cursor: pointer;
+      display: inline-block !important;
 
       &.swiper-pagination-bullet-active {
         opacity: 1;
@@ -279,7 +295,7 @@ $nav-button-offset: rem(25px);
   }
 
   // ==========================================
-  // BOTONES DE NAVEGACIÓN - DISEÑO SOCIAL
+  // BOTONES DE NAVEGACIÓN - OCULTOS POR DEFECTO
   // ==========================================
   &_prev,
   &_next {
@@ -289,14 +305,15 @@ $nav-button-offset: rem(25px);
     z-index: 10;
     width: $nav-button-size;
     height: $nav-button-size;
-    display: none;
+    display: none; // Inicialmente ocultos, JS los controlará
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
-    opacity: 1;
-    visibility: visible;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     backdrop-filter: blur(rem(10px));
     background: rgba(255, 255, 255, 0.9);
     border: rem(2px) solid var(--neutral-300);
@@ -329,10 +346,8 @@ $nav-button-offset: rem(25px);
       }
     }
 
-    // Estados de Swiper mejorados
     &.swiper-button-disabled {
-      opacity: 0 !important;
-      visibility: hidden !important;
+      opacity: 0.3 !important;
       pointer-events: none !important;
       transform: translateY(-50%) scale(0.8);
     }
@@ -346,8 +361,9 @@ $nav-button-offset: rem(25px);
 
     &.show-navigation {
       display: flex !important;
-      opacity: 1;
-      visibility: visible;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
     }
   }
 
@@ -368,10 +384,89 @@ $nav-button-offset: rem(25px);
   }
 
   // ==========================================
+  // CONTROL DE NAVEGACIÓN - MEJORADO
+  // ==========================================
+  
+  // Estado por defecto - todo oculto
+  .swiper-container-lock & {
+    &_slides {
+      justify-content: center;
+    }
+
+    &_wrapper {
+      padding: rem(20px) 0;
+    }
+
+    &_pagination {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    &_prev,
+    &_next {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  }
+
+  // Mostrar solo paginación cuando hay 1 slide
+  &.show-pagination-only {
+    .social-carousel_prev,
+    .social-carousel_next {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .social-carousel_pagination {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      
+      .swiper-pagination-bullet {
+        display: inline-block !important;
+        opacity: 0.3 !important;
+        
+        &.swiper-pagination-bullet-active {
+          opacity: 1 !important;
+        }
+      }
+    }
+  }
+
+  // Mostrar solo botones cuando hay múltiples slides
+  &.show-buttons-only {
+    .social-carousel_pagination {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .social-carousel_prev,
+    .social-carousel_next {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      
+      &.swiper-button-disabled {
+        opacity: 0.3 !important;
+        pointer-events: none !important;
+      }
+    }
+  }
+
+  // ==========================================
   // RESPONSIVE - MOBILE FIRST OPTIMIZADO
   // ==========================================
 
-  // Móviles pequeños (hasta 576px)
   @media (max-width: 576px) {
     &_prev,
     &_next {
@@ -397,36 +492,15 @@ $nav-button-offset: rem(25px);
     }
   }
 
-  // Tablets (768px - 1023px)
   @media (min-width: 768px) and (max-width: 1023px) {
     &_card {
       max-width: rem(350px);
     }
   }
 
-  // Desktop (1024px+)
   @media (min-width: 1024px) {
     &_card {
       max-width: $social-card-max-width;
-    }
-  }
-
-  // ==========================================
-  // OPTIMIZACIONES PARA POCOS SLIDES
-  // ==========================================
-  .swiper-container-lock & {
-    &_slides {
-      justify-content: center;
-    }
-
-    &_wrapper {
-      padding: rem(20px) 0;
-    }
-
-    &_pagination {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
     }
   }
 
@@ -475,10 +549,31 @@ $nav-button-offset: rem(25px);
 }
 
 // ==========================================
-// CLASES GLOBALES DE SWIPER - OPTIMIZADAS PARA SOCIAL
+// CLASES GLOBALES DE SWIPER - CENTRADO FORZADO
 // ==========================================
 .swiper {
   overflow: visible;
+
+  .swiper-pagination {
+    margin-top: var(--spacing-md);
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+  }
+
+  .swiper-pagination-bullets {
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: rem(8px) !important;
+  }
 
   &.swiper-container-lock {
     .swiper-slide-button {
@@ -498,22 +593,83 @@ $nav-button-offset: rem(25px);
   .swiper-pagination {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+}
 
-  .swiper-pagination {
-    position: static !important;
-    margin-top: var(--spacing-md);
+// ==========================================
+// OVERRIDE ESPECÍFICO PARA PAGINACIÓN DE SWIPER
+// ==========================================
+.swiper-pagination-horizontal {
+  &.swiper-pagination-bullets {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: rem(8px) !important;
+
+    .swiper-pagination-bullet {
+      margin: 0 !important;
+    }
   }
+}
+
+// ==========================================
+// FIXES ADICIONALES PARA CONTROL DE NAVEGACIÓN
+// ==========================================
+
+// Override para elementos con estilos inline aplicados por JS
+.social-carousel_pagination[style*="display: flex"] {
+  display: flex !important;
+}
+
+.social-carousel_pagination[style*="opacity: 1"] {
+  opacity: 1 !important;
+}
+
+.social-carousel_prev[style*="display: flex"],
+.social-carousel_next[style*="display: flex"] {
+  display: flex !important;
+}
+
+// Asegurar centrado perfecto
+[class*="social-carousel_pagination"] {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+.swiper-pagination,
+.swiper-pagination-bullets,
+.swiper-pagination-horizontal {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin: 0 auto !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+}
+
+// Override para clase hidden de Swiper
+.swiper-pagination-hidden {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 // ==========================================
 // ESTILOS ESPECÍFICOS PARA EMBEDS DE INSTAGRAM
 // ==========================================
 .instagram-media {
-  // Forzar que los embeds se ajusten al contenedor
   max-width: 100% !important;
   min-width: auto !important;
 
-  // Mejorar la responsividad
   @include responsive($breakpoint-sm) {
     min-height: rem(300px) !important;
   }

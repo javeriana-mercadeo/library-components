@@ -114,14 +114,14 @@ const SocialCarousel = () => {
   return (
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
-        <Title weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
-          Redes
+        <Title className='title-multimediaR' weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
+          Multimedia Redes
         </Title>
 
         <div className={`${baseClass}_carousel swiper`}>
           <div className={`${baseClass}_wrapper social-swiper`}>
             <div className={`${baseClass}_slides swiper-wrapper`} role="list">
-              {/* ✅ GENERAR CARDS DINÁMICAMENTE */}
+              {/* GENERAR CARDS DINÁMICAMENTE */}
               {instagramPosts.map((postData, index) => renderPostCard(postData, index))}
             </div>
 

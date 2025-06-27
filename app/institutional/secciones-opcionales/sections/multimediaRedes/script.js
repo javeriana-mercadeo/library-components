@@ -81,28 +81,24 @@ export default () => {
 
       on: {
         init: function () {
-          updateNavigationVisibility(this, totalSlides)
-          updatePaginationVisibility(this, totalSlides)
+          updateNavigationDisplay(this, totalSlides)
           updateButtonStates(this)
           // Procesar embeds de Instagram después de la inicialización
           processInstagramEmbeds()
         },
         update: function () {
-          updateNavigationVisibility(this, totalSlides)
-          updatePaginationVisibility(this, totalSlides)
+          updateNavigationDisplay(this, totalSlides)
           updateButtonStates(this)
         },
         resize: function () {
           setTimeout(() => {
-            updateNavigationVisibility(this, totalSlides)
-            updatePaginationVisibility(this, totalSlides)
+            updateNavigationDisplay(this, totalSlides)
             updateButtonStates(this)
           }, 100)
         },
         breakpoint: function () {
           setTimeout(() => {
-            updateNavigationVisibility(this, totalSlides)
-            updatePaginationVisibility(this, totalSlides)
+            updateNavigationDisplay(this, totalSlides)
             updateButtonStates(this)
           }, 150)
         },
@@ -132,42 +128,123 @@ export default () => {
     }
   }
 
-  const updateNavigationVisibility = (swiper, totalSlides) => {
+  // Nueva función unificada para controlar toda la navegación
+  const updateNavigationDisplay = (swiper, totalSlides) => {
+    const carousel = document.querySelector('.social-carousel')
     const nextBtn = document.querySelector('.social-carousel_next') || document.querySelector('.social-next')
     const prevBtn = document.querySelector('.social-carousel_prev') || document.querySelector('.social-prev')
+    const pagination = document.querySelector('.social-carousel_pagination') || document.querySelector('.social-pagination')
 
-    if (!nextBtn || !prevBtn) {
-      console.warn('Botones de navegación no encontrados')
+    if (!nextBtn || !prevBtn || !pagination) {
+      console.warn('Elementos de navegación no encontrados')
       return
     }
 
-    // Lógica mejorada
-    // Si hay más de 1 slide, siempre mostrar los botones
-    // Los botones individuales se controlarán en updateButtonStates
-    const needsNavigation = totalSlides > 1
-
-    if (needsNavigation) {
-      // Mostrar contenedor de botones
-      nextBtn.classList.add('show-navigation')
-      nextBtn.classList.remove('swiper-button-hidden')
-      nextBtn.setAttribute('aria-hidden', 'false')
-
-      prevBtn.classList.add('show-navigation')
-      prevBtn.classList.remove('swiper-button-hidden')
-      prevBtn.setAttribute('aria-hidden', 'false')
-      updateButtonStates(swiper)
-    } else {
-      // Solo si hay 1 slide o menos, ocultar completamente
-      nextBtn.classList.remove('show-navigation')
-      nextBtn.classList.add('swiper-button-hidden')
-      nextBtn.setAttribute('aria-hidden', 'true')
-
-      prevBtn.classList.remove('show-navigation')
-      prevBtn.classList.add('swiper-button-hidden')
-      prevBtn.setAttribute('aria-hidden', 'true')
-
-      console.log('❌ Navegación deshabilitada (1 slide o menos)')
+    // Si hay solo 1 slide, mostrar indicadores y ocultar botones
+    if (totalSlides === 1) {
+      showPaginationOnly(carousel, nextBtn, prevBtn, pagination)
+      console.log('🔘 Solo paginación - 1 slide')
+    } 
+    // Si hay más de 1 slide, mostrar botones y ocultar indicadores
+    else if (totalSlides > 1) {
+      showButtonsOnly(carousel, nextBtn, prevBtn, pagination)
+      console.log('⬅️➡️ Solo botones - slides:', totalSlides)
     }
+    // Si no hay slides, ocultar todo
+    else {
+      hideAllNavigation(carousel, nextBtn, prevBtn, pagination)
+      console.log('❌ Sin navegación - no hay slides')
+    }
+  }
+
+  const hideAllNavigation = (carousel, nextBtn, prevBtn, pagination) => {
+    // Remover clases de control
+    carousel?.classList.remove('show-pagination-only', 'show-buttons-only')
+    
+    // Ocultar paginación
+    pagination.style.display = 'none'
+    pagination.style.opacity = '0'
+    pagination.style.visibility = 'hidden'
+    pagination.classList.add('swiper-pagination-hidden')
+    pagination.setAttribute('aria-hidden', 'true')
+    
+    // Ocultar botones
+    nextBtn.style.display = 'none'
+    nextBtn.style.opacity = '0'
+    nextBtn.style.visibility = 'hidden'
+    nextBtn.classList.remove('show-navigation')
+    nextBtn.classList.add('swiper-button-hidden')
+    nextBtn.setAttribute('aria-hidden', 'true')
+    
+    prevBtn.style.display = 'none'
+    prevBtn.style.opacity = '0'
+    prevBtn.style.visibility = 'hidden'
+    prevBtn.classList.remove('show-navigation')
+    prevBtn.classList.add('swiper-button-hidden')
+    prevBtn.setAttribute('aria-hidden', 'true')
+  }
+
+  const showPaginationOnly = (carousel, nextBtn, prevBtn, pagination) => {
+    // Agregar clase de control
+    carousel?.classList.add('show-pagination-only')
+    carousel?.classList.remove('show-buttons-only')
+    
+    // Mostrar paginación
+    pagination.style.display = 'flex'
+    pagination.style.opacity = '1'
+    pagination.style.visibility = 'visible'
+    pagination.classList.remove('swiper-pagination-hidden')
+    pagination.setAttribute('aria-hidden', 'false')
+    
+    // Configurar bullets
+    const bullets = pagination.querySelectorAll('.swiper-pagination-bullet')
+    bullets.forEach((bullet, index) => {
+      bullet.setAttribute('aria-label', `Ir a slide ${index + 1}`)
+      bullet.style.display = 'block'
+    })
+    
+    // Ocultar botones
+    nextBtn.style.display = 'none'
+    nextBtn.style.opacity = '0'
+    nextBtn.style.visibility = 'hidden'
+    nextBtn.classList.remove('show-navigation')
+    nextBtn.classList.add('swiper-button-hidden')
+    nextBtn.setAttribute('aria-hidden', 'true')
+    
+    prevBtn.style.display = 'none'
+    prevBtn.style.opacity = '0'
+    prevBtn.style.visibility = 'hidden'
+    prevBtn.classList.remove('show-navigation')
+    prevBtn.classList.add('swiper-button-hidden')
+    prevBtn.setAttribute('aria-hidden', 'true')
+  }
+
+  const showButtonsOnly = (carousel, nextBtn, prevBtn, pagination) => {
+    // Agregar clase de control
+    carousel?.classList.add('show-buttons-only')
+    carousel?.classList.remove('show-pagination-only')
+    
+    // Ocultar paginación
+    pagination.style.display = 'none'
+    pagination.style.opacity = '0'
+    pagination.style.visibility = 'hidden'
+    pagination.classList.add('swiper-pagination-hidden')
+    pagination.setAttribute('aria-hidden', 'true')
+    
+    // Mostrar botones
+    nextBtn.style.display = 'flex'
+    nextBtn.style.opacity = '1'
+    nextBtn.style.visibility = 'visible'
+    nextBtn.classList.add('show-navigation')
+    nextBtn.classList.remove('swiper-button-hidden')
+    nextBtn.setAttribute('aria-hidden', 'false')
+    
+    prevBtn.style.display = 'flex'
+    prevBtn.style.opacity = '1'
+    prevBtn.style.visibility = 'visible'
+    prevBtn.classList.add('show-navigation')
+    prevBtn.classList.remove('swiper-button-hidden')
+    prevBtn.setAttribute('aria-hidden', 'false')
   }
 
   const updateButtonStates = swiper => {
@@ -175,6 +252,11 @@ export default () => {
     const prevBtn = document.querySelector('.social-carousel_prev') || document.querySelector('.social-prev')
 
     if (!nextBtn || !prevBtn) return
+
+    // Solo actualizar estados si los botones están visibles
+    const buttonsVisible = nextBtn.classList.contains('show-navigation')
+    
+    if (!buttonsVisible) return
 
     // Verificar si los botones deben estar activos
     const isBeginning = swiper.isBeginning
@@ -206,45 +288,6 @@ export default () => {
       nextBtn.style.opacity = '1'
       nextBtn.style.pointerEvents = 'auto'
       nextBtn.setAttribute('aria-disabled', 'false')
-    }
-
-    // Asegurar visibilidad si la navegación está habilitada
-    if (nextBtn.classList.contains('show-navigation')) {
-      nextBtn.style.visibility = 'visible'
-      nextBtn.style.display = 'flex'
-    }
-    if (prevBtn.classList.contains('show-navigation')) {
-      prevBtn.style.visibility = 'visible'
-      prevBtn.style.display = 'flex'
-    }
-  }
-
-  const updatePaginationVisibility = (swiper, totalSlides) => {
-    const pagination = document.querySelector('.social-carousel_pagination') || document.querySelector('.social-pagination')
-
-    if (!pagination) {
-      console.warn('Paginación no encontrada')
-      return
-    }
-
-    // Mostrar paginación si hay más de 1 slide
-    const needsPagination = totalSlides > 1
-
-    if (needsPagination) {
-      pagination.style.display = 'flex'
-      pagination.classList.remove('swiper-pagination-hidden')
-      pagination.setAttribute('aria-hidden', 'false')
-
-      const bullets = pagination.querySelectorAll('.swiper-pagination-bullet')
-      bullets.forEach((bullet, index) => {
-        bullet.setAttribute('aria-label', `Ir a slide ${index + 1}`)
-        bullet.style.display = 'block'
-      })
-    } else {
-      pagination.style.display = 'none'
-      pagination.classList.add('swiper-pagination-hidden')
-      pagination.setAttribute('aria-hidden', 'true')
-      console.log('❌ Paginación oculta (1 slide)')
     }
   }
 
