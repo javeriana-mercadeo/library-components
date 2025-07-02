@@ -1,4 +1,4 @@
-import script from './script.js'
+import createFloatingMenuFunctions from './script.js'
 import info from './info.json'
 import './styles.scss'
 import React from 'react';
@@ -7,7 +7,7 @@ class FloatingMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
+      isOpen: true, // Siempre abierto
       isDragging: false,
       hoveredItem: null,
       dragPosition: { x: 0, y: 0 },
@@ -15,98 +15,120 @@ class FloatingMenu extends React.Component {
     };
     this.menuRef = React.createRef();
     this.dragOffset = { x: 0, y: 0 };
+    this.menuFunctions = null;
   }
 
-  // Demostración inicial del menú
   componentDidMount() {
-    // Cargar iconos Phosphor dinámicamente
-    if (!document.querySelector('script[src*="phosphor-icons"]')) {
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/@phosphor-icons/web';
-      script.async = true;
-      document.head.appendChild(script);
+    // Verificar si la función se importó correctamente
+    console.log('createFloatingMenuFunctions:', createFloatingMenuFunctions);
+    
+    // Inicializar funciones del menú desde script.js
+    this.menuFunctions = createFloatingMenuFunctions();
+    console.log('menuFunctions inicializadas:', this.menuFunctions);
+    
+    if (this.menuFunctions) {
+      // Cargar iconos Phosphor usando la utilidad del script
+      this.menuFunctions.utils.loadPhosphorIcons();
+      console.log('Configuración del menú:', this.menuFunctions.config);
+    } else {
+      console.error('No se pudieron inicializar las funciones del menú');
+      // Fallback: cargar iconos manualmente
+      this.loadPhosphorIconsFallback();
     }
+    
+    // Forzar re-render para mostrar iconos
+    this.forceUpdate();
+  }
 
-    // Cargar CSS de Phosphor
+  // Fallback para cargar iconos si falla el script
+  loadPhosphorIconsFallback = () => {
     if (!document.querySelector('link[href*="phosphor-icons"]')) {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       link.type = 'text/css';
       link.href = 'https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css';
       document.head.appendChild(link);
+      console.log('Iconos Phosphor cargados como fallback');
     }
-
-    // Abrir menú y mantenerlo abierto
-    setTimeout(() => {
-      this.setState({ isOpen: true });
-    }, 50);
   }
 
-  // Configuración de elementos del menú
-  getMenuItems = () => [
-    { id: 'btnOpen', icon: 'ph-magnifying-glass-plus', color: '#4866D1', action: 'toggle' },
-    { id: 'btnZoomOut', icon: 'ph-magnifying-glass-minus', color: '#FF6B6B', action: 'zoomOut' },
-    { 
-      id: 'btnThemeToggle', 
-      icon: this.state.isDarkTheme ? 'ph-moon' : 'ph-sun', 
-      color: this.state.isDarkTheme ? '#2D3748' : '#F6E05E', 
-      action: 'themeToggle' 
-    },
-    { id: 'btnGradient', icon: 'ph-gradient', color: '#9F7AEA', action: 'gradient' },
-    { id: 'btnContrast', icon: 'ph-circle-half', color: '#718096', action: 'contrast' },
-    { id: 'btnVisibility', icon: 'ph-eye', color: '#38B2AC', action: 'visibility' },
-    { id: 'btnShare', icon: 'ph-share-fat', color: '#4CAF50', action: 'share' },
-    {
-      id: 'btnWhatsapp',
-      icon: 'ph-whatsapp-logo',
-      color: '#25D366',
-      action: 'whatsapp',
-      url: `https://api.whatsapp.com/send?text=${encodeURIComponent(
-        'Te invito a visitar este sitio web de la Pontificia Universidad Javeriana.'
-      )}%20${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`
+  // Obtener elementos del menú desde script.js con fallback
+  getMenuItems = () => {
+    if (!this.menuFunctions) {
+      console.warn('MenuFunctions no disponibles, usando configuración por defecto');
+      // Fallback: configuración por defecto
+      return [
+        { id: 'btnOpen', icon: 'ph-magnifying-glass-plus', color: '#454F59', hoverColor: '#4866D1', action: 'toggle', title: 'Abrir/Cerrar menú' },
+        { id: 'btnZoomOut', icon: 'ph-magnifying-glass-minus', color: '#454F59', hoverColor: '#FF6B6B', action: 'zoomOut', title: 'Zoom Out' },
+        { id: 'btnThemeToggle', icon: 'ph-sun', color: '#454F59', hoverColor: '#F6E05E', action: 'themeToggle', title: 'Cambiar tema' },
+        { id: 'btnGradient', icon: 'ph-gradient', color: '#454F59', hoverColor: '#9F7AEA', action: 'gradient', title: 'Activar gradiente' },
+        { id: 'btnContrast', icon: 'ph-circle-half', color: '#454F59', hoverColor: '#718096', action: 'contrast', title: 'Cambiar contraste' },
+        { id: 'btnVisibility', icon: 'ph-eye', color: '#454F59', hoverColor: '#38B2AC', action: 'visibility', title: 'Cambiar visibilidad' },
+        { id: 'btnShare', icon: 'ph-share-fat', color: '#454F59', hoverColor: '#4CAF50', action: 'share', title: 'Compartir página' },
+        { id: 'btnWhatsapp', icon: 'ph-whatsapp-logo', color: '#454F59', hoverColor: '#25D366', action: 'whatsapp', title: 'Compartir en WhatsApp' }
+      ];
     }
-  ];
+    
+    const items = this.menuFunctions.getMenuItems();
+    console.log('Items del menú obtenidos:', items);
+    return items;
+  };
 
-  // Manejo de acciones de los botones
+  // Manejo de acciones con fallback
   handleItemClick = (action, url) => {
-    if (action === 'toggle') {
-      this.setState({ isOpen: !this.state.isOpen });
-      return;
+    console.log('Acción clickeada:', action, url);
+    
+    if (this.menuFunctions) {
+      // Usar funciones del script
+      const result = this.menuFunctions.executeAction(action, url);
+      
+      // Actualizar estado local si es necesario
+      if (action === 'themeToggle') {
+        const newTheme = this.menuFunctions.utils.isDarkTheme();
+        this.setState({ isDarkTheme: newTheme });
+      }
+      
+      console.log(`Acción '${action}' ejecutada:`, result);
+    } else {
+      // Fallback: acciones básicas
+      console.warn('Usando acciones fallback');
+      this.handleFallbackActions(action, url);
     }
+  };
 
+  // Acciones fallback si no está disponible el script
+  handleFallbackActions = (action, url) => {
     const actions = {
+      toggle: () => console.log('Toggle - menú siempre abierto'),
       zoomOut: () => alert('Función de zoom out activada'),
       themeToggle: () => {
-        if (typeof document !== 'undefined') {
-          const newTheme = !this.state.isDarkTheme;
-          this.setState({ isDarkTheme: newTheme });
-          document.body.style.filter = newTheme ? 'invert(1)' : '';
-        }
+        const newTheme = !this.state.isDarkTheme;
+        this.setState({ isDarkTheme: newTheme });
+        document.body.style.filter = newTheme ? 'invert(1)' : '';
       },
       gradient: () => {
-        if (typeof document !== 'undefined') {
-          document.body.style.background = document.body.style.background.includes('gradient')
-            ? ''
-            : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-        }
+        const hasGradient = document.body.style.background.includes('gradient');
+        document.body.style.background = hasGradient ? '' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
       },
       contrast: () => {
-        if (typeof document !== 'undefined') {
-          document.body.style.filter = document.body.style.filter.includes('contrast')
-            ? ''
-            : 'contrast(1.5)';
+        const currentFilter = document.body.style.filter;
+        const hasContrast = currentFilter.includes('contrast');
+        if (hasContrast) {
+          const newFilter = currentFilter.replace(/contrast\([^)]*\)\s*/g, '').trim();
+          document.body.style.filter = newFilter;
+        } else {
+          const newFilter = currentFilter ? `${currentFilter} contrast(1.5)` : 'contrast(1.5)';
+          document.body.style.filter = newFilter;
         }
       },
       visibility: () => {
-        if (typeof document !== 'undefined') {
-          const content = document.querySelector('.demo-content');
-          if (content) {
-            content.style.opacity = content.style.opacity === '0.5' ? '1' : '0.5';
-          }
+        const content = document.querySelector('.demo-content');
+        if (content) {
+          content.style.opacity = content.style.opacity === '0.5' ? '1' : '0.5';
         }
       },
       share: async () => {
-        if (typeof navigator !== 'undefined' && navigator.share) {
+        if (navigator.share) {
           try {
             await navigator.share({
               title: 'Mi Página Web',
@@ -121,8 +143,12 @@ class FloatingMenu extends React.Component {
         }
       },
       whatsapp: () => {
-        if (url && typeof window !== 'undefined') {
+        if (url) {
           window.open(url, '_blank');
+        } else {
+          const message = encodeURIComponent('Te invito a visitar este sitio web de la Pontificia Universidad Javeriana.');
+          const currentUrl = encodeURIComponent(window.location.href);
+          window.open(`https://api.whatsapp.com/send?text=${message}%20${currentUrl}`, '_blank');
         }
       }
     };
@@ -132,7 +158,7 @@ class FloatingMenu extends React.Component {
     }
   };
 
-  // Manejo del hover con lógica especial para tema
+  // Manejo del hover
   handleMouseEnter = (itemId) => {
     this.setState({ hoveredItem: itemId });
   };
@@ -141,7 +167,7 @@ class FloatingMenu extends React.Component {
     this.setState({ hoveredItem: null });
   };
 
-  // Manejo del arrastre simplificado
+  // Manejo del arrastre solo para el primer elemento
   handleMouseDown = (e, isFirst) => {
     if (isFirst) {
       e.preventDefault();
@@ -167,7 +193,7 @@ class FloatingMenu extends React.Component {
       };
 
       const handleMouseUp = () => {
-        this.setState({ isDragging: false, isOpen: false });
+        this.setState({ isDragging: false });
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
       };
@@ -177,83 +203,38 @@ class FloatingMenu extends React.Component {
     }
   };
 
-  handleMouseUp = (isFirst) => {
-    if (isFirst && !this.state.isDragging) {
-      this.setState({ isOpen: !this.state.isOpen });
-    }
-  };
-
   // Renderizar elemento individual del menú
   renderMenuItem = (item, index) => {
-    const { isOpen, hoveredItem, isDragging, dragPosition } = this.state;
+    const { hoveredItem, isDragging } = this.state;
     const isFirst = index === 0;
     const isHovered = hoveredItem === item.id;
     const menuItems = this.getMenuItems();
 
-    let top = '15px'; // Ajustado para el padding del contenedor
-    let left = '15px'; // Ajustado para el padding del contenedor
-
-    if (isDragging && isFirst) {
-      left = dragPosition.x + 'px';
-      top = dragPosition.y + 'px';
-    } else if (isOpen && !isFirst) {
-      top = (15 + index * 50) + 'px'; // 15px padding + espaciado
-      left = '15px';
-    }
-
+    // Posición fija para todos los elementos
     const itemStyle = {
-      position: 'absolute',
-      left: left,
-      top: top,
-      width: '38px',
-      height: '38px',
-      backgroundColor: 'white',
-      borderRadius: '50%',
-      border: '1px solid #454F59', // Color de borde uniforme
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      cursor: 'pointer',
-      overflow: 'hidden',
-      transition: isDragging && isFirst ? 'none' : 'all 0.5s ease',
-      zIndex: menuItems.length - index + 2,
-      userSelect: 'none'
+      zIndex: menuItems.length - index + 2
     };
 
-    // Lógica especial para el icono del tema en hover
+    // Lógica especial para el icono del tema usando script.js
     let displayIcon = item.icon;
-    let iconColor = item.color;
+    let iconColor = '#454F59'; // FORZAR color gris para TODOS los iconos
+    let currentHoverColor = item.hoverColor || item.color;
 
-    if (item.id === 'btnThemeToggle' && isHovered) {
-      if (this.state.isDarkTheme) {
-        displayIcon = 'ph-sun';
-        iconColor = '#F6E05E';
-      } else {
-        displayIcon = 'ph-moon';
-        iconColor = '#2D3748';
-      }
+    if (item.id === 'btnThemeToggle' && this.menuFunctions) {
+      const themeData = this.menuFunctions.getThemeIcon(isHovered);
+      displayIcon = themeData.icon;
+      iconColor = '#454F59'; // MANTENER gris incluso para tema
+      currentHoverColor = themeData.hoverColor || themeData.color;
     }
 
     const iconStyle = {
-      fontSize: '19px',
-      color: isHovered ? 'white' : iconColor,
-      transition: 'all 0.3s ease',
-      zIndex: 1,
-      position: 'relative',
-      pointerEvents: 'none'
+      color: isHovered ? 'white' : '#454F59' // FORZAR gris cuando no hay hover
     };
 
     const spanStyle = {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
       width: isHovered ? '3.6rem' : '0',
       height: isHovered ? '3.6rem' : '0',
-      backgroundColor: item.color,
-      borderRadius: '50%',
-      transform: 'translate(-50%, -50%)',
-      transition: 'all 0.3s ease',
-      zIndex: 0
+      backgroundColor: currentHoverColor // Usar el color de hover correcto
     };
 
     return (
@@ -261,11 +242,11 @@ class FloatingMenu extends React.Component {
         key={item.id}
         className={`menu-item ${isFirst ? 'menu-toggle' : ''}`}
         style={itemStyle}
+        title={item.title || item.action} // Tooltip con descripción
         onClick={() => this.handleItemClick(item.action, item.url)}
         onMouseEnter={() => this.handleMouseEnter(item.id)}
         onMouseLeave={this.handleMouseLeave}
         onMouseDown={(e) => this.handleMouseDown(e, isFirst)}
-        onMouseUp={() => this.handleMouseUp(isFirst)}
       >
         <span style={spanStyle}></span>
         <i className={`ph ${displayIcon}`} style={iconStyle}></i>
@@ -275,42 +256,32 @@ class FloatingMenu extends React.Component {
 
   render() {
     const menuItems = this.getMenuItems();
-    const { isOpen, isDragging, dragPosition } = this.state;
+    const { isDragging, dragPosition } = this.state;
 
-    // Calcular altura del contenedor
-    const containerHeight = isOpen ? (menuItems.length * 50) + 30 : 68; // 30px total padding
-
+    // Estilos dinámicos solo para el drag del contenedor
     const containerStyle = {
-      position: 'fixed',
-      top: isDragging ? dragPosition.y + 'px' : '142px',
-      left: isDragging ? dragPosition.x + 'px' : '10px',
-      width: '68px', // 38px + 30px padding
-      height: containerHeight + 'px',
-      backgroundColor: '#C7D1DB',
-      borderRadius: '20px',
-      padding: '15px',
-      transition: isDragging ? 'none' : 'all 0.5s ease',
-      zIndex: 1000,
-      boxSizing: 'border-box'
+      top: isDragging ? dragPosition.y + 'px' : undefined,
+      left: isDragging ? dragPosition.x + 'px' : undefined,
+      transition: isDragging ? 'none' : undefined
     };
 
     return (
       <>
         {/* Contenido de demostración */}
-        <div className="demo-content" style={{
-          color: 'white',
-          textAlign: 'center',
-          padding: '50px 20px',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          minHeight: '100vh',
-          margin: '-20px',
-          fontFamily: 'Arial, sans-serif'
-        }}>
+        <div className="demo-content">
           <h1>Menú Flotante con React y Phosphor Icons</h1>
-          <p>Haz clic en el primer icono del menú flotante para ver la animación</p>
-          <p>Los botones tienen diferentes funcionalidades como modo oscuro, compartir, etc.</p>
-          <p>El primer elemento es arrastrable</p>
-          <p>Fondo: #C7D1DB con bordes de iconos: #454F59</p>
+          <p>El menú flotante está siempre desplegado</p>
+          <p>Funcionalidades centralizadas en script.js:</p>
+          <ul>
+            <li>🌓 Modo oscuro con filtro invert</li>
+            <li>🎨 Fondo gradiente dinámico</li>
+            <li>🔍 Función de zoom out</li>
+            <li>👁️ Control de visibilidad</li>
+            <li>📤 Compartir nativo y WhatsApp</li>
+            <li>🎭 Contraste mejorado</li>
+          </ul>
+          <p>El primer elemento permite arrastrar todo el menú</p>
+          <p>🎨 Iconos: #454F59 (gris) | Hovers: colores únicos</p>
         </div>
 
         {/* Menú flotante principal */}
@@ -321,37 +292,6 @@ class FloatingMenu extends React.Component {
         >
           {menuItems.map((item, index) => this.renderMenuItem(item, index))}
         </div>
-
-        {/* Estilos CSS para responsive */}
-        <style jsx>{`
-          @media (max-width: 768px) {
-            .floating-menu {
-              top: 100px !important;
-              left: 20px !important;
-              padding: 12px !important;
-              width: 62px !important; /* 38px + 24px padding */
-            }
-            
-            .menu-item {
-              left: 12px !important;
-            }
-            
-            .menu-item:not(:first-child) {
-              top: calc(12px + var(--item-index) * 50px) !important;
-            }
-          }
-          
-          .menu-item:focus,
-          .menu-item:focus-visible,
-          .menu-item:active {
-            outline: none;
-          }
-          
-          body {
-            margin: 0;
-            padding: 20px;
-          }
-        `}</style>
       </>
     );
   }

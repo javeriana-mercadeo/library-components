@@ -1,9 +1,7 @@
 @use '@styles/autoload' as *;
 
 // Variables para el menú flotante
-$menu-size: 38px;
-$menu-border-color: #3b5998;
-$menu-bg-color: white;
+$menu-size: 35px;
 $menu-hover-size: 3.6rem;
 $menu-z-index: 1000;
 $menu-container-bg: #C7D1DB; // Background del contenedor
@@ -14,126 +12,95 @@ $menu-container-radius: 20px; // Border radius del contenedor
   transition: all 0.2s ease !important;
 }
 
-// Posicionamiento del menú
-.center-menu {
+// Contenido de demostración
+.demo-content {
+  color: white;
+  text-align: center;
+  padding: 50px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  margin: -20px;
+  font-family: Arial, sans-serif;
+}
+
+// Posicionamiento del menú flotante
+.floating-menu {
   position: fixed;
   top: 142px;
   left: 10px;
-  z-index: $menu-z-index;
-  
-  // Background y padding para el contenedor del menú
+  width: 42px; 
   background-color: $menu-container-bg;
   border-radius: $menu-container-radius;
-  padding: 15px;
+  z-index: $menu-z-index;
+  box-sizing: border-box;
   
-  // Tamaño inicial (solo primer botón)
-  width: calc($menu-size + 30px);
-  height: calc($menu-size + 30px);
+  // Usar Flexbox para distribución homogénea
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   
-  // Transición suave para cambios de tamaño
-  transition: all 0.5s ease;
+  // Altura fija de 398px con padding de 10px arriba y abajo
+  height: 398px;
+  padding: 10px 0;
+  
+  // Sin transición de altura para mantenerlo fijo
+  transition: left 0.5s ease, top 0.5s ease;
+}
 
-  // Responsive para móviles
-  @media (max-width: 768px) {
-    top: 100px;
-    left: 20px;
-    padding: 12px;
-    width: calc($menu-size + 24px);
-    height: calc($menu-size + 24px);
-  }
+// Elementos individuales del menú
+.menu-item {
+  // Cambiar de absolute a relative para que funcione con Flexbox
+  position: relative;
+  width: $menu-size;
+  height: $menu-size;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  
+  // Flexbox se encarga del posicionamiento, no necesitamos left/top
+  // Los elementos se distribuirán automáticamente con justify-content: space-between
+  
+  // Sin transiciones para mantener posición fija
+  transition: none;
 
-  // Cuando el menú está abierto, permitir crecimiento
-  &.menu-open {
-    height: auto;
-    min-height: auto;
-  }
-
-  .item {
-    cursor: pointer;
-    overflow: hidden;
+  // Elemento span para efecto hover
+  span {
     position: absolute;
-    left: 15px; // Ajustar para el padding
-    top: 15px;  // Ajustar para el padding
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: $menu-size;
-    height: $menu-size;
-    background-color: $menu-bg-color;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
     border-radius: 50%;
-    border: 1px solid $menu-border-color;
-    margin: 0;
-    padding: 0;
-    
-    // Transición para movimientos suaves
-    transition: all 0.5s ease;
-
-    // Responsive para móviles
-    @media (max-width: 768px) {
-      left: 12px;
-      top: 12px;
-    }
-
-    // Elemento span para efecto hover
-    span {
-      border-radius: 0;
-      display: block;
-      height: 0;
-      left: 50%;
-      margin: 0;
-      position: absolute;
-      top: 50%;
-      transition: all 0.3s;
-      width: 0;
-    }
-
-    &:hover span {
-      width: $menu-hover-size;
-      height: $menu-hover-size;
-      border-radius: $menu-hover-size;
-      margin: calc(-#{$menu-hover-size} / 2);
-    }
-
-    .icon-button {
-      text-decoration: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: $menu-bg-color;
-      border-radius: 50%;
-      border: none;
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-
-      &:hover span {
-        width: $menu-hover-size;
-        height: $menu-hover-size;
-        border-radius: $menu-hover-size;
-        margin: calc(-#{$menu-hover-size} / 2);
-      }
-
-      &:focus,
-      &:focus-visible,
-      &:active {
-        outline: none;
-      }
-
-      i {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 19px;
-        width: 100%;
-        height: 100%;
-        padding: 10px;
-        z-index: 1;
-        transition: all 0.3s;
-        pointer-events: none;
-      }
-    }
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+    z-index: 0;
   }
+
+  // Estados focus y active
+  &:focus,
+  &:focus-visible,
+  &:active {
+    outline: none;
+  }
+
+  // Iconos dentro del menú
+  i {
+    font-size: 22px;
+    transition: all 0.3s ease;
+    z-index: 1;
+    position: relative;
+    pointer-events: none;
+    color: #454F59; // Color gris forzado para todos los iconos
+  }
+}
+
+// Estilos globales del body
+body {
+  margin: 0;
+  padding: 20px;
 }
