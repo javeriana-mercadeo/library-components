@@ -3,7 +3,6 @@ import info from './info.json'
 import './styles.scss'
 import React from 'react';
 
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
 class FloatingMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +10,8 @@ class FloatingMenu extends React.Component {
       isOpen: false,
       isDragging: false,
       hoveredItem: null,
-      dragPosition: { x: 0, y: 0 }
+      dragPosition: { x: 0, y: 0 },
+      isDarkTheme: false
     };
     this.menuRef = React.createRef();
     this.dragOffset = { x: 0, y: 0 };
@@ -27,13 +27,18 @@ class FloatingMenu extends React.Component {
       document.head.appendChild(script);
     }
 
+    // Cargar CSS de Phosphor
+    if (!document.querySelector('link[href*="phosphor-icons"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = 'https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css';
+      document.head.appendChild(link);
+    }
+
     // Abrir menú y mantenerlo abierto
     setTimeout(() => {
       this.setState({ isOpen: true });
-      // Comentado para mantener siempre abierto
-      // setTimeout(() => {
-      //   this.setState({ isOpen: false });
-      // }, 1000);
     }, 50);
   }
 
@@ -41,8 +46,12 @@ class FloatingMenu extends React.Component {
   getMenuItems = () => [
     { id: 'btnOpen', icon: 'ph-magnifying-glass-plus', color: '#4866D1', action: 'toggle' },
     { id: 'btnZoomOut', icon: 'ph-magnifying-glass-minus', color: '#FF6B6B', action: 'zoomOut' },
-    { id: 'btnDarkMode', icon: 'ph-moon', color: '#2D3748', action: 'darkMode' },
-    { id: 'btnLightMode', icon: 'ph-sun', color: '#F6E05E', action: 'lightMode' },
+    { 
+      id: 'btnThemeToggle', 
+      icon: this.state.isDarkTheme ? 'ph-moon' : 'ph-sun', 
+      color: this.state.isDarkTheme ? '#2D3748' : '#F6E05E', 
+      action: 'themeToggle' 
+    },
     { id: 'btnGradient', icon: 'ph-gradient', color: '#9F7AEA', action: 'gradient' },
     { id: 'btnContrast', icon: 'ph-circle-half', color: '#718096', action: 'contrast' },
     { id: 'btnVisibility', icon: 'ph-eye', color: '#38B2AC', action: 'visibility' },
@@ -67,14 +76,11 @@ class FloatingMenu extends React.Component {
 
     const actions = {
       zoomOut: () => alert('Función de zoom out activada'),
-      darkMode: () => {
+      themeToggle: () => {
         if (typeof document !== 'undefined') {
-          document.body.style.filter = document.body.style.filter === 'invert(1)' ? '' : 'invert(1)';
-        }
-      },
-      lightMode: () => {
-        if (typeof document !== 'undefined') {
-          document.body.style.filter = '';
+          const newTheme = !this.state.isDarkTheme;
+          this.setState({ isDarkTheme: newTheme });
+          document.body.style.filter = newTheme ? 'invert(1)' : '';
         }
       },
       gradient: () => {
@@ -126,7 +132,7 @@ class FloatingMenu extends React.Component {
     }
   };
 
-  // Manejo del hover
+  // Manejo del hover con lógica especial para tema
   handleMouseEnter = (itemId) => {
     this.setState({ hoveredItem: itemId });
   };
@@ -142,9 +148,11 @@ class FloatingMenu extends React.Component {
       this.setState({ isDragging: true });
       
       const rect = e.currentTarget.getBoundingClientRect();
+      const containerRect = this.menuRef.current.getBoundingClientRect();
+      
       this.dragOffset = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
+        x: e.clientX - containerRect.left,
+        y: e.clientY - containerRect.top
       };
 
       const handleMouseMove = (e) => {
@@ -182,14 +190,15 @@ class FloatingMenu extends React.Component {
     const isHovered = hoveredItem === item.id;
     const menuItems = this.getMenuItems();
 
-    let top = '0px';
-    let left = '0px';
+    let top = '15px'; // Ajustado para el padding del contenedor
+    let left = '15px'; // Ajustado para el padding del contenedor
 
     if (isDragging && isFirst) {
       left = dragPosition.x + 'px';
       top = dragPosition.y + 'px';
     } else if (isOpen && !isFirst) {
-      top = (index * 50) + 'px';
+      top = (15 + index * 50) + 'px'; // 15px padding + espaciado
+      left = '15px';
     }
 
     const itemStyle = {
@@ -200,7 +209,7 @@ class FloatingMenu extends React.Component {
       height: '38px',
       backgroundColor: 'white',
       borderRadius: '50%',
-      border: `1px solid ${item.color}`,
+      border: '1px solid #454F59', // Color de borde uniforme
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -211,9 +220,23 @@ class FloatingMenu extends React.Component {
       userSelect: 'none'
     };
 
+    // Lógica especial para el icono del tema en hover
+    let displayIcon = item.icon;
+    let iconColor = item.color;
+
+    if (item.id === 'btnThemeToggle' && isHovered) {
+      if (this.state.isDarkTheme) {
+        displayIcon = 'ph-sun';
+        iconColor = '#F6E05E';
+      } else {
+        displayIcon = 'ph-moon';
+        iconColor = '#2D3748';
+      }
+    }
+
     const iconStyle = {
       fontSize: '19px',
-      color: isHovered ? 'white' : item.color,
+      color: isHovered ? 'white' : iconColor,
       transition: 'all 0.3s ease',
       zIndex: 1,
       position: 'relative',
@@ -245,13 +268,31 @@ class FloatingMenu extends React.Component {
         onMouseUp={() => this.handleMouseUp(isFirst)}
       >
         <span style={spanStyle}></span>
-        <i className={`ph ${item.icon}`} style={iconStyle}></i>
+        <i className={`ph ${displayIcon}`} style={iconStyle}></i>
       </div>
     );
   };
 
   render() {
     const menuItems = this.getMenuItems();
+    const { isOpen, isDragging, dragPosition } = this.state;
+
+    // Calcular altura del contenedor
+    const containerHeight = isOpen ? (menuItems.length * 50) + 30 : 68; // 30px total padding
+
+    const containerStyle = {
+      position: 'fixed',
+      top: isDragging ? dragPosition.y + 'px' : '142px',
+      left: isDragging ? dragPosition.x + 'px' : '10px',
+      width: '68px', // 38px + 30px padding
+      height: containerHeight + 'px',
+      backgroundColor: '#C7D1DB',
+      borderRadius: '20px',
+      padding: '15px',
+      transition: isDragging ? 'none' : 'all 0.5s ease',
+      zIndex: 1000,
+      boxSizing: 'border-box'
+    };
 
     return (
       <>
@@ -269,20 +310,14 @@ class FloatingMenu extends React.Component {
           <p>Haz clic en el primer icono del menú flotante para ver la animación</p>
           <p>Los botones tienen diferentes funcionalidades como modo oscuro, compartir, etc.</p>
           <p>El primer elemento es arrastrable</p>
+          <p>Fondo: #C7D1DB con bordes de iconos: #454F59</p>
         </div>
 
         {/* Menú flotante principal */}
         <div
           ref={this.menuRef}
           className="floating-menu"
-          style={{
-            position: 'fixed',
-            top: '142px',
-            left: '10px',
-            width: '38px',
-            height: '38px',
-            zIndex: 1000
-          }}
+          style={containerStyle}
         >
           {menuItems.map((item, index) => this.renderMenuItem(item, index))}
         </div>
@@ -293,6 +328,16 @@ class FloatingMenu extends React.Component {
             .floating-menu {
               top: 100px !important;
               left: 20px !important;
+              padding: 12px !important;
+              width: 62px !important; /* 38px + 24px padding */
+            }
+            
+            .menu-item {
+              left: 12px !important;
+            }
+            
+            .menu-item:not(:first-child) {
+              top: calc(12px + var(--item-index) * 50px) !important;
             }
           }
           
