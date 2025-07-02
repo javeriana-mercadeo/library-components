@@ -1,9 +1,5 @@
-// Menú flotante con JavaScript vanilla - sin dependencias
-// Menú flotante con JavaScript vanilla - sin dependencias
-// Menú flotante con JavaScript vanilla - sin dependencias
-// Menú flotante con JavaScript vanilla - sin dependencias
 function initFloatingMenu() {
-    // Cargar iconos Phosphor via CSS (más eficiente)
+    // Cargar iconos Phosphor via CSS
     if (!document.querySelector('link[href*="phosphor-icons"]')) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -22,7 +18,7 @@ function initFloatingMenu() {
     const listSocial = [
         { type: "button", id: "btnOpen", icon: "ph-magnifying-glass-plus", backgroundColor: "#4866D1" },
         { type: "button", id: "btnZoomOut", icon: "ph-magnifying-glass-minus", backgroundColor: "#FF6B6B" },
-        { type: "button", id: "btnThemeToggle", icon: "ph-sun", backgroundColor: "#F6E05E" }, // Solo este botón de tema
+        { type: "button", id: "btnThemeToggle", icon: "ph-sun", backgroundColor: "#F6E05E" },
         { type: "button", id: "btnGradient", icon: "ph-gradient", backgroundColor: "#9F7AEA" },
         { type: "button", id: "btnContrast", icon: "ph-circle-half", backgroundColor: "#718096" },
         { type: "button", id: "btnVisibility", icon: "ph-eye", backgroundColor: "#38B2AC" },
@@ -30,7 +26,7 @@ function initFloatingMenu() {
         { type: "link", icon: "ph-whatsapp-logo", url: `https://api.whatsapp.com/send?text=${message}%20${currentUrl}`, backgroundColor: "#25D366" }
     ];
 
-    // Utilidades de animación simple
+    // Utilidades de animación
     function animateElement(element, properties, duration = 500) {
         const startTime = performance.now();
         const startValues = {};
@@ -43,8 +39,6 @@ function initFloatingMenu() {
         function animate(currentTime) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            
-            // Easing function (ease-out)
             const easeOut = 1 - Math.pow(1 - progress, 3);
 
             Object.keys(properties).forEach(prop => {
@@ -62,19 +56,17 @@ function initFloatingMenu() {
         requestAnimationFrame(animate);
     }
 
-    // Variable global para el estado del tema
     let isDarkTheme = false;
 
     // Clase Item para elementos individuales
     function Item(type, id, icon, url, backgroundColor, index) {
-        // Crear elemento contenedor
         this.element = document.createElement("div");
         this.element.className = "item";
-        this.element.style.border = "1px solid " + backgroundColor;
+        this.element.style.border = "1px solid #454F59"; // Color de borde actualizado
         this.element.style.zIndex = index + 2;
         this.element.style.position = "absolute";
-        this.element.style.left = "0px";
-        this.element.style.top = "0px";
+        this.element.style.left = "15px"; // Ajustado para el padding del contenedor
+        this.element.style.top = "15px";  // Ajustado para el padding del contenedor
         this.element.style.width = "38px";
         this.element.style.height = "38px";
         this.element.style.backgroundColor = "white";
@@ -86,7 +78,6 @@ function initFloatingMenu() {
         this.element.style.overflow = "hidden";
         this.element.style.transition = "all 0.5s ease";
 
-        // Guardar referencia al ID para lógica específica
         this.itemId = id;
 
         // Crear botón o enlace según el tipo
@@ -157,7 +148,6 @@ function initFloatingMenu() {
         iconElement.style.position = "relative";
         this.item.appendChild(iconElement);
 
-        // Guardar referencias para uso posterior
         this.iconElement = iconElement;
         this.span = span;
         this.originalIcon = icon;
@@ -165,20 +155,16 @@ function initFloatingMenu() {
 
         // Eventos hover con lógica especial para tema
         this.item.addEventListener("mouseenter", () => {
-            // Lógica especial para el botón de tema - cambiar icono ANTES del hover visual
             if (id === "btnThemeToggle") {
                 if (isDarkTheme) {
-                    // Si está en modo oscuro, mostrar sol al hacer hover
                     iconElement.className = "ph ph-sun";
-                    iconElement.style.color = "#F6E05E"; // Color del sol
+                    iconElement.style.color = "#F6E05E";
                 } else {
-                    // Si está en modo claro, mostrar luna al hacer hover
                     iconElement.className = "ph ph-moon";
-                    iconElement.style.color = "#2D3748"; // Color de la luna
+                    iconElement.style.color = "#2D3748";
                 }
             }
             
-            // Aplicar efectos hover visuales después del cambio de icono
             setTimeout(() => {
                 iconElement.style.color = "#fff";
                 span.style.backgroundColor = this.backgroundColor;
@@ -188,13 +174,11 @@ function initFloatingMenu() {
         });
 
         this.item.addEventListener("mouseleave", () => {
-            // Restaurar efectos hover primero
             iconElement.style.color = this.backgroundColor;
             span.style.backgroundColor = "#fff";
             span.style.width = "0";
             span.style.height = "0";
             
-            // Restaurar icono original después
             if (id === "btnThemeToggle") {
                 setTimeout(() => {
                     iconElement.className = "ph " + this.originalIcon;
@@ -203,7 +187,6 @@ function initFloatingMenu() {
             }
         });
 
-        // Propiedades para lista enlazada
         this.prev = null;
         this.next = null;
         this.isMoving = false;
@@ -224,28 +207,25 @@ function initFloatingMenu() {
             isDarkTheme = !isDarkTheme;
             
             if (isDarkTheme) {
-                // Activar modo oscuro
                 document.body.style.filter = "invert(1)";
                 this.originalIcon = "ph-moon";
                 this.backgroundColor = "#2D3748";
-                this.element.style.border = "1px solid #2D3748";
+                this.element.style.border = "1px solid #454F59"; // Mantener color de borde consistente
             } else {
-                // Activar modo claro
                 document.body.style.filter = "";
                 this.originalIcon = "ph-sun";
                 this.backgroundColor = "#F6E05E";
-                this.element.style.border = "1px solid #F6E05E";
+                this.element.style.border = "1px solid #454F59"; // Mantener color de borde consistente
             }
             
-            // Actualizar icono actual
             this.iconElement.className = "ph " + this.originalIcon;
             this.iconElement.style.color = this.backgroundColor;
         };
 
         // Métodos de movimiento
         this.moveTo = function(item) {
-            const targetLeft = parseInt(item.element.style.left) || 0;
-            const targetTop = parseInt(item.element.style.top) || 0;
+            const targetLeft = parseInt(item.element.style.left) || 15;
+            const targetTop = parseInt(item.element.style.top) || 15;
             
             animateElement(this.element, {
                 left: targetLeft,
@@ -257,8 +237,8 @@ function initFloatingMenu() {
 
         this.updatePosition = function() {
             if (this.prev) {
-                const targetLeft = parseInt(this.prev.element.style.left) || 0;
-                const targetTop = parseInt(this.prev.element.style.top) || 0;
+                const targetLeft = parseInt(this.prev.element.style.left) || 15;
+                const targetTop = parseInt(this.prev.element.style.top) || 15;
                 
                 animateElement(this.element, {
                     left: targetLeft,
@@ -278,16 +258,27 @@ function initFloatingMenu() {
         this.last = null;
         this.status = "closed";
 
-        // Verificar que el elemento existe
         if (!this.element) {
             console.error(`Elemento ${menuSelector} no encontrado en el DOM`);
             return;
         }
 
+        // Aplicar estilos del contenedor del menú
+        this.element.style.position = 'fixed';
+        this.element.style.top = '142px';
+        this.element.style.left = '10px';
+        this.element.style.zIndex = '1000';
+        this.element.style.backgroundColor = '#C7D1DB';
+        this.element.style.borderRadius = '20px';
+        this.element.style.padding = '15px';
+        this.element.style.width = '68px'; // 38px + 30px padding
+        this.element.style.height = '68px'; // 38px + 30px padding
+        this.element.style.transition = 'all 0.5s ease';
+        this.element.style.boxSizing = 'border-box';
+
         this.add = function(item) {
             let menu = this;
-            
-            // Verificar que el elemento del menú existe y tiene un contenedor
+
             if (!this.element) {
                 console.error('Elemento del menú no existe');
                 return;
@@ -297,7 +288,6 @@ function initFloatingMenu() {
                 this.first = item;
                 this.last = item;
                 
-                // Evento click para toggle
                 this.first.element.addEventListener("mouseup", function () {
                     if (menu.first.isMoving) {
                         menu.first.isMoving = false;
@@ -306,7 +296,6 @@ function initFloatingMenu() {
                     }
                 });
 
-                // Simulación básica de drag (sin jQuery UI)
                 let isDragging = false;
                 
                 item.element.addEventListener("mousedown", function(e) {
@@ -318,8 +307,9 @@ function initFloatingMenu() {
 
                 document.addEventListener("mousemove", function(e) {
                     if (isDragging && item.isMoving) {
-                        item.element.style.left = (e.clientX - 19) + "px";
-                        item.element.style.top = (e.clientY - 19) + "px";
+                        // Ajustar para el padding del contenedor
+                        item.element.style.left = (e.clientX - 19 - 15) + "px";
+                        item.element.style.top = (e.clientY - 19 - 15) + "px";
                         if (item.next) item.next.updatePosition();
                     }
                 });
@@ -337,19 +327,25 @@ function initFloatingMenu() {
                 this.last = item;
             }
             
-            // Usar el elemento del menú directamente en lugar de parentNode
             this.element.appendChild(item.element);
         };
 
         this.open = function() {
             this.status = "open";
+            this.element.classList.add('menu-open');
+            
+            // Calcular altura necesaria del contenedor
+            const itemCount = listSocial.length;
+            const containerHeight = (itemCount * 50) + 30; // 50px por item + 30px padding total
+            this.element.style.height = containerHeight + 'px';
+            
             let current = this.first.next;
             let iterator = 1;
 
             while (current != null) {
-                const baseTop = parseInt(this.first.element.style.top) || 0;
+                const baseTop = parseInt(this.first.element.style.top) || 15;
                 animateElement(current.element, {
-                    left: parseInt(this.first.element.style.left) || 0,
+                    left: parseInt(this.first.element.style.left) || 15,
                     top: baseTop + iterator * 50
                 }, 500);
                 iterator++;
@@ -359,12 +355,17 @@ function initFloatingMenu() {
 
         this.close = function() {
             this.status = "closed";
+            this.element.classList.remove('menu-open');
+            
+            // Restaurar altura mínima del contenedor
+            this.element.style.height = '68px';
+            
             let current = this.first.next;
 
             while (current != null) {
                 animateElement(current.element, {
-                    left: parseInt(this.first.element.style.left) || 0,
-                    top: parseInt(this.first.element.style.top) || 0
+                    left: parseInt(this.first.element.style.left) || 15,
+                    top: parseInt(this.first.element.style.top) || 15
                 }, 500);
                 current = current.next;
             }
@@ -379,7 +380,7 @@ function initFloatingMenu() {
         };
     }
 
-    // Inicialización del menú con verificación
+    // Inicialización del menú
     const menuElement = document.querySelector("#myMenu");
     if (!menuElement) {
         console.error('Elemento #myMenu no encontrado. Asegúrate de que existe <div id="myMenu"></div> en el HTML');
@@ -388,7 +389,6 @@ function initFloatingMenu() {
 
     menu = new Menu("#myMenu");
     
-    // Verificar que el menú se inicializó correctamente
     if (!menu.element) {
         console.error('No se pudo inicializar el menú');
         return;
@@ -403,29 +403,19 @@ function initFloatingMenu() {
     setTimeout(() => {
         if (menu && menu.open) {
             menu.open();
-            // Comentado para mantener el menú siempre abierto
-            // setTimeout(() => {
-            //     if (menu && menu.close) {
-            //         menu.close();
-            //     }
-            // }, 1000);
         }
     }, 50);
 }
 
-// Inicializar cuando el DOM esté listo con mejor verificación
+// Inicializar cuando el DOM esté listo
 function initWhenReady() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            // Esperar un poco más para asegurar que el DOM esté completamente cargado
             setTimeout(initFloatingMenu, 100);
         });
     } else {
-        // Esperar un tick para asegurar que todos los elementos estén renderizados
         setTimeout(initFloatingMenu, 100);
     }
 }
 
 initWhenReady();
-
-<script src="https://unpkg.com/@phosphor-icons/web"></script>

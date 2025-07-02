@@ -1,10 +1,13 @@
 @use '@styles/autoload' as *;
+
 // Variables para el menú flotante
 $menu-size: 38px;
 $menu-border-color: #3b5998;
 $menu-bg-color: white;
 $menu-hover-size: 3.6rem;
 $menu-z-index: 1000;
+$menu-container-bg: #C7D1DB; // Background del contenedor
+$menu-container-radius: 20px; // Border radius del contenedor
 
 // Estilos específicos para el botón de tema
 .theme-toggle-icon {
@@ -16,22 +19,41 @@ $menu-z-index: 1000;
   position: fixed;
   top: 142px;
   left: 10px;
-  width: $menu-size;
-  height: $menu-size;
   z-index: $menu-z-index;
+  
+  // Background y padding para el contenedor del menú
+  background-color: $menu-container-bg;
+  border-radius: $menu-container-radius;
+  padding: 15px;
+  
+  // Tamaño inicial (solo primer botón)
+  width: calc($menu-size + 30px);
+  height: calc($menu-size + 30px);
+  
+  // Transición suave para cambios de tamaño
+  transition: all 0.5s ease;
 
   // Responsive para móviles
   @media (max-width: 768px) {
     top: 100px;
     left: 20px;
+    padding: 12px;
+    width: calc($menu-size + 24px);
+    height: calc($menu-size + 24px);
+  }
+
+  // Cuando el menú está abierto, permitir crecimiento
+  &.menu-open {
+    height: auto;
+    min-height: auto;
   }
 
   .item {
     cursor: pointer;
     overflow: hidden;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 15px; // Ajustar para el padding
+    top: 15px;  // Ajustar para el padding
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,6 +65,15 @@ $menu-z-index: 1000;
     border: 1px solid $menu-border-color;
     margin: 0;
     padding: 0;
+    
+    // Transición para movimientos suaves
+    transition: all 0.5s ease;
+
+    // Responsive para móviles
+    @media (max-width: 768px) {
+      left: 12px;
+      top: 12px;
+    }
 
     // Elemento span para efecto hover
     span {
@@ -101,7 +132,7 @@ $menu-z-index: 1000;
         padding: 10px;
         z-index: 1;
         transition: all 0.3s;
-        pointer-events: none; // Evita conflictos con eventos de hover
+        pointer-events: none;
       }
     }
   }
