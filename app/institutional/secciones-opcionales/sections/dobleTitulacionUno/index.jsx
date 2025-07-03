@@ -1,4 +1,3 @@
-// DoubleTitulacion.jsx
 import React from 'react'
 import './styles.scss'
 import Title from '../../../../_library/components/contain/title'
@@ -25,9 +24,9 @@ const DoubleTitulacion = () => {
           <div className="overlay"></div>
           
           <div className="hero-content">
-            <h2 id="double-degree-hero-title" className="hero-title">
+            <Title id="double-degree-hero-title" className="hero-title">
               Internacionaliza tu MBA y amplía tu visión global
-            </h2>
+            </Title> 
             
             <Paragraph id="double-degree-hero-description" className="hero-description">
               Vive experiencias académicas en el extranjero que potencian tu perfil profesional y amplían tus oportunidades laborales.
@@ -35,22 +34,28 @@ const DoubleTitulacion = () => {
 
             <div id="double-degree-cards" className="cards-container">
               <div id="international-missions-card" className="info-card">
-                <h3 className="card-title">Misiones Internacionales:</h3>
-                <Paragraph className="card-description">
+                <Title id="international-missions-title" className="card-title">
+                  Misiones Internacionales:
+                </Title>
+                <Paragraph id="international-missions-description" className="card-description">
                   Dos experiencias académicas en innovación, estrategia y emprendimiento, incluidas en la matrícula.
                 </Paragraph>
               </div>
 
               <div id="summer-business-school-card" className="info-card">
-                <h3 className="card-title">Summer Business School:</h3>
-                <Paragraph className="card-description">
+                <Title id="summer-business-school-title" className="card-title">
+                  Summer Business School:
+                </Title>
+                <Paragraph id="summer-business-school-description" className="card-description">
                   Programa intersemestral con docentes internacionales para complementar tu formación
                 </Paragraph>
               </div>
 
               <div id="double-degree-info-card" className="info-card">
-                <h3 className="card-title">Doble Titulación:</h3>
-                <Paragraph className="card-description">
+                <Title id="double-degree-card-title" className="card-title">
+                  Doble Titulación:
+                </Title>
+                <Paragraph id="double-degree-card-description" className="card-description">
                   A partir de 2025, opción de obtener un título adicional con la Universidad Pompeu Fabra en Barcelona.
                 </Paragraph>
               </div>
