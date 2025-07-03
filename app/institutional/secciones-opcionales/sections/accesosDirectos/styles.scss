@@ -62,10 +62,6 @@ $menu-container-radius: 20px; // Border radius del contenedor
   overflow: hidden;
   user-select: none;
   
-  // Flexbox se encarga del posicionamiento, no necesitamos left/top
-  // Los elementos se distribuirán automáticamente con justify-content: space-between
-  
-  // Sin transiciones para mantener posición fija
   transition: none;
 
   // Elemento span para efecto hover
