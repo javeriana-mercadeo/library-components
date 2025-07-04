@@ -1,29 +1,32 @@
-import ViewComponent from '@/app/_components/viewComponent/viewComponent'
+'use client'
 
-import Encabezado from './sections/0_encabezado'
-import Datos from './sections/1_datos'
-import PlanEstudio from './sections/2_planEstudio'
-import Perfiles from './sections/3_perfiles'
-import Diferenciales from './sections/4_diferenciales'
-import Insignias from './sections/5_insignias'
-import Docentes from './sections/6_docentes'
-import Experiencia from './sections/7_experiencia'
-import Cita from './sections/8_cita'
-import PreguntasFrecuentes from './sections/9_preguntasFrecuentes'
-import Relacionados from './sections/10_relacionados'
-import Footer from './sections/11_footer'
+import dynamic from 'next/dynamic'
+import ViewComponent from '@/app/_components/viewComponent/viewComponent'
+import Load from '@/app/_components/load/load'
+
+// Lazy load heavy sections with client-side loading
+const Encabezado = dynamic(() => import('./_sections/0_encabezado'), { ssr: false, loading: () => <Load /> })
+const Datos = dynamic(() => import('./_sections/1_datos'), { ssr: false, loading: () => <Load /> })
+const PlanEstudio = dynamic(() => import('./_sections/2_planEstudio'), { ssr: false, loading: () => <Load /> })
+const Perfiles = dynamic(() => import('./_sections/3_perfiles'), { ssr: false, loading: () => <Load /> })
+const Diferenciales = dynamic(() => import('./_sections/4_diferenciales'), { ssr: false, loading: () => <Load /> })
+const Insignias = dynamic(() => import('./_sections/5_insignias'), { ssr: false, loading: () => <Load /> })
+const Docentes = dynamic(() => import('./_sections/6_docentes'), { ssr: false, loading: () => <Load /> })
+const Experiencia = dynamic(() => import('./_sections/7_experiencia'), { ssr: false, loading: () => <Load /> })
+const Cita = dynamic(() => import('./_sections/8_cita'), { ssr: false, loading: () => <Load /> })
+const PreguntasFrecuentes = dynamic(() => import('./_sections/9_preguntasFrecuentes'), { ssr: false, loading: () => <Load /> })
+const Relacionados = dynamic(() => import('./_sections/10_relacionados'), { ssr: false, loading: () => <Load /> })
+const Footer = dynamic(() => import('./_sections/11_footer'), { ssr: false, loading: () => <Load /> })
 
 export default function Profesional() {
   const basePath = '/landing/pregrado'
 
   return (
     <>
-      {/* <Encabezado /> */}
+      <Encabezado />
       {/* <ViewComponent path={`${basePath}/sections/0_encabezado`}>
         <Encabezado />
       </ViewComponent> */}
-
-      <Encabezado />
 
       {/* <Datos /> */}
       <ViewComponent path={`${basePath}/sections/1_datos`}>

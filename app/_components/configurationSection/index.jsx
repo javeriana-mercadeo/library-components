@@ -1,8 +1,10 @@
 'use client'
+import { UniversalComponent as UC, Container } from '@library/components'
 
+import GlobalAssets from '@library/_configurations/globalAssets'
+import StateProgram from '@library/_configurations/stateProgram'
 import LoadTheme from '@library/_configurations/loadTheme'
 import LoadProgram from '@library/_configurations/loadProgram'
-import Container from '@library/components/container'
 import Splash from '@library/components/splash'
 import ViewComponent from '../viewComponent/viewComponent'
 
@@ -32,11 +34,19 @@ export default function ConfigurationSection() {
 
           {/* Contenedor donde se renderizan los componentes */}
           <div className="component-container bg-[var(--background-100)] rounded-lg p-4 border border-[var(--neutral-800)] min-h-[300px]">
-            <ViewComponent path="/_configurations/components/loadTheme">
+            <ViewComponent path="/_library/_configurations/globalAssets">
+              <GlobalAssets />
+            </ViewComponent>
+
+            <ViewComponent path="/_library/_configurations/stateProgram">
+              <StateProgram />
+            </ViewComponent>
+
+            <ViewComponent path="/_library/_configurations/loadTheme">
               <LoadTheme />
             </ViewComponent>
 
-            <ViewComponent path="/_configurations/components/loadProgram">
+            <ViewComponent path="/_library/_configurations/loadProgram">
               <LoadProgram />
             </ViewComponent>
 
