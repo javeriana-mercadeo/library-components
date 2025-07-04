@@ -1,4 +1,4 @@
-export default function main() {
+function initGlobalUtils() {
   // ===========================================
   // UTILIDADES GLOBALES
   // ===========================================
@@ -15,6 +15,8 @@ export default function main() {
   // Helpers para manipulación del DOM
   const DOMHelpers = {
     isReady(callback) {
+      if (typeof document === 'undefined') return
+      
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', callback)
       } else {
@@ -34,6 +36,8 @@ export default function main() {
     },
 
     createElement(tag, className = '', content = '') {
+      if (typeof document === 'undefined') return null
+      
       const element = document.createElement(tag)
       if (className) element.className = className
       if (content) element.innerHTML = content
@@ -41,10 +45,12 @@ export default function main() {
     },
 
     findElement(selector, context = document) {
+      if (typeof document === 'undefined') return null
       return context.querySelector(selector)
     },
 
     findElements(selector, context = document) {
+      if (typeof document === 'undefined') return []
       return Array.from(context.querySelectorAll(selector))
     }
   }
@@ -120,10 +126,25 @@ export default function main() {
     required: value => value && value.toString().trim().length > 0
   }
 
-  // Exponer utilidades globalmente
-  window.Logger = Logger
-  window.DOMHelpers = DOMHelpers
-  window.EventManager = EventManager
-  window.TimingUtils = TimingUtils
-  window.Validators = Validators
+  // Exponer utilidades globalmente solo en el navegador
+  if (typeof window !== 'undefined') {
+    window.Logger = Logger
+    window.DOMHelpers = DOMHelpers
+    window.EventManager = EventManager
+    window.TimingUtils = TimingUtils
+    window.Validators = Validators
+    
+    // Marcar como cargadas
+    window.__GLOBAL_UTILS_LOADED__ = true
+    
+    Logger.success('Utilidades globales inicializadas')
+  }
 }
+
+// Auto-ejecutar si estamos en el navegador
+if (typeof window !== 'undefined' && !window.__GLOBAL_UTILS_LOADED__) {
+  initGlobalUtils()
+}
+
+// Exportar la función para uso manual
+export default initGlobalUtils

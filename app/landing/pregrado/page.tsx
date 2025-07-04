@@ -1,6 +1,6 @@
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 
-import EncabezadoFix from './sections/0_encabezado_fix'
+import Encabezado from './sections/0_encabezado'
 import Datos from './sections/1_datos'
 import PlanEstudio from './sections/2_planEstudio'
 import Perfiles from './sections/3_perfiles'
@@ -19,9 +19,11 @@ export default function Profesional() {
   return (
     <>
       {/* <Encabezado /> */}
-      <ViewComponent path={`${basePath}/sections/0_encabezado_fix`}>
-        <EncabezadoFix />
-      </ViewComponent>
+      {/* <ViewComponent path={`${basePath}/sections/0_encabezado`}>
+        <Encabezado />
+      </ViewComponent> */}
+
+      <Encabezado />
 
       {/* <Datos /> */}
       <ViewComponent path={`${basePath}/sections/1_datos`}>

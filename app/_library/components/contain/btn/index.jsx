@@ -24,6 +24,7 @@ import script from './script.js'
  * @param {string} [props.target] - Target del enlace (_blank, _self, etc.)
  * @param {Function} [props.onClick] - Función a ejecutar al hacer clic
  * @param {number} [props.radius] - Radio de borde personalizado
+ * @param {boolean} [props.iconOnly=false] - Si el botón debe mostrar solo el icono (proporciones cuadradas)
  * @returns {JSX.Element} Botón o enlace renderizado con los estilos aplicados
  */
 export default function Btn({
@@ -44,22 +45,18 @@ export default function Btn({
   isEditable = true,
   target,
   radius,
+  iconOnly = false,
   ...otherProps
 }) {
-  // Constante para el nombre base del elemento
   const ELEMENT_NAME = 'btn'
 
-  // Validar variantes disponibles (HeroUI compatible + nueva variante 'link')
   const validVariants = ['solid', 'faded', 'bordered', 'light', 'flat', 'ghost', 'shadow', 'link']
   const finalVariant = validVariants.includes(variant) ? variant : 'solid'
 
-  // Determinar si es un enlace o un botón
   const isLink = !!href
-
-  // Para la variante 'link', no aplicar el efecto ripple
   const shouldApplyRipple = finalVariant !== 'link'
 
-  // Construcción de clases CSS usando template más limpio
+  // Construcción de clases CSS
   const classNames = [
     ELEMENT_NAME,
     `${ELEMENT_NAME}-${color}`,
@@ -67,13 +64,14 @@ export default function Btn({
     // Para variante 'link', no aplicar clases de tamaño ni fullWidth
     finalVariant !== 'link' && size !== 'md' ? `${ELEMENT_NAME}-${size}` : null,
     finalVariant !== 'link' && fullWidth ? `${ELEMENT_NAME}-full-width` : null,
+    // Agregar clase para botón solo icono
+    iconOnly ? `${ELEMENT_NAME}-icon-only` : null,
     disabled ? `${ELEMENT_NAME}-disabled` : null,
     className
   ]
     .filter(Boolean)
     .join(' ')
 
-  // Manejar el evento onClick
   const handleClick = event => {
     if (disabled) {
       event.preventDefault()
@@ -85,7 +83,6 @@ export default function Btn({
   }
 
   useEffect(() => {
-    // Solo aplicar el script (efecto ripple) si no es variante 'link'
     if (shouldApplyRipple) {
       script()
     }
@@ -94,50 +91,40 @@ export default function Btn({
   // Configurar propiedades base
   const baseProps = {
     ...otherProps,
-    // Solo agregar data-dmpa-element-id si necesita efecto ripple
     ...(shouldApplyRipple && { 'data-dmpa-element-id': 'btn' }),
     className: classNames,
     onClick: handleClick,
     'aria-disabled': disabled,
-    // Solo aplicar radius personalizado si no es variante 'link'
     ...(finalVariant !== 'link' && radius && { style: { '--btn-radius': `${radius}px`, ...otherProps.style } })
   }
 
   // Propiedades específicas para enlaces
   if (isLink) {
     baseProps.href = href
-    baseProps['data-senna-off'] = 'true' // Desactivar SPA de Liferay
+    baseProps['data-senna-off'] = 'true'
 
     if (target) {
       baseProps.target = target
     }
 
-    // Para enlaces externos, agregar rel por seguridad
     if (target === '_blank') {
       baseProps.rel = 'noopener noreferrer'
     }
 
-    // Para enlaces deshabilitados
     if (disabled) {
       baseProps.href = undefined
       baseProps.tabIndex = -1
     }
   } else {
-    // Propiedades específicas para botones
     baseProps.type = type
     baseProps.disabled = disabled
   }
 
-  // ==========================================
-  // CONFIGURACIÓN DE IDs
-  // ==========================================
-
-  // 1. ID de elemento para JavaScript (prioritario si existe)
+  // Configuración de IDs
   if (elementId) {
     baseProps.id = elementId
   }
 
-  // 2. ID de Liferay (separado del ID de elemento)
   if (isEditable) {
     const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
     baseProps['data-lfr-editable-id'] = editableId
@@ -145,15 +132,27 @@ export default function Btn({
   }
 
   // Renderizar contenido interno
-  const renderContent = () => (
-    <>
-      {startIcon && <span className="btn-icon btn-icon-start">{startIcon}</span>}
-      <span className="btn-text">{children}</span>
-      {endIcon && <span className="btn-icon btn-icon-end">{endIcon}</span>}
-    </>
-  )
+  const renderContent = () => {
+    // Si es botón solo icono, mostrar solo el icono principal
+    if (iconOnly) {
+      const iconToShow = startIcon || endIcon
+      if (!iconToShow) {
+        console.warn('Btn: iconOnly está habilitado pero no se proporcionó startIcon ni endIcon')
+        return <span className="btn-text">{children}</span>
+      }
+      return <span className="btn-icon btn-icon-only">{iconToShow}</span>
+    }
 
-  // Renderizar como enlace o botón según corresponda
+    // Renderizado normal con iconos y texto
+    return (
+      <>
+        {startIcon && <span className="btn-icon btn-icon-start">{startIcon}</span>}
+        <span className="btn-text">{children}</span>
+        {endIcon && <span className="btn-icon btn-icon-end">{endIcon}</span>}
+      </>
+    )
+  }
+
   if (isLink) {
     return <a {...baseProps}>{renderContent()}</a>
   }
