@@ -129,13 +129,6 @@ export default function ComponentCatalog({ selectedTab }) {
     // Ahora todos usan la misma navegación simple
     const targetUrl = item.path
 
-    console.log('Renderizando tarjeta:', {
-      name: item.name,
-      path: item.path,
-      type,
-      targetUrl
-    }) // Debug
-
     return (
       <Card key={item.path} className="hover:shadow-md transition-shadow bg-[var(--background-100)]">
         {/* Todo el CardBody es clickeable */}
@@ -217,38 +210,6 @@ export default function ComponentCatalog({ selectedTab }) {
               <UnifiedCard key={component.path} item={component} type="component" />
             ))}
           </div>
-        </div>
-      )}
-
-      {/* Debug info - solo en desarrollo */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="mt-8 p-4 bg-[var(--background-300)] rounded-lg">
-          <h4 className="text-sm font-semibold text-[var(--neutral-300)] mb-2">Debug Info (solo en desarrollo):</h4>
-          <p className="text-xs text-[var(--neutral-500)]">Selected Tab: {selectedTab}</p>
-          <p className="text-xs text-[var(--neutral-500)]">Current URL: {typeof window !== 'undefined' ? window.location.href : 'N/A'}</p>
-          <details className="mt-2">
-            <summary className="text-xs cursor-pointer text-[var(--primary-500)]">Ver todas las rutas</summary>
-            <div className="mt-2 space-y-1">
-              <div className="text-xs font-semibold">Landing Pages:</div>
-              {landingPages.map(item => (
-                <div key={item.path} className="text-xs ml-2">
-                  <strong>{item.name}:</strong> {item.path}
-                </div>
-              ))}
-              <div className="text-xs font-semibold mt-2">Institutional:</div>
-              {institutionalPages.map(item => (
-                <div key={item.path} className="text-xs ml-2">
-                  <strong>{item.name}:</strong> {item.path}
-                </div>
-              ))}
-              <div className="text-xs font-semibold mt-2">Components:</div>
-              {uiComponents.map(item => (
-                <div key={item.path} className="text-xs ml-2">
-                  <strong>{item.name}:</strong> {item.path}
-                </div>
-              ))}
-            </div>
-          </details>
         </div>
       )}
     </>
