@@ -21,23 +21,25 @@ const ModalForm = () => {
         <div className="modal-form-container">
           {/* Header del Modal */}
           <div className="modal-header">
-            <Title hierarchy="h3" size="2xl" weight="bold" isEditable={false} color="primary" id="modal-title">
-              ¿Tienes dudas?
-            </Title>
             <Btn
+              variant="light"
               id="modal-close"
               aria-label="Cerrar modal"
               type="button"
               isEditable={false}
               startIcon={<i className="ph ph-x"></i>}
-              iconOnly
-            />
+              iconOnly>
+              botón de cerrar
+            </Btn>
           </div>
 
           {/* Contenido del Modal */}
           <div className="modal-content">
             {/* Título y descripción del formulario */}
             <div className="form-intro">
+              <Title hierarchy="h3" size="2xl" weight="bold" isEditable={false} color="primary" id="modal-title">
+                ¿Tienes dudas?
+              </Title>
               <p className="form-intro__subtitle">Déjanos tus datos y te contactaremos para brindarte toda la información.</p>
             </div>
 
@@ -261,6 +263,8 @@ const ModalForm = () => {
               </div>
             </form>
           </div>
+
+          <div className="modal-footer"></div>
         </div>
       </div>
     </div>

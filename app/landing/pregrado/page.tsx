@@ -23,63 +23,63 @@ export default function Profesional() {
 
   return (
     <>
-      <Encabezado />
-      {/* <ViewComponent path={`${basePath}/sections/0_encabezado`}>
+      {/* <Encabezado /> */}
+      <ViewComponent path={`${basePath}/_sections/0_encabezado`}>
         <Encabezado />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/* <Datos /> */}
-      <ViewComponent path={`${basePath}/sections/1_datos`}>
+      <ViewComponent path={`${basePath}/_sections/1_datos`}>
         <Datos />
       </ViewComponent>
 
       {/* <PlanEstudio /> */}
-      <ViewComponent path={`${basePath}/sections/2_planEstudio`}>
+      <ViewComponent path={`${basePath}/_sections/2_planEstudio`}>
         <PlanEstudio />
       </ViewComponent>
 
       {/* <Perfiles /> */}
-      <ViewComponent path={`${basePath}/sections/3_perfiles`}>
+      <ViewComponent path={`${basePath}/_sections/3_perfiles`}>
         <Perfiles />
       </ViewComponent>
 
       {/* <Diferenciales /> */}
-      <ViewComponent path={`${basePath}/sections/4_diferenciales`}>
+      <ViewComponent path={`${basePath}/_sections/4_diferenciales`}>
         <Diferenciales />
       </ViewComponent>
 
       {/* <Insignias /> */}
-      <ViewComponent path={`${basePath}/sections/5_insignias`}>
+      <ViewComponent path={`${basePath}/_sections/5_insignias`}>
         <Insignias />
       </ViewComponent>
 
       {/* <Docentes /> */}
-      <ViewComponent path={`${basePath}/sections/6_docentes`}>
+      <ViewComponent path={`${basePath}/_sections/6_docentes`}>
         <Docentes />
       </ViewComponent>
 
       {/* <Experiencia /> */}
-      <ViewComponent path={`${basePath}/sections/7_experiencia`}>
+      <ViewComponent path={`${basePath}/_sections/7_experiencia`}>
         <Experiencia />
       </ViewComponent>
 
       {/* <Cita /> */}
-      <ViewComponent path={`${basePath}/sections/8_cita`}>
+      <ViewComponent path={`${basePath}/_sections/8_cita`}>
         <Cita />
       </ViewComponent>
 
       {/*  <PreguntasFrecuentes /> */}
-      <ViewComponent path={`${basePath}/sections/9_preguntasFrecuentes`}>
+      <ViewComponent path={`${basePath}/_sections/9_preguntasFrecuentes`}>
         <PreguntasFrecuentes />
       </ViewComponent>
 
       {/* <Relacionados /> */}
-      <ViewComponent path={`${basePath}/sections/10_relacionados`}>
+      {/* <ViewComponent path={`${basePath}/_sections/10_relacionados`}>
         <Relacionados />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Footer /> */}
-      <ViewComponent path={`${basePath}/sections/11_footer`}>
+      <ViewComponent path={`${basePath}/_sections/11_footer`}>
         <Footer />
       </ViewComponent>
     </>

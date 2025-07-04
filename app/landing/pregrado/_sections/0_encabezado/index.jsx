@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { UniversalComponent as UC, Btn, Container, Logo } from '@library/components'
-import ModalForm from './components/modalForm/index.jsx'
+import ModalForm from './components/ModalForm.jsx'
 
 import script from './script.js'
 import './styles.scss'
@@ -57,7 +57,6 @@ const EncabezadoFix = () => {
               </div>
             }
             iconOnly
-            {...{ 'data-menu-target': 'mobile-menu' }}
           />
 
           {/* Overlay para cerrar menú */}

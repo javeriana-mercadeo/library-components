@@ -1,3 +1,9 @@
+import { Skeleton } from '@heroui/react'
+
 export default function load() {
-  return <div className="animate-pulse bg-gray-100 h-96 rounded-lg" />
+  return (
+    <Skeleton className="rounded-lg">
+      <div className="h-24 rounded-lg" />
+    </Skeleton>
+  )
 }
