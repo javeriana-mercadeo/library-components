@@ -10,7 +10,7 @@ import ModalForm from './components/modalForm/index.jsx'
 import script from './script.js'
 import './styles.scss'
 
-const Encabezado = () => {
+const EncabezadoFix = () => {
   useEffect(() => {
     script()
   }, [])
@@ -34,11 +34,11 @@ const Encabezado = () => {
 
           {/* CTA Buttons - Solo desktop */}
           <div className="header__cta">
-            <Btn id="info-btn" variant="faded" data-modal-target="contact-modal" isEditable={false}>
+            <Btn elementId="info-btn" variant="faded" data-modal-target="contact-modal" isEditable={false}>
               Recibe más Información
             </Btn>
 
-            <Btn id="register-btn" isEditable={false}>
+            <Btn elementId="register-btn" isEditable={false}>
               ¡Inscríbete Ahora!
             </Btn>
           </div>
@@ -46,17 +46,22 @@ const Encabezado = () => {
           {/* Botón de menú móvil con icono animado */}
           <Btn
             className="header__menu-toggle"
-            id="menu-toggle"
+            elementId="menu-toggle"
             aria-label="Abrir menú de navegación"
+            data-menu-target="mobile-menu"
             isEditable={false}
             variant="light"
-            type="button">
-            <div className="menu-icon" id="menu-icon">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </Btn>
+            type="button"
+            startIcon={
+              <div className="menu-icon" id="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            }
+            iconOnly
+            {...{ 'data-menu-target': 'mobile-menu' }}
+          />
 
           {/* Overlay para cerrar menú */}
           <div className="header__overlay" id="menu-overlay"></div>
@@ -129,4 +134,4 @@ const Encabezado = () => {
   )
 }
 
-export default Encabezado
+export default EncabezadoFix

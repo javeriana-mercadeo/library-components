@@ -29,14 +29,14 @@
                   </#list>
                 </#if>
               </ul>
-              <div class="plan-estudio_credits">
-                <strong>
-                  <#if (cur_ITEM.CREDITS.getData())??>
+              <#if (cur_ITEM.CREDITS.getData())?? && (cur_ITEM.CREDITS.getData()?number> 0)>
+                <div class="plan-estudio_credits">
+                  <strong>
                     ${cur_ITEM.CREDITS.getData()}
-                  </#if>
-                </strong>
-                Créditos
-              </div>
+                  </strong>
+                  Créditos
+                </div>
+              </#if>
             </div>
           </div>
         </#list>

@@ -122,6 +122,11 @@ body.menu-open {
       display: none;
     }
 
+    // TEMPORAL: Para testing - remover después
+    @include only-dev-mode {
+      display: flex !important;
+    }
+
     &:active {
       transform: scale(0.95);
     }
@@ -182,28 +187,53 @@ body.menu-open {
     }
   }
 
+  // Overlay para cerrar menú móvil
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
   // Menú móvil
   &__mobile-menu {
     position: fixed;
     top: rem(0px);
     left: rem(0px);
     width: 100%;
+    height: 100vh;
     background: linear-gradient(135deg, var(--background-100) 0%, var(--background-200) 100%);
     backdrop-filter: blur(10px);
     border-top: rem(1px) solid var(--neutral-800);
     box-shadow: rem(0px) rem(10px) rem(30px) rgba(0, 0, 0, 0.15);
     z-index: 10000;
 
-    // Estados de animación
+    // Estado inicial (igual que el modal)
     transform: translateY(-100%);
     opacity: 0;
     visibility: hidden;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-    &.active {
+    // Clase 'show' - hace visible el elemento (igual que el modal)
+    &.show {
+      visibility: visible;
+    }
+
+    // Clase 'active' - aplica la animación de entrada (igual que el modal)
+    &.show.active {
       transform: translateY(0);
       opacity: 1;
-      visibility: visible;
     }
 
     // Contenedor interno con padding y scroll
@@ -245,7 +275,7 @@ body.menu-open {
       }
     }
 
-    &.active &-list li {
+    &.show.active &-list li {
       animation: slideInLeft 0.3s ease-out forwards;
     }
 

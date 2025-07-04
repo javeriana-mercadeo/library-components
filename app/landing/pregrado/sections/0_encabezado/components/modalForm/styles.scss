@@ -11,7 +11,7 @@ $modal-backdrop-blur: 12px;
 $modal-border-radius: rem(16px);
 $modal-shadow: 0 rem(25px) rem(80px) rgba(0, 0, 0, 0.25);
 $modal-max-width-mobile: rem(420px);
-$modal-max-width-desktop: rem(800px);
+$modal-max-width-desktop: rem(1100px);
 
 // Animaciones
 $modal-animation-duration: 0.5s;
@@ -65,12 +65,12 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 .contact-modal {
   align-items: normal;
   justify-items: normal;
-  background: var(--background-100);
+  background: var(--neutral-1000);
   border-radius: $modal-border-radius;
   box-shadow: $modal-shadow;
   width: 100%;
   max-height: calc(100vh - rem(40px));
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   border: rem(1px) solid var(--neutral-800);
 
@@ -131,7 +131,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--background-100);
+  // background: var(--neutral);
   border-radius: $modal-border-radius;
   min-height: 0;
 
@@ -144,53 +144,24 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 // HEADER DEL MODAL
 // ===========================================
 .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
-  padding: rem(20px) rem(20px) rem(16px);
-  border-bottom: rem(1px) solid var(--neutral-800);
-  background: linear-gradient(135deg, var(--background-100) 0%, var(--background-200) 100%);
-  border-radius: $modal-border-radius $modal-border-radius 0 0;
+  padding: rem(12px) rem(16px);
   flex-shrink: 0;
+  min-height: rem(48px);
 
   @include responsive($breakpoint-md) {
-    padding: rem(24px) rem(30px) rem(20px);
-    border-radius: 0 $modal-border-radius 0 0;
-  }
-
-  &__title {
-    font-size: rem(22px);
-    font-weight: 700;
-    color: var(--primary-600);
-    margin: 0 0 rem(8px) 0;
-    line-height: 1.3;
-    text-align: center;
-
-    @include responsive($breakpoint-md) {
-      font-size: rem(24px);
-      text-align: left;
-    }
-  }
-
-  &__subtitle {
-    font-size: rem(14px);
-    color: var(--neutral-400);
-    margin: 0;
-    line-height: 1.5;
-    text-align: center;
-
-    @include responsive($breakpoint-md) {
-      text-align: left;
-    }
+    padding: rem(16px) rem(20px);
   }
 
   &__close {
-    position: absolute;
-    top: rem(16px);
-    right: rem(16px);
     width: rem(36px);
     height: rem(36px);
     border: none;
-    background: var(--neutral-700);
-    color: var(--neutral-400);
+    background: var(--primary-600);
+    color: var(--neutral-1000);
     cursor: pointer;
     border-radius: rem(8px);
     display: flex;
@@ -199,7 +170,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transition: all 0.2s ease;
 
     &:hover {
-      background: var(--danger-500);
+      background: var(--primary-500);
       color: var(--neutral-1000);
       transform: scale(1.05);
     }
@@ -237,6 +208,10 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
     }
   }
+
+  .title {
+    margin: 0;
+  }
 }
 
 // ===========================================
@@ -268,6 +243,28 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
       background: var(--primary-400);
+    }
+  }
+}
+
+// ===========================================
+// INTRODUCCIÓN DEL FORMULARIO
+// ===========================================
+.form-intro {
+  @include responsive($breakpoint-md) {
+    padding-bottom: rem(24px);
+  }
+
+  &__subtitle {
+    font-size: rem(14px);
+    color: var(--neutral-200);
+    line-height: 1.6;
+    margin-top: rem(8px);
+    margin-bottom: 0;
+
+    @include responsive($breakpoint-md) {
+      font-size: rem(15px);
+      margin-top: rem(12px);
     }
   }
 }
@@ -334,127 +331,88 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     flex-direction: column;
     flex: 1;
     width: 100%;
+
+    &.form-group-half {
+      @include responsive($breakpoint-md) {
+        flex: 1;
+      }
+    }
+
+    &.form-group-prefix {
+      @include responsive($breakpoint-md) {
+        flex: 0 0 rem(140px);
+      }
+    }
+
+    &.form-group-phone {
+      @include responsive($breakpoint-md) {
+        flex: 1;
+      }
+    }
   }
 
   // ===========================================
-  // LABELS CON ANIMACIÓN ESTILO MATERIAL
+  // LABELS OCULTOS
   // ===========================================
   .form-label {
-    position: absolute;
-    left: rem(16px);
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: rem(16px);
-    font-weight: 400;
-    color: var(--neutral-500);
-    pointer-events: none;
-    transition: $form-transition;
-    background: var(--background-100);
-    padding: 0 rem(6px);
-    z-index: 2;
-    border-radius: rem(4px);
-
-    // Asterisco para campos requeridos
-    &.required::after {
-      content: ' *';
-      color: var(--danger-500);
-      font-weight: 600;
-    }
-
-    // Estado activo/enfocado
-    &.active {
-      top: 0;
-      left: rem(12px);
-      transform: translateY(-50%) scale(0.875);
-      color: var(--primary-600);
-      font-weight: 500;
-      font-size: rem(14px);
-      background: linear-gradient(to right, var(--background-100) 30%, transparent 30%, transparent 70%, var(--background-100) 70%);
-    }
-
-    // Estado de error
-    &.error {
-      color: var(--danger-500);
-      background: linear-gradient(to right, var(--background-100) 30%, transparent 30%, transparent 70%, var(--background-100) 70%);
-    }
+    display: none;
   }
 
   // ===========================================
-  // INPUTS ESTILO MATERIAL MEJORADO
+  // INPUTS CON BORDE INFERIOR
   // ===========================================
   .form-input {
     width: 100%;
-    height: rem(56px);
-    padding: rem(16px);
-    border: rem(2px) solid var(--neutral-700);
-    border-radius: rem(12px);
-    background: var(--background-100);
-    color: var(--neutral-200);
+    height: rem(48px);
+    padding: rem(12px) 0;
+    border: none;
+    border-bottom: rem(1px) solid var(--neutral-700);
+    background: transparent;
+    color: var(--neutral-1000);
     font-size: rem(16px);
     font-family: inherit;
     outline: none;
     transition: $form-transition;
 
     &::placeholder {
-      color: transparent;
-      opacity: 0;
+      color: var(--neutral-500);
+      opacity: 1;
     }
 
     @include responsive($breakpoint-md) {
       font-size: rem(15px);
     }
 
-    // Estados de focus y contenido
-    &:focus,
-    &:not(:placeholder-shown),
-    &.has-content {
-      border-color: var(--primary-600);
-      box-shadow: 0 0 0 rem(3px) rgba(var(--primary-rgb), 0.1);
-      padding-top: rem(22px);
-      padding-bottom: rem(10px);
+    // Estados de focus
+    &:focus {
+      border-bottom: rem(1.5px) solid var(--primary-600);
+      background: rgba(var(--primary-rgb), 0.02);
 
-      + .form-label {
-        top: 0;
-        left: rem(12px);
-        transform: translateY(-50%) scale(0.875);
-        color: var(--primary-600);
-        font-weight: 500;
-        font-size: rem(14px);
-        background: linear-gradient(to right, var(--background-100) 30%, transparent 30%, transparent 70%, var(--background-100) 70%);
+      &::placeholder {
+        color: var(--neutral-600);
       }
     }
 
     // Estado hover sin focus
     &:hover:not(:focus) {
-      border-color: var(--neutral-600);
-      transform: translateY(rem(-1px));
-      box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.1);
+      border-bottom-color: var(--neutral-600);
     }
 
     // Estado de error
     &.error {
-      border-color: var(--danger-500);
-      box-shadow: 0 0 0 rem(3px) rgba(var(--danger-rgb), 0.1);
+      border-bottom-color: var(--danger-500);
       background: rgba(var(--danger-rgb), 0.02);
-
-      + .form-label {
-        color: var(--danger-500);
-      }
     }
 
     // Estado válido
     &.validated {
-      border-color: var(--success-600);
-      box-shadow: 0 0 0 rem(3px) rgba(var(--success-rgb), 0.1);
-
-      + .form-label {
-        color: var(--success-600);
-      }
+      border-bottom-color: var(--success-600);
+      background: rgba(var(--success-rgb), 0.02);
     }
   }
 
   // ===========================================
-  // SELECTORES ESTILO MATERIAL
+  // SELECTORES CON BORDE INFERIOR
   // ===========================================
   .select-wrapper {
     position: relative;
@@ -463,7 +421,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     &::after {
       content: '';
       position: absolute;
-      right: rem(16px);
+      right: 0;
       top: 50%;
       transform: translateY(-50%);
       width: 0;
@@ -489,11 +447,11 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   .form-select {
     width: 100%;
-    height: rem(56px);
-    padding: rem(16px) rem(45px) rem(16px) rem(16px);
-    border: rem(2px) solid var(--neutral-700);
-    border-radius: rem(12px);
-    background: var(--background-100);
+    height: rem(48px);
+    padding: rem(12px) rem(25px) rem(12px) 0;
+    border: none;
+    border-bottom: rem(1px) solid var(--neutral-700);
+    background: transparent;
     color: var(--neutral-200);
     font-size: rem(16px);
     font-family: inherit;
@@ -506,37 +464,20 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       font-size: rem(15px);
     }
 
-    // Estados de focus y selección
-    &:focus,
-    &:not([value='']),
-    &.has-selection {
-      border-color: var(--primary-600);
-      box-shadow: 0 0 0 rem(3px) rgba(var(--primary-rgb), 0.1);
-      padding-top: rem(22px);
-      padding-bottom: rem(10px);
-
-      + .form-label {
-        top: 0;
-        left: rem(12px);
-        transform: translateY(-50%) scale(0.875);
-        color: var(--primary-600);
-        font-weight: 500;
-        font-size: rem(14px);
-        background: linear-gradient(to right, var(--background-100) 30%, transparent 30%, transparent 70%, var(--background-100) 70%);
-      }
+    // Estados de focus
+    &:focus {
+      border-bottom: rem(1.5px) solid var(--primary-600);
+      background: rgba(var(--primary-rgb), 0.02);
     }
 
     // Estado hover sin focus
     &:hover:not(:focus) {
-      border-color: var(--neutral-600);
-      transform: translateY(rem(-1px));
-      box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.1);
+      border-bottom-color: var(--neutral-600);
     }
 
     // Estado disabled
     &:disabled {
-      background: var(--neutral-800);
-      border-color: var(--neutral-700);
+      border-bottom-color: var(--neutral-800);
       color: var(--neutral-500);
       cursor: not-allowed;
       opacity: 0.6;
@@ -555,21 +496,13 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     // Estados de error y validación
     &.error {
-      border-color: var(--danger-500);
-      box-shadow: 0 0 0 rem(3px) rgba(var(--danger-rgb), 0.1);
-
-      + .form-label {
-        color: var(--danger-500);
-      }
+      border-bottom-color: var(--danger-500);
+      background: rgba(var(--danger-rgb), 0.02);
     }
 
     &.validated {
-      border-color: var(--success-600);
-      box-shadow: 0 0 0 rem(3px) rgba(var(--success-rgb), 0.1);
-
-      + .form-label {
-        color: var(--success-600);
-      }
+      border-bottom-color: var(--success-600);
+      background: rgba(var(--success-rgb), 0.02);
     }
   }
 
@@ -581,8 +514,8 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       text-align: center;
       font-weight: 600;
       font-size: rem(14px);
-      padding-left: rem(12px);
-      padding-right: rem(35px);
+      padding-left: 0;
+      padding-right: rem(20px);
 
       @include responsive($breakpoint-md) {
         font-size: rem(13px);
@@ -599,7 +532,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     &::after {
-      right: rem(8px);
+      right: 0;
       border-top: rem(6px) solid var(--neutral-500);
     }
   }
@@ -617,7 +550,6 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     padding: rem(4px) rem(8px);
     background: rgba(var(--danger-rgb), 0.05);
     border-radius: rem(6px);
-    border-left: rem(3px) solid var(--danger-500);
     animation: errorSlideIn 0.3s ease-out;
 
     &::before {
@@ -636,9 +568,9 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     gap: rem(12px);
     margin-top: rem(8px);
     padding: rem(16px);
-    background: var(--neutral-900);
-    border-radius: rem(12px);
-    border: rem(1px) solid var(--neutral-700);
+    background: transparent;
+    border-radius: 0;
+    border: none;
 
     .terms-checkbox {
       width: rem(18px);
@@ -695,7 +627,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
             &::after {
               opacity: 1;
-              transform: scale(1);
+              transform: translate(-50%, -50%) scale(1);
             }
           }
 
@@ -751,7 +683,6 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   .form-submit {
     margin-top: rem(8px);
     padding-top: rem(16px);
-    border-top: rem(1px) solid var(--neutral-800);
 
     .btn {
       height: rem(56px);
@@ -816,8 +747,9 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 // ===========================================
 body.modal-open {
   overflow: hidden;
-  position: fixed;
-  width: 100%;
+  // Removemos position: fixed que puede causar problemas de scroll
+  // position: fixed;
+  // width: 100%;
 }
 
 // ===========================================
@@ -891,7 +823,7 @@ body.modal-open {
 
     .form-input,
     .form-select {
-      height: rem(52px);
+      height: rem(44px);
       font-size: rem(16px); // Mantener 16px en mobile para evitar zoom
     }
 
@@ -945,38 +877,3 @@ body.modal-open {
     }
   }
 }
-
-// ===========================================
-// DARK THEME ADJUSTMENTS
-// ===========================================
-/* @include dark-theme {
-  .contact-modal {
-    box-shadow: 0 rem(25px) rem(80px) rgba(0, 0, 0, 0.6);
-    border-color: var(--neutral-600);
-  }
-
-  .modal-header {
-    background: linear-gradient(135deg, var(--background-200) 0%, var(--background-300) 100%);
-  }
-
-  .form-input,
-  .form-select {
-    &:hover:not(:focus) {
-      box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.3);
-    }
-  }
-
-  .terms-group {
-    background: var(--neutral-800);
-    border-color: var(--neutral-600);
-  }
-
-  .success-message {
-    background: linear-gradient(135deg, var(--success-900), var(--success-800));
-    border-color: var(--success-600);
-
-    p {
-      color: var(--success-200);
-    }
-  }
-} */
