@@ -36,13 +36,13 @@
   .main-title {
     color: var(--neutral-400);
     font-weight: var(--font-weight-bold);
-    font-size: var(--font-size-principal-title);
+    font-size: var(--font-size-title);
     padding: var(--spacing-xl);
     text-align: center;
 
     // Desktop
     @media (min-width: 769px) {
-      font-size: var(--font-size-principal-title);
+      font-size: var(--font-size-title);
       padding: var(--spacing-xl);
       flex-shrink: 0;
     }
@@ -118,6 +118,7 @@
         aspect-ratio: 9/ 16;
         object-fit: cover;
         border-radius: rem(8px);
+        max-height: 500px;
 
         // Desktop
         @media (min-width: 769px) {

@@ -12,17 +12,6 @@ $menu-container-radius: 20px; // Border radius del contenedor
   transition: all 0.2s ease !important;
 }
 
-// Contenido de demostración
-.demo-content {
-  color: white;
-  text-align: center;
-  padding: 50px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  margin: -20px;
-  font-family: Arial, sans-serif;
-}
-
 // Posicionamiento del menú flotante
 .floating-menu {
   position: fixed;
@@ -95,8 +84,141 @@ $menu-container-radius: 20px; // Border radius del contenedor
   }
 }
 
-// Estilos globales del body
-body {
-  margin: 0;
-  padding: 20px;
+// Estilos para el primer elemento (draggable)
+.menu-toggle {
+  cursor: grab;
+  
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+// Estados de hover para todos los elementos
+.menu-item:hover {
+  span {
+    width: $menu-hover-size;
+    height: $menu-hover-size;
+  }
+  
+  i {
+    color: white;
+  }
+}
+
+// Responsividad para dispositivos móviles
+@media (max-width: 768px) {
+  .floating-menu {
+    top: 20px;
+    left: 10px;
+    width: 38px;
+    height: 358px;
+    padding: 8px 0;
+  }
+  
+  .menu-item {
+    width: 32px;
+    height: 32px;
+    
+    i {
+      font-size: 20px;
+    }
+  }
+}
+
+// Optimizaciones para pantallas pequeñas
+@media (max-width: 480px) {
+  .floating-menu {
+    top: 15px;
+    left: 5px;
+    width: 36px;
+    height: 320px;
+    padding: 6px 0;
+  }
+  
+  .menu-item {
+    width: 30px;
+    height: 30px;
+    
+    i {
+      font-size: 18px;
+    }
+    
+    span {
+      max-width: 3rem;
+      max-height: 3rem;
+    }
+  }
+}
+
+// Animaciones suaves para el menú
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.floating-menu {
+  animation: fadeIn 0.5s ease-out;
+}
+
+// Estilos para accesibilidad
+.menu-item {
+  &:focus-visible {
+    outline: 2px solid #4866D1;
+    outline-offset: 2px;
+  }
+}
+
+// Prevenir selección de texto al arrastrar
+.floating-menu * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// Estilos para tema oscuro (si se aplica)
+@media (prefers-color-scheme: dark) {
+  .floating-menu {
+    background-color: #2D3748;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .menu-item i {
+    color: #A0AEC0;
+  }
+}
+
+// Soporte para dispositivos táctiles
+@media (pointer: coarse) {
+  .menu-item {
+    &:hover {
+      // Desactivar hover en dispositivos táctiles
+      span {
+        width: 0;
+        height: 0;
+      }
+      
+      i {
+        color: #454F59;
+      }
+    }
+    
+    // Activar efectos solo en touch/tap
+    &:active {
+      span {
+        width: $menu-hover-size;
+        height: $menu-hover-size;
+      }
+      
+      i {
+        color: white;
+      }
+    }
+  }
 }

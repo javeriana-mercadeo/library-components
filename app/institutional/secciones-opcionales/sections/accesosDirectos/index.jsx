@@ -217,24 +217,24 @@ class FloatingMenu extends React.Component {
 
     // Lógica especial para el icono del tema usando script.js
     let displayIcon = item.icon;
-    let iconColor = '#454F59'; // FORZAR color gris para TODOS los iconos
+    let iconColor = '#454F59';
     let currentHoverColor = item.hoverColor || item.color;
 
     if (item.id === 'btnThemeToggle' && this.menuFunctions) {
       const themeData = this.menuFunctions.getThemeIcon(isHovered);
       displayIcon = themeData.icon;
-      iconColor = '#454F59'; // MANTENER gris incluso para tema
+      iconColor = '#454F59';
       currentHoverColor = themeData.hoverColor || themeData.color;
     }
 
     const iconStyle = {
-      color: isHovered ? 'white' : '#454F59' // FORZAR gris cuando no hay hover
+      color: isHovered ? 'white' : '#454F59'
     };
 
     const spanStyle = {
       width: isHovered ? '3.6rem' : '0',
       height: isHovered ? '3.6rem' : '0',
-      backgroundColor: currentHoverColor // Usar el color de hover correcto
+      backgroundColor: currentHoverColor
     };
 
     return (
@@ -242,7 +242,7 @@ class FloatingMenu extends React.Component {
         key={item.id}
         className={`menu-item ${isFirst ? 'menu-toggle' : ''}`}
         style={itemStyle}
-        title={item.title || item.action} // Tooltip con descripción
+        title={item.title || item.action}
         onClick={() => this.handleItemClick(item.action, item.url)}
         onMouseEnter={() => this.handleMouseEnter(item.id)}
         onMouseLeave={this.handleMouseLeave}
@@ -266,33 +266,13 @@ class FloatingMenu extends React.Component {
     };
 
     return (
-      <>
-        {/* Contenido de demostración */}
-        <div className="demo-content">
-          <h1>Menú Flotante con React y Phosphor Icons</h1>
-          <p>El menú flotante está siempre desplegado</p>
-          <p>Funcionalidades centralizadas en script.js:</p>
-          <ul>
-            <li>🌓 Modo oscuro con filtro invert</li>
-            <li>🎨 Fondo gradiente dinámico</li>
-            <li>🔍 Función de zoom out</li>
-            <li>👁️ Control de visibilidad</li>
-            <li>📤 Compartir nativo y WhatsApp</li>
-            <li>🎭 Contraste mejorado</li>
-          </ul>
-          <p>El primer elemento permite arrastrar todo el menú</p>
-          <p>🎨 Iconos: #454F59 (gris) | Hovers: colores únicos</p>
-        </div>
-
-        {/* Menú flotante principal */}
-        <div
-          ref={this.menuRef}
-          className="floating-menu"
-          style={containerStyle}
-        >
-          {menuItems.map((item, index) => this.renderMenuItem(item, index))}
-        </div>
-      </>
+      <div
+        ref={this.menuRef}
+        className="floating-menu"
+        style={containerStyle}
+      >
+        {menuItems.map((item, index) => this.renderMenuItem(item, index))}
+      </div>
     );
   }
 }
