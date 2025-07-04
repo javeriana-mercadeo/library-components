@@ -21,37 +21,18 @@ let PERIODS_DATA = []
 // ███████████████████████████████████████████████████████████████████████████████
 
 const APIManager = {
-  async fetchData(url) {
-    try {
-      Logger.debug(`Cargando datos desde: ${url}`)
-      const response = await fetch(url)
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-      }
-
-      const data = await response.json()
-      Logger.success(`Datos cargados exitosamente desde: ${url}`)
-      return data
-    } catch (error) {
-      Logger.error(`Error al cargar datos de ${url}:`, error)
-      throw error
-    }
-  },
-
   async loadLocationData() {
     try {
       const [ubicaciones, codigosPais, periodos] = await Promise.all([
-        this.fetchData(API_ENDPOINTS.ubicaciones),
-        this.fetchData(API_ENDPOINTS.codigosPais),
-        this.fetchData(API_ENDPOINTS.periodos)
+        window.APIManager.get(API_ENDPOINTS.ubicaciones),
+        window.APIManager.get(API_ENDPOINTS.codigosPais),
+        window.APIManager.get(API_ENDPOINTS.periodos)
       ])
 
       LOCATION_DATA = this.processLocationData(ubicaciones)
       COUNTRY_CODES = this.processCountryCodes(codigosPais)
       PERIODS_DATA = periodos
 
-      Logger.success('Datos de ubicaciones cargados')
       return { LOCATION_DATA, COUNTRY_CODES, PERIODS_DATA }
     } catch (error) {
       Logger.error('Error al cargar datos de ubicaciones:', error)
@@ -62,7 +43,7 @@ const APIManager = {
   processLocationData(data) {
     return data.reduce((acc, location) => {
       const { PAIS, DEPTO, CIUDAD } = location
-      
+
       if (!acc[PAIS]) {
         acc[PAIS] = {}
       }
@@ -72,7 +53,7 @@ const APIManager = {
       if (!acc[PAIS][DEPTO].includes(CIUDAD)) {
         acc[PAIS][DEPTO].push(CIUDAD)
       }
-      
+
       return acc
     }, {})
   },
@@ -92,14 +73,12 @@ const APIManager = {
 const FormAnimations = {
   init() {
     const formGroups = DOMHelpers.findElements('.form-group')
-    
+
     formGroups.forEach((group, index) => {
       TimingUtils.delay(() => {
         DOMHelpers.toggleClasses(group, ['animate-in'], true)
       }, index * 50)
     })
-
-    Logger.debug('Animaciones de formulario inicializadas')
   },
 
   showError(fieldId) {
@@ -151,7 +130,7 @@ const LocationManager = {
     const locationRow = DOMHelpers.findElement('#location-row')
 
     if (!paisSelect || !locationRow) {
-      Logger.warning('Elementos de ubicación no encontrados')
+      Logger.error('Elementos de ubicación no encontrados')
       return false
     }
 
@@ -163,25 +142,22 @@ const LocationManager = {
       const selectedCountry = paisSelect.value
       if (selectedCountry && selectedCountry === 'Colombia') {
         DOMHelpers.toggleClasses(locationRow, ['show'], true)
-        Logger.debug('Campos de Colombia mostrados')
       } else {
         DOMHelpers.toggleClasses(locationRow, ['show'], false)
         if (departamentoSelect) departamentoSelect.value = ''
         if (ciudadSelect) ciudadSelect.value = ''
-        Logger.debug('Campos de Colombia ocultados')
       }
     }
 
     EventManager.add(paisSelect, 'change', checkSelectValue)
     checkSelectValue()
 
-    Logger.success('Gestor de ubicaciones inicializado')
     return true
   },
 
   populateCountrySelect(paisSelect) {
     paisSelect.innerHTML = '<option value="">Selecciona un país</option>'
-    
+
     Object.keys(LOCATION_DATA)
       .sort()
       .forEach(pais => {
@@ -190,8 +166,6 @@ const LocationManager = {
         option.textContent = pais
         paisSelect.appendChild(option)
       })
-
-    Logger.debug('Países cargados en select')
   },
 
   populateCountryCodeSelect() {
@@ -199,7 +173,7 @@ const LocationManager = {
     if (!prefijoSelect) return
 
     prefijoSelect.innerHTML = '<option value="">Indicativo</option>'
-    
+
     Object.entries(COUNTRY_CODES)
       .sort(([, a], [, b]) => a - b)
       .forEach(([pais, codigo]) => {
@@ -208,8 +182,6 @@ const LocationManager = {
         option.textContent = `+${codigo} (${pais})`
         prefijoSelect.appendChild(option)
       })
-
-    Logger.debug('Códigos de país cargados')
   },
 
   setupLocationHandlers(paisSelect, departamentoSelect, ciudadSelect) {
@@ -217,7 +189,7 @@ const LocationManager = {
 
     EventManager.add(paisSelect, 'change', () => {
       const selectedCountry = paisSelect.value
-      
+
       departamentoSelect.innerHTML = '<option value="">Selecciona un departamento</option>'
       ciudadSelect.innerHTML = '<option value="">Selecciona una ciudad</option>'
 
@@ -236,20 +208,16 @@ const LocationManager = {
     EventManager.add(departamentoSelect, 'change', () => {
       const selectedCountry = paisSelect.value
       const selectedDepartment = departamentoSelect.value
-      
+
       ciudadSelect.innerHTML = '<option value="">Selecciona una ciudad</option>'
 
-      if (selectedCountry && selectedDepartment && 
-          LOCATION_DATA[selectedCountry] && 
-          LOCATION_DATA[selectedCountry][selectedDepartment]) {
-        LOCATION_DATA[selectedCountry][selectedDepartment]
-          .sort()
-          .forEach(ciudad => {
-            const option = DOMHelpers.createElement('option')
-            option.value = ciudad
-            option.textContent = ciudad
-            ciudadSelect.appendChild(option)
-          })
+      if (selectedCountry && selectedDepartment && LOCATION_DATA[selectedCountry] && LOCATION_DATA[selectedCountry][selectedDepartment]) {
+        LOCATION_DATA[selectedCountry][selectedDepartment].sort().forEach(ciudad => {
+          const option = DOMHelpers.createElement('option')
+          option.value = ciudad
+          option.textContent = ciudad
+          ciudadSelect.appendChild(option)
+        })
       }
     })
   }
@@ -259,118 +227,38 @@ const LocationManager = {
 // █                     SECCIÓN: VALIDACIÓN DE FORMULARIO                     █
 // ███████████████████████████████████████████████████████████████████████████████
 
+// FormValidation ahora usa las utilidades globales pero mantiene lógica específica
 const FormValidation = {
-  validateField(input) {
-    const { name, value } = input
-    let isValid = true
-    let message = ''
-
-    switch (name) {
-      case 'first_name':
-      case 'last_name':
-        isValid = Validators.name(value)
-        message = 'Mínimo 2 caracteres, solo letras'
-        break
-      case '00N5G00000WmhsT':
-        isValid = Validators.required(value)
-        message = 'Selecciona un tipo de identificación'
-        break
-      case '00NJw000002mzbM':
-        isValid = Validators.required(value)
-        message = 'Ingresa un número de identificación'
-        break
-      case 'phone':
-        isValid = Validators.required(value)
-        message = 'Ingresa un número de teléfono'
-        break
-      case 'email':
-        isValid = value.trim() !== '' ? Validators.email(value) : true
-        message = 'Ingresa un email válido'
-        break
-      case '00N5G00000WmhvJ':
-        isValid = Validators.required(value)
-        message = 'Selecciona un país'
-        break
-      case '00N5G00000WmhvX':
-        isValid = Validators.required(value)
-        message = 'Selecciona un departamento'
-        break
-      case '00N5G00000WmhvO':
-        isValid = Validators.required(value)
-        message = 'Selecciona una ciudad'
-        break
-    }
-
-    this.updateFieldStatus(input, isValid, message)
-    return isValid
-  },
-
-  updateFieldStatus(input, isValid, message) {
-    const container = input.closest('.form-group') || input.parentElement
-    if (!container) return
-
-    const existingError = container.querySelector('.field-error')
-    if (existingError) existingError.remove()
-
-    FormAnimations.clearError(input.id)
-
-    if (message) {
-      FormAnimations.showError(input.id)
-      const errorElement = DOMHelpers.createElement('span', 'field-error', message)
-      container.appendChild(errorElement)
-    } else {
-      FormAnimations.markAsValid(input.id)
-    }
-  },
-
-  setupFormValidation(form) {
-    if (!form) return
-
-    EventManager.add(form, 'submit', e => {
-      e.preventDefault()
-      this.handleSubmit(form)
-    })
-
-    const inputs = DOMHelpers.findElements('input, select', form)
-    inputs.forEach(input => {
-      EventManager.add(input, 'blur', () => {
-        if (input.hasAttribute('required')) {
-          this.validateField(input)
-        }
-      })
-
-      if (input.type === 'email') {
-        EventManager.add(input, 'input', () => {
-          if (input.value.trim() !== '') {
-            this.validateField(input)
-          }
-        })
-      }
-    })
-  },
-
+  // Lógica específica de manejo de submit para este formulario
   handleSubmit(form) {
-    const inputs = DOMHelpers.findElements('input[required], select[required]', form)
-    let isValid = true
+    // Usar el FormManager global para validación
+    const validation = window.FormManager.validateForm(form)
 
-    inputs.forEach(input => {
-      if (!this.validateField(input)) {
-        isValid = false
+    // Mostrar errores usando FormManager global
+    Object.entries(validation.results).forEach(([fieldName, result]) => {
+      const field = DOMHelpers.findElement(`[name="${fieldName}"]`, form)
+      if (field && field.id) {
+        if (!result.isValid) {
+          window.FormManager.showFieldError(field.id, result.message)
+        } else {
+          window.FormManager.markFieldAsValid(field.id)
+        }
       }
     })
 
+    // Validación específica de términos y condiciones
     const autorizacionChecked = DOMHelpers.findElement('input[name="00N5G00000WmhvF"]:checked', form)
     if (!autorizacionChecked) {
-      isValid = false
+      validation.isValid = false
       const termsGroup = DOMHelpers.findElement('.terms-group', form)
       if (termsGroup) termsGroup.classList.add('error')
     }
 
-    if (!isValid) {
-      Logger.warning('Formulario con errores de validación')
+    if (!validation.isValid) {
       return false
     }
 
+    // Configuración específica antes del envío
     const retURL = DOMHelpers.findElement('#retURL')
     if (retURL) {
       retURL.value = window.location.href
@@ -382,10 +270,22 @@ const FormValidation = {
       submitBtn.disabled = true
     }
 
-    Logger.debug('Enviando formulario a Salesforce usando form.submit()...')
     form.submit()
-
     return true
+  },
+
+  // Configurar el formulario usando FormManager global
+  setupFormValidation(form) {
+    if (!form) return
+
+    // Usar FormManager global para configurar validación en tiempo real
+    window.FormManager.setupLiveValidation(form)
+
+    // Configurar submit específico de este formulario
+    EventManager.add(form, 'submit', e => {
+      e.preventDefault()
+      this.handleSubmit(form)
+    })
   }
 }
 
@@ -393,20 +293,16 @@ const FormValidation = {
 // █                      SISTEMA PRINCIPAL DEL FORMULARIO                     █
 // ███████████████████████████████████████████████████████████████████████████████
 
-const FormManager = {
+const ModalForm = {
   async initLocationData() {
     // Verificar que las utilidades globales estén disponibles
     if (typeof window === 'undefined' || !window.Logger || !window.DOMHelpers || !window.EventManager) {
-      console.warn('⚠️ Utilidades globales no disponibles para FormManager')
       throw new Error('Utilidades globales no disponibles')
     }
-
-    Logger.debug('Inicializando datos de ubicaciones...')
 
     try {
       await APIManager.loadLocationData()
       await LocationManager.init()
-      Logger.success('Datos de ubicaciones inicializados')
       return true
     } catch (error) {
       Logger.error('Error al inicializar datos de ubicaciones:', error)
@@ -420,11 +316,32 @@ const FormManager = {
 
   setupFormValidation(form) {
     FormValidation.setupFormValidation(form)
+    // Configurar UTMs cuando se configura el formulario
+    this.setupUTMTracking(form)
+  },
+
+  setupUTMTracking(form) {
+    // Configuración de UTMs para el formulario
+    const urlParams = new URLSearchParams(window.location.search)
+
+    const utmSource = DOMHelpers.findElement('#utm-source', form)
+    const utmSubsource = DOMHelpers.findElement('#utm-subsource', form)
+    const utmMedium = DOMHelpers.findElement('#utm-medium', form)
+    const utmCampaign = DOMHelpers.findElement('#utm-campaign', form)
+    const programaField = DOMHelpers.findElement('#programa', form)
+
+    if (utmSource) utmSource.value = urlParams.get('utm_source') || 'Javeriana'
+    if (utmSubsource) utmSubsource.value = urlParams.get('utm_subsource') || 'Organico'
+    if (utmMedium) utmMedium.value = urlParams.get('utm_medium') || 'Landing'
+    if (utmCampaign) utmCampaign.value = urlParams.get('utm_campaign') || 'Mercadeo'
+
+    if (programaField && typeof codPrograma !== 'undefined') {
+      programaField.value = codPrograma
+    }
   },
 
   // Métodos para compatibilidad con el HeaderManager
   async init() {
-    Logger.debug('FormManager inicializado (solo utilidades)')
     return {
       formAnimations: true,
       locationManager: false, // Se inicializa bajo demanda
@@ -433,23 +350,10 @@ const FormManager = {
   },
 
   cleanup() {
-    if (typeof window !== 'undefined' && window.Logger) {
-      Logger.debug('Limpiando eventos del formulario...')
-    }
     if (typeof window !== 'undefined' && window.EventManager) {
       EventManager.cleanup()
     }
   }
 }
 
-// Exportar para uso como módulo ES6
-export default FormManager
-
-// Para compatibilidad con diferentes sistemas
-if (typeof window !== 'undefined') {
-  window.FormManager = FormManager
-  window.APIManager = APIManager
-  window.LocationManager = LocationManager
-  window.FormValidation = FormValidation
-  window.FormAnimations = FormAnimations
-}
+export default ModalForm

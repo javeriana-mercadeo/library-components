@@ -7,21 +7,27 @@
 // ███████████████████████████████████████████████████████████████████████████████
 
 const MobileMenu = {
+  // Namespace específico para evitar conflictos
+  namespace: 'puj-mobile-menu',
+  initialized: false,
+
   init() {
+    // Prevenir múltiples inicializaciones
+    if (this.initialized) {
+      return true
+    }
+
     // Verificar que las utilidades globales estén disponibles
     if (typeof window === 'undefined' || !window.DOMHelpers || !window.Logger || !window.EventManager) {
-      console.warn('⚠️ Utilidades globales no disponibles para HeaderManager')
       return false
     }
 
-    Logger.debug('Buscando elementos del menú móvil...')
-    
-    // Buscar elementos igual que el modal
+    // Buscar elementos del menú móvil
     this.mobileMenu = DOMHelpers.findElement('#mobile-menu')
-    this.menuOverlay = DOMHelpers.findElement('#menu-overlay')  
+    this.menuOverlay = DOMHelpers.findElement('#menu-overlay')
     this.menuIcon = DOMHelpers.findElement('#menu-icon')
     this.triggers = DOMHelpers.findElements('[data-menu-target="mobile-menu"]')
-    
+
     // Fallback para el trigger si no usa data-attribute
     if (this.triggers.length === 0) {
       const fallbackTrigger = DOMHelpers.findElement('#menu-toggle')
@@ -30,15 +36,20 @@ const MobileMenu = {
       }
     }
 
-    Logger.debug('Elementos encontrados:', {
-      triggers: this.triggers.length,
-      mobileMenu: !!this.mobileMenu,
-      menuOverlay: !!this.menuOverlay,
-      menuIcon: !!this.menuIcon
+    // Eliminar duplicados si el elemento tiene ambos atributos
+    const uniqueTriggers = []
+    const seenElements = new Set()
+
+    this.triggers.forEach(trigger => {
+      if (!seenElements.has(trigger)) {
+        seenElements.add(trigger)
+        uniqueTriggers.push(trigger)
+      }
     })
 
+    this.triggers = uniqueTriggers
+
     if (this.triggers.length === 0 || !this.mobileMenu) {
-      Logger.warning('Elementos básicos del menú móvil no encontrados')
       return false
     }
 
@@ -46,19 +57,17 @@ const MobileMenu = {
     this.setupKeyboardNavigation()
     this.setupLinkHandlers()
 
-    Logger.success('Menú móvil inicializado')
+    this.initialized = true
     return true
   },
 
   setupEventListeners() {
-    Logger.debug('Configurando eventos del menú móvil...')
-    
-    // Configurar triggers (igual que el modal)
+    // Configurar triggers del menú
     this.triggers.forEach(trigger => {
       EventManager.add(trigger, 'click', e => {
         e.preventDefault()
-        Logger.debug('Click en trigger del menú móvil detectado')
-        
+        e.stopPropagation()
+
         const isOpen = this.mobileMenu.classList.contains('show')
         if (isOpen) {
           this.close()
@@ -68,7 +77,7 @@ const MobileMenu = {
       })
     })
 
-    // Configurar overlay
+    // Configurar overlay para cerrar
     if (this.menuOverlay) {
       EventManager.add(this.menuOverlay, 'click', e => {
         if (e.target === this.menuOverlay && !e.defaultPrevented) {
@@ -82,13 +91,12 @@ const MobileMenu = {
     EventManager.add(this.mobileMenu, 'click', e => {
       e.stopPropagation()
     })
-
-    Logger.debug('Eventos configurados exitosamente')
   },
 
   setupKeyboardNavigation() {
-    EventManager.add(document, 'keydown', (e) => {
-      if (e.key === 'Escape' && this.mobileMenu.classList.contains('show')) {
+    // ESC key - solo si NUESTRO menú móvil está activo
+    EventManager.add(document, 'keydown', e => {
+      if (e.key === 'Escape' && this.mobileMenu && this.mobileMenu.classList.contains('show') && this.mobileMenu.id === 'mobile-menu') {
         this.close()
       }
     })
@@ -104,163 +112,47 @@ const MobileMenu = {
   },
 
   open() {
-    Logger.debug('Abriendo menú móvil...')
-
-    // Paso 1: Aplicar 'show' inmediatamente (igual que el modal)
+    // Aplicar 'show' inmediatamente
     DOMHelpers.toggleClasses(this.mobileMenu, ['show'], true)
-    DOMHelpers.toggleClasses(document.body, ['menu-open'], true)
-    
+
     if (this.menuOverlay) {
       DOMHelpers.toggleClasses(this.menuOverlay, ['active'], true)
     }
 
-    // Paso 2: Aplicar 'active' con un pequeño delay (igual que el modal)
+    // Aplicar 'active' con delay para animación
     TimingUtils.delay(() => {
       DOMHelpers.toggleClasses(this.mobileMenu, ['active'], true)
-      
+
       if (this.menuIcon) {
         DOMHelpers.toggleClasses(this.menuIcon, ['active'], true)
       }
-      
-      Logger.debug('Menú móvil abierto - clases aplicadas')
-      Logger.debug('Clases del menú:', this.mobileMenu.classList.toString())
     }, 10)
   },
 
   close() {
-    Logger.debug('Cerrando menú móvil...')
-
-    // Paso 1: Quitar clases de body y overlay
-    DOMHelpers.toggleClasses(document.body, ['menu-open'], false)
-    
+    // Quitar clases del menú
     if (this.menuIcon) {
       DOMHelpers.toggleClasses(this.menuIcon, ['active'], false)
     }
 
-    // Paso 2: Quitar 'active' inmediatamente
+    // Quitar 'active' inmediatamente
     DOMHelpers.toggleClasses(this.mobileMenu, ['active'], false)
 
-    // Paso 3: Quitar 'show' y overlay con delay (igual que el modal)
+    // Quitar 'show' y overlay con delay para animación
     TimingUtils.delay(() => {
       DOMHelpers.toggleClasses(this.mobileMenu, ['show'], false)
-      
+
       if (this.menuOverlay) {
         DOMHelpers.toggleClasses(this.menuOverlay, ['active'], false)
       }
-      
-      Logger.debug('Menú móvil cerrado - clases removidas')
-      Logger.debug('Clases del menú:', this.mobileMenu.classList.toString())
     }, 300)
   },
 
-  // Modo básico sin utilidades globales
-  initBasicMode() {
-    console.log('🔧 Inicializando menú móvil en modo básico...')
-    
-    // Buscar elementos básicos
-    const menuToggle = document.querySelector('#menu-toggle') || 
-                      document.querySelector('button.header__menu-toggle') ||
-                      document.querySelector('[aria-label="Abrir menú de navegación"]')
-    
-    const mobileMenu = document.querySelector('#mobile-menu') || 
-                      document.querySelector('.header__mobile-menu')
-                      
-    const menuOverlay = document.querySelector('#menu-overlay') || 
-                       document.querySelector('.header__overlay')
-                       
-    const menuIcon = document.querySelector('#menu-icon') || 
-                    document.querySelector('.menu-icon')
-
-    console.log('🔍 Elementos encontrados:', {
-      menuToggle: !!menuToggle,
-      mobileMenu: !!mobileMenu,
-      menuOverlay: !!menuOverlay,
-      menuIcon: !!menuIcon
-    })
-
-    if (!menuToggle || !mobileMenu) {
-      console.error('❌ No se encontraron los elementos básicos del menú móvil')
-      return false
+  cleanup() {
+    this.initialized = false
+    if (typeof window !== 'undefined' && window.EventManager) {
+      EventManager.cleanup()
     }
-
-    // Configurar eventos básicos
-    const toggleMenu = () => {
-      console.log('🔧 Toggle menú móvil (modo básico)')
-      const isOpen = mobileMenu.classList.contains('active')
-      
-      if (isOpen) {
-        // Cerrar menú
-        mobileMenu.classList.remove('active')
-        if (menuOverlay) menuOverlay.classList.remove('active')
-        if (menuIcon) menuIcon.classList.remove('active')
-        document.body.classList.remove('menu-open')
-        
-        // TEMPORAL: Limpiar estilos inline para testing
-        mobileMenu.style.transform = ''
-        mobileMenu.style.opacity = ''
-        mobileMenu.style.visibility = ''
-        
-        console.log('🔧 Menú cerrado')
-        console.log('🔧 Clases del menú después de cerrar:', mobileMenu.classList.toString())
-      } else {
-        // Abrir menú
-        mobileMenu.classList.add('active')
-        if (menuOverlay) menuOverlay.classList.add('active')
-        if (menuIcon) menuIcon.classList.add('active')
-        document.body.classList.add('menu-open')
-        
-        // TEMPORAL: Forzar estilos inline para testing
-        mobileMenu.style.transform = 'translateY(0)'
-        mobileMenu.style.opacity = '1'
-        mobileMenu.style.visibility = 'visible'
-        
-        console.log('🔧 Menú abierto')
-        console.log('🔧 Clases del menú después de abrir:', mobileMenu.classList.toString())
-        console.log('🔧 Estilos del menú después de abrir:', mobileMenu.style.cssText)
-      }
-    }
-
-    // Agregar eventos
-    menuToggle.addEventListener('click', (e) => {
-      e.preventDefault()
-      toggleMenu()
-    })
-
-    if (menuOverlay) {
-      menuOverlay.addEventListener('click', () => {
-        console.log('🔧 Click en overlay (modo básico)')
-        if (mobileMenu.classList.contains('active')) {
-          mobileMenu.classList.remove('active')
-          menuOverlay.classList.remove('active')
-          if (menuIcon) menuIcon.classList.remove('active')
-          document.body.classList.remove('menu-open')
-        }
-      })
-    }
-
-    // Tecla ESC
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-        mobileMenu.classList.remove('active')
-        if (menuOverlay) menuOverlay.classList.remove('active')
-        if (menuIcon) menuIcon.classList.remove('active')
-        document.body.classList.remove('menu-open')
-      }
-    })
-
-    // Cerrar al hacer clic en enlaces
-    const menuLinks = mobileMenu.querySelectorAll('a')
-    menuLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('active')
-        if (menuOverlay) menuOverlay.classList.remove('active')
-        if (menuIcon) menuIcon.classList.remove('active')
-        document.body.classList.remove('menu-open')
-      })
-    })
-
-    console.log('✅ Menú móvil inicializado en modo básico')
-    return true
   }
 }
 
@@ -269,29 +161,40 @@ const MobileMenu = {
 // ███████████████████████████████████████████████████████████████████████████████
 
 const ContactModal = {
+  // Namespace específico para evitar conflictos
+  namespace: 'puj-contact-modal',
+  initialized: false,
+
   init() {
+    // Prevenir múltiples inicializaciones
+    if (this.initialized) {
+      return true
+    }
+
     // Verificar que las utilidades globales estén disponibles
     if (typeof window === 'undefined' || !window.DOMHelpers || !window.Logger || !window.EventManager) {
-      console.warn('⚠️ Utilidades globales no disponibles para ContactModal')
       return false
     }
 
+    // Elementos específicos del modal de contacto
     this.modal = DOMHelpers.findElement('#contact-modal')
     this.overlay = DOMHelpers.findElement('#modal-overlay')
-    this.closeBtn = DOMHelpers.findElement('#modal-close')
+    this.closeBtn = null // Se configurará dinámicamente
     this.form = DOMHelpers.findElement('#contact-form')
     this.triggers = DOMHelpers.findElements('[data-modal-target="contact-modal"]')
 
+    // Verificar que es específicamente nuestro modal
+    if (this.modal && !this.modal.classList.contains('contact-modal')) {
+      return false // No es nuestro modal
+    }
+
     if (!this.modal || !this.overlay) {
-      Logger.warning('Elementos del modal no encontrados')
       return false
     }
 
     this.setupEventListeners()
-    this.setupUTMTracking()
-    this.setupFormValidation()
 
-    Logger.success('Modal de contacto inicializado')
+    this.initialized = true
     return true
   },
 
@@ -303,21 +206,27 @@ const ContactModal = {
       })
     })
 
-    if (this.closeBtn) {
-      Logger.debug('Configurando botón de cerrar modal')
-      EventManager.add(this.closeBtn, 'click', e => {
-        e.preventDefault()
-        e.stopPropagation()
-        Logger.debug('Botón cerrar clickeado')
-        this.close()
-      })
-    } else {
-      Logger.warning('Botón de cerrar no encontrado')
-    }
+    // Setup close button using normal EventManager approach
+    this.setupCloseButton()
 
     EventManager.add(this.overlay, 'click', e => {
+      // Cerrar al hacer click en el overlay
       if (e.target === this.overlay && !e.defaultPrevented) {
         e.preventDefault()
+        this.close()
+      }
+
+      // Fallback ESPECÍFICO: solo botones de cerrar en NUESTRO modal de contacto
+      const isOurModal = e.target.closest('#contact-modal.contact-modal')
+      const isCloseButton =
+        e.target.id === 'modal-close' ||
+        e.target.closest('#modal-close') ||
+        e.target.closest('.modal-header button') ||
+        (e.target.matches('button') && e.target.closest('.modal-header'))
+
+      if (isOurModal && isCloseButton) {
+        e.preventDefault()
+        e.stopPropagation()
         this.close()
       }
     })
@@ -326,146 +235,152 @@ const ContactModal = {
       e.stopPropagation()
     })
 
+    // ESC key - solo si NUESTRO modal está activo
     EventManager.add(document, 'keydown', e => {
-      if (e.key === 'Escape' && this.modal.classList.contains('show')) {
+      if (e.key === 'Escape' && this.modal && this.modal.classList.contains('show') && this.modal.classList.contains('contact-modal')) {
         this.close()
       }
     })
   },
 
-  async open() {
-    Logger.debug('Abriendo modal...')
+  setupCloseButton() {
+    // Buscar el botón de cerrar cada vez que se necesite
+    const findAndSetupCloseButton = () => {
+      // Buscar ESPECÍFICAMENTE en nuestro modal de contacto
+      const closeBtn = DOMHelpers.findElement('#modal-close', this.modal) || DOMHelpers.findElement('.modal-header button', this.modal)
 
+      if (closeBtn) {
+        // Verificar si ya tiene nuestro event listener específico
+        if (!closeBtn.hasAttribute(`data-${this.namespace}-setup`)) {
+          // Agregar event listener usando EventManager
+          EventManager.add(closeBtn, 'click', e => {
+            e.preventDefault()
+            e.stopPropagation()
+            this.close()
+          })
+
+          // Marcar como configurado con nuestro namespace
+          closeBtn.setAttribute(`data-${this.namespace}-setup`, 'true')
+        }
+        return true
+      }
+      return false
+    }
+
+    // Intentar inmediatamente
+    if (findAndSetupCloseButton()) {
+      return
+    }
+
+    // Si no se encuentra, intentar con un delay (para renderizado de React)
+    TimingUtils.delay(() => {
+      if (findAndSetupCloseButton()) {
+        return
+      }
+
+      // Intentar una vez más con delay más largo
+      TimingUtils.delay(() => {
+        if (!findAndSetupCloseButton()) {
+          // No mostrar warning - el event delegation funcionará como fallback
+        }
+      }, 200)
+    }, 50)
+  },
+
+  async open() {
+
+    // Aplicar 'show' inmediatamente (patrón similar al menú móvil)
     DOMHelpers.toggleClasses(this.modal, ['show'], true)
     DOMHelpers.toggleClasses(this.overlay, ['active'], true)
     DOMHelpers.toggleClasses(document.body, ['modal-open'], true)
 
+    // Aplicar 'active' con delay sutil para animación
     TimingUtils.delay(() => {
       DOMHelpers.toggleClasses(this.modal, ['active'], true)
     }, 10)
 
-    this.showLoadingState()
+    // Asegurar que el botón de cerrar esté configurado cuando se abre el modal
+    TimingUtils.delay(() => {
+      this.setupCloseButton()
+    }, 50)
 
-    // Notificar al FormManager para que inicialice los datos
-    if (typeof window !== 'undefined' && window.FormManager) {
+    // Delegar inicialización del formulario al ModalForm
+    this.initializeForm()
+  },
+
+  async initializeForm() {
+    // Delegar toda la lógica del formulario al ModalForm
+    if (typeof window !== 'undefined' && window.ModalForm) {
       try {
-        await window.FormManager.initLocationData()
-        this.hideLoadingState()
-
+        await window.ModalForm.initLocationData()
+        
         TimingUtils.delay(() => {
-          if (typeof window !== 'undefined' && window.FormManager) {
-            window.FormManager.initFormAnimations()
-          }
+          window.ModalForm.initFormAnimations()
         }, 50)
 
         TimingUtils.delay(() => {
           const firstInput = DOMHelpers.findElement('input:not([type="radio"]):not([type="checkbox"])', this.modal)
           if (firstInput) firstInput.focus()
-        }, 300)
+        }, 100)
+        
+        // Configurar validación del formulario
+        if (this.form) {
+          window.ModalForm.setupFormValidation(this.form)
+        }
       } catch (error) {
-        this.showErrorState('Error al cargar datos de ubicaciones')
+        console.error('Error al inicializar formulario del modal:', error)
       }
-    }
-
-    Logger.debug('Modal abierto')
-  },
-
-  showLoadingState() {
-    const paisSelect = DOMHelpers.findElement('#00N5G00000WmhvJ')
-    const prefijoSelect = DOMHelpers.findElement('#00NJw000002mzb7')
-
-    if (paisSelect) {
-      paisSelect.disabled = true
-      paisSelect.innerHTML = '<option value="">Cargando países...</option>'
-    }
-
-    if (prefijoSelect) {
-      prefijoSelect.disabled = true
-      prefijoSelect.innerHTML = '<option value="">Cargando indicativos...</option>'
-    }
-  },
-
-  hideLoadingState() {
-    const paisSelect = DOMHelpers.findElement('#00N5G00000WmhvJ')
-    const prefijoSelect = DOMHelpers.findElement('#00NJw000002mzb7')
-
-    if (paisSelect) {
-      paisSelect.disabled = false
-    }
-
-    if (prefijoSelect) {
-      prefijoSelect.disabled = false
-    }
-  },
-
-  showErrorState(message) {
-    const paisSelect = DOMHelpers.findElement('#00N5G00000WmhvJ')
-    const prefijoSelect = DOMHelpers.findElement('#00NJw000002mzb7')
-
-    if (paisSelect) {
-      paisSelect.disabled = false
-      paisSelect.innerHTML = `<option value="">Error: ${message}</option>`
-    }
-
-    if (prefijoSelect) {
-      prefijoSelect.disabled = false
-      prefijoSelect.innerHTML = `<option value="">Error: ${message}</option>`
     }
   },
 
   close() {
-    Logger.debug('Cerrando modal...')
 
-    DOMHelpers.toggleClasses(document.body, ['modal-open'], false)
-    document.body.style.overflow = ''
-    document.body.style.position = ''
-    document.body.style.width = ''
-
+    // Quitar 'active' inmediatamente para comenzar animación de salida
     DOMHelpers.toggleClasses(this.modal, ['active'], false)
 
+    // CRÍTICO: Limpiar TODAS las clases de modal que puedan existir
+    if (this.modal) {
+      // Remover clases del otro sistema de modales
+      this.modal.classList.remove('program-detail-modal--active')
+      // Remover cualquier otra clase de modal genérica
+      const modalClasses = Array.from(this.modal.classList).filter(cls => cls.includes('modal') && cls.includes('active'))
+      modalClasses.forEach(cls => this.modal.classList.remove(cls))
+    }
+
+    // Quitar 'show' y limpiar completamente con delay para animación
     TimingUtils.delay(() => {
       DOMHelpers.toggleClasses(this.modal, ['show'], false)
       DOMHelpers.toggleClasses(this.overlay, ['active'], false)
-      document.body.classList.remove('modal-open')
+      DOMHelpers.toggleClasses(document.body, ['modal-open'], false)
+
+      // Limpiar estilos del body completamente
       document.body.style.overflow = ''
       document.body.style.position = ''
       document.body.style.width = ''
-    }, 400)
 
-    Logger.debug('Modal cerrado')
+      // Reset completo del modal - forzar estado inicial
+      this.modal.style.transform = ''
+      this.modal.style.opacity = ''
+      this.modal.style.visibility = ''
+      this.overlay.style.opacity = ''
+      this.overlay.style.visibility = ''
+
+      // Asegurar limpieza completa SOLO de nuestro modal
+      if (this.modal && this.modal.classList.contains('contact-modal')) {
+        this.modal.classList.remove('program-detail-modal--active', 'show', 'active')
+      }
+      if (this.overlay) {
+        this.overlay.classList.remove('active')
+      }
+
+    }, 200)
   },
 
-  setupUTMTracking() {
-    const urlParams = new URLSearchParams(window.location.search)
 
-    const utmSource = DOMHelpers.findElement('#utm-source')
-    const utmSubsource = DOMHelpers.findElement('#utm-subsource')
-    const utmMedium = DOMHelpers.findElement('#utm-medium')
-    const utmCampaign = DOMHelpers.findElement('#utm-campaign')
-    const programaField = DOMHelpers.findElement('#programa')
-
-    if (utmSource) utmSource.value = urlParams.get('utm_source') || 'Javeriana'
-    if (utmSubsource) utmSubsource.value = urlParams.get('utm_subsource') || 'Organico'
-    if (utmMedium) utmMedium.value = urlParams.get('utm_medium') || 'Landing'
-    if (utmCampaign) utmCampaign.value = urlParams.get('utm_campaign') || 'Mercadeo'
-
-    if (programaField && typeof codPrograma !== 'undefined') {
-      programaField.value = codPrograma
-    }
-
-    Logger.debug('UTM tracking configurado', {
-      source: utmSource?.value,
-      subsource: utmSubsource?.value,
-      medium: utmMedium?.value,
-      campaign: utmCampaign?.value
-    })
-  },
-
-  setupFormValidation() {
-    // Configurar validación del formulario usando FormManager
-    if (this.form && typeof window !== 'undefined' && window.FormManager) {
-      window.FormManager.setupFormValidation(this.form)
-      Logger.debug('Validación de formulario configurada')
+  cleanup() {
+    this.initialized = false
+    if (typeof window !== 'undefined' && window.EventManager) {
+      EventManager.cleanup()
     }
   }
 }
@@ -475,39 +390,25 @@ const ContactModal = {
 // ███████████████████████████████████████████████████████████████████████████████
 
 const HeaderManager = {
+  // Namespace principal del header
+  namespace: 'puj-header-manager',
+
   init() {
-    Logger.debug('Inicializando sistemas del header...')
-    
-    const systems = { 
+    const systems = {
       mobileMenu: MobileMenu.init(),
       contactModal: ContactModal.init()
     }
 
-    const activeSystems = Object.entries(systems)
-      .filter(([_, isActive]) => isActive)
-      .map(([name]) => name)
-
-    if (activeSystems.length > 0) {
-      Logger.success(`Header - Sistemas activos: ${activeSystems.join(', ')}`)
-    }
-    
     return systems
   },
 
   cleanup() {
-    if (typeof window !== 'undefined' && window.Logger) {
-      Logger.debug('Limpiando eventos del header...')
-    }
+    MobileMenu.cleanup()
+    ContactModal.cleanup()
     if (typeof window !== 'undefined' && window.EventManager) {
       EventManager.cleanup()
     }
   }
 }
 
-// Exportar para uso como módulo ES6
 export default HeaderManager
-
-// Para compatibilidad con diferentes sistemas
-if (typeof window !== 'undefined') {
-  window.HeaderManager = HeaderManager
-}

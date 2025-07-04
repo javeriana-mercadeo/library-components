@@ -4,19 +4,18 @@
 // MODAL MEJORADO
 // ===========================================
 
-// Variables del modal
+// Variables del modal usando variables globales
 $modal-z-index: 10000;
 $modal-overlay-bg: rgba(0, 0, 0, 0.65);
-$modal-backdrop-blur: 12px;
-$modal-border-radius: rem(16px);
-$modal-shadow: 0 rem(25px) rem(80px) rgba(0, 0, 0, 0.25);
-$modal-max-width-mobile: rem(420px);
-$modal-max-width-desktop: rem(1100px);
+$modal-backdrop-blur: 10px;
+$modal-shadow: 0 var(--spacing-lg) var(--spacing-4xl) rgba(0, 0, 0, 0.25);
+$modal-max-width-mobile: var(--max-width-sm);
+$modal-max-width-desktop: var(--max-width-xl);
 
-// Animaciones
-$modal-animation-duration: 0.5s;
-$modal-animation-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
-$form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+// Animaciones unificadas para mobile y desktop
+$modal-animation-duration: calc(var(--transition) * 0.67); // 0.2s uniforme
+$modal-animation-easing: cubic-bezier(0.2, 0, 0.2, 1);
+$form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1);
 
 // ===========================================
 // OVERLAY Y CONTENEDOR PRINCIPAL
@@ -34,9 +33,14 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   visibility: hidden;
   backdrop-filter: blur(0px);
   background: transparent;
+  // Optimización de rendimiento
+  will-change: opacity, visibility, backdrop-filter;
 
-  // Transiciones suaves
-  transition: all $modal-animation-duration ease-out;
+  // Transiciones optimizadas - solo las propiedades que cambian
+  transition:
+    opacity $modal-animation-duration $modal-animation-easing,
+    visibility $modal-animation-duration $modal-animation-easing,
+    backdrop-filter $modal-animation-duration $modal-animation-easing;
 
   // Estado activo
   &.active {
@@ -46,15 +50,15 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: $modal-overlay-bg;
   }
 
-  // Centrado responsivo
+  // Centrado responsivo usando variables globales
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: rem(15px);
-  padding-top: rem(20px);
+  padding: var(--spacing-md);
+  padding-top: var(--spacing-lg);
 
-  @include responsive($breakpoint-md) {
-    padding: rem(30px);
+  @include responsive {
+    padding: var(--spacing-xl);
     align-items: center;
   }
 }
@@ -66,7 +70,7 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   align-items: normal;
   justify-items: normal;
   background: var(--neutral-1000);
-  border-radius: $modal-border-radius;
+  border-radius: var(--border-radius-lg);
   box-shadow: $modal-shadow;
   width: 100%;
   max-height: calc(100vh - rem(40px));
@@ -74,35 +78,38 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   border: rem(1px) solid var(--neutral-800);
 
-  // Animaciones de entrada
-  transform: scale(0.8) translateY(rem(30px)) rotateX(10deg);
+  // Animaciones sutiles de entrada (similar al menú móvil)
+  transform: translateY(calc(var(--spacing-md) * -1));
   opacity: 0;
-  transition: all $modal-animation-duration $modal-animation-easing;
+  visibility: hidden;
+  // Optimización de rendimiento
+  will-change: transform, opacity, visibility;
+  // Transiciones específicas para mejor rendimiento
+  transition:
+    transform $modal-animation-duration $modal-animation-easing,
+    opacity $modal-animation-duration $modal-animation-easing,
+    visibility $modal-animation-duration $modal-animation-easing;
 
   // Responsive layout
   max-width: $modal-max-width-mobile;
   display: flex;
   flex-direction: column;
 
-  @include responsive($breakpoint-md) {
+  @include responsive {
     max-width: $modal-max-width-desktop;
     flex-direction: row;
     height: 80vh;
     max-height: rem(650px);
   }
 
-  // Estados
+  // Estados (patrón similar al menú móvil)
   &.show {
-    display: flex;
+    visibility: visible;
   }
 
-  &.active {
-    transform: scale(1) translateY(0) rotateX(0deg);
+  &.show.active {
+    transform: translateY(0);
     opacity: 1;
-  }
-
-  &:not(.show) {
-    display: none;
   }
 }
 
@@ -112,13 +119,13 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 .modal-image {
   display: none;
 
-  @include responsive($breakpoint-md) {
+  @include responsive {
     display: block;
     flex: 0 0 40%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border-radius: $modal-border-radius 0 0 $modal-border-radius;
+    border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
     position: relative;
   }
 }
@@ -131,12 +138,12 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex: 1;
   display: flex;
   flex-direction: column;
-  // background: var(--neutral);
-  border-radius: $modal-border-radius;
+  border-radius: var(--border-radius-lg);
   min-height: 0;
+  padding: 0 var(--spacing-xs) var(--spacing-2xl) var(--spacing-2xl);
 
-  @include responsive($breakpoint-md) {
-    border-radius: 0 $modal-border-radius $modal-border-radius 0;
+  @include responsive {
+    border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
   }
 }
 
@@ -146,85 +153,26 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 .modal-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   position: relative;
-  padding: rem(12px) rem(16px);
+  padding: var(--spacing-xs) var(--spacing-md);
   flex-shrink: 0;
-  min-height: rem(48px);
+  min-height: var(--spacing-2xl);
 
-  @include responsive($breakpoint-md) {
-    padding: rem(16px) rem(20px);
-  }
-
-  &__close {
-    width: rem(36px);
-    height: rem(36px);
-    border: none;
-    background: var(--primary-600);
-    color: var(--neutral-1000);
-    cursor: pointer;
-    border-radius: rem(8px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: var(--primary-500);
-      color: var(--neutral-1000);
-      transform: scale(1.05);
-    }
-
-    &:active {
-      transform: scale(0.95);
-    }
-
-    // Icono X mejorado
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      width: rem(16px);
-      height: rem(2px);
-      background: currentColor;
-      border-radius: rem(1px);
-      transition: transform 0.2s ease;
-    }
-
-    &::before {
-      transform: rotate(45deg);
-    }
-
-    &::after {
-      transform: rotate(-45deg);
-    }
-
-    &:hover {
-      &::before {
-        transform: rotate(45deg) scale(1.1);
-      }
-      &::after {
-        transform: rotate(-45deg) scale(1.1);
-      }
-    }
-  }
-
-  .title {
-    margin: 0;
-  }
+  // El botón de cerrar usa el componente Button global, no necesita estilos adicionales
 }
 
 // ===========================================
 // CONTENIDO DEL MODAL
 // ===========================================
 .modal-content {
-  padding: rem(20px);
+  padding: var(--spacing-lg);
   overflow-y: auto;
   flex: 1;
   min-height: 0;
 
-  @include responsive($breakpoint-md) {
-    padding: rem(24px) rem(30px) rem(30px);
+  @include responsive {
+    padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
   }
 
   // Scrollbar personalizado
@@ -251,20 +199,23 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 // INTRODUCCIÓN DEL FORMULARIO
 // ===========================================
 .form-intro {
-  @include responsive($breakpoint-md) {
-    padding-bottom: rem(24px);
+  @include responsive {
+    padding-bottom: var(--spacing-lg);
   }
 
-  &__subtitle {
-    font-size: rem(14px);
-    color: var(--neutral-200);
-    line-height: 1.6;
-    margin-top: rem(8px);
-    margin-bottom: 0;
+  // El título usa el componente Title global, no necesita estilos adicionales
 
-    @include responsive($breakpoint-md) {
-      font-size: rem(15px);
-      margin-top: rem(12px);
+  &__subtitle {
+    font-size: var(--font-size-paragraph);
+    color: var(--neutral-200);
+    line-height: var(--line-height-base);
+    margin-top: var(--spacing-xs);
+    margin-bottom: 0;
+    font-family: var(--font-family);
+
+    @include responsive {
+      font-size: var(--font-size-heading);
+      margin-top: var(--spacing-sm);
     }
   }
 }
@@ -275,10 +226,10 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: rem(20px);
+  gap: var(--spacing-lg);
 
-  @include responsive($breakpoint-md) {
-    gap: rem(24px);
+  @include responsive {
+    gap: var(--spacing-lg);
   }
 
   // ===========================================
@@ -286,24 +237,24 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   // ===========================================
   .form-row {
     display: flex;
-    gap: rem(16px);
+    gap: var(--spacing-md);
     flex-direction: column;
 
-    @include responsive($breakpoint-md) {
+    @include responsive {
       flex-direction: row;
-      gap: rem(20px);
+      gap: var(--spacing-lg);
     }
 
     // Fila especial para teléfono
     &.form-row-phone {
       .form-group-prefix {
-        @include responsive($breakpoint-md) {
+        @include responsive {
           flex: 0 0 rem(140px);
         }
       }
 
       .form-group-phone {
-        @include responsive($breakpoint-md) {
+        @include responsive {
           flex: 1;
         }
       }
@@ -312,8 +263,8 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     // Fila de ubicación con animación
     &.location-row {
       opacity: 0;
-      transform: translateY(rem(10px));
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(var(--spacing-sm));
+      transition: all var(--transition) cubic-bezier(0.4, 0, 0.2, 1);
 
       &[style*='flex'] {
         opacity: 1;
@@ -332,20 +283,16 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     flex: 1;
     width: 100%;
 
-    &.form-group-half {
-      @include responsive($breakpoint-md) {
+    @include responsive {
+      &.form-group-half {
         flex: 1;
       }
-    }
 
-    &.form-group-prefix {
-      @include responsive($breakpoint-md) {
+      &.form-group-prefix {
         flex: 0 0 rem(140px);
       }
-    }
 
-    &.form-group-phone {
-      @include responsive($breakpoint-md) {
+      &.form-group-phone {
         flex: 1;
       }
     }
@@ -363,14 +310,14 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   // ===========================================
   .form-input {
     width: 100%;
-    height: rem(48px);
-    padding: rem(12px) 0;
+    height: var(--spacing-2xl);
+    padding: var(--spacing-sm) 0;
     border: none;
-    border-bottom: rem(1px) solid var(--neutral-700);
+    border-bottom: 1px solid var(--neutral-700);
     background: transparent;
     color: var(--neutral-1000);
-    font-size: rem(16px);
-    font-family: inherit;
+    font-size: var(--font-size-heading);
+    font-family: var(--font-family);
     outline: none;
     transition: $form-transition;
 
@@ -379,13 +326,13 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       opacity: 1;
     }
 
-    @include responsive($breakpoint-md) {
-      font-size: rem(15px);
+    @include responsive {
+      font-size: var(--font-size-paragraph);
     }
 
     // Estados de focus
     &:focus {
-      border-bottom: rem(1.5px) solid var(--primary-600);
+      border-bottom: 1.5px solid var(--primary-600);
       background: rgba(var(--primary-rgb), 0.02);
 
       &::placeholder {
@@ -447,26 +394,26 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   .form-select {
     width: 100%;
-    height: rem(48px);
-    padding: rem(12px) rem(25px) rem(12px) 0;
+    height: var(--spacing-2xl);
+    padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-sm) 0;
     border: none;
-    border-bottom: rem(1px) solid var(--neutral-700);
+    border-bottom: 1px solid var(--neutral-700);
     background: transparent;
     color: var(--neutral-200);
-    font-size: rem(16px);
-    font-family: inherit;
+    font-size: var(--font-size-heading);
+    font-family: var(--font-family);
     cursor: pointer;
     appearance: none;
     outline: none;
     transition: $form-transition;
 
-    @include responsive($breakpoint-md) {
-      font-size: rem(15px);
+    @include responsive {
+      font-size: var(--font-size-paragraph);
     }
 
     // Estados de focus
     &:focus {
-      border-bottom: rem(1.5px) solid var(--primary-600);
+      border-bottom: 1.5px solid var(--primary-600);
       background: rgba(var(--primary-rgb), 0.02);
     }
 
@@ -512,13 +459,13 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   .select-prefijo {
     .select-prefijo-input {
       text-align: center;
-      font-weight: 600;
-      font-size: rem(14px);
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-paragraph);
       padding-left: 0;
-      padding-right: rem(20px);
+      padding-right: var(--spacing-lg);
 
-      @include responsive($breakpoint-md) {
-        font-size: rem(13px);
+      @include responsive {
+        font-size: var(--font-size-small);
       }
 
       option {
@@ -541,20 +488,20 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   // MENSAJES DE ERROR MEJORADOS
   // ===========================================
   .field-error {
-    font-size: rem(12px);
+    font-size: var(--font-size-small);
     color: var(--danger-500);
-    margin-top: rem(6px);
+    margin-top: var(--spacing-2xs);
     display: flex;
     align-items: center;
-    gap: rem(6px);
-    padding: rem(4px) rem(8px);
+    gap: var(--spacing-2xs);
+    padding: var(--spacing-2xs) var(--spacing-xs);
     background: rgba(var(--danger-rgb), 0.05);
-    border-radius: rem(6px);
-    animation: errorSlideIn 0.3s ease-out;
+    border-radius: var(--border-radius-sm);
+    animation: errorSlideIn var(--transition) ease-out;
 
     &::before {
       content: '⚠';
-      font-size: rem(11px);
+      font-size: var(--font-size-xs);
       flex-shrink: 0;
     }
   }
@@ -565,32 +512,33 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   .terms-group {
     display: flex;
     flex-direction: column;
-    gap: rem(12px);
-    margin-top: rem(8px);
-    padding: rem(16px);
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+    padding: var(--spacing-md);
     background: transparent;
     border-radius: 0;
     border: none;
 
     .terms-checkbox {
-      width: rem(18px);
-      height: rem(18px);
+      width: var(--icon-size-sm);
+      height: var(--icon-size-sm);
       margin: 0;
       accent-color: var(--primary-600);
       cursor: pointer;
 
       &:focus {
-        outline: rem(2px) solid var(--primary-400);
-        outline-offset: rem(2px);
+        outline: 2px solid var(--primary-400);
+        outline-offset: 2px;
       }
     }
 
     .terms-label {
-      font-size: rem(13px);
+      font-size: var(--font-size-small);
       color: var(--neutral-400);
-      line-height: 1.5;
+      line-height: var(--line-height-base);
       cursor: pointer;
-      margin-bottom: rem(12px);
+      margin-bottom: var(--spacing-sm);
+      font-family: var(--font-family);
 
       .terms-link {
         color: var(--primary-500);
@@ -605,17 +553,18 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     .radio-options {
       display: flex;
-      gap: rem(20px);
-      margin-left: rem(24px);
+      gap: var(--spacing-lg);
+      margin-left: var(--spacing-lg);
 
       .radio-label {
         display: flex;
         align-items: center;
-        gap: rem(8px);
+        gap: var(--spacing-xs);
         cursor: pointer;
-        font-size: rem(14px);
+        font-size: var(--font-size-paragraph);
         color: var(--neutral-300);
-        font-weight: 500;
+        font-weight: var(--font-weight-medium);
+        font-family: var(--font-family);
 
         input[type='radio'] {
           position: absolute;
@@ -637,9 +586,9 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .radio-custom {
-          width: rem(18px);
-          height: rem(18px);
-          border: rem(2px) solid var(--neutral-600);
+          width: var(--icon-size-sm);
+          height: var(--icon-size-sm);
+          border: 2px solid var(--neutral-600);
           border-radius: 50%;
           background: var(--background-100);
           position: relative;
@@ -650,8 +599,8 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: absolute;
             top: 50%;
             left: 50%;
-            width: rem(8px);
-            height: rem(8px);
+            width: var(--spacing-xs);
+            height: var(--spacing-xs);
             background: var(--neutral-1000);
             border-radius: 50%;
             transform: translate(-50%, -50%) scale(0);
@@ -681,32 +630,11 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   // BOTÓN DE ENVÍO
   // ===========================================
   .form-submit {
-    margin-top: rem(8px);
-    padding-top: rem(16px);
+    margin-top: var(--spacing-xs);
+    padding-top: var(--spacing-md);
 
-    .btn {
-      height: rem(56px);
-      font-size: rem(16px);
-      font-weight: 600;
-      letter-spacing: rem(0.5px);
-      text-transform: uppercase;
-      box-shadow: 0 rem(4px) rem(16px) rgba(var(--primary-rgb), 0.3);
-
-      &:hover {
-        transform: translateY(rem(-2px));
-        box-shadow: 0 rem(8px) rem(24px) rgba(var(--primary-rgb), 0.4);
-      }
-
-      &:active {
-        transform: translateY(0);
-      }
-
-      &:disabled {
-        transform: none;
-        box-shadow: none;
-        opacity: 0.6;
-      }
-    }
+    // El botón usa el componente Button global, no necesita estilos adicionales
+    // Estilos específicos solo si es necesario
   }
 }
 
@@ -715,28 +643,29 @@ $form-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 // ===========================================
 .success-message {
   text-align: center;
-  padding: rem(40px) rem(24px);
+  padding: var(--spacing-2xl) var(--spacing-lg);
   background: linear-gradient(135deg, var(--success-50), var(--success-100));
-  border-radius: rem(16px);
-  border: rem(2px) solid var(--success-300);
+  border-radius: var(--border-radius-lg);
+  border: 2px solid var(--success-300);
 
   .success-icon {
-    font-size: rem(48px);
-    margin-bottom: rem(16px);
-    animation: successBounce 0.8s ease-out;
+    font-size: var(--spacing-2xl);
+    margin-bottom: var(--spacing-md);
+    animation: successBounce calc(var(--transition) * 2.5) ease-out;
   }
 
   p {
-    margin: rem(8px) 0;
+    margin: var(--spacing-xs) 0;
     color: var(--success-700);
+    font-family: var(--font-family);
 
     &:first-of-type {
-      font-weight: 700;
-      font-size: rem(18px);
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-caption);
     }
 
     &:last-of-type {
-      font-size: rem(15px);
+      font-size: var(--font-size-heading);
       opacity: 0.9;
     }
   }
@@ -764,17 +693,17 @@ body.modal-open {
     transform: translateY(0) scale(1);
   }
   40% {
-    transform: translateY(rem(-15px)) scale(1.1);
+    transform: translateY(calc(var(--spacing-md) * -1)) scale(1.1);
   }
   60% {
-    transform: translateY(rem(-7px)) scale(1.05);
+    transform: translateY(calc(var(--spacing-xs) * -1)) scale(1.05);
   }
 }
 
 @keyframes errorSlideIn {
   from {
     opacity: 0;
-    transform: translateY(rem(-10px));
+    transform: translateY(calc(var(--spacing-sm) * -1));
   }
   to {
     opacity: 1;
@@ -785,7 +714,7 @@ body.modal-open {
 // ===========================================
 // RESPONSIVE ESPECÍFICO
 // ===========================================
-@media (max-width: $breakpoint-sm) {
+@include responsive($breakpoint-sm) {
   .modal-overlay {
     padding: rem(10px);
   }
@@ -846,7 +775,7 @@ body.modal-open {
 // ===========================================
 // RESPONSIVE EXTRA SMALL
 // ===========================================
-@media (max-width: 375px) {
+@include responsive(375px) {
   .modal-overlay {
     padding: rem(8px);
   }

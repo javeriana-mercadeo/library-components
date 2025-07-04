@@ -547,6 +547,12 @@ const ModalSystem = {
       return
     }
 
+    // Excluir el modal de contacto que es manejado por ContactModal
+    if (modalId === 'contact-modal') {
+      Logger.debug(`Modal ${modalId} excluido - manejado por ContactModal`)
+      return
+    }
+
     const closeBtn = modal.querySelector('.program-detail-modal__close')
 
     // Eventos para abrir modal

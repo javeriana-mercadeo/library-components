@@ -1,20 +1,9 @@
 @use '@styles/autoload' as *;
-@use './components/modalForm/styles.scss' as *;
+@use './components/modalForm.scss' as *;
 
 // ===========================================
-// BODY MODIFICATIONS
+// HEADER CONTAINER
 // ===========================================
-// Prevenir scroll del body cuando el menú está activo
-body.menu-open {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-
-  // Cuando el menú está abierto, siempre mostrar el header
-  .header--hidden {
-    transform: translateY(0) !important;
-  }
-}
 
 .header {
   position: fixed;
@@ -122,11 +111,6 @@ body.menu-open {
       display: none;
     }
 
-    // TEMPORAL: Para testing - remover después
-    @include only-dev-mode {
-      display: flex !important;
-    }
-
     &:active {
       transform: scale(0.95);
     }
@@ -212,7 +196,7 @@ body.menu-open {
     top: rem(0px);
     left: rem(0px);
     width: 100%;
-    height: 100vh;
+
     background: linear-gradient(135deg, var(--background-100) 0%, var(--background-200) 100%);
     backdrop-filter: blur(10px);
     border-top: rem(1px) solid var(--neutral-800);
@@ -342,7 +326,7 @@ body.menu-open {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 120px); // Dejar espacio para los botones fijos
     background: rgba(0, 0, 0, 0.5);
     z-index: 9998;
     opacity: 0;
@@ -365,7 +349,7 @@ body.menu-open {
   bottom: 0;
   left: 0;
   width: 100%;
-  z-index: 9999;
+  z-index: 10001;
   display: block;
 
   // Ocultar en desktop

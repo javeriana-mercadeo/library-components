@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import {
   Button,
@@ -14,7 +14,9 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  Spinner
+  Spinner,
+  Pagination,
+  Chip
 } from '@heroui/react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { a11yDark } from 'react-syntax-highlighter/dist/cjs/styles/prism'
@@ -22,10 +24,17 @@ import { a11yDark } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import handleZipExport from './utils/handleZipExport'
 import { prettierFormat } from './utils/prettierFormat'
 
+const LINES_PER_PAGE = 300 // Líneas por página para la paginación
+
 export default function ViewComponent({ path, children }: { path?: string; children: React.ReactNode }) {
   const [activeCodeTab, setActiveCodeTab] = useState('html')
   const containerRef = useRef<HTMLDivElement>(null)
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  // Estados para paginación
+  const [htmlPage, setHtmlPage] = useState(1)
+  const [cssPage, setCssPage] = useState(1)
+  const [jsPage, setJsPage] = useState(1)
 
   // Estados para la información básica (solo para descarga)
   const [info, setInfo] = useState<any>({})
@@ -37,6 +46,26 @@ export default function ViewComponent({ path, children }: { path?: string; child
   const [htmlContent, setHtmlContent] = useState<string>('')
   const [cssContent, setCssContent] = useState<string>('')
   const [jsContent, setJsContent] = useState<string>('')
+
+  // Función para dividir contenido en páginas
+  const createPages = (content: string) => {
+    if (!content) return []
+    const lines = content.split('\n')
+    const pages = []
+    for (let i = 0; i < lines.length; i += LINES_PER_PAGE) {
+      pages.push({
+        content: lines.slice(i, i + LINES_PER_PAGE).join('\n'),
+        startLine: i + 1,
+        endLine: Math.min(i + LINES_PER_PAGE, lines.length)
+      })
+    }
+    return pages
+  }
+
+  // Dividir contenido en páginas usando useMemo
+  const htmlPages = useMemo(() => createPages(htmlContent), [htmlContent])
+  const cssPages = useMemo(() => createPages(cssContent), [cssContent])
+  const jsPages = useMemo(() => createPages(jsContent), [jsContent])
 
   // Cargar solo la información básica al montar (solo si hay path válido)
   useEffect(() => {
@@ -102,9 +131,30 @@ export default function ViewComponent({ path, children }: { path?: string; child
   // 📌 Filtrar solo los lenguajes con contenido (solo si ya está cargado)
   const codeElements = codeLoaded
     ? [
-        { type: 'html', code: htmlContent, label: 'HTML' },
-        { type: 'css', code: cssContent, label: 'CSS' },
-        { type: 'javascript', code: jsContent, label: 'JS' }
+        {
+          type: 'html',
+          code: htmlContent,
+          label: 'HTML',
+          pages: htmlPages,
+          currentPage: htmlPage,
+          setPage: setHtmlPage
+        },
+        {
+          type: 'css',
+          code: cssContent,
+          label: 'CSS',
+          pages: cssPages,
+          currentPage: cssPage,
+          setPage: setCssPage
+        },
+        {
+          type: 'javascript',
+          code: jsContent,
+          label: 'JS',
+          pages: jsPages,
+          currentPage: jsPage,
+          setPage: setJsPage
+        }
       ].filter(({ code }) => code.trim() !== '')
     : []
 
@@ -118,6 +168,15 @@ export default function ViewComponent({ path, children }: { path?: string; child
       await loadAndProcessCode()
     }
     await handleZipExport(info, htmlContent, cssContent, jsContent, containerRef)
+  }
+
+  // Función para resetear páginas al cambiar de tab
+  const handleTabChange = (key: string) => {
+    setActiveCodeTab(key)
+    // Resetear las páginas cuando se cambia de tab
+    setHtmlPage(1)
+    setCssPage(1)
+    setJsPage(1)
   }
 
   return (
@@ -202,29 +261,70 @@ export default function ViewComponent({ path, children }: { path?: string; child
                     <Tabs
                       aria-label="Opciones de código"
                       selectedKey={activeCodeTab}
-                      onSelectionChange={key => setActiveCodeTab(key.toString())}>
-                      {codeElements.map(({ type, code, label }) => (
-                        <Tab key={type} title={label}>
-                          <div className="h-full flex flex-col">
-                            {/* Snippet para copiar */}
-                            <div className="bg-default-50 border border-divider rounded-lg mb-4 flex-shrink-0">
+                      onSelectionChange={key => handleTabChange(key.toString())}>
+                      {codeElements.map(({ type, code, label, pages, currentPage, setPage }) => (
+                        <Tab
+                          key={type}
+                          title={
+                            <div className="flex items-center gap-2">
+                              <span>{label}</span>
+                              <Chip size="sm" variant="flat" color="default">
+                                {(code.length / 1024).toFixed(1)}KB
+                              </Chip>
+                              <Chip size="sm" variant="flat" color="primary">
+                                {code.split('\n').length} líneas
+                              </Chip>
+                              {pages.length > 1 && (
+                                <Chip size="sm" variant="flat" color="warning">
+                                  {pages.length} páginas
+                                </Chip>
+                              )}
+                            </div>
+                          }>
+                          <div className="h-full flex flex-col space-y-4">
+                            {/* Actions bar */}
+                            <div className="flex justify-between items-center bg-default-50 border border-divider rounded-lg p-3 flex-shrink-0">
+                              <div className="flex items-center gap-4">
+                                <p className="text-sm text-default-600">
+                                  {info.name} • {label}
+                                </p>
+                                {pages.length > 1 && (
+                                  <Chip color="warning" variant="flat" size="sm">
+                                    Archivo grande: {pages.length} páginas
+                                  </Chip>
+                                )}
+                              </div>
                               <Snippet
                                 variant="flat"
+                                size="sm"
                                 codeString={code}
                                 symbol=""
-                                className="w-full"
                                 classNames={{
-                                  base: 'bg-transparent max-w-full',
-                                  pre: 'text-xs overflow-hidden',
+                                  base: 'bg-default-100',
                                   copyButton: 'text-default-600 hover:text-primary'
                                 }}>
-                                <span className="text-xs text-default-600 truncate">
-                                  Copiar {label} - {info.name}
-                                </span>
+                                <span className="text-xs">Copiar {label} completo</span>
                               </Snippet>
                             </div>
 
-                            {/* Código con scroll */}
+                            {/* Paginación superior */}
+                            {pages.length > 1 && (
+                              <div className="flex justify-between items-center bg-default-100 p-3 rounded-lg flex-shrink-0">
+                                <div className="text-sm text-default-600">
+                                  Página {currentPage} de {pages.length} • Líneas {pages[currentPage - 1]?.startLine} - {pages[currentPage - 1]?.endLine}
+                                </div>
+                                <Pagination
+                                  size="sm"
+                                  total={pages.length}
+                                  page={currentPage}
+                                  onChange={setPage}
+                                  showControls
+                                  className="gap-2"
+                                />
+                              </div>
+                            )}
+
+                            {/* Código con paginación */}
                             <div className="flex-1 min-h-0 bg-[#2d3748] rounded-lg overflow-auto border border-divider scrollbar-default">
                               <SyntaxHighlighter
                                 language={type}
@@ -237,16 +337,31 @@ export default function ViewComponent({ path, children }: { path?: string; child
                                   lineHeight: '1.5'
                                 }}
                                 showLineNumbers={true}
+                                startingLineNumber={pages[currentPage - 1]?.startLine || 1}
                                 wrapLines={true}
                                 lineNumberStyle={{
-                                  minWidth: '3em',
+                                  minWidth: '4em',
                                   paddingRight: '1em',
                                   textAlign: 'right',
-                                  userSelect: 'none'
+                                  userSelect: 'none',
+                                  color: '#6b7280'
                                 }}>
-                                {code}
+                                {pages[currentPage - 1]?.content || code}
                               </SyntaxHighlighter>
                             </div>
+
+                            {/* Paginación inferior */}
+                            {pages.length > 1 && (
+                              <div className="flex justify-center flex-shrink-0">
+                                <Pagination
+                                  total={pages.length}
+                                  page={currentPage}
+                                  onChange={setPage}
+                                  showControls
+                                  className="gap-2"
+                                />
+                              </div>
+                            )}
                           </div>
                         </Tab>
                       ))}
@@ -268,7 +383,27 @@ export default function ViewComponent({ path, children }: { path?: string; child
                   <div className="text-sm text-default-500">
                     {!isLoading && codeElements.length > 0 && (
                       <>
-                        {codeElements.find(el => el.type === activeCodeTab)?.label} • {info.name}
+                        {(() => {
+                          const currentElement = codeElements.find(el => el.type === activeCodeTab)
+                          if (!currentElement) return null
+
+                          const { label, pages, currentPage } = currentElement
+                          return (
+                            <div className="flex items-center gap-4">
+                              <span>{label} • {info.name}</span>
+                              {pages.length > 1 && (
+                                <div className="flex items-center gap-2">
+                                  <Chip size="sm" variant="flat" color="primary">
+                                    Página {currentPage}/{pages.length}
+                                  </Chip>
+                                  <Chip size="sm" variant="flat" color="default">
+                                    Líneas {pages[currentPage - 1]?.startLine}-{pages[currentPage - 1]?.endLine}
+                                  </Chip>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })()}
                       </>
                     )}
                   </div>

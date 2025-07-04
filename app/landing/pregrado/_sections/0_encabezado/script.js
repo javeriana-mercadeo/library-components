@@ -4,7 +4,8 @@
 
 // Importar módulos separados
 import HeaderManager from './headerManager.js'
-import FormManager from './formManager.js'
+import FormManager from './components/modalFrom.js'
+
 
 // ███████████████████████████████████████████████████████████████████████████████
 // █                        UTILIDADES DE ESPERA                               █
@@ -12,18 +13,27 @@ import FormManager from './formManager.js'
 
 // Función para esperar a que las utilidades globales estén disponibles
 function waitForGlobalUtils() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    let attempts = 0
+    const maxAttempts = 500 // 5 segundos máximo
+
     const checkUtils = () => {
-      if (typeof window !== 'undefined' && 
+      attempts++
+
+      if (typeof window !== 'undefined' &&
           window.__GLOBAL_UTILS_LOADED__ &&
-          window.Logger && 
-          window.DOMHelpers && 
-          window.EventManager && 
-          window.TimingUtils && 
-          window.Validators) {
+          window.Logger &&
+          window.DOMHelpers &&
+          window.EventManager &&
+          window.TimingUtils &&
+          window.Validators &&
+          window.APIManager &&
+          window.FormManager) {
         resolve(true)
+      } else if (attempts >= maxAttempts) {
+        reject(new Error('Timeout: Las utilidades globales no se cargaron después de 5 segundos'))
       } else {
-        setTimeout(checkUtils, 10) // Reducir el intervalo para mayor velocidad
+        setTimeout(checkUtils, 10)
       }
     }
     checkUtils()
@@ -36,12 +46,13 @@ function waitForGlobalUtils() {
 
 const AppSystem = {
   async init() {
-    // Esperar a que las utilidades globales estén disponibles
-    await waitForGlobalUtils()
-    
-    Logger.debug('Inicializando aplicación...')
-
     try {
+      // Esperar a que las utilidades globales estén disponibles
+      await waitForGlobalUtils()
+
+      // Exponer FormManager globalmente para que ContactModal pueda accederlo
+      window.ModalForm = FormManager
+
       // Inicializar sistemas por separado
       const headerSystems = HeaderManager.init()
       const formSystems = await FormManager.init()
@@ -50,25 +61,25 @@ const AppSystem = {
       const allSystems = { ...headerSystems, ...formSystems }
       const totalActiveSystems = Object.values(allSystems).filter(Boolean).length
 
-      Logger.success(`Aplicación iniciada - ${totalActiveSystems} sistemas activos`)
       return allSystems
     } catch (error) {
-      Logger.warning('Aplicación iniciada con limitaciones - Error al cargar datos externos')
-
-      // Inicializar sistemas básicos sin datos externos
-      const headerSystems = HeaderManager.init()
-      const formSystems = await FormManager.init()
-
-      return { ...headerSystems, ...formSystems }
+      console.error('Error al inicializar la aplicación:', error.message)
+      return {
+        mobileMenu: false,
+        contactModal: false,
+        formAnimations: false,
+        locationManager: false,
+        formValidation: false
+      }
     }
   },
 
   cleanup() {
-    if (typeof Logger !== 'undefined') {
-      Logger.debug('Limpiando aplicación...')
+    // Solo limpiar si las utilidades están disponibles
+    if (typeof window !== 'undefined' && window.HeaderManager && window.FormManager) {
+      HeaderManager.cleanup()
+      FormManager.cleanup()
     }
-    HeaderManager.cleanup()
-    FormManager.cleanup()
   }
 }
 
@@ -76,7 +87,7 @@ const AppSystem = {
 // AUTO-INICIALIZACIÓN PARA LIFERAY
 // ===========================================
 
-function initHeaderModal() {
+function initHeaderSystem() {
   const waitForDOM = () => {
     return new Promise((resolve) => {
       if (typeof document === 'undefined') {
@@ -96,7 +107,7 @@ function initHeaderModal() {
     try {
       // Agregar un pequeño delay para asegurar que React haya terminado de renderizar
       await new Promise(resolve => setTimeout(resolve, 100))
-      
+
       await AppSystem.init()
 
       // Cleanup global al cambiar de página
@@ -104,25 +115,18 @@ function initHeaderModal() {
         AppSystem.cleanup()
       })
     } catch (error) {
-      console.error('Error al inicializar aplicación:', error)
+      console.error('Error al inicializar sistema del header:', error)
     }
   })
 }
 
 // Auto-ejecutar si no es un módulo
 if (typeof module === 'undefined') {
-  initHeaderModal()
+  initHeaderSystem()
 }
 
-// Exportar para uso como módulo (si es necesario)
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = initHeaderModal
-}
-
-// Para compatibilidad con diferentes sistemas
 if (typeof window !== 'undefined') {
-  window.initHeaderModal = initHeaderModal
+  window.initHeaderSystem = initHeaderSystem
 }
 
-// Exportar por defecto para Next.js
-export default initHeaderModal
+export default initHeaderSystem
