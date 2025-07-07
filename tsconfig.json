@@ -22,13 +22,13 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["./app/_components/*"],
+      "@components/*": ["app/_components/*"],
       "@library/*": ["app/_library/*"],
       "@styles/*": ["./styles/*"],
       "@assets/*": ["./assets/*"],
       "@utils/*": ["./app/_utils/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/_components/componentCatalog/index.jsx"],
   "exclude": ["node_modules"]
 }

@@ -1,0 +1,231 @@
+@use '@styles/autoload' as *;
+
+.slider-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.carousel-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  h1 {
+    color: var(--neutral-300);
+    font-weight: var(--font-weight-bold);
+    padding: rem(50px);
+    text-align: center;
+    font-size: var(--font-size-principal-title);
+  }
+}
+
+.image-slider-container {
+  background-image: url('https://www.javeriana.edu.co/recursosdb/d/info-prg/fondo-2');
+  box-sizing: border-box;
+  height: rem(688px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: rem(20px);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+}
+
+@media (max-width: rem(1200px)) {
+  .image-slider-container {
+    border-radius: 0;
+  }
+}
+
+.title-gallery {
+  color: #ffffff;
+  font-weight: var(--font-weight-bold);
+  text-align: left;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-items: left;
+
+  h1 {
+    max-width: 45%;
+    padding-top: 10%;
+    padding-left: 8%;
+  }
+
+  @media (max-width: rem(768px)) {
+    font-size: 2.5rem;
+  }
+}
+
+.image-slider {
+  position: relative;
+  overflow: hidden;
+  margin-top: rem(80px);
+  margin-bottom: rem(40px);
+  box-shadow: 0 rem(4px) rem(8px) rgba(0, 0, 0, 0.1);
+
+  @media (max-width: rem(768px)) {
+    margin-bottom: rem(15px);
+  }
+}
+
+.slider-wrapper {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: rem(20px);
+  gap: rem(15px);
+  background-color: rgba(255, 255, 255, 0.623);
+  margin-bottom: rem(15px);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.slide {
+  flex: 0 0 calc(100% - rem(15px));
+  scroll-snap-align: start;
+  position: relative;
+
+  @media (min-width: rem(576px)) {
+    flex: 0 0 calc(50% - rem(15px));
+  }
+
+  @media (min-width: rem(992px)) {
+    flex: 0 0 calc(33.333% - rem(15px));
+  }
+}
+
+.slide-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  border-radius: rem(10px);
+  overflow: hidden;
+
+  &:hover .slide-image {
+    transform: scale(1.03);
+  }
+}
+
+.slide-video {
+  width: 100%;
+  height: rem(180px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: rem(10px);
+  overflow: hidden;
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (min-width: rem(768px)) {
+    height: rem(200px);
+  }
+
+  @media (min-width: rem(992px)) {
+    height: rem(176px);
+  }
+}
+
+.slide-image {
+  position: relative;
+  height: rem(180px);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  border-radius: rem(10px);
+
+  @media (min-width: rem(768px)) {
+    height: rem(200px);
+  }
+
+  @media (min-width: rem(992px)) {
+    height: rem(176px);
+  }
+}
+
+.slide-content {
+  position: absolute;
+  bottom: rem(20px);
+  right: rem(20px);
+}
+
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: rem(44px);
+  height: rem(44px);
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s ease;
+  box-shadow: 0 rem(2px) rem(5px) rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background-color: #fff;
+    box-shadow: 0 rem(3px) rem(7px) rgba(0, 0, 0, 0.3);
+  }
+
+  .arrow-icon {
+    font-size: rem(20px);
+    color: #333;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.prev-button {
+  left: rem(15px);
+}
+
+.next-button {
+  right: rem(15px);
+}
+
+@media (max-width: rem(575px)) {
+  .nav-button {
+    width: rem(38px);
+    height: rem(38px);
+
+    .arrow-icon {
+      font-size: rem(18px);
+    }
+  }
+
+  .prev-button {
+    left: rem(10px);
+  }
+
+  .next-button {
+    right: rem(10px);
+  }
+}
