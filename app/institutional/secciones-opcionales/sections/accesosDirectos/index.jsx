@@ -2,6 +2,7 @@ import createFloatingMenuFunctions from './script.js'
 import info from './info.json'
 import './styles.scss'
 import React from 'react';
+import ShareModal from './index.jsx';
 
 class FloatingMenu extends React.Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class FloatingMenu extends React.Component {
       isDragging: false,
       hoveredItem: null,
       dragPosition: { x: 0, y: 0 },
-      isDarkTheme: false
+      isDarkTheme: false,
+      isShareModalOpen: false // Estado para el modal de compartir
     };
     this.menuRef = React.createRef();
     this.dragOffset = { x: 0, y: 0 };
@@ -74,9 +76,74 @@ class FloatingMenu extends React.Component {
     return items;
   };
 
+  // Función para manejar compartir por modal
+  handleShareModalAction = (platform) => {
+    if (this.menuFunctions) {
+      const result = this.menuFunctions.executeShareAction(platform);
+      console.log(`Acción de compartir '${platform}' ejecutada:`, result);
+    } else {
+      this.handleFallbackShareActions(platform);
+    }
+  };
+
+  // Acciones fallback para compartir
+  handleFallbackShareActions = (platform) => {
+    const currentUrl = encodeURIComponent(window.location.href);
+    const message = encodeURIComponent("Te invito a visitar este sitio web de la Pontificia Universidad Javeriana.");
+
+    const shareActions = {
+      whatsapp: () => {
+        window.open(`https://api.whatsapp.com/send?text=${message}%20${currentUrl}`, '_blank');
+      },
+      facebook: () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, '_blank');
+      },
+      instagram: () => {
+        // Instagram no permite compartir directamente vía URL, mostrar mensaje
+        navigator.clipboard.writeText(decodeURIComponent(currentUrl)).then(() => {
+          alert('Enlace copiado. Puedes pegarlo en Instagram Stories o DM.');
+        });
+      },
+      linkedin: () => {
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}`, '_blank');
+      },
+      email: () => {
+        const subject = encodeURIComponent("Te comparto este sitio web");
+        const body = encodeURIComponent(`Hola,\n\nTe invito a visitar este increíble sitio web:\n${decodeURIComponent(currentUrl)}\n\n¡Espero que te guste!`);
+        window.location.href = `mailto:?subject=${subject}&body=${body}`;
+      },
+      copylink: async () => {
+        try {
+          await navigator.clipboard.writeText(decodeURIComponent(currentUrl));
+          alert('Enlace copiado al portapapeles');
+        } catch (err) {
+          console.error('Error al copiar:', err);
+          // Fallback para navegadores antiguos
+          const textArea = document.createElement('textarea');
+          textArea.value = decodeURIComponent(currentUrl);
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          alert('Enlace copiado al portapapeles');
+        }
+      }
+    };
+
+    if (shareActions[platform]) {
+      shareActions[platform]();
+    }
+  };
+
   // Manejo de acciones con fallback
   handleItemClick = (action, url) => {
     console.log('Acción clickeada:', action, url);
+    
+    // Si es la acción de compartir, abrir modal en lugar de ejecutar acción directa
+    if (action === 'share') {
+      this.setState({ isShareModalOpen: true });
+      return;
+    }
     
     if (this.menuFunctions) {
       // Usar funciones del script
@@ -127,21 +194,6 @@ class FloatingMenu extends React.Component {
           content.style.opacity = content.style.opacity === '0.5' ? '1' : '0.5';
         }
       },
-      share: async () => {
-        if (navigator.share) {
-          try {
-            await navigator.share({
-              title: 'Mi Página Web',
-              text: '¡Mira esta increíble página!',
-              url: window.location.href
-            });
-          } catch (error) {
-            console.error('Error al compartir:', error);
-          }
-        } else {
-          alert('La funcionalidad de compartir no es compatible con tu dispositivo.');
-        }
-      },
       whatsapp: () => {
         if (url) {
           window.open(url, '_blank');
@@ -156,6 +208,11 @@ class FloatingMenu extends React.Component {
     if (actions[action]) {
       actions[action]();
     }
+  };
+
+  // Cerrar modal de compartir
+  closeShareModal = () => {
+    this.setState({ isShareModalOpen: false });
   };
 
   // Manejo del hover
@@ -256,7 +313,7 @@ class FloatingMenu extends React.Component {
 
   render() {
     const menuItems = this.getMenuItems();
-    const { isDragging, dragPosition } = this.state;
+    const { isDragging, dragPosition, isShareModalOpen } = this.state;
 
     // Estilos dinámicos solo para el drag del contenedor
     const containerStyle = {
@@ -266,13 +323,21 @@ class FloatingMenu extends React.Component {
     };
 
     return (
-      <div
-        ref={this.menuRef}
-        className="floating-menu"
-        style={containerStyle}
-      >
-        {menuItems.map((item, index) => this.renderMenuItem(item, index))}
-      </div>
+      <>
+        <div
+          ref={this.menuRef}
+          className="floating-menu"
+          style={containerStyle}
+        >
+          {menuItems.map((item, index) => this.renderMenuItem(item, index))}
+        </div>
+
+        <ShareModal
+          isOpen={isShareModalOpen}
+          onClose={this.closeShareModal}
+          shareFunction={this.handleShareModalAction}
+        />
+      </>
     );
   }
 }
