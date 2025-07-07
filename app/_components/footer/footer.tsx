@@ -1,5 +1,4 @@
-import Image from 'next/image'
-import logo from '../../../assets/icon.svg'
+import Logo from '@library/components/logo_institucional'
 
 const Footer = () => {
   return (
@@ -7,7 +6,7 @@ const Footer = () => {
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="flex justify-center sm:justify-start">
-            <Image src={logo} alt="Logo" width={32} height={32} />
+            <Logo />
           </div>
 
           <p className="mt-4 text-center text-sm text-[var(--neutral-200)] lg:mt-0 lg:text-right">

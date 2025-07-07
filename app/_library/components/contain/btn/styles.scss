@@ -18,6 +18,11 @@ $btn-padding-sm: rem(6px) rem(14px);
 $btn-padding-md: rem(8px) rem(18px);
 $btn-padding-lg: rem(14px) rem(26px);
 
+// Tamaños para botón solo icono (proporciones cuadradas)
+$btn-icon-only-size-sm: rem(32px);
+$btn-icon-only-size-md: rem(40px);
+$btn-icon-only-size-lg: rem(48px);
+
 // Escalas de fuente
 $btn-font-scale-sm: 0.875;
 $btn-font-scale-md: 1;
@@ -80,14 +85,14 @@ $btn-ripple-duration: 0.6s;
 
     font-weight: $btn-font-weight;
     line-height: $btn-line-height;
-    font-size: rem(14px); // Tamaño base específico
+    font-size: rem(14px);
     border-radius: var(--btn-radius, #{$btn-border-radius});
     padding: $btn-padding-md;
     transition: $btn-transition;
     user-select: none;
     white-space: nowrap;
     overflow: hidden;
-    vertical-align: top; // Alineación consistente
+    vertical-align: top;
 
     // Estilos para iconos
     .btn-icon {
@@ -104,12 +109,75 @@ $btn-ripple-duration: 0.6s;
         width: 100%;
         height: 100%;
       }
+
+      // Icono solo (para botones iconOnly)
+      &.btn-icon-only {
+        width: rem(18px);
+        height: rem(18px);
+        font-size: rem(18px);
+      }
     }
 
     .btn-text {
       font-size: inherit;
       font-weight: inherit;
       line-height: inherit;
+    }
+
+    // ===========================================
+    // ESTILOS PARA BOTÓN SOLO ICONO
+    // ===========================================
+    &.btn-icon-only {
+      min-width: $btn-icon-only-size-md;
+      width: $btn-icon-only-size-md;
+      height: $btn-icon-only-size-md;
+      padding: 0;
+      gap: 0;
+
+      .btn-icon-only {
+        width: rem(20px);
+        height: rem(20px);
+        font-size: rem(20px);
+      }
+
+      // Tamaños específicos para botón solo icono
+      &.btn-sm {
+        min-width: $btn-icon-only-size-sm;
+        width: $btn-icon-only-size-sm;
+        height: $btn-icon-only-size-sm;
+
+        .btn-icon-only {
+          width: rem(16px);
+          height: rem(16px);
+          font-size: rem(16px);
+        }
+      }
+
+      &.btn-lg {
+        min-width: $btn-icon-only-size-lg;
+        width: $btn-icon-only-size-lg;
+        height: $btn-icon-only-size-lg;
+
+        .btn-icon-only {
+          width: rem(24px);
+          height: rem(24px);
+          font-size: rem(24px);
+        }
+      }
+
+      // Para botones solo icono, fullWidth no debería aplicarse
+      &.btn-full-width {
+        width: auto;
+        min-width: $btn-icon-only-size-md;
+
+        &.btn-sm {
+          min-width: $btn-icon-only-size-sm;
+        }
+
+        &.btn-lg {
+          min-width: $btn-icon-only-size-lg;
+        }
+      }
     }
 
     // Variantes de tamaño
@@ -453,23 +521,23 @@ $btn-ripple-duration: 0.6s;
     // Estados de interacción más sutiles
     &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
       color: $color-700;
-      text-decoration-thickness: rem(2px); // Subrayado más grueso en hover
-      transform: none; // Sin transformación
+      text-decoration-thickness: rem(2px);
+      transform: none;
       background: transparent;
     }
 
     &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
       color: $color-800;
-      transform: none; // Sin transformación
+      transform: none;
       background: transparent;
     }
 
     &:focus-visible {
       outline: rem(2px) solid $color-400;
       outline-offset: rem(2px);
-      border-radius: rem(2px); // Pequeño border radius solo para el focus
+      border-radius: rem(2px);
       box-shadow: none;
-      text-decoration: none; // Sin subrayado en focus para mejor legibilidad
+      text-decoration: none;
     }
 
     // Iconos en variante link
@@ -478,7 +546,6 @@ $btn-ripple-duration: 0.6s;
       height: auto;
       font-size: inherit;
 
-      // Ajustar spacing entre icono y texto
       &.btn-icon-start {
         margin-right: rem(4px);
       }
