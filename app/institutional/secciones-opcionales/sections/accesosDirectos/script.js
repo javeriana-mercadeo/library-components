@@ -74,7 +74,7 @@ function createFloatingMenuFunctions() {
         }
     ];
 
-    // Funciones de acciones principales
+    // Funciones de acciones principales del menú
     const menuActions = {
         // Acción del primer botón (ya no cambia estado, solo placeholder)
         toggle: () => {
@@ -153,41 +153,10 @@ function createFloatingMenuFunctions() {
             return false;
         },
         
-        // Función de compartir nativa
+        // Función de compartir nativa (ahora abre modal)
         share: async () => {
-            if (navigator.share) {
-                try {
-                    await navigator.share({ 
-                        title: "Mi Página Web", 
-                        text: "¡Mira esta increíble página!", 
-                        url: window.location.href 
-                    });
-                    console.log('Contenido compartido exitosamente');
-                    return true;
-                } catch (error) {
-                    console.error("Error al compartir:", error);
-                    return false;
-                }
-            } else {
-                // Fallback para navegadores que no soportan Web Share API
-                const url = window.location.href;
-                const text = "¡Mira esta increíble página!";
-                const shareText = `${text} ${url}`;
-                
-                // Intentar copiar al clipboard
-                if (navigator.clipboard) {
-                    try {
-                        await navigator.clipboard.writeText(shareText);
-                        alert('Enlace copiado al portapapeles');
-                        return true;
-                    } catch (err) {
-                        console.error('Error al copiar:', err);
-                    }
-                }
-                
-                alert('La funcionalidad de compartir no es compatible con tu dispositivo.');
-                return false;
-            }
+            console.log('Acción de compartir - abriendo modal');
+            return true;
         },
         
         // Abrir WhatsApp con mensaje predefinido
@@ -200,6 +169,94 @@ function createFloatingMenuFunctions() {
             }
             console.error('Window no disponible');
             return false;
+        }
+    };
+
+    // Funciones específicas para el modal de compartir
+    const shareModalActions = {
+        whatsapp: () => {
+            const url = `https://api.whatsapp.com/send?text=${message}%20${currentUrl}`;
+            window.open(url, '_blank');
+            console.log('WhatsApp compartido desde modal');
+            return true;
+        },
+
+        facebook: () => {
+            const url = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+            window.open(url, '_blank');
+            console.log('Facebook compartido desde modal');
+            return true;
+        },
+
+        instagram: () => {
+            // Instagram no permite compartir directamente vía URL
+            const url = decodeURIComponent(currentUrl);
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Enlace copiado. Puedes pegarlo en Instagram Stories o enviar por DM.');
+                    console.log('Enlace copiado para Instagram');
+                }).catch(err => {
+                    console.error('Error al copiar para Instagram:', err);
+                    // Fallback si falla clipboard
+                    fallbackCopyText(url);
+                });
+            } else {
+                fallbackCopyText(url);
+            }
+            return true;
+        },
+
+        linkedin: () => {
+            const url = `https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}`;
+            window.open(url, '_blank');
+            console.log('LinkedIn compartido desde modal');
+            return true;
+        },
+
+        email: () => {
+            const subject = encodeURIComponent("Te comparto este sitio web");
+            const body = encodeURIComponent(`Hola,\n\nTe invito a visitar este increíble sitio web:\n${decodeURIComponent(currentUrl)}\n\n¡Espero que te guste!`);
+            const mailtoUrl = `mailto:?subject=${subject}&body=${body}`;
+            window.location.href = mailtoUrl;
+            console.log('Email compartido desde modal');
+            return true;
+        },
+
+        copylink: async () => {
+            const url = decodeURIComponent(currentUrl);
+            try {
+                await navigator.clipboard.writeText(url);
+                alert('Enlace copiado al portapapeles');
+                console.log('Enlace copiado desde modal');
+                return true;
+            } catch (err) {
+                console.error('Error al copiar:', err);
+                // Fallback para navegadores antiguos
+                fallbackCopyText(url);
+                return true;
+            }
+        }
+    };
+
+    // Función auxiliar para copiar texto en navegadores antiguos
+    const fallbackCopyText = (text) => {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.top = '-9999px';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            alert('Enlace copiado al portapapeles');
+            console.log('Texto copiado usando fallback');
+        } catch (err) {
+            console.error('Error en fallback de copia:', err);
+            alert('No se pudo copiar el enlace. Por favor, cópialo manualmente: ' + text);
+        } finally {
+            document.body.removeChild(textArea);
         }
     };
 
@@ -229,7 +286,8 @@ function createFloatingMenuFunctions() {
             // En hover, mostrar el icono contrario
             return {
                 icon: isDarkTheme ? 'ph-sun' : 'ph-moon',
-                color: isDarkTheme ? '#F6E05E' : '#2D3748'
+                color: isDarkTheme ? '#F6E05E' : '#2D3748',
+                hoverColor: isDarkTheme ? '#F6E05E' : '#2D3748'
             };
         },
 
@@ -242,7 +300,7 @@ function createFloatingMenuFunctions() {
                         ...item,
                         icon: themeData.icon,
                         color: themeData.color,
-                        hoverColor: themeData.hoverColor // Agregar hoverColor dinámico
+                        hoverColor: themeData.hoverColor || themeData.color
                     };
                 }
                 return item;
@@ -274,18 +332,30 @@ function createFloatingMenuFunctions() {
             
             console.warn(`Acción '${actionName}' no encontrada`);
             return false;
+        },
+
+        // Ejecutar acción de compartir del modal
+        executeShareAction: (platform) => {
+            if (shareModalActions[platform]) {
+                return shareModalActions[platform]();
+            }
+            
+            console.warn(`Acción de compartir '${platform}' no encontrada`);
+            return false;
         }
     };
 
     // Retornar objeto público con todas las funcionalidades
     return {
         actions: menuActions,
+        shareActions: shareModalActions, // Nuevo objeto de acciones de compartir
         config: menuConfig,
         utils: utils,
         
         // Métodos de conveniencia
         getMenuItems: utils.getUpdatedMenuConfig,
         executeAction: utils.executeAction,
+        executeShareAction: utils.executeShareAction, // Nueva función expuesta
         getThemeIcon: utils.getThemeIconData
     };
 }

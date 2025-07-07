@@ -35,6 +35,11 @@ $menu-container-radius: 20px; // Border radius del contenedor
   
   // Sin transición de altura para mantenerlo fijo
   transition: left 0.5s ease, top 0.5s ease;
+  
+  // Asegurar que el menú flotante esté debajo del modal cuando está abierto
+  &.modal-open {
+    z-index: 999;
+  }
 }
 
 // Elementos individuales del menú
@@ -105,6 +110,222 @@ $menu-container-radius: 20px; // Border radius del contenedor
   }
 }
 
+// Estilos para accesibilidad
+.menu-item {
+  &:focus-visible {
+    outline: 2px solid #4866D1;
+    outline-offset: 2px;
+  }
+}
+
+// Prevenir selección de texto al arrastrar
+.floating-menu * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// Animaciones suaves para el menú
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.floating-menu {
+  animation: fadeIn 0.5s ease-out;
+}
+
+// ===================================================
+// ESTILOS PARA EL MODAL DE COMPARTIR
+// ===================================================
+
+// Overlay del modal
+.share-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInOverlay 0.3s ease-out;
+}
+
+// Contenedor principal del modal
+.share-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  min-width: 320px;
+  max-width: 400px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: slideInModal 0.3s ease-out;
+  position: relative;
+}
+
+// Header del modal
+.share-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #E5E7EB;
+  
+  h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+  }
+}
+
+// Botón de cerrar
+.close-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #6B7280;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background-color: #F3F4F6;
+    color: #374151;
+  }
+  
+  &:focus {
+    outline: none;
+    background-color: #E5E7EB;
+  }
+  
+  i {
+    font-size: 20px;
+  }
+}
+
+// Grid de opciones de compartir
+.share-options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+// Botones individuales de compartir
+.share-option {
+  background: none;
+  border: none;
+  padding: 16px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+  
+  &:hover {
+    background-color: #F9FAFB;
+    transform: translateY(-2px);
+    
+    .share-icon {
+      background-color: var(--hover-color);
+      color: white;
+      transform: scale(1.1);
+    }
+  }
+  
+  &:focus {
+    outline: none;
+    background-color: #F3F4F6;
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Iconos de compartir
+.share-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: #F3F4F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: #6B7280;
+  
+  i {
+    font-size: 24px;
+    transition: inherit;
+  }
+}
+
+// Etiquetas de compartir
+.share-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  text-align: center;
+  line-height: 1.2;
+}
+
+// Animaciones para el modal
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInModal {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// Prevenir scroll del body cuando el modal está abierto
+body.modal-open {
+  overflow: hidden;
+}
+
+// ===================================================
+// RESPONSIVIDAD
+// ===================================================
+
 // Responsividad para dispositivos móviles
 @media (max-width: 768px) {
   .floating-menu {
@@ -121,6 +342,43 @@ $menu-container-radius: 20px; // Border radius del contenedor
     
     i {
       font-size: 20px;
+    }
+  }
+
+  // Responsividad del modal en tablets
+  .share-modal {
+    margin: 16px;
+    padding: 20px;
+    min-width: unset;
+    
+    .share-modal-header {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      
+      h3 {
+        font-size: 18px;
+      }
+    }
+    
+    .share-options-grid {
+      gap: 12px;
+    }
+    
+    .share-option {
+      padding: 12px 8px;
+      
+      .share-icon {
+        width: 44px;
+        height: 44px;
+        
+        i {
+          font-size: 22px;
+        }
+      }
+      
+      .share-label {
+        font-size: 11px;
+      }
     }
   }
 }
@@ -148,41 +406,36 @@ $menu-container-radius: 20px; // Border radius del contenedor
       max-height: 3rem;
     }
   }
-}
 
-// Animaciones suaves para el menú
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
+  // Responsividad del modal en móviles
+  .share-modal {
+    margin: 12px;
+    padding: 16px;
+    
+    .share-option {
+      padding: 10px 6px;
+      
+      .share-icon {
+        width: 40px;
+        height: 40px;
+        
+        i {
+          font-size: 20px;
+        }
+      }
+      
+      .share-label {
+        font-size: 10px;
+      }
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
-.floating-menu {
-  animation: fadeIn 0.5s ease-out;
-}
+// ===================================================
+// TEMAS OSCUROS
+// ===================================================
 
-// Estilos para accesibilidad
-.menu-item {
-  &:focus-visible {
-    outline: 2px solid #4866D1;
-    outline-offset: 2px;
-  }
-}
-
-// Prevenir selección de texto al arrastrar
-.floating-menu * {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-// Estilos para tema oscuro (si se aplica)
+// Estilos para tema oscuro del menú flotante
 @media (prefers-color-scheme: dark) {
   .floating-menu {
     background-color: #2D3748;
@@ -192,7 +445,57 @@ $menu-container-radius: 20px; // Border radius del contenedor
   .menu-item i {
     color: #A0AEC0;
   }
+
+  // Tema oscuro para el modal
+  .share-modal {
+    background: #1F2937;
+    color: #F9FAFB;
+    
+    .share-modal-header {
+      border-bottom-color: #374151;
+      
+      h3 {
+        color: #F9FAFB;
+      }
+    }
+    
+    .close-button {
+      color: #9CA3AF;
+      
+      &:hover {
+        background-color: #374151;
+        color: #D1D5DB;
+      }
+      
+      &:focus {
+        background-color: #4B5563;
+      }
+    }
+    
+    .share-option {
+      &:hover {
+        background-color: #374151;
+      }
+      
+      &:focus {
+        background-color: #4B5563;
+      }
+    }
+    
+    .share-icon {
+      background-color: #374151;
+      color: #9CA3AF;
+    }
+    
+    .share-label {
+      color: #D1D5DB;
+    }
+  }
 }
+
+// ===================================================
+// SOPORTE PARA DISPOSITIVOS TÁCTILES
+// ===================================================
 
 // Soporte para dispositivos táctiles
 @media (pointer: coarse) {
