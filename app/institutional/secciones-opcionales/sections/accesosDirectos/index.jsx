@@ -2,18 +2,17 @@ import createFloatingMenuFunctions from './script.js'
 import info from './info.json'
 import './styles.scss'
 import React from 'react';
-import ShareModal from './index.jsx';
 
 class FloatingMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: true, // Siempre abierto
+      isOpen: true,
       isDragging: false,
       hoveredItem: null,
       dragPosition: { x: 0, y: 0 },
       isDarkTheme: false,
-      isShareModalOpen: false // Estado para el modal de compartir
+      showShareModal: false
     };
     this.menuRef = React.createRef();
     this.dragOffset = { x: 0, y: 0 };
@@ -21,28 +20,22 @@ class FloatingMenu extends React.Component {
   }
 
   componentDidMount() {
-    // Verificar si la función se importó correctamente
     console.log('createFloatingMenuFunctions:', createFloatingMenuFunctions);
     
-    // Inicializar funciones del menú desde script.js
     this.menuFunctions = createFloatingMenuFunctions();
     console.log('menuFunctions inicializadas:', this.menuFunctions);
     
     if (this.menuFunctions) {
-      // Cargar iconos Phosphor usando la utilidad del script
       this.menuFunctions.utils.loadPhosphorIcons();
       console.log('Configuración del menú:', this.menuFunctions.config);
     } else {
       console.error('No se pudieron inicializar las funciones del menú');
-      // Fallback: cargar iconos manualmente
       this.loadPhosphorIconsFallback();
     }
     
-    // Forzar re-render para mostrar iconos
     this.forceUpdate();
   }
 
-  // Fallback para cargar iconos si falla el script
   loadPhosphorIconsFallback = () => {
     if (!document.querySelector('link[href*="phosphor-icons"]')) {
       const link = document.createElement('link');
@@ -54,20 +47,14 @@ class FloatingMenu extends React.Component {
     }
   }
 
-  // Obtener elementos del menú desde script.js con fallback
   getMenuItems = () => {
     if (!this.menuFunctions) {
       console.warn('MenuFunctions no disponibles, usando configuración por defecto');
-      // Fallback: configuración por defecto
       return [
         { id: 'btnOpen', icon: 'ph-magnifying-glass-plus', color: '#454F59', hoverColor: '#4866D1', action: 'toggle', title: 'Abrir/Cerrar menú' },
         { id: 'btnZoomOut', icon: 'ph-magnifying-glass-minus', color: '#454F59', hoverColor: '#FF6B6B', action: 'zoomOut', title: 'Zoom Out' },
         { id: 'btnThemeToggle', icon: 'ph-sun', color: '#454F59', hoverColor: '#F6E05E', action: 'themeToggle', title: 'Cambiar tema' },
-        { id: 'btnGradient', icon: 'ph-gradient', color: '#454F59', hoverColor: '#9F7AEA', action: 'gradient', title: 'Activar gradiente' },
-        { id: 'btnContrast', icon: 'ph-circle-half', color: '#454F59', hoverColor: '#718096', action: 'contrast', title: 'Cambiar contraste' },
-        { id: 'btnVisibility', icon: 'ph-eye', color: '#454F59', hoverColor: '#38B2AC', action: 'visibility', title: 'Cambiar visibilidad' },
-        { id: 'btnShare', icon: 'ph-share-fat', color: '#454F59', hoverColor: '#4CAF50', action: 'share', title: 'Compartir página' },
-        { id: 'btnWhatsapp', icon: 'ph-whatsapp-logo', color: '#454F59', hoverColor: '#25D366', action: 'whatsapp', title: 'Compartir en WhatsApp' }
+        { id: 'btnShare', icon: 'ph-share-fat', color: '#454F59', hoverColor: '#4CAF50', action: 'share', title: 'Compartir página' }
       ];
     }
     
@@ -76,80 +63,29 @@ class FloatingMenu extends React.Component {
     return items;
   };
 
-  // Función para manejar compartir por modal
-  handleShareModalAction = (platform) => {
-    if (this.menuFunctions) {
-      const result = this.menuFunctions.executeShareAction(platform);
-      console.log(`Acción de compartir '${platform}' ejecutada:`, result);
-    } else {
-      this.handleFallbackShareActions(platform);
-    }
+  // Separar items principales de WhatsApp y filtrar elementos no deseados
+  getMainMenuItems = () => {
+    const excludedActions = ['gradient', 'contrast', 'visibility'];
+    return this.getMenuItems().filter(item => 
+      item.id !== 'btnWhatsapp' && !excludedActions.includes(item.action)
+    );
   };
 
-  // Acciones fallback para compartir
-  handleFallbackShareActions = (platform) => {
-    const currentUrl = encodeURIComponent(window.location.href);
-    const message = encodeURIComponent("Te invito a visitar este sitio web de la Pontificia Universidad Javeriana.");
-
-    const shareActions = {
-      whatsapp: () => {
-        window.open(`https://api.whatsapp.com/send?text=${message}%20${currentUrl}`, '_blank');
-      },
-      facebook: () => {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, '_blank');
-      },
-      instagram: () => {
-        // Instagram no permite compartir directamente vía URL, mostrar mensaje
-        navigator.clipboard.writeText(decodeURIComponent(currentUrl)).then(() => {
-          alert('Enlace copiado. Puedes pegarlo en Instagram Stories o DM.');
-        });
-      },
-      linkedin: () => {
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}`, '_blank');
-      },
-      email: () => {
-        const subject = encodeURIComponent("Te comparto este sitio web");
-        const body = encodeURIComponent(`Hola,\n\nTe invito a visitar este increíble sitio web:\n${decodeURIComponent(currentUrl)}\n\n¡Espero que te guste!`);
-        window.location.href = `mailto:?subject=${subject}&body=${body}`;
-      },
-      copylink: async () => {
-        try {
-          await navigator.clipboard.writeText(decodeURIComponent(currentUrl));
-          alert('Enlace copiado al portapapeles');
-        } catch (err) {
-          console.error('Error al copiar:', err);
-          // Fallback para navegadores antiguos
-          const textArea = document.createElement('textarea');
-          textArea.value = decodeURIComponent(currentUrl);
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textArea);
-          alert('Enlace copiado al portapapeles');
-        }
-      }
-    };
-
-    if (shareActions[platform]) {
-      shareActions[platform]();
-    }
+  getWhatsAppItem = () => {
+    return this.getMenuItems().find(item => item.id === 'btnWhatsapp');
   };
 
-  // Manejo de acciones con fallback
   handleItemClick = (action, url) => {
     console.log('Acción clickeada:', action, url);
     
-    // Si es la acción de compartir, abrir modal en lugar de ejecutar acción directa
     if (action === 'share') {
-      this.setState({ isShareModalOpen: true });
+      this.setState({ showShareModal: true });
       return;
     }
     
     if (this.menuFunctions) {
-      // Usar funciones del script
       const result = this.menuFunctions.executeAction(action, url);
       
-      // Actualizar estado local si es necesario
       if (action === 'themeToggle') {
         const newTheme = this.menuFunctions.utils.isDarkTheme();
         this.setState({ isDarkTheme: newTheme });
@@ -157,13 +93,58 @@ class FloatingMenu extends React.Component {
       
       console.log(`Acción '${action}' ejecutada:`, result);
     } else {
-      // Fallback: acciones básicas
       console.warn('Usando acciones fallback');
       this.handleFallbackActions(action, url);
     }
   };
 
-  // Acciones fallback si no está disponible el script
+  closeShareModal = () => {
+    this.setState({ showShareModal: false });
+  };
+
+  shareToWhatsApp = () => {
+    const message = encodeURIComponent('Te invito a visitar este sitio web de la Pontificia Universidad Javeriana.');
+    const currentUrl = encodeURIComponent(window.location.href);
+    window.open(`https://api.whatsapp.com/send?text=${message}%20${currentUrl}`, '_blank');
+    this.closeShareModal();
+  };
+
+  shareToFacebook = () => {
+    const currentUrl = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, '_blank');
+    this.closeShareModal();
+  };
+
+  shareToInstagram = () => {
+    this.copyLink();
+    alert('Link copiado. Puedes pegarlo en tu historia de Instagram');
+  };
+
+  shareToLinkedIn = () => {
+    const currentUrl = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent('Pontificia Universidad Javeriana');
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}&title=${title}`, '_blank');
+    this.closeShareModal();
+  };
+
+  shareByEmail = () => {
+    const subject = encodeURIComponent('Te invito a visitar este sitio web');
+    const body = encodeURIComponent(`Te invito a visitar este sitio web de la Pontificia Universidad Javeriana: ${window.location.href}`);
+    window.open(`mailto:?subject=${subject}&body=${body}`);
+    this.closeShareModal();
+  };
+
+  copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert('Link copiado al portapapeles');
+      this.closeShareModal();
+    } catch (err) {
+      console.error('Error al copiar:', err);
+      alert('No se pudo copiar el link');
+    }
+  };
+
   handleFallbackActions = (action, url) => {
     const actions = {
       toggle: () => console.log('Toggle - menú siempre abierto'),
@@ -210,12 +191,6 @@ class FloatingMenu extends React.Component {
     }
   };
 
-  // Cerrar modal de compartir
-  closeShareModal = () => {
-    this.setState({ isShareModalOpen: false });
-  };
-
-  // Manejo del hover
   handleMouseEnter = (itemId) => {
     this.setState({ hoveredItem: itemId });
   };
@@ -224,7 +199,6 @@ class FloatingMenu extends React.Component {
     this.setState({ hoveredItem: null });
   };
 
-  // Manejo del arrastre solo para el primer elemento
   handleMouseDown = (e, isFirst) => {
     if (isFirst) {
       e.preventDefault();
@@ -260,19 +234,16 @@ class FloatingMenu extends React.Component {
     }
   };
 
-  // Renderizar elemento individual del menú
-  renderMenuItem = (item, index) => {
+  renderMenuItem = (item, index, isMainMenu = true) => {
     const { hoveredItem, isDragging } = this.state;
-    const isFirst = index === 0;
+    const isFirst = index === 0 && isMainMenu;
     const isHovered = hoveredItem === item.id;
-    const menuItems = this.getMenuItems();
+    const menuItems = isMainMenu ? this.getMainMenuItems() : [this.getWhatsAppItem()];
 
-    // Posición fija para todos los elementos
     const itemStyle = {
       zIndex: menuItems.length - index + 2
     };
 
-    // Lógica especial para el icono del tema usando script.js
     let displayIcon = item.icon;
     let iconColor = '#454F59';
     let currentHoverColor = item.hoverColor || item.color;
@@ -284,20 +255,26 @@ class FloatingMenu extends React.Component {
       currentHoverColor = themeData.hoverColor || themeData.color;
     }
 
+    // Estilos especiales para WhatsApp
+    if (item.id === 'btnWhatsapp') {
+      iconColor = isHovered ? 'white' : '#25D366';
+      currentHoverColor = '#25D366';
+    }
+
     const iconStyle = {
-      color: isHovered ? 'white' : '#454F59'
+      color: isHovered ? 'white' : iconColor
     };
 
     const spanStyle = {
-      width: isHovered ? '3.6rem' : '0',
-      height: isHovered ? '3.6rem' : '0',
+      width: isHovered ? (item.id === 'btnWhatsapp' ? '4rem' : '3.6rem') : '0',
+      height: isHovered ? (item.id === 'btnWhatsapp' ? '4rem' : '3.6rem') : '0',
       backgroundColor: currentHoverColor
     };
 
     return (
       <div
         key={item.id}
-        className={`menu-item ${isFirst ? 'menu-toggle' : ''}`}
+        className={`menu-item ${isFirst ? 'menu-toggle' : ''} ${item.id === 'btnWhatsapp' ? 'whatsapp-button' : ''}`}
         style={itemStyle}
         title={item.title || item.action}
         onClick={() => this.handleItemClick(item.action, item.url)}
@@ -311,11 +288,57 @@ class FloatingMenu extends React.Component {
     );
   };
 
-  render() {
-    const menuItems = this.getMenuItems();
-    const { isDragging, dragPosition, isShareModalOpen } = this.state;
+  renderShareModal = () => {
+    if (!this.state.showShareModal) return null;
 
-    // Estilos dinámicos solo para el drag del contenedor
+    return (
+      <div className="share-modal-overlay" onClick={this.closeShareModal}>
+        <div className="share-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="share-modal-header">
+            <h3>Compartir</h3>
+          </div>
+          
+          <div className="share-options">
+            <div className="share-option" onClick={this.shareToWhatsApp}>
+              <i className="ph ph-whatsapp-logo"></i>
+              <span>WhatsApp</span>
+            </div>
+            
+            <div className="share-option" onClick={this.shareToFacebook}>
+              <i className="ph ph-facebook-logo"></i>
+              <span>Facebook</span>
+            </div>
+            
+            <div className="share-option" onClick={this.shareToInstagram}>
+              <i className="ph ph-instagram-logo"></i>
+              <span>Instagram</span>
+            </div>
+            
+            <div className="share-option" onClick={this.shareToLinkedIn}>
+              <i className="ph ph-linkedin-logo"></i>
+              <span>LinkedIn</span>
+            </div>
+            
+            <div className="share-option" onClick={this.shareByEmail}>
+              <i className="ph ph-paper-plane-tilt"></i>
+              <span>Correo</span>
+            </div>
+            
+            <div className="share-option" onClick={this.copyLink}>
+              <i className="ph ph-share-fat"></i>
+              <span>Copiar Link</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  render() {
+    const mainMenuItems = this.getMainMenuItems();
+    const whatsappItem = this.getWhatsAppItem();
+    const { isDragging, dragPosition } = this.state;
+
     const containerStyle = {
       top: isDragging ? dragPosition.y + 'px' : undefined,
       left: isDragging ? dragPosition.x + 'px' : undefined,
@@ -329,14 +352,17 @@ class FloatingMenu extends React.Component {
           className="floating-menu"
           style={containerStyle}
         >
-          {menuItems.map((item, index) => this.renderMenuItem(item, index))}
+          {mainMenuItems.map((item, index) => this.renderMenuItem(item, index, true))}
         </div>
-
-        <ShareModal
-          isOpen={isShareModalOpen}
-          onClose={this.closeShareModal}
-          shareFunction={this.handleShareModalAction}
-        />
+        
+        {/* Botón de WhatsApp separado */}
+        {whatsappItem && (
+          <div className="whatsapp-floating-button">
+            {this.renderMenuItem(whatsappItem, 0, false)}
+          </div>
+        )}
+        
+        {this.renderShareModal()}
       </>
     );
   }

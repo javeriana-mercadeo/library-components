@@ -53,11 +53,13 @@ export default function SeccionesOpcionales() {
       {/* <Herramientas />*/}
       <ViewComponent path={`${basePath}/sections/herramientas`}>
         <Herramientas />
-      </ViewComponent>
+      </ViewComponent>  
 
+
+      {/* <AccesosDirectos/>*/}
       <ViewComponent path={`${basePath}/sections/accesosDirectos`}>
         <AccesosDirectos />
-      </ViewComponent>
+      </ViewComponent> 
     </>
   )
 }

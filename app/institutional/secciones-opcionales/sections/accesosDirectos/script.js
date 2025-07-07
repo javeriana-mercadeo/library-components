@@ -12,7 +12,7 @@ function createFloatingMenuFunctions() {
     const message = encodeURIComponent("Te invito a visitar este sitio web de la Pontificia Universidad Javeriana.");
     let isDarkTheme = false;
 
-    // Configuración de elementos del menú
+    // Configuración de elementos del menú (eliminados gradient, contrast, visibility)
     const menuConfig = [
         { 
             id: 'btnOpen', 
@@ -34,28 +34,7 @@ function createFloatingMenuFunctions() {
             color: '#F6E05E', 
             action: 'themeToggle',
             title: 'Cambiar tema',
-            dynamicIcon: true // Indica que el icono cambia según el estado
-        },
-        { 
-            id: 'btnGradient', 
-            icon: 'ph-gradient', 
-            color: '#9F7AEA', 
-            action: 'gradient',
-            title: 'Activar gradiente'
-        },
-        { 
-            id: 'btnContrast', 
-            icon: 'ph-circle-half', 
-            color: '#718096', 
-            action: 'contrast',
-            title: 'Cambiar contraste'
-        },
-        { 
-            id: 'btnVisibility', 
-            icon: 'ph-eye', 
-            color: '#38B2AC', 
-            action: 'visibility',
-            title: 'Cambiar visibilidad'
+            dynamicIcon: true
         },
         { 
             id: 'btnShare', 
@@ -74,7 +53,91 @@ function createFloatingMenuFunctions() {
         }
     ];
 
-    // Funciones de acciones principales del menú
+    // Funciones específicas para compartir en redes sociales
+    const socialShareFunctions = {
+        // Compartir en WhatsApp
+        shareToWhatsApp: () => {
+            const shareMessage = encodeURIComponent('Te invito a visitar este sitio web de la Pontificia Universidad Javeriana.');
+            const url = encodeURIComponent(window.location.href);
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${shareMessage}%20${url}`;
+            window.open(whatsappUrl, '_blank');
+            console.log('Compartido en WhatsApp');
+            return true;
+        },
+
+        // Compartir en Facebook
+        shareToFacebook: () => {
+            const url = encodeURIComponent(window.location.href);
+            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+            window.open(facebookUrl, '_blank', 'width=600,height=400');
+            console.log('Compartido en Facebook');
+            return true;
+        },
+
+        // Compartir en Instagram (copiar link)
+        shareToInstagram: async () => {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('Link copiado. Puedes pegarlo en tu historia de Instagram');
+                console.log('Link copiado para Instagram');
+                return true;
+            } catch (error) {
+                console.error('Error al copiar link:', error);
+                prompt('Copia este link para Instagram:', window.location.href);
+                return false;
+            }
+        },
+
+        // Compartir en LinkedIn
+        shareToLinkedIn: () => {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent('Pontificia Universidad Javeriana');
+            const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}`;
+            window.open(linkedinUrl, '_blank', 'width=600,height=400');
+            console.log('Compartido en LinkedIn');
+            return true;
+        },
+
+        // Compartir por correo
+        shareByEmail: () => {
+            const subject = encodeURIComponent('Te invito a visitar este sitio web');
+            const body = encodeURIComponent(`Te invito a visitar este sitio web de la Pontificia Universidad Javeriana: ${window.location.href}`);
+            const mailtoUrl = `mailto:?subject=${subject}&body=${body}`;
+            window.open(mailtoUrl);
+            console.log('Correo de compartir abierto');
+            return true;
+        },
+
+        // Copiar link al portapapeles
+        copyLink: async () => {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('Link copiado al portapapeles');
+                console.log('Link copiado al portapapeles');
+                return true;
+            } catch (error) {
+                console.error('Error al copiar al portapapeles:', error);
+                // Fallback para navegadores antiguos
+                const textArea = document.createElement('textarea');
+                textArea.value = window.location.href;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('Link copiado al portapapeles');
+                    return true;
+                } catch (fallbackError) {
+                    console.error('Error en fallback:', fallbackError);
+                    prompt('Copia este link:', window.location.href);
+                    return false;
+                } finally {
+                    document.body.removeChild(textArea);
+                }
+            }
+        }
+    };
+
+    // Funciones de acciones principales (eliminadas gradient, contrast, visibility)
     const menuActions = {
         // Acción del primer botón (ya no cambia estado, solo placeholder)
         toggle: () => {
@@ -85,7 +148,6 @@ function createFloatingMenuFunctions() {
         // Función de zoom out
         zoomOut: () => {
             alert('Función de zoom out activada');
-            // Aquí se puede implementar lógica real de zoom
             console.log('Zoom out ejecutado');
             return true;
         },
@@ -105,158 +167,37 @@ function createFloatingMenuFunctions() {
             return isDarkTheme;
         },
         
-        // Toggle de fondo gradiente
-        gradient: () => {
-            const hasGradient = document.body.style.background.includes("gradient");
-            
-            if (hasGradient) {
-                document.body.style.background = "";
-                console.log('Gradiente desactivado');
+        // Función de compartir - Retorna 'modal' para que React maneje el modal
+        share: () => {
+            console.log('Solicitud de abrir modal de compartir');
+            // Retornar 'modal' indica a React que debe abrir el modal
+            return 'modal';
+        },
+        
+        // Función de compartir con Web Share API como fallback
+        shareNative: async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({ 
+                        title: "Mi Página Web", 
+                        text: "¡Mira esta increíble página!", 
+                        url: window.location.href 
+                    });
+                    console.log('Contenido compartido exitosamente');
+                    return true;
+                } catch (error) {
+                    console.error("Error al compartir:", error);
+                    return false;
+                }
             } else {
-                document.body.style.background = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
-                console.log('Gradiente activado');
+                // Fallback: copiar al clipboard
+                return socialShareFunctions.copyLink();
             }
-            
-            return !hasGradient;
-        },
-        
-        // Toggle de contraste
-        contrast: () => {
-            const currentFilter = document.body.style.filter;
-            const hasContrast = currentFilter.includes("contrast");
-            
-            if (hasContrast) {
-                // Remover solo el contraste, mantener otros filtros como invert
-                const newFilter = currentFilter.replace(/contrast\([^)]*\)\s*/g, '').trim();
-                document.body.style.filter = newFilter;
-                console.log('Contraste desactivado');
-            } else {
-                // Agregar contraste a filtros existentes
-                const newFilter = currentFilter ? `${currentFilter} contrast(1.5)` : 'contrast(1.5)';
-                document.body.style.filter = newFilter;
-                console.log('Contraste activado');
-            }
-            
-            return !hasContrast;
-        },
-        
-        // Toggle de visibilidad del contenido demo
-        visibility: () => {
-            const content = document.querySelector('.demo-content');
-            if (content) {
-                const isHidden = content.style.opacity === "0.5";
-                content.style.opacity = isHidden ? "1" : "0.5";
-                console.log(`Visibilidad: ${isHidden ? 'mostrado' : 'atenuado'}`);
-                return !isHidden;
-            }
-            console.warn('Elemento .demo-content no encontrado');
-            return false;
-        },
-        
-        // Función de compartir nativa (ahora abre modal)
-        share: async () => {
-            console.log('Acción de compartir - abriendo modal');
-            return true;
         },
         
         // Abrir WhatsApp con mensaje predefinido
         whatsapp: () => {
-            const url = `https://api.whatsapp.com/send?text=${message}%20${currentUrl}`;
-            if (typeof window !== 'undefined') {
-                window.open(url, '_blank');
-                console.log('WhatsApp abierto');
-                return true;
-            }
-            console.error('Window no disponible');
-            return false;
-        }
-    };
-
-    // Funciones específicas para el modal de compartir
-    const shareModalActions = {
-        whatsapp: () => {
-            const url = `https://api.whatsapp.com/send?text=${message}%20${currentUrl}`;
-            window.open(url, '_blank');
-            console.log('WhatsApp compartido desde modal');
-            return true;
-        },
-
-        facebook: () => {
-            const url = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
-            window.open(url, '_blank');
-            console.log('Facebook compartido desde modal');
-            return true;
-        },
-
-        instagram: () => {
-            // Instagram no permite compartir directamente vía URL
-            const url = decodeURIComponent(currentUrl);
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(url).then(() => {
-                    alert('Enlace copiado. Puedes pegarlo en Instagram Stories o enviar por DM.');
-                    console.log('Enlace copiado para Instagram');
-                }).catch(err => {
-                    console.error('Error al copiar para Instagram:', err);
-                    // Fallback si falla clipboard
-                    fallbackCopyText(url);
-                });
-            } else {
-                fallbackCopyText(url);
-            }
-            return true;
-        },
-
-        linkedin: () => {
-            const url = `https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}`;
-            window.open(url, '_blank');
-            console.log('LinkedIn compartido desde modal');
-            return true;
-        },
-
-        email: () => {
-            const subject = encodeURIComponent("Te comparto este sitio web");
-            const body = encodeURIComponent(`Hola,\n\nTe invito a visitar este increíble sitio web:\n${decodeURIComponent(currentUrl)}\n\n¡Espero que te guste!`);
-            const mailtoUrl = `mailto:?subject=${subject}&body=${body}`;
-            window.location.href = mailtoUrl;
-            console.log('Email compartido desde modal');
-            return true;
-        },
-
-        copylink: async () => {
-            const url = decodeURIComponent(currentUrl);
-            try {
-                await navigator.clipboard.writeText(url);
-                alert('Enlace copiado al portapapeles');
-                console.log('Enlace copiado desde modal');
-                return true;
-            } catch (err) {
-                console.error('Error al copiar:', err);
-                // Fallback para navegadores antiguos
-                fallbackCopyText(url);
-                return true;
-            }
-        }
-    };
-
-    // Función auxiliar para copiar texto en navegadores antiguos
-    const fallbackCopyText = (text) => {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        textArea.style.top = '-9999px';
-        textArea.style.left = '-9999px';
-        document.body.appendChild(textArea);
-        textArea.select();
-        
-        try {
-            document.execCommand('copy');
-            alert('Enlace copiado al portapapeles');
-            console.log('Texto copiado usando fallback');
-        } catch (err) {
-            console.error('Error en fallback de copia:', err);
-            alert('No se pudo copiar el enlace. Por favor, cópialo manualmente: ' + text);
-        } finally {
-            document.body.removeChild(textArea);
+            return socialShareFunctions.shareToWhatsApp();
         }
     };
 
@@ -279,7 +220,8 @@ function createFloatingMenuFunctions() {
             if (!isHovered) {
                 return {
                     icon: isDarkTheme ? 'ph-moon' : 'ph-sun',
-                    color: isDarkTheme ? '#2D3748' : '#F6E05E'
+                    color: isDarkTheme ? '#2D3748' : '#F6E05E',
+                    hoverColor: isDarkTheme ? '#F6E05E' : '#2D3748'
                 };
             }
             
@@ -295,12 +237,12 @@ function createFloatingMenuFunctions() {
         getUpdatedMenuConfig: () => {
             return menuConfig.map(item => {
                 if (item.id === 'btnThemeToggle') {
-                    const themeData = utils.getThemeIconData(false); // Sin hover por defecto
+                    const themeData = utils.getThemeIconData(false);
                     return {
                         ...item,
                         icon: themeData.icon,
                         color: themeData.color,
-                        hoverColor: themeData.hoverColor || themeData.color
+                        hoverColor: themeData.hoverColor
                     };
                 }
                 return item;
@@ -334,28 +276,20 @@ function createFloatingMenuFunctions() {
             return false;
         },
 
-        // Ejecutar acción de compartir del modal
-        executeShareAction: (platform) => {
-            if (shareModalActions[platform]) {
-                return shareModalActions[platform]();
-            }
-            
-            console.warn(`Acción de compartir '${platform}' no encontrada`);
-            return false;
-        }
+        // Acceso directo a funciones de redes sociales
+        socialShare: socialShareFunctions
     };
 
     // Retornar objeto público con todas las funcionalidades
     return {
         actions: menuActions,
-        shareActions: shareModalActions, // Nuevo objeto de acciones de compartir
         config: menuConfig,
         utils: utils,
+        socialShare: socialShareFunctions,
         
         // Métodos de conveniencia
         getMenuItems: utils.getUpdatedMenuConfig,
         executeAction: utils.executeAction,
-        executeShareAction: utils.executeShareAction, // Nueva función expuesta
         getThemeIcon: utils.getThemeIconData
     };
 }
@@ -366,6 +300,37 @@ function initFloatingMenu() {
     console.log('Usa createFloatingMenuFunctions() para acceder a las funcionalidades.');
     return null;
 }
+
+// Funciones globales adicionales para uso directo
+window.shareToWhatsApp = () => {
+    const functions = createFloatingMenuFunctions();
+    return functions?.socialShare.shareToWhatsApp() || false;
+};
+
+window.shareToFacebook = () => {
+    const functions = createFloatingMenuFunctions();
+    return functions?.socialShare.shareToFacebook() || false;
+};
+
+window.shareToInstagram = () => {
+    const functions = createFloatingMenuFunctions();
+    return functions?.socialShare.shareToInstagram() || false;
+};
+
+window.shareToLinkedIn = () => {
+    const functions = createFloatingMenuFunctions();
+    return functions?.socialShare.shareToLinkedIn() || false;
+};
+
+window.shareByEmail = () => {
+    const functions = createFloatingMenuFunctions();
+    return functions?.socialShare.shareByEmail() || false;
+};
+
+window.copyLink = () => {
+    const functions = createFloatingMenuFunctions();
+    return functions?.socialShare.copyLink() || false;
+};
 
 // Exportar usando sintaxis ES6 para Next.js
 export { createFloatingMenuFunctions, initFloatingMenu };
