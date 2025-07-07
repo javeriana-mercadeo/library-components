@@ -12,7 +12,7 @@
   }
 
   .main-title {
-    font-size: var(--font-size-principal-title);
+    font-size: var(--font-size-title);
     color: var(--neutral-400);
     font-weight: var(--font-weight-bold);
     padding: var(--spacing-xl);
@@ -222,7 +222,7 @@
 @media (min-width: 1440px) {
   .double-titulacion-container {
     .main-title {
-      font-size: var(--font-size-principal-title);
+      font-size: var(--font-size-title);
       padding: rem(80px) rem(80px) rem(50px);
     }
 

@@ -7,7 +7,7 @@
     color: var(--neutral-300);
     font-weight: var(--font-weight-bold);
     text-align: center;
-    font-size: var(--font-size-principal-title);
+    font-size: var(--font-size-title);
     padding: var(--spacing-xl);
   }
   .paragraph-lab {
@@ -29,7 +29,7 @@
     margin-bottom: rem(24px);
 
     .subtitle-lab {
-      font-size: var(--font-size-title);
+      font-size: var(--font-size-subtitle);
       font-weight: var(--font-weight-bold);
       margin-bottom: rem(16px);
       color: var(--neutral-300);

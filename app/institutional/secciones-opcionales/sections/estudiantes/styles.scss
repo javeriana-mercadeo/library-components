@@ -4,7 +4,7 @@
   padding: 0;
 }
 .slider-container .slider-title {
-  font-size: var(--font-size-principal-title);
+  font-size: var(--font-size-title);
   color: var(--neutral-400);
   font-weight: var(--font-weight-bold);
   padding: var(--spacing-xl);
@@ -94,7 +94,7 @@
   overflow: visible;
 }
 .student-info h3 {
-  font-size: 1.25rem;
+  font-size: var(--font-size-caption);
   font-weight: var(--font-weight-bold);
   margin: 0 0 0.5rem;
   line-height: 1.3;
@@ -177,9 +177,7 @@
     min-height: 7rem;
     flex: 1;
   }
-  .student-info h3 {
-    font-size: 1.125rem;
-  }
+
   .student-info p {
     font-size: var(--font-size-paragraph);
     flex-grow: 1;
@@ -246,7 +244,6 @@
   }
 
   .student-info h3 {
-    font-size: var(--font-size-subtitle);
     margin-bottom: 0.3125rem;
     line-height: 1.2;
     display: block;
@@ -373,7 +370,7 @@
   }
 
   .student-info h3 {
-    font-size: var(--font-size-subtitle);
+    font-size: var(--font-size-caption);
     margin-bottom: 0.5rem;
     line-height: 1.2;
   }
