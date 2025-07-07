@@ -13,7 +13,7 @@
     color: var(--neutral-300);
     font-weight: var(--font-weight-bold);
     text-align: center;
-    font-size: var(--font-size-principal-title);
+    font-size: var(--font-size-title);
     padding-bottom: rem(20px);
   }
 
@@ -184,7 +184,7 @@
 
     // Estilos específicos para los iconos
     i {
-      font-size: rem(24px); // Tamaño apropiado para el icono
+      font-size: rem(24px);
       line-height: 1;
       display: flex;
       align-items: center;
@@ -193,17 +193,6 @@
       height: 100%;
     }
 
-    // Asegurar que los iconos Phosphor se muestren correctamente
-    &::before {
-      font-family: 'Phosphor', sans-serif;
-      font-style: normal;
-      font-weight: normal;
-      font-variant: normal;
-      text-transform: none;
-      line-height: 1;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
   }
 
   // Posicionamiento específico para los botones
@@ -317,11 +306,11 @@
 .ph-arrow-circle-left::before {
   content: "‹";
   font-size: rem(32px);
-  font-weight: bold;
+
 }
 
 .ph-arrow-circle-right::before {
   content: "›";
   font-size: rem(32px);
-  font-weight: bold;
+
 }
