@@ -61,6 +61,14 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
     padding: var(--spacing-xl);
     align-items: center;
   }
+
+  @include responsive($breakpoint-sm) {
+    padding: rem(10px);
+  }
+
+  @include responsive(375px) {
+    padding: rem(8px);
+  }
 }
 
 // ===========================================
@@ -73,6 +81,7 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   border-radius: var(--border-radius-lg);
   box-shadow: $modal-shadow;
   width: 100%;
+  height: 100%;
   max-height: calc(100vh - rem(40px));
   overflow: visible;
   position: relative;
@@ -98,8 +107,11 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   @include responsive {
     max-width: $modal-max-width-desktop;
     flex-direction: row;
-    height: 80vh;
     max-height: rem(650px);
+  }
+
+  @include responsive(375px) {
+    border-radius: rem(8px);
   }
 
   // Estados (patrón similar al menú móvil)
@@ -159,7 +171,24 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   flex-shrink: 0;
   min-height: var(--spacing-2xl);
 
-  // El botón de cerrar usa el componente Button global, no necesita estilos adicionales
+  @include responsive($breakpoint-sm) {
+    padding: rem(16px);
+
+    &__title {
+      font-size: rem(20px);
+    }
+
+    &__close {
+      width: rem(32px);
+      height: rem(32px);
+      top: rem(12px);
+      right: rem(12px);
+    }
+  }
+
+  @include responsive(375px) {
+    padding: rem(12px);
+  }
 }
 
 // ===========================================
@@ -173,6 +202,14 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
 
   @include responsive {
     padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
+  }
+
+  @include responsive($breakpoint-sm) {
+    padding: rem(16px);
+  }
+
+  @include responsive(375px) {
+    padding: rem(12px);
   }
 
   // Scrollbar personalizado
@@ -228,8 +265,8 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   flex-direction: column;
   gap: var(--spacing-lg);
 
-  @include responsive {
-    gap: var(--spacing-lg);
+  @include responsive($breakpoint-sm) {
+    gap: rem(16px);
   }
 
   // ===========================================
@@ -245,6 +282,10 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
       gap: var(--spacing-lg);
     }
 
+    @include responsive($breakpoint-sm) {
+      gap: rem(12px);
+    }
+
     // Fila especial para teléfono
     &.form-row-phone {
       .form-group-prefix {
@@ -256,6 +297,15 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
       .form-group-phone {
         @include responsive {
           flex: 1;
+        }
+      }
+
+      @include responsive(375px) {
+        flex-direction: column;
+
+        .form-group-prefix,
+        .form-group-phone {
+          width: 100%;
         }
       }
     }
@@ -328,6 +378,11 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
 
     @include responsive {
       font-size: var(--font-size-paragraph);
+    }
+
+    @include responsive($breakpoint-sm) {
+      height: rem(44px);
+      font-size: rem(16px); // Mantener 16px en mobile para evitar zoom
     }
 
     // Estados de focus
@@ -409,6 +464,11 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
 
     @include responsive {
       font-size: var(--font-size-paragraph);
+    }
+
+    @include responsive($breakpoint-sm) {
+      height: rem(44px);
+      font-size: rem(16px); // Mantener 16px en mobile para evitar zoom
     }
 
     // Estados de focus
@@ -519,6 +579,10 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
     border-radius: 0;
     border: none;
 
+    @include responsive($breakpoint-sm) {
+      padding: rem(12px);
+    }
+
     .terms-checkbox {
       width: var(--icon-size-sm);
       height: var(--icon-size-sm);
@@ -555,6 +619,17 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
       display: flex;
       gap: var(--spacing-lg);
       margin-left: var(--spacing-lg);
+
+      @include responsive($breakpoint-sm) {
+        margin-left: rem(20px);
+        gap: rem(16px);
+      }
+
+      @include responsive(375px) {
+        flex-direction: column;
+        gap: rem(8px);
+        margin-left: rem(16px);
+      }
 
       .radio-label {
         display: flex;
@@ -633,8 +708,12 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
     margin-top: var(--spacing-xs);
     padding-top: var(--spacing-md);
 
-    // El botón usa el componente Button global, no necesita estilos adicionales
-    // Estilos específicos solo si es necesario
+    @include responsive($breakpoint-sm) {
+      .btn {
+        height: rem(52px);
+        font-size: rem(15px);
+      }
+    }
   }
 }
 
@@ -711,98 +790,3 @@ body.modal-open {
   }
 }
 
-// ===========================================
-// RESPONSIVE ESPECÍFICO
-// ===========================================
-@include responsive($breakpoint-sm) {
-  .modal-overlay {
-    padding: rem(10px);
-  }
-
-  .contact-modal {
-    max-height: calc(100vh - rem(20px));
-    border-radius: rem(12px);
-  }
-
-  .modal-header {
-    padding: rem(16px);
-
-    &__title {
-      font-size: rem(20px);
-    }
-
-    &__close {
-      width: rem(32px);
-      height: rem(32px);
-      top: rem(12px);
-      right: rem(12px);
-    }
-  }
-
-  .modal-content {
-    padding: rem(16px);
-  }
-
-  .contact-form {
-    gap: rem(16px);
-
-    .form-row {
-      gap: rem(12px);
-    }
-
-    .form-input,
-    .form-select {
-      height: rem(44px);
-      font-size: rem(16px); // Mantener 16px en mobile para evitar zoom
-    }
-
-    .terms-group {
-      padding: rem(12px);
-
-      .radio-options {
-        margin-left: rem(20px);
-        gap: rem(16px);
-      }
-    }
-
-    .form-submit .btn {
-      height: rem(52px);
-      font-size: rem(15px);
-    }
-  }
-}
-
-// ===========================================
-// RESPONSIVE EXTRA SMALL
-// ===========================================
-@include responsive(375px) {
-  .modal-overlay {
-    padding: rem(8px);
-  }
-
-  .contact-modal {
-    border-radius: rem(8px);
-  }
-
-  .modal-header,
-  .modal-content {
-    padding: rem(12px);
-  }
-
-  .contact-form {
-    .form-row.form-row-phone {
-      flex-direction: column;
-
-      .form-group-prefix,
-      .form-group-phone {
-        width: 100%;
-      }
-    }
-
-    .terms-group .radio-options {
-      flex-direction: column;
-      gap: rem(8px);
-      margin-left: rem(16px);
-    }
-  }
-}
