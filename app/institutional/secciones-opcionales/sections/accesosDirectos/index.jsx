@@ -1,7 +1,5 @@
-import createFloatingMenuFunctions from './script.js'
-import info from './info.json'
-import './styles.scss'
 import React from 'react';
+import './styles.scss';
 
 class FloatingMenu extends React.Component {
   constructor(props) {
@@ -10,26 +8,39 @@ class FloatingMenu extends React.Component {
       isOpen: true,
       isDragging: false,
       hoveredItem: null,
-      dragPosition: { x: 0, y: 0 },
+      dragPosition: { x: 10, y: 142 },
       isDarkTheme: false,
       showShareModal: false
     };
     this.menuRef = React.createRef();
+    this.whatsappRef = React.createRef();
     this.dragOffset = { x: 0, y: 0 };
     this.menuFunctions = null;
+    
+    this.config = {
+      menuWidth: 42,
+      menuHeight: 218,
+      whatsappSize: 50,
+      whatsappOffset: 20,
+      initialTop: 142,
+      initialLeft: 10
+    };
   }
 
   componentDidMount() {
-    console.log('createFloatingMenuFunctions:', createFloatingMenuFunctions);
-    
-    this.menuFunctions = createFloatingMenuFunctions();
-    console.log('menuFunctions inicializadas:', this.menuFunctions);
-    
-    if (this.menuFunctions) {
-      this.menuFunctions.utils.loadPhosphorIcons();
-      console.log('Configuración del menú:', this.menuFunctions.config);
+    if (typeof window !== 'undefined' && window.createFloatingMenuFunctions) {
+      this.menuFunctions = window.createFloatingMenuFunctions();
+      console.log('createFloatingMenuFunctions cargado desde window:', this.menuFunctions);
+      
+      if (this.menuFunctions) {
+        this.menuFunctions.utils.loadPhosphorIcons();
+        console.log('Configuración del menú:', this.menuFunctions.config);
+      } else {
+        console.error('No se pudieron inicializar las funciones del menú');
+        this.loadPhosphorIconsFallback();
+      }
     } else {
-      console.error('No se pudieron inicializar las funciones del menú');
+      console.error('window.createFloatingMenuFunctions no está disponible');
       this.loadPhosphorIconsFallback();
     }
     
@@ -37,7 +48,7 @@ class FloatingMenu extends React.Component {
   }
 
   loadPhosphorIconsFallback = () => {
-    if (!document.querySelector('link[href*="phosphor-icons"]')) {
+    if (typeof document !== 'undefined' && !document.querySelector('link[href*="phosphor-icons"]')) {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       link.type = 'text/css';
@@ -51,10 +62,10 @@ class FloatingMenu extends React.Component {
     if (!this.menuFunctions) {
       console.warn('MenuFunctions no disponibles, usando configuración por defecto');
       return [
-        { id: 'btnOpen', icon: 'ph-magnifying-glass-plus', color: '#454F59', hoverColor: '#4866D1', action: 'toggle', title: 'Abrir/Cerrar menú' },
-        { id: 'btnZoomOut', icon: 'ph-magnifying-glass-minus', color: '#454F59', hoverColor: '#FF6B6B', action: 'zoomOut', title: 'Zoom Out' },
-        { id: 'btnThemeToggle', icon: 'ph-sun', color: '#454F59', hoverColor: '#F6E05E', action: 'themeToggle', title: 'Cambiar tema' },
-        { id: 'btnShare', icon: 'ph-share-fat', color: '#454F59', hoverColor: '#4CAF50', action: 'share', title: 'Compartir página' }
+        { id: 'btnOpen', icon: 'ph-magnifying-glass-plus', color: '#4866D1', hoverColor: '#4866D1', action: 'toggle', title: 'Abrir/Cerrar menú' },
+        { id: 'btnZoomOut', icon: 'ph-magnifying-glass-minus', color: '#FF6B6B', hoverColor: '#FF6B6B', action: 'zoomOut', title: 'Zoom Out' },
+        { id: 'btnThemeToggle', icon: 'ph-sun', color: '#F6E05E', hoverColor: '#F6E05E', action: 'themeToggle', title: 'Cambiar tema' },
+        { id: 'btnShare', icon: 'ph-share-fat', color: '#4CAF50', hoverColor: '#4CAF50', action: 'share', title: 'Compartir página' }
       ];
     }
     
@@ -63,7 +74,6 @@ class FloatingMenu extends React.Component {
     return items;
   };
 
-  // Separar items principales de WhatsApp y filtrar elementos no deseados
   getMainMenuItems = () => {
     const excludedActions = ['gradient', 'contrast', 'visibility'];
     return this.getMenuItems().filter(item => 
@@ -72,7 +82,15 @@ class FloatingMenu extends React.Component {
   };
 
   getWhatsAppItem = () => {
-    return this.getMenuItems().find(item => item.id === 'btnWhatsapp');
+    const item = this.getMenuItems().find(item => item.id === 'btnWhatsapp');
+    return item || {
+      id: 'btnWhatsapp',
+      icon: 'ph-whatsapp-logo',
+      color: '#25D366',
+      hoverColor: '#25D366',
+      action: 'whatsapp',
+      title: 'Compartir en WhatsApp'
+    };
   };
 
   handleItemClick = (action, url) => {
@@ -103,45 +121,83 @@ class FloatingMenu extends React.Component {
   };
 
   shareToWhatsApp = () => {
-    const message = encodeURIComponent('Te invito a visitar este sitio web de la Pontificia Universidad Javeriana.');
-    const currentUrl = encodeURIComponent(window.location.href);
-    window.open(`https://api.whatsapp.com/send?text=${message}%20${currentUrl}`, '_blank');
+    if (typeof window !== 'undefined' && window.shareToWhatsApp) {
+      window.shareToWhatsApp();
+    } else {
+      const message = encodeURIComponent('Te invito a visitar este sitio web de la Pontificia Universidad Javeriana.');
+      const currentUrl = encodeURIComponent(window.location.href);
+      window.open(`https://api.whatsapp.com/send?text=${message}%20${currentUrl}`, '_blank');
+    }
     this.closeShareModal();
   };
 
   shareToFacebook = () => {
-    const currentUrl = encodeURIComponent(window.location.href);
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, '_blank');
+    if (typeof window !== 'undefined' && window.shareToFacebook) {
+      window.shareToFacebook();
+    } else {
+      const currentUrl = encodeURIComponent(window.location.href);
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, '_blank');
+    }
     this.closeShareModal();
   };
 
   shareToInstagram = () => {
-    this.copyLink();
-    alert('Link copiado. Puedes pegarlo en tu historia de Instagram');
+    if (typeof window !== 'undefined' && window.shareToInstagram) {
+      window.shareToInstagram();
+    } else {
+      this.copyLink();
+      alert('Link copiado. Puedes pegarlo en tu historia de Instagram');
+    }
   };
 
   shareToLinkedIn = () => {
-    const currentUrl = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent('Pontificia Universidad Javeriana');
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}&title=${title}`, '_blank');
+    if (typeof window !== 'undefined' && window.shareToLinkedIn) {
+      window.shareToLinkedIn();
+    } else {
+      const currentUrl = encodeURIComponent(window.location.href);
+      const title = encodeURIComponent('Pontificia Universidad Javeriana');
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}&title=${title}`, '_blank');
+    }
     this.closeShareModal();
   };
 
   shareByEmail = () => {
-    const subject = encodeURIComponent('Te invito a visitar este sitio web');
-    const body = encodeURIComponent(`Te invito a visitar este sitio web de la Pontificia Universidad Javeriana: ${window.location.href}`);
-    window.open(`mailto:?subject=${subject}&body=${body}`);
+    if (typeof window !== 'undefined' && window.shareByEmail) {
+      window.shareByEmail();
+    } else {
+      const subject = encodeURIComponent('Te invito a visitar este sitio web');
+      const body = encodeURIComponent(`Te invito a visitar este sitio web de la Pontificia Universidad Javeriana: ${window.location.href}`);
+      window.open(`mailto:?subject=${subject}&body=${body}`);
+    }
     this.closeShareModal();
   };
 
   copyLink = async () => {
+    if (typeof window !== 'undefined' && window.copyLink) {
+      window.copyLink();
+      return;
+    }
+
     try {
       await navigator.clipboard.writeText(window.location.href);
       alert('Link copiado al portapapeles');
       this.closeShareModal();
     } catch (err) {
       console.error('Error al copiar:', err);
-      alert('No se pudo copiar el link');
+      const textArea = document.createElement('textarea');
+      textArea.value = window.location.href;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        alert('Link copiado al portapapeles');
+        this.closeShareModal();
+      } catch (fallbackError) {
+        console.error('Error en fallback:', fallbackError);
+        prompt('Copia este link:', window.location.href);
+      } finally {
+        document.body.removeChild(textArea);
+      }
     }
   };
 
@@ -152,36 +208,15 @@ class FloatingMenu extends React.Component {
       themeToggle: () => {
         const newTheme = !this.state.isDarkTheme;
         this.setState({ isDarkTheme: newTheme });
-        document.body.style.filter = newTheme ? 'invert(1)' : '';
-      },
-      gradient: () => {
-        const hasGradient = document.body.style.background.includes('gradient');
-        document.body.style.background = hasGradient ? '' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-      },
-      contrast: () => {
-        const currentFilter = document.body.style.filter;
-        const hasContrast = currentFilter.includes('contrast');
-        if (hasContrast) {
-          const newFilter = currentFilter.replace(/contrast\([^)]*\)\s*/g, '').trim();
-          document.body.style.filter = newFilter;
-        } else {
-          const newFilter = currentFilter ? `${currentFilter} contrast(1.5)` : 'contrast(1.5)';
-          document.body.style.filter = newFilter;
-        }
-      },
-      visibility: () => {
-        const content = document.querySelector('.demo-content');
-        if (content) {
-          content.style.opacity = content.style.opacity === '0.5' ? '1' : '0.5';
+        if (typeof document !== 'undefined') {
+          document.body.style.filter = newTheme ? 'invert(1)' : '';
         }
       },
       whatsapp: () => {
         if (url) {
           window.open(url, '_blank');
         } else {
-          const message = encodeURIComponent('Te invito a visitar este sitio web de la Pontificia Universidad Javeriana.');
-          const currentUrl = encodeURIComponent(window.location.href);
-          window.open(`https://api.whatsapp.com/send?text=${message}%20${currentUrl}`, '_blank');
+          this.shareToWhatsApp();
         }
       }
     };
@@ -191,12 +226,15 @@ class FloatingMenu extends React.Component {
     }
   };
 
+  // ELIMINADOS los handlers de mouse enter/leave - Dejamos que CSS maneje todo
   handleMouseEnter = (itemId) => {
-    this.setState({ hoveredItem: itemId });
+    // NO aplicar estilos inline - dejar que CSS maneje el hover
+    console.log('Hover en:', itemId);
   };
 
   handleMouseLeave = () => {
-    this.setState({ hoveredItem: null });
+    // NO aplicar estilos inline - dejar que CSS maneje el hover
+    console.log('Saliendo del hover');
   };
 
   handleMouseDown = (e, isFirst) => {
@@ -214,11 +252,11 @@ class FloatingMenu extends React.Component {
 
       const handleMouseMove = (e) => {
         if (this.state.isDragging) {
+          const newX = e.clientX - this.dragOffset.x;
+          const newY = e.clientY - this.dragOffset.y;
+          
           this.setState({
-            dragPosition: {
-              x: e.clientX - this.dragOffset.x,
-              y: e.clientY - this.dragOffset.y
-            }
+            dragPosition: { x: newX, y: newY }
           });
         }
       };
@@ -235,9 +273,7 @@ class FloatingMenu extends React.Component {
   };
 
   renderMenuItem = (item, index, isMainMenu = true) => {
-    const { hoveredItem, isDragging } = this.state;
     const isFirst = index === 0 && isMainMenu;
-    const isHovered = hoveredItem === item.id;
     const menuItems = isMainMenu ? this.getMainMenuItems() : [this.getWhatsAppItem()];
 
     const itemStyle = {
@@ -245,45 +281,31 @@ class FloatingMenu extends React.Component {
     };
 
     let displayIcon = item.icon;
-    let iconColor = '#454F59';
-    let currentHoverColor = item.hoverColor || item.color;
 
+    // Lógica especial para el botón de tema
     if (item.id === 'btnThemeToggle' && this.menuFunctions) {
-      const themeData = this.menuFunctions.getThemeIcon(isHovered);
+      const themeData = this.menuFunctions.getThemeIcon(false); // Sin hover aquí
       displayIcon = themeData.icon;
-      iconColor = '#454F59';
-      currentHoverColor = themeData.hoverColor || themeData.color;
     }
 
-    // Estilos especiales para WhatsApp
-    if (item.id === 'btnWhatsapp') {
-      iconColor = isHovered ? 'white' : '#25D366';
-      currentHoverColor = '#25D366';
-    }
-
-    const iconStyle = {
-      color: isHovered ? 'white' : iconColor
-    };
-
-    const spanStyle = {
-      width: isHovered ? (item.id === 'btnWhatsapp' ? '4rem' : '3.6rem') : '0',
-      height: isHovered ? (item.id === 'btnWhatsapp' ? '4rem' : '3.6rem') : '0',
-      backgroundColor: currentHoverColor
-    };
+    // NO aplicar estilos inline que interfieren con CSS hover
+    // Los spans e iconos no tendrán estilos inline
 
     return (
       <div
         key={item.id}
         className={`menu-item ${isFirst ? 'menu-toggle' : ''} ${item.id === 'btnWhatsapp' ? 'whatsapp-button' : ''}`}
-        style={itemStyle}
+        style={itemStyle} // Solo z-index, sin otros estilos
         title={item.title || item.action}
         onClick={() => this.handleItemClick(item.action, item.url)}
         onMouseEnter={() => this.handleMouseEnter(item.id)}
         onMouseLeave={this.handleMouseLeave}
         onMouseDown={(e) => this.handleMouseDown(e, isFirst)}
       >
-        <span style={spanStyle}></span>
-        <i className={`ph ${displayIcon}`} style={iconStyle}></i>
+        {/* SIN estilos inline en span - CSS puro manejará el hover */}
+        <span></span>
+        {/* SIN estilos inline en icono - CSS puro manejará el color */}
+        <i className={`ph ${displayIcon}`}></i>
       </div>
     );
   };
@@ -339,10 +361,25 @@ class FloatingMenu extends React.Component {
     const whatsappItem = this.getWhatsAppItem();
     const { isDragging, dragPosition } = this.state;
 
+    // Solo estilos de posicionamiento - sin interferir con hover
     const containerStyle = {
-      top: isDragging ? dragPosition.y + 'px' : undefined,
-      left: isDragging ? dragPosition.x + 'px' : undefined,
-      transition: isDragging ? 'none' : undefined
+      position: 'fixed',
+      top: isDragging ? `${dragPosition.y}px` : `${this.config.initialTop}px`,
+      left: isDragging ? `${dragPosition.x}px` : `${this.config.initialLeft}px`,
+      transition: isDragging ? 'none' : 'left 0.5s ease, top 0.5s ease',
+      zIndex: 1000
+    };
+
+    const whatsappStyle = {
+      position: 'fixed',
+      top: isDragging 
+        ? `${dragPosition.y + this.config.menuHeight + this.config.whatsappOffset}px`
+        : '380px',
+      left: isDragging 
+        ? `${dragPosition.x + (this.config.menuWidth - this.config.whatsappSize) / 2}px`
+        : '6px',
+      transition: isDragging ? 'none' : 'left 0.5s ease, top 0.5s ease',
+      zIndex: 1001
     };
 
     return (
@@ -355,12 +392,13 @@ class FloatingMenu extends React.Component {
           {mainMenuItems.map((item, index) => this.renderMenuItem(item, index, true))}
         </div>
         
-        {/* Botón de WhatsApp separado */}
-        {whatsappItem && (
-          <div className="whatsapp-floating-button">
-            {this.renderMenuItem(whatsappItem, 0, false)}
-          </div>
-        )}
+        <div 
+          ref={this.whatsappRef}
+          className="whatsapp-floating-button"
+          style={whatsappStyle}
+        >
+          {this.renderMenuItem(whatsappItem, 0, false)}
+        </div>
         
         {this.renderShareModal()}
       </>

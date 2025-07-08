@@ -1,126 +1,138 @@
-@use '@styles/autoload' as *;
+// Estilos del menú flotante - Compatible con Liferay - HOVER FORZADO
 
-// Variables para el menú flotante
+// Variables SCSS (no CSS custom properties)
 $menu-size: 35px;
 $menu-hover-size: 3.6rem;
 $menu-z-index: 1000;
 $menu-container-bg: #C7D1DB;
 $menu-container-radius: 20px;
 
-// Variables específicas para WhatsApp
 $whatsapp-size: 50px;
 $whatsapp-hover-size: 4rem;
 $whatsapp-color: #25D366;
-$whatsapp-separation: 20px;
 
-.theme-toggle-icon {
-  transition: all 0.2s ease !important;
-}
-
-// Menú principal (sin WhatsApp)
+// Menú principal
 .floating-menu {
-  position: fixed;
-  top: 142px;
-  left: 10px;
-  width: 42px; 
-  background-color: $menu-container-bg;
-  border-radius: $menu-container-radius;
-  z-index: $menu-z-index;
-  box-sizing: border-box;
+  position: fixed !important;
+  top: 142px !important;
+  left: 10px !important;
+  width: 42px !important;
+  height: 218px !important;
+  background-color: $menu-container-bg !important;
+  border-radius: $menu-container-radius !important;
+  z-index: $menu-z-index !important;
+  box-sizing: border-box !important;
+  padding: 10px 0 !important;
   
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  align-items: center !important;
   
-  // Altura ajustada para 4 elementos principales (sin gradient, contrast, visibility)
-  height: 218px;
-  padding: 10px 0;
-  
-  transition: left 0.5s ease, top 0.5s ease;
+  transition: left 0.5s ease, top 0.5s ease !important;
+  animation: fadeIn 0.5s ease-out !important;
 }
 
 // Botón de WhatsApp separado
 .whatsapp-floating-button {
-  position: fixed;
-  // Se posiciona debajo del menú principal + separación
-  top: calc(142px + 218px + #{$whatsapp-separation});
-  left: 10px;
-  width: 60px;
-  height: 60px;
-  background-color: $whatsapp-color;
-  border-radius: 50%;
-  z-index: $menu-z-index + 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-  transition: all 0.3s ease;
+  position: fixed !important;
+  top: 380px !important; // 142 + 218 + 20 calculado manualmente
+  left: 6px !important; // 10 + (42 - 50) / 2 calculado manualmente
+  width: 50px !important;
+  height: 50px !important;
+  background-color: $whatsapp-color !important;
+  border-radius: 50% !important;
+  z-index: $menu-z-index + 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3) !important;
+  transition: all 0.3s ease !important;
+  animation: whatsappFadeIn 0.6s ease-out 0.2s both !important;
   
   &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4) !important;
   }
   
   .menu-item {
     background: none !important;
-    border-radius: 50%;
+    border-radius: 50% !important;
   }
 }
 
-// Elementos individuales del menú
+// Elementos individuales del menú - HOVER FORZADO CON !important
 .menu-item {
-  position: relative;
-  width: $menu-size;
-  height: $menu-size;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  overflow: hidden;
-  user-select: none;
-  
-  transition: none;
+  position: relative !important;
+  width: $menu-size !important;
+  height: $menu-size !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  overflow: hidden !important;
+  user-select: none !important;
+  transition: none !important;
 
-  // Elemento span para efecto hover
+  // Elemento span para efecto hover - FORZADO
   span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: all 0.3s ease;
-    z-index: 0;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-radius: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    transition: all 0.3s ease !important;
+    z-index: 0 !important;
+    background-color: transparent !important;
   }
 
   &:focus,
   &:focus-visible,
   &:active {
-    outline: none;
+    outline: none !important;
   }
 
   // Iconos dentro del menú
   i {
-    font-size: 22px;
-    transition: all 0.3s ease;
-    z-index: 1;
-    position: relative;
-    pointer-events: none;
-    color: #454F59;
+    font-size: 22px !important;
+    transition: all 0.3s ease !important;
+    z-index: 1 !important;
+    position: relative !important;
+    pointer-events: none !important;
+    color: #454F59 !important;
   }
   
-  // Estilos específicos para el botón de WhatsApp
-  &.whatsapp-button {
-    width: $whatsapp-size;
-    height: $whatsapp-size;
-    background: transparent;
+  // HOVER FORZADO para elementos regulares - Sobrescribe estilos inline
+  &:hover:not(.whatsapp-button) {
+    span {
+      width: $menu-hover-size !important;
+      height: $menu-hover-size !important;
+      background-color: #4866D1 !important; // Color por defecto
+    }
     
     i {
-      font-size: 32px;
-      color: white;
+      color: white !important;
+    }
+  }
+  
+  // Colores específicos por botón en hover - FORZADOS
+  &:nth-child(1):hover:not(.whatsapp-button) span { background-color: #4866D1 !important; }
+  &:nth-child(2):hover:not(.whatsapp-button) span { background-color: #FF6B6B !important; }
+  &:nth-child(3):hover:not(.whatsapp-button) span { background-color: #F6E05E !important; }
+  &:nth-child(4):hover:not(.whatsapp-button) span { background-color: #4CAF50 !important; }
+  
+  // Estilos específicos para el botón de WhatsApp - FORZADOS
+  &.whatsapp-button {
+    width: $whatsapp-size !important;
+    height: $whatsapp-size !important;
+    background: transparent !important;
+    
+    i {
+      font-size: 30px !important;
+      color: white !important; // Siempre blanco para WhatsApp
     }
     
     span {
@@ -129,70 +141,58 @@ $whatsapp-separation: 20px;
     
     &:hover {
       span {
-        width: $whatsapp-hover-size;
-        height: $whatsapp-hover-size;
+        width: $whatsapp-hover-size !important;
+        height: $whatsapp-hover-size !important;
         background-color: rgba(255, 255, 255, 0.2) !important;
       }
       
       i {
-        color: white;
-        transform: scale(1.1);
+        color: white !important; // Mantener blanco en hover
+        transform: scale(1.1) !important;
       }
     }
   }
 }
 
 .menu-toggle {
-  cursor: grab;
+  cursor: grab !important;
   
   &:active {
-    cursor: grabbing;
-  }
-}
-
-// Estados de hover para elementos regulares del menú
-.menu-item:not(.whatsapp-button):hover {
-  span {
-    width: $menu-hover-size;
-    height: $menu-hover-size;
-  }
-  
-  i {
-    color: white;
+    cursor: grabbing !important;
   }
 }
 
 // Responsividad para dispositivos móviles
 @media (max-width: 768px) {
   .floating-menu {
-    top: 20px;
-    left: 10px;
-    width: 38px;
-    height: 178px;
-    padding: 8px 0;
+    top: 20px !important;
+    left: 10px !important;
+    width: 38px !important;
+    height: 178px !important;
+    padding: 8px 0 !important;
   }
   
   .whatsapp-floating-button {
-    top: calc(20px + 178px + #{$whatsapp-separation});
-    left: 10px;
-    width: 55px;
-    height: 55px;
+    top: 218px !important; // 20 + 178 + 20
+    left: 6px !important; // 10 + (38 - 45) / 2
+    width: 45px !important;
+    height: 45px !important;
   }
   
   .menu-item {
-    width: 32px;
-    height: 32px;
+    width: 32px !important;
+    height: 32px !important;
     
     i {
-      font-size: 20px;
+      font-size: 20px !important;
     }
     
     &.whatsapp-button {
-      width: 45px;
-      height: 45px;
+      width: 45px !important;
+      height: 45px !important;
       
       i {
-        font-size: 28px;
+        font-size: 26px !important;
       }
     }
   }
@@ -200,44 +200,45 @@ $whatsapp-separation: 20px;
 
 @media (max-width: 480px) {
   .floating-menu {
-    top: 15px;
-    left: 5px;
-    width: 36px;
-    height: 140px;
-    padding: 6px 0;
+    top: 15px !important;
+    left: 5px !important;
+    width: 36px !important;
+    height: 140px !important;
+    padding: 6px 0 !important;
   }
   
   .whatsapp-floating-button {
-    top: calc(15px + 140px + #{$whatsapp-separation});
-    left: 5px;
-    width: 50px;
-    height: 50px;
+    top: 175px !important; // 15 + 140 + 20
+    left: 2px !important; // 5 + (36 - 42) / 2
+    width: 42px !important;
+    height: 42px !important;
   }
   
   .menu-item {
-    width: 30px;
-    height: 30px;
+    width: 30px !important;
+    height: 30px !important;
     
     i {
-      font-size: 18px;
+      font-size: 18px !important;
     }
     
     &.whatsapp-button {
-      width: 42px;
-      height: 42px;
+      width: 42px !important;
+      height: 42px !important;
       
       i {
-        font-size: 24px;
+        font-size: 24px !important;
       }
     }
     
     span {
-      max-width: 3rem;
-      max-height: 3rem;
+      max-width: 3rem !important;
+      max-height: 3rem !important;
     }
   }
 }
 
+// Animaciones
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -249,7 +250,6 @@ $whatsapp-separation: 20px;
   }
 }
 
-// Animación específica para WhatsApp desde abajo
 @keyframes whatsappFadeIn {
   from {
     opacity: 0;
@@ -261,199 +261,122 @@ $whatsapp-separation: 20px;
   }
 }
 
-.floating-menu {
-  animation: fadeIn 0.5s ease-out;
-}
-
-.whatsapp-floating-button {
-  animation: whatsappFadeIn 0.6s ease-out 0.2s both;
-}
-
+// Accesibilidad
 .menu-item {
   &:focus-visible {
-    outline: 2px solid #4866D1;
-    outline-offset: 2px;
+    outline: 2px solid #4866D1 !important;
+    outline-offset: 2px !important;
   }
   
   &.whatsapp-button:focus-visible {
-    outline: 2px solid white;
-    outline-offset: 2px;
+    outline: 2px solid white !important;
+    outline-offset: 2px !important;
   }
 }
 
+// Prevenir selección de texto
 .floating-menu * {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  .floating-menu {
-    background-color: var(--neutral-900);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-  
-  .menu-item:not(.whatsapp-button) i {
-    color: #A0AEC0;
-  }
-  
-  .whatsapp-floating-button {
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-  }
-}
-
-// Soporte para dispositivos táctiles
-@media (pointer: coarse) {
-  .menu-item:not(.whatsapp-button) {
-    &:hover {
-      span {
-        width: 0;
-        height: 0;
-      }
-      
-      i {
-        color: #454F59;
-      }
-    }
-    
-    &:active {
-      span {
-        width: $menu-hover-size;
-        height: $menu-hover-size;
-      }
-      
-      i {
-        color: white;
-      }
-    }
-  }
-  
-  .whatsapp-floating-button {
-    &:hover {
-      transform: none;
-    }
-    
-    &:active {
-      transform: scale(0.95);
-    }
-  }
-}
-
-// Estilos del Modal de Compartir (mantenido igual)
+// Estilos del Modal de Compartir
 .share-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-  display: flex;
-  backdrop-filter: blur(2px);
-  
-  align-items: center;
-  justify-content: center;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   
   @media (max-width: 768px) {
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 20px;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    padding-bottom: 20px !important;
   }
 }
 
 .share-modal {
-  background: var(--neutral, white);
-  border-radius: 16px;
-  padding: 0;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  
-  animation: modalSlideInCenter 0.3s ease-out;
+  background: white !important;
+  border-radius: 16px !important;
+  padding: 0 !important;
+  width: 90% !important;
+  max-width: 400px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+  overflow: hidden !important;
+  animation: modalSlideInCenter 0.3s ease-out !important;
   
   @media (max-width: 768px) {
-    animation: modalSlideInBottom 0.3s ease-out;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-bottom: 0;
+    animation: modalSlideInBottom 0.3s ease-out !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    margin-bottom: 0 !important;
   }
 }
 
 .share-modal-header {
-  padding: 20px 24px 16px;
-  border-bottom: 1px dashed #E2E8F0;
+  padding: 20px 24px 16px !important;
+  border-bottom: 1px dashed #E2E8F0 !important;
   
   h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #2D3748;
-    text-align: left;
+    margin: 0 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #2D3748 !important;
+    text-align: left !important;
   }
 }
 
 .share-options {
-  padding: 16px 24px 24px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  padding: 16px 24px 24px !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 16px !important;
 }
 
 .share-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 8px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 16px 8px !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid transparent !important;
   
   &:hover {
-    background-color: #F7FAFC;
-    border-color: #E2E8F0;
-    transform: translateY(-2px);
+    background-color: #F7FAFC !important;
+    border-color: #E2E8F0 !important;
+    transform: translateY(-2px) !important;
   }
   
   i {
-    font-size: 28px;
-    color: #4A5568;
-    transition: color 0.2s ease;
+    font-size: 28px !important;
+    color: #4A5568 !important;
+    transition: color 0.2s ease !important;
   }
   
   span {
-    font-size: 12px;
-    font-weight: 500;
-    color: #4A5568;
-    text-align: center;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: #4A5568 !important;
+    text-align: center !important;
   }
   
-  &:nth-child(1) {
-    &:hover i { color: #25D366; }
-  }
-  
-  &:nth-child(2) {
-    &:hover i { color: #1877F2; }
-  }
-  
-  &:nth-child(3) {
-    &:hover i { color: #E4405F; }
-  }
-  
-  &:nth-child(4) {
-    &:hover i { color: #0A66C2; }
-  }
-  
-  &:nth-child(5) {
-    &:hover i { color: #718096; }
-  }
-  
-  &:nth-child(6) {
-    &:hover i { color: #4A5568; }
-  }
+  // Colores específicos para cada red social
+  &:nth-child(1):hover i { color: #25D366 !important; } // WhatsApp
+  &:nth-child(2):hover i { color: #1877F2 !important; } // Facebook
+  &:nth-child(3):hover i { color: #E4405F !important; } // Instagram
+  &:nth-child(4):hover i { color: #0A66C2 !important; } // LinkedIn
+  &:nth-child(5):hover i { color: #718096 !important; } // Email
+  &:nth-child(6):hover i { color: #4A5568 !important; } // Copy
 }
 
 @keyframes modalSlideInCenter {
@@ -478,86 +401,137 @@ $whatsapp-separation: 20px;
   }
 }
 
+// Responsividad para modal
 @media (max-width: 768px) {
   .share-modal {
-    width: 95%;
-    max-width: 100%;
-    border-radius: 16px 16px 0 0;
+    width: 95% !important;
+    max-width: 100% !important;
+    border-radius: 16px 16px 0 0 !important;
   }
   
   .share-modal-header {
-    padding: 16px 20px 12px;
+    padding: 16px 20px 12px !important;
     
     h3 {
-      font-size: 16px;
+      font-size: 16px !important;
     }
   }
   
   .share-options {
-    padding: 12px 20px 20px;
-    gap: 12px;
+    padding: 12px 20px 20px !important;
+    gap: 12px !important;
   }
   
   .share-option {
-    padding: 12px 6px;
+    padding: 12px 6px !important;
     
     i {
-      font-size: 24px;
+      font-size: 24px !important;
     }
     
     span {
-      font-size: 11px;
+      font-size: 11px !important;
     }
   }
 }
 
 @media (max-width: 480px) {
   .share-modal {
-    width: 100%;
-    border-radius: 16px 16px 0 0;
+    width: 100% !important;
+    border-radius: 16px 16px 0 0 !important;
   }
   
   .share-options {
-    padding: 10px 16px 18px;
-    gap: 10px;
+    padding: 10px 16px 18px !important;
+    gap: 10px !important;
   }
   
   .share-option {
-    padding: 10px 4px;
+    padding: 10px 4px !important;
     
     i {
-      font-size: 22px;
+      font-size: 22px !important;
     }
     
     span {
-      font-size: 10px;
+      font-size: 10px !important;
     }
   }
 }
 
+// Soporte para dispositivos táctiles - Mejoras para móviles
+@media (pointer: coarse) {
+  .menu-item:not(.whatsapp-button) {
+    // En hover no hacer nada en dispositivos táctiles
+    &:hover {
+      span {
+        width: 0 !important;
+        height: 0 !important;
+      }
+      
+      i {
+        color: #454F59 !important;
+      }
+    }
+    
+    // En active mostrar el efecto
+    &:active {
+      span {
+        width: $menu-hover-size !important;
+        height: $menu-hover-size !important;
+      }
+      
+      i {
+        color: white !important;
+      }
+    }
+  }
+  
+  .whatsapp-floating-button {
+    &:hover {
+      transform: none !important;
+    }
+    
+    &:active {
+      transform: scale(0.95) !important;
+    }
+  }
+}
+
+// Tema oscuro básico - SIN VARIABLES CSS
 @media (prefers-color-scheme: dark) {
+  .floating-menu {
+    background-color: var(--neutral-900) !important; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  .menu-item:not(.whatsapp-button) i {
+    color: var(--neutral-400) !important;
+  }
+  
+  .whatsapp-floating-button {
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4) !important;
+  }
+  
   .share-modal {
-    background: var(--neutral, #2D3748); 
+    background: var(--neutral-900) !important;
     
     .share-modal-header {
-      border-bottom-color: #4A5568;
+      border-bottom-color: #4A5568 !important;
       
       h3 {
-        color: var(--neutral-100);
+        color: #F7FAFC !important;
       }
     }
     
     .share-option {
       &:hover {
-        background-color: var(--neutral-900);
+        background-color: #4A5568 !important;
       }
       
-      i {
-        color: var(--neutral-100);
-      }
-      
+      i,
       span {
-        color: var(--neutral-100);
+        color: #F7FAFC !important;
       }
     }
   }
