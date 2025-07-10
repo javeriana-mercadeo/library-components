@@ -1,81 +1,233 @@
-// Estilos del menú flotante - Compatible con Liferay - HOVER FORZADO
+@use '@styles/autoload' as *;
 
-// Variables SCSS (no CSS custom properties)
-$menu-size: 35px;
-$menu-hover-size: 3.6rem;
-$menu-z-index: 1000;
-$menu-container-bg: #C7D1DB;
-$menu-container-radius: 20px;
+:root {
 
-$whatsapp-size: 50px;
-$whatsapp-hover-size: 4rem;
-$whatsapp-color: #25D366;
+  --javeriana-acc-menu-bg-dark: var(--neutral-400);
+  --javeriana-acc-menu-text: #cbd5e0;
+  --javeriana-acc-menu-hover: #4866d1;
+  --javeriana-acc-whatsapp: #25d366;
+  --javeriana-acc-bg-light: #ffffff;
+  --javeriana-acc-bg-dark: #1a1a1a;
+  --javeriana-acc-text-light: #2d3748;
+  --javeriana-acc-text-dark: #f7fafc;
+  --javeriana-acc-border-light: #e2e8f0;
+  --javeriana-acc-border-dark: #4a5568;
+  --javeriana-acc-z-menu: 999999;
+  --javeriana-acc-z-whatsapp: 999998;
+  --javeriana-acc-z-modal: 999997;
+  --javeriana-acc-transition: all 0.3s ease;
+  --accessibility-font-scale: 1;
+}
 
-// Menú principal
+/* ===================================================================
+   PROTECCIÓN ABSOLUTA CONTRA ZOOM Y FILTROS - MEJORADA
+   =================================================================== */
+
+/* Protección total para elementos de accesibilidad */
+.floating-menu,
+.floating-menu *,
+.whatsapp-floating-button,
+.whatsapp-floating-button *,
+.share-modal-overlay,
+.share-modal-overlay *,
+.share-modal,
+.share-modal *,
+[class*="accessibility"],
+[id*="accessibility"] {
+  filter: none !important;
+  -webkit-filter: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  zoom: 1 !important;
+  font-size: initial !important;
+  scale: 1 !important;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+}
+
+/* ===================================================================
+   ESCALA DE GRISES CORREGIDA - SELECTORES MÁS ESPECÍFICOS
+   =================================================================== */
+
+/* Aplicar escala de grises SOLO a elementos específicos del contenido */
+#wrapper.grayscale-mode ,
+body.grayscale-mode .portlet-boundary,
+body.grayscale-mode .portlet-content,
+body.grayscale-mode .journal-content-article,
+body.grayscale-mode .portlet-body,
+body.grayscale-mode main,
+body.grayscale-mode .container-fluid:not(.floating-menu):not(.whatsapp-floating-button),
+body.grayscale-mode .container:not(.floating-menu):not(.whatsapp-floating-button),
+body.grayscale-mode .content,
+body.grayscale-mode .main-content,
+body.grayscale-mode .page-content,
+body.grayscale-mode section,
+body.grayscale-mode article,
+body.grayscale-mode .card,
+body.grayscale-mode .row,
+body.grayscale-mode .col {
+  filter: grayscale(100%) !important;
+  transition: filter 0.3s ease !important;
+}
+
+/* Aplicar escala de grises a imágenes y videos específicos */
+body.grayscale-mode img:not(.floating-menu img):not(.whatsapp-floating-button img):not(.share-modal img):not([class*="accessibility"]),
+body.grayscale-mode video:not(.floating-menu video):not(.whatsapp-floating-button video):not(.share-modal video):not([class*="accessibility"]) {
+  filter: grayscale(100%) !important;
+  transition: filter 0.3s ease !important;
+}
+
+/* PROTECCIÓN REFORZADA - Múltiples niveles de especificidad */
+html body.grayscale-mode .floating-menu,
+html body.grayscale-mode .floating-menu *,
+html body.grayscale-mode .whatsapp-floating-button,
+html body.grayscale-mode .whatsapp-floating-button *,
+html body.grayscale-mode .share-modal-overlay,
+html body.grayscale-mode .share-modal-overlay *,
+html body.grayscale-mode .share-modal,
+html body.grayscale-mode .share-modal *,
+html body.grayscale-mode [class*="accessibility"],
+html body.grayscale-mode [id*="accessibility"] {
+  filter: none !important;
+  -webkit-filter: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+}
+
+/* Protección con especificidad máxima */
+body.grayscale-mode .floating-menu,
+body.grayscale-mode .floating-menu .menu-item,
+body.grayscale-mode .floating-menu .menu-item *,
+body.grayscale-mode .whatsapp-floating-button,
+body.grayscale-mode .whatsapp-floating-button .menu-item,
+body.grayscale-mode .whatsapp-floating-button .menu-item * {
+  filter: none !important;
+  -webkit-filter: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  display: flex !important;
+}
+
+/* ===================================================================
+   MENÚ FLOTANTE PRINCIPAL
+   =================================================================== */
 .floating-menu {
-  position: fixed !important;
-  top: 142px !important;
-  left: 10px !important;
+   position: fixed !important;
+  z-index: 999999 !important;
+  top: 142px;
+  left: 10px;
   width: 42px !important;
-  height: 218px !important;
-  background-color: $menu-container-bg !important;
-  border-radius: $menu-container-radius !important;
-  z-index: $menu-z-index !important;
-  box-sizing: border-box !important;
+  height: auto !important;
+  min-height: 253px !important;
+  background-color: var(--neutral-900) !important;
+  border-radius: 20px !important;
+  z-index: var(--javeriana-acc-z-menu) !important;
   padding: 10px 0 !important;
-  
+  margin: 0 !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
   align-items: center !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  transition: var(--javeriana-acc-transition) !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
+  user-select: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
   
-  transition: left 0.5s ease, top 0.5s ease !important;
-  animation: fadeIn 0.5s ease-out !important;
+  /* Protección específica contra filtros */
+  filter: none !important;
+  -webkit-filter: none !important;
+  transform: none !important;
+  scale: 1 !important;
+  zoom: 1 !important;
+  font-size: initial !important;
+
+  /* Animación de entrada */
+  animation: fadeInAccessibility 0.5s ease-out !important;
 }
 
-// Botón de WhatsApp separado
+/* Estado tema oscuro */
+body.accessibility-dark-theme .floating-menu {
+  background-color: var(--neutral-900) !important;
+  opacity: 1 !important;
+}
+
+/* ===================================================================
+   BOTÓN DE WHATSAPP
+   =================================================================== */
 .whatsapp-floating-button {
   position: fixed !important;
-  top: 380px !important; // 142 + 218 + 20 calculado manualmente
-  left: 6px !important; // 10 + (42 - 50) / 2 calculado manualmente
-  width: 50px !important;
-  height: 50px !important;
-  background-color: $whatsapp-color !important;
+  top: 415px !important;
+  left: 10px !important;
+  width: 42px !important;
+  height: 42px !important;
+  background-color: var(--javeriana-acc-whatsapp) !important;
   border-radius: 50% !important;
-  z-index: $menu-z-index + 1 !important;
+  z-index: var(--javeriana-acc-z-whatsapp) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3) !important;
-  transition: all 0.3s ease !important;
-  animation: whatsappFadeIn 0.6s ease-out 0.2s both !important;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4) !important;
+  transition: var(--javeriana-acc-transition) !important;
+  cursor: pointer !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
   
+  /* Protección específica */
+  filter: none !important;
+  -webkit-filter: none !important;
+  transform: none !important;
+  scale: 1 !important;
+  zoom: 1 !important;
+  font-size: initial !important;
+
   &:hover {
-    transform: scale(1.1) !important;
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4) !important;
-  }
-  
-  .menu-item {
-    background: none !important;
-    border-radius: 50% !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5) !important;
   }
 }
 
-// Elementos individuales del menú - HOVER FORZADO CON !important
+/* ===================================================================
+   ITEMS DEL MENÚ
+   =================================================================== */
 .menu-item {
   position: relative !important;
-  width: $menu-size !important;
-  height: $menu-size !important;
+  width: 35px !important;
+  height: 35px !important;
   border-radius: 50% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
   overflow: hidden !important;
+  margin: 2px 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  transition: var(--javeriana-acc-transition) !important;
   user-select: none !important;
-  transition: none !important;
+  
+  /* Protección específica */
+  filter: none !important;
+  -webkit-filter: none !important;
+  transform: none !important;
+  scale: 1 !important;
+  zoom: 1 !important;
+  font-size: initial !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 
-  // Elemento span para efecto hover - FORZADO
+  /* Elemento para efecto hover */
   span {
     position: absolute !important;
     top: 50% !important;
@@ -84,162 +236,284 @@ $whatsapp-color: #25D366;
     height: 0 !important;
     border-radius: 50% !important;
     transform: translate(-50%, -50%) !important;
-    transition: all 0.3s ease !important;
+    transition: var(--javeriana-acc-transition) !important;
     z-index: 0 !important;
     background-color: transparent !important;
+    pointer-events: none !important;
+    filter: none !important;
+    -webkit-filter: none !important;
   }
 
-  &:focus,
-  &:focus-visible,
-  &:active {
-    outline: none !important;
-  }
-
-  // Iconos dentro del menú
+  /* Iconos */
   i {
     font-size: 22px !important;
-    transition: all 0.3s ease !important;
+    color: var(--javeriana-acc-menu-text) !important;
+    transition: var(--javeriana-acc-transition) !important;
     z-index: 1 !important;
     position: relative !important;
-    pointer-events: none !important;
-    color: #454F59 !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+
+  /* Iconos en tema oscuro */
+  .accessibility-dark-theme & i {
+    color: #2d3748 !important;
   }
   
-  // HOVER FORZADO para elementos regulares - Sobrescribe estilos inline
+  /* Efectos hover para elementos regulares */
   &:hover:not(.whatsapp-button) {
     span {
-      width: $menu-hover-size !important;
-      height: $menu-hover-size !important;
-      background-color: #4866D1 !important; // Color por defecto
+      width: 3.6rem !important;
+      height: 3.6rem !important;
+      background-color: var(--javeriana-acc-menu-hover) !important;
+      transform: translate(-50%, -50%) scale(1) !important;
     }
     
     i {
       color: white !important;
+      transform: scale(1.1) !important;
     }
   }
   
-  // Colores específicos por botón en hover - FORZADOS
-  &:nth-child(1):hover:not(.whatsapp-button) span { background-color: #4866D1 !important; }
-  &:nth-child(2):hover:not(.whatsapp-button) span { background-color: #FF6B6B !important; }
-  &:nth-child(3):hover:not(.whatsapp-button) span { background-color: #F6E05E !important; }
-  &:nth-child(4):hover:not(.whatsapp-button) span { background-color: #4CAF50 !important; }
+  /* Colores específicos por función */
+  &:nth-child(1):hover:not(.whatsapp-button) span { 
+    background-color: #10b981 !important; /* Aumentar fuente - Verde */
+  }
   
-  // Estilos específicos para el botón de WhatsApp - FORZADOS
+  &:nth-child(2):hover:not(.whatsapp-button) span { 
+    background-color: #ef4444 !important; /* Disminuir fuente - Rojo */
+  }
+  
+  &:nth-child(3):hover:not(.whatsapp-button) span { 
+    background-color: #ffd93d !important; /* Tema - Amarillo */
+  }
+  
+  &:nth-child(4):hover:not(.whatsapp-button) span { 
+    background-color: #9ca3af !important; /* Escala de grises - Gris */
+  }
+  
+  &:nth-child(5):hover:not(.whatsapp-button) span { 
+    background-color: #4caf50 !important; /* Compartir - Verde */
+  }
+  
+  /* Estados activos */
+  &.active {
+    span {
+      width: 3.6rem !important;
+      height: 3.6rem !important;
+      background-color: var(--javeriana-acc-menu-hover) !important;
+      transform: translate(-50%, -50%) scale(1) !important;
+    }
+    
+    i {
+      color: #ffd93d !important;
+      transform: scale(1.1) !important;
+    }
+  }
+  
+  /* Estilos para botón de WhatsApp */
   &.whatsapp-button {
-    width: $whatsapp-size !important;
-    height: $whatsapp-size !important;
+    width: 42px !important;
+    height: 42px !important;
     background: transparent !important;
     
     i {
-      font-size: 30px !important;
-      color: white !important; // Siempre blanco para WhatsApp
-    }
-    
-    span {
-      background-color: transparent !important;
+      font-size: 22px !important;
+      color: white !important;
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      line-height: 1 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: block !important;
+      text-align: center !important;
     }
     
     &:hover {
       span {
-        width: $whatsapp-hover-size !important;
-        height: $whatsapp-hover-size !important;
+        width: 3.6rem !important;
+        height: 3.6rem !important;
         background-color: rgba(255, 255, 255, 0.2) !important;
+        transform: translate(-50%, -50%) scale(1) !important;
       }
       
       i {
-        color: white !important; // Mantener blanco en hover
-        transform: scale(1.1) !important;
+        color: white !important;
+        transform: translate(-50%, -50%) scale(1.1) !important;
       }
     }
   }
 }
 
-.menu-toggle {
-  cursor: grab !important;
+/* ===================================================================
+   ESTADO ACTIVO DEL BOTÓN DE ESCALA DE GRISES - CORREGIDO
+   =================================================================== */
+
+/* Botón de escala de grises en estado activo */
+.menu-item[data-action="grayscale"].active {
+  span {
+    width: 3.6rem !important;
+    height: 3.6rem !important;
+    background-color: #9ca3af !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+  }
   
-  &:active {
-    cursor: grabbing !important;
+  i {
+    color: white !important;
+    transform: scale(1.1) !important;
   }
 }
 
-// Responsividad para dispositivos móviles
-@media (max-width: 768px) {
-  .floating-menu {
-    top: 20px !important;
-    left: 10px !important;
-    width: 38px !important;
-    height: 178px !important;
-    padding: 8px 0 !important;
-  }
-  
-  .whatsapp-floating-button {
-    top: 218px !important; // 20 + 178 + 20
-    left: 6px !important; // 10 + (38 - 45) / 2
-    width: 45px !important;
-    height: 45px !important;
-  }
-  
-  .menu-item {
-    width: 32px !important;
-    height: 32px !important;
-    
-    i {
-      font-size: 20px !important;
-    }
-    
-    &.whatsapp-button {
-      width: 45px !important;
-      height: 45px !important;
-      
-      i {
-        font-size: 26px !important;
-      }
-    }
+/* Indicador visual cuando escala de grises está activa */
+body.grayscale-mode .menu-item[data-action="grayscale"] {
+  &::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background-color: #9ca3af;
+    border-radius: 50%;
+    border: 2px solid white;
+    z-index: 10;
+    filter: none !important;
+    -webkit-filter: none !important;
   }
 }
 
-@media (max-width: 480px) {
-  .floating-menu {
-    top: 15px !important;
-    left: 5px !important;
-    width: 36px !important;
-    height: 140px !important;
-    padding: 6px 0 !important;
+/* Hover para escala de grises */
+.menu-item[data-action="grayscale"]:hover:not(.whatsapp-button) {
+  span {
+    width: 3.6rem !important;
+    height: 3.6rem !important;
+    background-color: #9ca3af !important;
+    transform: translate(-50%, -50%) scale(1) !important;
   }
   
-  .whatsapp-floating-button {
-    top: 175px !important; // 15 + 140 + 20
-    left: 2px !important; // 5 + (36 - 42) / 2
-    width: 42px !important;
-    height: 42px !important;
-  }
-  
-  .menu-item {
-    width: 30px !important;
-    height: 30px !important;
-    
-    i {
-      font-size: 18px !important;
-    }
-    
-    &.whatsapp-button {
-      width: 42px !important;
-      height: 42px !important;
-      
-      i {
-        font-size: 24px !important;
-      }
-    }
-    
-    span {
-      max-width: 3rem !important;
-      max-height: 3rem !important;
-    }
+  i {
+    color: white !important;
+    transform: scale(1.1) !important;
   }
 }
 
-// Animaciones
-@keyframes fadeIn {
+/* ===================================================================
+   MODAL DE COMPARTIR
+   =================================================================== */
+.share-modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  z-index: var(--javeriana-acc-z-modal) !important;
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
+  
+  /* Protección específica */
+  filter: none !important;
+  -webkit-filter: none !important;
+  transform: none !important;
+  scale: 1 !important;
+  zoom: 1 !important;
+  font-size: initial !important;
+  
+  &.show {
+    display: flex !important;
+    opacity: 1 !important;
+  }
+}
+
+.share-modal {
+  background: var(--javeriana-acc-bg-light) !important;
+  border-radius: 16px !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  overflow: hidden !important;
+  transform: scale(0.9) !important;
+  transition: transform 0.3s ease !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  opacity: 1 !important;
+  
+  /* Protección específica */
+  filter: none !important;
+  -webkit-filter: none !important;
+  font-size: initial !important;
+  zoom: 1 !important;
+  
+  .show & {
+    transform: scale(1) !important;
+  }
+}
+
+/* ===================================================================
+   PROTECCIÓN FINAL REFORZADA
+   =================================================================== */
+
+/* Protección de último recurso con máxima especificidad */
+html body.grayscale-mode .floating-menu,
+html body.grayscale-mode .floating-menu *,
+html body.grayscale-mode .whatsapp-floating-button,
+html body.grayscale-mode .whatsapp-floating-button *,
+html body.grayscale-mode .share-modal-overlay,
+html body.grayscale-mode .share-modal-overlay *,
+html body.grayscale-mode .share-modal,
+html body.grayscale-mode .share-modal *,
+html body.grayscale-mode [class*="accessibility"],
+html body.grayscale-mode [id*="accessibility"] {
+  filter: none !important;
+  -webkit-filter: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+  transform: none !important;
+  zoom: 1 !important;
+  font-size: initial !important;
+  scale: 1 !important;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+}
+
+/* Protección específica para el contenedor del menú */
+.floating-menu {
+  filter: none !important;
+  -webkit-filter: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+}
+
+/* Protección específica para cuando se activa escala de grises */
+body.grayscale-mode .floating-menu {
+  filter: none !important;
+  -webkit-filter: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+  background-color: var(--neutral-900) !important;
+}
+
+/* ===================================================================
+   ANIMACIONES Y RESPONSIVE
+   =================================================================== */
+
+@keyframes fadeInAccessibility {
   from {
     opacity: 0;
     transform: translateX(-20px);
@@ -250,288 +524,69 @@ $whatsapp-color: #25D366;
   }
 }
 
-@keyframes whatsappFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-// Accesibilidad
-.menu-item {
-  &:focus-visible {
-    outline: 2px solid #4866D1 !important;
-    outline-offset: 2px !important;
-  }
-  
-  &.whatsapp-button:focus-visible {
-    outline: 2px solid white !important;
-    outline-offset: 2px !important;
-  }
-}
-
-// Prevenir selección de texto
-.floating-menu * {
-  -webkit-user-select: none !important;
-  -moz-user-select: none !important;
-  -ms-user-select: none !important;
-  user-select: none !important;
-}
-
-// Estilos del Modal de Compartir
-.share-modal-overlay {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  background-color: rgba(0, 0, 0, 0.5) !important;
-  z-index: 9999 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  
-  @media (max-width: 768px) {
-    align-items: flex-end !important;
-    justify-content: center !important;
-    padding-bottom: 20px !important;
-  }
-}
-
-.share-modal {
-  background: white !important;
-  border-radius: 16px !important;
-  padding: 0 !important;
-  width: 90% !important;
-  max-width: 400px !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
-  overflow: hidden !important;
-  animation: modalSlideInCenter 0.3s ease-out !important;
-  
-  @media (max-width: 768px) {
-    animation: modalSlideInBottom 0.3s ease-out !important;
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    margin-bottom: 0 !important;
-  }
-}
-
-.share-modal-header {
-  padding: 20px 24px 16px !important;
-  border-bottom: 1px dashed #E2E8F0 !important;
-  
-  h3 {
-    margin: 0 !important;
-    font-size: 18px !important;
-    font-weight: 600 !important;
-    color: #2D3748 !important;
-    text-align: left !important;
-  }
-}
-
-.share-options {
-  padding: 16px 24px 24px !important;
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 16px !important;
-}
-
-.share-option {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 8px !important;
-  padding: 16px 8px !important;
-  border-radius: 12px !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  border: 1px solid transparent !important;
-  
-  &:hover {
-    background-color: #F7FAFC !important;
-    border-color: #E2E8F0 !important;
-    transform: translateY(-2px) !important;
-  }
-  
-  i {
-    font-size: 28px !important;
-    color: #4A5568 !important;
-    transition: color 0.2s ease !important;
-  }
-  
-  span {
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    color: #4A5568 !important;
-    text-align: center !important;
-  }
-  
-  // Colores específicos para cada red social
-  &:nth-child(1):hover i { color: #25D366 !important; } // WhatsApp
-  &:nth-child(2):hover i { color: #1877F2 !important; } // Facebook
-  &:nth-child(3):hover i { color: #E4405F !important; } // Instagram
-  &:nth-child(4):hover i { color: #0A66C2 !important; } // LinkedIn
-  &:nth-child(5):hover i { color: #718096 !important; } // Email
-  &:nth-child(6):hover i { color: #4A5568 !important; } // Copy
-}
-
-@keyframes modalSlideInCenter {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes modalSlideInBottom {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// Responsividad para modal
+/* Responsive Design */
 @media (max-width: 768px) {
-  .share-modal {
-    width: 95% !important;
-    max-width: 100% !important;
-    border-radius: 16px 16px 0 0 !important;
+  .floating-menu {
+    top: 20px !important;
+    width: 38px !important;
+    min-height: 203px !important;
+    padding: 8px 0 !important;
   }
-  
-  .share-modal-header {
-    padding: 16px 20px 12px !important;
-    
-    h3 {
-      font-size: 16px !important;
-    }
+
+  .whatsapp-floating-button {
+    top: 243px !important;
+    width: 38px !important;
+    height: 38px !important;
   }
-  
-  .share-options {
-    padding: 12px 20px 20px !important;
-    gap: 12px !important;
-  }
-  
-  .share-option {
-    padding: 12px 6px !important;
+
+  .menu-item {
+    width: 32px !important;
+    height: 32px !important;
     
     i {
-      font-size: 24px !important;
+      font-size: 20px !important;
     }
     
-    span {
-      font-size: 11px !important;
+    &.whatsapp-button {
+      width: 38px !important;
+      height: 38px !important;
+      
+      i {
+        font-size: 20px !important;
+      }
     }
   }
 }
 
 @media (max-width: 480px) {
-  .share-modal {
-    width: 100% !important;
-    border-radius: 16px 16px 0 0 !important;
+  .floating-menu {
+    top: 15px !important;
+    left: 5px !important;
+    width: 36px !important;
+    min-height: 165px !important;
   }
-  
-  .share-options {
-    padding: 10px 16px 18px !important;
-    gap: 10px !important;
+
+  .whatsapp-floating-button {
+    top: 200px !important;
+    left: 5px !important;
+    width: 36px !important;
+    height: 36px !important;
   }
-  
-  .share-option {
-    padding: 10px 4px !important;
+
+  .menu-item {
+    width: 30px !important;
+    height: 30px !important;
     
     i {
-      font-size: 22px !important;
+      font-size: 18px !important;
     }
     
-    span {
-      font-size: 10px !important;
-    }
-  }
-}
-
-// Soporte para dispositivos táctiles - Mejoras para móviles
-@media (pointer: coarse) {
-  .menu-item:not(.whatsapp-button) {
-    // En hover no hacer nada en dispositivos táctiles
-    &:hover {
-      span {
-        width: 0 !important;
-        height: 0 !important;
-      }
+    &.whatsapp-button {
+      width: 36px !important;
+      height: 36px !important;
       
       i {
-        color: #454F59 !important;
-      }
-    }
-    
-    // En active mostrar el efecto
-    &:active {
-      span {
-        width: $menu-hover-size !important;
-        height: $menu-hover-size !important;
-      }
-      
-      i {
-        color: white !important;
-      }
-    }
-  }
-  
-  .whatsapp-floating-button {
-    &:hover {
-      transform: none !important;
-    }
-    
-    &:active {
-      transform: scale(0.95) !important;
-    }
-  }
-}
-
-// Tema oscuro básico - SIN VARIABLES CSS
-@media (prefers-color-scheme: dark) {
-  .floating-menu {
-    background-color: var(--neutral-900) !important; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-  }
-  
-  .menu-item:not(.whatsapp-button) i {
-    color: var(--neutral-400) !important;
-  }
-  
-  .whatsapp-floating-button {
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4) !important;
-  }
-  
-  .share-modal {
-    background: var(--neutral-900) !important;
-    
-    .share-modal-header {
-      border-bottom-color: #4A5568 !important;
-      
-      h3 {
-        color: #F7FAFC !important;
-      }
-    }
-    
-    .share-option {
-      &:hover {
-        background-color: #4A5568 !important;
-      }
-      
-      i,
-      span {
-        color: #F7FAFC !important;
+        font-size: 18px !important;
       }
     }
   }
