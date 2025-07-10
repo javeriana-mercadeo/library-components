@@ -26,6 +26,7 @@
     var slides = [];
     var currentSlide = 0;
     var isInitialized = false;
+    var isAnimating = false; // Evita múltiples animaciones simultáneas
 
     function initializeSlides() {
       if (window.liferayLabSlides && Array.isArray(window.liferayLabSlides) && window.liferayLabSlides.length > 0) {
@@ -41,7 +42,7 @@
         currentSlide = 0;
         
         if (isInitialized) {
-          updateContent();
+          updateContentWithAnimation();
         }
         return true;
       }
@@ -73,21 +74,21 @@
     }
 
     function nextSlide() {
-      if (!isInitialized || slides.length === 0) {
+      if (!isInitialized || slides.length === 0 || isAnimating) {
         return;
       }
       
       currentSlide = currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
-      updateContent();
+      updateContentWithAnimation();
     }
 
     function prevSlide() {
-      if (!isInitialized || slides.length === 0) {
+      if (!isInitialized || slides.length === 0 || isAnimating) {
         return;
       }
       
       currentSlide = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
-      updateContent();
+      updateContentWithAnimation();
     }
 
     function getCurrentSlide() {
@@ -106,6 +107,60 @@
       };
     }
 
+    // Función principal de actualización con animación integrada
+    function updateContentWithAnimation() {
+      if (isAnimating) return;
+      
+      try {
+        isAnimating = true;
+        
+        // Busca el elemento principal del contenido que cambia
+        var sliderContent = document.querySelector('.lab-slider-content');
+        var sliderText = document.querySelector('.lab-slider-text');
+        var sliderImages = document.querySelector('.lab-slider-images');
+
+        if (!sliderContent) {
+          updateContent();
+          isAnimating = false;
+          return;
+        }
+
+        // Aplica la animación a todos los elementos que cambian
+        var elementsToAnimate = [sliderContent];
+        if (sliderText) elementsToAnimate.push(sliderText);
+        if (sliderImages) elementsToAnimate.push(sliderImages);
+
+        // Reinicia las clases de animación
+        elementsToAnimate.forEach(function(element) {
+          element.classList.remove('lab-slider-transition');
+        });
+        
+        // Fuerza el reflow para reiniciar las animaciones
+        void sliderContent.offsetWidth;
+
+        // Agrega las clases para animar
+        elementsToAnimate.forEach(function(element) {
+          element.classList.add('lab-slider-transition');
+        });
+
+        // Actualiza el contenido inmediatamente para que la animación sea visible
+        updateContent();
+
+        // Quita las clases al finalizar la animación
+        setTimeout(function() {
+          elementsToAnimate.forEach(function(element) {
+            element.classList.remove('lab-slider-transition');
+          });
+          isAnimating = false;
+        }, 450); // Un poco más de tiempo que la animación CSS
+
+      } catch (error) {
+        console.error('Error actualizando contenido con animación:', error);
+        isAnimating = false;
+      }
+    }
+
+    // Función de actualización sin animación (para uso interno)
     function updateContent() {
       try {
         updateText();
@@ -324,7 +379,7 @@
           function proceedWithInit() {
             try {
               initializeButtons();
-              updateContent();
+              updateContent(); // Inicialización sin animación
               bindEvents();
 
               window.removeEventListener('resize', handleResize);
@@ -348,6 +403,7 @@
     function cleanup() {
       try {
         isInitialized = false;
+        isAnimating = false;
         window.removeEventListener('resize', handleResize);
       } catch (error) {
         console.error('Error en limpieza:', error);

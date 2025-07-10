@@ -6,9 +6,7 @@ class FloatingMenu extends React.Component {
     super(props);
     this.state = {
       isOpen: true,
-      isDragging: false,
       hoveredItem: null,
-      dragPosition: { x: 10, y: 142 },
       isDarkTheme: false,
       isGrayscale: false,
       showShareModal: false,
@@ -17,18 +15,8 @@ class FloatingMenu extends React.Component {
       initialized: false
     };
     
-    this.menuRef = React.createRef();
-    this.whatsappRef = React.createRef();
-    this.dragOffset = { x: 0, y: 0 };
-    
     this.config = {
       version: '2.2.0',
-      menuWidth: 42,
-      menuHeight: 253,
-      whatsappSize: 42,
-      whatsappOffset: 20,
-      initialTop: 142,
-      initialLeft: 10,
       fontScale: {
         min: 0.8,
         max: 2.0,
@@ -487,8 +475,8 @@ class FloatingMenu extends React.Component {
     });
   };
 
-  // ===== MANEJO DE EVENTOS =====
-  handleItemClick = (action, url) => {
+  // ===== MANEJO DE EVENTOS SIMPLIFICADO =====
+  handleItemClick = (action) => {
     console.log('Acción clickeada:', action);
     
     switch (action) {
@@ -575,39 +563,7 @@ class FloatingMenu extends React.Component {
     this.setState({ hoveredItem: null, isHoveringTheme: false });
   };
 
-  handleMouseDown = (e, isFirst) => {
-    if (isFirst) {
-      e.preventDefault();
-      this.setState({ isDragging: true });
-      
-      const containerRect = this.menuRef.current.getBoundingClientRect();
-      
-      this.dragOffset = {
-        x: e.clientX - containerRect.left,
-        y: e.clientY - containerRect.top
-      };
-
-      const handleMouseMove = (e) => {
-        if (this.state.isDragging) {
-          const newX = e.clientX - this.dragOffset.x;
-          const newY = e.clientY - this.dragOffset.y;
-          
-          this.setState({
-            dragPosition: { x: newX, y: newY }
-          });
-        }
-      };
-
-      const handleMouseUp = () => {
-        this.setState({ isDragging: false });
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    }
-  };
+  // ❌ ELIMINADO COMPLETAMENTE: handleMouseDown, handleMouseMove, handleMouseUp
 
   getMenuItems = () => {
     const baseItems = [
@@ -656,7 +612,6 @@ class FloatingMenu extends React.Component {
   };
 
   renderMenuItem = (item, index, isMainMenu = true) => {
-    const isFirst = index === 0 && isMainMenu;
     const isHovered = this.state.hoveredItem === item.id;
 
     let displayIcon = item.icon;
@@ -667,13 +622,12 @@ class FloatingMenu extends React.Component {
     return (
       <div
         key={item.id}
-        className={`menu-item ${isFirst ? 'menu-toggle' : ''} ${item.id === 'btnWhatsapp' ? 'whatsapp-button' : ''}`}
+        className={`menu-item ${item.id === 'btnWhatsapp' ? 'whatsapp-button' : ''}`}
         data-action={item.action}
         title={item.title}
-        onClick={() => this.handleItemClick(item.action, item.url)}
+        onClick={() => this.handleItemClick(item.action)}
         onMouseEnter={() => this.handleMouseEnter(item.id)}
         onMouseLeave={this.handleMouseLeave}
-        onMouseDown={(e) => this.handleMouseDown(e, isFirst)}
       >
         <span></span>
         <i className={`ph ${displayIcon}`}></i>
@@ -741,42 +695,17 @@ class FloatingMenu extends React.Component {
 
     const mainMenuItems = this.getMenuItems();
     const whatsappItem = this.getWhatsAppItem();
-    const { isDragging, dragPosition } = this.state;
-
-    const containerStyle = {
-      position: 'fixed',
-      top: isDragging ? `${dragPosition.y}px` : `${this.config.initialTop}px`,
-      left: isDragging ? `${dragPosition.x}px` : `${this.config.initialLeft}px`,
-      transition: isDragging ? 'none' : 'left 0.5s ease, top 0.5s ease',
-      zIndex: 999999
-    };
-
-    const whatsappStyle = {
-      position: 'fixed',
-      top: isDragging 
-        ? `${dragPosition.y + this.config.menuHeight + this.config.whatsappOffset}px`
-        : '415px',
-      left: isDragging 
-        ? `${dragPosition.x}px`
-        : '10px',
-      transition: isDragging ? 'none' : 'left 0.5s ease, top 0.5s ease',
-      zIndex: 999998
-    };
-
+    
     return (
       <>
         <div
-          ref={this.menuRef}
           className="floating-menu"
-          style={containerStyle}
         >
           {mainMenuItems.map((item, index) => this.renderMenuItem(item, index, true))}
         </div>
         
         <div 
-          ref={this.whatsappRef}
           className="whatsapp-floating-button"
-          style={whatsappStyle}
         >
           {this.renderMenuItem(whatsappItem, 0, false)}
         </div>

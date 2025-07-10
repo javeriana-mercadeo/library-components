@@ -304,13 +304,13 @@
 
 // Fallback para iconos Phosphor si no cargan
 .ph-arrow-circle-left::before {
-  content: "‹";
   font-size: rem(32px);
-
+  font-weight: 100;
 }
 
 .ph-arrow-circle-right::before {
-  content: "›";
+
   font-size: rem(32px);
+  font-weight: 100;
 
 }

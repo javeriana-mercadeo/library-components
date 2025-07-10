@@ -10,6 +10,7 @@
     font-size: var(--font-size-title);
     padding: var(--spacing-xl);
   }
+
   .paragraph-lab {
     width: 90%;
   }
@@ -26,7 +27,7 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    margin-bottom: rem(24px);
+    margin-bottom: rem(15px);
 
     .subtitle-lab {
       font-size: var(--font-size-subtitle);
@@ -81,17 +82,37 @@
         color: white;
         transform: scale(1.1);
       }
-      i {
-        font-size: rem(32px);
-        line-height: 1;
-      }
 
+      // Centrado total del ícono dentro del botón
       span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
         line-height: 1;
         position: relative;
-        top: rem(-1px);
+        top: 0; // Antes estaba en -1px
+      }
+
+      i {
+        font-size: rem(24px); // Puedes ajustar el tamaño si lo quieres más grande
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        font-weight: 100;
       }
     }
+  }
+  .ph-arrow-circle-left::before {
+    font-weight: 100;
+  }
+
+  .ph-arrow-circle-right::before {
+    font-weight: 100;
   }
 
   .lab-slider-images {
@@ -117,7 +138,7 @@
 
       .lab-image {
         width: 100%;
-        height: rem(300px);
+        height: rem(250px);
         object-fit: cover;
         transition: transform 0.5s ease;
 
@@ -199,9 +220,41 @@
         }
 
         .lab-image {
-          height: rem(400px);
+          height: rem(300px);
         }
       }
     }
   }
+
+  //animaciones
+
+.lab-slider-transition {
+  animation: colorFlashZoom 800ms ease-in-out !important;
+  will-change: transform, opacity, background-color, box-shadow;
+}
+
+@keyframes colorFlashZoom {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.95);
+
+  }
+  30% {
+    opacity: 0.9;
+    transform: scale(1.05);
+
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.02);
+
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+   
+   
+  }
+}
+
 }

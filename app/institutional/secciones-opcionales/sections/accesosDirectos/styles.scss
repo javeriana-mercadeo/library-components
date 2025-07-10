@@ -1,130 +1,103 @@
 @use '@styles/autoload' as *;
 
-:root {
-
-  --javeriana-acc-menu-bg-dark: var(--neutral-400);
-  --javeriana-acc-menu-text: #cbd5e0;
-  --javeriana-acc-menu-hover: #4866d1;
-  --javeriana-acc-whatsapp: #25d366;
-  --javeriana-acc-bg-light: #ffffff;
-  --javeriana-acc-bg-dark: #1a1a1a;
-  --javeriana-acc-text-light: #2d3748;
-  --javeriana-acc-text-dark: #f7fafc;
-  --javeriana-acc-border-light: #e2e8f0;
-  --javeriana-acc-border-dark: #4a5568;
-  --javeriana-acc-z-menu: 999999;
-  --javeriana-acc-z-whatsapp: 999998;
-  --javeriana-acc-z-modal: 999997;
-  --javeriana-acc-transition: all 0.3s ease;
-  --accessibility-font-scale: 1;
+html {
+  --javeriana-acc-menu-hover: #4866d1 !important;
+  --javeriana-acc-whatsapp: #25d366 !important;
+  --javeriana-acc-z-menu: 999999 !important;
+  --javeriana-acc-z-whatsapp: 999998 !important;
+  --javeriana-acc-z-modal: 999997 !important;
+  --javeriana-acc-transition: all 0.3s ease !important;
 }
 
-/* ===================================================================
-   PROTECCIÓN ABSOLUTA CONTRA ZOOM Y FILTROS - MEJORADA
-   =================================================================== */
-
-/* Protección total para elementos de accesibilidad */
+// Protección absoluta contra zoom para barra de accesibilidad
 .floating-menu,
 .floating-menu *,
 .whatsapp-floating-button,
 .whatsapp-floating-button *,
 .share-modal-overlay,
 .share-modal-overlay *,
-.share-modal,
-.share-modal *,
 [class*="accessibility"],
 [id*="accessibility"] {
-  filter: none !important;
-  -webkit-filter: none !important;
-  visibility: visible !important;
-  opacity: 1 !important;
   transform: none !important;
   zoom: 1 !important;
-  font-size: initial !important;
+  
   scale: 1 !important;
   -webkit-transform: none !important;
   -moz-transform: none !important;
   -ms-transform: none !important;
   -o-transform: none !important;
-}
-
-/* ===================================================================
-   ESCALA DE GRISES CORREGIDA - SELECTORES MÁS ESPECÍFICOS
-   =================================================================== */
-
-/* Aplicar escala de grises SOLO a elementos específicos del contenido */
-#wrapper.grayscale-mode ,
-body.grayscale-mode .portlet-boundary,
-body.grayscale-mode .portlet-content,
-body.grayscale-mode .journal-content-article,
-body.grayscale-mode .portlet-body,
-body.grayscale-mode main,
-body.grayscale-mode .container-fluid:not(.floating-menu):not(.whatsapp-floating-button),
-body.grayscale-mode .container:not(.floating-menu):not(.whatsapp-floating-button),
-body.grayscale-mode .content,
-body.grayscale-mode .main-content,
-body.grayscale-mode .page-content,
-body.grayscale-mode section,
-body.grayscale-mode article,
-body.grayscale-mode .card,
-body.grayscale-mode .row,
-body.grayscale-mode .col {
-  filter: grayscale(100%) !important;
-  transition: filter 0.3s ease !important;
-}
-
-/* Aplicar escala de grises a imágenes y videos específicos */
-body.grayscale-mode img:not(.floating-menu img):not(.whatsapp-floating-button img):not(.share-modal img):not([class*="accessibility"]),
-body.grayscale-mode video:not(.floating-menu video):not(.whatsapp-floating-button video):not(.share-modal video):not([class*="accessibility"]) {
-  filter: grayscale(100%) !important;
-  transition: filter 0.3s ease !important;
-}
-
-/* PROTECCIÓN REFORZADA - Múltiples niveles de especificidad */
-html body.grayscale-mode .floating-menu,
-html body.grayscale-mode .floating-menu *,
-html body.grayscale-mode .whatsapp-floating-button,
-html body.grayscale-mode .whatsapp-floating-button *,
-html body.grayscale-mode .share-modal-overlay,
-html body.grayscale-mode .share-modal-overlay *,
-html body.grayscale-mode .share-modal,
-html body.grayscale-mode .share-modal *,
-html body.grayscale-mode [class*="accessibility"],
-html body.grayscale-mode [id*="accessibility"] {
   filter: none !important;
   -webkit-filter: none !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  display: flex !important;
 }
 
-/* Protección con especificidad máxima */
-body.grayscale-mode .floating-menu,
-body.grayscale-mode .floating-menu .menu-item,
-body.grayscale-mode .floating-menu .menu-item *,
-body.grayscale-mode .whatsapp-floating-button,
-body.grayscale-mode .whatsapp-floating-button .menu-item,
-body.grayscale-mode .whatsapp-floating-button .menu-item * {
-  filter: none !important;
-  -webkit-filter: none !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  transform: none !important;
-  display: flex !important;
+// Escala de grises
+body.grayscale-mode {
+  #wrapper:not(.accessibility-menu-portlet),
+  .portlet:not([class*="accessibility"]):not([id*="accessibility"]),
+  .portlet-boundary:not([class*="accessibility"]),
+  .portlet-content:not([class*="accessibility"]),
+  .journal-content-article:not([class*="accessibility"]),
+  .portlet-body:not([class*="accessibility"]),
+  main:not([class*="accessibility"]),
+  .container-fluid:not([class*="accessibility"]):not(.floating-menu):not(.whatsapp-floating-button),
+  .container:not([class*="accessibility"]):not(.floating-menu):not(.whatsapp-floating-button),
+  .content:not([class*="accessibility"]),
+  .main-content:not([class*="accessibility"]),
+  .page-content:not([class*="accessibility"]) {
+    filter: grayscale(100%) !important;
+    transition: filter 0.3s ease !important;
+  }
+
+  img:not(.floating-menu img):not(.whatsapp-floating-button img):not(.share-modal img):not([class*="accessibility"]),
+  video:not(.floating-menu video):not(.whatsapp-floating-button video):not(.share-modal video):not([class*="accessibility"]) {
+    filter: grayscale(100%) !important;
+    transition: filter 0.3s ease !important;
+  }
+
+  // Protección para elementos de accesibilidad
+  .floating-menu,
+  .floating-menu *,
+  .whatsapp-floating-button,
+  .whatsapp-floating-button *,
+  .share-modal-overlay,
+  .share-modal-overlay *,
+  [class*="accessibility"],
+  [id*="accessibility"] {
+    filter: none !important;
+    -webkit-filter: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 }
 
-/* ===================================================================
-   MENÚ FLOTANTE PRINCIPAL
-   =================================================================== */
+// Tema oscuro
+body.accessibility-dark-theme {
+  background-color: var(--javeriana-acc-bg-dark) !important;
+  color: var(--javeriana-acc-text-dark) !important;
+
+  #wrapper:not([class*="accessibility"]),
+  .portlet:not([class*="accessibility"]),
+  .portlet-content:not([class*="accessibility"]),
+  .journal-content-article:not([class*="accessibility"]) {
+    background-color: var(--javeriana-acc-bg-dark) !important;
+    color: var(--javeriana-acc-text-dark) !important;
+  }
+
+  .floating-menu {
+    background-color: #2d3748 !important; //background barra tema oscuro
+    opacity: 1 !important;
+  }
+}
+
+// Menú flotante principal 
 .floating-menu {
-   position: fixed !important;
-  z-index: 999999 !important;
-  top: 142px;
-  left: 10px;
+  position: fixed !important;
+  top: 142px !important;                   
+  left: 10px !important;                    
   width: 42px !important;
   height: auto !important;
   min-height: 253px !important;
-  background-color: var(--neutral-900) !important;
+  background-color: var(--neutral-900) !important; // background barra tema claro
   border-radius: 20px !important;
   z-index: var(--javeriana-acc-z-menu) !important;
   padding: 10px 0 !important;
@@ -134,38 +107,181 @@ body.grayscale-mode .whatsapp-floating-button .menu-item * {
   justify-content: space-between !important;
   align-items: center !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
-  transition: var(--javeriana-acc-transition) !important;
-  font-family: system-ui, -apple-system, sans-serif !important;
   box-sizing: border-box !important;
   user-select: none !important;
   visibility: visible !important;
-  opacity: 1 !important;
-  
-  /* Protección específica contra filtros */
-  filter: none !important;
-  -webkit-filter: none !important;
   transform: none !important;
-  scale: 1 !important;
   zoom: 1 !important;
-  font-size: initial !important;
+  
+  scale: 1 !important;
 
-  /* Animación de entrada */
-  animation: fadeInAccessibility 0.5s ease-out !important;
+
+  .menu-item {
+    position: relative !important;
+    width: 35px !important;
+    height: 35px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    overflow: hidden !important;
+    margin: 2px 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    transition: var(--javeriana-acc-transition) !important;
+    user-select: none !important;
+    transform: none !important;
+    scale: 1 !important;
+    zoom: 1 !important;
+    
+
+    // Efectos hover circulares
+    span {
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      width: 0 !important;
+      height: 0 !important;
+      border-radius: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      transition: var(--javeriana-acc-transition) !important;
+      z-index: 0 !important;
+      background-color: transparent !important;
+      pointer-events: none !important;
+    }
+
+    // Iconos
+    i {
+      font-size: 22px !important;
+      color: var(--neutral-400) !important; //color icono tema claro
+      transition: var(--javeriana-acc-transition) !important;
+      z-index: 1 !important;
+      position: relative !important;
+      line-height: 1 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      
+      &.ph {
+        font-family: "Phosphor", sans-serif !important;
+      }
+    }
+
+    // Efectos hover por botón específico
+    &:nth-child(1) {
+      &:hover:not(.whatsapp-button) span {
+        width: 3.6rem !important;
+        height: 3.6rem !important;
+        background-color: #10b981 !important; // Verde
+        transform: translate(-50%, -50%) scale(1) !important;
+      }
+      &:hover:not(.whatsapp-button) i {
+        color: white !important;
+        transform: scale(1.1) !important;
+      }
+    }
+
+    &:nth-child(2) {
+      &:hover:not(.whatsapp-button) span {
+        width: 3.6rem !important;
+        height: 3.6rem !important;
+        background-color: #ef4444 !important; // Rojo
+        transform: translate(-50%, -50%) scale(1) !important;
+      }
+      &:hover:not(.whatsapp-button) i {
+        color: white !important;
+        transform: scale(1.1) !important;
+      }
+    }
+
+    &:nth-child(3) {
+      &:hover:not(.whatsapp-button) span {
+        width: 3.6rem !important;
+        height: 3.6rem !important;
+        background-color: rgb(6, 18, 68) !important; //hover luna
+        color: var(--neutral-400);
+        transform: translate(-50%, -50%) scale(1) !important;
+      }
+      &:hover:not(.whatsapp-button) i {
+        color: white !important;
+        transform: scale(1.1) !important;
+      }
+    }
+
+    &:nth-child(4) {
+      &:hover:not(.whatsapp-button) span {
+        width: 3.6rem !important;
+        height: 3.6rem !important;
+        background-color: #9ca3af !important; // Gris
+        transform: translate(-50%, -50%) scale(1) !important;
+      }
+      &:hover:not(.whatsapp-button) i {
+        color: white !important;
+        transform: scale(1.1) !important;
+      }
+    }
+
+    &:nth-child(5) {
+      &:hover:not(.whatsapp-button) span {
+        width: 3.6rem !important;
+        height: 3.6rem !important;
+        background-color: #4caf50 !important; // Verde
+        transform: translate(-50%, -50%) scale(1) !important;
+      }
+      &:hover:not(.whatsapp-button) i {
+        color: white !important;
+        transform: scale(1.1) !important;
+      }
+    }
+
+    // Estados activos
+    &.active {
+      span {
+        width: 3.6rem !important;
+        height: 3.6rem !important;
+        background-color: var(--javeriana-acc-menu-hover) !important;
+        transform: translate(-50%, -50%) scale(1) !important;
+      }
+
+      i {
+        color: var(--neutral-400) !important;
+        transform: scale(1.1) !important;
+      }
+    }
+
+    // Focus para accesibilidad
+    &:focus-visible {
+      outline: 2px solid #4866d1 !important;
+      outline-offset: 2px !important;
+      transform: none !important;
+    }
+
+    &:focus:not(:hover) {
+      span {
+        width: 3.6rem !important;
+        height: 3.6rem !important;
+        background-color: var(--javeriana-acc-menu-hover) !important;
+        transform: translate(-50%, -50%) scale(1) !important;
+      }
+
+      i {
+        color: white !important;
+      }
+    }
+  }
 }
 
-/* Estado tema oscuro */
-body.accessibility-dark-theme .floating-menu {
-  background-color: var(--neutral-900) !important;
-  opacity: 1 !important;
+// Iconos en tema oscuro
+body.accessibility-dark-theme .floating-menu .menu-item i {
+  color: var(--neutral-900) !important; // iconos barra
 }
 
-/* ===================================================================
-   BOTÓN DE WHATSAPP
-   =================================================================== */
+// Botón de WhatsApp flotante 
 .whatsapp-floating-button {
   position: fixed !important;
-  top: 415px !important;
-  left: 10px !important;
+  top: 415px !important;                   
+  left: 10px !important;                   
   width: 42px !important;
   height: 42px !important;
   background-color: var(--javeriana-acc-whatsapp) !important;
@@ -175,154 +291,64 @@ body.accessibility-dark-theme .floating-menu {
   align-items: center !important;
   justify-content: center !important;
   box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4) !important;
-  transition: var(--javeriana-acc-transition) !important;
+  transition: var(--javeriana-acc-transition) !important; // ❌ ELIMINADO: transiciones de drag
   cursor: pointer !important;
   visibility: visible !important;
   opacity: 1 !important;
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box !important;
-  
-  /* Protección específica */
-  filter: none !important;
-  -webkit-filter: none !important;
   transform: none !important;
   scale: 1 !important;
   zoom: 1 !important;
-  font-size: initial !important;
+  
 
   &:hover {
     transform: scale(1.05) !important;
     box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5) !important;
   }
-}
 
-/* ===================================================================
-   ITEMS DEL MENÚ
-   =================================================================== */
-.menu-item {
-  position: relative !important;
-  width: 35px !important;
-  height: 35px !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  overflow: hidden !important;
-  margin: 2px 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
-  transition: var(--javeriana-acc-transition) !important;
-  user-select: none !important;
-  
-  /* Protección específica */
-  filter: none !important;
-  -webkit-filter: none !important;
-  transform: none !important;
-  scale: 1 !important;
-  zoom: 1 !important;
-  font-size: initial !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-
-  /* Elemento para efecto hover */
-  span {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    width: 0 !important;
-    height: 0 !important;
-    border-radius: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    transition: var(--javeriana-acc-transition) !important;
-    z-index: 0 !important;
-    background-color: transparent !important;
-    pointer-events: none !important;
-    filter: none !important;
-    -webkit-filter: none !important;
-  }
-
-  /* Iconos */
-  i {
-    font-size: 22px !important;
-    color: var(--javeriana-acc-menu-text) !important;
-    transition: var(--javeriana-acc-transition) !important;
-    z-index: 1 !important;
+  .menu-item {
     position: relative !important;
-    line-height: 1 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    filter: none !important;
-    -webkit-filter: none !important;
-  }
-
-  /* Iconos en tema oscuro */
-  .accessibility-dark-theme & i {
-    color: #2d3748 !important;
-  }
-  
-  /* Efectos hover para elementos regulares */
-  &:hover:not(.whatsapp-button) {
-    span {
-      width: 3.6rem !important;
-      height: 3.6rem !important;
-      background-color: var(--javeriana-acc-menu-hover) !important;
-      transform: translate(-50%, -50%) scale(1) !important;
-    }
-    
-    i {
-      color: white !important;
-      transform: scale(1.1) !important;
-    }
-  }
-  
-  /* Colores específicos por función */
-  &:nth-child(1):hover:not(.whatsapp-button) span { 
-    background-color: #10b981 !important; /* Aumentar fuente - Verde */
-  }
-  
-  &:nth-child(2):hover:not(.whatsapp-button) span { 
-    background-color: #ef4444 !important; /* Disminuir fuente - Rojo */
-  }
-  
-  &:nth-child(3):hover:not(.whatsapp-button) span { 
-    background-color: #ffd93d !important; /* Tema - Amarillo */
-  }
-  
-  &:nth-child(4):hover:not(.whatsapp-button) span { 
-    background-color: #9ca3af !important; /* Escala de grises - Gris */
-  }
-  
-  &:nth-child(5):hover:not(.whatsapp-button) span { 
-    background-color: #4caf50 !important; /* Compartir - Verde */
-  }
-  
-  /* Estados activos */
-  &.active {
-    span {
-      width: 3.6rem !important;
-      height: 3.6rem !important;
-      background-color: var(--javeriana-acc-menu-hover) !important;
-      transform: translate(-50%, -50%) scale(1) !important;
-    }
-    
-    i {
-      color: #ffd93d !important;
-      transform: scale(1.1) !important;
-    }
-  }
-  
-  /* Estilos para botón de WhatsApp */
-  &.whatsapp-button {
     width: 42px !important;
     height: 42px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
     background: transparent !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    user-select: none !important;
+    transform: none !important;
+    scale: 1 !important;
+    zoom: 1 !important;
     
+
+    &.whatsapp-button {
+      background: transparent !important;
+    }
+
+    span {
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      width: 0 !important;
+      height: 0 !important;
+      border-radius: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      transition: var(--javeriana-acc-transition) !important;
+      z-index: 0 !important;
+      background-color: transparent !important;
+      pointer-events: none !important;
+    }
+
     i {
-      font-size: 22px !important;
+      font-size: 28px !important;
       color: white !important;
+      z-index: 1 !important;
       position: absolute !important;
       top: 50% !important;
       left: 50% !important;
@@ -333,78 +359,16 @@ body.accessibility-dark-theme .floating-menu {
       display: block !important;
       text-align: center !important;
     }
-    
-    &:hover {
-      span {
-        width: 3.6rem !important;
-        height: 3.6rem !important;
-        background-color: rgba(255, 255, 255, 0.2) !important;
-        transform: translate(-50%, -50%) scale(1) !important;
-      }
-      
-      i {
-        color: white !important;
-        transform: translate(-50%, -50%) scale(1.1) !important;
-      }
+
+    &:focus-visible {
+      outline: 2px solid #4866d1 !important;
+      outline-offset: 2px !important;
+      transform: none !important;
     }
   }
 }
 
-/* ===================================================================
-   ESTADO ACTIVO DEL BOTÓN DE ESCALA DE GRISES - CORREGIDO
-   =================================================================== */
-
-/* Botón de escala de grises en estado activo */
-.menu-item[data-action="grayscale"].active {
-  span {
-    width: 3.6rem !important;
-    height: 3.6rem !important;
-    background-color: #9ca3af !important;
-    transform: translate(-50%, -50%) scale(1) !important;
-  }
-  
-  i {
-    color: white !important;
-    transform: scale(1.1) !important;
-  }
-}
-
-/* Indicador visual cuando escala de grises está activa */
-body.grayscale-mode .menu-item[data-action="grayscale"] {
-  &::after {
-    content: '';
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    width: 8px;
-    height: 8px;
-    background-color: #9ca3af;
-    border-radius: 50%;
-    border: 2px solid white;
-    z-index: 10;
-    filter: none !important;
-    -webkit-filter: none !important;
-  }
-}
-
-/* Hover para escala de grises */
-.menu-item[data-action="grayscale"]:hover:not(.whatsapp-button) {
-  span {
-    width: 3.6rem !important;
-    height: 3.6rem !important;
-    background-color: #9ca3af !important;
-    transform: translate(-50%, -50%) scale(1) !important;
-  }
-  
-  i {
-    color: white !important;
-    transform: scale(1.1) !important;
-  }
-}
-
-/* ===================================================================
-   MODAL DE COMPARTIR
-   =================================================================== */
+// Modal de compartir
 .share-modal-overlay {
   position: fixed !important;
   top: 0 !important;
@@ -413,146 +377,252 @@ body.grayscale-mode .menu-item[data-action="grayscale"] {
   height: 100vh !important;
   background-color: rgba(0, 0, 0, 0.6) !important;
   z-index: var(--javeriana-acc-z-modal) !important;
-  display: none !important;
+  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  opacity: 0 !important;
+  opacity: 1 !important;
   transition: opacity 0.3s ease !important;
   padding: 20px !important;
   box-sizing: border-box !important;
-  
-  /* Protección específica */
-  filter: none !important;
-  -webkit-filter: none !important;
   transform: none !important;
   scale: 1 !important;
   zoom: 1 !important;
-  font-size: initial !important;
   
-  &.show {
-    display: flex !important;
-    opacity: 1 !important;
-  }
-}
 
-.share-modal {
-  background: var(--javeriana-acc-bg-light) !important;
-  border-radius: 16px !important;
-  width: 100% !important;
-  max-width: 400px !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
-  overflow: hidden !important;
-  transform: scale(0.9) !important;
-  transition: transform 0.3s ease !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  position: relative !important;
-  opacity: 1 !important;
-  
-  /* Protección específica */
-  filter: none !important;
-  -webkit-filter: none !important;
-  font-size: initial !important;
-  zoom: 1 !important;
-  
-  .show & {
+  .share-modal {
+    border-radius: 16px !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+    overflow: hidden !important;
     transform: scale(1) !important;
+    transition: transform 0.3s ease !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    opacity: 1 !important;
+    
+    zoom: 1 !important;
+
+    .share-modal-header {
+      padding: 20px 24px 16px !important;
+      border-bottom: 1px dashed var(--neutral-400) !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      margin: 0 !important;
+      background: var(--neutral-900); // background-color header modal tema claro
+      
+
+      h3 {
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        color: var(--neutral-400) !important;
+        line-height: 1.2 !important;
+      }
+    }
+
+    .share-modal-close {
+      background: none !important;
+      border: none !important;
+      cursor: pointer !important;
+      padding: 8px !important;
+      border-radius: 50% !important;
+      width: 32px !important;
+      height: 32px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: var(--javeriana-acc-transition) !important;
+      color: var(--neutral-400) !important;
+      margin: 0 !important;
+
+      &:hover {
+        background-color: #ffffff !important;
+        color: var(--neutral-400) !important;
+        transform: scale(1.1) !important;
+      }
+
+      &:focus-visible {
+        outline: 2px solid #4866d1 !important;
+        outline-offset: 2px !important;
+      }
+
+      i {
+        font-size: 18px !important;
+        color: var(--neutral-400) !important; // icono close tema oscuro / claro
+        font-weight: bold !important;
+      }
+    }
+
+    .share-options {
+      padding: 16px 24px 24px !important;
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 16px !important;
+      background: var(--neutral-900) !important; // background-color modal tema claro
+      margin: 0 !important;
+      
+    }
+
+    .share-option {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding: 16px 8px !important;
+      border-radius: 12px !important;
+      cursor: pointer !important;
+      transition: var(--javeriana-acc-transition) !important;
+      border: 1px solid transparent !important;
+      background: var(--neutral-900) ; //background-color botones modal
+      margin: 0 !important;
+      text-decoration: none !important;
+      
+
+      &:hover {      
+        border-color: var(--neutral-400) !important;
+        transform: translateY(-2px) !important;
+      }
+
+      &:focus-visible {
+        outline: 2px solid #4866d1 !important;
+        outline-offset: 2px !important;
+      }
+
+      &:focus:not(:hover) {
+        background-color: #1474b5 !important;
+        border-color: var(--javeriana-acc-border-light) !important;
+      }
+
+      i {
+        font-size: 28px !important;
+        color: var(--neutral-400) !important;
+        transition: color 0.2s ease !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      span {
+        font-size: var(--font-size-paragraph) !important; //texto iconos modal
+        font-weight: 500 !important;
+        color: var(--neutral-400) !important;
+        text-align: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.2 !important;
+      }
+
+      // Colores hover específicos
+      &:nth-child(1):hover i { color: var(--javeriana-acc-whatsapp) !important; }
+      &:nth-child(2):hover i { color: #1877f2 !important; }
+      &:nth-child(3):hover i { color: #e4405f !important; }
+      &:nth-child(4):hover i { color: #0a66c2 !important; }
+      &:nth-child(5):hover i { color: #d44638 !important; }
+      &:nth-child(6):hover i { color: #374151 !important; }
+    }
   }
 }
 
-/* ===================================================================
-   PROTECCIÓN FINAL REFORZADA
-   =================================================================== */
+// Modal en tema oscuro
+body.accessibility-dark-theme {
+  .share-modal {
+    background: #2d3748 ; 
+    opacity: 1 !important;
+   
 
-/* Protección de último recurso con máxima especificidad */
-html body.grayscale-mode .floating-menu,
-html body.grayscale-mode .floating-menu *,
-html body.grayscale-mode .whatsapp-floating-button,
-html body.grayscale-mode .whatsapp-floating-button *,
-html body.grayscale-mode .share-modal-overlay,
-html body.grayscale-mode .share-modal-overlay *,
-html body.grayscale-mode .share-modal,
-html body.grayscale-mode .share-modal *,
-html body.grayscale-mode [class*="accessibility"],
-html body.grayscale-mode [id*="accessibility"] {
-  filter: none !important;
-  -webkit-filter: none !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  display: flex !important;
+    .share-modal-header {
+      background: #2d3748 ;
+      border-bottom-color: var(--neutral-900);
+
+      h3 {
+        color: var(--neutral-900) !important;
+      }
+    }
+
+    .share-modal-close {
+      color: var(--neutral-900) !important;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1) !important;
+        color: white !important;
+      }
+    }
+
+    .share-options {
+      background: #2d3748 !important; //background fondo modal tema oscuro
+    }
+
+    .share-option {
+      background: #2d3748 !important; // fondo botones tema oscuro
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border-color: var(--neutral-900) !important;
+      }
+
+      i,
+      span {
+        color: var(--neutral-900) !important;
+      }
+    }
+  }
+}
+
+// Screen reader only
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
   transform: none !important;
   zoom: 1 !important;
-  font-size: initial !important;
-  scale: 1 !important;
-  -webkit-transform: none !important;
-  -moz-transform: none !important;
-  -ms-transform: none !important;
-  -o-transform: none !important;
 }
 
-/* Protección específica para el contenedor del menú */
-.floating-menu {
-  filter: none !important;
-  -webkit-filter: none !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  display: flex !important;
-}
-
-/* Protección específica para cuando se activa escala de grises */
-body.grayscale-mode .floating-menu {
-  filter: none !important;
-  -webkit-filter: none !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  display: flex !important;
-  background-color: var(--neutral-900) !important;
-}
-
-/* ===================================================================
-   ANIMACIONES Y RESPONSIVE
-   =================================================================== */
-
-@keyframes fadeInAccessibility {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Responsive Design */
+// Responsive design
 @media (max-width: 768px) {
   .floating-menu {
     top: 20px !important;
     width: 38px !important;
     min-height: 203px !important;
     padding: 8px 0 !important;
+    transform: none !important;
+    scale: 1 !important;
+    zoom: 1 !important;
+
+    .menu-item {
+      width: 32px !important;
+      height: 32px !important;
+      
+
+      i {
+        font-size: 20px !important;
+      }
+    }
   }
 
   .whatsapp-floating-button {
     top: 243px !important;
     width: 38px !important;
     height: 38px !important;
-  }
+    transform: none !important;
+    scale: 1 !important;
+    zoom: 1 !important;
 
-  .menu-item {
-    width: 32px !important;
-    height: 32px !important;
-    
-    i {
-      font-size: 20px !important;
-    }
-    
-    &.whatsapp-button {
+    .menu-item {
       width: 38px !important;
       height: 38px !important;
       
+
       i {
-        font-size: 20px !important;
+        font-size: 25px !important;
       }
     }
   }
@@ -564,6 +634,9 @@ body.grayscale-mode .floating-menu {
     left: 5px !important;
     width: 36px !important;
     min-height: 165px !important;
+    transform: none !important;
+    scale: 1 !important;
+    zoom: 1 !important;
   }
 
   .whatsapp-floating-button {
@@ -571,23 +644,44 @@ body.grayscale-mode .floating-menu {
     left: 5px !important;
     width: 36px !important;
     height: 36px !important;
-  }
+    transform: none !important;
+    scale: 1 !important;
+    zoom: 1 !important;
 
-  .menu-item {
-    width: 30px !important;
-    height: 30px !important;
-    
-    i {
+    .menu-item i {
       font-size: 18px !important;
     }
-    
-    &.whatsapp-button {
-      width: 36px !important;
-      height: 36px !important;
-      
-      i {
-        font-size: 18px !important;
-      }
-    }
   }
+}
+
+// Override protectivo final
+.floating-menu,
+.floating-menu *,
+.whatsapp-floating-button,
+.whatsapp-floating-button *,
+.share-modal-overlay,
+.share-modal-overlay *,
+[class*="accessibility"],
+[id*="accessibility"] {
+  opacity: 1 !important;
+  transform: none !important;
+  scale: 1 !important;
+  zoom: 1 !important;
+  
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+}
+
+
+.floating-menu,
+.floating-menu *,
+.whatsapp-floating-button,
+.whatsapp-floating-button *,
+.share-modal-overlay,
+.share-modal-overlay *,
+[class*="accessibility"],
+[id*="accessibility"] {
+  --font-scale: 1 !important;
 }

@@ -25,6 +25,18 @@ const Proyectos = () => {
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
       slideData: { id: 2, type: 'investigacion' }
     },
+        {
+      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
+      title: 'Investigación de Clase Mundial',
+      description: 'Conoce nuestros proyectos de investigación y logros académicos',
+      slideData: { id: 2, type: 'investigacion' }
+    },
+        {
+      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
+      title: 'Investigación de Clase Mundial',
+      description: 'Conoce nuestros proyectos de investigación y logros académicos',
+      slideData: { id: 2, type: 'investigacion' }
+    },
 
 
   ]
