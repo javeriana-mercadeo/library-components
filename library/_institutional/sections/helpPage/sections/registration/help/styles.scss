@@ -18,8 +18,8 @@
     align-items: center;
     width: 100%;
 
-    h2 {
-      font-size: $font-size-h2;
+    .title-help {
+      font-size: var(--font-size-title);
       font-weight: bold;
       width: 100%;
     }

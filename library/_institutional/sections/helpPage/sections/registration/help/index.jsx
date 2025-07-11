@@ -5,7 +5,7 @@ const Index = () => {
   return (
     <section className="help-section">
       <div className="help-header">
-        <h2>¿Necesitas ayuda?</h2>
+       <Title className="title-help"> ¿Necesitas ayuda?</Title>
         <a href="/institutional/helpPage/pgInscription">
           Ver más <i className="ph ph-arrow-right"></i>
         </a>
