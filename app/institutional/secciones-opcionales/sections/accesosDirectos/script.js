@@ -5,13 +5,6 @@ function initializeAccessibilityBar() {
         version: '2.2.0',
         debug: false,
         
-        // Configuración de persistencia
-        storage: {
-            enabled: true,
-            key: 'javeriana_accessibility_preferences',
-            expireDays: 365
-        },
-        
         // Configuración de inicialización
         initialization: {
             delayAfterMount: 1500,
@@ -24,7 +17,6 @@ function initializeAccessibilityBar() {
             min: 0.8,
             max: 2.0,
             step: 0.1,
-            resetOnRefresh: true,
             applyToRootFontSize: true
         },
         
@@ -84,7 +76,7 @@ function initializeAccessibilityBar() {
         initialized: false,
         initAttempts: 0,
         
-        // Estados de funcionalidad
+        // Estados de funcionalidad (siempre inician en false/1.0)
         darkTheme: false,
         grayscale: false,
         fontScale: 1.0,
@@ -124,74 +116,6 @@ function initializeAccessibilityBar() {
         }
     };
 
-    // Sistema de almacenamiento
-    const Storage = {
-        save: function() {
-            if (!CONFIG.storage.enabled) return false;
-            
-            try {
-                const preferences = {
-                    darkTheme: accessibilityState.darkTheme,
-                    grayscale: accessibilityState.grayscale,
-                    fontScale: CONFIG.fontScale.resetOnRefresh ? 1.0 : accessibilityState.fontScale,
-                    timestamp: Date.now(),
-                    version: CONFIG.version
-                };
-                
-                localStorage.setItem(CONFIG.storage.key, JSON.stringify(preferences));
-                Logger.info('Preferencias guardadas:', preferences);
-                return true;
-            } catch (error) {
-                Logger.error('Error guardando preferencias:', error);
-                return false;
-            }
-        },
-        
-        load: function() {
-            if (!CONFIG.storage.enabled) return null;
-            
-            try {
-                const stored = localStorage.getItem(CONFIG.storage.key);
-                if (!stored) return null;
-                
-                const preferences = JSON.parse(stored);
-                
-                // Verificar expiración
-                if (preferences.timestamp) {
-                    const daysDiff = (Date.now() - preferences.timestamp) / (1000 * 60 * 60 * 24);
-                    if (daysDiff > CONFIG.storage.expireDays) {
-                        Logger.info('Preferencias expiradas, eliminando');
-                        this.clear();
-                        return null;
-                    }
-                }
-                
-                // Resetear font scale si está configurado
-                if (CONFIG.fontScale.resetOnRefresh && preferences.fontScale !== 1.0) {
-                    Logger.info('Reseteando font scale por configuración');
-                    preferences.fontScale = 1.0;
-                }
-                
-                Logger.info('Preferencias cargadas:', preferences);
-                return preferences;
-            } catch (error) {
-                Logger.error('Error cargando preferencias:', error);
-                return null;
-            }
-        },
-        
-        clear: function() {
-            try {
-                localStorage.removeItem(CONFIG.storage.key);
-                Logger.info('Preferencias eliminadas');
-                return true;
-            } catch (error) {
-                Logger.error('Error eliminando preferencias:', error);
-                return false;
-            }
-        }
-    };
-
     // Sistema de anuncios para screen readers
     const Announcer = {
         announce: function(message) {
@@ -209,7 +133,7 @@ function initializeAccessibilityBar() {
         }
     };
 
-    // Gestor de Font Scale compatible
+    // Gestor de Font Scale
     const FontScaleManager = {
         applyFontScale: function(scale) {
             Logger.info(`Aplicando escala de fuente: ${scale}`);
@@ -353,7 +277,7 @@ function initializeAccessibilityBar() {
         }
     };
 
-    // Gestor de Escala de Grises compatible
+    // Gestor de Escala de Grises
     const GrayscaleManager = {
         apply: function() {
             try {
@@ -470,7 +394,6 @@ function initializeAccessibilityBar() {
         Announcer.announce(`${CONFIG.messages.notifications.fontSizeIncreased}. Nivel: ${percentage}%`);
         Logger.success(`Fuente aumentada: ${accessibilityState.fontScale} (${percentage}%)`);
         
-        Storage.save();
         return accessibilityState.fontScale;
     }
 
@@ -492,7 +415,6 @@ function initializeAccessibilityBar() {
         Announcer.announce(`${CONFIG.messages.notifications.fontSizeDecreased}. Nivel: ${percentage}%`);
         Logger.success(`Fuente reducida: ${accessibilityState.fontScale} (${percentage}%)`);
         
-        Storage.save();
         return accessibilityState.fontScale;
     }
 
@@ -509,7 +431,6 @@ function initializeAccessibilityBar() {
             Announcer.announce(CONFIG.messages.notifications.grayscaleOff);
         }
         
-        Storage.save();
         return accessibilityState.grayscale;
     }
 
@@ -546,7 +467,6 @@ function initializeAccessibilityBar() {
             Logger.success('Tema claro activado');
         }
         
-        Storage.save();
         return accessibilityState.darkTheme;
     }
 
@@ -717,7 +637,7 @@ function initializeAccessibilityBar() {
         }
     };
 
-    // Manejadores de eventos SIMPLIFICADOS
+    // Manejadores de eventos
     function handleMenuClick(action, element) {
         Logger.info('Acción del menú:', action);
 
@@ -812,7 +732,7 @@ function initializeAccessibilityBar() {
         }
     }
 
-    // Inicializador del menú SIMPLIFICADO
+    // Inicializador del menú
     function cacheElements() {
         accessibilityState.elements = {
             menu: document.querySelector('.floating-menu'),
@@ -947,7 +867,6 @@ function initializeAccessibilityBar() {
         }
 
         setupAriaAttributes();
-        loadSavedPreferences();
 
         setTimeout(() => {
             showMenuWithAnimation();
@@ -1005,31 +924,6 @@ function initializeAccessibilityBar() {
         }
 
         Logger.info('Atributos ARIA configurados');
-    }
-
-    function loadSavedPreferences() {
-        const saved = Storage.load();
-        if (!saved) {
-            Logger.info('No hay preferencias guardadas');
-            return;
-        }
-
-        Logger.info('Aplicando preferencias guardadas:', saved);
-
-        if (saved.darkTheme && !accessibilityState.darkTheme) {
-            toggleTheme();
-        }
-
-        if (saved.grayscale && !accessibilityState.grayscale) {
-            toggleGrayscale();
-        }
-
-        if (saved.fontScale && saved.fontScale !== 1.0) {
-            accessibilityState.fontScale = saved.fontScale;
-            FontScaleManager.applyFontScale(accessibilityState.fontScale);
-        }
-
-        Logger.success('Preferencias aplicadas');
     }
 
     function loadPhosphorIcons() {
@@ -1096,7 +990,6 @@ function initializeAccessibilityBar() {
         closeShareModal: closeShareModal,
         
         share: ShareFunctions,
-        storage: Storage,
         announcer: Announcer,
         fontScale: FontScaleManager,
         
@@ -1172,8 +1065,6 @@ function initializeAccessibilityBar() {
             accessibilityState.modalOpen = false;
             accessibilityState.isHoveringTheme = false;
             
-            Storage.clear();
-            
             Logger.success('Sistema reseteado completamente');
             Announcer.announce('Configuración de accesibilidad reseteada');
         },
@@ -1184,10 +1075,10 @@ function initializeAccessibilityBar() {
         }
     };
 
-    // Inicialización automática SIMPLIFICADA
-    Logger.info(`🚀 Cargando Barra de Accesibilidad Javeriana v${CONFIG.version} (Sin Drag)`);
+    // Inicialización automática
+    Logger.info(`🚀 Cargando Barra de Accesibilidad Javeriana v${CONFIG.version} (Sin Persistencia)`);
 
-    // Estrategias de inicialización simplificadas
+    // Estrategias de inicialización
     if (document.readyState === 'complete') {
         setTimeout(initialize, CONFIG.initialization.delayAfterMount);
     } else if (document.readyState === 'loading') {
@@ -1212,7 +1103,7 @@ function initializeAccessibilityBar() {
         Logger.info('🌍 API pública disponible en window.AccessibilityMenuJaveriana');
     }
 
-    Logger.success('🏁 Sistema de accesibilidad cargado');
+    Logger.success('🏁 Sistema de accesibilidad cargado sin persistencia');
 
     return PublicAPI;
 }

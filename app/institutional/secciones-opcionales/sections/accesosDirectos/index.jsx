@@ -27,11 +27,6 @@ class FloatingMenu extends React.Component {
         maxInitAttempts: 5,
         retryDelay: 1000
       },
-      storage: {
-        enabled: true,
-        key: 'javeriana_accessibility_preferences',
-        expireDays: 365
-      },
       messages: {
         notifications: {
           darkThemeOn: 'Tema oscuro activado',
@@ -62,7 +57,6 @@ class FloatingMenu extends React.Component {
   initializeDelayed = () => {
     setTimeout(() => {
       this.loadPhosphorIcons();
-      this.loadSavedPreferences();
       this.setupInitialState();
       this.setState({ initialized: true });
       this.announceToScreenReader(this.config.messages.notifications.menuReady);
@@ -89,57 +83,8 @@ class FloatingMenu extends React.Component {
     }
   };
 
-  // Sistema de almacenamiento mejorado
-  savePreferences = () => {
-    if (!this.config.storage.enabled) return false;
-    
-    try {
-      const preferences = {
-        darkTheme: this.state.isDarkTheme,
-        grayscale: this.state.isGrayscale,
-        fontScale: this.state.fontScale,
-        timestamp: Date.now(),
-        version: this.config.version
-      };
-      
-      localStorage.setItem(this.config.storage.key, JSON.stringify(preferences));
-      return true;
-    } catch (error) {
-      console.error('Error guardando preferencias:', error);
-      return false;
-    }
-  };
-
-  loadSavedPreferences = () => {
-    if (!this.config.storage.enabled) return;
-    
-    try {
-      const stored = localStorage.getItem(this.config.storage.key);
-      if (!stored) return;
-      
-      const preferences = JSON.parse(stored);
-      
-      if (preferences.timestamp) {
-        const daysDiff = (Date.now() - preferences.timestamp) / (1000 * 60 * 60 * 24);
-        if (daysDiff > this.config.storage.expireDays) {
-          localStorage.removeItem(this.config.storage.key);
-          return;
-        }
-      }
-      
-      this.setState({
-        isDarkTheme: preferences.darkTheme || false,
-        isGrayscale: preferences.grayscale || false,
-        fontScale: preferences.fontScale || 1.0
-      });
-      
-      console.log('Preferencias cargadas:', preferences);
-    } catch (error) {
-      console.error('Error cargando preferencias:', error);
-    }
-  };
-
   setupInitialState = () => {
+    // Solo configurar estado inicial sin cargar preferencias guardadas
     if (this.state.isDarkTheme) {
       document.body.classList.add('accessibility-dark-theme');
     }
@@ -315,7 +260,6 @@ class FloatingMenu extends React.Component {
     
     const percentage = Math.round(newScale * 100);
     this.announceToScreenReader(`${this.config.messages.notifications.fontSizeIncreased}. Nivel: ${percentage}%`);
-    this.savePreferences();
   };
 
   decreaseFontSize = () => {
@@ -331,10 +275,9 @@ class FloatingMenu extends React.Component {
     
     const percentage = Math.round(newScale * 100);
     this.announceToScreenReader(`${this.config.messages.notifications.fontSizeDecreased}. Nivel: ${percentage}%`);
-    this.savePreferences();
   };
 
-  // ===== FUNCIONES DE ESCALA DE GRISES CORREGIDAS =====
+  // ===== FUNCIONES DE ESCALA DE GRISES =====
   applyGrayscaleSimple = () => {
     try {
       console.log('Aplicando escala de grises...');
@@ -452,7 +395,6 @@ class FloatingMenu extends React.Component {
         this.announceToScreenReader(this.config.messages.notifications.grayscaleOff);
       }
       
-      setTimeout(() => this.savePreferences(), 100);
       return { isGrayscale: newGrayscale };
     });
   };
@@ -470,12 +412,11 @@ class FloatingMenu extends React.Component {
         this.announceToScreenReader(this.config.messages.notifications.darkThemeOff);
       }
       
-      setTimeout(() => this.savePreferences(), 100);
       return { isDarkTheme: newTheme };
     });
   };
 
-  // ===== MANEJO DE EVENTOS SIMPLIFICADO =====
+  // ===== MANEJO DE EVENTOS =====
   handleItemClick = (action) => {
     console.log('Acción clickeada:', action);
     
@@ -562,8 +503,6 @@ class FloatingMenu extends React.Component {
   handleMouseLeave = () => {
     this.setState({ hoveredItem: null, isHoveringTheme: false });
   };
-
-  // ❌ ELIMINADO COMPLETAMENTE: handleMouseDown, handleMouseMove, handleMouseUp
 
   getMenuItems = () => {
     const baseItems = [
@@ -698,15 +637,11 @@ class FloatingMenu extends React.Component {
     
     return (
       <>
-        <div
-          className="floating-menu"
-        >
+        <div className="floating-menu">
           {mainMenuItems.map((item, index) => this.renderMenuItem(item, index, true))}
         </div>
         
-        <div 
-          className="whatsapp-floating-button"
-        >
+        <div className="whatsapp-floating-button">
           {this.renderMenuItem(whatsappItem, 0, false)}
         </div>
         
