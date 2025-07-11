@@ -6,7 +6,6 @@
   gap: 15px;
   margin-top: 20px;
   flex-wrap: wrap;
-  max-width: 1200px;
   padding: 20px;
   padding-top: 0;
 
@@ -53,7 +52,7 @@
         align-items: center;
         justify-content: space-between;
         color: var(--primary);
-        font-size: var(--font-size-paragraph);
+        font-size: var(--font-size-heading);
         font-weight: bold;
         text-decoration: none;
         gap: 5px;
@@ -70,7 +69,6 @@
 
 @media (min-width: $breakpoint-xl) {
   .help-section {
-    max-width: $breakpoint-xl;
 
     .help-header {
       width: 100%;
