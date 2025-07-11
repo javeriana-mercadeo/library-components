@@ -1,0 +1,48 @@
+@use '@styles/autoload' as *;
+
+@mixin container {
+  .container {
+    width: 100%;
+    max-width: var(--max-width);
+    padding: var(--spacing-lg);
+    margin: 0 auto;
+
+    // Responsive adjustments
+    @include responsive {
+      padding: var(--spacing-lg) var(--spacing-xl);
+      padding-left: var(--spacing-3xl);
+    }
+
+    // Variantes de ancho máximo
+    &.container-sm {
+      max-width: var(--max-width-sm);
+    }
+
+    &.container-md {
+      max-width: var(--max-width-md);
+    }
+
+    &.container-lg {
+      max-width: var(--max-width-lg);
+    }
+
+    &.container-xl {
+      max-width: var(--max-width-xl);
+    }
+
+    &.container-2xl {
+      max-width: var(--max-width-2xl);
+    }
+
+    // Variantes de padding
+    &.container-no-padding {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    &.container-fluid {
+      max-width: none;
+      width: 100%;
+    }
+  }
+}

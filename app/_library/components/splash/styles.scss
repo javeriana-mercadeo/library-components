@@ -1,0 +1,128 @@
+@use '@styles/autoload' as *;
+
+// Variables específicas del componente
+$splash-z-index: 9999;
+$splash-gradient-light-center: var(--background-100);
+$splash-gradient-light-edge: var(--primary-200);
+$splash-gradient-dark-center: var(--background-200);
+$splash-gradient-dark-edge: var(--primary-200);
+$spinner-size: rem(24px);
+$spinner-margin-top: rem(40px);
+$spinner-gap: rem(10px);
+$spinner-color: var(--primary-300);
+$logo-size: rem(140px);
+
+// Componente Splash
+#splash {
+  // Posicionamiento
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $splash-z-index;
+
+  // Dimensiones
+  width: 100dvw;
+  height: 100dvh;
+
+  // Diseño de contenido
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Visuales
+  opacity: 1;
+  background: radial-gradient(circle, $splash-gradient-light-center 40%, $splash-gradient-light-edge 60%);
+  transition: opacity var(--transition) ease-in-out;
+
+  @include liferay-edit-mode {
+    position: initial;
+    display: none;
+  }
+
+  @include only-dev-mode {
+    position: initial;
+    display: none;
+  }
+
+  // Tema oscuro
+  @include dark-theme {
+    background: radial-gradient(circle, $splash-gradient-dark-center 59%, $splash-gradient-dark-edge 100%);
+  }
+
+  // Contenedor principal
+  .splash-content {
+    // Diseño
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    // Dimensiones
+    width: calc(var(--icon-logo-big) + rem(100px));
+    height: calc(var(--icon-logo-big) + rem(100px));
+    border-radius: 50%;
+
+    // Logos (claro y oscuro)
+    .logo,
+    .logo-dark {
+      width: var(--icon-logo-big);
+      max-width: var(--icon-logo-big);
+    }
+
+    // Contenedor del spinner
+    .spinner-container {
+      display: flex;
+      align-items: center;
+      gap: $spinner-gap;
+      margin-top: $spinner-margin-top;
+
+      // Spinner de carga
+      .spinner {
+        color: $spinner-color;
+        width: $spinner-size;
+        height: $spinner-size;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      // Texto del spinner
+      span {
+        font-size: var(--font-size-normal);
+        color: var(--neutral-100);
+      }
+    }
+  }
+}
+
+// Animaciones
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+// Estado oculto
+.hidden {
+  animation: fadeOut var(--transition) ease-in-out forwards;
+}

@@ -1,0 +1,59 @@
+// ==========================================
+// VARIABLES CSS GLOBALES
+// ==========================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+
+:root {
+  // ==========================================
+  // BASE
+  // ==========================================
+  --transition: 0.3s;
+
+  // ==========================================
+  // LAYOUT
+  // ==========================================
+  --max-width: #{rem(1400px)};
+  --max-width-sm: #{rem(576px)};
+  --max-width-md: #{rem(768px)};
+  --max-width-lg: #{rem(992px)};
+  --max-width-xl: #{rem(1200px)};
+
+  // ==========================================
+  // ESPACIADOS
+  // ==========================================
+  --spacing-2xs: #{rem(4px)};
+  --spacing-xs: #{rem(8px)};
+  --spacing-sm: #{rem(12px)};
+  --spacing-md: #{rem(16px)};
+  --spacing-lg: #{rem(24px)};
+  --spacing-xl: #{rem(38px)};
+  --spacing-2xl: #{rem(48px)};
+  --spacing-3xl: #{rem(64px)};
+  --spacing-4xl: #{rem(80px)};
+
+  // ==========================================
+  // BORDES
+  // ==========================================
+  --border-radius: #{rem(14px)};
+  --border-radius-xs: #{rem(2px)};
+  --border-radius-sm: #{rem(4px)};
+  --border-radius-md: #{rem(8px)};
+  --border-radius-lg: #{rem(16px)};
+  --border-radius-xl: #{rem(20px)};
+
+  // ==========================================
+  // COMPONENTES
+  // ==========================================
+
+  // Botones - Ripple
+  --btn-ripple-duration: 0.6s;
+  --btn-ripple-color-light: rgba(255, 255, 255, 0.3);
+  --btn-ripple-color-dark: rgba(0, 0, 0, 0.15);
+
+  // Botones - Animaciones
+  --btn-transition-duration: 0.3s;
+  --btn-hover-y-offset: #{rem(-2px)};
+  --btn-shadow-hover: 0 #{rem(4px)} #{rem(8px)} rgba(0, 0, 0, 0.1);
+  --btn-shadow-hover-dark: 0 #{rem(4px)} #{rem(12px)} rgba(0, 0, 0, 0.25);
+}

@@ -1,0 +1,91 @@
+// ==========================================
+// MIXINS
+// ==========================================
+@use 'sass:meta';
+@use 'sass:map';
+@use 'variables' as *;
+@use 'colors' as *;
+
+// ==========================================
+// TEMAS - SELECTORES
+// ==========================================
+@mixin dark-theme {
+  [data-theme-base='dark'] & {
+    @content;
+  }
+}
+
+@mixin faculty-theme($faculty-name) {
+  [data-theme-faculty='#{$faculty-name}'] & {
+    @content;
+  }
+}
+
+@mixin combined-theme($base: null, $faculty: null) {
+  $selector: '';
+
+  @if $base and $faculty {
+    $selector: '[data-theme-base="#{$base}"][data-theme-faculty="#{$faculty}"]';
+  } @else if $base {
+    $selector: '[data-theme-base="#{$base}"]';
+  } @else if $faculty {
+    $selector: '[data-theme-faculty="#{$faculty}"]';
+  }
+
+  @if $selector != '' {
+    #{$selector} & {
+      @content;
+    }
+  }
+}
+
+// ==========================================
+// RESPONSIVE
+// ==========================================
+@mixin responsive($break_point: $breakpoint-md) {
+  @media (min-width: $break_point) {
+    @content;
+  }
+}
+
+// ==========================================
+// COMPONENTES - COLORES
+// ==========================================
+@mixin colors-variants($base-class, $mixin-ref) {
+  $color-names: ('primary', 'secondary', 'tertiary', 'neutral', 'success', 'warning', 'danger');
+
+  @each $color-name in $color-names {
+    .#{$base-class}-#{$color-name} {
+      @include meta.apply($mixin-ref, null, $color-name);
+    }
+  }
+}
+
+// ==========================================
+// UTILIDADES
+// ==========================================
+@mixin text-style(
+  $size,
+  $weight: var(--font-weight-regular),
+  $spacing: var(--letter-spacing-normal),
+  $line-height: var(--line-height-base)
+) {
+  font-size: $size;
+  font-weight: $weight;
+  letter-spacing: $spacing;
+  line-height: $line-height;
+  font-family: var(--font-family);
+}
+
+@mixin liferay-edit-mode {
+  .has-edit-mode-menu &,
+  .signed-in & {
+    @content;
+  }
+}
+
+@mixin only-dev-mode {
+  [data-env='development'] & {
+    @content;
+  }
+}

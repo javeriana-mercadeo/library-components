@@ -1,0 +1,196 @@
+// ==========================================
+// SISTEMA DE COLORES
+// ==========================================
+@use 'sass:map';
+@use 'functions' as *;
+
+// ==========================================
+// COLORES BASE
+// ==========================================
+$color-base: (
+  'primary': #2c5697,
+  'primary-dark': #2c5697,
+  'secondary': #f6bd30,
+  'tertiary': #029be1,
+  'tertiary-dark': #117daf,
+  'background': #1e1e1e,
+  'neutral-base': #ffffff,
+  'neutral-variant': #96937f,
+  'neutral-variant-blue': #eeefef,
+  'success': #28a368,
+  'warning': #f2bf2e,
+  'danger': #ff1200
+);
+
+// ==========================================
+// ESCALA NEUTRAL
+// ==========================================
+$neutral-colors-base: (
+  '': #ffffff,
+  100: #1d2125,
+  200: #22272b,
+  300: #2c333a,
+  400: #454f59,
+  500: #596773,
+  600: #8c9bab,
+  700: #9fadbc,
+  800: #b6c2cf,
+  900: #c7d1db,
+  1000: #eeefef,
+  1100: #f2f2f2
+);
+
+$neutral-colors: add-rgb-to-color-map($neutral-colors-base);
+
+// ==========================================
+// TEMA LIGHT (BASE)
+// ==========================================
+$base-theme-light: (
+  'primary': generate-color-scale(map.get($color-base, 'primary')),
+  'secondary': generate-color-scale(map.get($color-base, 'secondary')),
+  'tertiary': generate-color-scale(map.get($color-base, 'tertiary')),
+  'background': generate-color-scale(map.get($color-base, 'background')),
+  'neutral': $neutral-colors,
+  'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant')),
+  'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue')),
+  'success': generate-color-scale(map.get($color-base, 'success')),
+  'warning': generate-color-scale(map.get($color-base, 'warning')),
+  'danger': generate-color-scale(map.get($color-base, 'danger'))
+);
+
+// ==========================================
+// TEMA DARK
+// ==========================================
+$base-theme-dark: (
+  'primary': generate-color-scale(map.get($color-base, 'primary-dark'), true),
+  'secondary': generate-color-scale(map.get($color-base, 'secondary'), true),
+  'tertiary': generate-color-scale(map.get($color-base, 'tertiary-dark'), true),
+  'background': generate-color-scale(map.get($color-base, 'background'), true),
+  'neutral': add-rgb-to-color-map(invert-color-map($neutral-colors-base)),
+  'neutral-variant': generate-color-scale(map.get($color-base, 'neutral-variant'), true),
+  'neutral-variant-blue': generate-color-scale(map.get($color-base, 'neutral-variant-blue'), true),
+  'success': generate-color-scale(map.get($color-base, 'success'), true),
+  'warning': generate-color-scale(map.get($color-base, 'warning'), true),
+  'danger': generate-color-scale(map.get($color-base, 'danger'), true)
+);
+
+// ==========================================
+// COLORES POR FACULTAD
+// ==========================================
+$faculty-colors: (
+  'arquitectura-diseno': (
+    'primary': #653383,
+    'secondary': #00559a
+  ),
+  'artes': (
+    'primary': #6f45e9,
+    'secondary': #ff4b78,
+    'tertiary': #2c5595
+  ),
+  'ciencias': (
+    'primary': #008aa2,
+    'secondary': #f6bd30
+  ),
+  'ciencias-economicas-administrativas': (
+    'primary': #4a7ed8,
+    'secondary': #371f75,
+    'tertiary': #ff4e30
+  ),
+  'ciencias-juridicas': (
+    'primary': #2c5595,
+    'secondary': #f6bd30,
+    'tertiary': #c6c6c6
+  ),
+  'ciencias-politicas-relaciones-internacionales': (
+    'primary': #008874,
+    'secondary': #f6bd30
+  ),
+  'ciencias-sociales': (
+    'primary': #003d7a,
+    'secondary': #73d9fc,
+    'tertiary': #3e2580
+  ),
+  'comunicacion-lenguaje': (
+    'primary': #8048a9,
+    'secondary': #73d9fc,
+    'tertiary': #2c5595
+  ),
+  'derecho-canonico': (
+    'primary': #2c5595,
+    'secondary': #f6bd30,
+    'tertiary': #f2f2f2
+  ),
+  'educacion': (
+    'primary': #a1bfff,
+    'secondary': #2a2a68,
+    'tertiary': #f47abd
+  ),
+  'enfermeria': (
+    'primary': #018ab9,
+    'secondary': #ffcd00
+  ),
+  'estudios-ambientales-rurales': (
+    'primary': #abc80e,
+    'secondary': #2dcad1,
+    'tertiary': #029be2
+  ),
+  'filosofia': (
+    'primary': #004c8f,
+    'secondary': #c08300,
+    'tertiary': #f2f2f2
+  ),
+  'ingenieria': (
+    'primary': #026fc1,
+    'secondary': #029be1,
+    'tertiary': #339e36
+  ),
+  'instituto-pensar': (
+    'primary': #00b3ab,
+    'secondary': #ff6b17
+  ),
+  'instituto-salud-publica': (
+    'primary': #a74731,
+    'secondary': #c28069
+  ),
+  'medicina': (
+    'primary': #2b9cd2,
+    'secondary': #f6bd30
+  ),
+  'odontologia': (
+    'primary': #32abbf,
+    'secondary': #32abbf
+  ),
+  'psicologia': (
+    'primary': #029be1,
+    'secondary': #f6bd30
+  ),
+  'teologia': (
+    'primary': #004c8f,
+    'secondary': #c08300
+  )
+);
+
+// ==========================================
+// COMPATIBILIDAD (COMPONENTES EXISTENTES)
+// ==========================================
+$colors-map: $base-theme-light;
+
+$basic-colors-map: (
+  'primary': map.get($base-theme-light, 'primary'),
+  'secondary': map.get($base-theme-light, 'secondary'),
+  'tertiary': map.get($base-theme-light, 'tertiary'),
+  'neutral': map.get($base-theme-light, 'neutral'),
+  'success': map.get($base-theme-light, 'success'),
+  'warning': map.get($base-theme-light, 'warning'),
+  'danger': map.get($base-theme-light, 'danger')
+);
+
+$basic-dark-colors: (
+  'primary': map.get($base-theme-dark, 'primary'),
+  'secondary': map.get($base-theme-dark, 'secondary'),
+  'tertiary': map.get($base-theme-dark, 'tertiary'),
+  'neutral': map.get($base-theme-dark, 'neutral'),
+  'success': map.get($base-theme-dark, 'success'),
+  'warning': map.get($base-theme-dark, 'warning'),
+  'danger': map.get($base-theme-dark, 'danger')
+);

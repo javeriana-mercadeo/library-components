@@ -1,0 +1,22 @@
+// ==========================================
+// ARCHIVO PRINCIPAL DE ESTILOS
+// ==========================================
+
+// 1. Abstracts (sin salida CSS)
+// ------------------------------------------
+@forward 'abstracts/variables';
+@forward 'abstracts/functions';
+@forward 'abstracts/mixins';
+@forward 'abstracts/colors';
+
+// 2. Vendors (Terceras)
+// ------------------------------------------
+@forward 'vendors/liferay';
+@forward 'vendors/flowbite';
+
+// 3. Base (estilos fundamentales)
+// ------------------------------------------
+@forward 'base/root_vars';
+@forward 'base/reset';
+@forward 'base/typography';
+@forward 'base/themes';

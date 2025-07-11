@@ -14,8 +14,8 @@ import {
 
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@heroui/react'
 import Image from 'next/image'
-import logo from '../../../assets/icon.svg'
-import { ThemeSwitch } from '@/app/_components/themeSwitch/theme-switch'
+import Logo from '@library/components/logo_institucional'
+import ThemeSwitch from '@/app/_components/themeSwitch/theme-switch'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -48,7 +48,7 @@ const Header = () => {
         <NavbarMenuToggle aria-label={isMenuOpen ? 'Close menu' : 'Open menu'} className="sm:hidden" />
         <NavbarBrand>
           <figure className="flex gap-2 items-center">
-            <Image alt="ACME" className="h-8 w-8" src={logo} width={32} height={32} />
+            <Logo />
             <p className="text-inherit font-bold">Biblioteca de componentes</p>
           </figure>
         </NavbarBrand>

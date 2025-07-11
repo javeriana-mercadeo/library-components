@@ -1,0 +1,99 @@
+// ==========================================
+// RESET COMPATIBLE CON TAILWIND
+// ==========================================
+@use '../abstracts/functions' as *;
+
+// ==========================================
+// RESET SELECTIVO
+// ==========================================
+
+// Solo elementos que Tailwind no resetea o necesitan ajustes específicos
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+// Variables CSS base para nuestro sistema
+body {
+  font-family: var(--font-family);
+  transition: background-color var(--transition) ease;
+}
+
+// ==========================================
+// ELEMENTOS ESPECÍFICOS DEL PROYECTO
+// ==========================================
+
+// Solo estilos que necesitamos y que no chocan con Tailwind
+code:not(.hljs) {
+  font-family: 'Courier New', Consolas, Monaco, monospace;
+  font-size: var(--font-size-small);
+  background: var(--neutral-900);
+  padding: rem(2px) rem(4px);
+  border-radius: var(--border-radius-xs);
+}
+
+// ==========================================
+// ACCESIBILIDAD
+// ==========================================
+
+// Focus específico para nuestro sistema
+:focus-visible:not(.focus\:outline-none):not([class*='focus:']) {
+  outline: rem(2px) solid var(--primary-500);
+  outline-offset: rem(2px);
+  border-radius: var(--border-radius-xs);
+}
+
+// Screen reader only (mejorado)
+.sr-only {
+  position: absolute !important;
+  width: rem(1px) !important;
+  height: rem(1px) !important;
+  padding: 0 !important;
+  margin: rem(-1px) !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// ==========================================
+// COMPONENTES ESPECÍFICOS
+// ==========================================
+
+// Solo para elementos de nuestro sistema de componentes
+[data-component] {
+  font-family: var(--font-family);
+}
+
+// Elementos editables de Liferay
+lfr-editable {
+  display: block;
+  min-height: rem(20px);
+}
+
+lfr-editable:empty::before {
+  content: attr(data-lfr-editable-id);
+  opacity: 0.5;
+  font-style: italic;
+  color: var(--neutral-500);
+}
+
+// ==========================================
+// UTILIDADES NO CONFLICTIVAS
+// ==========================================
+
+// Respeta las preferencias de movimiento del usuario
+@media (prefers-reduced-motion: reduce) {
+  *:not([class*='animate-']):not([class*='transition-']) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Hidden mejorado (solo si Tailwind no lo maneja)
+[hidden]:not(.block):not(.inline):not(.flex):not(.grid) {
+  display: none !important;
+}

@@ -1,0 +1,652 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:color';
+@use '@styles/autoload' as *;
+
+// ===========================================
+// VARIABLES GLOBALES DEL COMPONENTE
+// ===========================================
+$btn-border-width: rem(2px);
+$btn-border-radius: rem(12px);
+$btn-transition: all 0.25s ease-in-out;
+$btn-font-weight: 500;
+$btn-line-height: 1.5;
+$btn-gap: rem(8px);
+
+// Tamaños de padding
+$btn-padding-sm: rem(6px) rem(14px);
+$btn-padding-md: rem(8px) rem(18px);
+$btn-padding-lg: rem(14px) rem(26px);
+
+// Tamaños para botón solo icono (proporciones cuadradas)
+$btn-icon-only-size-sm: rem(32px);
+$btn-icon-only-size-md: rem(40px);
+$btn-icon-only-size-lg: rem(48px);
+
+// Escalas de fuente
+$btn-font-scale-sm: 0.875;
+$btn-font-scale-md: 1;
+$btn-font-scale-lg: 1.125;
+
+// Sombras específicas por variante
+$btn-shadow-solid:
+  0 rem(1px) rem(3px) rgba(0, 0, 0, 0.12),
+  0 rem(1px) rem(2px) rgba(0, 0, 0, 0.24);
+$btn-shadow-bordered: none;
+$btn-shadow-light: none;
+$btn-shadow-flat: none;
+$btn-shadow-faded: 0 rem(4px) rem(18px) rgba(0, 0, 0, 0.25);
+$btn-shadow-ghost: none;
+$btn-shadow-shadow: 0 rem(4px) rem(14px);
+
+// Transformaciones
+$btn-transform-hover: translateY(rem(-2px));
+$btn-transform-active: translateY(0);
+$btn-transform-shadow: translateY(rem(-1px));
+
+// Opacidades para variantes
+$btn-opacity-faded: 0.25;
+$btn-opacity-light: 0.15;
+$btn-opacity-flat: 0.1;
+$btn-opacity-ghost: 0.05;
+$btn-opacity-disabled: 0.5;
+
+// Efecto ripple
+$btn-ripple-size: rem(180px);
+$btn-ripple-offset: rem(-90px);
+$btn-ripple-duration: 0.6s;
+
+// ===========================================
+// MIXIN PRINCIPAL
+// ===========================================
+@mixin general-btn {
+  // Clase base común para todos los botones
+  .btn {
+    // Reset de estilos base
+    appearance: none;
+    outline: none;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+
+    // Estilos propios del componente
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $btn-gap;
+    min-width: rem(64px);
+    min-height: rem(40px);
+
+    font-weight: $btn-font-weight;
+    line-height: $btn-line-height;
+    font-size: rem(14px);
+    border-radius: var(--btn-radius, #{$btn-border-radius});
+    padding: $btn-padding-md;
+    transition: $btn-transition;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+
+    // Estilos para iconos
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: var(--icon-size-sm);
+      height: var(--icon-size-sm);
+      font-size: var(--icon-size-sm);
+
+      svg,
+      i {
+        width: 100%;
+        height: 100%;
+      }
+
+      // Icono solo (para botones iconOnly)
+      &.btn-icon-only {
+        width: rem(18px);
+        height: rem(18px);
+        font-size: rem(18px);
+      }
+    }
+
+    .btn-text {
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+
+    // ===========================================
+    // ESTILOS PARA BOTÓN SOLO ICONO
+    // ===========================================
+    &.btn-icon-only {
+      min-width: $btn-icon-only-size-md;
+      width: $btn-icon-only-size-md;
+      height: $btn-icon-only-size-md;
+      padding: 0;
+      gap: 0;
+
+      .btn-icon-only {
+        width: rem(20px);
+        height: rem(20px);
+        font-size: rem(20px);
+      }
+
+      // Tamaños específicos para botón solo icono
+      &.btn-sm {
+        min-width: $btn-icon-only-size-sm;
+        width: $btn-icon-only-size-sm;
+        height: $btn-icon-only-size-sm;
+
+        .btn-icon-only {
+          width: rem(16px);
+          height: rem(16px);
+          font-size: rem(16px);
+        }
+      }
+
+      &.btn-lg {
+        min-width: $btn-icon-only-size-lg;
+        width: $btn-icon-only-size-lg;
+        height: $btn-icon-only-size-lg;
+
+        .btn-icon-only {
+          width: rem(24px);
+          height: rem(24px);
+          font-size: rem(24px);
+        }
+      }
+
+      // Para botones solo icono, fullWidth no debería aplicarse
+      &.btn-full-width {
+        width: auto;
+        min-width: $btn-icon-only-size-md;
+
+        &.btn-sm {
+          min-width: $btn-icon-only-size-sm;
+        }
+
+        &.btn-lg {
+          min-width: $btn-icon-only-size-lg;
+        }
+      }
+    }
+
+    // Variantes de tamaño
+    &.btn-sm {
+      min-height: rem(32px);
+      padding: $btn-padding-sm;
+      font-size: rem(12px);
+
+      .btn-icon {
+        width: var(--icon-size-xs);
+        height: var(--icon-size-xs);
+        font-size: var(--icon-size-xs);
+      }
+    }
+
+    &.btn-lg {
+      min-height: rem(48px);
+      padding: $btn-padding-lg;
+      font-size: rem(16px);
+
+      .btn-icon {
+        width: rem(20px);
+        height: rem(20px);
+      }
+    }
+
+    // Botón de ancho completo
+    &.btn-full-width {
+      width: 100%;
+    }
+
+    // Estados del botón
+    &:disabled,
+    &.btn-disabled,
+    &[aria-disabled='true'] {
+      opacity: $btn-opacity-disabled;
+      pointer-events: none;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    // Focus state
+    &:focus-visible {
+      outline: rem(2px) solid transparent;
+      outline-offset: rem(2px);
+      z-index: 10;
+    }
+
+    // Efecto de onda al hacer clic
+    .btn-ripple-effect {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple $btn-ripple-duration linear;
+      pointer-events: none;
+      width: $btn-ripple-size;
+      height: $btn-ripple-size;
+      margin-top: $btn-ripple-offset;
+      margin-left: $btn-ripple-offset;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+  }
+
+  // Aplicar los estilos temáticos a cada combinación de botón y color
+  @include colors-variants('btn', meta.get-mixin('button-themes'));
+}
+
+// ===========================================
+// MIXIN DE TEMAS POR COLOR
+// ===========================================
+@mixin button-themes($color-values, $color-name) {
+  // Variables CSS que se adaptan automáticamente por tema
+  $color: var(--#{$color-name});
+  $color-100: var(--#{$color-name}-100);
+  $color-200: var(--#{$color-name}-200);
+  $color-300: var(--#{$color-name}-300);
+  $color-400: var(--#{$color-name}-400);
+  $color-500: var(--#{$color-name}-500);
+  $color-600: var(--#{$color-name}-600);
+  $color-700: var(--#{$color-name}-700);
+  $color-800: var(--#{$color-name}-800);
+  $color-rgb: var(--#{$color-name}-rgb);
+
+  // Variables para texto
+  $text-on-color: var(--neutral-1000);
+  $text-on-light: var(--neutral-100);
+  $text-primary: $color-600;
+
+  // ===========================================
+  // VARIANTE: SOLID (estilo por defecto de HeroUI)
+  // ===========================================
+  &.btn-solid {
+    background: $color-600;
+    color: $text-on-color;
+    box-shadow: $btn-shadow-solid;
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-700;
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-800;
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: FADED (translúcido con backdrop-filter)
+  // ===========================================
+  &.btn-faded {
+    background: rgba($color-rgb, 0.1);
+    color: $color-600;
+    backdrop-filter: blur(8px) saturate(150%);
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
+    box-shadow: none;
+    border: rem(2px) solid rgba($color-rgb, 0.2);
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: rgba($color-rgb, 0.25);
+      border-color: rgba($color-rgb, 0.3);
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: rgba($color-rgb, 0.35);
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: rgba($color-rgb, 0.4);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: BORDERED (solo borde)
+  // ===========================================
+  &.btn-bordered {
+    background: transparent;
+    color: $text-primary;
+    border: rem(2px) solid $color-600;
+    box-shadow: $btn-shadow-bordered;
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      border-color: $color-400;
+      color: $color-700;
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      border-color: $color-500;
+      color: $color-800;
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: rgba($color-rgb, 0.2);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: LIGHT (fondo muy sutil)
+  // ===========================================
+  &.btn-light {
+    background: transparent;
+    color: $color-600;
+    box-shadow: $btn-shadow-light;
+    border: rem(1px) solid transparent;
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: rgba($color-rgb, 0.18);
+      color: $color-800;
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: rgba($color-rgb, 0.25);
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: rgba($color-rgb, 0.3);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: FLAT (menos énfasis que light)
+  // ===========================================
+  &.btn-flat {
+    background: rgba($color-rgb, 0.18);
+    color: $color-600;
+    box-shadow: $btn-shadow-flat;
+    border: rem(1px) solid transparent;
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: rgba($color-rgb, 0.2);
+      color: $color-700;
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: rgba($color-rgb, 0.23);
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: rgba($color-rgb, 0.25);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: GHOST (solo texto, sin fondo)
+  // ===========================================
+  &.btn-ghost {
+    background: transparent;
+    color: $text-primary;
+    border: rem(2px) solid $color-600;
+    box-shadow: $btn-shadow-ghost;
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-700;
+      color: $text-on-color;
+      transform: $btn-transform-hover;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-800;
+      color: $text-on-color;
+      transform: $btn-transform-active;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300;
+    }
+
+    .btn-ripple-effect {
+      background: rgba($color-rgb, 0.2);
+    }
+  }
+
+  // ===========================================
+  // VARIANTE: SHADOW (con sombra prominente)
+  // ===========================================
+  &.btn-shadow {
+    background: $color-600;
+    color: $text-on-color;
+    box-shadow: 0 rem(4px) rem(14px) rgba($color-rgb, 0.4);
+
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-700;
+      box-shadow: 0 rem(8px) rem(25px) rgba($color-rgb, 0.35);
+      transform: translateY(rem(-2px));
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      background: $color-800;
+      box-shadow: 0 rem(4px) rem(14px) rgba($color-rgb, 0.4);
+      transform: translateY(0);
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) $color-300,
+        0 rem(4px) rem(14px) rgba($color-rgb, 0.4);
+    }
+
+    .btn-ripple-effect {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  // ===========================================
+  // NUEVA VARIANTE: LINK (sin padding, sin efecto de onda)
+  // ===========================================
+  &.btn-link {
+    background: transparent;
+    color: $text-primary;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    min-height: auto;
+    min-width: auto;
+    font-size: inherit;
+    font-weight: inherit;
+    border-radius: 0;
+    overflow: visible;
+
+    // Deshabilitar efecto ripple completamente
+    &::before,
+    &::after {
+      display: none !important;
+    }
+
+    .btn-ripple-effect {
+      display: none !important;
+    }
+
+    // Estados de interacción más sutiles
+    &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      color: $color-700;
+      text-decoration-thickness: rem(2px);
+      transform: none;
+      background: transparent;
+    }
+
+    &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+      color: $color-800;
+      transform: none;
+      background: transparent;
+    }
+
+    &:focus-visible {
+      outline: rem(2px) solid $color-400;
+      outline-offset: rem(2px);
+      border-radius: rem(2px);
+      box-shadow: none;
+      text-decoration: none;
+    }
+
+    // Iconos en variante link
+    .btn-icon {
+      width: auto;
+      height: auto;
+      font-size: inherit;
+
+      &.btn-icon-start {
+        margin-right: rem(4px);
+      }
+
+      &.btn-icon-end {
+        margin-left: rem(4px);
+      }
+    }
+
+    // Estados disabled más sutiles
+    &:disabled,
+    &.btn-disabled,
+    &[aria-disabled='true'] {
+      opacity: 0.6;
+      text-decoration: none;
+      color: currentColor;
+      cursor: not-allowed;
+    }
+  }
+
+  // ===========================================
+  // AJUSTES PARA MODO OSCURO - VARIANTE LINK
+  // ===========================================
+  @include dark-theme {
+    &.btn-link {
+      color: $color-300;
+
+      &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        color: $color-200;
+      }
+
+      &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        color: $color-100;
+      }
+
+      &:focus-visible {
+        outline-color: $color-400;
+      }
+    }
+  }
+
+  // ===========================================
+  // AJUSTES PARA MODO OSCURO
+  // ===========================================
+  @include dark-theme {
+    &.btn-solid {
+      background: $color-500;
+      color: var(--neutral-100);
+
+      &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-400;
+      }
+
+      &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-600;
+      }
+    }
+
+    &.btn-faded {
+      color: $color-800;
+      border: rem(2px) solid rgba($color-rgb, 0.3);
+    }
+
+    &.btn-bordered {
+      color: $color-800;
+      border-color: $color-500;
+    }
+
+    &.btn-light {
+      color: $color-800;
+    }
+
+    &.btn-flat {
+      color: $color-800;
+    }
+
+    &.btn-ghost {
+      color: $color-800;
+
+      &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-400;
+        color: var(--neutral-100);
+      }
+
+      &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-600;
+        color: var(--neutral-100);
+      }
+    }
+
+    &.btn-shadow {
+      background: $color-500;
+      color: var(--neutral-100);
+
+      &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-400;
+      }
+
+      &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
+        background: $color-600;
+      }
+    }
+  }
+}

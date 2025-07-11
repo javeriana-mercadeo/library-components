@@ -1,0 +1,18 @@
+// ==========================================
+// LIFERAY - OVERRIDES
+// ==========================================
+@use '../abstracts/functions' as *;
+
+// ==========================================
+// Ajuste en página de edición
+// ==========================================
+html:not(#__):not(#___) .page-editor__layout-viewport {
+  align-items: initial;
+  display: initial;
+  justify-content: initial;
+  position: initial;
+}
+
+.portlet {
+  width: 100%;
+}

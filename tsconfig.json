@@ -22,18 +22,13 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["./app/_components/*"],
-      "@library/*": ["./library/*"],
-      "@styles/*": ["./styles/*"]
+      "@components/*": ["app/_components/*"],
+      "@library/*": ["app/_library/*"],
+      "@styles/*": ["./styles/*"],
+      "@assets/*": ["./assets/*"],
+      "@utils/*": ["./app/_utils/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "library/_general/components/buttons/btnLink.tjx",
-    "library/_general/components/buttons/BtnLink.jsx"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/_components/componentCatalog/index.jsx"],
   "exclude": ["node_modules"]
 }

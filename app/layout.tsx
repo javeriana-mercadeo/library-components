@@ -1,4 +1,4 @@
-import '@/styles/_tailwind.scss'
+import '@/styles/vendors/_tailwind.scss'
 import '@/styles/global.scss'
 
 //import '@/styles/liferayStyles.css'
@@ -9,6 +9,8 @@ import { siteConfig } from '@/config/site'
 
 import Footer from './_components/footer/footer'
 import ThemeSwitch from './_components/themeSwitch/theme-switch'
+import BtnReturn from './_components/btnReturn/btnReturn'
+import { ClientSideUtils } from './_components/clientSideUtils/ClientSideUtils'
 
 export const metadata: Metadata = {
   title: {
@@ -27,24 +29,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* <!-- Flowbite CSS --> */}
         <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+        {/* Utilidades globales - DEBE CARGARSE PRIMERO */}
         <title>Librería de componentes</title>
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <Providers themeProps={{ attribute: 'data-theme' }}>
+          <ClientSideUtils />
           <div className="relative flex flex-col">
             <ThemeSwitch />
-            <main className="flex-grow">{children}</main>
+            <BtnReturn />
+            <main className="global-container">{children}</main>
             <Footer />
           </div>
         </Providers>
 
         {/* <script>
-          document.addEventListener("DOMContentLoaded", function () {
+          const isEditMode = document.body.classList.contains('has-edit-mode-menu');
+          const isSignedIn = document.body.classList.contains('signed-in');
+
+          if (!isEditMode && !isSignedIn) {
             document
               .querySelectorAll("link.lfr-css-file")
               .forEach((link) => link.remove());
-          });
+          }
         </script> */}
+
+        {/* <!-- Swiper JS --> */}
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
         {/* <!-- Iconos Phosphor --> */}
         <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>

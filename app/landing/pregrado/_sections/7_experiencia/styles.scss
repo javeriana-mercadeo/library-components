@@ -1,0 +1,347 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$experience-border-radius: rem(16px);
+$experience-card-height: rem(450px);
+$experience-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$experience-nav-size: rem(50px);
+$experience-nav-size-mobile: rem(40px);
+
+// ==========================================
+// CONTENEDOR PRINCIPAL
+// ==========================================
+.experience-carousel {
+  background-color: var(--background-100);
+
+  @include dark-theme {
+    background-color: var(--background-200);
+  }
+
+  &_container {
+    width: 100%;
+    padding-top: var(--spacing-2xl);
+    padding-bottom: var(--spacing-2xl);
+  }
+
+  // ==========================================
+  // TÍTULO Y DESCRIPCIÓN
+  // ==========================================
+  &__title {
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-bold);
+    color: var(--neutral-100);
+    margin-bottom: var(--spacing-lg);
+
+    @include responsive($breakpoint-md) {
+      font-size: var(--font-size-principal-title);
+    }
+  }
+
+  &__description {
+    color: var(--neutral-500);
+    max-width: rem(600px);
+    margin: 0 auto var(--spacing-xl);
+    font-size: var(--font-size-paragraph);
+    line-height: 1.6;
+
+    @include responsive($breakpoint-md) {
+      font-size: var(--font-size-caption);
+    }
+  }
+
+  // ==========================================
+  // CARRUSEL
+  // ==========================================
+  &__carousel {
+    position: relative;
+    width: 100%;
+  }
+
+  &__wrapper {
+    margin: 0 auto rem(35px);
+    padding: rem(20px) rem(40px);
+    overflow: hidden;
+    position: relative;
+
+    @include responsive($breakpoint-md) {
+      padding: rem(20px) rem(30px);
+    }
+
+    @include responsive($breakpoint-sm) {
+      margin: 0 auto rem(25px);
+      padding: rem(10px) rem(15px);
+    }
+
+    @include responsive($breakpoint-xl) {
+      max-width: rem(1400px);
+    }
+  }
+
+  &__slides {
+    align-items: stretch !important;
+  }
+
+  &__slide {
+    display: flex !important;
+    flex-direction: column !important;
+    height: $experience-card-height !important;
+    align-items: stretch;
+    justify-content: center;
+
+    // Slide con video horizontal - doble ancho en desktop
+    &.swiper-slide-double-width {
+      @include responsive($breakpoint-md) {
+        // El ancho se maneja dinámicamente en JavaScript
+        .experience-carousel__video-card {
+          width: 100%;
+        }
+      }
+    }
+
+    @include responsive($breakpoint-sm) {
+      height: rem(400px) !important;
+    }
+  }
+
+  // ==========================================
+  // CARDS BASE
+  // ==========================================
+  &__testimonial-card,
+  &__image-card,
+  &__video-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: $experience-border-radius;
+    overflow: hidden;
+    transition: $experience-transition;
+
+    &:hover {
+      transform: translateY(rem(-4px));
+      box-shadow: 0 rem(8px) rem(25px) rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  // ==========================================
+  // TESTIMONIAL CARD
+  // ==========================================
+  &__testimonial-card {
+    background-color: var(--primary);
+    padding: rem(32px);
+    justify-content: space-between;
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(24px);
+    }
+
+    @include dark-theme {
+      background-color: var(--primary-600);
+    }
+  }
+
+  &__testimonial-text {
+    font-size: rem(18px);
+    font-weight: var(--font-weight-medium);
+    color: var(--neutral);
+    line-height: 1.6;
+    margin-bottom: auto;
+
+    // Limitar texto a 6 líneas en desktop
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    @include responsive($breakpoint-sm) {
+      font-size: rem(16px);
+      -webkit-line-clamp: 5;
+    }
+  }
+
+  &__testimonial-user {
+    display: flex;
+    align-items: center;
+    margin-top: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+
+  &__testimonial-avatar {
+    flex-shrink: 0;
+
+    img {
+      width: rem(60px);
+      height: rem(60px);
+      border-radius: 50%;
+      object-fit: cover;
+      border: rem(3px) solid var(--neutral);
+    }
+  }
+
+  &__testimonial-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__testimonial-name {
+    font-size: var(--font-size-paragraph);
+    font-weight: var(--font-weight-bold);
+    color: var(--neutral);
+    margin: 0 0 rem(4px) 0;
+    line-height: 1.3;
+  }
+
+  &__testimonial-job {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-regular);
+    color: var(--neutral);
+    margin: 0;
+    opacity: 0.9;
+    line-height: 1.3;
+  }
+
+  &__testimonial-linkedin {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(36px);
+    height: rem(36px);
+    background: rgba(var(--neutral-rgb), 0.2);
+    border-radius: 50%;
+    color: var(--neutral);
+    text-decoration: none;
+    transition: $experience-transition;
+
+    &:hover {
+      background: rgba(var(--neutral-rgb), 0.3);
+      transform: scale(1.1);
+    }
+
+    i {
+      font-size: var(--icon-size-sm);
+    }
+  }
+
+  // ==========================================
+  // IMAGE CARD
+  // ==========================================
+  &__card-link {
+    display: block;
+    height: 100%;
+    text-decoration: none;
+    border-radius: $experience-border-radius;
+    overflow: hidden;
+  }
+
+  &__image-card {
+    height: 100%;
+    position: relative;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: $experience-transition;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  // ==========================================
+  // VIDEO CARD - MEJORADO
+  // ==========================================
+  &__video-card {
+    height: 100%;
+    position: relative;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // Videos horizontales
+    &--horizontal {
+      .experience-carousel__video-container {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        iframe {
+          width: 100%;
+          height: auto;
+          max-height: rem(270px);
+          aspect-ratio: 16/9;
+        }
+      }
+    }
+
+    // Videos verticales
+    &--vertical {
+      .experience-carousel__video-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        iframe {
+          width: auto;
+          height: 100%;
+          max-width: 100%;
+          aspect-ratio: 9/16;
+        }
+
+        @include responsive($breakpoint-sm) {
+          iframe {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  &__video-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: $experience-border-radius;
+    background: #000;
+    width: 100%;
+    height: 100%;
+
+    iframe {
+      position: relative;
+      border: none;
+      border-radius: rem(8px);
+    }
+  }
+
+  // Estilos para el primer video (autoplay)
+  .first-video-container {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: rem(2px) solid var(--primary);
+      border-radius: rem(8px);
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+      pointer-events: none;
+      z-index: 1;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 @use '../../../styles/_variables.scss' as *;
 @use '../../../styles/mixins' as *;
 @use '../../../../../../../styles/global.scss' as *;
+@use '@styles/autoload' as *;
 
 .help-section {
   display: flex;

@@ -1,22 +1,83 @@
-@use './main.scss' as *;
+// ==========================================
+// ESTILOS GLOBALES
+// ==========================================
 
-/* Liferay Styles */
-@use './liferayMain.scss' as *;
+// ==========================================
+// DEPENDENCIAS
+// ==========================================
+@use './main' as *;
 
-/* Theme */
-@use './general_vars' as *;
-@use './theme' as *;
-@use './typography' as *;
+// ==========================================
+// COMPONENTES
+// ==========================================
+@use '@library/components/container/styles.scss' as *;
+@use '@library/components/contain/btn/styles.scss' as *;
+@use '@library/components/contain/title/styles.scss' as *;
+@use '@library/components/contain/caption/styles.scss' as *;
+@use '@library/components/contain/paragraph/styles.scss' as *;
+@use '@library/components/contain/image/styles.scss' as *;
+@use '@library/components/contain/icon/styles.scss' as *;
+@use '@library/components/logo_institucional/styles.scss' as *;
+@use '@library/components/liferay_dev_banner/styles.scss' as *;
 
-/* Components */
-@use '../library/_general/components/buttons/btn_general/style.scss' as *;
-
+@include container;
+@include logo;
+@include title;
+@include caption;
+@include paragraph;
+@include image;
+@include icon;
 @include general-btn;
+@include liferay-dev-banner;
 
-/************ Default Css ************/
+// ==========================================
+// ELEMENTOS BASE
+// ==========================================
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: rem(75px);
+  min-height: 100dvh;
+  height: 100%;
+}
 
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+body {
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh;
+  height: fit-content;
+  background-color: var(--background-100);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
+  @include responsive {
+    background-attachment: scroll;
+  }
+
+  // Scrollbar personalizado
+  &::-webkit-scrollbar {
+    width: rem(7px);
+    background-color: var(--neutral-700);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--primary-600);
+    border-radius: rem(5px);
+    height: 40%;
+  }
+}
+
+// ==========================================
+// LAYOUT PRINCIPAL
+// ==========================================
+.global-container {
+  min-height: 100vh;
+  height: 100%;
+  flex-grow: 1;
+}
+
+// ==========================================
+// SELECCIÓN DE TEXTO
+// ==========================================
 ::selection {
   background-color: var(--primary-400);
   color: var(--neutral-200);
@@ -24,53 +85,5 @@
   @include dark-theme {
     background-color: var(--primary-200);
     color: var(--neutral-100);
-  }
-}
-
-* {
-  margin: revert-layer;
-  padding: revert-layer;
-  box-sizing: border-box;
-  font-family: 'Raleway', serif;
-  font-weight: 500;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: rem(75px);
-  min-height: 100vh;
-  height: 100%;
-
-  body {
-    position: relative;
-    overflow-x: hidden;
-    min-height: 100vh;
-    height: 100%;
-
-    background: var(--background-100);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  /* * Scroll personalizado */
-  body::-webkit-scrollbar {
-    width: rem(7px);
-    background-color: var(--neutral-700);
-  }
-
-  body::-webkit-scrollbar-thumb {
-    background-color: var(--primary-600);
-    border-radius: rem(5px);
-    height: 40%;
-  }
-}
-
-@include responsive {
-  html body {
-    background-attachment: scroll;
   }
 }

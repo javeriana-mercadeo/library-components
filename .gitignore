@@ -15,7 +15,7 @@
 /out/
 
 # production
-/build
+/dist
 
 # misc
 .DS_Store
@@ -231,3 +231,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/node,react,nextjs,windows,visualstudiocode
+
+# build output
+/build/
+!build/script.js
+!build/style.scss

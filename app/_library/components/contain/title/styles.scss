@@ -1,0 +1,229 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use '@styles/autoload' as *;
+
+// ===========================================
+// VARIABLES GLOBALES DEL COMPONENTE
+// ===========================================
+$title-line-height: var(--line-height-heading, 1.2);
+$title-font-family: var(--font-family);
+$title-transition:
+  color 0.3s ease,
+  opacity 0.3s ease;
+$title-margin-bottom: var(--spacing-sm);
+
+// Tamaños responsive
+$title-sizes: (
+  'xs': (
+    mobile: var(--font-size-xs),
+    desktop: var(--font-size-xs)
+  ),
+  'sm': (
+    mobile: var(--font-size-small),
+    desktop: var(--font-size-small)
+  ),
+  'md': (
+    mobile: var(--font-size-paragraph),
+    desktop: var(--font-size-paragraph)
+  ),
+  'lg': (
+    mobile: calc(var(--font-size-caption) * 1.1),
+    desktop: var(--font-size-caption)
+  ),
+  'xl': (
+    mobile: calc(var(--font-size-subtitle) * 0.85),
+    desktop: var(--font-size-subtitle)
+  ),
+  '2xl': (
+    mobile: calc(var(--font-size-title) * 0.8),
+    desktop: var(--font-size-title)
+  ),
+  '3xl': (
+    mobile: calc(var(--font-size-principal-title) * 0.75),
+    desktop: var(--font-size-principal-title)
+  )
+);
+
+// Pesos de fuente
+$title-weights: (
+  'light': var(--font-weight-light),
+  'regular': var(--font-weight-regular),
+  'medium': var(--font-weight-medium),
+  'semibold': 600,
+  'bold': var(--font-weight-bold),
+  'extrabold': 800
+);
+
+// ===========================================
+// MIXIN PRINCIPAL
+// ===========================================
+@mixin title {
+  // Clase base común para todos los títulos
+  .title {
+    // Reset de estilos base
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    color: var(--neutral-200);
+
+    // Estilos propios del componente
+    font-family: $title-font-family;
+    line-height: $title-line-height;
+    margin-bottom: $title-margin-bottom;
+    transition: $title-transition;
+    word-break: normal;
+    overflow-wrap: normal;
+
+    // Estilos para modo de edición de Liferay
+    @include liferay-edit-mode {
+      &:empty::before {
+        content: attr(data-lfr-editable-id);
+        opacity: 0.5;
+        font-style: italic;
+        display: block;
+      }
+    }
+
+    // Tamaños usando el mapa - Mobile First
+    @each $size, $values in $title-sizes {
+      &.title-#{$size} {
+        font-size: map.get($values, 'mobile');
+
+        // Desktop: tamaño completo
+        @include responsive($breakpoint-md) {
+          font-size: map.get($values, 'desktop');
+        }
+      }
+    }
+
+    // Alineación de texto
+    &.title-left {
+      text-align: left;
+    }
+
+    &.title-center {
+      text-align: center;
+    }
+
+    &.title-right {
+      text-align: right;
+    }
+
+    // Pesos de fuente usando el mapa
+    @each $weight, $value in $title-weights {
+      &.title-#{$weight} {
+        font-weight: $value;
+      }
+    }
+
+    // Transformaciones de texto
+    &.title-uppercase {
+      text-transform: uppercase;
+      letter-spacing: rem(0.8px);
+    }
+
+    // Truncado de texto
+    &.title-truncate {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      // Truncado multi-línea
+      &[class*='title-clamp-'] {
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+
+        // Clases dinámicas para diferentes números de líneas
+        @for $i from 1 through 6 {
+          &.title-clamp-#{$i} {
+            -webkit-line-clamp: #{$i};
+            line-clamp: #{$i};
+            --line-clamp: #{$i};
+          }
+        }
+      }
+    }
+
+    // Título clickeable
+    &.title-clickable {
+      cursor: pointer;
+      transition:
+        $title-transition,
+        transform 0.2s ease;
+
+      &:hover {
+        opacity: 0.8;
+        transform: translateY(rem(-1px));
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      // Focus state para accesibilidad
+      &:focus-visible {
+        outline: rem(2px) solid transparent;
+        outline-offset: rem(2px);
+        border-radius: rem(4px);
+      }
+
+      @include dark-theme {
+        &.title-clickable:hover {
+          color: var(--neutral-100);
+        }
+      }
+    }
+
+    // Estados especiales
+    &:empty {
+      display: none;
+    }
+
+    // Mejora la legibilidad en fondos complejos
+    &.title-with-shadow {
+      text-shadow: 0 rem(1px) rem(3px) rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  @include colors-variants('title', meta.get-mixin('title-color-styles'));
+}
+
+// ===========================================
+// MIXIN DE TEMAS POR COLOR
+// ===========================================
+@mixin title-color-styles($color-values, $color-name) {
+  // Usar variables CSS que se adaptan automáticamente por tema
+  color: var(--#{$color-name}-600);
+
+  // Estados interactivos
+  &.title-clickable {
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: var(--#{$color-name}-700);
+    }
+
+    &:focus-visible {
+      outline: rem(2px) solid var(--#{$color-name}-400);
+      outline-offset: rem(2px);
+      border-radius: rem(4px);
+    }
+
+    &:active {
+      color: var(--#{$color-name}-800);
+    }
+  }
+
+  // Modificadores especiales
+  &.title-muted {
+    color: var(--#{$color-name}-400);
+  }
+
+  &.title-strong {
+    color: var(--#{$color-name}-700);
+    font-weight: var(--font-weight-bold);
+  }
+}

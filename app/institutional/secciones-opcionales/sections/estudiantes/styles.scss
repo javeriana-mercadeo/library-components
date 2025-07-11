@@ -1,0 +1,246 @@
+@use '@styles/autoload' as *;
+
+.slider-container {
+  padding: 20px;
+}
+
+.slider-title {
+  color: var(--neutral-300);
+  font-weight: var(--font-weight-bold);
+  padding: rem(50px);
+  text-align: center;
+  font-size: var(--font-size-principal-title);
+}
+
+.slider-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 rem(40px);
+}
+
+.slider-cards {
+  display: flex;
+  width: 100%;
+  position: relative;
+  min-height: rem(350px);
+  overflow: visible;
+  gap: rem(20px);
+}
+
+.student-card {
+  position: absolute;
+  width: 100%;
+  max-width: rem(320px);
+  height: rem(320px);
+  background-color: #f9f9f9;
+  border-radius: rem(12px);
+  box-shadow: 0 rem(4px) rem(8px) rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.5s ease;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0 rem(12px);
+
+  &.active {
+    z-index: 2;
+  }
+}
+
+.student-image {
+  width: 100%;
+  height: 65%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.student-info {
+  padding: rem(15px);
+  background-color: white;
+
+  h3 {
+    font-size: var(--font-size-subtitle); 
+    font-weight: var(--font-weight-bold);
+    margin: 0 0 rem(5px);
+  }
+
+  p {
+    font-size: clamp(0.68rem, 1vw + 0.5rem, 0.7rem);
+    color: var(--neutral-500);
+    font-size: var(--font-size-paragraph);
+  }
+
+  .company-logo {
+    height: auto;
+    max-width: rem(83px);
+    object-fit: contain;
+    padding-top: rem(5px);
+  }
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+  padding: 0 rem(10px);
+  pointer-events: none; // Permite que los clics pasen a través del contenedor
+
+  .carousel-control {
+    pointer-events: all; // Restaura los clics en los botones
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--primary);
+    width: rem(40px);
+    height: rem(40px);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 rem(2px) rem(10px) rgba(0, 0, 0, 0.15);
+
+    &:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    i {
+      font-size: rem(32px);
+      line-height: 1;
+    }
+  }
+
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin: 0 rem(5px);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.active {
+      background-color: #333;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .slider-cards {
+    min-height: rem(350px);
+  }
+
+  .student-card {
+    transform: translateX(-50%) scale(0.8);
+    opacity: 0.6;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+
+    &.active {
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+    }
+
+    &.prev {
+      transform: translateX(-170%) scale(0.8);
+      opacity: 0.6;
+      z-index: 1;
+    }
+
+    &.next {
+      transform: translateX(70%) scale(0.8);
+      opacity: 0.6;
+      z-index: 1;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .slider-content {
+    padding: 0 rem(60px);
+  }
+
+  .slider-cards {
+    min-height: rem(350px);
+    gap: rem(30px);
+  }
+
+  .student-card {
+    margin: 0 rem(15px);
+    position: absolute;
+    transition: all 0.5s ease;
+
+    &.active {
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+      z-index: 3;
+    }
+
+    &.next {
+      transform: translateX(85%) scale(0.9);
+      opacity: 0.7;
+      z-index: 2;
+    }
+
+    &.prev {
+      transform: translateX(-185%) scale(0.9);
+      opacity: 0.7;
+      z-index: 1;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .slider-cards {
+    min-height: rem(380px);
+    gap: rem(20px);
+  }
+
+  .student-card {
+    max-width: rem(350px);
+    height: rem(350px);
+    margin: 0 rem(20px);
+
+    &.prev {
+      transform: translateX(-200%) scale(0.9);
+    }
+
+    &.next {
+      transform: translateX(100%) scale(0.9);
+    }
+
+    &.prev-prev {
+      transform: translateX(-350%) scale(0.8);
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    &.next-next {
+      transform: translateX(250%) scale(0.8);
+      opacity: 0.5;
+      z-index: 0;
+    }
+  }
+}
