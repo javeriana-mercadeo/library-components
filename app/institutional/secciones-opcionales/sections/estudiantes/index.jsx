@@ -1,7 +1,7 @@
+import { UniversalComponent as UC, Container } from '@library/components'
+
 import React from 'react'
 
-import Title from '@library/components/contain/title'
-import Container from '@library/components/container'
 import { studentsData, getNextSlide, getPrevSlide, getSlideClass } from './script.js'
 
 import './styles.scss'

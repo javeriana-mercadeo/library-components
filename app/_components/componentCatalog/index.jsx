@@ -1,51 +1,104 @@
 'use client'
 
-import { Card, CardBody, CardFooter, Button, Divider } from '@heroui/react'
+import { Card, CardBody, CardFooter, Button } from '@heroui/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 export default function ComponentCatalog({ selectedTab }) {
-  const router = useRouter()
-
-  // Datos de las diferentes categorías
   const landingPages = [
-    { name: 'Pregrado', path: '/landing/pregrado', icon: 'ph-graduation-cap' },
-    { name: 'Maestría y Especialización', path: '/landing/maestria-especializacion', icon: 'ph-certificate' },
-    { name: 'MBA', path: '/landing/mba', icon: 'ph-briefcase' },
-    { name: 'Doctorado', path: '/landing/doctorado', icon: 'ph-student' },
-    { name: 'Eclesiásticos', path: '/landing/eclesiasticos', icon: 'ph-cross' }
+    {
+      name: 'Pregrado',
+      path: '/landing/pregrado',
+      icon: 'ph-graduation-cap',
+      description: 'Landing page para programas de pregrado'
+    },
+    {
+      name: 'Maestría y Especialización',
+      path: '/landing/maestria-especializacion',
+      icon: 'ph-certificate',
+      description: 'Landing page para maestrías y especializaciones'
+    },
+    {
+      name: 'MBA',
+      path: '/landing/mba',
+      icon: 'ph-briefcase',
+      description: 'Landing page para programas MBA'
+    },
+    {
+      name: 'Doctorado',
+      path: '/landing/doctorado',
+      icon: 'ph-student',
+      description: 'Landing page para programas de doctorado'
+    },
+    {
+      name: 'Eclesiásticos',
+      path: '/landing/eclesiasticos',
+      icon: 'ph-cross',
+      description: 'Landing page para programas eclesiásticos'
+    }
   ]
 
   const institutionalPages = [
-    { name: 'Centro de ayuda', path: '/institutional/centro-ayuda', icon: 'ph-lifebuoy' },
-    { name: 'Secciones opcionales', path: '/institutional/secciones-opcionales', icon: 'ph-gear-six' },
-    { name: 'Thank you page', path: '/institutional/thank-you-page', icon: 'ph-check-circle' },
-    { name: 'Artículos', path: '/institutional/articulos', icon: 'ph-newspaper' }
+    {
+      name: 'Centro de ayuda',
+      path: '/institutional/centro-ayuda',
+      icon: 'ph-lifebuoy',
+      description: 'Página de centro de ayuda y soporte'
+    },
+    {
+      name: 'Secciones opcionales',
+      path: '/institutional/secciones-opcionales',
+      icon: 'ph-gear-six',
+      description: 'Configuración de secciones opcionales'
+    },
+    {
+      name: 'Thank you page',
+      path: '/institutional/thank-you-page',
+      icon: 'ph-check-circle',
+      description: 'Página de agradecimiento post-conversión'
+    },
+    {
+      name: 'Artículos',
+      path: '/institutional/articulos',
+      icon: 'ph-newspaper',
+      description: 'Gestión y visualización de artículos'
+    }
   ]
 
+  // Ahora uiComponents es una lista directa como las demás
   const uiComponents = [
     {
-      name: 'Contenido',
-      items: [
-        { name: 'Botón', section: '/fragments/components/buttons', icon: 'ph-cursor-click' },
-        { name: 'Título', section: '/fragments/components/titles', icon: 'ph-text-h-one' },
-        { name: 'Párrafo', section: '/fragments/components/paragraph', icon: 'ph-text-align-left' },
-        { name: 'Caption', section: '/fragments/components/captions', icon: 'ph-quotes' },
-        { name: 'Imagen de Fondo', section: '/fragments/components/imgBackground', icon: 'ph-image' }
-      ]
+      name: 'Botón',
+      path: '/fragments/components/buttons',
+      icon: 'ph-cursor-click',
+      description: 'Página de demostración del componente botón'
+    },
+    {
+      name: 'Título',
+      path: '/fragments/components/titles',
+      icon: 'ph-text-h-one',
+      description: 'Página de demostración del componente título'
+    },
+    {
+      name: 'Párrafo',
+      path: '/fragments/components/paragraph',
+      icon: 'ph-text-align-left',
+      description: 'Página de demostración del componente párrafo'
+    },
+    {
+      name: 'Caption',
+      path: '/fragments/components/captions',
+      icon: 'ph-quotes',
+      description: 'Página de demostración del componente caption'
+    },
+    {
+      name: 'Imagen de Fondo',
+      path: '/fragments/components/imgBackground',
+      icon: 'ph-image',
+      description: 'Página de demostración del componente imagen de fondo'
     }
   ]
 
-  // Función unificada para navegación
-  const handleNavigation = (path, isComponent = false) => {
-    if (isComponent) {
-      router.push(`/components/view?path=${path}`)
-    } else {
-      router.push(path)
-    }
-  }
-
-  // Componente unificado para todas las tarjetas
+  // Componente unificado - ahora más simple
   const UnifiedCard = ({ item, type }) => {
     const getButtonText = () => {
       switch (type) {
@@ -63,7 +116,7 @@ export default function ComponentCatalog({ selectedTab }) {
     const getSubtitle = () => {
       switch (type) {
         case 'component':
-          return item.section
+          return 'Componente UI'
         case 'landing':
           return 'Landing Page'
         case 'institutional':
@@ -73,33 +126,41 @@ export default function ComponentCatalog({ selectedTab }) {
       }
     }
 
-    const handleClick = () => {
-      const path = item.path || item.section
-      const isComponent = type === 'component'
-      handleNavigation(path, isComponent)
-    }
+    // Ahora todos usan la misma navegación simple
+    const targetUrl = item.path
 
     return (
-      <Card key={item.path || item.section} className="hover:shadow-md transition-shadow bg-[var(--background-100)]">
-        <CardBody className="p-6">
-          <div className="flex items-center gap-3">
-            <div className="bg-[var(--primary-100)] text-[var(--primary-600)] p-4 rounded-lg">
-              <i className={`ph ${item.icon} text-2xl`}></i>
+      <Card key={item.path} className="hover:shadow-md transition-shadow bg-[var(--background-100)]">
+        {/* Todo el CardBody es clickeable */}
+        <Link href={targetUrl} className="block">
+          <CardBody className="p-6 cursor-pointer hover:bg-[var(--background-50)] transition-colors">
+            <div className="flex items-center gap-3">
+              <div className="bg-[var(--primary-100)] text-[var(--primary-600)] p-4 rounded-lg flex-shrink-0">
+                <i className={`ph ${item.icon} text-2xl`}></i>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-xl text-[var(--neutral-200)] font-semibold truncate">{item.name}</h3>
+                <p className="text-[var(--neutral-500)] text-sm line-clamp-2">{item.description || getSubtitle()}</p>
+                {/* Mostrar el path para debug - solo en desarrollo */}
+                {process.env.NODE_ENV === 'development' && (
+                  <p className="text-[var(--neutral-600)] text-xs mt-1 font-mono">→ {targetUrl}</p>
+                )}
+              </div>
             </div>
-            <div className="flex-1">
-              <h3 className="text-xl text-[var(--neutral-200)] font-semibold">{item.name}</h3>
-              <p className="text-[var(--neutral-500)] text-sm truncate">{getSubtitle()}</p>
-            </div>
-          </div>
-        </CardBody>
+          </CardBody>
+        </Link>
+
         <CardFooter className="bg-[var(--background-100)] border-t border-[var(--background-300)] flex justify-end">
-          <Button
-            className="!text-white bg-[var(--primary-700)] hover:bg-[var(--primary-800)] transition-colors"
-            variant="flat"
-            onClick={handleClick}>
-            <span className="text-white">{getButtonText()}</span>
-            <i className="ph-arrow-right ml-2 !text-[var(--primary-600)]"></i>
-          </Button>
+          <Link href={targetUrl}>
+            <Button
+              className="!text-white bg-[var(--primary-700)] hover:bg-[var(--primary-800)] transition-colors"
+              variant="flat"
+              size="sm"
+              endContent={<i className="ph-arrow-right text-white"></i>}
+              as="div">
+              <span className="text-white">{getButtonText()}</span>
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     )
@@ -109,39 +170,46 @@ export default function ComponentCatalog({ selectedTab }) {
     <>
       {/* Landing Pages */}
       {selectedTab === 'landing-pages' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-[var(--background-200)] p-4 rounded-lg">
-          {landingPages.map(page => (
-            <UnifiedCard key={page.path} item={page} type="landing" />
-          ))}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 mb-4">
+            <i className="ph-rocket text-[var(--primary-500)] text-xl"></i>
+            <h2 className="text-2xl font-semibold text-[var(--neutral-200)]">Landing Pages</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-[var(--background-200)] p-4 rounded-lg">
+            {landingPages.map(page => (
+              <UnifiedCard key={page.path} item={page} type="landing" />
+            ))}
+          </div>
         </div>
       )}
 
       {/* Páginas Institucionales */}
       {selectedTab === 'institutional' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-[var(--background-200)] p-4 rounded-lg">
-          {institutionalPages.map(page => (
-            <UnifiedCard key={page.path} item={page} type="institutional" />
-          ))}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 mb-4">
+            <i className="ph-buildings text-[var(--primary-500)] text-xl"></i>
+            <h2 className="text-2xl font-semibold text-[var(--neutral-200)]">Páginas Institucionales</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-[var(--background-200)] p-4 rounded-lg">
+            {institutionalPages.map(page => (
+              <UnifiedCard key={page.path} item={page} type="institutional" />
+            ))}
+          </div>
         </div>
       )}
 
-      {/* Componentes UI */}
+      {/* Páginas de Componentes UI */}
       {selectedTab === 'components' && (
-        <div className="grid grid-cols-1 gap-6 bg-[var(--background-200)] p-4 rounded-lg">
-          {uiComponents.map(category => (
-            <div key={category.name} className="w-full">
-              <h2 className="text-xl text-[var(--neutral-200)] font-semibold mb-4 flex items-center gap-2">
-                <i className="ph-folder text-[var(--primary-500)]"></i>
-                {category.name}
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                {category.items.map(component => (
-                  <UnifiedCard key={component.section} item={component} type="component" />
-                ))}
-              </div>
-              <Divider className="my-4 bg-[var(--background-300)]" />
-            </div>
-          ))}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 mb-4">
+            <i className="ph-stack text-[var(--primary-500)] text-xl"></i>
+            <h2 className="text-2xl font-semibold text-[var(--neutral-200)]">Páginas de Componentes UI</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-[var(--background-200)] p-4 rounded-lg">
+            {uiComponents.map(component => (
+              <UnifiedCard key={component.path} item={component} type="component" />
+            ))}
+          </div>
         </div>
       )}
     </>

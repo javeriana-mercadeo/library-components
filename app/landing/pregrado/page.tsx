@@ -1,17 +1,22 @@
-import ViewComponent from '@/app/_components/viewComponent/viewComponent'
+'use client'
 
-import EncabezadoFix from './sections/0_encabezado_fix'
-import Datos from './sections/1_datos'
-import PlanEstudio from './sections/2_planEstudio'
-import Perfiles from './sections/3_perfiles'
-import Diferenciales from './sections/4_diferenciales'
-import Insignias from './sections/5_insignias'
-import Docentes from './sections/6_docentes'
-import Experiencia from './sections/7_experiencia'
-import Cita from './sections/8_cita'
-import PreguntasFrecuentes from './sections/9_preguntasFrecuentes'
-import Relacionados from './sections/10_relacionados'
-import Footer from './sections/11_footer'
+import dynamic from 'next/dynamic'
+import ViewComponent from '@/app/_components/viewComponent/viewComponent'
+import Load from '@/app/_components/load/load'
+
+// Lazy load heavy sections with client-side loading
+const Encabezado = dynamic(() => import('./_sections/0_encabezado'), { ssr: false, loading: () => <Load /> })
+const Datos = dynamic(() => import('./_sections/1_datos'), { ssr: false, loading: () => <Load /> })
+const PlanEstudio = dynamic(() => import('./_sections/2_planEstudio'), { ssr: false, loading: () => <Load /> })
+const Perfiles = dynamic(() => import('./_sections/3_perfiles'), { ssr: false, loading: () => <Load /> })
+const Diferenciales = dynamic(() => import('./_sections/4_diferenciales'), { ssr: false, loading: () => <Load /> })
+const Insignias = dynamic(() => import('./_sections/5_insignias'), { ssr: false, loading: () => <Load /> })
+const Docentes = dynamic(() => import('./_sections/6_docentes'), { ssr: false, loading: () => <Load /> })
+const Experiencia = dynamic(() => import('./_sections/7_experiencia'), { ssr: false, loading: () => <Load /> })
+const Cita = dynamic(() => import('./_sections/8_cita'), { ssr: false, loading: () => <Load /> })
+const PreguntasFrecuentes = dynamic(() => import('./_sections/9_preguntasFrecuentes'), { ssr: false, loading: () => <Load /> })
+const Relacionados = dynamic(() => import('./_sections/10_relacionados'), { ssr: false, loading: () => <Load /> })
+const Footer = dynamic(() => import('./_sections/11_footer'), { ssr: false, loading: () => <Load /> })
 
 export default function Profesional() {
   const basePath = '/landing/pregrado'
@@ -19,62 +24,62 @@ export default function Profesional() {
   return (
     <>
       {/* <Encabezado /> */}
-      <ViewComponent path={`${basePath}/sections/0_encabezado_fix`}>
-        <EncabezadoFix />
+      <ViewComponent path={`${basePath}/_sections/0_encabezado`}>
+        <Encabezado />
       </ViewComponent>
 
       {/* <Datos /> */}
-      <ViewComponent path={`${basePath}/sections/1_datos`}>
+      <ViewComponent path={`${basePath}/_sections/1_datos`}>
         <Datos />
       </ViewComponent>
 
       {/* <PlanEstudio /> */}
-      <ViewComponent path={`${basePath}/sections/2_planEstudio`}>
+      <ViewComponent path={`${basePath}/_sections/2_planEstudio`}>
         <PlanEstudio />
       </ViewComponent>
 
       {/* <Perfiles /> */}
-      <ViewComponent path={`${basePath}/sections/3_perfiles`}>
+      <ViewComponent path={`${basePath}/_sections/3_perfiles`}>
         <Perfiles />
       </ViewComponent>
 
       {/* <Diferenciales /> */}
-      <ViewComponent path={`${basePath}/sections/4_diferenciales`}>
+      <ViewComponent path={`${basePath}/_sections/4_diferenciales`}>
         <Diferenciales />
       </ViewComponent>
 
       {/* <Insignias /> */}
-      <ViewComponent path={`${basePath}/sections/5_insignias`}>
+      <ViewComponent path={`${basePath}/_sections/5_insignias`}>
         <Insignias />
       </ViewComponent>
 
       {/* <Docentes /> */}
-      <ViewComponent path={`${basePath}/sections/6_docentes`}>
+      <ViewComponent path={`${basePath}/_sections/6_docentes`}>
         <Docentes />
       </ViewComponent>
 
       {/* <Experiencia /> */}
-      <ViewComponent path={`${basePath}/sections/7_experiencia`}>
+      <ViewComponent path={`${basePath}/_sections/7_experiencia`}>
         <Experiencia />
       </ViewComponent>
 
       {/* <Cita /> */}
-      <ViewComponent path={`${basePath}/sections/8_cita`}>
+      <ViewComponent path={`${basePath}/_sections/8_cita`}>
         <Cita />
       </ViewComponent>
 
       {/*  <PreguntasFrecuentes /> */}
-      <ViewComponent path={`${basePath}/sections/9_preguntasFrecuentes`}>
+      <ViewComponent path={`${basePath}/_sections/9_preguntasFrecuentes`}>
         <PreguntasFrecuentes />
       </ViewComponent>
 
       {/* <Relacionados /> */}
-      <ViewComponent path={`${basePath}/sections/10_relacionados`}>
+      {/* <ViewComponent path={`${basePath}/_sections/10_relacionados`}>
         <Relacionados />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Footer /> */}
-      <ViewComponent path={`${basePath}/sections/11_footer`}>
+      <ViewComponent path={`${basePath}/_sections/11_footer`}>
         <Footer />
       </ViewComponent>
     </>

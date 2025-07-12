@@ -3,9 +3,25 @@
 import { useEffect } from 'react'
 import main from '@/utils/main.js'
 
+declare global {
+  interface Window {
+    __GLOBAL_UTILS_LOADED__?: boolean
+  }
+}
+
 export function ClientSideUtils() {
   useEffect(() => {
-    main()
+    // Cargar utilidades globales inmediatamente si no están ya cargadas
+    try {
+      if (typeof window !== 'undefined' && !window.__GLOBAL_UTILS_LOADED__) {
+        main()
+        console.log('✅ Utilidades globales cargadas correctamente desde ClientSideUtils')
+      } else if (typeof window !== 'undefined') {
+        console.log('ℹ️ Utilidades globales ya estaban cargadas')
+      }
+    } catch (error) {
+      console.error('❌ Error al cargar utilidades globales:', error)
+    }
   }, [])
 
   useEffect(() => {
