@@ -1,9 +1,10 @@
-import React from 'react'
 import './styles.scss'
-import Container from '@library/components/container'
-import Title from '@library/components/contain/title'
-import Image from '@library/components/contain/image'
+
+import React from 'react'
+
 import Paragraph from '@library/components/contain/paragraph'
+import Title from '@library/components/contain/title'
+import Container from '@library/components/container'
 
 const Index = () => {
   return (
@@ -21,9 +22,7 @@ const Index = () => {
             <a href="/institutional/helpPage/questionFrequently">
               Proceso de Inscripción <i className="ph ph-arrow-up-right"></i>
             </a>
-            <Paragraph>
-              Todo lo que necesitas saber para inscribirte en la Universidad Javeriana.
-            </Paragraph>
+            <Paragraph>Todo lo que necesitas saber para inscribirte en la Universidad Javeriana.</Paragraph>
           </div>
 
           <div className="help-item">
@@ -37,7 +36,7 @@ const Index = () => {
             <a href="/institutional/helpPage/internationalization/internationalizationQuestionFrequently">
               Internacionalización y Movilidad <i className="ph ph-arrow-up-right"></i>
             </a>
-             <Paragraph>Oportunidades de estudios en el extranjero y experiencias internacionales. </Paragraph>
+            <Paragraph>Oportunidades de estudios en el extranjero y experiencias internacionales. </Paragraph>
           </div>
         </div>
       </Container>

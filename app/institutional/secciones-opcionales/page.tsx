@@ -1,13 +1,12 @@
 'use client'
-import Proyectos from './sections/proyectos'
-import Laboratorios from './sections/laboratorios'
+import DobleTitulacionDos from './sections/dobleTitulacionDos'
+import DobleTitulacionUno from './sections/dobleTitulacionUno'
 import Estudiantes from './sections/estudiantes'
+import Herramientas from './sections/herramientas'
+import Laboratorios from './sections/laboratorios'
 import Multimedia from './sections/multimedia'
 import MultimediaRedes from './sections/multimediaRedes'
-import DobleTitulacionUno from './sections/dobleTitulacionUno'
-import DobleTitulacionDos from './sections/dobleTitulacionDos'
-import Herramientas from './sections/herramientas'
-import ViewComponent from '@/app/_components/viewComponent/viewComponent'
+import Proyectos from './sections/proyectos'
 
 export default function SeccionesOpcionales() {
   const basePath = '/institutional/pgProjects'
