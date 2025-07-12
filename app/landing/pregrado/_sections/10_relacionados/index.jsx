@@ -64,30 +64,32 @@ const Relacionados = () => {
   // Componente para renderizar tarjeta de programa
   const ProgramCard = ({ program, index }) => (
     <div className={`${baseClass}__program-card`}>
-      <div className={`${baseClass}__overlay`}></div>
-      <img
-        src={program.image}
-        alt={program.alt}
-        className={`${baseClass}__image`}
-        data-lfr-editable-id={`program-image-${index}`}
-        data-lfr-editable-type="image"
-        loading="lazy"
-      />
-      <div className={`${baseClass}__content`}>
-        <h3 className={`${baseClass}__name`} data-lfr-editable-id={`program-name-${index}`} data-lfr-editable-type="text">
-          {program.name}
-        </h3>
-        <Paragraph className={`${baseClass}__faculty`} id={`${elementName}-faculty-${index}`} isEditable={false}>
-          {program.faculty}
-        </Paragraph>
-        <a
-          href={program.url}
-          className={`${baseClass}__link`}
-          data-lfr-editable-id={`program-link-${index}`}
-          data-lfr-editable-type="link"
-          aria-label={`Ver detalles del programa: ${program.name}`}>
-          Ver Programa <i className="ph ph-arrow-up-right"></i>
-        </a>
+      <div className={`${baseClass}__image-container`}>
+        <img
+          src={program.image}
+          alt={program.alt}
+          className={`${baseClass}__image`}
+          data-lfr-editable-id={`program-image-${index}`}
+          data-lfr-editable-type="image"
+          loading="lazy"
+        />
+        <div className={`${baseClass}__overlay`}></div>
+        <div className={`${baseClass}__content`}>
+          <h3 className={`${baseClass}__name`} data-lfr-editable-id={`program-name-${index}`} data-lfr-editable-type="text">
+            {program.name}
+          </h3>
+          <Paragraph className={`${baseClass}__faculty`} id={`${elementName}-faculty-${index}`} isEditable={false}>
+            {program.faculty}
+          </Paragraph>
+          <a
+            href={program.url}
+            className={`${baseClass}__link`}
+            data-lfr-editable-id={`program-link-${index}`}
+            data-lfr-editable-type="link"
+            aria-label={`Ver detalles del programa: ${program.name}`}>
+            Ver Programa <i className="ph ph-arrow-up-right"></i>
+          </a>
+        </div>
       </div>
     </div>
   )
@@ -103,39 +105,37 @@ const Relacionados = () => {
           Conoce otros programas que complementan tus intereses y expanden tus oportunidades académicas y profesionales.
         </Paragraph>
 
-        {/* CONTENEDOR PRINCIPAL CON BOTONES DESFASADOS */}
+        {/* CONTENEDOR PRINCIPAL - ESTRATEGIA PLANESTUDIO */}
         <div className={`${baseClass}__carousel-container`}>
-          {/* Botón Anterior - FUERA del carousel */}
-          <button
-            className={`swiper-slide-button ${baseClass}__prev related-programs-prev`}
-            aria-label="Ver programas anteriores"
-            type="button">
-            <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
-          </button>
+          {/* Carousel con botones absolutos DENTRO */}
+          <div className={`${baseClass}__carousel swiper related-programs-swiper`}>
+            {/* Botón Anterior - DENTRO con posición absoluta */}
+            <button
+              className={`swiper-slide-button ${baseClass}__prev related-programs-prev`}
+              aria-label="Ver programas anteriores"
+              type="button">
+              <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
+            </button>
 
-          {/* Carousel */}
-          <div className={`${baseClass}__carousel swiper`}>
-            <div className={`${baseClass}__wrapper related-programs-swiper`}>
-              <div className={`${baseClass}__slides swiper-wrapper card-list`} role="list">
-                {programsData.map((program, index) => (
-                  <div key={program.id} className={`${baseClass}__slide swiper-slide card-item`} role="listitem">
-                    <ProgramCard program={program} index={index} />
-                  </div>
-                ))}
-              </div>
-
-              {/* Paginación - DENTRO del carousel */}
-              <div
-                className={`swiper-pagination ${baseClass}__pagination related-programs-pagination`}
-                role="tablist"
-                aria-label="Control de páginas del carrusel"></div>
+            <div className={`${baseClass}__slides swiper-wrapper card-list`} role="list">
+              {programsData.map((program, index) => (
+                <div key={program.id} className={`${baseClass}__slide swiper-slide card-item`} role="listitem">
+                  <ProgramCard program={program} index={index} />
+                </div>
+              ))}
             </div>
-          </div>
 
-          {/* Botón Siguiente - FUERA del carousel */}
-          <button className={`swiper-slide-button ${baseClass}__next related-programs-next`} aria-label="Ver más programas" type="button">
-            <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
-          </button>
+            {/* Botón Siguiente - DENTRO con posición absoluta */}
+            <button className={`swiper-slide-button ${baseClass}__next related-programs-next`} aria-label="Ver más programas" type="button">
+              <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+            </button>
+
+            {/* Paginación - DENTRO del carousel */}
+            <div
+              className={`swiper-pagination ${baseClass}__pagination related-programs-pagination`}
+              role="tablist"
+              aria-label="Control de páginas del carrusel"></div>
+          </div>
         </div>
       </Container>
     </section>
