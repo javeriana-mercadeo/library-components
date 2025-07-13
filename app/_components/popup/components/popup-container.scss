@@ -9,6 +9,7 @@
   background-color: rgba(0, 0, 0, 0.5);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 
+  z-index: 1000;
   display: none;
 }
 
@@ -49,6 +50,7 @@
   box-sizing: border-box;
 
   padding: 0.5rem 1rem;
+  width: 20%;
   color: var(--neutral-1000);
   background-color: var(--primary-500);
   border-radius: 1rem;
@@ -57,4 +59,9 @@
     background-color: var(--primary-700);
     transform: translateY(-2px);
   }
+}
+
+.has-edit-mode-menu .popup-overlay {
+  position: initial;
+  display: flex !important;
 }
