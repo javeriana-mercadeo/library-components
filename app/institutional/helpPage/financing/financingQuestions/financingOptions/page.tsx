@@ -1,5 +1,5 @@
-import FinancingOptions from '@library/_institutional/sections/helpPage/sections/financing/financingOptions'
-import MoreDoubtsF from '@library/_institutional/sections/helpPage/sections/financing/moreDoubtsf'
+import FinancingOptions from '@/library/_institutional/sections/helpPage/sections/financing/financingOptions'
+import MoreDoubtsF from '@/library/_institutional/sections/helpPage/sections/financing/moreDoubtsf'
 
 export default function page() {
   return (

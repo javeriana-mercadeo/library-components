@@ -1,5 +1,5 @@
-import InterviewProcess from '@library/_institutional/sections/helpPage/sections/registration/interviewProcess'
-import MoreDoubts from '@library/_institutional/sections/helpPage/sections/registration/moreDoubts'
+import InterviewProcess from '@/library/_institutional/sections/helpPage/sections/registration/interviewProcess'
+import MoreDoubts from '@/library/_institutional/sections/helpPage/sections/registration/moreDoubts'
 
 export default function page() {
   return (
