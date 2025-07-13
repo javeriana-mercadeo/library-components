@@ -24,7 +24,26 @@ const DatosProgramaVideo = () => {
       icon: 'ph-graduation-cap',
       label: 'Título',
       value: 'Cargando título...',
-      type: 'normal'
+      type: 'modal',
+      modalContent: (
+        <Paragraph className={`${baseClass}__modal-content`} id={`${elementName}-horarios-modal`}>
+          <p>
+            <strong>Jornada de atención:</strong>
+          </p>
+          <ul>
+            <li>
+              <strong>Lunes a viernes:</strong> 7:00 a.m. a 11:00 a.m.
+            </li>
+            <li>
+              <strong>Sábados:</strong> 8:00 a.m. a 12:00 p.m. (solo con cita previa)
+            </li>
+          </ul>
+          <p>
+            Si necesitas atención en un horario diferente, por favor comunícate con nosotros con antelación para agendar una cita
+            personalizada.
+          </p>
+        </Paragraph>
+      )
     },
     {
       id: 'data-puj-academic-level',

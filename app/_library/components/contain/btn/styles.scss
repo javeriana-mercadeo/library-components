@@ -276,7 +276,7 @@ $btn-ripple-duration: 0.6s;
   // VARIANTE: SOLID (estilo por defecto de HeroUI)
   // ===========================================
   &.btn-solid {
-    background: $color-600;
+    background: $color;
     color: $text-on-color;
     box-shadow: $btn-shadow-solid;
 
@@ -306,7 +306,7 @@ $btn-ripple-duration: 0.6s;
   // ===========================================
   &.btn-faded {
     background: rgba($color-rgb, 0.1);
-    color: $color-600;
+    color: $color;
     backdrop-filter: blur(8px) saturate(150%);
     -webkit-backdrop-filter: blur(8px) saturate(150%);
     box-shadow: none;
@@ -340,7 +340,7 @@ $btn-ripple-duration: 0.6s;
   &.btn-bordered {
     background: transparent;
     color: $text-primary;
-    border: rem(2px) solid $color-600;
+    border: rem(2px) solid $color;
     box-shadow: $btn-shadow-bordered;
 
     &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
@@ -371,7 +371,7 @@ $btn-ripple-duration: 0.6s;
   // ===========================================
   &.btn-light {
     background: transparent;
-    color: $color-600;
+    color: $color;
     box-shadow: $btn-shadow-light;
     border: rem(1px) solid transparent;
 
@@ -402,7 +402,7 @@ $btn-ripple-duration: 0.6s;
   // ===========================================
   &.btn-flat {
     background: rgba($color-rgb, 0.18);
-    color: $color-600;
+    color: $color;
     box-shadow: $btn-shadow-flat;
     border: rem(1px) solid transparent;
 

@@ -203,7 +203,7 @@ $mobile-breakpoint: 1024px;
 
   &__icon i {
     font-size: rem(20px);
-    color: var(--primary-600);
+    color: var(--primary);
     transition: $diferenciales-transition;
 
     @include dark-theme {

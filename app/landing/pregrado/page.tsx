@@ -74,9 +74,9 @@ export default function Profesional() {
       </ViewComponent>
 
       {/* <Relacionados /> */}
-      {/* <ViewComponent path={`${basePath}/_sections/10_relacionados`}>
+      <ViewComponent path={`${basePath}/_sections/10_relacionados`}>
         <Relacionados />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/* <Footer /> */}
       <ViewComponent path={`${basePath}/_sections/11_footer`}>
