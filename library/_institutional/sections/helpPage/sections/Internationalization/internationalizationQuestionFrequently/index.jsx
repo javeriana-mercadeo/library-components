@@ -9,6 +9,9 @@ import SupportInternationalization from '../../../../../../../app/institutional/
 import Helpinternationalization from '../../../../../../../app/institutional/helpPage/internationalization/internationalizationQuestions/helpinternationalization/page'
 import Universitiesinternationalization from '../../../../../../../app/institutional/helpPage/internationalization/internationalizationQuestions/universitiesinternationalization/page'
 
+import Paragraph from '@library/components/contain/paragraph'
+import Title from '@library/components/contain/title'
+import Container from '@library/components/container'
 class Accordion extends React.Component {
   constructor(props) {
     super(props)
@@ -201,6 +204,7 @@ class Accordion extends React.Component {
 
     return (
       <section className="accordion-container">
+        <Container>
         {/* No mostramos breadcrumb en la UI aquí, se maneja vía DOM */}
 
         {isMobile ? (
@@ -276,7 +280,7 @@ class Accordion extends React.Component {
               </div>
             )}
           </>
-        )}
+        )}</Container>
       </section>
     )
   }

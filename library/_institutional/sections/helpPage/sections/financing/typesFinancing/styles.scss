@@ -1,20 +1,18 @@
-@use '../../../styles/_variables.scss'as *;
-@use '../../../styles/mixins'as *;
-@use '../../../../../../../styles/global.scss' as *;
+@use '@styles/autoload' as *;
 
 .documentation-section {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-top: 10px;
+  gap: rem(15px);
+  margin-top: rem(10px);
   flex-wrap: wrap;
-  max-width: 1200px;
 
   .inscription-title {
-    color: #6d7881;
-    font-size: $font-size-p;
+    color: var(--neutral-400);
+    font-size: var(--font-size-paragraph);
     width: fit-content;
   }
+
   .documentation-header {
     display: flex;
     justify-content: space-between;
@@ -22,26 +20,28 @@
     width: 100%;
 
     h2 {
-      font-size: $font-size-h2;
+      font-size: var(--font-size-title);
       font-weight: bold;
       width: 100%;
-      color: $text-dark;
+      color: var(--neutral-100);
     }
   }
-  .noteIntro{
-    color: #2c333a;
-    font-size: $font-size-p;
+
+  .noteIntro {
+    color: var(--neutral-300);
+    font-size: var(--font-size-paragraph);
     width: fit-content;
   }
+
   .note {
-    color: #2c333a;
-    font-size: $font-size-p;
+    color: var(--neutral-300);
+    font-size: var(--font-size-paragraph);
     width: fit-content;
     font-weight: 700;
 
-    a{
-      color: $primary-color;
-      font-size: $font-size-p;
+    a {
+      color: var(--primary);
+      font-size: var(--font-size-paragraph);
       font-weight: 700;
     }
   }
@@ -49,48 +49,48 @@
   .documentation-links {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: rem(20px);
     transition: all 0.5s ease-in-out;
 
     .documentation-p {
-      color: #000000;
-      font-size: $font-size-h3;
+      color: var(--neutral-100);
+      font-size: var(--font-size-paragraph);
       font-weight: 700;
     }
 
     .documentation-item {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: rem(10px);
 
       ul {
-        padding-left: 20px;
-        font-size: $font-size-p;
+        padding-left: rem(20px);
+        font-size: var(--font-size-paragraph);
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        gap: 10px;
+        gap: rem(10px);
         list-style-type: disc;
 
         li {
-          color: #2c333a;
+          color: var(--neutral-300);
 
           &::marker {
-            color: $primary-color;
+            color: var(--primary);
           }
         }
       }
     }
   }
+
   .sub-title {
-    font-size: $font-size-p;
+    font-size: var(--font-size-paragraph);
     font-weight: bold;
   }
 }
 
 @media (min-width: $breakpoint-xl) {
   .documentation-section {
-    max-width: $breakpoint-xl;
 
     .documentation-header {
       width: 100%;
@@ -101,7 +101,7 @@
 
       a {
         justify-content: end;
-        gap: 10px;
+        gap: rem(10px);
         width: 30%;
       }
     }
@@ -109,13 +109,14 @@
     .documentation-links {
       display: flex;
       flex-direction: column;
-      transform: translateY(-5px);
+      transform: translateY(rem(-5px));
+
       .documentation-item {
         border-bottom: none;
         width: 100%;
 
         a {
-          gap: 5px;
+          gap: rem(5px);
           width: 100%;
         }
 
@@ -126,11 +127,12 @@
     }
   }
 }
-//sección de moreDoubts
+
+// sección de moreDoubts
 .only-desktop {
   display: none; // Oculto en móvil
 
   @media (min-width: 1200px) {
-    display: block; 
+    display: block;
   }
 }

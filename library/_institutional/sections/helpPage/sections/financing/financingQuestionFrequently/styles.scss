@@ -1,38 +1,34 @@
-@use '../../../styles/_variables.scss' as *;
-@use '../../../styles/mixins' as *;
-@use '../../../../../../../styles/global.scss' as *;
+@use '@styles/autoload' as *;
 
 .accordion-container {
   width: 100vw;
   margin: 0 auto;
-  gap: 10px;
+  gap: rem(10px);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  max-width: 1200px;
   overflow-x: hidden;
-  padding: 20px;
+  padding: rem(20px);
 }
 
 .accordion-header {
   width: 100%;
-  max-width: 1200px;
-  padding: 20px;
+  padding: rem(20px);
   padding-bottom: 0;
 }
 
 .accordion-toggle {
-  color: $primary-color;
-  border-bottom: 1px solid $primary-color;
+  color: var(--primary);
+  border-bottom: 1px solid var(--primary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  font-size: $font-size-p;
+  font-size: var(--font-size-paragraph);
   font-weight: bold;
-  padding-bottom: 20px;
+  padding-bottom: rem(20px);
 
   &:hover {
     opacity: 0.8;
@@ -40,10 +36,9 @@
 }
 
 .accordion-items {
-  max-width: 1200px;
   width: 100%;
   padding-top: 0;
-  padding: 20px;
+  padding: rem(20px);
   padding-bottom: 0;
   box-sizing: border-box;
   overflow-x: hidden;
@@ -60,16 +55,16 @@
   padding-left: 0;
   padding-right: 0;
   text-align: left;
-  font-size: $font-size-p;
-  color: #454f59;
+  font-size: var(--font-size-paragraph);
+  color: var(--neutral-400);
   font-weight: 400;
   box-sizing: border-box;
   transition: all 0.3s ease;
 
   i {
     transition: color 0.3s ease;
-    color: $primary-color;
-    padding-left: 15px;
+    color: var(--primary);
+    padding-left: rem(15px);
     font-size: 1rem;
   }
 
@@ -79,17 +74,17 @@
 }
 
 .accordion-answer {
-  margin-top: 20px;
-  color: $primary-color;
+  margin-top: rem(20px);
+  color: var(--primary);
 
   h3 {
-    margin-bottom: 15px;
-    color: #333;
+    margin-bottom: rem(15px);
+    color: var(--neutral-400);
   }
 
   ul {
-    margin-left: 20px;
-    margin-bottom: 15px;
+    margin-left: rem(20px);
+    margin-bottom: rem(15px);
   }
 
   p {
@@ -103,16 +98,17 @@
 
 @media (min-width: $breakpoint-xl) {
   .accordion-header {
-    padding: 0px;
+    padding: 0;
   }
 
   .doubts-questions {
     display: none;
   }
+
   .accordion-items {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 20px;
+    gap: rem(20px);
     align-items: flex-start;
     padding: 0;
   }
@@ -121,23 +117,22 @@
 .accordion-questions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: rem(10px);
 }
 
 .question-button {
   width: 100%;
   text-align: left;
-  padding: 10px;
+  padding: rem(10px);
   padding-left: 0;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: $font-size-p;
-  color: #333;
+  font-size: var(--font-size-paragraph);
+  color: var(--neutral-400);
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 
   @media (min-width: 1200px) {
     i {
@@ -148,23 +143,21 @@
   @media (max-width: 1199px) {
     i {
       display: block !important;
-      color: $primary-color;
+      color: var(--primary);
       font-size: 1rem;
     }
   }
 
   &.active {
     font-weight: bold;
-    color: $primary-color;
+    color: var(--primary);
   }
 }
 
-
 .accordion-answer {
-  padding: 20px;
+  padding: rem(20px);
   padding-top: 0;
   margin-top: 0;
-  border-left: 2px solid #ddd;
 }
 
 .more-doubts-container {
@@ -175,28 +168,26 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
-
+  margin-bottom: rem(20px);
 }
 
 .mobile-content {
   width: 100%;
-
 }
 
 .breadcrumb {
   display: flex;
   align-items: center;
-  font-size: 14px;
-  color: #333;
-  padding-left: 30;
-  gap: 10px;
-  padding-top: 30px;
-  margin-top: 50px;
+  font-size: rem(14px);
+  color: var(--neutral-400);
+  padding-left: rem(30px);
+  gap: rem(10px);
+  padding-top: rem(30px);
+  margin-top: rem(50px);
 }
 
 .breadcrumb a {
-  color: $primary-color;
+  color: var(--primary);
   font-weight: 700;
   text-decoration: none;
 }
@@ -207,14 +198,14 @@
 
 .breadcrumb .current-page {
   font-weight: 600;
-  color: #666;
+  color: var(--neutral-400);
 }
 
 .iconCenter {
   font-size: 1rem;
-  color: $primary-color;
+  color: var(--primary);
   font-weight: inherit !important;
-  padding: 5px;
+  padding: rem(5px);
 }
 
 .only-mobile {

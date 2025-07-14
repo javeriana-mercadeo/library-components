@@ -1,14 +1,18 @@
 'use client'
-import React from 'react'
 import './styles.scss'
 
-import TypesFinancing from '../../../../../../../app/institutional/helpPage/financing/financingQuestions/typesFinancing/page.tsx'
-import ApplicationFinancing from '../../../../../../../app/institutional/helpPage/financing/financingQuestions/applicationFinancing/page.tsx'
-import FinancingRequirements from '../../../../../../../app/institutional/helpPage/financing/financingQuestions/financingRequirements/page.tsx'
-import FinancingOptions from '../../../../../../../app/institutional/helpPage/financing/financingQuestions/financingOptions/page.tsx'
-import FinancingJaveriana from '../../../../../../../app/institutional/helpPage/financing/financingQuestions/financingJaveriana/page'
-import RequirementsHelp from '../../../../../../../app/institutional/helpPage/questions/requirementsHelp/page.tsx';
+import React from 'react'
 
+import ApplicationFinancing
+  from '../../../../../../../app/institutional/helpPage/financing/financingQuestions/applicationFinancing/page.tsx'
+import FinancingJaveriana from '../../../../../../../app/institutional/helpPage/financing/financingQuestions/financingJaveriana/page'
+import FinancingOptions from '../../../../../../../app/institutional/helpPage/financing/financingQuestions/financingOptions/page.tsx'
+import FinancingRequirements
+  from '../../../../../../../app/institutional/helpPage/financing/financingQuestions/financingRequirements/page.tsx'
+import TypesFinancing from '../../../../../../../app/institutional/helpPage/financing/financingQuestions/typesFinancing/page.tsx'
+import Paragraph from '@library/components/contain/paragraph'
+import Title from '@library/components/contain/title'
+import Container from '@library/components/container'
 class Accordion extends React.Component {
   constructor(props) {
     super(props)
@@ -65,7 +69,7 @@ class Accordion extends React.Component {
 
   getAccordionData = () => {
     return [
-      { title: '¿Qué tipos de becas ofrece la Universidad Javeriana?', content: <TypesFinancing  /> },
+      { title: '¿Qué tipos de becas ofrece la Universidad Javeriana?', content: <TypesFinancing /> },
       { title: '¿Cómo puedo aplicar a una beca en la Javeriana?', content: <ApplicationFinancing /> },
       { title: '¿Cuáles son los requisitos para mantener una beca?', content: <FinancingRequirements /> },
       { title: '¿Cuáles son las opciones de financiación para pagar la matrícula?', content: <FinancingOptions /> },
@@ -199,10 +203,9 @@ class Accordion extends React.Component {
 
     return (
       <section className="accordion-container">
-        {/* No mostramos breadcrumb en la UI aquí, se maneja vía DOM */}
+        <Container>
 
         {isMobile ? (
-          // Versión móvil: Acordeón con todas las preguntas agrupadas al principio
           <>
             <div className="accordion-header">
               <button className="accordion-toggle" onClick={this.toggleAllAccordions}>
@@ -274,7 +277,7 @@ class Accordion extends React.Component {
               </div>
             )}
           </>
-        )}
+        )}</Container>
       </section>
     )
   }

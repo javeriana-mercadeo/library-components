@@ -1,14 +1,11 @@
-@use '../../../styles/_variables.scss' as *;
-@use '../../../styles/mixins' as *;
-@use '../../../../../../../styles/global.scss' as *;
+@use '@styles/autoload' as *;
 
 .exchange-section {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-top: 10px;
+  gap: rem(15px);
+  margin-top: rem(10px);
   flex-wrap: wrap;
-  max-width: 1200px;
 
   .exchange-header {
     display: flex;
@@ -17,20 +14,21 @@
     width: 100%;
 
     h2 {
-      font-size: $font-size-h2;
+      font-size: var(--font-size-title);
       font-weight: bold;
       width: 100%;
-      color: $text-dark;
+      color: var(--neutral-100);
     }
   }
+
   .note {
-    color: #2c333a;
-    font-size: $font-size-p;
+    color: var(--neutral-300);
+    font-size: var(--font-size-paragraph);
     width: fit-content;
 
     a {
-      color: $primary-color;
-      font-size: $font-size-p;
+      color: var(--primary);
+      font-size: var(--font-size-paragraph);
       font-weight: 700;
     }
   }
@@ -38,8 +36,6 @@
 
 @media (min-width: $breakpoint-xl) {
   .documentation-section {
-    max-width: $breakpoint-xl;
-
     .documentation-header {
       width: 100%;
 
@@ -49,7 +45,7 @@
 
       a {
         justify-content: end;
-        gap: 10px;
+        gap: rem(10px);
         width: 30%;
       }
     }
@@ -59,7 +55,7 @@
       width: 100%;
 
       a {
-        gap: 5px;
+        gap: rem(5px);
         width: 100%;
       }
 
@@ -70,9 +66,9 @@
   }
 }
 
-//sección de moreDoubts
+// sección de moreDoubts
 .only-desktop {
-  display: none; // Oculto en móvil
+  display: none;
 
   @media (min-width: 1200px) {
     display: block;

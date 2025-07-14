@@ -1,10 +1,13 @@
 import React from 'react'
 import './styles.scss'
-
+import Paragraph from '@library/components/contain/paragraph'
+import Title from '@library/components/contain/title'
+import Container from '@library/components/container'
 const Index = () => {
   return (
     <section className="documentation-section">
-      <h2 className="inscription-title">Internacionalización y Movilidad</h2>
+      <Container>
+   <Title className="inscription-title">  Internacionalización y Movilidad</Title> 
 
       <div className="documentation-header">
         <h2>¿Existen becas o ayudas económicas para intercambios internacionales?</h2>
@@ -38,12 +41,12 @@ const Index = () => {
         
         </div>
 
-      <p className="note">
+    <Paragraph className="note">  
       Para más información:{' '}
         <a href="movilidadinternacional@javeriana.edu.co" target="_blank" rel="noopener noreferrer">
         movilidadinternacional@javeriana.edu.co
         </a>
-      </p>
+     </Paragraph></Container>
     </section>
   )
 }

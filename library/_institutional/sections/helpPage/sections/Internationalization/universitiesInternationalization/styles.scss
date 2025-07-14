@@ -1,6 +1,4 @@
-@use '../../../styles/_variables.scss'as *;
-@use '../../../styles/mixins'as *;
-@use '../../../../../../../styles/global.scss' as *;
+@use '@styles/autoload' as *;
 
 .documentation-section {
   display: flex;
@@ -8,7 +6,7 @@
   gap: 15px;
   margin-top: 10px;
   flex-wrap: wrap;
-  max-width: 1200px;
+
 
   .documentation-header {
     display: flex;
@@ -73,7 +71,7 @@
 
 @media (min-width: $breakpoint-xl) {
   .documentation-section {
-    max-width: $breakpoint-xl;
+ 
 
     .documentation-header {
       width: 100%;
