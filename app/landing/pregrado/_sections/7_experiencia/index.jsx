@@ -22,45 +22,45 @@ const Experiencia = () => {
       src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/dsc00979',
       alt: 'Estudiantes Javeriana',
       link: '#'
+    },
+    {
+      type: 'video',
+      orientation: 'vertical',
+      videoId: 'coJHjliTbKM'
+    },
+    {
+      type: 'testimonial',
+      text: 'Actualmente me desempeño en la organización Terpel en el área de Inteligencia de Negocios. Mis funciones en la compañía son hacer estudios de mercado y encontrar oportunidades de mejora.',
+      user: {
+        name: 'Carlos Gómez',
+        job: 'Analista de Negocios en Terpel',
+        avatar:
+          'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773710/Preview-1000x0/CarlosAlbertoHerna%CC%81ndez.png?t=1719869232728',
+        linkedin: '#'
+      }
+    },
+    {
+      type: 'video',
+      orientation: 'horizontal',
+      videoId: 'IWZvfiu3gX4',
+      link: '#'
+    },
+    {
+      type: 'testimonial',
+      text: 'La Javeriana me dio las herramientas para liderar proyectos empresariales. Hoy impulso estrategias de crecimiento en una multinacional.',
+      user: {
+        name: 'Anamaría López',
+        job: 'Gerente de Estrategia en GlobalCorp',
+        avatar:
+          'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461',
+        linkedin: '#'
+      }
+    },
+    {
+      type: 'video',
+      orientation: 'vertical',
+      videoId: 'wUmYyNrVjfg'
     }
-    // {
-    //   type: 'video',
-    //   orientation: 'vertical',
-    //   videoId: 'coJHjliTbKM'
-    // },
-    // {
-    //   type: 'testimonial',
-    //   text: 'Actualmente me desempeño en la organización Terpel en el área de Inteligencia de Negocios. Mis funciones en la compañía son hacer estudios de mercado y encontrar oportunidades de mejora.',
-    //   user: {
-    //     name: 'Carlos Gómez',
-    //     job: 'Analista de Negocios en Terpel',
-    //     avatar:
-    //       'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773710/Preview-1000x0/CarlosAlbertoHerna%CC%81ndez.png?t=1719869232728',
-    //     linkedin: '#'
-    //   }
-    // },
-    // {
-    //   type: 'video',
-    //   orientation: 'horizontal',
-    //   videoId: 'IWZvfiu3gX4',
-    //   link: '#'
-    // },
-    // {
-    //   type: 'testimonial',
-    //   text: 'La Javeriana me dio las herramientas para liderar proyectos empresariales. Hoy impulso estrategias de crecimiento en una multinacional.',
-    //   user: {
-    //     name: 'Anamaría López',
-    //     job: 'Gerente de Estrategia en GlobalCorp',
-    //     avatar:
-    //       'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461',
-    //     linkedin: '#'
-    //   }
-    // },
-    // {
-    //   type: 'video',
-    //   orientation: 'vertical',
-    //   videoId: 'wUmYyNrVjfg'
-    // }
   ]
 
   // Componente para renderizar imagen
