@@ -1,0 +1,36 @@
+{
+   "fieldSets": [
+      {
+         "fields": [
+               {
+                  "dataType": "int",
+                  "label": "Alto (%)",
+                  "name": "height",
+                  "type": "text",
+                  "typeOptions": {
+                     "validation": {
+                     "errorMessage": "Enter a number greater than 0.",
+                     "type": "number",
+                     "min": 1,
+                     "max": 1000
+                     }
+                  }
+               },
+					 {
+                  "dataType": "int",
+                  "label": "Ancho (%)",
+                  "name": "width",
+                  "type": "text",
+                  "typeOptions": {
+                     "validation": {
+                     "errorMessage": "Enter a number greater than 0.",
+                     "type": "number",
+                     "min": 1,
+                     "max": 1000
+                     }
+                  }
+               }
+         ]
+      }
+   ]
+}
