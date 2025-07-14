@@ -1,170 +1,67 @@
-<div class="related-programs__slide swiper-slide card-item" role="listitem">
-  <div class="related-programs__program-card">
-    <div class="related-programs__image-container">
-      <img
-        src="https://s1.elespanol.com/2023/01/11/omicrono/defensa-y-espacio/732937376_230080590_1706x1280.jpg"
-        alt="Especialización en Gerencia de Proyectos TI"
-        class="related-programs__image"
-        data-lfr-editable-id="program-image-0"
-        data-lfr-editable-type="image"
-        loading="lazy" />
-      <div class="related-programs__overlay"></div>
-      <div class="related-programs__content">
-        <h3
-          class="related-programs__name"
-          data-lfr-editable-id="program-name-0"
-          data-lfr-editable-type="text">
-          Especialización en Gerencia de Proyectos de Tecnologías de la Información
-        </h3>
-        <p class="paragraph paragraph-neutral paragraph-md related-programs__faculty">
-          Facultad de Ingeniería
-        </p>
-        <a
-          href="/programa/especializacion-gerencia-proyectos-ti"
-          class="related-programs__link"
-          data-lfr-editable-id="program-link-0"
-          data-lfr-editable-type="link"
-          aria-label="Ver detalles del programa: Especialización en Gerencia de Proyectos de Tecnologías de la Información">
-          Ver Programa
-          <i class="ph ph-arrow-up-right"></i>
-        </a>
-      </div>
+<div class="related-programs__carousel-container">
+  <div class="related-programs__carousel swiper related-programs-swiper">
+    <button
+      class="swiper-slide-button related-programs__prev related-programs-prev"
+      aria-label="Ver programas anteriores"
+      type="button">
+      <i class="ph ph-arrow-circle-left" aria-hidden="true"></i>
+    </button>
+    <div class="related-programs__slides swiper-wrapper card-list" role="list">
+      <#if related_program_single_card.getSiblings()?has_content>
+        <#list related_program_single_card.getSiblings() as cur_related_program_single_card>
+          <div class="related-programs__slide swiper-slide card-item" role="listitem">
+            <div class="related-programs__program-card">
+              <div class="related-programs__image-container">
+                <img
+                  src="<#if (cur_related_program_single_card.related_program_thumb.getData())??>
+            ${cur_related_program_single_card.related_program_thumb.getData()}
+            </#if>"
+                  alt=""
+                  class="related-programs__image"
+                  data-lfr-editable-id="program-image-${cur_related_program_single_card?index}"
+                  data-lfr-editable-type="image"
+                  loading="lazy" />
+                <div class="related-programs__overlay"></div>
+                <div class="related-programs__content">
+                  <h3
+                    class="related-programs__name"
+                    data-lfr-editable-id="program-name-${cur_related_program_single_card?index}"
+                    data-lfr-editable-type="text">
+                    <#if (cur_related_program_single_card.related_program_title.getData())??>
+                      ${cur_related_program_single_card.related_program_title.getData()}
+                    </#if>
+                  </h3>
+                  <p class="paragraph paragraph-neutral paragraph-md related-programs__faculty">
+                    <#if (cur_related_program_single_card.related_program_faculty.getData())??>
+                      ${cur_related_program_single_card.related_program_faculty.getData()}
+                    </#if>
+                  </p>
+                  <a
+                    data-senna-off="true"
+                    href="${cur_related_program_single_card.related_program_link.getFriendlyUrl()}"
+                    class="related-programs__link"
+                    data-lfr-editable-id="program-link-${cur_related_program_single_card?index}"
+                    data-lfr-editable-type="link"
+                    aria-label="Ver detalles del programa">
+                    Ver Programa
+                    <i class="ph ph-arrow-up-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </#list>
+      </#if>
     </div>
-  </div>
-</div>
-<div class="related-programs__slide swiper-slide card-item" role="listitem">
-  <div class="related-programs__program-card">
-    <div class="related-programs__image-container">
-      <img
-        src="https://www.marketingdirecto.com/wp-content/uploads/2022/02/software.jpg"
-        alt="Pregrado en Ingeniería de Sistemas"
-        class="related-programs__image"
-        data-lfr-editable-id="program-image-1"
-        data-lfr-editable-type="image"
-        loading="lazy" />
-      <div class="related-programs__overlay"></div>
-      <div class="related-programs__content">
-        <h3
-          class="related-programs__name"
-          data-lfr-editable-id="program-name-1"
-          data-lfr-editable-type="text">
-          Pregrado en Ingeniería de Sistemas
-        </h3>
-        <p class="paragraph paragraph-neutral paragraph-md related-programs__faculty">
-          Facultad de Ingeniería
-        </p>
-        <a
-          href="/programa/pregrado-ingenieria-sistemas"
-          class="related-programs__link"
-          data-lfr-editable-id="program-link-1"
-          data-lfr-editable-type="link"
-          aria-label="Ver detalles del programa: Pregrado en Ingeniería de Sistemas">
-          Ver Programa
-          <i class="ph ph-arrow-up-right"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="related-programs__slide swiper-slide card-item" role="listitem">
-  <div class="related-programs__program-card">
-    <div class="related-programs__image-container">
-      <img
-        src="https://smodin.io/blog/wp-content/uploads/2024/09/ai-writing-tool-2.png"
-        alt="Pregrado en Ingeniería Industrial"
-        class="related-programs__image"
-        data-lfr-editable-id="program-image-2"
-        data-lfr-editable-type="image"
-        loading="lazy" />
-      <div class="related-programs__overlay"></div>
-      <div class="related-programs__content">
-        <h3
-          class="related-programs__name"
-          data-lfr-editable-id="program-name-2"
-          data-lfr-editable-type="text">
-          Pregrado en Ingeniería Industrial
-        </h3>
-        <p class="paragraph paragraph-neutral paragraph-md related-programs__faculty">
-          Facultad de Ingeniería
-        </p>
-        <a
-          href="/programa/pregrado-ingenieria-industrial"
-          class="related-programs__link"
-          data-lfr-editable-id="program-link-2"
-          data-lfr-editable-type="link"
-          aria-label="Ver detalles del programa: Pregrado en Ingeniería Industrial">
-          Ver Programa
-          <i class="ph ph-arrow-up-right"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="related-programs__slide swiper-slide card-item" role="listitem">
-  <div class="related-programs__program-card">
-    <div class="related-programs__image-container">
-      <img
-        src="https://assets.isu.pub/document-structure/230714134545-9e4b4e9f580b5fc27e41ba9afdfee404/v1/6045ce86bd15988a15d94806470c7747.jpeg"
-        alt="Pregrado en Ingeniería Mecatrónica"
-        class="related-programs__image"
-        data-lfr-editable-id="program-image-3"
-        data-lfr-editable-type="image"
-        loading="lazy" />
-      <div class="related-programs__overlay"></div>
-      <div class="related-programs__content">
-        <h3
-          class="related-programs__name"
-          data-lfr-editable-id="program-name-3"
-          data-lfr-editable-type="text">
-          Pregrado en Ingeniería Mecatrónica
-        </h3>
-        <p class="paragraph paragraph-neutral paragraph-md related-programs__faculty">
-          Facultad de Ingeniería
-        </p>
-        <a
-          href="/programa/pregrado-ingenieria-mecatronica"
-          class="related-programs__link"
-          data-lfr-editable-id="program-link-3"
-          data-lfr-editable-type="link"
-          aria-label="Ver detalles del programa: Pregrado en Ingeniería Mecatrónica">
-          Ver Programa
-          <i class="ph ph-arrow-up-right"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="related-programs__slide swiper-slide card-item" role="listitem">
-  <div class="related-programs__program-card">
-    <div class="related-programs__image-container">
-      <img
-        src="https://assets.isu.pub/document-structure/230714134545-9e4b4e9f580b5fc27e41ba9afdfee404/v1/6045ce86bd15988a15d94806470c7747.jpeg"
-        alt="Pregrado en Ingeniería Mecatrónica"
-        class="related-programs__image"
-        data-lfr-editable-id="program-image-4"
-        data-lfr-editable-type="image"
-        loading="lazy" />
-      <div class="related-programs__overlay"></div>
-      <div class="related-programs__content">
-        <h3
-          class="related-programs__name"
-          data-lfr-editable-id="program-name-4"
-          data-lfr-editable-type="text">
-          Pregrado en Ingeniería Mecatrónica
-        </h3>
-        <p class="paragraph paragraph-neutral paragraph-md related-programs__faculty">
-          Facultad de Ingeniería
-        </p>
-        <a
-          href="/programa/pregrado-ingenieria-mecatronica"
-          class="related-programs__link"
-          data-lfr-editable-id="program-link-4"
-          data-lfr-editable-type="link"
-          aria-label="Ver detalles del programa: Pregrado en Ingeniería Mecatrónica">
-          Ver Programa
-          <i class="ph ph-arrow-up-right"></i>
-        </a>
-      </div>
-    </div>
+    <button
+      class="swiper-slide-button related-programs__next related-programs-next"
+      aria-label="Ver más programas"
+      type="button">
+      <i class="ph ph-arrow-circle-right" aria-hidden="true"></i>
+    </button>
+    <div
+      class="swiper-pagination related-programs__pagination related-programs-pagination"
+      role="tablist"
+      aria-label="Control de páginas del carrusel"></div>
   </div>
 </div>

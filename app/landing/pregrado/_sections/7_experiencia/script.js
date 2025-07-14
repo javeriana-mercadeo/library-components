@@ -255,7 +255,7 @@ const ExperienceSwiperSystem = {
       spaceBetween: 20, // Espaciado consistente
       slidesPerView: 'auto',
       watchOverflow: true,
-      centeredSlides: true,
+      centeredSlides: false,
       grabCursor: true,
       allowTouchMove: totalSlides > 1,
       watchSlidesProgress: true,
