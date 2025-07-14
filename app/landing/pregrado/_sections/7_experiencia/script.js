@@ -253,8 +253,9 @@ const ExperienceSwiperSystem = {
     return {
       loop: false, // Desactivar loop cuando hay slides de doble ancho
       spaceBetween: 20, // Espaciado consistente
+      slidesPerView: 'auto',
       watchOverflow: true,
-      centeredSlides: false,
+      centeredSlides: true,
       grabCursor: true,
       allowTouchMove: totalSlides > 1,
       watchSlidesProgress: true,
@@ -357,7 +358,7 @@ const ExperienceSwiperSystem = {
 const updateNavigationVisibility = (swiper, totalSlides) => {
   // Validar que swiper esté disponible
   if (!swiper) return
-  
+
   const nextBtn = document.querySelector('.experience-carousel__next')
   const prevBtn = document.querySelector('.experience-carousel__prev')
 
@@ -378,7 +379,7 @@ const updateNavigationVisibility = (swiper, totalSlides) => {
 const updateButtonStates = swiper => {
   // Validar que swiper esté disponible
   if (!swiper) return
-  
+
   const nextBtn = document.querySelector('.experience-carousel__next')
   const prevBtn = document.querySelector('.experience-carousel__prev')
 
@@ -421,7 +422,7 @@ const updatePaginationVisibility = (swiper, totalSlides) => {
 const handleVideoSlideChange = swiper => {
   // Validar que swiper y sus parámetros estén disponibles
   if (!swiper || !swiper.params || !swiper.el) return
-  
+
   // Pausar todos los videos que no están en el slide activo
   const allVideos = swiper.el.querySelectorAll('iframe')
 

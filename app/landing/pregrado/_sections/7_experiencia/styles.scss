@@ -100,6 +100,7 @@ $experience-nav-size-mobile: rem(40px);
       }
     }
 
+
     @include responsive($breakpoint-sm) {
       height: rem(400px) !important;
     }
