@@ -5,7 +5,7 @@
   .faq {
     text-align: center;
     padding: var(--spacing-xl) var(--spacing-lg);
-    
+
     @media (max-width: $breakpoint-md) {
       padding: var(--spacing-lg) var(--spacing-sm);
       text-align: left;
@@ -22,7 +22,6 @@
 
     &__container {
       text-align: left;
-    
     }
 
     &__item {
@@ -36,11 +35,18 @@
 
       // Estilo para item activo
       &.active {
+        border-bottom: 2px solid var(--primary);
+        
         .faq__question {
           color: var(--primary);
           font-weight: var(--font-weight-medium);
-          border-bottom: 2px solid var(--primary);
+          border-bottom: none; // Quitar border del question cuando está activo
         }
+      }
+
+      // Hover effect en el item completo
+      &:hover:not(.active) {
+        border-bottom: rem(1px) solid var(--primary);
       }
     }
 
@@ -63,7 +69,6 @@
 
       &:hover {
         color: var(--primary);
-        border-bottom: 1px solid var(--primary);
       }
 
       &:focus {
@@ -91,17 +96,23 @@
       color: var(--secondary);
       text-align: left;
       line-height: 1.6;
-      animation: slideDown 0.3s ease;
+      will-change: opacity, transform, max-height;
 
-      @keyframes slideDown {
-        from {
-          opacity: 0;
-          max-height: 0;
-        }
-        to {
-          opacity: 1;
-          max-height: 500px;
-        }
+      // Estados para animaciones con JavaScript
+      &:not(.hidden) {
+        display: block;
+      }
+
+      &.hidden {
+        display: none;
+      }
+
+      // Mejora para animaciones suaves
+      &.animating {
+        transition:
+          opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+          transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+          max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
     }
 
@@ -111,7 +122,7 @@
     }
 
     &__sub-question {
-      color: var(--neutral-variant-900);
+      color: var(--neutral-500);
       font-size: var(--font-size-paragraph);
       padding: rem(16px) 0;
       line-height: 1.5;
@@ -127,7 +138,7 @@
       }
     }
 
-    // Estados activos
+    // Estados activos - ahora controlado por JavaScript
     .faq__item.active {
       .faq__answer {
         display: block;
@@ -135,11 +146,39 @@
 
       .faq__icon {
         transform: rotate(180deg);
+        transition: transform 0.3s ease;
+      }
+    }
+
+    // Mejoras para animaciones
+    &__icon {
+      transition: transform 0.3s ease;
+
+      i {
+        transition: transform 0.2s ease;
+      }
+    }
+
+    // Estados de hover mejorados
+    &__item {
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: rgba(var(--primary-rgb), 0.02);
+      }
+    }
+
+    // Mejoras de accesibilidad y animaciones
+    &__question {
+      &:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+        border-radius: var(--border-radius-sm);
       }
     }
 
     // Responsive adjustments
-   @include responsive($breakpoint-xl) {
+    @include responsive($breakpoint-xl) {
       &__question {
         font-size: var(--font-size-paragraph);
         padding: var(--spacing-sm) 0;
@@ -168,6 +207,59 @@
           border-bottom: rem(1px) solid var(--primary);
         }
       }
+    }
+  }
+}
+
+// ==========================================
+// ANIMACIONES ADICIONALES
+// ==========================================
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+// ==========================================
+// MEJORAS DE ACCESIBILIDAD
+// ==========================================
+@media (prefers-reduced-motion: reduce) {
+  .faq {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+// ==========================================
+// DARK MODE ESPECÍFICO PARA FAQ
+// ==========================================
+.faq {
+  @include dark-theme {
+    &__item:hover {
+      background-color: rgba(var(--primary-rgb), 0.05);
+    }
+
+    &__sub-question:hover {
+      color: var(--neutral-200);
     }
   }
 }

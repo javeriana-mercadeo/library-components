@@ -1,8 +1,8 @@
 export default () => {
   console.log('🚀 [RELACIONADOS] Script iniciado')
-  
+
   // Función para actualizar estados de botones como planEstudio
-  const updateButtonStates = (swiper) => {
+  const updateButtonStates = swiper => {
     const nextBtn = document.querySelector('.related-programs__next') || document.querySelector('.related-programs-next')
     const prevBtn = document.querySelector('.related-programs__prev') || document.querySelector('.related-programs-prev')
 
@@ -108,7 +108,6 @@ export default () => {
         bullet.setAttribute('aria-label', `Ir al programa ${index + 1}`)
         bullet.style.display = 'block'
       })
-
     } else {
       pagination.style.display = 'none'
       pagination.classList.add('swiper-pagination-hidden')
@@ -117,14 +116,14 @@ export default () => {
   }
 
   // Función para contar slides dinámicamente
-  const countSlides = (element) => {
+  const countSlides = element => {
     const slides = element.querySelectorAll('.swiper-slide')
     return slides.length
   }
 
   const initializeSwiper = () => {
     console.log('🔧 [RELACIONADOS] Iniciando initializeSwiper()')
-    
+
     // Destruir instancia existente si existe
     if (window.relatedProgramsSwiper) {
       console.log('🗑️ [RELACIONADOS] Destruyendo instancia existente')
@@ -141,7 +140,7 @@ export default () => {
     // Buscar el wrapper - patrón planEstudio con un solo fallback
     console.log('🔍 [RELACIONADOS] Buscando contenedor del swiper...')
     const element = document.querySelector('.related-programs-swiper') || document.querySelector('.related-programs__carousel')
-    
+
     console.log('🔍 [RELACIONADOS] Elementos encontrados:')
     console.log('  - .related-programs-swiper:', !!document.querySelector('.related-programs-swiper'))
     console.log('  - .related-programs__carousel:', !!document.querySelector('.related-programs__carousel'))
@@ -159,12 +158,12 @@ export default () => {
     // Contar slides disponibles
     const totalSlides = countSlides(element)
     console.log('🎯 [RELACIONADOS] Slides encontrados:', totalSlides)
-    
+
     // Verificar elementos de navegación
     const nextBtn = document.querySelector('.related-programs__next') || document.querySelector('.related-programs-next')
     const prevBtn = document.querySelector('.related-programs__prev') || document.querySelector('.related-programs-prev')
     const pagination = document.querySelector('.related-programs__pagination') || document.querySelector('.related-programs-pagination')
-    
+
     console.log('🎮 [RELACIONADOS] Elementos de navegación:')
     console.log('  - Next button:', !!nextBtn, nextBtn?.className)
     console.log('  - Prev button:', !!prevBtn, prevBtn?.className)
@@ -233,14 +232,14 @@ export default () => {
           updatePaginationVisibility(swiper, totalSlides)
           updateButtonStates(swiper)
         },
-        
+
         update: function (swiper) {
           const currentSlides = countSlides(element)
           updateNavigationVisibility(swiper, currentSlides)
           updatePaginationVisibility(swiper, currentSlides)
           updateButtonStates(swiper)
         },
-        
+
         resize: function (swiper) {
           setTimeout(() => {
             updateNavigationVisibility(swiper, totalSlides)
@@ -248,7 +247,7 @@ export default () => {
             updateButtonStates(swiper)
           }, 100)
         },
-        
+
         breakpoint: function (swiper, breakpointParams) {
           setTimeout(() => {
             updateNavigationVisibility(swiper, totalSlides)
@@ -256,21 +255,21 @@ export default () => {
             updateButtonStates(swiper)
           }, 150)
         },
-        
+
         slideChange: function (swiper) {
           updateButtonStates(swiper)
         },
-        
+
         reachBeginning: function (swiper) {
           updateButtonStates(swiper)
         },
-        
+
         reachEnd: function (swiper) {
           updateButtonStates(swiper)
         }
       }
     })
-    
+
     // Verificar que la inicialización fue exitosa
     if (window.relatedProgramsSwiper) {
       console.log('✅ [RELACIONADOS] Instancia de Swiper creada exitosamente')
@@ -283,7 +282,7 @@ export default () => {
   // Función de inicialización con retry como planEstudio
   const checkAndInit = () => {
     console.log('🔄 [RELACIONADOS] Verificando disponibilidad de Swiper...')
-    
+
     if (typeof window !== 'undefined' && window.Swiper) {
       console.log('✅ [RELACIONADOS] Swiper encontrado, inicializando...')
       initializeSwiper()
@@ -321,6 +320,6 @@ export default () => {
       }
     }, 250)
   })
-  
+
   console.log('🎯 [RELACIONADOS] Script completamente cargado e inicializado')
 }
