@@ -3,14 +3,18 @@ import './styles.scss'
 
 import React from 'react'
 
-import ApplicationFinancing from '../../../../../../../app/institutional/centroDeAyuda/financing/financingQuestions/applicationFinancing/page'
-import FinancingJaveriana from '../../../../../../../app/institutional/centroDeAyuda/financing/financingQuestions/financingJaveriana/page'
-import FinancingOptions from '../../../../../../../app/institutional/centroDeAyuda/financing/financingQuestions/financingOptions/page'
-import FinancingRequirements from '../../../../../../../app/institutional/centroDeAyuda/financing/financingQuestions/financingRequirements/page'
-import TypesFinancing from '../../../../../../../app/institutional/centroDeAyuda/financing/financingQuestions/typesFinancing/page'
+import TypesFinancing from '@/app/institutional/centroDeAyuda/financing/financingQuestions/typesFinancing/page'
+
+import ApplicationFinancing from '@/app/institutional/centroDeAyuda/financing/financingQuestions/applicationFinancing/page'
+import FinancingJaveriana from '@/app/institutional/centroDeAyuda/financing/financingQuestions/financingJaveriana/page'
+import FinancingOptions from '@/app/institutional/centroDeAyuda/financing/financingQuestions/financingOptions/page'
+import FinancingRequirements from '@/app/institutional/centroDeAyuda/financing/financingQuestions/financingRequirements/page'
+
+
 import Paragraph from '@library/components/contain/paragraph'
 import Title from '@library/components/contain/title'
 import Container from '@library/components/container'
+
 class Accordion extends React.Component {
   constructor(props) {
     super(props)

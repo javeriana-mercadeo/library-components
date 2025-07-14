@@ -1,13 +1,13 @@
 'use client'
 import React from 'react'
 import './styles.scss'
-import RequirementsHelp from '../../../../../../../app/institutional/helpPage/questions/requirementsHelp/page.tsx';
-import Exchageinternationalization from '../../../../../../../app/institutional/helpPage/internationalization/internationalizationQuestions/exchageinternationalization/page.tsx'
-import Requirementsinternationalization from '../../../../../../../app/institutional/helpPage/internationalization/internationalizationQuestions/requirementsinternationalization/page'
-import Agreementsinternationalization from '../../../../../../../app/institutional/helpPage/internationalization/internationalizationQuestions/agreementsinternationalization/page'
-import SupportInternationalization from '../../../../../../../app/institutional/helpPage/internationalization/internationalizationQuestions/supportInternationalization/page'
-import Helpinternationalization from '../../../../../../../app/institutional/helpPage/internationalization/internationalizationQuestions/helpinternationalization/page'
-import Universitiesinternationalization from '../../../../../../../app/institutional/helpPage/internationalization/internationalizationQuestions/universitiesinternationalization/page'
+import RequirementsHelp from '../../../../../../../app/institutional/centroDeAyuda/questions/requirementsHelp/page'
+import Exchageinternationalization from '../../../../../../../app/institutional/centroDeAyuda/internationalization/internationalizationQuestions/exchageinternationalization/page'
+import Requirementsinternationalization from '../../../../../../../app/institutional/centroDeAyuda/internationalization/internationalizationQuestions/requirementsinternationalization/page'
+import Agreementsinternationalization from '../../../../../../../app/institutional/centroDeAyuda/internationalization/internationalizationQuestions/agreementsinternationalization/page'
+import SupportInternationalization from '../../../../../../../app/institutional/centroDeAyuda/internationalization/internationalizationQuestions/supportInternationalization/page'
+import Helpinternationalization from '../../../../../../../app/institutional/centroDeAyuda/internationalization/internationalizationQuestions/helpinternationalization/page'
+import Universitiesinternationalization from '../../../../../../../app/institutional/centroDeAyuda/internationalization/internationalizationQuestions/universitiesinternationalization/page'
 
 import Paragraph from '@library/components/contain/paragraph'
 import Title from '@library/components/contain/title'
@@ -69,12 +69,14 @@ class Accordion extends React.Component {
   getAccordionData = () => {
     return [
       { title: '¿Puedo hacer un intercambio académico si soy estudiante nuevo?', content: <Exchageinternationalization /> },
-      { title: '¿Cuáles son los requisitos para aplicar a un programa de movilidad internacional?', content: <Requirementsinternationalization /> },
+      {
+        title: '¿Cuáles son los requisitos para aplicar a un programa de movilidad internacional?',
+        content: <Requirementsinternationalization />
+      },
       { title: '¿Cómo funcionan los convenios de doble titulación?', content: <Agreementsinternationalization /> },
       { title: '¿Qué apoyo brinda la universidad a estudiantes extranjeros?', content: <SupportInternationalization /> },
       { title: '¿Existen becas o ayudas económicas para intercambios internacionales?', content: <Helpinternationalization /> },
       { title: '¿Cuántas universidades tienen convenio con la Javeriana para intercambios?', content: <Universitiesinternationalization /> }
-      
     ]
   }
 
@@ -205,82 +207,83 @@ class Accordion extends React.Component {
     return (
       <section className="accordion-container">
         <Container>
-        {/* No mostramos breadcrumb en la UI aquí, se maneja vía DOM */}
+          {/* No mostramos breadcrumb en la UI aquí, se maneja vía DOM */}
 
-        {isMobile ? (
-          // Versión móvil: Acordeón con todas las preguntas agrupadas al principio
-          <>
-            <div className="accordion-header">
-              <button className="accordion-toggle" onClick={this.toggleAllAccordions}>
-                Ver más preguntas frecuentes
-                <i className={`ph ${isCollapsed ? 'ph-caret-down' : 'ph-caret-up'}`}></i>
-              </button>
-            </div>
-
-            {!isCollapsed && (
-              <div className="accordion-items">
-                {/* CAMBIO: Primero mostramos todas las preguntas juntas con sus iconos visibles */}
-                <div className="accordion-questions mobile-questions">
-                  {accordionData.map((item, index) => (
-                    <button
-                      key={index}
-                      className={`question-button ${activeIndex === index ? 'active' : ''} mobile-question`}
-                      onClick={() => this.toggleAccordion(index)}>
-                      <span>{item.title}</span>
-                      <i className={`ph ${activeIndex === index ? '' : ''}`}></i>
-                    </button>
-                  ))}
-                </div>
-
-                {/* CAMBIO: Luego mostramos el contenido de la pregunta activa */}
-                {activeIndex !== null && (
-                  <div className="accordion-content mobile-content">
-                    {typeof accordionData[activeIndex].content === 'string' ? (
-                      <p>{accordionData[activeIndex].content}</p>
-                    ) : (
-                      accordionData[activeIndex].content
-                    )}
-                  </div>
-                )}
+          {isMobile ? (
+            // Versión móvil: Acordeón con todas las preguntas agrupadas al principio
+            <>
+              <div className="accordion-header">
+                <button className="accordion-toggle" onClick={this.toggleAllAccordions}>
+                  Ver más preguntas frecuentes
+                  <i className={`ph ${isCollapsed ? 'ph-caret-down' : 'ph-caret-up'}`}></i>
+                </button>
               </div>
-            )}
-          </>
-        ) : (
-          <>
-            <div className="accordion-header">
-              <button className="accordion-toggle" onClick={this.toggleAllAccordions}>
-                Ver más preguntas frecuentes
-                <i className={`ph ${isCollapsed ? 'ph-caret-down' : 'ph-caret-up'}`}></i>
-              </button>
-            </div>
 
-            {!isCollapsed && (
-              <div className="accordion-items">
-                <div className="accordion-questions">
-                  {accordionData.map((item, index) => (
-                    <button
-                      key={index}
-                      className={`question-button ${activeIndex === index ? 'active' : ''}`}
-                      onClick={() => this.toggleAccordion(index)}>
-                      <span>{item.title}</span>
-                      <i className={`ph ${activeIndex === index ? 'ph-caret-up' : 'ph-caret-down'}`}></i>
-                    </button>
-                  ))}
-                </div>
-
-                <div className="accordion-answer">
-                  {activeIndex !== null &&
-                    accordionData[activeIndex] &&
-                    (typeof accordionData[activeIndex].content === 'string' ? (
-                      <p>{accordionData[activeIndex].content}</p>
-                    ) : (
-                      accordionData[activeIndex].content
+              {!isCollapsed && (
+                <div className="accordion-items">
+                  {/* CAMBIO: Primero mostramos todas las preguntas juntas con sus iconos visibles */}
+                  <div className="accordion-questions mobile-questions">
+                    {accordionData.map((item, index) => (
+                      <button
+                        key={index}
+                        className={`question-button ${activeIndex === index ? 'active' : ''} mobile-question`}
+                        onClick={() => this.toggleAccordion(index)}>
+                        <span>{item.title}</span>
+                        <i className={`ph ${activeIndex === index ? '' : ''}`}></i>
+                      </button>
                     ))}
+                  </div>
+
+                  {/* CAMBIO: Luego mostramos el contenido de la pregunta activa */}
+                  {activeIndex !== null && (
+                    <div className="accordion-content mobile-content">
+                      {typeof accordionData[activeIndex].content === 'string' ? (
+                        <p>{accordionData[activeIndex].content}</p>
+                      ) : (
+                        accordionData[activeIndex].content
+                      )}
+                    </div>
+                  )}
                 </div>
+              )}
+            </>
+          ) : (
+            <>
+              <div className="accordion-header">
+                <button className="accordion-toggle" onClick={this.toggleAllAccordions}>
+                  Ver más preguntas frecuentes
+                  <i className={`ph ${isCollapsed ? 'ph-caret-down' : 'ph-caret-up'}`}></i>
+                </button>
               </div>
-            )}
-          </>
-        )}</Container>
+
+              {!isCollapsed && (
+                <div className="accordion-items">
+                  <div className="accordion-questions">
+                    {accordionData.map((item, index) => (
+                      <button
+                        key={index}
+                        className={`question-button ${activeIndex === index ? 'active' : ''}`}
+                        onClick={() => this.toggleAccordion(index)}>
+                        <span>{item.title}</span>
+                        <i className={`ph ${activeIndex === index ? 'ph-caret-up' : 'ph-caret-down'}`}></i>
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="accordion-answer">
+                    {activeIndex !== null &&
+                      accordionData[activeIndex] &&
+                      (typeof accordionData[activeIndex].content === 'string' ? (
+                        <p>{accordionData[activeIndex].content}</p>
+                      ) : (
+                        accordionData[activeIndex].content
+                      ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </Container>
       </section>
     )
   }

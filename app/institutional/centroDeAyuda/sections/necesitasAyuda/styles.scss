@@ -6,7 +6,7 @@
   gap: rem(15px);
   margin-top: rem(20px);
   flex-wrap: wrap;
-  padding-top: 0;
+  padding-top: rem(100px);
 
   .help-header {
     display: flex;
@@ -44,7 +44,7 @@
       display: flex;
       flex-direction: column;
       border-bottom: 1px solid var(--primary);
-      padding-bottom: rem(20px);
+      padding-bottom: 0;
       gap: rem(10px);
 
       a {

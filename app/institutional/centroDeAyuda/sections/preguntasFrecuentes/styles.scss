@@ -1,0 +1,131 @@
+@use '@styles/autoload' as *;
+
+.faq-section {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  .title-qf {
+    font-size: var(--font-size-title);
+    font-weight: bold;
+  }
+
+  .faq-item-content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: rem(10px);
+    transition: all 0.5s ease-in-out;
+  }
+
+  .faq-item {
+    background: white;
+    border: 1px solid var(--neutral-700);
+    border-radius: rem(12px);
+    padding: rem(15px);
+    margin-top: rem(10px);
+    box-shadow: 0 rem(2px) rem(4px) rgba(0, 0, 0, 0.1);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: rem(15px);
+    min-width: rem(260px);
+
+    .sub-question {
+      width: 100%;
+      font-size: var(--font-size-heading);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: rem(8px);
+    }
+
+    a {
+      color: var(--primary);
+      font-weight: bold;
+      text-decoration: none;
+      font-size: var(--font-size-paragraph);
+      display: flex;
+      align-items: center;
+      gap: rem(5px);
+      width: fit-content;
+    }
+
+    .iconsTitle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--primary);
+      width: rem(38px);
+      height: rem(38px);
+      border-radius: 50%;
+      color: var(--neutral);
+      font-size: 1.2rem;
+      line-height: rem(38px);
+      padding: 0;
+    }
+  }
+}
+
+@media (min-width: $breakpoint-xl) {
+  .faq-section {
+    .faq-item-content {
+      margin-top: rem(10px);
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      gap: rem(26px);
+      transform: translateY(rem(-10px));
+
+      .faq-item {
+        padding: rem(15px);
+        margin-top: rem(10px);
+        box-shadow: 0 rem(2px) rem(4px) rgba(0, 0, 0, 0.1);
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: rem(20px);
+        width: rem(240px);
+        height: auto;
+      }
+
+      h3 {
+        width: 100%;
+        font-size: var(--font-size-heading);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: rem(8px);
+      }
+
+      a {
+        color: var(--primary);
+        font-weight: bold;
+        text-decoration: none;
+        font-size: var(--font-size-paragraph);
+        display: flex;
+        align-items: center;
+        gap: rem(5px);
+        width: fit-content;
+      }
+
+      .iconsTitle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--primary);
+        width: rem(38px);
+        height: rem(38px);
+        border-radius: 50%;
+        color: var(--neutral);
+        font-size: 1.2rem;
+        line-height: rem(38px);
+        padding: 0;
+        font-weight: 500;
+      }
+    }
+  }
+}

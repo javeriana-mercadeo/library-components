@@ -1,0 +1,39 @@
+@use '@styles/autoload' as *;
+
+.videoHelp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .videoContainer {
+    width: 100%;
+    height: rem(850px);
+
+    .videoFrame {
+      object-fit: cover;
+      width: 100%;
+      height: rem(850px);
+    }
+  }
+}
+
+@media (min-width: $breakpoint-sm) {
+  .videoHelp {
+    padding: rem(20px);
+    border-radius: rem(20px);
+
+    .videoContainer {
+      width: 100%;
+      height: rem(380px);
+      border-radius: rem(20px);
+
+      .videoFrame {
+        object-fit: cover;
+        width: 100%;
+        height: rem(380px);
+        min-height: rem(380px);
+        border-radius: rem(20px);
+      }
+    }
+  }
+}
