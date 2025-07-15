@@ -288,7 +288,6 @@ const ContactModal = {
   },
 
   async open() {
-
     // Aplicar 'show' inmediatamente (patrón similar al menú móvil)
     DOMHelpers.toggleClasses(this.modal, ['show'], true)
     DOMHelpers.toggleClasses(this.overlay, ['active'], true)
@@ -310,22 +309,22 @@ const ContactModal = {
 
   async initializeForm() {
     // Delegar toda la lógica del formulario al ModalForm
-    if (typeof window !== 'undefined' && window.ModalForm) {
+    if (typeof window !== 'undefined' && window.ModalFormManager) {
       try {
-        await window.ModalForm.initLocationData()
-        
+        await window.ModalFormManager.initLocationData()
+
         TimingUtils.delay(() => {
-          window.ModalForm.initFormAnimations()
+          window.ModalFormManager.initFormAnimations()
         }, 50)
 
         TimingUtils.delay(() => {
           const firstInput = DOMHelpers.findElement('input:not([type="radio"]):not([type="checkbox"])', this.modal)
           if (firstInput) firstInput.focus()
         }, 100)
-        
+
         // Configurar validación del formulario
         if (this.form) {
-          window.ModalForm.setupFormValidation(this.form)
+          window.ModalFormManager.setupFormValidation(this.form)
         }
       } catch (error) {
         console.error('Error al inicializar formulario del modal:', error)
@@ -334,7 +333,6 @@ const ContactModal = {
   },
 
   close() {
-
     // Quitar 'active' inmediatamente para comenzar animación de salida
     DOMHelpers.toggleClasses(this.modal, ['active'], false)
 
@@ -372,10 +370,8 @@ const ContactModal = {
       if (this.overlay) {
         this.overlay.classList.remove('active')
       }
-
     }, 200)
   },
-
 
   cleanup() {
     this.initialized = false
@@ -411,4 +407,4 @@ const HeaderManager = {
   }
 }
 
-export default HeaderManager
+export { HeaderManager }
