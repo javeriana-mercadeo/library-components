@@ -3,6 +3,8 @@
 import dynamic from 'next/dynamic'
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 import Load from '@/app/_components/load/load'
+import Logo from '@/app/_components/Logo/Logo'
+import Content from '@/app/_components/Logo/components/Content'
 
 // Lazy load heavy sections with client-side loading
 const Encabezado = dynamic(() => import('./_sections/0_encabezado'), { ssr: false, loading: () => <Load /> })
@@ -36,6 +38,7 @@ export default function Profesional() {
       {/* <PlanEstudio /> */}
       <ViewComponent path={`${basePath}/_sections/2_planEstudio`}>
         <PlanEstudio />
+        <Logo> <Content/> </Logo>
       </ViewComponent>
 
       {/* <Perfiles /> */}
