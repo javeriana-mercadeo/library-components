@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 import Load from '@/app/_components/load/load'
-import Logo from '@/app/_components/Logo/Logo'
+import Logo from '@/app/_components/Logo/Logo.jsx'
 import Content from '@/app/_components/Logo/components/Content'
 
 // Lazy load heavy sections with client-side loading
@@ -38,8 +38,11 @@ export default function Profesional() {
       {/* <PlanEstudio /> */}
       <ViewComponent path={`${basePath}/_sections/2_planEstudio`}>
         <PlanEstudio />
-        <Logo> <Content/> </Logo>
       </ViewComponent>
+
+      {/* <ViewComponent path={`${basePath}/_sections/2_planEstudio`}>
+        <Logo width={14} height={10}> <Content/> </Logo>
+      </ViewComponent> */}
 
       {/* <Perfiles /> */}
       <ViewComponent path={`${basePath}/_sections/3_perfiles`}>
