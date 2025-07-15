@@ -12,10 +12,14 @@
 
 .content__image {
   grid-area: img;
+}
+
+.image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .content__title {
   grid-area: title;
   margin: 3.5rem 3.5rem 0.5rem 0.5rem;

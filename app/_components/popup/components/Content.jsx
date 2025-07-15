@@ -11,8 +11,8 @@ const Content = ({ id = 'popup', imageSrc, isEditable }) => {
   return (
     <>
       <div className="content">
-        <lfr-editable id="image-popup" class="content__image" type="image">
-          <img src={imgSource} alt="Muestra del contenido" class="image" />
+        <lfr-editable id="image-popup" className="content__image" type="image">
+          <img src={imgSource} alt="Muestra del contenido" className="image" />
         </lfr-editable>
         <Title id={`${id}-title`} hierarchy="h2" size="xl" isEditable={isEditable} className="content__title">
           ¡Tu futuro en la Javeriana es posible!
