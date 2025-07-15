@@ -1,0 +1,417 @@
+@use '@styles/autoload' as *;
+
+.accordion-container {
+  width: 100vw;
+  margin: 0 auto;
+  gap: rem(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding: rem(20px);
+}
+
+.accordion-header {
+  width: 100%;
+  padding: rem(20px);
+  padding-bottom: 0;
+  display: block; // Visible en móvil por defecto
+}
+
+.accordion-toggle {
+  color: var(--primary);
+  border-bottom: 1px solid var(--primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: var(--font-size-paragraph);
+  font-weight: bold;
+  padding-bottom: rem(20px);
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.accordion-items {
+  width: 100%;
+  padding-top: 0;
+  padding: rem(20px);
+  padding-bottom: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: none;
+}
+
+.question-button {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: left;
+  font-size: var(--font-size-paragraph);
+  color: var(--neutral-400);
+  font-weight: 400;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+
+  i {
+    transition: color 0.3s ease;
+    color: var(--primary);
+    padding-left: rem(15px);
+    font-size: 1rem;
+  }
+
+  &.active {
+    font-weight: bold;
+  }
+}
+
+.accordion-answer {
+  margin-top: rem(20px);
+  color: var(--primary);
+
+  h3 {
+    margin-bottom: rem(15px);
+    color: var(--neutral-400);
+  }
+
+  ul {
+    margin-left: rem(20px);
+    margin-bottom: rem(15px);
+  }
+
+  p {
+    line-height: 1.6;
+  }
+}
+
+// Estilos para drop zones
+.drop-zone-container {
+  min-height: rem(200px);
+  position: relative;
+
+  lfr-drop-zone {
+    display: block;
+    min-height: rem(150px);
+    width: 100%;
+    border: 2px dashed var(--neutral-200);
+    border-radius: rem(8px);
+    padding: rem(20px);
+    transition: all 0.3s ease;
+    position: relative;
+
+    &:before {
+      content: "Arrastra aquí el contenido";
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      color: var(--neutral-400);
+      font-size: var(--font-size-small);
+      font-style: italic;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    &:hover,
+    &.drag-over {
+      border-color: var(--primary);
+      background-color: rgba(var(--primary-rgb), 0.05);
+      
+      &:before {
+        color: var(--primary);
+        opacity: 1;
+      }
+    }
+
+    &:empty:before {
+      display: flex;
+    }
+
+    &:not(:empty):before {
+      display: none;
+    }
+  }
+}
+
+.mobile-drop-zone-content {
+  lfr-drop-zone {
+    display: block;
+    min-height: rem(120px);
+    width: 100%;
+    border: 2px dashed var(--neutral-200);
+    border-radius: rem(6px);
+    padding: rem(15px);
+    background-color: var(--neutral-50);
+    margin-top: rem(10px);
+
+    &:before {
+      content: "Contenido de la respuesta";
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--neutral-400);
+      font-size: var(--font-size-small);
+      height: 100%;
+      min-height: rem(80px);
+      font-style: italic;
+    }
+
+    &:hover {
+      border-color: var(--primary);
+      background-color: rgba(var(--primary-rgb), 0.05);
+      
+      &:before {
+        color: var(--primary);
+      }
+    }
+
+    &:empty:before {
+      display: flex;
+    }
+
+    &:not(:empty):before {
+      display: none;
+    }
+  }
+}
+
+.breadcrumb {
+  display: none; 
+  align-items: center;
+  font-size: rem(14px);
+  color: var(--neutral-400);
+  padding: rem(15px) rem(30px);
+  gap: rem(8px);
+  margin-top: rem(30px);
+  margin-bottom: rem(20px);
+  border-radius: rem(8px);
+  background-color: var(--neutral-25);
+  border: 1px solid var(--neutral-100);
+  flex-wrap: wrap;
+  line-height: 1.4;
+
+  // Enlaces de navegación
+  a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    border-radius: rem(4px);
+    padding: rem(2px) rem(6px);
+
+    &:hover {
+      text-decoration: underline;
+      background-color: var(--primary-25);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  // Sección actual (no clickeable)
+  .section-name {
+    font-weight: 500;
+    color: var(--neutral-600);
+    padding: rem(2px) rem(6px);
+    border-radius: rem(4px);
+  }
+
+  // Pregunta actual (página actual)
+  .current-page {
+    font-weight: 600;
+    color: var(--neutral-700);
+    max-width: rem(300px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: rem(2px) rem(6px);
+    background-color: var(--primary-50);
+    border-radius: rem(4px);
+    border: 1px solid var(--primary-100);
+  }
+
+  // Separadores entre elementos
+  &::before {
+    content: none;
+  }
+  
+  // Responsive para el contenido largo
+  @media (max-width: 768px) {
+    .current-page {
+      max-width: rem(200px);
+    }
+  }
+}
+
+// Mostrar breadcrumb en desktop
+@media (min-width: $breakpoint-xl) {
+  .breadcrumb {
+    display: flex !important;
+  }
+  
+  // Ocultar header del acordeón en desktop
+  .accordion-header {
+    display: none !important;
+  }
+
+  .doubts-questions {
+    display: none;
+  }
+
+  .accordion-items {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: rem(20px);
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .drop-zone-container {
+    min-height: rem(300px);
+    
+    lfr-drop-zone {
+      min-height: rem(250px);
+    }
+  }
+}
+
+// Icono del Centro de Ayuda
+.iconCenter {
+  font-size: 1rem;
+  color: var(--primary);
+  font-weight: inherit !important;
+  margin-right: rem(6px);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+// Estados adicionales para migas de pan
+.breadcrumb {
+  // Animación de aparición
+  &.breadcrumb-enter {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  &.breadcrumb-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  // Efecto hover en todo el breadcrumb
+  &:hover {
+    box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.1);
+  }
+}
+
+// ===========================
+// RESTO DE ESTILOS ORIGINALES
+// ===========================
+.accordion-questions {
+  display: flex;
+  flex-direction: column;
+  gap: rem(10px);
+}
+
+.question-button {
+  width: 100%;
+  text-align: left;
+  padding: rem(10px);
+  padding-left: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-paragraph);
+  color: var(--neutral-400);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (min-width: 1200px) {
+    i {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1199px) {
+    i {
+      display: block !important;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+  }
+
+  &.active {
+    font-weight: bold;
+    color: var(--primary);
+  }
+}
+
+.accordion-answer {
+  padding: rem(20px);
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.more-doubts-container {
+  display: flex;
+}
+
+.mobile-questions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: rem(20px);
+}
+
+.mobile-content {
+  width: 100%;
+}
+
+.only-mobile {
+  display: none;
+
+  @media (max-width: 1199px) {
+    display: block;
+  }
+}
+
+// Estilos para elementos con data-current-section (para detección automática)
+[data-current-section] {
+  display: none; // Oculto pero disponible para el script
+}
+
+// Utilidades para debugging (remover en producción)
+.debug-breadcrumb {
+  .breadcrumb {
+    border: 2px dashed red !important;
+    
+    &::before {
+      content: "DEBUG MODE" !important;
+      color: red !important;
+      font-weight: bold !important;
+    }
+  }
+}
