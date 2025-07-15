@@ -1,89 +1,175 @@
 export default () => {
-  console.log('🚀 [RELACIONADOS] Script iniciado')
+  console.log('📍 [SCRIPT] Script relacionados cargado y ejecutándose')
+  // Función de llamada a la API
+  async function callApi(API) {
+    try {
+      const response = await fetch(API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: '', visibilidad: 'yes', tipoPrograma: '', areas: '', facultad: '' })
+      })
+      return await response.json()
+    } catch (error) {
+      console.error('Error:', error)
+      return null
+    }
+  }
 
-  // Función para actualizar estados de botones como planEstudio
+  // Función para buscar un programa específico
+  function findProgramByCode(data, code) {
+    return data.find(item => item.codigo === code)
+  }
+
+  // Función para compilar programas en un Set sin duplicados
+  function compilePrograms(...programLists) {
+    const programSet = new Set()
+    programLists.flat().forEach(program => programSet.add(JSON.stringify(program)))
+    return Array.from(programSet).map(program => JSON.parse(program))
+  }
+
+  // Log inicial antes del evento
+  console.log('📋 [SCRIPT] Configurando evento DOMContentLoaded')
+  console.log('📋 [SCRIPT] Estado del documento:', document.readyState)
+  
+  // Función principal para cargar programas
+  const loadRelatedPrograms = async () => {
+    console.log('🚀 [MAIN] Iniciando carga de programas relacionados')
+    
+    console.log('🔍 [MAIN] Verificando variable codPrograma...')
+    console.log('🔍 [MAIN] typeof codPrograma:', typeof codPrograma)
+    console.log('🔍 [MAIN] window.codPrograma:', typeof window.codPrograma)
+    
+    const COD_PROGRAM = typeof codPrograma !== 'undefined' ? codPrograma : 
+                       typeof window.codPrograma !== 'undefined' ? window.codPrograma : 'ARQUI'
+    console.log('📋 [MAIN] Código del programa final:', COD_PROGRAM)
+    
+    const API_PROGRAMS = 'https://www.javeriana.edu.co/prg-api/searchpuj/general-search-program'
+    console.log('🌐 Llamando API:', API_PROGRAMS)
+    
+    const dataPrograms = await callApi(API_PROGRAMS)
+    console.log('📊 Datos recibidos:', dataPrograms ? dataPrograms.length + ' programas' : 'Sin datos')
+
+    if (!dataPrograms || !Array.isArray(dataPrograms)) {
+      console.error('No se obtuvieron datos válidos de la API.')
+      return
+    }
+
+    // Buscar programa por código
+    let program = findProgramByCode(dataPrograms, COD_PROGRAM)
+    console.log('🔍 Programa encontrado:', program ? program.nombre : 'No encontrado')
+
+    if (program) {
+      const { areas, facultad, tipoPrograma } = program
+      let faculty = Array.isArray(facultad) ? facultad[0] : facultad
+
+      const programsByLevel = dataPrograms.filter(program => program.tipoPrograma === tipoPrograma)
+
+      const programsByFaculty = programsByLevel.filter(program => {
+        const programFaculty = Array.isArray(program.facultad) ? program.facultad[0] : program.facultad
+        return programFaculty == faculty
+      })
+
+      const programByArea = dataPrograms.filter(program => program.areas?.some(area => areas.includes(area)))
+
+      let compiledPrograms = compilePrograms(programsByFaculty, programByArea)
+      compiledPrograms = compiledPrograms.filter(item => item.codigo !== program.codigo)
+
+      compiledPrograms = compiledPrograms.filter(program => program.visibilidad === 'yes')
+
+      compiledPrograms = compiledPrograms.slice(0, 6)
+
+      console.log('✅ Programas compilados:', compiledPrograms.length, 'programas')
+
+      const relatedPrograms = document.getElementById('relatedPrograms')
+
+      if (!relatedPrograms) {
+        console.error("❌ Error: Contenedor 'relatedPrograms' no se encuentra en el DOM.")
+        return
+      }
+
+      console.log('📦 Contenedor encontrado correctamente')
+
+      if (compiledPrograms.length === 0) {
+        const title = document.querySelector('#related-programs-title')
+        const contain = document.querySelector('#related-programs-contain')
+
+        if (title) title.style.display = 'none'
+        if (contain) contain.style.display = 'none'
+      }
+
+      compiledPrograms.forEach(program => {
+        const newStart = 'https://www.javeriana.edu.co/recursosdb/'
+        let urlImage = program.urlImagenPrograma
+
+        if (typeof urlImage === 'string' && urlImage.includes('documents')) {
+          const cleanUrl = urlImage.trim()
+          urlImage = cleanUrl.replace(/\/?documents\//, newStart)
+        }
+
+        const card = document.createElement('div')
+        card.classList.add('swiper-slide')
+
+        card.innerHTML = `
+          <div class="related-programs__program-card">
+            <div class="related-programs__image-container">
+              <img src="${urlImage}" alt="${program.nombre}" class="related-programs__image" loading="lazy">
+              <div class="related-programs__overlay"></div>
+              <div class="related-programs__content">
+                <h3 class="related-programs__name">${program.nombre}</h3>
+                <p class="paragraph paragraph-neutral paragraph-md related-programs__faculty">${Array.isArray(program.facultad) ? program.facultad[0] : program.facultad}</p>
+                <a href="${program.urlPrograma}" class="related-programs__link" data-senna-off aria-label="Ver detalles del programa: ${program.nombre}">
+                  Ver Programa <i class="ph ph-arrow-up-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        `
+
+        relatedPrograms.appendChild(card)
+      })
+
+      console.log('🎯 Cards creadas exitosamente:', compiledPrograms.length)
+
+      // Inicializar Swiper después de crear las cards
+      setTimeout(() => {
+        console.log('⚡ Inicializando Swiper...')
+        initializeSwiper()
+      }, 100)
+
+    } else {
+      const title = document.querySelector('#related-programs-title')
+      const contain = document.querySelector('#related-programs-contain')
+
+      if (title) title.style.display = 'none'
+      if (contain) contain.style.display = 'none'
+
+      console.log('Programa no encontrado en los datos. Con el código:', COD_PROGRAM)
+    }
+  }
+
+  // Ejecutar según el estado del documento
+  if (document.readyState === 'loading') {
+    console.log('📋 [SCRIPT] DOM aún cargando, esperando DOMContentLoaded')
+    document.addEventListener('DOMContentLoaded', loadRelatedPrograms)
+  } else {
+    console.log('📋 [SCRIPT] DOM ya está listo, ejecutando inmediatamente')
+    loadRelatedPrograms()
+  }
+
+  // Función para actualizar estados de botones
   const updateButtonStates = swiper => {
     const nextBtn = document.querySelector('.related-programs__next') || document.querySelector('.related-programs-next')
     const prevBtn = document.querySelector('.related-programs__prev') || document.querySelector('.related-programs-prev')
 
     if (!nextBtn || !prevBtn) return
-
-    // Verificar si los botones deben estar activos
-    const isBeginning = swiper.isBeginning
-    const isEnd = swiper.isEnd
-    const allowSlideNext = swiper.allowSlideNext
-    const allowSlidePrev = swiper.allowSlidePrev
-
-    // Botón anterior
-    if (isBeginning || !allowSlidePrev) {
-      prevBtn.classList.add('swiper-button-disabled')
-      prevBtn.style.opacity = '0.3'
-      prevBtn.style.pointerEvents = 'none'
-      prevBtn.setAttribute('aria-disabled', 'true')
-    } else {
-      prevBtn.classList.remove('swiper-button-disabled')
-      prevBtn.style.opacity = '1'
-      prevBtn.style.pointerEvents = 'auto'
-      prevBtn.setAttribute('aria-disabled', 'false')
-    }
-
-    // Botón siguiente
-    if (isEnd || !allowSlideNext) {
-      nextBtn.classList.add('swiper-button-disabled')
-      nextBtn.style.opacity = '0.3'
-      nextBtn.style.pointerEvents = 'none'
-      nextBtn.setAttribute('aria-disabled', 'true')
-    } else {
-      nextBtn.classList.remove('swiper-button-disabled')
-      nextBtn.style.opacity = '1'
-      nextBtn.style.pointerEvents = 'auto'
-      nextBtn.setAttribute('aria-disabled', 'false')
-    }
-
-    // Asegurar visibilidad si la navegación está habilitada
-    if (nextBtn.classList.contains('show-navigation')) {
-      nextBtn.style.visibility = 'visible'
-      nextBtn.style.display = 'flex'
-    }
-    if (prevBtn.classList.contains('show-navigation')) {
-      prevBtn.style.visibility = 'visible'
-      prevBtn.style.display = 'flex'
-    }
   }
 
   // Función para actualizar visibilidad de navegación
   const updateNavigationVisibility = (swiper, totalSlides) => {
     const nextBtn = document.querySelector('.related-programs__next') || document.querySelector('.related-programs-next')
     const prevBtn = document.querySelector('.related-programs__prev') || document.querySelector('.related-programs-prev')
-
-    if (!nextBtn || !prevBtn) {
-      console.warn('Botones de navegación no encontrados')
-      return
-    }
-
-    // Lógica mejorada siguiendo patrón planEstudio
-    const needsNavigation = totalSlides > 1
-
-    if (needsNavigation) {
-      // Mostrar contenedor de botones
-      nextBtn.classList.add('show-navigation')
-      nextBtn.classList.remove('swiper-button-hidden')
-      nextBtn.setAttribute('aria-hidden', 'false')
-
-      prevBtn.classList.add('show-navigation')
-      prevBtn.classList.remove('swiper-button-hidden')
-      prevBtn.setAttribute('aria-hidden', 'false')
-      updateButtonStates(swiper)
-    } else {
-      // Solo si hay 1 slide o menos, ocultar completamente
-      nextBtn.classList.remove('show-navigation')
-      nextBtn.classList.add('swiper-button-hidden')
-      nextBtn.setAttribute('aria-hidden', 'true')
-
-      prevBtn.classList.remove('show-navigation')
-      prevBtn.classList.add('swiper-button-hidden')
-      prevBtn.setAttribute('aria-hidden', 'true')
-    }
   }
 
   // Función para actualizar visibilidad de paginación
@@ -95,7 +181,7 @@ export default () => {
       return
     }
 
-    // Mostrar paginación si hay más de 1 slide - patrón planEstudio
+    // Mostrar paginación si hay más de 1 slide
     const needsPagination = totalSlides > 1
 
     if (needsPagination) {
@@ -122,52 +208,21 @@ export default () => {
   }
 
   const initializeSwiper = () => {
-    console.log('🔧 [RELACIONADOS] Iniciando initializeSwiper()')
-
     // Destruir instancia existente si existe
     if (window.relatedProgramsSwiper) {
-      console.log('🗑️ [RELACIONADOS] Destruyendo instancia existente')
       window.relatedProgramsSwiper.destroy(true, true)
       window.relatedProgramsSwiper = null
     }
 
     if (!window.Swiper) {
-      console.error('❌ [RELACIONADOS] Swiper no está disponible')
       return
     }
-    console.log('✅ [RELACIONADOS] Swiper disponible')
 
-    // Buscar el wrapper - patrón planEstudio con un solo fallback
-    console.log('🔍 [RELACIONADOS] Buscando contenedor del swiper...')
+    // Buscar el wrapper con un solo fallback
     const element = document.querySelector('.related-programs-swiper') || document.querySelector('.related-programs__carousel')
-
-    console.log('🔍 [RELACIONADOS] Elementos encontrados:')
-    console.log('  - .related-programs-swiper:', !!document.querySelector('.related-programs-swiper'))
-    console.log('  - .related-programs__carousel:', !!document.querySelector('.related-programs__carousel'))
-    console.log('  - Elemento seleccionado:', element)
-
-    if (!element) {
-      console.error('❌ [RELACIONADOS] No se encontró el contenedor del swiper')
-      // Listar todos los elementos relacionados para debug
-      console.log('🔍 [RELACIONADOS] Elementos disponibles en DOM:')
-      const allRelated = document.querySelectorAll('[class*="related"]')
-      allRelated.forEach(el => console.log('  -', el.className))
-      return
-    }
 
     // Contar slides disponibles
     const totalSlides = countSlides(element)
-    console.log('🎯 [RELACIONADOS] Slides encontrados:', totalSlides)
-
-    // Verificar elementos de navegación
-    const nextBtn = document.querySelector('.related-programs__next') || document.querySelector('.related-programs-next')
-    const prevBtn = document.querySelector('.related-programs__prev') || document.querySelector('.related-programs-prev')
-    const pagination = document.querySelector('.related-programs__pagination') || document.querySelector('.related-programs-pagination')
-
-    console.log('🎮 [RELACIONADOS] Elementos de navegación:')
-    console.log('  - Next button:', !!nextBtn, nextBtn?.className)
-    console.log('  - Prev button:', !!prevBtn, prevBtn?.className)
-    console.log('  - Pagination:', !!pagination, pagination?.className)
 
     window.relatedProgramsSwiper = new window.Swiper(element, {
       loop: false,
@@ -223,11 +278,6 @@ export default () => {
 
       on: {
         init: function (swiper) {
-          console.log('✅ [RELACIONADOS] Swiper inicializado correctamente')
-          console.log('  - Slides totales:', swiper.slides.length)
-          console.log('  - Active index:', swiper.activeIndex)
-          console.log('  - Is beginning:', swiper.isBeginning)
-          console.log('  - Is end:', swiper.isEnd)
           updateNavigationVisibility(swiper, totalSlides)
           updatePaginationVisibility(swiper, totalSlides)
           updateButtonStates(swiper)
@@ -269,57 +319,16 @@ export default () => {
         }
       }
     })
-
-    // Verificar que la inicialización fue exitosa
-    if (window.relatedProgramsSwiper) {
-      console.log('✅ [RELACIONADOS] Instancia de Swiper creada exitosamente')
-      updateNavigationVisibility(window.relatedProgramsSwiper, totalSlides)
-    } else {
-      console.error('❌ [RELACIONADOS] Error al crear instancia de Swiper')
-    }
   }
 
   // Función de inicialización con retry como planEstudio
   const checkAndInit = () => {
-    console.log('🔄 [RELACIONADOS] Verificando disponibilidad de Swiper...')
-
     if (typeof window !== 'undefined' && window.Swiper) {
-      console.log('✅ [RELACIONADOS] Swiper encontrado, inicializando...')
       initializeSwiper()
     } else {
-      console.log('⏳ [RELACIONADOS] Swiper no disponible, reintentando en 300ms...')
-      console.log('  - window:', typeof window)
-      console.log('  - window.Swiper:', typeof window?.Swiper)
       setTimeout(checkAndInit, 300)
     }
   }
 
-  // Verificar estado inicial del DOM
-  console.log('🏗️ [RELACIONADOS] Estado inicial del DOM:')
-  console.log('  - Document ready state:', document.readyState)
-  console.log('  - Window loaded:', document.readyState === 'complete')
-
-  // Inicialización
-  console.log('🚀 [RELACIONADOS] Iniciando checkAndInit()')
   checkAndInit()
-
-  // Event listener para resize como planEstudio
-  let resizeTimeout
-  window.addEventListener('resize', () => {
-    console.log('📏 [RELACIONADOS] Evento resize detectado')
-    if (resizeTimeout) {
-      clearTimeout(resizeTimeout)
-    }
-
-    resizeTimeout = setTimeout(() => {
-      if (window.relatedProgramsSwiper) {
-        console.log('🔄 [RELACIONADOS] Actualizando Swiper después de resize')
-        window.relatedProgramsSwiper.update()
-      } else {
-        console.log('⚠️ [RELACIONADOS] No hay instancia de Swiper para actualizar')
-      }
-    }, 250)
-  })
-
-  console.log('🎯 [RELACIONADOS] Script completamente cargado e inicializado')
 }
