@@ -30,7 +30,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* <!-- Flowbite CSS --> */}
         <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-        <link rel="stylesheet" href="https://www.javeriana.edu.co/recursosdb/d/info-prg/form-modules-style" />
+        <link rel="stylesheet" href="http://127.0.0.1:5501/form-modules/build/form-modules-style.css" />
+        {/* <link rel="stylesheet" href="https://www.javeriana.edu.co/recursosdb/d/info-prg/form-modules-style" /> */}
         {/* Utilidades globales - DEBE CARGARSE PRIMERO */}
         <title>Librería de componentes</title>
       </head>
@@ -72,7 +73,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script src="https://www.javeriana.edu.co/planestudio/pages/libraries/simple_datatables/simple-datatables.js"></script>
 
         {/* Form-modules */}
-        <script src="https://www.javeriana.edu.co/recursosdb/d/info-prg/form-modules-script"></script>
+        {/* <script src="https://www.javeriana.edu.co/recursosdb/d/info-prg/form-modules-script"></script> */}
+        <script src="http://127.0.0.1:5501/form-modules/build/form-modules-script.js"></script>
       </body>
     </html>
   )

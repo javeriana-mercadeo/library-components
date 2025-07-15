@@ -3,9 +3,8 @@
 // ===========================================
 
 // Importar módulos separados
-import HeaderManager from './headerManager.js'
-import FormManager from './components/modalFrom.js'
-
+import { HeaderManager } from './headerManager.js'
+import { ModalForm } from './components/modalFrom.js'
 
 // ███████████████████████████████████████████████████████████████████████████████
 // █                        UTILIDADES DE ESPERA                               █
@@ -20,15 +19,17 @@ function waitForGlobalUtils() {
     const checkUtils = () => {
       attempts++
 
-      if (typeof window !== 'undefined' &&
-          window.__GLOBAL_UTILS_LOADED__ &&
-          window.Logger &&
-          window.DOMHelpers &&
-          window.EventManager &&
-          window.TimingUtils &&
-          window.Validators &&
-          window.APIManager &&
-          window.FormManager) {
+      if (
+        typeof window !== 'undefined' &&
+        window.__GLOBAL_UTILS_LOADED__ &&
+        window.Logger &&
+        window.DOMHelpers &&
+        window.EventManager &&
+        window.TimingUtils &&
+        window.Validators &&
+        window.APIManager &&
+        window.FormManager
+      ) {
         resolve(true)
       } else if (attempts >= maxAttempts) {
         reject(new Error('Timeout: Las utilidades globales no se cargaron después de 5 segundos'))
@@ -50,12 +51,12 @@ const AppSystem = {
       // Esperar a que las utilidades globales estén disponibles
       await waitForGlobalUtils()
 
-      // Exponer FormManager globalmente para que ContactModal pueda accederlo
-      window.ModalForm = FormManager
+      // Exponer ModalForm globalmente para que ContactModal pueda accederlo
+      window.ModalForm = ModalForm
 
       // Inicializar sistemas por separado
       const headerSystems = HeaderManager.init()
-      const formSystems = await FormManager.init()
+      const formSystems = await ModalForm.init()
 
       // Reporte final
       const allSystems = { ...headerSystems, ...formSystems }
@@ -76,9 +77,9 @@ const AppSystem = {
 
   cleanup() {
     // Solo limpiar si las utilidades están disponibles
-    if (typeof window !== 'undefined' && window.HeaderManager && window.FormManager) {
+    if (typeof window !== 'undefined' && window.HeaderManager && window.ModalForm) {
       HeaderManager.cleanup()
-      FormManager.cleanup()
+      ModalForm.cleanup()
     }
   }
 }
@@ -89,7 +90,7 @@ const AppSystem = {
 
 function initHeaderSystem() {
   const waitForDOM = () => {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       if (typeof document === 'undefined') {
         setTimeout(() => waitForDOM().then(resolve), 50)
         return
