@@ -1,11 +1,20 @@
+'use client'
 import { useEffect } from 'react'
 import LiferayDevBanner from '@library/components/liferay_dev_banner'
 import './variantsLogos.scss'
+import script from './script.js'
+import configData from './configuration.json'
 
-const Logo = ({ children }) => {
+const Logo = ({ children, width, height }) => {
   useEffect(() => {
-    import('./script.js')
-  }, [])
+    // Pass configuration to script
+    const config = {
+      width: width || configData.fieldSets[0].fields.find(f => f.name === 'width')?.defaultValue || 14,
+      height: height || configData.fieldSets[0].fields.find(f => f.name === 'height')?.defaultValue || 12
+    }
+    script(config)
+  }, [width, height])
+ 
 
   return (
     <>
