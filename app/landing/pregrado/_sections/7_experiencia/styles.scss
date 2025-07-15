@@ -100,6 +100,7 @@ $experience-nav-size-mobile: rem(40px);
       }
     }
 
+
     @include responsive($breakpoint-sm) {
       height: rem(400px) !important;
     }
@@ -138,7 +139,7 @@ $experience-nav-size-mobile: rem(40px);
     }
 
     @include dark-theme {
-      background-color: var(--primary-600);
+      background-color: var(--primary);
     }
   }
 
