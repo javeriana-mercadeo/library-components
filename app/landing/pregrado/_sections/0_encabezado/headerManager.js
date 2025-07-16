@@ -355,13 +355,16 @@ const ContactModal = {
       document.body.style.overflow = ''
       document.body.style.position = ''
       document.body.style.width = ''
+      document.body.style.height = ''
 
       // Reset completo del modal - forzar estado inicial
       this.modal.style.transform = ''
       this.modal.style.opacity = ''
       this.modal.style.visibility = ''
+      this.modal.style.pointerEvents = ''
       this.overlay.style.opacity = ''
       this.overlay.style.visibility = ''
+      this.overlay.style.pointerEvents = ''
 
       // Asegurar limpieza completa SOLO de nuestro modal
       if (this.modal && this.modal.classList.contains('contact-modal')) {
@@ -370,6 +373,9 @@ const ContactModal = {
       if (this.overlay) {
         this.overlay.classList.remove('active')
       }
+
+      // Forzar reflow para asegurar que los cambios se apliquen
+      this.overlay.offsetHeight
     }, 200)
   },
 
