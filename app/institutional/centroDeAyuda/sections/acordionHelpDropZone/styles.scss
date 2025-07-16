@@ -16,7 +16,7 @@
   width: 100%;
   padding: rem(20px);
   padding-bottom: 0;
-  display: block; // Visible en móvil por defecto
+  display: block; 
 }
 
 .accordion-toggle {
@@ -193,13 +193,11 @@
   align-items: center;
   font-size: rem(14px);
   color: var(--neutral-400);
-  padding: rem(15px) rem(30px);
+  padding: rem(20px) rem(5px);
   gap: rem(8px);
   margin-top: rem(30px);
   margin-bottom: rem(20px);
   border-radius: rem(8px);
-  background-color: var(--neutral-25);
-  border: 1px solid var(--neutral-100);
   flex-wrap: wrap;
   line-height: 1.4;
 
@@ -320,10 +318,7 @@
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
 
-  // Efecto hover en todo el breadcrumb
-  &:hover {
-    box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.1);
-  }
+
 }
 
 // ===========================

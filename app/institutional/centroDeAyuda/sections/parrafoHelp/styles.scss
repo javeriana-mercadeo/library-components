@@ -1,0 +1,7 @@
+@use '@styles/autoload' as *;
+
+.note {
+  color: var(--neutral-100);
+  font-size: var(--font-size-paragraph);
+  width: fit-content;
+}

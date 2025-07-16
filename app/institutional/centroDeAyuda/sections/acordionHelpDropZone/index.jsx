@@ -12,10 +12,10 @@ class Accordion extends React.Component {
     super(props)
     this.state = {
       activeIndex: 0,
-      isCollapsed: false, // CAMBIO: Siempre desplegado
+      isCollapsed: false, 
       isMobile: false,
       currentTitle: '',
-      currentSection: 'Centro de Ayuda' // Valor por defecto
+      currentSection: 'Centro de Ayuda'
     }
   }
 
@@ -27,7 +27,7 @@ class Accordion extends React.Component {
     
     this.setState(
       {
-        isCollapsed: false, // CAMBIO: Siempre desplegado
+        isCollapsed: false, 
         isMobile: isMobileView,
         currentSection: detectedSection,
         currentTitle: this.getAccordionData()[0].title
@@ -46,14 +46,14 @@ class Accordion extends React.Component {
     window.removeEventListener('resize', this.handleResize)
   }
 
-  // Detectar sección automáticamente - SIN nombres hardcodeados
+  // Detectar sección automáticamente
   detectCurrentSection = () => {
-    // 1. Props pasadas al componente (prioridad máxima)
+    // 1. Props pasadas al componente
     if (this.props.sectionName) {
       return this.props.sectionName
     }
 
-    // 2. SessionStorage (navegación previa)
+    // 2. SessionStorage
     if (typeof window !== 'undefined') {
       const storedSection = sessionStorage.getItem('currentSection')
       if (storedSection) {
@@ -86,10 +86,9 @@ class Accordion extends React.Component {
       }
     }
 
-    // 6. Título de la página (extraer sección si sigue un patrón)
+    // 6. Título de la página
     if (typeof document !== 'undefined') {
       const pageTitle = document.title
-      // Buscar patrones como "Becas - Centro de Ayuda" o "Admisiones | Universidad"
       const patterns = [
         /^([^-|]+)\s*[-|]\s*Centro de Ayuda/i,
         /^([^-|]+)\s*[-|]\s*Universidad/i,
@@ -115,7 +114,7 @@ class Accordion extends React.Component {
 
     this.setState(
       {
-        isCollapsed: false, // CAMBIO: Siempre desplegado
+        isCollapsed: false,
         isMobile: isMobileView
       },
       () => {
@@ -194,11 +193,10 @@ class Accordion extends React.Component {
   }
 
   toggleAllAccordions = () => {
-    // DESHABILITADO: No permitir colapsar en ningún dispositivo
     return;
   }
 
-  // Migas de pan automáticas - SIN nombres hardcodeados
+  // Migas de pan actualizadas para usar el Container
   updateBreadcrumb = title => {
     if (this.state.isMobile) {
       return
@@ -215,7 +213,6 @@ class Accordion extends React.Component {
       helpCenter.href = '/institutional/helpPage/help'
       helpCenter.innerHTML = '<i class="ph ph-arrow-bend-up-left iconCenter"></i> Centro de Ayuda'
       helpCenter.onclick = () => {
-        // Limpiar navegación y volver al inicio
         sessionStorage.removeItem('currentSection')
       }
       breadcrumb.appendChild(helpCenter)
@@ -238,16 +235,33 @@ class Accordion extends React.Component {
         breadcrumb.appendChild(currentPage)
       }
 
-      // Insertar en el DOM
-      const accordionContainer = document.querySelector('.accordion-container')
-      if (accordionContainer) {
-        accordionContainer.parentNode.insertBefore(breadcrumb, accordionContainer)
+      // CAMBIO: Insertar DENTRO del Container
+      const containerDiv = document.querySelector('.accordion-container .container')
+      if (containerDiv) {
+        // Insertar como primer hijo del container
+        containerDiv.insertBefore(breadcrumb, containerDiv.firstChild)
       } else {
-        const mainContainer = document.querySelector('main')
-        if (mainContainer) {
-          mainContainer.insertBefore(breadcrumb, mainContainer.firstChild)
+        // Fallback: buscar cualquier container
+        const anyContainer = document.querySelector('.container')
+        if (anyContainer) {
+          anyContainer.insertBefore(breadcrumb, anyContainer.firstChild)
         } else {
-          document.body.insertBefore(breadcrumb, document.body.firstChild)
+          // Último recurso: crear un wrapper con los estilos del container
+          const breadcrumbWrapper = document.createElement('div')
+          breadcrumbWrapper.className = 'breadcrumb-wrapper'
+          breadcrumbWrapper.appendChild(breadcrumb)
+          
+          const accordionContainer = document.querySelector('.accordion-container')
+          if (accordionContainer) {
+            accordionContainer.parentNode.insertBefore(breadcrumbWrapper, accordionContainer)
+          } else {
+            const mainContainer = document.querySelector('main')
+            if (mainContainer) {
+              mainContainer.insertBefore(breadcrumbWrapper, mainContainer.firstChild)
+            } else {
+              document.body.insertBefore(breadcrumbWrapper, document.body.firstChild)
+            }
+          }
         }
       }
     } else {
@@ -278,7 +292,7 @@ class Accordion extends React.Component {
         if (currentPage) {
           const previousSibling = currentPage.previousSibling
           if (previousSibling && previousSibling.nodeType === Node.TEXT_NODE) {
-            breadcrumb.removeChild(previousSibling) // Remover separador
+            breadcrumb.removeChild(previousSibling) 
           }
           breadcrumb.removeChild(currentPage)
         }
@@ -330,7 +344,7 @@ class Accordion extends React.Component {
         <Container>
           {isMobile ? (
             <>
-              {/* MÓVIL: Header visible pero SIN funcionalidad */}
+              {/* MÓVIL: Header visible pero sin funcionalidad */}
               <div className="accordion-header">
                 <button className="accordion-toggle" onClick={this.toggleAllAccordions}>
                   Ver más preguntas frecuentes
@@ -338,7 +352,7 @@ class Accordion extends React.Component {
                 </button>
               </div>
 
-              {/* MÓVIL: Contenido SIEMPRE visible - sin condicional isCollapsed */}
+              {/* MÓVIL: Contenido siempre visible */}
               <div className="accordion-items">
                 <div className="accordion-questions mobile-questions">
                   {accordionData.map((item, index) => (
