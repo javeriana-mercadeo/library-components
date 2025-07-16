@@ -6,10 +6,6 @@ const Popup = ({ id, children, onClose }) => {
     <>
       <div id={id} className="popup-overlay">
         <div className="popup-content">
-          {/* <button className="popup-close close btn-primary btn-lg" type="button" data-dismiss="modal" aria-label="Close" onClick={onClose}>
-            &times;
-          </button> */}
-
           <Btn
             variant="light"
             id="modal-close"

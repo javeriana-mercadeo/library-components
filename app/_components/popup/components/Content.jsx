@@ -1,11 +1,11 @@
 'use client'
 import Paragraph from '@/app/_library/components/contain/paragraph'
-import Image from '@/app/_library/components/contain/image'
+import Caption from '@/app/_library/components/contain/caption'
 import Title from '@/app/_library/components/contain/title'
 import './content.scss'
 // import { setupPopupEvent } from "../script";
 
-const Content = ({ id = 'popup', imageSrc, isEditable }) => {
+const Content = ({ id = 'popup', imageSrc, isEditable, onClose }) => {
   const imgSource = imageSrc || 'https://cdn.forbes.co/2020/09/Javeriana-1280x720-1.jpg'
 
   return (
@@ -22,24 +22,35 @@ const Content = ({ id = 'popup', imageSrc, isEditable }) => {
             Sabemos que el talento y la dedicación merecen oportunidades. Accede a nuestras becas y construye tu camino en una universidad
             de excelencia, conoce las diferentes opciones de becas como:
           </Paragraph>
-          <div className="list">
-            <lfr-editable id={`${id}-text`} type="rich-text" className="list__title">
+          <lfr-editable id={`${id}-text`} type="rich-text" className="list">
+            <Caption className=" list__title" color="neutral-100" size="md" bold={true} isEditable={false}>
               Beca ingresa
-            </lfr-editable>
-            <lfr-editable id={`${id}-text`} type="rich-text" className="list__text">
+            </Caption>
+            <Caption className=" list__text" color="neutral-100" size="md" isEditable={false}>
               Hasta un 50% para aspirantes con alto potencial académico.
-            </lfr-editable>
-            <lfr-editable id={`${id}-text`} type="rich-text" className="list__title">
-              Beca Bachiller Destacado
-            </lfr-editable>
-            <lfr-editable id={`${id}-text`} type="rich-text" className="list__text">
+            </Caption>
+
+            <Caption className=" list__title" color="neutral-100" size="md" bold={true} isEditable={false}>
+              Beca Bachiller Destacado 
+            </Caption>
+            <Caption className=" list__text" color="neutral-100" size="md" isEditable={false}>
               80% de descuento para los mejores estudiantes.
-            </lfr-editable>
-          </div>
+            </Caption>
+          </lfr-editable>
           <Paragraph id={`${id}-text`} className="content__text" isEditable={isEditable}>
             ¡No dejes que nada detenga tus sueños!
           </Paragraph>
-          <button className="content__button">Continuar</button>
+          {/* <button className="content__button">Continuar</button> */}
+          <button
+            data-dmpa-element-id="btn"
+            className="btn btn-primary btn-solid btn-lg btn-full-width content-btn"
+            aria-disabled="false"
+            type="submit"
+            data-lfr-editable-id="btn"
+            data-lfr-editable-type="text"
+            onClick={onClose}>
+            <span className="btn-text">Continuar</span>
+          </button>
         </div>
       </div>
     </>
