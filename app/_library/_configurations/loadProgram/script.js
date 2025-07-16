@@ -106,10 +106,13 @@ const loadDataProgram = async codPrg => {
     // Logs para debugging
     console.log('🔍 Programa principal:', programData)
     console.log('🔍 Programa complementario:', consolidatedData.complementaryProgram)
+    console.log('🔍 Todos los programas:', allPrograms);
+
 
     dispatchEvent(nameEvent, {
       dataProgram: consolidatedData.mainProgram,
-      consolidatedData
+      consolidatedData,
+      allPrograms
     })
 
     return
