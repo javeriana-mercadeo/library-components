@@ -3,193 +3,257 @@
 // ===========================================
 
 // ███████████████████████████████████████████████████████████████████████████████
-// █                       SISTEMA DE VIDEO YOUTUBE OPTIMIZADO                  █
+// █                   SISTEMA DE VIDEO YOUTUBE CON CONTROLES PERSONALIZADOS    █
 // ███████████████████████████████████████████████████████████████████████████████
 
 const VideoYouTubeSystem = {
-  config: {
-    videoParams: {
-      autoplay: '0', // No autoplay por defecto
-      mute: '0', // Con audio
-      loop: '1',
-      controls: '1', // Mostrar controles INCLUYENDO volumen
-      showinfo: '0',
-      rel: '0',
-      modestbranding: '1',
-      playsinline: '1',
-      iv_load_policy: '3',
-      disablekb: '0', // Permitir controles de teclado
-      fs: '1', // Permitir pantalla completa
-      cc_load_policy: '0',
-      start: '0',
-      end: '',
-      enablejsapi: '1', // Habilitar API para control programático
-      hl: 'es',
-      cc_lang_pref: 'es'
-    }
-  },
-
-  currentPlayingVideo: null, // Track del video actual reproduciendo
+  players: new Map(), // Almacenar referencias a los players de YouTube
 
   init() {
-    Logger.debug('🎬 Inicializando videos de YouTube...')
+    console.log('🎬 [VIDEO] Inicializando sistema de videos YouTube con controles personalizados...')
 
     const videoContainers = document.querySelectorAll('.experience-carousel__video-container[data-video-id]')
 
     if (videoContainers.length === 0) {
-      Logger.debug('No se encontraron contenedores de video')
+      console.log('🎬 [VIDEO] No se encontraron contenedores de video')
       return false
     }
 
-    // Cargar todos los videos directamente sin miniaturas
-    videoContainers.forEach((container, index) => {
-      this.loadVideoDirectly(container, index === 0)
+    // Cargar API de YouTube si no está disponible
+    this.loadYouTubeAPI(() => {
+      // Cargar todos los videos con configuración simple
+      videoContainers.forEach((container, index) => {
+        this.createVideoWithCustomControls(container, index === 0)
+      })
+
+      console.log(`🎬 [VIDEO] ${videoContainers.length} videos cargados con controles personalizados`)
     })
 
-    // Configurar observador SOLO para el primer video
-    this.setupFirstVideoObserver()
-
-    Logger.success(`Videos de YouTube cargados: ${videoContainers.length}`)
     return true
   },
 
-  loadVideoDirectly(container, isFirstVideo = false) {
+  loadYouTubeAPI(callback) {
+    if (window.YT && window.YT.Player) {
+      callback()
+      return
+    }
+
+    // Cargar API de YouTube
+    window.onYouTubeIframeAPIReady = callback
+
+    if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+      const script = document.createElement('script')
+      script.src = 'https://www.youtube.com/iframe_api'
+      document.head.appendChild(script)
+    }
+  },
+
+  createVideoWithCustomControls(container, isFirstVideo = false) {
     const videoId = container.dataset.videoId
     const orientation = container.dataset.videoOrientation || 'horizontal'
 
     if (!videoId) {
-      Logger.warning('Video ID no encontrado en contenedor')
+      console.error('🎬 [VIDEO] Video ID no encontrado:', container)
       return
     }
 
-    // Marcar si es el primer video
-    if (isFirstVideo) {
-      container.dataset.isFirstVideo = 'true'
-    }
+    console.log(`🎬 [VIDEO] Creando video con controles personalizados: ${videoId}`)
 
-    // Cargar iframe directamente
-    this.loadVideoIframe(container, videoId, orientation, isFirstVideo)
+    // Crear estructura HTML para video + controles
+    const videoWrapper = document.createElement('div')
+    videoWrapper.className = 'video-wrapper'
 
-    Logger.debug(`Video YouTube configurado: ${videoId} (${orientation}${isFirstVideo ? ' - PRIMER VIDEO' : ''})`)
-  },
+    // Crear div para el player de YouTube
+    const playerDiv = document.createElement('div')
+    playerDiv.id = `youtube-player-${videoId}-${Date.now()}`
+    playerDiv.className = `experience-carousel__video-iframe experience-carousel__video-iframe--${orientation}`
 
-  setupFirstVideoObserver() {
-    const firstVideoContainer = document.querySelector('.experience-carousel__video-container[data-video-id][data-is-first-video="true"]')
+    // Crear controles personalizados
+    const controlsDiv = document.createElement('div')
+    controlsDiv.className = 'custom-video-controls'
+    controlsDiv.innerHTML = `
+      <button class="volume-btn muted" data-video-id="${videoId}" title="Activar/Desactivar audio">
+        <i class="ph ph-speaker-x volume-icon-muted"></i>
+        <i class="ph ph-speaker-high volume-icon-unmuted" style="display: none;"></i>
+      </button>
+      <div class="volume-slider-container" style="display: none;">
+        <input type="range" class="volume-slider" min="0" max="100" value="50" data-video-id="${videoId}">
+      </div>
+    `
 
-    if (!firstVideoContainer || !window.IntersectionObserver) {
-      Logger.debug('No se puede configurar observador para el primer video')
-      return
-    }
+    // Ensamblar estructura
+    videoWrapper.appendChild(playerDiv)
+    videoWrapper.appendChild(controlsDiv)
 
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          const iframe = entry.target.querySelector('iframe')
-          if (!iframe) return
-
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            // Video visible al 50%, reproducir SOLO si es el primer video
-            if (entry.target.dataset.isFirstVideo === 'true') {
-              this.playVideo(iframe)
-              this.currentPlayingVideo = iframe
-            }
-          } else {
-            // Video no visible, pausar si es el video actual
-            if (this.currentPlayingVideo === iframe) {
-              this.pauseVideo(iframe)
-              this.currentPlayingVideo = null
-            }
-          }
-        })
-      },
-      {
-        threshold: [0, 0.5, 1],
-        rootMargin: '0px'
-      }
-    )
-
-    observer.observe(firstVideoContainer)
-  },
-
-  loadVideoIframe(container, videoId, orientation, isFirstVideo = false) {
-    // Crear iframe de YouTube
-    const iframe = this.createYouTubeIframe(videoId, orientation, isFirstVideo)
-
-    // Limpiar contenedor y agregar iframe
+    // Insertar en contenedor
     container.innerHTML = ''
-    container.appendChild(iframe)
+    container.appendChild(videoWrapper)
 
-    // Si es el primer video, configurar para autoplay cuando sea visible
-    if (isFirstVideo) {
-      container.classList.add('first-video-container')
-
-      // Esperar a que el iframe esté completamente cargado
-      iframe.addEventListener('load', () => {
-        Logger.debug('Primer video cargado, listo para autoplay cuando sea visible')
-      })
-    }
-
-    Logger.debug(`Video YouTube cargado: ${videoId} (${orientation}${isFirstVideo ? ' - PRIMER VIDEO' : ''})`)
-  },
-
-  createYouTubeIframe(videoId, orientation, isFirstVideo = false) {
-    const iframe = document.createElement('iframe')
-
-    // Parámetros específicos para cada video
-    const videoParams = {
-      ...this.config.videoParams,
-      playlist: videoId,
-      // Primer video: autoplay con mute para cumplir políticas del navegador
-      autoplay: isFirstVideo ? '1' : '0',
-      mute: isFirstVideo ? '1' : '0'
-    }
-
-    const params = new URLSearchParams(videoParams)
-    const videoSrc = `https://www.youtube.com/embed/${videoId}?${params.toString()}`
-
-    // Configurar iframe
-    iframe.src = videoSrc
-    iframe.title = `Video Experiencia - ${videoId}`
-    iframe.allow = 'autoplay; encrypted-media; picture-in-picture; clipboard-write'
-    iframe.allowFullscreen = true
-    iframe.loading = 'lazy'
-    iframe.frameBorder = '0'
-    iframe.className = `experience-carousel__video-iframe experience-carousel__video-iframe--${orientation}`
-    iframe.setAttribute('data-video-id', videoId)
-    iframe.setAttribute('data-orientation', orientation)
-
-    return iframe
-  },
-
-  playVideo(iframe) {
-    if (!iframe || !iframe.contentWindow) return
-
-    try {
-      iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*')
-      Logger.debug('Video reproducido')
-    } catch (e) {
-      Logger.warning('No se pudo reproducir el video:', e)
-    }
-  },
-
-  pauseVideo(iframe) {
-    if (!iframe || !iframe.contentWindow) return
-
-    try {
-      iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
-      Logger.debug('Video pausado')
-    } catch (e) {
-      Logger.warning('No se pudo pausar el video:', e)
-    }
-  },
-
-  pauseAllVideosExcept(exceptIframe) {
-    const allIframes = document.querySelectorAll('.experience-carousel__video-iframe')
-    allIframes.forEach(iframe => {
-      if (iframe !== exceptIframe) {
-        this.pauseVideo(iframe)
+    // Crear player de YouTube usando API
+    const player = new window.YT.Player(playerDiv.id, {
+      videoId: videoId,
+      playerVars: {
+        controls: 1,
+        modestbranding: 1,
+        rel: 0,
+        showinfo: 0,
+        autoplay: isFirstVideo ? 1 : 0,
+        mute: 0, // Siempre muteado por defecto
+        playsinline: 1
+      },
+      events: {
+        onReady: event => {
+          console.log(`🎬 [VIDEO] Player listo: ${videoId}`)
+          this.setupCustomControls(event.target, videoId, controlsDiv)
+        },
+        onStateChange: event => {
+          console.log(`🎬 [VIDEO] Estado cambiado: ${videoId}`, event.data)
+        }
       }
     })
+
+    // Almacenar referencia al player
+    this.players.set(videoId, player)
+
+    // Marcar primer video si es necesario
+    if (isFirstVideo) {
+      playerDiv.setAttribute('data-first-video', 'true')
+      container.setAttribute('data-is-first-video', 'true')
+    }
+
+    console.log(`🎬 [VIDEO] Video con controles personalizados creado: ${videoId} (${orientation})`)
+
+    return player
+  },
+
+  setupCustomControls(player, videoId, controlsDiv) {
+    const volumeBtn = controlsDiv.querySelector('.volume-btn')
+    const volumeSlider = controlsDiv.querySelector('.volume-slider')
+    const volumeSliderContainer = controlsDiv.querySelector('.volume-slider-container')
+    const mutedIcon = controlsDiv.querySelector('.volume-icon-muted')
+    const unmutedIcon = controlsDiv.querySelector('.volume-icon-unmuted')
+
+    let isMuted = true
+    let currentVolume = 50
+
+    // Función para actualizar iconos
+    const updateVolumeIcon = muted => {
+      if (muted) {
+        mutedIcon.style.display = 'block'
+        unmutedIcon.style.display = 'none'
+        volumeBtn.classList.add('muted')
+      } else {
+        mutedIcon.style.display = 'none'
+        unmutedIcon.style.display = 'block'
+        volumeBtn.classList.remove('muted')
+      }
+    }
+
+    // Click en botón de volumen
+    volumeBtn.addEventListener('click', () => {
+      if (isMuted) {
+        player.unMute()
+        player.setVolume(currentVolume)
+        isMuted = false
+        console.log(`🎬 [CONTROLS] Audio activado para ${videoId}`)
+      } else {
+        player.mute()
+        isMuted = true
+        console.log(`🎬 [CONTROLS] Audio desactivado para ${videoId}`)
+      }
+      updateVolumeIcon(isMuted)
+    })
+
+    // Hover para mostrar slider
+    volumeBtn.addEventListener('mouseenter', () => {
+      volumeSliderContainer.style.display = 'block'
+    })
+
+    volumeBtn.addEventListener('mouseleave', () => {
+      setTimeout(() => {
+        if (!volumeSliderContainer.matches(':hover')) {
+          volumeSliderContainer.style.display = 'none'
+        }
+      }, 200)
+    })
+
+    volumeSliderContainer.addEventListener('mouseleave', () => {
+      volumeSliderContainer.style.display = 'none'
+    })
+
+    // Cambio en slider de volumen
+    volumeSlider.addEventListener('input', e => {
+      currentVolume = parseInt(e.target.value)
+      player.setVolume(currentVolume)
+
+      if (currentVolume === 0) {
+        player.mute()
+        isMuted = true
+      } else if (isMuted) {
+        player.unMute()
+        isMuted = false
+      }
+
+      updateVolumeIcon(isMuted)
+      console.log(`🎬 [CONTROLS] Volumen cambiado a ${currentVolume}% para ${videoId}`)
+    })
+
+    // Inicializar estado
+    updateVolumeIcon(isMuted)
+    volumeSlider.value = currentVolume
+
+    console.log(`🎬 [CONTROLS] Controles personalizados configurados para ${videoId}`)
+  },
+
+  // Función simple para pausar todos los videos
+  pauseAllVideos() {
+    this.players.forEach((player, videoId) => {
+      try {
+        if (player && player.pauseVideo) {
+          player.pauseVideo()
+          console.log(`🎬 [VIDEO] Video pausado: ${videoId}`)
+        }
+      } catch (e) {
+        console.debug('No se pudo pausar video:', videoId, e)
+      }
+    })
+    console.log('🎬 [VIDEO] Todos los videos pausados')
+  },
+
+  // Función para reproducir un video específico
+  playVideo(videoIdOrPlayer) {
+    try {
+      if (typeof videoIdOrPlayer === 'string') {
+        const player = this.players.get(videoIdOrPlayer)
+        if (player && player.playVideo) {
+          player.playVideo()
+          console.log(`🎬 [VIDEO] Video reproducido: ${videoIdOrPlayer}`)
+        }
+      } else if (videoIdOrPlayer && videoIdOrPlayer.playVideo) {
+        videoIdOrPlayer.playVideo()
+        console.log('🎬 [VIDEO] Video reproducido')
+      }
+    } catch (e) {
+      console.debug('No se pudo reproducir video:', e)
+    }
+  },
+
+  // Función para pausar un video específico
+  pauseVideo(videoIdOrPlayer) {
+    try {
+      if (typeof videoIdOrPlayer === 'string') {
+        const player = this.players.get(videoIdOrPlayer)
+        if (player && player.pauseVideo) {
+          player.pauseVideo()
+          console.log(`🎬 [VIDEO] Video pausado: ${videoIdOrPlayer}`)
+        }
+      } else if (videoIdOrPlayer && videoIdOrPlayer.pauseVideo) {
+        videoIdOrPlayer.pauseVideo()
+        console.log('🎬 [VIDEO] Video pausado')
+      }
+    } catch (e) {
+      console.debug('No se pudo pausar video:', e)
+    }
   }
 }
 
@@ -262,12 +326,11 @@ const ExperienceSwiperSystem = {
       watchSlidesVisibility: true,
       slidesPerGroup: 1, // Avanzar de uno en uno
 
-      // Paginación
+      // Paginación - IGUAL A RELACIONADOS
       pagination: {
         el: '.experience-carousel__pagination',
         clickable: true,
-        dynamicBullets: true,
-        dynamicMainBullets: 3,
+        dynamicBullets: false,
         renderBullet: function (index, className) {
           return `<span class="${className}" aria-label="Ir a slide ${index + 1}"></span>`
         }
@@ -410,31 +473,39 @@ const updateButtonStates = swiper => {
 const updatePaginationVisibility = (swiper, totalSlides) => {
   const pagination = document.querySelector('.experience-carousel__pagination')
 
-  if (!pagination) return
+  if (!pagination) {
+    console.warn('Paginación no encontrada')
+    return
+  }
 
-  if (totalSlides > 1) {
+  // Mostrar paginación si hay más de 1 slide
+  const needsPagination = totalSlides > 1
+
+  if (needsPagination) {
+    pagination.style.display = 'flex'
     pagination.classList.remove('swiper-pagination-hidden')
+    pagination.setAttribute('aria-hidden', 'false')
+
+    const bullets = pagination.querySelectorAll('.swiper-pagination-bullet')
+    bullets.forEach((bullet, index) => {
+      bullet.setAttribute('aria-label', `Ir a slide ${index + 1}`)
+      bullet.style.display = 'block'
+    })
+
   } else {
+    pagination.style.display = 'none'
     pagination.classList.add('swiper-pagination-hidden')
+    pagination.setAttribute('aria-hidden', 'true')
   }
 }
 
 const handleVideoSlideChange = swiper => {
-  // Validar que swiper y sus parámetros estén disponibles
-  if (!swiper || !swiper.params || !swiper.el) return
+  if (!swiper?.el) return
 
-  // Pausar todos los videos que no están en el slide activo
-  const allVideos = swiper.el.querySelectorAll('iframe')
+  // Pausar todos los videos cuando se cambia de slide
+  VideoYouTubeSystem.pauseAllVideos()
 
-  allVideos.forEach((iframe, index) => {
-    // Usar valor por defecto si slidesPerView no está disponible
-    const slidesPerView = swiper.params.slidesPerView || 1
-    const slideIndex = Math.floor(index / slidesPerView)
-
-    if (slideIndex !== swiper.activeIndex) {
-      VideoYouTubeSystem.pauseVideo(iframe)
-    }
-  })
+  console.log('🎠 [SWIPER] Slide cambiado - videos pausados')
 }
 
 // Nueva función para manejar slides de doble ancho
@@ -461,57 +532,58 @@ const handleDoubleWidthSlides = swiper => {
 
 const VisibilityManagement = {
   init() {
-    Logger.debug('👁️ Configurando gestión de visibilidad...')
+    console.log('👁️ [VISIBILITY] Configurando gestión de visibilidad...')
 
-    // Gestión de visibilidad de la pestaña
+    // Pausar videos cuando se cambia de pestaña
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        this.pauseAllVideos()
+        VideoYouTubeSystem.pauseAllVideos()
+        console.log('👁️ [VISIBILITY] Pestaña oculta - videos pausados')
       }
     })
 
-    // Configurar observadores para todos los videos
-    this.setupAllVideoObservers()
+    // Configurar autoplay para el primer video cuando sea visible
+    this.setupFirstVideoAutoplay()
 
     return true
   },
 
-  setupAllVideoObservers() {
+  setupFirstVideoAutoplay() {
     if (!window.IntersectionObserver) return
+
+    const firstVideoContainer = document.querySelector('.experience-carousel__video-container[data-is-first-video="true"]')
+
+    if (!firstVideoContainer) {
+      console.log('👁️ [VISIBILITY] No se encontró primer video')
+      return
+    }
 
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          const videoContainer = entry.target
-          const iframe = videoContainer.querySelector('iframe')
-          const isFirstVideo = videoContainer.dataset.isFirstVideo === 'true'
+          const iframe = entry.target.querySelector('iframe[data-first-video="true"]')
 
-          if (iframe && !isFirstVideo) {
-            // Para videos que no son el primero, solo pausar cuando no son visibles
-            if (!entry.isIntersecting) {
+          if (iframe) {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+              // Primer video visible al 50%, iniciar reproducción
+              VideoYouTubeSystem.playVideo(iframe)
+              console.log('👁️ [VISIBILITY] Primer video visible - reproduciendo')
+            } else {
+              // Primer video no visible, pausar
               VideoYouTubeSystem.pauseVideo(iframe)
+              console.log('👁️ [VISIBILITY] Primer video no visible - pausando')
             }
           }
         })
       },
       {
-        threshold: 0.1,
+        threshold: [0, 0.5, 1],
         rootMargin: '0px'
       }
     )
 
-    // Observar todos los contenedores de video excepto el primero
-    document.querySelectorAll('.experience-carousel__video-container').forEach(container => {
-      if (container.dataset.isFirstVideo !== 'true') {
-        observer.observe(container)
-      }
-    })
-  },
-
-  pauseAllVideos() {
-    const iframes = document.querySelectorAll('.experience-carousel__video-iframe')
-    iframes.forEach(iframe => VideoYouTubeSystem.pauseVideo(iframe))
-    Logger.debug('Todos los videos pausados')
+    observer.observe(firstVideoContainer)
+    console.log('👁️ [VISIBILITY] Observador configurado para primer video')
   }
 }
 
@@ -521,12 +593,12 @@ const VisibilityManagement = {
 
 const ExperienciaSystem = {
   async init() {
-    Logger.debug('🚀 Inicializando sistema de experiencia...')
+    console.log('🚀 [EXPERIENCIA] Inicializando sistema de experiencia...')
 
     try {
       const checkAndInit = () => {
         if (typeof window !== 'undefined' && window.Swiper) {
-          // Inicializar sistemas
+          // Inicializar sistemas en orden
           const systems = {
             videoYouTube: VideoYouTubeSystem.init(),
             swiper: ExperienceSwiperSystem.init(),
@@ -537,16 +609,17 @@ const ExperienciaSystem = {
             .filter(([_, isActive]) => isActive)
             .map(([name]) => name)
 
-          Logger.success(`✅ Experiencia iniciada - ${activeSystems.length} sistemas activos`)
+          console.log(`✅ [EXPERIENCIA] Sistema iniciado - ${activeSystems.length} sistemas activos:`, activeSystems)
           return systems
         } else {
+          console.log('⏳ [EXPERIENCIA] Esperando Swiper...')
           setTimeout(checkAndInit, 300)
         }
       }
 
       return checkAndInit()
     } catch (error) {
-      Logger.error('Error al inicializar Experiencia:', error)
+      console.error('❌ [EXPERIENCIA] Error al inicializar:', error)
       return false
     }
   },
@@ -557,8 +630,7 @@ const ExperienciaSystem = {
         window.experienceSwiper.destroy(true, true)
         window.experienceSwiper = null
       }
-
-      EventManager.cleanup()
+      console.log('🧹 [EXPERIENCIA] Cleanup completado')
     })
   }
 }
@@ -567,10 +639,26 @@ const ExperienciaSystem = {
 // AUTO-INICIALIZACIÓN
 // ===========================================
 export default () => {
-  DOMHelpers.isReady(async () => {
+  console.log('🔧 [SCRIPT] Script de experiencia cargado')
+
+  // Inicializar cuando el DOM esté listo
+  const initWhenReady = async () => {
+    console.log('🔧 [SCRIPT] Iniciando sistema de experiencia...')
     await ExperienciaSystem.init()
     ExperienciaSystem.setupCleanup()
-  })
+  }
+
+  // Usar DOMHelpers si está disponible, sino usar fallback
+  if (typeof DOMHelpers !== 'undefined' && DOMHelpers.isReady) {
+    DOMHelpers.isReady(initWhenReady)
+  } else {
+    // Fallback simple para inicialización
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initWhenReady)
+    } else {
+      initWhenReady()
+    }
+  }
 
   // Exponer para debugging
   if (typeof window !== 'undefined') {

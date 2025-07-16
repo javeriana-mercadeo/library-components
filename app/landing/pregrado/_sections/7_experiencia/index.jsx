@@ -41,7 +41,7 @@ const Experiencia = () => {
     },
     {
       type: 'video',
-      orientation: 'horizontal',
+      orientation: 'vertical',
       videoId: 'IWZvfiu3gX4',
       link: '#'
     },
@@ -156,7 +156,7 @@ const Experiencia = () => {
               ))}
             </div>
 
-            {/* Paginación */}
+            {/* Paginación - DENTRO del carousel como en 10_relacionados */}
             <div className={`swiper-pagination ${baseClass}__pagination`} role="tablist" aria-label="Control de páginas del carrusel"></div>
 
             {/* Botones de navegación */}
