@@ -6,8 +6,12 @@
 $experience-border-radius: rem(16px);
 $experience-card-height: rem(450px);
 $experience-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-$experience-nav-size: rem(50px);
+
+// Navegación - IGUAL A RELACIONADOS
+$experience-nav-size: rem(40px);
 $experience-nav-size-mobile: rem(40px);
+$experience-nav-bullet-size: rem(13px);
+$experience-nav-offset: rem(25px);
 
 // ==========================================
 // CONTENEDOR PRINCIPAL
@@ -319,6 +323,105 @@ $experience-nav-size-mobile: rem(40px);
     width: 100%;
     height: 100%;
 
+    // Contenedor para video + controles personalizados
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      
+      // Player de YouTube
+      div[id*="youtube-player"] {
+        width: 100%;
+        height: 100%;
+        border-radius: rem(8px);
+        overflow: hidden;
+      }
+      
+      // Controles personalizados
+      .custom-video-controls {
+        position: absolute;
+        bottom: rem(55px);
+        right: rem(15px);
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: rem(8px);
+        
+        .volume-btn {
+          background: rgba(0, 0, 0, 0.7);
+          border: none;
+          border-radius: rem(6px);
+          padding: rem(8px);
+          color: white;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(10px);
+          
+          &:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.05);
+          }
+          
+          &.muted {
+            color: #ff4444;
+          }
+          
+          i {
+            font-size: rem(16px);
+            pointer-events: none;
+          }
+        }
+        
+        .volume-slider-container {
+          background: rgba(0, 0, 0, 0.7);
+          border-radius: rem(6px);
+          padding: rem(8px) rem(12px);
+          backdrop-filter: blur(10px);
+          
+          .volume-slider {
+            width: rem(80px);
+            height: rem(4px);
+            background: #333;
+            border-radius: rem(2px);
+            outline: none;
+            cursor: pointer;
+            
+            &::-webkit-slider-thumb {
+              appearance: none;
+              width: rem(16px);
+              height: rem(16px);
+              background: var(--primary, #007bff);
+              border-radius: 50%;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              
+              &:hover {
+                transform: scale(1.2);
+              }
+            }
+            
+            &::-moz-range-thumb {
+              width: rem(16px);
+              height: rem(16px);
+              background: var(--primary, #007bff);
+              border-radius: 50%;
+              cursor: pointer;
+              border: none;
+              transition: all 0.3s ease;
+              
+              &:hover {
+                transform: scale(1.2);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Estilos para iframes legacy (fallback)
     iframe {
       position: relative;
       border: none;
@@ -344,5 +447,225 @@ $experience-nav-size-mobile: rem(40px);
       pointer-events: none;
       z-index: 1;
     }
+  }
+
+  // ==========================================
+  // BOTONES DE NAVEGACIÓN - IGUAL A PLAN ESTUDIO
+  // ==========================================
+  &__prev,
+  &__next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 11;
+    width: $experience-nav-size;
+    height: $experience-nav-size;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(rem(8px));
+    border: rem(1px) solid var(--neutral-700);
+    box-shadow: 0 rem(2px) rem(8px) rgba(0, 0, 0, 0.15);
+    background-color: rgba(var(--background-100-rgb, 255, 255, 255), 0.95);
+
+    @include responsive($breakpoint-lg) {
+      display: flex;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    &:hover {
+      transform: translateY(-50%) scale(1.05);
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary-500);
+      box-shadow: 0 rem(4px) rem(12px) rgba(var(--primary-rgb), 0.2);
+
+      i {
+        color: var(--primary-600);
+      }
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateY(-50%) scale(0.8);
+    }
+
+    &.swiper-button-hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      display: none !important;
+    }
+
+    &.show-navigation {
+      @include responsive($breakpoint-sm) {
+        display: flex !important;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    i {
+      font-size: rem(24px);
+      color: var(--primary);
+      z-index: 100;
+      transition: all 0.3s ease;
+
+      @include responsive($breakpoint-sm) {
+        font-size: rem(20px);
+      }
+    }
+  }
+
+  &__prev {
+    left: rem(8px);
+
+    @include responsive($breakpoint-sm) {
+      left: rem(8px);
+    }
+
+    @include responsive($breakpoint-md) {
+      left: rem(16px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      left: rem(24px);
+    }
+  }
+
+  &__next {
+    right: rem(8px);
+
+    @include responsive($breakpoint-sm) {
+      right: rem(8px);
+    }
+
+    @include responsive($breakpoint-md) {
+      right: rem(16px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      right: rem(24px);
+    }
+  }
+
+  // ==========================================
+  // PAGINACIÓN - IGUAL A RELACIONADOS
+  // ==========================================
+  &__pagination {
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    left: 0;
+    right: 0;
+  }
+
+  // ==========================================
+  // TEMA OSCURO
+  // ==========================================
+  @include dark-theme {
+    &__prev,
+    &__next {
+      z-index: 11;
+      background-color: rgba(var(--background-200-rgb), 0.95);
+      border-color: var(--neutral-600);
+
+      &:hover {
+        background-color: rgba(var(--primary-rgb), 0.15);
+        border-color: var(--primary-400);
+      }
+
+      &.swiper-button-disabled {
+        background-color: rgba(var(--neutral-rgb), 0.2);
+        border-color: var(--neutral-800);
+      }
+    }
+  }
+}
+
+// ==========================================
+// ESTILOS ESPECÍFICOS PARA PAGINACIÓN - COPIADO DE RELACIONADOS
+// ==========================================
+.experience-carousel__pagination {
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  left: 0;
+  right: 0;
+}
+
+// Estilos específicos para los bullets de Swiper con mayor especificidad
+.experience-carousel .swiper-pagination,
+.experience-carousel__carousel .swiper-pagination {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: 10px !important;
+  margin-top: 20px !important;
+
+  .swiper-pagination-bullet {
+    width: 10px !important;
+    height: 10px !important;
+    margin: 0 6px !important;
+    background: var(--neutral-400) !important;
+    opacity: 0.6 !important;
+    transition: all 0.3s ease !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+
+    &.swiper-pagination-bullet-active {
+      background: var(--primary) !important;
+      opacity: 1 !important;
+      transform: scale(1.2) !important;
+    }
+
+    &:hover {
+      opacity: 0.8 !important;
+      transform: scale(1.1) !important;
+    }
+  }
+}
+
+// ==========================================
+// ESTILOS GLOBALES DE SWIPER - IGUAL A PLAN ESTUDIO
+// ==========================================
+.swiper {
+  overflow: visible;
+
+  &.swiper-container-lock {
+    .swiper-slide-button {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .swiper-pagination {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  }
+
+  .swiper-slide-button,
+  .swiper-pagination {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .swiper-pagination {
+    position: static !important;
   }
 }
