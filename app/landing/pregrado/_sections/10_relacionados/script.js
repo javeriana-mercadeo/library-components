@@ -66,17 +66,62 @@ export default () => {
 
       const programsByLevel = dataPrograms.filter(program => program.tipoPrograma === tipoPrograma)
 
-      const programsByFaculty = programsByLevel.filter(program => {
+      // Programas de la misma facultad SIN restricción de tipo (para priorizar)
+      const programsByFaculty = dataPrograms.filter(program => {
         const programFaculty = Array.isArray(program.facultad) ? program.facultad[0] : program.facultad
         return programFaculty == faculty
       })
 
-      const programByArea = dataPrograms.filter(program => program.areas?.some(area => areas.includes(area)))
+      // Programas por área del mismo tipo de programa
+      const programByArea = programsByLevel.filter(program => program.areas?.some(area => areas.includes(area)))
 
-      let compiledPrograms = compilePrograms(programsByFaculty, programByArea)
+      // Función mejorada para compilar programas manteniendo orden de prioridad
+      function compileOrderedPrograms(facultyPrograms, areaPrograms) {
+        const compiledPrograms = []
+        const addedCodes = new Set()
+        
+        console.log('🔄 Iniciando compilación ordenada...')
+        
+        // 1. Primero agregar programas de la misma facultad
+        console.log('📝 Agregando programas de facultad:', facultyPrograms.length)
+        facultyPrograms.forEach((program, index) => {
+          if (!addedCodes.has(program.codigo)) {
+            console.log(`  ${index + 1}. Agregando: ${program.nombre} (${Array.isArray(program.facultad) ? program.facultad[0] : program.facultad})`)
+            compiledPrograms.push(program)
+            addedCodes.add(program.codigo)
+          }
+        })
+        
+        // 2. Luego agregar programas por área que no estén ya incluidos
+        console.log('📝 Agregando programas por área:', areaPrograms.length)
+        areaPrograms.forEach((program, index) => {
+          if (!addedCodes.has(program.codigo)) {
+            console.log(`  ${index + 1}. Agregando: ${program.nombre} (${Array.isArray(program.facultad) ? program.facultad[0] : program.facultad})`)
+            compiledPrograms.push(program)
+            addedCodes.add(program.codigo)
+          } else {
+            console.log(`  ${index + 1}. Ya existe: ${program.nombre}`)
+          }
+        })
+        
+        console.log('✅ Compilación completada, total:', compiledPrograms.length)
+        return compiledPrograms
+      }
+
+      let compiledPrograms = compileOrderedPrograms(programsByFaculty, programByArea)
       compiledPrograms = compiledPrograms.filter(item => item.codigo !== program.codigo)
 
-      compiledPrograms = compiledPrograms.filter(program => program.visibilidad === 'yes')
+      console.log('🏫 Programas por facultad encontrados:', programsByFaculty.length)
+      console.log('📚 Programas por área encontrados:', programByArea.length)
+      console.log('📋 Total antes de filtros:', compiledPrograms.length)
+      
+      // Log detallado del orden final
+      console.log('📋 ORDEN FINAL DE PROGRAMAS:')
+      compiledPrograms.forEach((prog, index) => {
+        const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
+        const isFromSameFaculty = progFaculty === faculty
+        console.log(`${index + 1}. ${prog.nombre} - ${progFaculty} ${isFromSameFaculty ? '⭐ (MISMA FACULTAD)' : ''}`)
+      })
 
       compiledPrograms = compiledPrograms.slice(0, 6)
 

@@ -59,9 +59,9 @@ export default function Profesional() {
       </ViewComponent> */}
 
       {/* <Experiencia /> */}
-      {/* <ViewComponent path={`${basePath}/_sections/7_experiencia`}>
+      {/*<ViewComponent path={`${basePath}/_sections/7_experiencia`}>
         <Experiencia />
-      </ViewComponent> */}
+      </ViewComponent>*/}
 
       {/* <Cita /> */}
       {/* <ViewComponent path={`${basePath}/_sections/8_cita`}>
@@ -74,9 +74,9 @@ export default function Profesional() {
       </ViewComponent> */}
 
       {/* <Relacionados /> */}
-      {/* <ViewComponent path={`${basePath}/_sections/10_relacionados`}>
+      <ViewComponent path={`${basePath}/_sections/10_relacionados`}>
         <Relacionados />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/* <Footer /> */}
       <ViewComponent path={`${basePath}/_sections/11_footer`}>
