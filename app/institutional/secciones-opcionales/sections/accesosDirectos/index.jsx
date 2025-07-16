@@ -48,6 +48,7 @@ class FloatingMenu extends React.Component {
 
   componentDidMount() {
     this.initializeDelayed();
+    this.setupSystemThemeDetection();
   }
 
   componentWillUnmount() {
@@ -69,6 +70,8 @@ class FloatingMenu extends React.Component {
     this.removeGrayscaleSimple();
     document.body.classList.remove('accessibility-dark-theme', 'grayscale-mode');
     document.body.style.overflow = '';
+    // Restaurar tema base a light al limpiar
+    document.documentElement.setAttribute('data-theme-base', 'light');
   };
 
   loadPhosphorIcons = () => {
@@ -84,10 +87,8 @@ class FloatingMenu extends React.Component {
   };
 
   setupInitialState = () => {
-    // Solo configurar estado inicial sin cargar preferencias guardadas
-    if (this.state.isDarkTheme) {
-      document.body.classList.add('accessibility-dark-theme');
-    }
+    // Cargar tema guardado del usuario
+    this.loadAndApplyTheme();
     
     if (this.state.isGrayscale) {
       this.applyGrayscaleSimple();
@@ -95,6 +96,56 @@ class FloatingMenu extends React.Component {
     
     if (this.state.fontScale !== 1.0) {
       this.applyFontScale(this.state.fontScale);
+    }
+  };
+
+  loadAndApplyTheme = () => {
+    const savedTheme = localStorage.getItem('theme-base');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldUseDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+    
+    console.log(`Cargando tema: guardado=${savedTheme}, preferencia=${prefersDark}, usar=${shouldUseDark}`);
+    
+    // Actualizar estado si es diferente
+    if (shouldUseDark !== this.state.isDarkTheme) {
+      this.setState({ isDarkTheme: shouldUseDark });
+    }
+    
+    // Aplicar tema en ambos sistemas
+    if (shouldUseDark) {
+      document.body.classList.add('accessibility-dark-theme');
+      document.documentElement.setAttribute('data-theme-base', 'dark');
+    } else {
+      document.body.classList.remove('accessibility-dark-theme');
+      document.documentElement.setAttribute('data-theme-base', 'light');
+    }
+    
+    console.log(`Tema ${shouldUseDark ? 'oscuro' : 'claro'} aplicado en la inicialización`);
+  };
+
+  setupSystemThemeDetection = () => {
+    if (window.matchMedia) {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      
+      mediaQuery.addEventListener('change', (e) => {
+        // Solo aplicar si no hay preferencia guardada del usuario
+        const savedTheme = localStorage.getItem('theme-base');
+        if (!savedTheme) {
+          console.log('Cambio detectado en preferencias del sistema:', e.matches ? 'dark' : 'light');
+          
+          this.setState({ isDarkTheme: e.matches });
+          
+          if (e.matches) {
+            document.body.classList.add('accessibility-dark-theme');
+            document.documentElement.setAttribute('data-theme-base', 'dark');
+          } else {
+            document.body.classList.remove('accessibility-dark-theme');
+            document.documentElement.setAttribute('data-theme-base', 'light');
+          }
+        }
+      });
+      
+      console.log('Detección de cambios de tema del sistema configurada');
     }
   };
 
@@ -399,18 +450,27 @@ class FloatingMenu extends React.Component {
     });
   };
 
-  // ===== FUNCIÓN DE TEMA =====
+  // ===== FUNCIÓN DE TEMA INTEGRADA =====
   toggleTheme = () => {
     this.setState(prevState => {
       const newTheme = !prevState.isDarkTheme;
       
       if (newTheme) {
+        // Aplicar tema oscuro en ambos sistemas
         document.body.classList.add('accessibility-dark-theme');
+        document.documentElement.setAttribute('data-theme-base', 'dark');
         this.announceToScreenReader(this.config.messages.notifications.darkThemeOn);
+        console.log('Tema oscuro activado en ambos sistemas');
       } else {
+        // Aplicar tema claro en ambos sistemas
         document.body.classList.remove('accessibility-dark-theme');
+        document.documentElement.setAttribute('data-theme-base', 'light');
         this.announceToScreenReader(this.config.messages.notifications.darkThemeOff);
+        console.log('Tema claro activado en ambos sistemas');
       }
+      
+      // Guardar preferencia del usuario
+      localStorage.setItem('theme-base', newTheme ? 'dark' : 'light');
       
       return { isDarkTheme: newTheme };
     });
