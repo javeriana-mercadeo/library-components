@@ -307,7 +307,7 @@ export default function swiperCarousel() {
       } else if (Date.now() - startTime < timeout) {
         setTimeout(checkElements, 100)
       } else {
-        console.warn('⏰ Timeout: No se encontraron elementos .logo-item')
+        console.warn('Timeout: No se encontraron elementos .logo-item')
       }
     }
     

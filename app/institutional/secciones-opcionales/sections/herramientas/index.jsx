@@ -29,20 +29,14 @@ const Herramientas = () => {
   return (
     <section id={elementName}>
       <Container className="tools-container">
-        <Title
-          className="tools-titulo"
-          id={`${elementName}-title`}
-          size="2xl"
-          weight="bold"
-          align="center"
-          color="neutral">
+        <Title className="tools-titulo" id={`${elementName}-title`} size="2xl" weight="bold" align="center" color="neutral">
           Herramientas
         </Title>
 
         <div className="tools-content">
           <div className="tools-texto">
-            <h2>Lorem ipsum dolor sit amet</h2>
-            
+            <Title id={`${elementName}-sub-titleH`}> Lorem ipsum dolor sit amet</Title>
+
             <Paragraph id={`${elementName}-paragraph`}>
               Lorem ipsum dolor sit amet consectetur. Eget id cursus eget at congue turpis. Volutpat odio nisi dictum in congue. Suspendisse
               diam pellentesque volutpat donec consequat tempor et quis sed. Leo sit donec scelerisque vitae risus senectus dignissim.
@@ -52,16 +46,8 @@ const Herramientas = () => {
           {/* Grid que será reorganizado automáticamente en hexágono */}
           <div className="tools-logos-grid">
             {logosHerramientas.map((logo, index) => (
-              <div 
-                key={`logo-${index}`} 
-                className="logo-item"
-                title={logo.nombre}
-              >
-                <Image
-                  id={`${elementName}-logo-${index}`}
-                  src={logo.imagen}
-                  alt={logo.nombre}
-                />
+              <div key={`logo-${index}`} className="logo-item" title={logo.nombre}>
+                <Image id={`${elementName}-logo-${index}`} src={logo.imagen} alt={logo.nombre} />
               </div>
             ))}
           </div>

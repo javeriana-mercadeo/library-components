@@ -1,18 +1,17 @@
-@use '@styles/autoload' as *;
+@charset "UTF-8";
 
+// Función para convertir px a rem
+@function rem($pixels) {
+  @return $pixels / 16px * 1rem;
+}
 
 :root {
-  // Espaciado vertical entre elementos dentro de cada columna
   --columna-gap-vertical-mobile: #{rem(20px)};
   --columna-gap-vertical-tablet: #{rem(25px)};
   --columna-gap-vertical-desktop: #{rem(30px)};
-  
-  // Espaciado horizontal entre columnas
   --grid-gap-horizontal-mobile: #{rem(15px)};
   --grid-gap-horizontal-tablet: #{rem(20px)};
   --grid-gap-horizontal-desktop: #{rem(25px)};
-  
-  // Offsets para efecto colmena por número de elementos
   --offset-3-elementos: #{rem(-15px)};
   --offset-4-elementos: #{rem(-20px)};
   --offset-5-elementos: #{rem(-25px)};
@@ -20,31 +19,23 @@
   --offset-8-elementos: #{rem(-20px)};
   --offset-9-elementos: #{rem(-35px)};
   --offset-general: #{rem(-20px)};
-  
-  // Propiedades de elementos
   --logo-shadow-base: 0 #{rem(2px)} #{rem(10px)} rgba(0, 0, 0, 0.05);
   --logo-shadow-hover: 0 #{rem(8px)} #{rem(20px)} rgba(0, 0, 0, 0.12);
   --logo-hover-lift: #{rem(-8px)};
-  
-  // Propiedades de transición
   --transition-base: all 0.3s ease;
   --transition-hover: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-// ====================================
-// COMPONENTE PRINCIPAL
-// ====================================
-
 .tools-container {
   width: 100%;
-  padding: rem(40px) rem(15px);
 
   .tools-titulo {
     text-align: center;
-    font-size: var(--font-size-principal-title);
+    font-size: var(--font-size-title);
     font-weight: var(--font-weight-bold);
     color: var(--neutral-400);
-    margin-bottom: rem(40px);
+    padding: var(--spacing-xl);
+    margin: 0px;
   }
 
   .tools-content {
@@ -57,14 +48,14 @@
     .tools-texto {
       width: 100%;
       max-width: 80%;
-      margin-bottom: rem(50px);
       display: flex;
       align-items: flex-start;
       justify-content: center;
       flex-direction: column;
+      
 
       h2 {
-        font-size: var(--font-size-title);
+        font-size: var(--font-size-subtitle);
         font-weight: var(--font-weight-bold);
         color: var(--neutral-200);
         width: 100%;
@@ -75,10 +66,10 @@
         line-height: 1.6;
         color: var(--neutral-400);
         width: 100%;
+        margin: 0;
       }
     }
 
-    
     .tools-logos-grid {
       width: fit-content;
       max-width: 100%;
@@ -90,7 +81,7 @@
       flex-wrap: wrap;
       position: relative;
       margin: 0;
-      
+
       .columna-logos {
         display: flex !important;
         flex-direction: column !important;
@@ -100,20 +91,18 @@
         min-height: rem(80px);
         justify-content: flex-start;
         align-items: center;
+        margin: 0 auto;
 
- 
-        
-        // Offset general (por defecto)
         &.offset {
           margin-top: var(--offset-general);
         }
-        
+
         .logo-item {
           background-color: #eeefef;
           border-radius: rem(10px);
-          padding: rem(12px);
-          width: rem(80px);
-          height: rem(80px);
+          padding: rem(8px);
+          width: rem(50px);
+          height: rem(50px);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -126,25 +115,23 @@
             transform: translateY(var(--logo-hover-lift));
             box-shadow: var(--logo-shadow-hover);
             transition: var(--transition-hover);
+
+            img {
+              transform: scale(1.05);
+            }
           }
 
           img {
             max-width: 80%;
-            max-height: rem(60px);
+            max-height: rem(45px);
             object-fit: contain;
             transition: transform 0.3s ease;
           }
 
-          &:hover img {
-            transform: scale(1.05);
-          }
-
-          // Backup con margin si gap no funciona
           &:not(:last-child) {
             margin-bottom: var(--columna-gap-vertical-mobile);
           }
 
-          // Estados especiales
           &.loading {
             opacity: 0.6;
             pointer-events: none;
@@ -157,65 +144,41 @@
         }
       }
 
-      
-      // 3 elementos - columna central elevada
-      &[data-total-items="3"] {
-        .columna-logos.offset {
-          margin-top: var(--offset-3-elementos);
-        }
-      }
-      
-      // 4 elementos - segunda columna elevada
-      &[data-total-items="4"] {
-        .columna-logos.offset {
-          margin-top: var(--offset-4-elementos);
-        }
-      }
-      
-      &[data-total-items="5"] {
-        .columna-logos.offset {
-          margin-top: 0 !important; 
-        }
-      }
-      
-      // 6 elementos - columna central elevada
-      &[data-total-items="6"] {
-        .columna-logos.offset {
-          margin-top: var(--offset-6-elementos);
-        }
-      }
-      
-      // 7 elementos - sin offset (hexágono perfecto)
-      &[data-total-items="7"] {
-        .columna-logos.offset {
-          margin-top: 0; // Sin elevación para hexágono perfecto
-        }
-      }
-      
-      // 8 elementos - columna central elevada
-      &[data-total-items="8"] {
-        .columna-logos.offset {
-          margin-top: var(--offset-8-elementos);
-        }
-      }
-      
-      // 9 elementos - columna central elevada
-      &[data-total-items="9"] {
-        .columna-logos.offset {
-          margin-top: var(--offset-9-elementos);
-        }
+      // Configuraciones específicas por número de elementos
+      &[data-total-items='3'] .columna-logos.offset {
+        margin-top: var(--offset-3-elementos);
       }
 
-      // 10+ elementos - offset reducido
-      &[data-total-items="10"],
-      &[data-total-items="11"],
-      &[data-total-items="12"] {
-        .columna-logos.offset {
-          margin-top: #{rem(-15px)};
-        }
+      &[data-total-items='4'] .columna-logos.offset {
+        margin-top: var(--offset-4-elementos);
       }
 
-      // Estado vacío
+      &[data-total-items='5'] .columna-logos.offset {
+        margin-top: 0 !important;
+      }
+
+      &[data-total-items='6'] .columna-logos.offset {
+        margin-top: var(--offset-6-elementos);
+      }
+
+      &[data-total-items='7'] .columna-logos.offset {
+        margin-top: 0;
+      }
+
+      &[data-total-items='8'] .columna-logos.offset {
+        margin-top: var(--offset-8-elementos);
+      }
+
+      &[data-total-items='9'] .columna-logos.offset {
+        margin-top: var(--offset-9-elementos);
+      }
+
+      &[data-total-items='10'] .columna-logos.offset,
+      &[data-total-items='11'] .columna-logos.offset,
+      &[data-total-items='12'] .columna-logos.offset {
+        margin-top: rem(-15px);
+      }
+
       &:empty::before {
         content: 'Cargando herramientas...';
         position: absolute;
@@ -227,11 +190,10 @@
         font-size: rem(14px);
       }
 
-      // Estado cargando
       &.loading {
         opacity: 0.7;
         pointer-events: none;
-        
+
         &::after {
           content: '';
           position: absolute;
@@ -250,10 +212,14 @@
   }
 }
 
-
+// Keyframes
 @keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 @keyframes fadeInUp {
@@ -268,7 +234,8 @@
 }
 
 @keyframes hexagonPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -276,45 +243,10 @@
   }
 }
 
+// Media Queries - CORREGIDOS
 
-// Tablet pequeña (481px+)
-@media (min-width: 481px) {
-  :root {
-    --columna-gap-vertical-mobile: var(--columna-gap-vertical-tablet);
-    --grid-gap-horizontal-mobile: var(--grid-gap-horizontal-tablet);
-    --offset-3-elementos: #{rem(-20px)};
-    --offset-4-elementos: #{rem(-25px)};
-    --offset-5-elementos: #{rem(-30px)};
-    --offset-6-elementos: #{rem(-35px)};
-    --offset-8-elementos: #{rem(-25px)};
-    --offset-9-elementos: #{rem(-40px)};
-    --offset-general: #{rem(-25px)};
-  }
-
-  .tools-container {
-    .tools-content {
-      .tools-logos-grid {
-        padding-top: rem(40px);
-
-        .columna-logos {
-          .logo-item {
-            width: rem(100px);
-            height: rem(100px);
-            padding: rem(15px);
-            border-radius: rem(12px);
-
-            img {
-              max-height: rem(70px);
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-// Desktop (841px+)
-@media (min-width: 841px) {
+// Desktop: Distribución 50/50 entre texto e iconos - CORREGIDO
+@media (min-width: rem(768px)) {
   :root {
     --columna-gap-vertical-mobile: var(--columna-gap-vertical-desktop);
     --grid-gap-horizontal-mobile: var(--grid-gap-horizontal-desktop);
@@ -331,42 +263,59 @@
     padding: rem(60px) rem(20px);
 
     .tools-content {
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: flex-start !important;
       margin: 0 auto;
+      max-width: rem(1200px);
+      width: 100%;
+      gap: rem(32px);
 
       .tools-texto {
-        padding-right: rem(40px);
+        width: calc(50% - #{rem(16px)}) !important;
+        max-width: calc(50% - #{rem(16px)}) !important;
+        padding-right: 0;
         margin-bottom: 0;
-        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        flex-shrink: 0;
 
         h2 {
           width: 100%;
+          text-align: left;
+          
         }
 
         p {
           width: 100%;
+          margin-bottom: 0;
+  
         }
       }
 
       .tools-logos-grid {
-        padding-top: rem(60px);
-        padding-right: rem(20px);
-        flex-wrap: nowrap;
-        flex: 1;
-        max-width: rem(600px);
+        width: calc(50% - #{rem(16px)}) !important;
+        max-width: calc(50% - #{rem(16px)}) !important;
+        flex-shrink: 0;
+        padding-top: 0;
+        padding-right: 0;
+        margin: 0;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        flex-wrap: nowrap !important;
+        flex: none;
 
-        .columna-logos {
-          .logo-item {
-            width: rem(120px);
-            height: rem(120px);
-            padding: rem(20px);
-            border-radius: rem(14px);
+        .columna-logos .logo-item {
+          width: rem(70px);
+          height: rem(70px);
+          padding: rem(8px);
+          border-radius: rem(14px);
 
-            img {
-              max-height: rem(80px);
-            }
+          img {
+            max-height: rem(40px);
           }
         }
       }
@@ -374,40 +323,136 @@
   }
 }
 
+// Tablet - Ajustado para que no interfiera
+@media (min-width: rem(481px)) and (max-width: rem(767px)) {
+  :root {
+    --columna-gap-vertical-mobile: var(--columna-gap-vertical-tablet);
+    --grid-gap-horizontal-mobile: var(--grid-gap-horizontal-tablet);
+    --offset-3-elementos: #{rem(-20px)};
+    --offset-4-elementos: #{rem(-25px)};
+    --offset-5-elementos: #{rem(-30px)};
+    --offset-6-elementos: #{rem(-35px)};
+    --offset-8-elementos: #{rem(-25px)};
+    --offset-9-elementos: #{rem(-40px)};
+    --offset-general: #{rem(-25px)};
+  }
 
-// Modificadores de gap vertical (dentro de columnas)
+  .tools-container .tools-content {
+    flex-direction: column !important;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    gap: rem(40px);
+
+    .tools-texto {
+      width: 100% !important;
+      max-width: 90% !important;
+      text-align: left;
+      margin-bottom: 0;
+
+      h2,
+      p,
+      lfr-editable {
+        text-align: left;
+        margin-bottom: 0;
+      }
+    }
+
+    .tools-logos-grid {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding-top: rem(40px);
+    }
+  }
+}
+
+// Mobile - Ajustado
+@media (max-width: rem(480px)) {
+  .tools-container .tools-content {
+    flex-direction: column !important;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    gap: rem(32px);
+
+    .tools-texto {
+      width: 100% !important;
+      max-width: 95% !important;
+      text-align: left;
+
+      h2,
+      p,
+      lfr-editable {
+        text-align: left;
+      }
+    }
+
+    .tools-logos-grid {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+  }
+}
+
+// Contenedor lfr-widget-web-content - Ajustado
+@media (min-width: rem(768px)) {
+  .tools-content lfr-widget-web-content {
+    width: calc(50% - #{rem(16px)}) !important;
+    max-width: calc(50% - #{rem(16px)}) !important;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+}
+
+@media (min-width: rem(481px)) and (max-width: rem(767px)) {
+  .tools-content lfr-widget-web-content {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: rem(480px)) {
+  .tools-content lfr-widget-web-content {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+// Clases de modificación de espaciado
 .tools-logos-grid {
   &.tight-vertical .columna-logos {
     gap: calc(var(--columna-gap-vertical-mobile) * 0.7) !important;
     row-gap: calc(var(--columna-gap-vertical-mobile) * 0.7) !important;
-    
+
     .logo-item:not(:last-child) {
       margin-bottom: calc(var(--columna-gap-vertical-mobile) * 0.7);
     }
   }
-  
+
   &.loose-vertical .columna-logos {
     gap: calc(var(--columna-gap-vertical-mobile) * 1.3) !important;
     row-gap: calc(var(--columna-gap-vertical-mobile) * 1.3) !important;
-    
+
     .logo-item:not(:last-child) {
       margin-bottom: calc(var(--columna-gap-vertical-mobile) * 1.3);
     }
   }
-  
+
   &.extra-loose-vertical .columna-logos {
     gap: calc(var(--columna-gap-vertical-mobile) * 1.6) !important;
     row-gap: calc(var(--columna-gap-vertical-mobile) * 1.6) !important;
-    
+
     .logo-item:not(:last-child) {
       margin-bottom: calc(var(--columna-gap-vertical-mobile) * 1.6);
     }
   }
-  
+
   &.minimal-vertical .columna-logos {
     gap: calc(var(--columna-gap-vertical-mobile) * 0.5) !important;
     row-gap: calc(var(--columna-gap-vertical-mobile) * 0.5) !important;
-    
+
     .logo-item:not(:last-child) {
       margin-bottom: calc(var(--columna-gap-vertical-mobile) * 0.5);
     }
@@ -416,23 +461,20 @@
   &.super-loose-vertical .columna-logos {
     gap: calc(var(--columna-gap-vertical-mobile) * 2) !important;
     row-gap: calc(var(--columna-gap-vertical-mobile) * 2) !important;
-    
+
     .logo-item:not(:last-child) {
       margin-bottom: calc(var(--columna-gap-vertical-mobile) * 2);
     }
   }
-}
 
-// Modificadores de gap horizontal (entre columnas)
-.tools-logos-grid {
   &.tight-horizontal {
     gap: calc(var(--grid-gap-horizontal-mobile) * 0.7) !important;
   }
-  
+
   &.loose-horizontal {
     gap: calc(var(--grid-gap-horizontal-mobile) * 1.3) !important;
   }
-  
+
   &.extra-loose-horizontal {
     gap: calc(var(--grid-gap-horizontal-mobile) * 1.6) !important;
   }
@@ -444,31 +486,28 @@
   &.super-loose-horizontal {
     gap: calc(var(--grid-gap-horizontal-mobile) * 2) !important;
   }
-}
 
-// Modificadores combinados
-.tools-logos-grid {
   &.compact-both {
     gap: calc(var(--grid-gap-horizontal-mobile) * 0.7) !important;
-    
+
     .columna-logos {
       gap: calc(var(--columna-gap-vertical-mobile) * 0.7) !important;
       row-gap: calc(var(--columna-gap-vertical-mobile) * 0.7) !important;
     }
   }
-  
+
   &.spacious-both {
     gap: calc(var(--grid-gap-horizontal-mobile) * 1.3) !important;
-    
+
     .columna-logos {
       gap: calc(var(--columna-gap-vertical-mobile) * 1.3) !important;
       row-gap: calc(var(--columna-gap-vertical-mobile) * 1.3) !important;
     }
   }
-  
+
   &.ultra-spacious {
     gap: calc(var(--grid-gap-horizontal-mobile) * 1.6) !important;
-    
+
     .columna-logos {
       gap: calc(var(--columna-gap-vertical-mobile) * 1.8) !important;
       row-gap: calc(var(--columna-gap-vertical-mobile) * 1.8) !important;
@@ -477,40 +516,36 @@
 
   &.minimal-both {
     gap: calc(var(--grid-gap-horizontal-mobile) * 0.5) !important;
-    
+
     .columna-logos {
       gap: calc(var(--columna-gap-vertical-mobile) * 0.5) !important;
       row-gap: calc(var(--columna-gap-vertical-mobile) * 0.5) !important;
     }
   }
-}
 
-
-// Efecto elevación alternada
-.tools-logos-grid {
   &.alternating-elevation {
     .columna-logos:nth-child(odd) .logo-item {
       transform: translateY(rem(-3px));
     }
-    
+
     .columna-logos:nth-child(even) .logo-item {
       transform: translateY(rem(3px));
     }
   }
-  
+
   &.wave-effect {
     .columna-logos:nth-child(1) {
       margin-top: rem(-10px);
     }
-    
+
     .columna-logos:nth-child(2) {
       margin-top: rem(10px);
     }
-    
+
     .columna-logos:nth-child(3) {
       margin-top: rem(-5px);
     }
-    
+
     .columna-logos:nth-child(4) {
       margin-top: rem(5px);
     }
@@ -525,45 +560,38 @@
   }
 }
 
-
-// Tema minimalista
-.tools-container.theme-minimal {
-  .tools-logos-grid .columna-logos .logo-item {
+// Temas visuales
+.tools-container {
+  &.theme-minimal .tools-logos-grid .columna-logos .logo-item {
     background-color: #fafafa;
     border: 1px solid #e0e0e0;
     box-shadow: 0 rem(1px) rem(3px) rgba(0, 0, 0, 0.05);
-    
+
     &:hover {
       box-shadow: 0 rem(3px) rem(8px) rgba(0, 0, 0, 0.1);
       transform: translateY(rem(-3px));
       border-color: #d0d0d0;
     }
   }
-}
 
-// Tema dramático
-.tools-container.theme-dramatic {
-  .tools-logos-grid .columna-logos .logo-item {
+  &.theme-dramatic .tools-logos-grid .columna-logos .logo-item {
     background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
     box-shadow: 0 rem(6px) rem(20px) rgba(0, 0, 0, 0.15);
-    
+
     &:hover {
       box-shadow: 0 rem(15px) rem(40px) rgba(0, 0, 0, 0.25);
       transform: translateY(rem(-12px));
     }
   }
-}
 
-// Tema colorido
-.tools-container.theme-colorful {
-  .tools-logos-grid .columna-logos .logo-item {
+  &.theme-colorful .tools-logos-grid .columna-logos .logo-item {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    
+
     &:nth-child(2n) {
       background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     }
-    
+
     &:nth-child(3n) {
       background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     }
@@ -572,16 +600,13 @@
       background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
     }
   }
-}
 
-// Tema glassmorphism
-.tools-container.theme-glass {
-  .tools-logos-grid .columna-logos .logo-item {
+  &.theme-glass .tools-logos-grid .columna-logos .logo-item {
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(rem(10px));
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 rem(8px) rem(32px) rgba(0, 0, 0, 0.1);
-    
+
     &:hover {
       background: rgba(255, 255, 255, 0.35);
       box-shadow: 0 rem(12px) rem(40px) rgba(0, 0, 0, 0.15);
@@ -589,13 +614,13 @@
   }
 }
 
-// Debug para columnas
-.tools-container[data-debug="columns"] {
+// Modo debug
+.tools-container[data-debug='columns'] {
   .tools-logos-grid {
     outline: 2px dashed #ff0000;
     background: rgba(255, 0, 0, 0.05);
     position: relative;
-    
+
     &::before {
       content: attr(data-total-items) ' elementos - Patrón: ' attr(data-pattern);
       position: absolute;
@@ -610,11 +635,11 @@
       white-space: nowrap;
       z-index: 100;
     }
-    
+
     .columna-logos {
       outline: 2px solid #00ff00;
       background: rgba(0, 255, 0, 0.1);
-      
+
       &::before {
         content: 'Col ' attr(data-columna-index) ' (' attr(data-elements) ' items)';
         position: absolute;
@@ -644,10 +669,10 @@
         font-weight: bold;
         z-index: 10;
       }
-      
+
       .logo-item {
         outline: 1px solid #0066cc;
-        
+
         &::after {
           content: attr(data-original-index);
           position: absolute;
@@ -669,128 +694,109 @@
   }
 }
 
-// Debug para gaps
-.tools-container[data-debug="gaps"] {
-  .tools-logos-grid .columna-logos {
-    &::after {
-      content: 'Gap: ' attr(data-gap);
-      position: absolute;
-      bottom: rem(-25px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: #333;
-      color: #fff;
-      padding: rem(3px) rem(6px);
-      border-radius: rem(3px);
-      font-size: rem(8px);
-      white-space: nowrap;
-    }
-  }
+.tools-container[data-debug='gaps'] .tools-logos-grid .columna-logos::after {
+  content: 'Gap: ' attr(data-gap);
+  position: absolute;
+  bottom: rem(-25px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: rem(3px) rem(6px);
+  border-radius: rem(3px);
+  font-size: rem(8px);
+  white-space: nowrap;
 }
 
+// Configuración base del grid
 .tools-logos-grid {
   display: flex !important;
   gap: rem(20px) !important;
   justify-content: center !important;
   align-items: flex-start !important;
-}
 
-.tools-logos-grid .columna-logos {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: rem(25px) !important;
-  row-gap: rem(25px) !important;
-}
+  .columna-logos {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: rem(25px) !important;
+    row-gap: rem(25px) !important;
 
-/* Backup con margin si CSS Grid falla completamente */
-.tools-logos-grid .columna-logos .logo-item:not(:last-child) {
-  margin-bottom: rem(20px) !important;
-}
-
-
-.tools-logos-grid {
-  
-  // PARA 5 ELEMENTOS (patrón 2-1-2)
-  &[data-total-items="5"] {
-    // Forzar centrado perfecto del grid completo
-    justify-content: center !important;
-    align-items: center !important;
-    
-    // Todas las columnas con el mismo comportamiento: SIN OFFSETS
-    .columna-logos {
-      margin-top: 0 !important; 
-      padding-top: 0 !important; 
-      justify-content: center !important;
-      align-items: center !important;
-      min-height: rem(200px) !important;
-      
-      .logo-item {
-        align-self: center !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-    }
-    
-    // Columna central con 1 elemento
-    .columna-central-5 {
-      justify-content: center !important;
-      align-items: center !important;
-      
-      .logo-item {
-        align-self: center !important;
-        margin: 0 auto !important;
-      }
-    }
-    
-
-    .columna-lateral-5 {
-      justify-content: center !important;
-      align-items: center !important;
-      
-      .logo-item {
-        align-self: center !important;
-      }
+    .logo-item:not(:last-child) {
+      margin-bottom: rem(20px) !important;
     }
   }
-  
-  //  7 ELEMENTOS (patrón 2-3-2)
-  &[data-total-items="7"] {
-    // Columna central con 3 elementos
-    .columna-central-7 {
-      justify-content: center !important;
-      align-items: center !important;
-      min-height: rem(300px) !important;
-      padding-top: 0 !important;
-      
-      .logo-item {
-        align-self: center !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-    }
-    
-    // Columnas laterales con 2 elementos cada una
-    .columna-lateral-7 {
-      justify-content: center !important;
-      align-items: center !important;
-      min-height: rem(300px) !important;
-      padding-top: rem(50px) !important; 
-      
-      .logo-item {
-        align-self: center !important;
-      }
-    }
-    
-    // Asegurar centrado del grid completo
+}
+
+// Configuraciones especiales para 5 y 7 elementos
+.tools-logos-grid[data-total-items='5'] {
+  justify-content: center !important;
+  align-items: center !important;
+
+  .columna-logos {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
     justify-content: center !important;
     align-items: center !important;
+    min-height: rem(200px) !important;
+
+    .logo-item {
+      align-self: center !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  }
+
+  .columna-central-5 {
+    justify-content: center !important;
+    align-items: center !important;
+
+    .logo-item {
+      align-self: center !important;
+      margin: 0 auto !important;
+    }
+  }
+
+  .columna-lateral-5 {
+    justify-content: center !important;
+    align-items: center !important;
+
+    .logo-item {
+      align-self: center !important;
+    }
   }
 }
 
-// Si por alguna razón los estilos inline no se aplican, estos harán de respaldo
+.tools-logos-grid[data-total-items='7'] {
+  justify-content: center !important;
+  align-items: center !important;
+
+  .columna-central-7 {
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: rem(300px) !important;
+    padding-top: 0 !important;
+
+    .logo-item {
+      align-self: center !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  }
+
+  .columna-lateral-7 {
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: rem(300px) !important;
+    padding-top: rem(50px) !important;
+
+    .logo-item {
+      align-self: center !important;
+    }
+  }
+}
+
+// Configuración del contenedor principal
 .tools-container .tools-content .tools-logos-grid {
-  
-  // Forzar flexbox y centrado base
   display: flex !important;
   justify-content: center !important;
   align-items: flex-start !important;
@@ -799,7 +805,7 @@
   width: fit-content !important;
   max-width: 100% !important;
   margin: 0 auto !important;
-  
+
   .columna-logos {
     display: flex !important;
     flex-direction: column !important;
@@ -807,7 +813,7 @@
     row-gap: rem(25px) !important;
     align-items: center !important;
     position: relative !important;
-    
+
     .logo-item {
       margin-left: auto;
       margin-right: auto;
@@ -818,102 +824,93 @@
   }
 }
 
-// Mobile
-@media (max-width: 480px) {
-  .tools-logos-grid {
-    &[data-total-items="5"] {
-      .columna-central-5 {
-        min-height: rem(200px) !important;
-        padding-top: 0 !important; 
-      }
-      
-      .columna-lateral-5 {
-        min-height: rem(150px) !important;
-        padding-top: 0 !important; 
-      }
+// Responsive para configuraciones especiales
+@media (max-width: rem(480px)) {
+  .tools-logos-grid[data-total-items='5'] {
+    .columna-central-5 {
+      min-height: rem(200px) !important;
+      padding-top: 0 !important;
     }
-    
-    &[data-total-items="7"] {
-      .columna-central-7 {
-        min-height: rem(200px) !important;
-      }
-      
-      .columna-lateral-7 {
-        min-height: rem(200px) !important;
-        padding-top: rem(30px) !important;
-      }
+
+    .columna-lateral-5 {
+      min-height: rem(150px) !important;
+      padding-top: 0 !important;
+    }
+  }
+
+  .tools-logos-grid[data-total-items='7'] {
+    .columna-central-7 {
+      min-height: rem(200px) !important;
+    }
+
+    .columna-lateral-7 {
+      min-height: rem(200px) !important;
+      padding-top: rem(30px) !important;
     }
   }
 }
 
-// Tablet
-@media (min-width: 481px) and (max-width: 840px) {
-  .tools-logos-grid {
-    &[data-total-items="5"] {
-      .columna-central-5 {
-        min-height: rem(180px) !important;
-        padding-top: 0 !important;  
-      }
-      
-      .columna-lateral-5 {
-        min-height: rem(180px) !important;
-        padding-top: 0 !important;  
-      }
+@media (min-width: rem(481px)) and (max-width: rem(767px)) {
+  .tools-logos-grid[data-total-items='5'] {
+    .columna-central-5 {
+      min-height: rem(180px) !important;
+      padding-top: 0 !important;
     }
-    
-    &[data-total-items="7"] {
-      .columna-central-7 {
-        min-height: rem(250px) !important;
-      }
-      
-      .columna-lateral-7 {
-        min-height: rem(250px) !important;
-        padding-top: rem(40px) !important;
-      }
+
+    .columna-lateral-5 {
+      min-height: rem(180px) !important;
+      padding-top: 0 !important;
+    }
+  }
+
+  .tools-logos-grid[data-total-items='7'] {
+    .columna-central-7 {
+      min-height: rem(250px) !important;
+    }
+
+    .columna-lateral-7 {
+      min-height: rem(250px) !important;
+      padding-top: rem(40px) !important;
     }
   }
 }
 
-// Desktop
-@media (min-width: 841px) {
-  .tools-logos-grid {
-    &[data-total-items="5"] {
-      .columna-central-5 {
-        min-height: rem(280px) !important;
-        padding-top: 0 !important; 
-      }
-      
-      .columna-lateral-5 {
-        min-height: rem(220px) !important;
-        padding-top: 0 !important; 
-      }
+@media (min-width: rem(768px)) {
+  .tools-logos-grid[data-total-items='5'] {
+    .columna-central-5 {
+      min-height: rem(280px) !important;
+      padding-top: 0 !important;
     }
-    
-    &[data-total-items="7"] {
-      .columna-central-7 {
-        min-height: rem(320px) !important;
-      }
-      
-      .columna-lateral-7 {
-        min-height: rem(320px) !important;
-        padding-top: rem(60px) !important;
-      }
+
+    .columna-lateral-5 {
+      min-height: rem(220px) !important;
+      padding-top: 0 !important;
+    }
+  }
+
+  .tools-logos-grid[data-total-items='7'] {
+    .columna-central-7 {
+      min-height: rem(320px) !important;
+    }
+
+    .columna-lateral-7 {
+      min-height: rem(320px) !important;
+      padding-top: rem(60px) !important;
     }
   }
 }
 
-
-// Contexto de portlet Liferay
-.portlet-boundary .tools-container,
-.portlet .tools-container {
-  .tools-logos-grid {
+// Compatibilidad con portlets
+.portlet-boundary,
+.portlet {
+  .tools-container .tools-logos-grid {
     position: relative;
     z-index: 1;
-    
+
     .columna-logos {
       position: relative;
       z-index: 1;
-      
+
       .logo-item {
         position: relative;
         z-index: 1;
@@ -922,43 +919,34 @@
   }
 }
 
-// Modo edición Liferay
-.portlet-body-edit .tools-container {
-  .tools-logos-grid {
-    outline: 2px dashed #007bff !important;
-    
-    &::before {
-      content: 'Modo Edición - Grid Hexagonal' !important;
-      position: absolute;
-      top: rem(-25px);
-      left: 0;
-      background: #007bff;
-      color: white;
-      padding: rem(2px) rem(6px);
-      border-radius: rem(3px);
-      font-size: rem(10px);
-      z-index: 1000;
-    }
+// Modo edición
+.portlet-body-edit .tools-container .tools-logos-grid {
+  outline: 2px dashed #007bff !important;
+
+  &::before {
+    content: 'Modo Edición - Grid Hexagonal' !important;
+    position: absolute;
+    top: rem(-25px);
+    left: 0;
+    background: #007bff;
+    color: white;
+    padding: rem(2px) rem(6px);
+    border-radius: rem(3px);
+    font-size: rem(10px);
+    z-index: 1000;
   }
 }
 
-// Contexto de fragmento Liferay
-.fragment .tools-container {
-  .tools-logos-grid {
-    .columna-logos .logo-item {
-      // Asegurar que las imágenes no se rompan en fragmentos
-      img {
-        width: auto;
-        height: auto;
-        max-width: 80%;
-        max-height: rem(60px);
-      }
-    }
-  }
+// Configuración para fragments
+.fragment .tools-container .tools-logos-grid .columna-logos .logo-item img {
+  width: auto;
+  height: auto;
+  max-width: 80%;
+  max-height: rem(60px);
 }
 
-// Mobile muy pequeño (320px-360px)
-@media (max-width: 360px) {
+// Responsive muy pequeño
+@media (max-width: rem(360px)) {
   :root {
     --columna-gap-vertical-mobile: #{rem(15px)};
     --grid-gap-horizontal-mobile: #{rem(12px)};
@@ -973,85 +961,107 @@
 
   .tools-container {
     padding: rem(30px) rem(10px);
-    
-    .tools-content {
-      .tools-logos-grid {
-        .columna-logos {
-          .logo-item {
-            width: rem(70px);
-            height: rem(70px);
-            padding: rem(10px);
-            border-radius: rem(8px);
 
-            img {
-              max-height: rem(50px);
-            }
-          }
-        }
-      }
-    }
-  }
-}
+    .tools-content .tools-logos-grid .columna-logos .logo-item {
+      width: rem(70px);
+      height: rem(70px);
+      padding: rem(10px);
+      border-radius: rem(8px);
 
-// Modo de alto contraste
-@media (prefers-contrast: high) {
-  .tools-container {
-    .tools-logos-grid .columna-logos .logo-item {
-      border: 2px solid #000;
-      background-color: #fff;
-      
-      &:hover {
-        background-color: #f0f0f0;
-        border-color: #333;
-      }
-    }
-  }
-}
-
-// Reducir movimiento para usuarios sensibles
-@media (prefers-reduced-motion: reduce) {
-  .tools-container {
-    .tools-logos-grid .columna-logos .logo-item {
-      transition: none;
-      
-      &:hover {
-        transform: none;
-      }
-      
       img {
-        transition: none;
-      }
-      
-      &:hover img {
-        transform: none;
+        max-height: rem(50px);
       }
     }
   }
-  
+}
+
+// Configuración para alto contraste
+@media (prefers-contrast: high) {
+  .tools-container .tools-logos-grid .columna-logos .logo-item {
+    border: 2px solid #000;
+    background-color: #fff;
+
+    &:hover {
+      background-color: #f0f0f0;
+      border-color: #333;
+    }
+  }
+}
+
+// Configuración para movimiento reducido
+@media (prefers-reduced-motion: reduce) {
+  .tools-container .tools-logos-grid .columna-logos .logo-item {
+    transition: none;
+
+    &:hover {
+      transform: none;
+
+      img {
+        transform: none;
+      }
+    }
+
+    img {
+      transition: none;
+    }
+  }
+
   .tools-logos-grid.staggered-animation .columna-logos .logo-item {
     animation: none;
     opacity: 1;
   }
 }
 
-// Animación de aparición para elementos organizados hexagonalmente
+// Animaciones de entrada escalonadas
 .tools-logos-grid .columna-logos .logo-item {
   opacity: 0;
   animation: fadeInUp 0.6s ease forwards;
 }
 
-// Delays escalonados por columna y posición
-.tools-logos-grid .columna-logos:nth-child(1) .logo-item:nth-child(1) { animation-delay: 0.1s; }
-.tools-logos-grid .columna-logos:nth-child(1) .logo-item:nth-child(2) { animation-delay: 0.2s; }
-.tools-logos-grid .columna-logos:nth-child(1) .logo-item:nth-child(3) { animation-delay: 0.3s; }
-.tools-logos-grid .columna-logos:nth-child(1) .logo-item:nth-child(4) { animation-delay: 0.4s; }
+.tools-logos-grid .columna-logos:nth-child(1) .logo-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
 
-.tools-logos-grid .columna-logos:nth-child(2) .logo-item:nth-child(1) { animation-delay: 0.5s; }
-.tools-logos-grid .columna-logos:nth-child(2) .logo-item:nth-child(2) { animation-delay: 0.6s; }
-.tools-logos-grid .columna-logos:nth-child(2) .logo-item:nth-child(3) { animation-delay: 0.7s; }
-.tools-logos-grid .columna-logos:nth-child(2) .logo-item:nth-child(4) { animation-delay: 0.8s; }
+.tools-logos-grid .columna-logos:nth-child(1) .logo-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
 
-.tools-logos-grid .columna-logos:nth-child(3) .logo-item:nth-child(1) { animation-delay: 0.9s; }
-.tools-logos-grid .columna-logos:nth-child(3) .logo-item:nth-child(2) { animation-delay: 1.0s; }
-.tools-logos-grid .columna-logos:nth-child(3) .logo-item:nth-child(3) { animation-delay: 1.1s; }
-.tools-logos-grid .columna-logos:nth-child(3) .logo-item:nth-child(4) { animation-delay: 1.2s; }
+.tools-logos-grid .columna-logos:nth-child(1) .logo-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.tools-logos-grid .columna-logos:nth-child(1) .logo-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.tools-logos-grid .columna-logos:nth-child(2) .logo-item:nth-child(1) {
+  animation-delay: 0.5s;
+}
+
+.tools-logos-grid .columna-logos:nth-child(2) .logo-item:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.tools-logos-grid .columna-logos:nth-child(2) .logo-item:nth-child(3) {
+  animation-delay: 0.7s;
+}
+
+.tools-logos-grid .columna-logos:nth-child(2) .logo-item:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+.tools-logos-grid .columna-logos:nth-child(3) .logo-item:nth-child(1) {
+  animation-delay: 0.9s;
+}
+
+.tools-logos-grid .columna-logos:nth-child(3) .logo-item:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.tools-logos-grid .columna-logos:nth-child(3) .logo-item:nth-child(3) {
+  animation-delay: 1.1s;
+}
+
+.tools-logos-grid .columna-logos:nth-child(3) .logo-item:nth-child(4) {
+  animation-delay: 1.2s;
+}

@@ -25,24 +25,20 @@ const Proyectos = () => {
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
       slideData: { id: 2, type: 'investigacion' }
     },
-    {
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3',
-      title: 'Campus Innovador',
-      description: 'Explora nuestras instalaciones modernas y entorno de aprendizaje',
-      slideData: { id: 3, type: 'campus' }
+        {
+      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
+      title: 'Investigación de Clase Mundial',
+      description: 'Conoce nuestros proyectos de investigación y logros académicos',
+      slideData: { id: 2, type: 'investigacion' }
     },
-    {
-      image: 'https://www.lapizdeacero.org/wp-content/uploads/2023/08/Interior-image_01.jpg',
-      title: 'Comunidad Estudiantil',
-      description: 'Forma parte de nuestra comunidad diversa y vibrante',
-      slideData: { id: 4, type: 'comunidad' }
+        {
+      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
+      title: 'Investigación de Clase Mundial',
+      description: 'Conoce nuestros proyectos de investigación y logros académicos',
+      slideData: { id: 2, type: 'investigacion' }
     },
-    {
-      image: 'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png',
-      title: 'Oportunidades Internacionales',
-      description: 'Descubre programas de intercambio y colaboraciones globales',
-      slideData: { id: 5, type: 'internacional' }
-    }
+
+
   ]
 
   const getPositionClass = (index, activeIndex, isMobile) => {
