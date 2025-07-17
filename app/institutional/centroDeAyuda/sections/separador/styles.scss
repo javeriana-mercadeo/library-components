@@ -1,0 +1,28 @@
+@use '@styles/autoload' as *;
+
+.separador {
+  width: 100%;
+  padding: rem(20px) 0;
+
+  div {
+    width: 100%;
+    height: rem(20px);
+    margin: 0 auto;
+    border-radius: rem(1px);
+  }
+  
+@include liferay-edit-mode {
+    position: relative;
+    z-index: 1;
+
+    &::before {
+      content: 'Soy un separador';
+      color: var(--neutral-900);
+      font-size: rem(12px);
+      font-weight: 200;
+      white-space: nowrap;
+    }
+  }
+
+}
+

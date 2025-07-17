@@ -1,0 +1,15 @@
+@use '@styles/autoload' as *;
+
+.subTitulosHelp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  .subTitleHelp {
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    width: 100%;
+    color: var(--neutral-100);
+  }
+}

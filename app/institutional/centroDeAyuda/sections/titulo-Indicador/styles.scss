@@ -1,0 +1,15 @@
+@use '@styles/autoload' as *;
+
+.tituloIndicadorContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  .tituloIhelp {
+    font-size: var(--font-size-heading);
+    font-weight: 600;
+    width: 100%;
+    color: var(--neutral-500);
+  }
+}

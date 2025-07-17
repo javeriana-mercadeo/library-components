@@ -5,9 +5,9 @@ import './styles.scss'
 
 const TitleSection = () => {
   return (
-    <Container className="documentation-header">
+    <Container className="tituloIndicadorContainer">
     <div >
-      <Title level="h2" className="titleHelp">
+      <Title level="h3" className="tituloIhelp">
         Hola soy un titulo
       </Title>
     </div></Container>

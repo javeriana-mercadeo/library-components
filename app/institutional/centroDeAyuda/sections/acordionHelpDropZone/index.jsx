@@ -12,7 +12,7 @@ class Accordion extends React.Component {
     super(props)
     this.state = {
       activeIndex: 0,
-      isCollapsed: false, 
+      isCollapsed: false,
       isMobile: false,
       currentTitle: '',
       currentSection: 'Centro de Ayuda'
@@ -21,13 +21,13 @@ class Accordion extends React.Component {
 
   componentDidMount() {
     const isMobileView = window.innerWidth < 1200
-    
+
     // Detectar sección automáticamente
     const detectedSection = this.detectCurrentSection()
-    
+
     this.setState(
       {
-        isCollapsed: false, 
+        isCollapsed: false,
         isMobile: isMobileView,
         currentSection: detectedSection,
         currentTitle: this.getAccordionData()[0].title
@@ -89,12 +89,8 @@ class Accordion extends React.Component {
     // 6. Título de la página
     if (typeof document !== 'undefined') {
       const pageTitle = document.title
-      const patterns = [
-        /^([^-|]+)\s*[-|]\s*Centro de Ayuda/i,
-        /^([^-|]+)\s*[-|]\s*Universidad/i,
-        /^([^-|]+)\s*[-|]/i
-      ]
-      
+      const patterns = [/^([^-|]+)\s*[-|]\s*Centro de Ayuda/i, /^([^-|]+)\s*[-|]\s*Universidad/i, /^([^-|]+)\s*[-|]/i]
+
       for (const pattern of patterns) {
         const match = pageTitle.match(pattern)
         if (match && match[1]) {
@@ -129,30 +125,15 @@ class Accordion extends React.Component {
 
   getAccordionData = () => {
     return [
-      { 
+      {
         id: 'types-financing',
-        title: '¿Qué tipos de becas ofrece la Universidad Javeriana?', 
-        content: <lfr-drop-zone data-lfr-drop-zone-id="types-financing"></lfr-drop-zone> 
+        title: '¿Qué tipos de becas ofrece la Universidad Javeriana?',
+        content: <lfr-drop-zone data-lfr-drop-zone-id="drop-zone1"></lfr-drop-zone>
       },
-      { 
+      {
         id: 'application-financing',
-        title: '¿Cómo puedo aplicar a una beca en la Javeriana?', 
-        content: <lfr-drop-zone data-lfr-drop-zone-id="application-financing"></lfr-drop-zone> 
-      },
-      { 
-        id: 'financing-requirements',
-        title: '¿Cuáles son los requisitos para mantener una beca?', 
-        content: <lfr-drop-zone data-lfr-drop-zone-id="financing-requirements"></lfr-drop-zone> 
-      },
-      { 
-        id: 'financing-options',
-        title: '¿Cuáles son las opciones de financiación para pagar la matrícula?', 
-        content: <lfr-drop-zone data-lfr-drop-zone-id="financing-options"></lfr-drop-zone> 
-      },
-      { 
-        id: 'financing-javeriana',
-        title: '¿La Javeriana ofrece descuentos en la matrícula?', 
-        content: <lfr-drop-zone data-lfr-drop-zone-id="financing-javeriana"></lfr-drop-zone> 
+        title: '¿Cómo puedo aplicar a una beca en la Javeriana?',
+        content: <lfr-drop-zone data-lfr-drop-zone-id="drop-zone2"></lfr-drop-zone>
       }
     ]
   }
@@ -193,7 +174,7 @@ class Accordion extends React.Component {
   }
 
   toggleAllAccordions = () => {
-    return;
+    return
   }
 
   // Migas de pan actualizadas para usar el Container
@@ -228,7 +209,7 @@ class Accordion extends React.Component {
       // Solo mostrar separador y pregunta si hay una pregunta específica
       if (title && title.trim()) {
         breadcrumb.appendChild(document.createTextNode(' / '))
-        
+
         const currentPage = document.createElement('span')
         currentPage.className = 'current-page'
         currentPage.textContent = title
@@ -250,7 +231,7 @@ class Accordion extends React.Component {
           const breadcrumbWrapper = document.createElement('div')
           breadcrumbWrapper.className = 'breadcrumb-wrapper'
           breadcrumbWrapper.appendChild(breadcrumb)
-          
+
           const accordionContainer = document.querySelector('.accordion-container')
           if (accordionContainer) {
             accordionContainer.parentNode.insertBefore(breadcrumbWrapper, accordionContainer)
@@ -273,7 +254,7 @@ class Accordion extends React.Component {
 
       // Actualizar o crear la pregunta actual
       let currentPage = breadcrumb.querySelector('.current-page')
-      
+
       if (title && title.trim()) {
         if (currentPage) {
           currentPage.textContent = title
@@ -281,7 +262,7 @@ class Accordion extends React.Component {
           // Agregar separador y pregunta si no existen
           const separator = document.createTextNode(' / ')
           breadcrumb.appendChild(separator)
-          
+
           currentPage = document.createElement('span')
           currentPage.className = 'current-page'
           currentPage.textContent = title
@@ -292,7 +273,7 @@ class Accordion extends React.Component {
         if (currentPage) {
           const previousSibling = currentPage.previousSibling
           if (previousSibling && previousSibling.nodeType === Node.TEXT_NODE) {
-            breadcrumb.removeChild(previousSibling) 
+            breadcrumb.removeChild(previousSibling)
           }
           breadcrumb.removeChild(currentPage)
         }
@@ -324,15 +305,19 @@ class Accordion extends React.Component {
       return (
         <div className="accordion-answer drop-zone-container">
           <lfr-drop-zone data-lfr-drop-zone-id="default-content"></lfr-drop-zone>
+
+          <div id="drop-zone-templates" style="display: none;">
+            <lfr-drop-zone data-lfr-drop-zone-id="types-financing"></lfr-drop-zone>
+            <lfr-drop-zone data-lfr-drop-zone-id="application-financing"></lfr-drop-zone>
+            <lfr-drop-zone data-lfr-drop-zone-id="financing-requirements"></lfr-drop-zone>
+            <lfr-drop-zone data-lfr-drop-zone-id="financing-options"></lfr-drop-zone>
+            <lfr-drop-zone data-lfr-drop-zone-id="financing-javeriana"></lfr-drop-zone>
+          </div>
         </div>
       )
     }
 
-    return (
-      <div className="accordion-answer drop-zone-container">
-        {accordionData[activeIndex] && accordionData[activeIndex].content}
-      </div>
-    )
+    return <div className="accordion-answer drop-zone-container">{accordionData[activeIndex] && accordionData[activeIndex].content}</div>
   }
 
   render() {
@@ -368,9 +353,7 @@ class Accordion extends React.Component {
 
                 {activeIndex !== null && (
                   <div className="accordion-content mobile-content">
-                    <div className="mobile-drop-zone-content">
-                      {accordionData[activeIndex] && accordionData[activeIndex].content}
-                    </div>
+                    <div className="mobile-drop-zone-content">{accordionData[activeIndex] && accordionData[activeIndex].content}</div>
                   </div>
                 )}
               </div>

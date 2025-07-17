@@ -15,11 +15,11 @@
     update(title) {
       if (currentState.isMobile) return
 
-      let breadcrumb = document.querySelector('.breadcrumb')
+      let breadcrumb = document.querySelector('.breadcrumH')
 
       if (!breadcrumb) {
         breadcrumb = document.createElement('div')
-        breadcrumb.className = 'breadcrumb'
+        breadcrumb.className = 'breadcrumH container'
 
         const helpCenter = document.createElement('a')
         helpCenter.href = '/institutional/helpPage/help'
@@ -74,12 +74,12 @@
     },
 
     hide() {
-      const bc = document.querySelector('.breadcrumb')
+      const bc = document.querySelector('.breadcrumH')
       if (bc) bc.style.display = 'none'
     },
 
     show() {
-      const bc = document.querySelector('.breadcrumb')
+      const bc = document.querySelector('.breadcrumH')
       if (bc) bc.style.display = ''
     }
   }
