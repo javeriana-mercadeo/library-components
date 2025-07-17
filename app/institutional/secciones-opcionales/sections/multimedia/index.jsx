@@ -1,10 +1,8 @@
-// index.jsx
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
-import Paragraph from '@library/components/contain/paragraph'
 
 import info from './info.json'
 import './styles.scss'
@@ -33,48 +31,42 @@ const MultimediaSlider = () => {
       title: 'Paisaje Natural',
       thumbnail:
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
-      overlayText:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi morbi tempus iaculis urna. Mauris augue neque gravida in fermentum et sollicitudin ac orci phasellus.'
+      overlayText: ''
     },
     {
       type: 'youtube',
       videoId: 'dQw4w9WgXcQ',
       title: 'Video Musical',
       thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
-      overlayText:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.'
+      overlayText: ''
     },
     {
       type: 'image',
       src: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
       title: 'Arquitectura Moderna',
       thumbnail: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      overlayText:
-        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin fermentum leo vel orci porta non pulvinar neque laoreet suspendisse.'
+      overlayText: ''
     },
     {
       type: 'youtube',
       videoId: 'jNQXAC9IVRw',
       title: 'Video Educativo',
       thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg',
-      overlayText:
-        'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris viverra veniam sit amet lacus cursus. Pellentesque habitant morbi tristique senectus.'
+      overlayText: ''
     },
     {
       type: 'image',
       src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
       title: 'Bosque Encantado',
       thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      overlayText:
-        'Donec rutrum congue leo eget malesuada. Vivamus magna justo lacinia eget consectetur sed convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'
+      overlayText: ''
     },
     {
       type: 'youtube',
       videoId: 'M7lc1UVf-VE',
       title: 'Video Tecnológico',
       thumbnail: 'https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg',
-      overlayText:
-        'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec sed odio dui. Cras mattis consectetur purus sit amet fermentum.'
+      overlayText: ''
     }
   ]
 
@@ -240,7 +232,7 @@ const MultimediaSlider = () => {
           />
           <iframe
             ref={el => (videoRefs.current[item.videoId] = el)} // Asignar la referencia
-            src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&controls=1&loop=1&playlist=${item.videoId}&rel=0&showinfo=0&modestbranding=1`}
+            src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${item.videoId}&rel=0&showinfo=0&modestbranding=1`}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -279,13 +271,9 @@ const MultimediaSlider = () => {
   return (
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
-        <Title weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
-          Galería Multimedia
+        <Title className="multimedia-titulo" weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
+          Multimedia
         </Title>
-
-        <Paragraph id={`${elementName}-description`} align="center">
-          Explora nuestra colección de imágenes y videos destacados
-        </Paragraph>
 
         <div className={`${baseClass}_slider-container`}>
           {/* Slider principal */}
