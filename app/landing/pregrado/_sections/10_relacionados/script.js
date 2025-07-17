@@ -66,64 +66,111 @@ export default () => {
 
       const programsByLevel = dataPrograms.filter(program => program.tipoPrograma === tipoPrograma)
 
-      // Programas de la misma facultad SIN restricción de tipo (para priorizar)
-      const programsByFaculty = dataPrograms.filter(program => {
-        const programFaculty = Array.isArray(program.facultad) ? program.facultad[0] : program.facultad
-        return programFaculty == faculty
-      })
-
-      // Programas por área del mismo tipo de programa
-      const programByArea = programsByLevel.filter(program => program.areas?.some(area => areas.includes(area)))
-
-      // Función mejorada para compilar programas manteniendo orden de prioridad
-      function compileOrderedPrograms(facultyPrograms, areaPrograms) {
-        const compiledPrograms = []
-        const addedCodes = new Set()
+      // Función mejorada para compilar programas con múltiples prioridades
+      function compileOrderedPrograms(currentProgram, allPrograms) {
+        const { facultad, areas, tipoPrograma, codigo } = currentProgram
+        const faculty = Array.isArray(facultad) ? facultad[0] : facultad
         
-        console.log('🔄 Iniciando compilación ordenada...')
+        const priorities = {
+          // 1. PRIORIDAD MÁXIMA: Pregrados de la misma facultad (excepto el actual)
+          sameFacultyUndergrad: [],
+          
+          // 2A. PRIORIDAD ALTA: Programas que inician con "Maestría" de la misma facultad
+          sameFacultyMaestrias: [],
+          
+          // 2B. PRIORIDAD ALTA-MEDIA: Otros posgrados de la misma facultad (orden alfabético)
+          sameFacultyOtherPostgrad: [],
+          
+          // 3. PRIORIDAD MEDIA: Programas por área (cualquier facultad, mismo tipo)
+          sameAreaSameType: [],
+          
+          // 4. PRIORIDAD BAJA: Programas por área (cualquier facultad, diferente tipo)
+          sameAreaDiffType: []
+        }
         
-        // 1. Primero agregar programas de la misma facultad
-        console.log('📝 Agregando programas de facultad:', facultyPrograms.length)
-        facultyPrograms.forEach((program, index) => {
-          if (!addedCodes.has(program.codigo)) {
-            console.log(`  ${index + 1}. Agregando: ${program.nombre} (${Array.isArray(program.facultad) ? program.facultad[0] : program.facultad})`)
-            compiledPrograms.push(program)
-            addedCodes.add(program.codigo)
+        console.log('🔄 Iniciando compilación con múltiples prioridades...')
+        console.log('📋 Programa actual:', currentProgram.nombre, `(${tipoPrograma}, ${faculty})`)
+        
+        allPrograms.forEach(prog => {
+          if (prog.codigo === codigo) return // Excluir programa actual
+          
+          const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
+          const isSameFaculty = progFaculty === faculty
+          const isSameType = prog.tipoPrograma === tipoPrograma
+          const hasCommonArea = prog.areas?.some(area => areas.includes(area))
+          
+          if (isSameFaculty) {
+            if (prog.tipoPrograma === 'PREGRADO') {
+              priorities.sameFacultyUndergrad.push(prog)
+              console.log(`  ⭐ Prioridad 1: ${prog.nombre} (Pregrado, ${progFaculty})`)
+            } else {
+              // Verificar si el nombre del programa inicia con "Maestría"
+              if (prog.nombre && prog.nombre.toLowerCase().startsWith('maestría')) {
+                priorities.sameFacultyMaestrias.push(prog)
+                console.log(`  🎓 Prioridad 2A: ${prog.nombre} (Maestría por nombre, ${progFaculty})`)
+              } else {
+                priorities.sameFacultyOtherPostgrad.push(prog)
+                console.log(`  📚 Prioridad 2B: ${prog.nombre} (${prog.tipoPrograma}, ${progFaculty})`)
+              }
+            }
+          } else if (hasCommonArea) {
+            if (isSameType) {
+              priorities.sameAreaSameType.push(prog)
+              console.log(`  📚 Prioridad 3: ${prog.nombre} (${prog.tipoPrograma}, ${progFaculty}) - Área común`)
+            } else {
+              priorities.sameAreaDiffType.push(prog)
+              console.log(`  📖 Prioridad 4: ${prog.nombre} (${prog.tipoPrograma}, ${progFaculty}) - Área común, tipo diferente`)
+            }
           }
         })
         
-        // 2. Luego agregar programas por área que no estén ya incluidos
-        console.log('📝 Agregando programas por área:', areaPrograms.length)
-        areaPrograms.forEach((program, index) => {
-          if (!addedCodes.has(program.codigo)) {
-            console.log(`  ${index + 1}. Agregando: ${program.nombre} (${Array.isArray(program.facultad) ? program.facultad[0] : program.facultad})`)
-            compiledPrograms.push(program)
-            addedCodes.add(program.codigo)
-          } else {
-            console.log(`  ${index + 1}. Ya existe: ${program.nombre}`)
-          }
-        })
+        // Ordenar alfabéticamente los posgrados que no son maestrías
+        priorities.sameFacultyOtherPostgrad.sort((a, b) => a.nombre.localeCompare(b.nombre))
+        
+        // Mostrar estadísticas por prioridad
+        console.log('📊 Estadísticas por prioridad:')
+        console.log(`  Prioridad 1 (Pregrados misma facultad): ${priorities.sameFacultyUndergrad.length}`)
+        console.log(`  Prioridad 2A (Maestrías misma facultad): ${priorities.sameFacultyMaestrias.length}`)
+        console.log(`  Prioridad 2B (Otros posgrados misma facultad - alfabético): ${priorities.sameFacultyOtherPostgrad.length}`)
+        console.log(`  Prioridad 3 (Área común, mismo tipo): ${priorities.sameAreaSameType.length}`)
+        console.log(`  Prioridad 4 (Área común, tipo diferente): ${priorities.sameAreaDiffType.length}`)
+        
+        // Compilar en orden de prioridad
+        const compiledPrograms = [
+          ...priorities.sameFacultyUndergrad,
+          ...priorities.sameFacultyMaestrias,
+          ...priorities.sameFacultyOtherPostgrad,
+          ...priorities.sameAreaSameType,
+          ...priorities.sameAreaDiffType
+        ].slice(0, 6)
         
         console.log('✅ Compilación completada, total:', compiledPrograms.length)
         return compiledPrograms
       }
 
-      let compiledPrograms = compileOrderedPrograms(programsByFaculty, programByArea)
-      compiledPrograms = compiledPrograms.filter(item => item.codigo !== program.codigo)
+      let compiledPrograms = compileOrderedPrograms(program, dataPrograms)
 
-      console.log('🏫 Programas por facultad encontrados:', programsByFaculty.length)
-      console.log('📚 Programas por área encontrados:', programByArea.length)
-      console.log('📋 Total antes de filtros:', compiledPrograms.length)
-      
       // Log detallado del orden final
       console.log('📋 ORDEN FINAL DE PROGRAMAS:')
       compiledPrograms.forEach((prog, index) => {
         const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
         const isFromSameFaculty = progFaculty === faculty
-        console.log(`${index + 1}. ${prog.nombre} - ${progFaculty} ${isFromSameFaculty ? '⭐ (MISMA FACULTAD)' : ''}`)
+        
+        let priorityLabel = '📖 P4'
+        if (isFromSameFaculty) {
+          if (prog.tipoPrograma === 'PREGRADO') {
+            priorityLabel = '⭐ P1'
+          } else if (prog.nombre && prog.nombre.toLowerCase().startsWith('maestría')) {
+            priorityLabel = '🎓 P2A'
+          } else {
+            priorityLabel = '📚 P2B'
+          }
+        } else if (prog.tipoPrograma === tipoPrograma) {
+          priorityLabel = '📚 P3'
+        }
+        
+        console.log(`${index + 1}. ${prog.nombre} - ${progFaculty} ${priorityLabel}`)
       })
-
-      compiledPrograms = compiledPrograms.slice(0, 6)
 
       console.log('✅ Programas compilados:', compiledPrograms.length, 'programas')
 
