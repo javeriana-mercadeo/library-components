@@ -56,6 +56,7 @@ export default () => {
       return
     }
 
+
     // Buscar programa por código
     let program = findProgramByCode(dataPrograms, COD_PROGRAM)
     console.log('🔍 Programa encontrado:', program ? program.nombre : 'No encontrado')
@@ -65,6 +66,19 @@ export default () => {
       let faculty = Array.isArray(facultad) ? facultad[0] : facultad
 
       const programsByLevel = dataPrograms.filter(program => program.tipoPrograma === tipoPrograma)
+      
+      // TEMPORAL: Mostrar todos los programas de la misma facultad
+      const programsSameFaculty = dataPrograms.filter(prog => {
+        const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
+        return progFaculty === faculty
+      })
+      
+      console.log(`📊 ESTADÍSTICAS FACULTAD ${faculty}:`)
+      const statsByType = programsSameFaculty.reduce((acc, prog) => {
+        acc[prog.tipoPrograma] = (acc[prog.tipoPrograma] || 0) + 1
+        return acc
+      }, {})
+      console.table(statsByType)
 
       // Función mejorada para compilar programas con múltiples prioridades
       function compileOrderedPrograms(currentProgram, allPrograms) {
@@ -72,20 +86,17 @@ export default () => {
         const faculty = Array.isArray(facultad) ? facultad[0] : facultad
         
         const priorities = {
-          // 1. PRIORIDAD MÁXIMA: Pregrados de la misma facultad (excepto el actual)
-          sameFacultyUndergrad: [],
+          // 1. PRIORIDAD MÁXIMA: Pregrado-Carrera de la misma facultad (excepto el actual)
+          sameFacultyPregradoCarrera: [],
           
-          // 2A. PRIORIDAD ALTA: Programas que inician con "Maestría" de la misma facultad
+          // 2. PRIORIDAD ALTA: Maestrías de la misma facultad
           sameFacultyMaestrias: [],
           
-          // 2B. PRIORIDAD ALTA-MEDIA: Otros posgrados de la misma facultad (orden alfabético)
-          sameFacultyOtherPostgrad: [],
+          // 3. PRIORIDAD MEDIA: Pregrado-Carrera por área (otras facultades)
+          areaRelatedPregradoCarrera: [],
           
-          // 3. PRIORIDAD MEDIA: Programas por área (cualquier facultad, mismo tipo)
-          sameAreaSameType: [],
-          
-          // 4. PRIORIDAD BAJA: Programas por área (cualquier facultad, diferente tipo)
-          sameAreaDiffType: []
+          // 4. PRIORIDAD BAJA: Maestrías por área (otras facultades)
+          areaRelatedMaestrias: []
         }
         
         console.log('🔄 Iniciando compilación con múltiples prioridades...')
@@ -94,54 +105,48 @@ export default () => {
         allPrograms.forEach(prog => {
           if (prog.codigo === codigo) return // Excluir programa actual
           
+          // Solo incluir "Pregrado - Carrera" y "Maestría"
+          if (prog.tipoPrograma !== 'Pregrado - Carrera' && prog.tipoPrograma !== 'Maestría') {
+            return
+          }
+          
           const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
           const isSameFaculty = progFaculty === faculty
           const isSameType = prog.tipoPrograma === tipoPrograma
           const hasCommonArea = prog.areas?.some(area => areas.includes(area))
           
           if (isSameFaculty) {
-            if (prog.tipoPrograma === 'PREGRADO') {
-              priorities.sameFacultyUndergrad.push(prog)
-              console.log(`  ⭐ Prioridad 1: ${prog.nombre} (Pregrado, ${progFaculty})`)
-            } else {
-              // Verificar si el nombre del programa inicia con "Maestría"
-              if (prog.nombre && prog.nombre.toLowerCase().startsWith('maestría')) {
-                priorities.sameFacultyMaestrias.push(prog)
-                console.log(`  🎓 Prioridad 2A: ${prog.nombre} (Maestría por nombre, ${progFaculty})`)
-              } else {
-                priorities.sameFacultyOtherPostgrad.push(prog)
-                console.log(`  📚 Prioridad 2B: ${prog.nombre} (${prog.tipoPrograma}, ${progFaculty})`)
-              }
+            if (prog.tipoPrograma === 'Pregrado - Carrera') {
+              priorities.sameFacultyPregradoCarrera.push(prog)
+              console.log(`  ⭐ Prioridad 1: ${prog.nombre} (Pregrado - Carrera, ${progFaculty})`)
+            } else if (prog.tipoPrograma === 'Maestría') {
+              priorities.sameFacultyMaestrias.push(prog)
+              console.log(`  🎓 Prioridad 2: ${prog.nombre} (Maestría, ${progFaculty})`)
             }
           } else if (hasCommonArea) {
-            if (isSameType) {
-              priorities.sameAreaSameType.push(prog)
-              console.log(`  📚 Prioridad 3: ${prog.nombre} (${prog.tipoPrograma}, ${progFaculty}) - Área común`)
-            } else {
-              priorities.sameAreaDiffType.push(prog)
-              console.log(`  📖 Prioridad 4: ${prog.nombre} (${prog.tipoPrograma}, ${progFaculty}) - Área común, tipo diferente`)
+            if (prog.tipoPrograma === 'Pregrado - Carrera') {
+              priorities.areaRelatedPregradoCarrera.push(prog)
+              console.log(`  📚 Prioridad 3: ${prog.nombre} (Pregrado - Carrera, ${progFaculty}) - Área común`)
+            } else if (prog.tipoPrograma === 'Maestría') {
+              priorities.areaRelatedMaestrias.push(prog)
+              console.log(`  📖 Prioridad 4: ${prog.nombre} (Maestría, ${progFaculty}) - Área común`)
             }
           }
         })
         
-        // Ordenar alfabéticamente los posgrados que no son maestrías
-        priorities.sameFacultyOtherPostgrad.sort((a, b) => a.nombre.localeCompare(b.nombre))
-        
         // Mostrar estadísticas por prioridad
         console.log('📊 Estadísticas por prioridad:')
-        console.log(`  Prioridad 1 (Pregrados misma facultad): ${priorities.sameFacultyUndergrad.length}`)
-        console.log(`  Prioridad 2A (Maestrías misma facultad): ${priorities.sameFacultyMaestrias.length}`)
-        console.log(`  Prioridad 2B (Otros posgrados misma facultad - alfabético): ${priorities.sameFacultyOtherPostgrad.length}`)
-        console.log(`  Prioridad 3 (Área común, mismo tipo): ${priorities.sameAreaSameType.length}`)
-        console.log(`  Prioridad 4 (Área común, tipo diferente): ${priorities.sameAreaDiffType.length}`)
+        console.log(`  Prioridad 1 (Pregrado - Carrera misma facultad): ${priorities.sameFacultyPregradoCarrera.length}`)
+        console.log(`  Prioridad 2 (Maestrías misma facultad): ${priorities.sameFacultyMaestrias.length}`)
+        console.log(`  Prioridad 3 (Pregrado - Carrera área común): ${priorities.areaRelatedPregradoCarrera.length}`)
+        console.log(`  Prioridad 4 (Maestrías área común): ${priorities.areaRelatedMaestrias.length}`)
         
         // Compilar en orden de prioridad
         const compiledPrograms = [
-          ...priorities.sameFacultyUndergrad,
+          ...priorities.sameFacultyPregradoCarrera,
           ...priorities.sameFacultyMaestrias,
-          ...priorities.sameFacultyOtherPostgrad,
-          ...priorities.sameAreaSameType,
-          ...priorities.sameAreaDiffType
+          ...priorities.areaRelatedPregradoCarrera,
+          ...priorities.areaRelatedMaestrias
         ].slice(0, 6)
         
         console.log('✅ Compilación completada, total:', compiledPrograms.length)
@@ -158,21 +163,24 @@ export default () => {
         
         let priorityLabel = '📖 P4'
         if (isFromSameFaculty) {
-          if (prog.tipoPrograma === 'PREGRADO') {
+          if (prog.tipoPrograma === 'Pregrado - Carrera') {
             priorityLabel = '⭐ P1'
-          } else if (prog.nombre && prog.nombre.toLowerCase().startsWith('maestría')) {
-            priorityLabel = '🎓 P2A'
-          } else {
-            priorityLabel = '📚 P2B'
+          } else if (prog.tipoPrograma === 'Maestría') {
+            priorityLabel = '🎓 P2'
           }
-        } else if (prog.tipoPrograma === tipoPrograma) {
-          priorityLabel = '📚 P3'
+        } else {
+          if (prog.tipoPrograma === 'Pregrado - Carrera') {
+            priorityLabel = '📚 P3'
+          } else if (prog.tipoPrograma === 'Maestría') {
+            priorityLabel = '📖 P4'
+          }
         }
         
-        console.log(`${index + 1}. ${prog.nombre} - ${progFaculty} ${priorityLabel}`)
+        console.log(`${index + 1}. ${prog.nombre} - ${progFaculty} - ${prog.tipoPrograma} ${priorityLabel}`)
       })
 
       console.log('✅ Programas compilados:', compiledPrograms.length, 'programas')
+
 
       const relatedPrograms = document.getElementById('relatedPrograms')
 
