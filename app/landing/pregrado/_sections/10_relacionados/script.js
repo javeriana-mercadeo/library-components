@@ -1,5 +1,63 @@
 export default () => {
   console.log('📍 [SCRIPT] Script relacionados cargado y ejecutándose')
+
+  // ==========================================
+  // CONFIGURACIÓN DEL CARRUSEL
+  // ==========================================
+  const CAROUSEL_CONFIG = {
+    programTypes: {
+      'Pregrado - Carrera': {
+        enabled: true,
+        priority: 1,
+        label: 'Programas de Pregrado',
+        description: 'Programas de pregrado ofrecidos por la universidad'
+      },
+      Maestría: {
+        enabled: true,
+        priority: 2,
+        label: 'Maestrías',
+        description: 'Programas de maestría disponibles'
+      },
+      Especialización: {
+        enabled: true,
+        priority: 3,
+        label: 'Especializaciones',
+        description: 'Programas de especialización profesional'
+      },
+      Diplomado: {
+        enabled: false,
+        priority: 4,
+        label: 'Diplomados',
+        description: 'Diplomados y cursos de educación continua'
+      },
+      Curso: {
+        enabled: false,
+        priority: 5,
+        label: 'Cursos',
+        description: 'Cursos cortos y talleres'
+      },
+      Doctorado: {
+        enabled: false,
+        priority: 6,
+        label: 'Doctorados',
+        description: 'Programas de doctorado e investigación'
+      }
+    },
+    filterSettings: {
+      maxPrograms: 6,
+      enableFacultyFilter: true,
+      enableAreaFilter: true,
+      enableSameFacultyPriority: true,
+      enableAreaBasedFallback: true
+    },
+    displaySettings: {
+      showProgramType: true,
+      showFaculty: true,
+      enableDebugLogs: false,
+      showStatistics: true,
+      enableAllLogs: false
+    }
+  }
   // Función de llamada a la API
   async function callApi(API) {
     try {
@@ -32,22 +90,22 @@ export default () => {
   // Log inicial antes del evento
   console.log('📋 [SCRIPT] Configurando evento DOMContentLoaded')
   console.log('📋 [SCRIPT] Estado del documento:', document.readyState)
-  
+
   // Función principal para cargar programas
   const loadRelatedPrograms = async () => {
     console.log('🚀 [MAIN] Iniciando carga de programas relacionados')
-    
+
     console.log('🔍 [MAIN] Verificando variable codPrograma...')
     console.log('🔍 [MAIN] typeof codPrograma:', typeof codPrograma)
     console.log('🔍 [MAIN] window.codPrograma:', typeof window.codPrograma)
-    
-    const COD_PROGRAM = typeof codPrograma !== 'undefined' ? codPrograma : 
-                       typeof window.codPrograma !== 'undefined' ? window.codPrograma : 'ARQUI'
+
+    const COD_PROGRAM =
+      typeof codPrograma !== 'undefined' ? codPrograma : typeof window.codPrograma !== 'undefined' ? window.codPrograma : 'ARQUI'
     console.log('📋 [MAIN] Código del programa final:', COD_PROGRAM)
-    
+
     const API_PROGRAMS = 'https://www.javeriana.edu.co/prg-api/searchpuj/general-search-program'
     console.log('🌐 Llamando API:', API_PROGRAMS)
-    
+
     const dataPrograms = await callApi(API_PROGRAMS)
     console.log('📊 Datos recibidos:', dataPrograms ? dataPrograms.length + ' programas' : 'Sin datos')
 
@@ -55,7 +113,6 @@ export default () => {
       console.error('No se obtuvieron datos válidos de la API.')
       return
     }
-
 
     // Buscar programa por código
     let program = findProgramByCode(dataPrograms, COD_PROGRAM)
@@ -66,121 +123,122 @@ export default () => {
       let faculty = Array.isArray(facultad) ? facultad[0] : facultad
 
       const programsByLevel = dataPrograms.filter(program => program.tipoPrograma === tipoPrograma)
-      
+
       // TEMPORAL: Mostrar todos los programas de la misma facultad
       const programsSameFaculty = dataPrograms.filter(prog => {
         const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
         return progFaculty === faculty
       })
-      
-      console.log(`📊 ESTADÍSTICAS FACULTAD ${faculty}:`)
-      const statsByType = programsSameFaculty.reduce((acc, prog) => {
-        acc[prog.tipoPrograma] = (acc[prog.tipoPrograma] || 0) + 1
-        return acc
-      }, {})
-      console.table(statsByType)
+
+      if (CAROUSEL_CONFIG.displaySettings.enableAllLogs && CAROUSEL_CONFIG.displaySettings.showStatistics) {
+        console.log(`📊 ESTADÍSTICAS FACULTAD ${faculty}:`)
+        const statsByType = programsSameFaculty.reduce((acc, prog) => {
+          acc[prog.tipoPrograma] = (acc[prog.tipoPrograma] || 0) + 1
+          return acc
+        }, {})
+        console.table(statsByType)
+
+        // Mostrar configuración actual
+        console.log('⚙️ CONFIGURACIÓN ACTUAL DEL CARRUSEL:')
+        const enabledTypes = Object.entries(CAROUSEL_CONFIG.programTypes)
+          .filter(([_, config]) => config.enabled)
+          .map(([type, config]) => `${type} (P${config.priority})`)
+        console.log('✅ Tipos habilitados:', enabledTypes.join(', '))
+        console.log('📊 Máximo de programas:', CAROUSEL_CONFIG.filterSettings.maxPrograms)
+      }
 
       // Función mejorada para compilar programas con múltiples prioridades
       function compileOrderedPrograms(currentProgram, allPrograms) {
         const { facultad, areas, tipoPrograma, codigo } = currentProgram
         const faculty = Array.isArray(facultad) ? facultad[0] : facultad
-        
+
+        // Crear prioridades dinámicamente basadas en la configuración
         const priorities = {
-          // 1. PRIORIDAD MÁXIMA: Pregrado-Carrera de la misma facultad (excepto el actual)
-          sameFacultyPregradoCarrera: [],
-          
-          // 2. PRIORIDAD ALTA: Maestrías de la misma facultad
-          sameFacultyMaestrias: [],
-          
-          // 3. PRIORIDAD MEDIA: Pregrado-Carrera por área (otras facultades)
-          areaRelatedPregradoCarrera: [],
-          
-          // 4. PRIORIDAD BAJA: Maestrías por área (otras facultades)
-          areaRelatedMaestrias: []
+          sameFaculty: [], // Misma facultad (todos los tipos)
+          areaRelated: [] // Área común (todos los tipos)
         }
-        
-        console.log('🔄 Iniciando compilación con múltiples prioridades...')
-        console.log('📋 Programa actual:', currentProgram.nombre, `(${tipoPrograma}, ${faculty})`)
-        
+
+        if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
+          console.log('🔄 Iniciando compilación con múltiples prioridades...')
+          console.log('📋 Programa actual:', currentProgram.nombre, `(${tipoPrograma}, ${faculty})`)
+        }
+
         allPrograms.forEach(prog => {
           if (prog.codigo === codigo) return // Excluir programa actual
-          
-          // Solo incluir "Pregrado - Carrera" y "Maestría"
-          if (prog.tipoPrograma !== 'Pregrado - Carrera' && prog.tipoPrograma !== 'Maestría') {
+
+          // Filtrar por tipos de programa habilitados en la configuración
+          const programTypeConfig = CAROUSEL_CONFIG.programTypes[prog.tipoPrograma]
+          if (!programTypeConfig || !programTypeConfig.enabled) {
+            if (CAROUSEL_CONFIG.displaySettings.enableAllLogs && CAROUSEL_CONFIG.displaySettings.enableDebugLogs) {
+              console.log(`  ❌ Excluido: ${prog.nombre} (${prog.tipoPrograma}) - Tipo no habilitado en configuración`)
+            }
             return
           }
-          
+
           const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
           const isSameFaculty = progFaculty === faculty
           const isSameType = prog.tipoPrograma === tipoPrograma
           const hasCommonArea = prog.areas?.some(area => areas.includes(area))
-          
+
           if (isSameFaculty) {
-            if (prog.tipoPrograma === 'Pregrado - Carrera') {
-              priorities.sameFacultyPregradoCarrera.push(prog)
-              console.log(`  ⭐ Prioridad 1: ${prog.nombre} (Pregrado - Carrera, ${progFaculty})`)
-            } else if (prog.tipoPrograma === 'Maestría') {
-              priorities.sameFacultyMaestrias.push(prog)
-              console.log(`  🎓 Prioridad 2: ${prog.nombre} (Maestría, ${progFaculty})`)
+            priorities.sameFaculty.push(prog)
+            if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
+              const typeConfig = CAROUSEL_CONFIG.programTypes[prog.tipoPrograma]
+              console.log(`  ⭐ Prioridad 1: ${prog.nombre} (${prog.tipoPrograma}, ${progFaculty}) - P${typeConfig.priority}`)
             }
           } else if (hasCommonArea) {
-            if (prog.tipoPrograma === 'Pregrado - Carrera') {
-              priorities.areaRelatedPregradoCarrera.push(prog)
-              console.log(`  📚 Prioridad 3: ${prog.nombre} (Pregrado - Carrera, ${progFaculty}) - Área común`)
-            } else if (prog.tipoPrograma === 'Maestría') {
-              priorities.areaRelatedMaestrias.push(prog)
-              console.log(`  📖 Prioridad 4: ${prog.nombre} (Maestría, ${progFaculty}) - Área común`)
+            priorities.areaRelated.push(prog)
+            if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
+              const typeConfig = CAROUSEL_CONFIG.programTypes[prog.tipoPrograma]
+              console.log(`  📚 Prioridad 2: ${prog.nombre} (${prog.tipoPrograma}, ${progFaculty}) - Área común - P${typeConfig.priority}`)
             }
           }
         })
-        
-        // Mostrar estadísticas por prioridad
-        console.log('📊 Estadísticas por prioridad:')
-        console.log(`  Prioridad 1 (Pregrado - Carrera misma facultad): ${priorities.sameFacultyPregradoCarrera.length}`)
-        console.log(`  Prioridad 2 (Maestrías misma facultad): ${priorities.sameFacultyMaestrias.length}`)
-        console.log(`  Prioridad 3 (Pregrado - Carrera área común): ${priorities.areaRelatedPregradoCarrera.length}`)
-        console.log(`  Prioridad 4 (Maestrías área común): ${priorities.areaRelatedMaestrias.length}`)
-        
-        // Compilar en orden de prioridad
-        const compiledPrograms = [
-          ...priorities.sameFacultyPregradoCarrera,
-          ...priorities.sameFacultyMaestrias,
-          ...priorities.areaRelatedPregradoCarrera,
-          ...priorities.areaRelatedMaestrias
-        ].slice(0, 6)
-        
-        console.log('✅ Compilación completada, total:', compiledPrograms.length)
+
+        // Ordenar por prioridad según configuración
+        const sortByPriority = (a, b) => {
+          const priorityA = CAROUSEL_CONFIG.programTypes[a.tipoPrograma]?.priority || 999
+          const priorityB = CAROUSEL_CONFIG.programTypes[b.tipoPrograma]?.priority || 999
+          return priorityA - priorityB
+        }
+
+        priorities.sameFaculty.sort(sortByPriority)
+        priorities.areaRelated.sort(sortByPriority)
+
+        if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
+          // Mostrar estadísticas por prioridad
+          console.log('📊 Estadísticas por prioridad:')
+          console.log(`  Prioridad 1 (Misma facultad): ${priorities.sameFaculty.length}`)
+          console.log(`  Prioridad 2 (Área común): ${priorities.areaRelated.length}`)
+        }
+
+        // Compilar en orden de prioridad y limitar según configuración
+        const compiledPrograms = [...priorities.sameFaculty, ...priorities.areaRelated].slice(0, CAROUSEL_CONFIG.filterSettings.maxPrograms)
+
+        if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
+          console.log('✅ Compilación completada, total:', compiledPrograms.length)
+        }
         return compiledPrograms
       }
 
       let compiledPrograms = compileOrderedPrograms(program, dataPrograms)
 
-      // Log detallado del orden final
-      console.log('📋 ORDEN FINAL DE PROGRAMAS:')
-      compiledPrograms.forEach((prog, index) => {
-        const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
-        const isFromSameFaculty = progFaculty === faculty
-        
-        let priorityLabel = '📖 P4'
-        if (isFromSameFaculty) {
-          if (prog.tipoPrograma === 'Pregrado - Carrera') {
-            priorityLabel = '⭐ P1'
-          } else if (prog.tipoPrograma === 'Maestría') {
-            priorityLabel = '🎓 P2'
-          }
-        } else {
-          if (prog.tipoPrograma === 'Pregrado - Carrera') {
-            priorityLabel = '📚 P3'
-          } else if (prog.tipoPrograma === 'Maestría') {
-            priorityLabel = '📖 P4'
-          }
-        }
-        
-        console.log(`${index + 1}. ${prog.nombre} - ${progFaculty} - ${prog.tipoPrograma} ${priorityLabel}`)
-      })
+      if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
+        // Log detallado del orden final
+        console.log('📋 ORDEN FINAL DE PROGRAMAS:')
+        compiledPrograms.forEach((prog, index) => {
+          const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
+          const isFromSameFaculty = progFaculty === faculty
 
-      console.log('✅ Programas compilados:', compiledPrograms.length, 'programas')
+          const typeConfig = CAROUSEL_CONFIG.programTypes[prog.tipoPrograma]
+          const typePriority = typeConfig ? typeConfig.priority : '?'
+          let priorityLabel = isFromSameFaculty ? `⭐ P1-${typePriority}` : `📚 P2-${typePriority}`
 
+          console.log(`${index + 1}. ${prog.nombre} - ${progFaculty} - ${prog.tipoPrograma} ${priorityLabel}`)
+        })
+
+        console.log('✅ Programas compilados:', compiledPrograms.length, 'programas')
+      }
 
       const relatedPrograms = document.getElementById('relatedPrograms')
 
@@ -230,14 +288,17 @@ export default () => {
         relatedPrograms.appendChild(card)
       })
 
-      console.log('🎯 Cards creadas exitosamente:', compiledPrograms.length)
+      if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
+        console.log('🎯 Cards creadas exitosamente:', compiledPrograms.length)
+      }
 
       // Inicializar Swiper después de crear las cards
       setTimeout(() => {
-        console.log('⚡ Inicializando Swiper...')
+        if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
+          console.log('⚡ Inicializando Swiper...')
+        }
         initializeSwiper()
       }, 100)
-
     } else {
       const title = document.querySelector('#related-programs-title')
       const contain = document.querySelector('#related-programs-contain')
