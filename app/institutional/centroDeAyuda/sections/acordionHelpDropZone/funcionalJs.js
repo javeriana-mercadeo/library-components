@@ -1,4 +1,4 @@
-// Accordion JS completo con mejoras para modo edición en Liferay + Migas de pan
+
 (function () {
   'use strict'
 
@@ -22,7 +22,7 @@
         breadcrumb.className = 'breadcrumH container'
 
         const helpCenter = document.createElement('a')
-        helpCenter.href = '/institutional/helpPage/help'
+        helpCenter.href = 'https://www.javeriana.edu.co/web/info-prg/centro-de-ayuda'
         helpCenter.innerHTML = '<i class="ph ph-arrow-bend-up-left iconCenter"></i> Centro de Ayuda'
         helpCenter.onclick = function () {
           sessionStorage.removeItem('currentSection')

@@ -1,7 +1,7 @@
 @use '@styles/autoload' as *;
 
 .custom-numbered-list {
-  padding-left: rem(20px);
+  padding-left: rem(0px);
   font-size: var(--font-size-paragraph);
   display: flex;
   flex-direction: column;

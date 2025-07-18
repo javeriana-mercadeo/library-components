@@ -1,16 +1,15 @@
 import React from 'react'
 import Title from '@library/components/contain/title'
-import Container from '@library/components/container'
+
 import './styles.scss'
 
 const TitleSection = () => {
   return (
-    <Container className="documentation-header">
-    <div >
+    <div className="documentation-header">
       <Title level="h2" className="titleHelp">
         Hola soy un titulo
       </Title>
-    </div></Container>
+    </div>
   )
 }
 

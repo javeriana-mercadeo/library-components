@@ -2,17 +2,16 @@
 
 
     ul {
-      padding-left: rem(20px);
       font-size: var(--font-size-paragraph);
       display: flex;
       flex-direction: column;
       align-items: stretch;
       gap: rem(10px);
       list-style-type: disc;
-
+      margin-bottom: 0;
+      margin-left: 0;
       li {
         color: var(--neutral-100);
-        padding-left: rem(5px);
 
         &::marker {
           color: var(--primary);
