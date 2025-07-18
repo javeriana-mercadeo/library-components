@@ -1,5 +1,5 @@
 // ===========================================
-// SCRIPT EXPERIENCIA - SISTEMA DE CARRUSEL
+// SCRIPT EXPERIENCIA - OPTIMIZADO PARA LIFERAY
 // ===========================================
 
 // ███████████████████████████████████████████████████████████████████████████████
@@ -38,11 +38,12 @@
 // - Errores (console.error) - siempre visibles
 // - Warnings (console.warn) - siempre visibles
 //
-// EJEMPLO DE USO:
+// EJEMPLO DE USO EN LIFERAY:
 // 1. Cargar página (debug desactivado, consola limpia)
-// 2. Si necesitas debug: toggleDebug(true) en consola
+// 2. Si necesitas debug: ExperienceCarousel.toggleDebug(true) en consola
 // 3. Ver logs detallados del sistema
-// 4. Desactivar cuando termines: toggleDebug(false)
+// 4. Para debug móvil: ExperienceCarousel.debugMobile()
+// 5. Desactivar cuando termines: ExperienceCarousel.toggleDebug(false)
 //
 // ███████████████████████████████████████████████████████████████████████████████
 // █                     SISTEMA DE DEBUG CONFIGURABLE                          █
@@ -113,32 +114,54 @@ const DEBUG_CONFIG = {
 const VideoYouTubeSystem = {
   players: new Map(), // Almacenar referencias a los players de YouTube
 
-  // Detectar dispositivo móvil (optimizado para dispositivos reales)
+  // Detectar dispositivo móvil (ULTRA agresivo para dispositivos reales)
   isMobile() {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera
     
-    // Detección más robusta para dispositivos móviles reales
-    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS|FxiOS/i
+    // Detección ULTRA agresiva para móviles reales
+    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS|FxiOS|Windows Phone|Android|Mobile Safari/i
     const isUserAgentMobile = mobileRegex.test(userAgent)
-    const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+    const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
     const isSmallScreen = window.innerWidth <= 768
     
-    // Detección específica para móviles reales (no simuladores)
+    // Detección específica para móviles reales (ULTRA específica)
     const isRealMobile = (
-      // Detectar dispositivos Android reales
-      /Android/.test(userAgent) ||
-      // Detectar iOS reales
-      /iPhone|iPad|iPod/.test(userAgent) ||
-      // Detectar otros móviles
-      /Mobile|mobile/.test(userAgent)
-    ) && hasTouchScreen
+      // Android de cualquier tipo
+      /Android/i.test(userAgent) ||
+      // iOS de cualquier tipo
+      /iPhone|iPad|iPod/i.test(userAgent) ||
+      // Mobile Safari
+      /Mobile Safari/i.test(userAgent) ||
+      // Chrome móvil
+      /CriOS|Chrome.*Mobile/i.test(userAgent) ||
+      // Firefox móvil
+      /FxiOS|Firefox.*Mobile/i.test(userAgent) ||
+      // Windows Phone
+      /Windows Phone/i.test(userAgent) ||
+      // Opera móvil
+      /Opera Mini|Opera.*Mobile/i.test(userAgent) ||
+      // Cualquier cosa que diga Mobile
+      /Mobile/i.test(userAgent) ||
+      // Samsung Internet
+      /SamsungBrowser/i.test(userAgent)
+    )
     
-    // Mejora: Dar prioridad a detección de User Agent para dispositivos reales
-    const isMobile = isRealMobile || (isUserAgentMobile && hasTouchScreen) || (hasTouchScreen && isSmallScreen)
+    // Detección por características de hardware
+    const hasOrientation = typeof window.orientation !== 'undefined'
+    const hasAccelerometer = typeof window.DeviceMotionEvent !== 'undefined'
+    const hasVibration = typeof navigator.vibrate !== 'undefined'
     
-    // Log detallado solo cuando DEBUG está activado o es primera vez
-    if (DEBUG_CONFIG.enabled.debug || !this._loggedMobileDetection) {
-      console.log('🔍 [MOBILE] Detección de dispositivo:')
+    // Combinación ULTRA agresiva
+    const isMobile = isRealMobile || 
+                     (isUserAgentMobile && hasTouchScreen) || 
+                     (hasTouchScreen && isSmallScreen) ||
+                     (hasOrientation && hasTouchScreen) ||
+                     (hasAccelerometer && hasTouchScreen) ||
+                     (hasVibration && hasTouchScreen)
+    
+    // Log detallado SIEMPRE en móviles para debugging
+    if (isMobile || DEBUG_CONFIG.enabled || !this._loggedMobileDetection) {
+      console.log('🔍 [MOBILE-ULTRA] Detección ULTRA agresiva:')
       console.log('- User Agent:', userAgent)
       console.log('- User Agent Mobile:', isUserAgentMobile)
       console.log('- Real Mobile Device:', isRealMobile)
@@ -146,7 +169,10 @@ const VideoYouTubeSystem = {
       console.log('- Small Screen:', isSmallScreen)
       console.log('- Screen Width:', window.innerWidth)
       console.log('- Touch Points:', navigator.maxTouchPoints || 0)
-      console.log('🔍 [MOBILE] Resultado final:', isMobile)
+      console.log('- Has Orientation:', hasOrientation)
+      console.log('- Has Accelerometer:', hasAccelerometer)
+      console.log('- Has Vibration:', hasVibration)
+      console.log('🔍 [MOBILE-ULTRA] Resultado final:', isMobile)
       
       // Marcar que ya se logueó una vez
       this._loggedMobileDetection = true
@@ -276,24 +302,55 @@ const VideoYouTubeSystem = {
     DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Botones creados - PlayPause: ${controlsDiv.querySelector('.play-pause-btn') ? 'OK' : 'ERROR'}`)
     DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Botones creados - Volume: ${controlsDiv.querySelector('.volume-btn') ? 'OK' : 'ERROR'}`)
 
-    // Crear overlay de play para móviles (solo el botón, no fondo completo)
+    // Crear overlay de play para móviles (ULTRA SIMPLE)
     const playOverlay = document.createElement('div')
     playOverlay.className = 'mobile-play-overlay'
-    playOverlay.innerHTML = `
-      <button class="mobile-play-btn" data-video-id="${videoId}" title="Reproducir video">
-        <i class="ph ph-play"></i>
-      </button>
+    
+    // Crear botón de play con estilos inline para asegurar visibilidad
+    const playBtn = document.createElement('button')
+    playBtn.className = 'mobile-play-btn'
+    playBtn.setAttribute('data-video-id', videoId)
+    playBtn.setAttribute('title', 'Reproducir video')
+    playBtn.innerHTML = '<i class="ph ph-play"></i>'
+    
+    // Estilos inline ULTRA agresivos para móviles
+    playOverlay.style.cssText = `
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: rgba(0, 0, 0, 0.5) !important;
+      z-index: 999 !important;
+      pointer-events: auto !important;
+      touch-action: manipulation !important;
+      cursor: pointer !important;
     `
-    DEBUG_CONFIG.log('debug', `🎬 [DEBUG] PlayOverlay creado para dispositivo móvil: ${this.isMobile()}`)
     
-    // IMPORTANTE: Hacer el overlay clickeable pero permitir touch-through en el resto del área
-    playOverlay.style.pointerEvents = 'none'  // Permitir touch-through por defecto
+    playBtn.style.cssText = `
+      background: #ff0000 !important;
+      border: 3px solid white !important;
+      border-radius: 50% !important;
+      width: 80px !important;
+      height: 80px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      z-index: 1000 !important;
+      pointer-events: auto !important;
+      touch-action: manipulation !important;
+      font-size: 24px !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+    `
     
-    // Solo el botón intercepta touches
-    const playBtn = playOverlay.querySelector('.mobile-play-btn')
-    if (playBtn) {
-      playBtn.style.pointerEvents = 'auto'  // Solo el botón es clickeable
-    }
+    playOverlay.appendChild(playBtn)
+    
+    DEBUG_CONFIG.log('debug', `🎬 [DEBUG] PlayOverlay ULTRA-SIMPLE creado para dispositivo móvil: ${this.isMobile()}`)
 
     // Ensamblar estructura
     videoWrapper.appendChild(playerDiv)
@@ -435,10 +492,10 @@ const VideoYouTubeSystem = {
       videoWrapper.style.touchAction = 'auto'
       playerDiv.style.touchAction = 'auto'
       
-      // Asegurar que Swiper no interfiera con el video
+      // Configurar slide para permitir interacción con videos
       const slide = container.closest('.swiper-slide')
       if (slide) {
-        slide.style.touchAction = 'pan-x pan-y'  // Permitir scroll pero también touch en video
+        slide.style.touchAction = 'auto'  // Permitir todas las interacciones
         DEBUG_CONFIG.log('debug', `🎬 [MOBILE] Slide configurado para touch: ${videoId}`)
       }
     }
@@ -504,8 +561,22 @@ const VideoYouTubeSystem = {
       }
     }
 
-    // Función para manejar play/pause
-    const handlePlayPause = () => {
+    // Función para manejar play/pause con prevención de doble ejecución
+    let isHandlingPlayPause = false
+    const handlePlayPause = (event) => {
+      if (isHandlingPlayPause) {
+        DEBUG_CONFIG.log('controls', `🎬 [CONTROLS] Previniendo doble ejecución: ${videoId}`)
+        return
+      }
+      
+      isHandlingPlayPause = true
+      
+      // Prevenir propagación para evitar conflictos
+      if (event) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      
       const playerState = player.getPlayerState()
       if (playerState === window.YT.PlayerState.PLAYING) {
         player.pauseVideo()
@@ -517,32 +588,64 @@ const VideoYouTubeSystem = {
         DEBUG_CONFIG.log('controls', `🎬 [CONTROLS] Video reproducido: ${videoId}`)
       }
       updatePlayPauseIcon(isPlaying)
+      
+      // Resetear flag después de un breve delay
+      setTimeout(() => {
+        isHandlingPlayPause = false
+      }, 300)
     }
 
-    // Event listeners para play/pause
+    // Event listeners optimizados para play/pause
     if (playPauseBtn) {
       DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Agregando event listeners a playPauseBtn`)
-      playPauseBtn.addEventListener('click', handlePlayPause)
-      playPauseBtn.addEventListener('touchstart', handlePlayPause)
-      DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Event listeners agregados a playPauseBtn - OK`)
+      
+      if (this.isMobile()) {
+        // En móviles, usar solo touchstart para mejor respuesta
+        playPauseBtn.addEventListener('touchstart', handlePlayPause, { passive: false })
+        DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Mobile: touchstart listener agregado a playPauseBtn`)
+      } else {
+        // En desktop, usar click
+        playPauseBtn.addEventListener('click', handlePlayPause)
+        DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Desktop: click listener agregado a playPauseBtn`)
+      }
     } else {
       DEBUG_CONFIG.error(`🎬 [DEBUG] playPauseBtn no encontrado - no se pueden agregar event listeners`)
     }
 
     if (mobilePlayBtn) {
       DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Agregando event listeners a mobilePlayBtn`)
+      
+      // Para el botón móvil, usar ambos eventos pero con mejor manejo
+      mobilePlayBtn.addEventListener('touchstart', handlePlayPause, { passive: false })
       mobilePlayBtn.addEventListener('click', handlePlayPause)
-      mobilePlayBtn.addEventListener('touchstart', handlePlayPause)
+      
+      // Agregar feedback visual en móviles
+      mobilePlayBtn.addEventListener('touchstart', () => {
+        mobilePlayBtn.style.transform = 'scale(0.95)'
+      }, { passive: true })
+      
+      mobilePlayBtn.addEventListener('touchend', () => {
+        setTimeout(() => {
+          mobilePlayBtn.style.transform = 'scale(1)'
+        }, 150)
+      }, { passive: true })
+      
       DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Event listeners agregados a mobilePlayBtn - OK`)
     } else {
       DEBUG_CONFIG.log('debug', `🎬 [DEBUG] mobilePlayBtn no encontrado (normal si no es móvil)`)
     }
 
-    // Click en botón de volumen
+    // Event listeners optimizados para botón de volumen
     if (volumeBtn) {
       DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Agregando event listener a volumeBtn`)
-      volumeBtn.addEventListener('click', () => {
-        DEBUG_CONFIG.log('controls', `🎬 [DEBUG] Volume button clicked - estado actual muted: ${isMuted}`)
+      
+      const handleVolumeToggle = (event) => {
+        if (event) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        
+        DEBUG_CONFIG.log('controls', `🎬 [DEBUG] Volume button activated - estado actual muted: ${isMuted}`)
         if (isMuted) {
           player.unMute()
           player.setVolume(currentVolume)
@@ -554,8 +657,15 @@ const VideoYouTubeSystem = {
           DEBUG_CONFIG.log('controls', `🎬 [CONTROLS] Audio desactivado para ${videoId}`)
         }
         updateVolumeIcon(isMuted)
-      })
-      DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Event listener agregado a volumeBtn - OK`)
+      }
+      
+      if (this.isMobile()) {
+        volumeBtn.addEventListener('touchstart', handleVolumeToggle, { passive: false })
+        DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Mobile: touchstart listener agregado a volumeBtn`)
+      } else {
+        volumeBtn.addEventListener('click', handleVolumeToggle)
+        DEBUG_CONFIG.log('debug', `🎬 [DEBUG] Desktop: click listener agregado a volumeBtn`)
+      }
     } else {
       DEBUG_CONFIG.error(`🎬 [DEBUG] volumeBtn no encontrado - no se puede agregar event listener`)
     }
@@ -1045,93 +1155,315 @@ const ExperienciaSystem = {
 }
 
 // ===========================================
-// AUTO-INICIALIZACIÓN
+// INICIALIZACIÓN OPTIMIZADA PARA LIFERAY
 // ===========================================
 
-// Función principal que se ejecuta inmediatamente
-const initializeExperienceSystem = () => {
-  console.log('🔧 [SCRIPT] Script de experiencia cargado - INICIO INMEDIATO')
-  DEBUG_CONFIG.log('init', '🔧 [SCRIPT] Navegador detectado:', navigator.userAgent)
-  DEBUG_CONFIG.log('init', '🔧 [SCRIPT] Document readyState:', document.readyState)
-  DEBUG_CONFIG.log('init', '🔧 [SCRIPT] Window object disponible:', typeof window !== 'undefined')
-
-  // Inicializar cuando el DOM esté listo
-  const initWhenReady = async () => {
-    DEBUG_CONFIG.log('init', '🔧 [SCRIPT] Iniciando sistema de experiencia...')
-    DEBUG_CONFIG.log('init', '🔧 [SCRIPT] ExperienciaSystem disponible:', typeof ExperienciaSystem !== 'undefined')
-
-    if (typeof ExperienciaSystem !== 'undefined') {
-      await ExperienciaSystem.init()
-      ExperienciaSystem.setupCleanup()
-    } else {
-      console.error('🔧 [SCRIPT] ExperienciaSystem no está definido')
+// Wrapper IIFE para evitar contaminación del scope global
+;(function() {
+  'use strict'
+  
+  console.log('🚀 [LIFERAY] Fragmento de experiencia cargándose...')
+  
+  // Función principal de inicialización
+  const initializeExperienceSystem = function() {
+    console.log('🔧 [LIFERAY] Iniciando sistema de experiencia para Liferay')
+    DEBUG_CONFIG.log('init', '🔧 [LIFERAY] Document readyState:', document.readyState)
+    DEBUG_CONFIG.log('init', '🔧 [LIFERAY] Navegador:', navigator.userAgent)
+    
+    // Verificar disponibilidad de sistemas
+    if (typeof ExperienciaSystem === 'undefined') {
+      console.error('🔧 [LIFERAY] ExperienciaSystem no está definido')
+      return
     }
-  }
-
-  // Usar DOMHelpers si está disponible, sino usar fallback
-  if (typeof DOMHelpers !== 'undefined' && DOMHelpers.isReady) {
-    DEBUG_CONFIG.log('init', '🔧 [SCRIPT] Usando DOMHelpers para inicialización')
-    DOMHelpers.isReady(initWhenReady)
-  } else {
-    DEBUG_CONFIG.log('init', '🔧 [SCRIPT] Usando fallback para inicialización')
-    // Fallback simple para inicialización
-    if (document.readyState === 'loading') {
-      DEBUG_CONFIG.log('init', '🔧 [SCRIPT] DOM aún cargando, esperando DOMContentLoaded')
-      document.addEventListener('DOMContentLoaded', initWhenReady)
-    } else {
-      DEBUG_CONFIG.log('init', '🔧 [SCRIPT] DOM ya cargado, iniciando inmediatamente')
-      initWhenReady()
-    }
-  }
-
-  // Exponer para debugging
-  if (typeof window !== 'undefined') {
-    DEBUG_CONFIG.log('init', '🔧 [SCRIPT] Exponiendo sistemas en window object')
-    window.VideoYouTubeSystem = VideoYouTubeSystem
-    window.ExperienceSwiperSystem = ExperienceSwiperSystem
-    window.VisibilityManagement = VisibilityManagement
-    window.ExperienciaSystem = ExperienciaSystem
-    window.initializeExperienceSystem = initializeExperienceSystem
-
-    // Exponer sistema de debug
-    window.DEBUG_CONFIG = DEBUG_CONFIG
-    window.toggleDebug = DEBUG_CONFIG.toggle.bind(DEBUG_CONFIG)
-    window.configureDebug = DEBUG_CONFIG.configure.bind(DEBUG_CONFIG)
-  }
-
-  // Configurar resize listener
-  let resizeTimeout
-  window.addEventListener('resize', () => {
-    if (resizeTimeout) {
-      clearTimeout(resizeTimeout)
-    }
-
-    resizeTimeout = setTimeout(() => {
-      if (window.experienceSwiper) {
-        window.experienceSwiper.update()
-        handleDoubleWidthSlides(window.experienceSwiper)
+    
+    // Inicializar sistema principal
+    const initSystem = async function() {
+      try {
+        DEBUG_CONFIG.log('init', '🔧 [LIFERAY] Iniciando ExperienciaSystem...')
+        await ExperienciaSystem.init()
+        ExperienciaSystem.setupCleanup()
+        DEBUG_CONFIG.log('init', '🔧 [LIFERAY] Sistema inicializado correctamente')
+      } catch (error) {
+        console.error('🔧 [LIFERAY] Error al inicializar sistema:', error)
       }
-    }, 250)
-  })
+    }
+    
+    // Usar solo DOM events nativos (compatible con Liferay)
+    if (document.readyState === 'loading') {
+      DEBUG_CONFIG.log('init', '🔧 [LIFERAY] DOM cargando, esperando DOMContentLoaded')
+      document.addEventListener('DOMContentLoaded', initSystem)
+    } else {
+      DEBUG_CONFIG.log('init', '🔧 [LIFERAY] DOM ya cargado, iniciando inmediatamente')
+      // Usar setTimeout para asegurar que todo esté listo
+      setTimeout(initSystem, 100)
+    }
+    
+    // Exponer sistemas para debugging (solo en desarrollo)
+    if (typeof window !== 'undefined') {
+      // Crear namespace para evitar conflictos
+      window.ExperienceCarousel = window.ExperienceCarousel || {}
+      
+      // Exponer sistemas bajo namespace
+      window.ExperienceCarousel.VideoSystem = VideoYouTubeSystem
+      window.ExperienceCarousel.SwiperSystem = ExperienceSwiperSystem
+      window.ExperienceCarousel.VisibilitySystem = VisibilityManagement
+      window.ExperienceCarousel.MainSystem = ExperienciaSystem
+      window.ExperienceCarousel.DebugConfig = DEBUG_CONFIG
+      
+      // Funciones de debug específicas para Liferay
+      window.ExperienceCarousel.toggleDebug = function(enabled) {
+        DEBUG_CONFIG.toggle(enabled)
+      }
+      
+      window.ExperienceCarousel.debugMobile = function() {
+        console.log('🔍 [MOBILE-DEBUG] =========================')
+        console.log('🔍 [MOBILE-DEBUG] INFORMACIÓN DEL DISPOSITIVO')
+        console.log('🔍 [MOBILE-DEBUG] =========================')
+        console.log('- User Agent:', navigator.userAgent)
+        console.log('- Touch Points:', navigator.maxTouchPoints)
+        console.log('- Screen Size:', window.innerWidth + 'x' + window.innerHeight)
+        console.log('- Es móvil según script:', VideoYouTubeSystem.isMobile())
+        console.log('- Swiper disponible:', typeof window.Swiper !== 'undefined')
+        console.log('- YouTube API disponible:', typeof window.YT !== 'undefined')
+        
+        console.log('\n🔍 [MOBILE-DEBUG] =========================')
+        console.log('🔍 [MOBILE-DEBUG] VERIFICACIÓN DE ELEMENTOS')
+        console.log('🔍 [MOBILE-DEBUG] =========================')
+        
+        // Verificar elementos de video
+        const videoContainers = document.querySelectorAll('.experience-carousel__video-container')
+        console.log('- Video containers encontrados:', videoContainers.length)
+        
+        videoContainers.forEach(function(container, index) {
+          console.log('\n--- Video ' + index + ' ---')
+          console.log('- Container:', container)
+          console.log('- Video ID:', container.dataset.videoId)
+          console.log('- Orientación:', container.dataset.videoOrientation)
+          
+          const overlay = container.querySelector('.mobile-play-overlay')
+          const playBtn = container.querySelector('.mobile-play-btn')
+          const videoWrapper = container.querySelector('.video-wrapper')
+          const youtubePlayer = container.querySelector('[id*="youtube-player"]')
+          
+          console.log('- Tiene overlay:', !!overlay)
+          console.log('- Tiene play button:', !!playBtn)
+          console.log('- Tiene video wrapper:', !!videoWrapper)
+          console.log('- Tiene YouTube player:', !!youtubePlayer)
+          
+          if (overlay) {
+            const overlayStyles = getComputedStyle(overlay)
+            console.log('- Overlay display:', overlayStyles.display)
+            console.log('- Overlay visibility:', overlayStyles.visibility)
+            console.log('- Overlay pointer-events:', overlayStyles.pointerEvents)
+            console.log('- Overlay z-index:', overlayStyles.zIndex)
+            console.log('- Overlay position:', overlayStyles.position)
+          }
+          
+          if (playBtn) {
+            const btnStyles = getComputedStyle(playBtn)
+            console.log('- Button display:', btnStyles.display)
+            console.log('- Button pointer-events:', btnStyles.pointerEvents)
+            console.log('- Button z-index:', btnStyles.zIndex)
+            
+            // Verificar event listeners
+            console.log('- Button click listeners:', playBtn.onclick ? 'Tiene onclick' : 'Sin onclick')
+            
+            // Intentar hacer click programático
+            console.log('- Intentando click programático...')
+            try {
+              playBtn.click()
+              console.log('- Click programático exitoso')
+            } catch (error) {
+              console.log('- Error en click programático:', error.message)
+            }
+          }
+        })
+        
+        console.log('\n🔍 [MOBILE-DEBUG] =========================')
+        console.log('🔍 [MOBILE-DEBUG] SISTEMA DE PLAYERS')
+        console.log('🔍 [MOBILE-DEBUG] =========================')
+        
+        if (VideoYouTubeSystem.players) {
+          console.log('- Players Map size:', VideoYouTubeSystem.players.size)
+          VideoYouTubeSystem.players.forEach(function(player, videoId) {
+            console.log('- Player ' + videoId + ':', {
+              exists: !!player,
+              hasGetPlayerState: typeof player.getPlayerState === 'function',
+              hasPlayVideo: typeof player.playVideo === 'function'
+            })
+            
+            if (player && typeof player.getPlayerState === 'function') {
+              try {
+                const state = player.getPlayerState()
+                console.log('- Player ' + videoId + ' state:', state)
+              } catch (error) {
+                console.log('- Error getting player state:', error.message)
+              }
+            }
+          })
+        }
+      }
+      
+      window.ExperienceCarousel.reinitialize = function() {
+        console.log('🔧 [LIFERAY] Reinicializando sistema...')
+        initSystem()
+      }
+      
+      // Función para forzar la creación de event listeners en móviles
+      window.ExperienceCarousel.forceMobileListeners = function() {
+        console.log('🔧 [MOBILE-FIX] Forzando creación de event listeners móviles...')
+        
+        const videoContainers = document.querySelectorAll('.experience-carousel__video-container')
+        console.log('🔧 [MOBILE-FIX] Contenedores encontrados:', videoContainers.length)
+        
+        videoContainers.forEach(function(container, index) {
+          console.log('🔧 [MOBILE-FIX] Procesando video ' + index)
+          
+          const overlay = container.querySelector('.mobile-play-overlay')
+          const playBtn = container.querySelector('.mobile-play-btn')
+          const videoId = container.dataset.videoId
+          
+          if (overlay && playBtn && videoId) {
+            console.log('🔧 [MOBILE-FIX] Elementos encontrados para video ' + videoId)
+            
+            // Remover event listeners existentes
+            const newPlayBtn = playBtn.cloneNode(true)
+            playBtn.parentNode.replaceChild(newPlayBtn, playBtn)
+            
+            // Agregar event listeners directamente
+            const handlePlay = function(event) {
+              console.log('🔧 [MOBILE-FIX] Click detectado en video ' + videoId)
+              event.preventDefault()
+              event.stopPropagation()
+              
+              // Buscar el player
+              const player = VideoYouTubeSystem.players.get(videoId)
+              if (player && typeof player.playVideo === 'function') {
+                console.log('🔧 [MOBILE-FIX] Reproduciendo video ' + videoId)
+                player.playVideo()
+                overlay.style.display = 'none'
+              } else {
+                console.log('🔧 [MOBILE-FIX] Player no encontrado para ' + videoId)
+              }
+            }
+            
+            // Agregar múltiples tipos de events
+            newPlayBtn.addEventListener('click', handlePlay)
+            newPlayBtn.addEventListener('touchstart', handlePlay)
+            newPlayBtn.addEventListener('touchend', handlePlay)
+            overlay.addEventListener('click', handlePlay)
+            overlay.addEventListener('touchstart', handlePlay)
+            
+            // Hacer el overlay más visible
+            overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
+            overlay.style.border = '2px solid red'
+            overlay.style.zIndex = '999'
+            newPlayBtn.style.backgroundColor = 'red'
+            newPlayBtn.style.border = '3px solid white'
+            
+            console.log('🔧 [MOBILE-FIX] Event listeners agregados para video ' + videoId)
+          } else {
+            console.log('🔧 [MOBILE-FIX] Elementos faltantes para video ' + index, {
+              hasOverlay: !!overlay,
+              hasPlayBtn: !!playBtn,
+              hasVideoId: !!videoId
+            })
+          }
+        })
+      }
+      
+      DEBUG_CONFIG.log('init', '🔧 [LIFERAY] Sistemas expuestos bajo window.ExperienceCarousel')
+    }
+    
+    // Configurar resize listener optimizado para Liferay
+    let resizeTimeout
+    const handleResize = function() {
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout)
+      }
+      
+      resizeTimeout = setTimeout(function() {
+        if (window.experienceSwiper && typeof window.experienceSwiper.update === 'function') {
+          window.experienceSwiper.update()
+          if (typeof handleDoubleWidthSlides === 'function') {
+            handleDoubleWidthSlides(window.experienceSwiper)
+          }
+        }
+      }, 250)
+    }
+    
+    window.addEventListener('resize', handleResize)
+    
+    // Cleanup al salir de la página (importante para Liferay)
+    window.addEventListener('beforeunload', function() {
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout)
+      }
+      window.removeEventListener('resize', handleResize)
+    })
+    
+    DEBUG_CONFIG.log('init', '🔧 [LIFERAY] Configuración completada')
+  }
+  
+  // Detectar si estamos en Liferay
+  const isLiferay = function() {
+    return (typeof Liferay !== 'undefined' || 
+            typeof window.Liferay !== 'undefined' || 
+            document.querySelector('body.liferay-portal') !== null)
+  }
+  
+  // Inicialización específica para Liferay
+  if (isLiferay()) {
+    console.log('🔧 [LIFERAY] Entorno Liferay detectado')
+    
+    // Esperar a que Liferay esté completamente cargado
+    if (typeof Liferay !== 'undefined' && Liferay.on) {
+      DEBUG_CONFIG.log('init', '🔧 [LIFERAY] Usando Liferay.on para inicialización')
+      Liferay.on('allPortletsReady', function() {
+        setTimeout(initializeExperienceSystem, 200)
+      })
+    } else {
+      DEBUG_CONFIG.log('init', '🔧 [LIFERAY] Liferay.on no disponible, usando fallback')
+      // Fallback para versiones de Liferay sin Liferay.on
+      setTimeout(initializeExperienceSystem, 500)
+    }
+  } else {
+    console.log('🔧 [LIFERAY] Entorno no-Liferay detectado, iniciando inmediatamente')
+    initializeExperienceSystem()
+  }
+  
+  console.log('🔧 [LIFERAY] Debug está ' + (DEBUG_CONFIG.enabled ? 'ACTIVADO' : 'DESACTIVADO'))
+  console.log('🔧 [LIFERAY] Para debug ejecuta: ExperienceCarousel.toggleDebug(true)')
+  
+  // Retornar función para Next.js
+  return initializeExperienceSystem
+  
+})() // Fin del IIFE
 
-  DEBUG_CONFIG.log('init', '🔧 [SCRIPT] Configuración completada')
+// ===========================================
+// EXPORTS PARA NEXT.JS
+// ===========================================
+
+// Función wrapper para Next.js
+const nextjsWrapper = function() {
+  console.log('🔧 [NEXT.JS] Script ejecutado desde Next.js')
+  
+  // En Next.js, el script se ejecuta automáticamente via useEffect
+  // No necesitamos inicialización automática aquí
+  return function() {
+    console.log('🔧 [NEXT.JS] Inicializando sistema desde useEffect')
+    
+    // Verificar si ya se inicializó (para evitar duplicados)
+    if (typeof window !== 'undefined' && window.ExperienceCarousel) {
+      console.log('🔧 [NEXT.JS] Sistema ya inicializado, reinicializando...')
+      if (window.ExperienceCarousel.reinitialize) {
+        window.ExperienceCarousel.reinitialize()
+      }
+    } else {
+      console.log('🔧 [NEXT.JS] Sistema no inicializado, esto es normal en Next.js')
+    }
+  }
 }
 
-// EJECUTAR INMEDIATAMENTE (compatible con Liferay)
-console.log('🚀 [GLOBAL] Archivo script.js ejecutándose...')
-console.log('🔧 [DEBUG] Debug está ' + (DEBUG_CONFIG.enabled ? 'ACTIVADO' : 'DESACTIVADO'))
-console.log('🔧 [DEBUG] Para activar/desactivar debug ejecuta: toggleDebug()')
-initializeExperienceSystem()
-
-// Export para Next.js (si está disponible)
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = initializeExperienceSystem
-}
-
-// Export ES6 para Next.js (si está disponible)
-if (typeof exports !== 'undefined') {
-  exports.default = initializeExperienceSystem
-}
-
-// También como export default para compatibilidad
-export default initializeExperienceSystem
+// Export default para Next.js
+export default nextjsWrapper

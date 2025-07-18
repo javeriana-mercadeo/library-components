@@ -12,7 +12,10 @@ const Experiencia = () => {
   const baseClass = 'experience-carousel'
 
   useEffect(() => {
-    script()
+    const initScript = script()
+    if (typeof initScript === 'function') {
+      initScript()
+    }
   }, [])
 
   // Datos del carrusel - estos vendrán de Liferay
