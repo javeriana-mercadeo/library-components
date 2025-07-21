@@ -1,106 +1,143 @@
-  <div class="experience-carousel__carousel swiper">
-    <div class="experience-carousel__wrapper experience-swiper">
-      <div class="experience-carousel__slides swiper-wrapper" role="list">
-        <!-- Loop através de todos los siblings -->
-        <#if slides.getSiblings()?has_content>
-          <#list slides.getSiblings() as cur_slides>
-            <!-- SLIDE DE TESTIMONIO -->
-            <#if (cur_slides.type_item.getData())?? && cur_slides.type_item.getData()=="type_testimonial">
-              <div class="experience-carousel__slide swiper-slide" role="listitem">
-                <div class="experience-carousel__testimonial-card">
-                  <!-- Texto del testimonio -->
-                  <p class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-text">
-                    <#if (cur_slides.testimonial.testimonial_text.getData())??>
-                      ${cur_slides.testimonial.testimonial_text.getData()}
-                    </#if>
-                  </p>
-                  <div class="experience-carousel__testimonial-user">
-                    <!-- Avatar -->
-                    <div class="experience-carousel__testimonial-avatar">
-                      <#if (cur_slides.testimonial.testimonial_image.getData())?? && cur_slides.testimonial.testimonial_image.getData() !="">
-                        <img alt="${cur_slides.testimonial.testimonial_image.getAttribute("alt")}" data-fileentryid="${cur_slides.testimonial.testimonial_image.getAttribute("fileEntryId")}" src="${cur_slides.testimonial.testimonial_image.getData()}" />
-                      </#if>
-                    </div>
-                    <div class="experience-carousel__testimonial-info">
-                      <!-- Nombre -->
-                      <h4 class="experience-carousel__testimonial-name">
-                        <#if (cur_slides.testimonial.testimonial_name.getData())??>
-                          ${cur_slides.testimonial.testimonial_name.getData()}
-                        </#if>
-                      </h4>
-                      <!-- Trabajo -->
-                      <p class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-job">
-                        <#if (cur_slides.testimonial.testimonial_work.getData())??>
-                          ${cur_slides.testimonial.testimonial_work.getData()}
-                        </#if>
-                      </p>
-                    </div>
-                    <!-- Enlace LinkedIn -->
-                    <#if (cur_slides.testimonial.testimonial_link.getData())??>
-                      <a href="${cur_slides.testimonial.testimonial_link.getData()}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="experience-carousel__testimonial-linkedin">
-                        <#if (cur_slides.testimonial.testimonial_icon.getData())??>
-                          ${cur_slides.testimonial.testimonial_icon.getData()}
-                          <#else>
-                            <i class="ph ph-linkedin-logo"></i>
-                        </#if>
-                      </a>
-                    </#if>
-                  </div>
-                </div>
-              </div>
-            </#if>
-            <!-- SLIDE DE IMAGEN -->
-            <#if (cur_slides.type_item.getData())?? && cur_slides.type_item.getData()=="type_image">
-              <div class="experience-carousel__slide swiper-slide" role="listitem">
-                <#if (cur_slides.image.image_link.getData())??>
-                  <a href="${cur_slides.image.image_link.getData()}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="experience-carousel__card-link">
-                    <div class="experience-carousel__image-card">
-                      <#if (cur_slides.image.image_image.getData())?? && cur_slides.image.image_image.getData() !="">
-                        <img class="experience-carousel__image" alt="${cur_slides.image.image_image.getAttribute("alt")}" data-fileentryid="${cur_slides.image.image_image.getAttribute("fileEntryId")}" src="${cur_slides.image.image_image.getData()}" />
-                      </#if>
-                    </div>
-                  </a>
-                </#if>
-              </div>
-            </#if>
-            <!-- SLIDE DE VIDEO -->
-            <#if (cur_slides.type_item.getData())?? && cur_slides.type_item.getData()=="type_media">
-              <div class="experience-carousel__slide swiper-slide" role="listitem">
-                <#if (cur_slides.grupo_media.media_id.getData())??>
-                  <div
-                    class="experience-carousel__card-link">
-                    <div class="experience-carousel__video-card">
-                      <div class="experience-carousel__video-container"
-                        data-video-id="${cur_slides.grupo_media.media_id.getData()}"
-                        data-video-options="">
-                      </div>
-                    </div>
-                  </div>
-                </#if>
-              </div>
-            </#if>
-          </#list>
-        </#if>
+<div class="experience-carousel__carousel swiper">
+  <div class="experience-carousel__wrapper experience-swiper">
+    <div class="experience-carousel__slides swiper-wrapper" role="list">
+      <div class="experience-carousel__slide swiper-slide" role="listitem">
+        <a href="#" target="" class="experience-carousel__card-link">
+          <div class="experience-carousel__image-card">
+            <img
+              src="https://www.javeriana.edu.co/recursosdb/d/info-prg/dsc00979"
+              alt="Estudiantes Javeriana"
+              class="image image--no-zoom experience-carousel__image" />
+          </div>
+        </a>
       </div>
-      <#-- Controles del carrusel -->
-        <div class="swiper-pagination experience-carousel__pagination"
-          role="tablist"
-          aria-label="Control de páginas del carrusel"></div>
-        <button class="swiper-slide-button experience-carousel__prev"
-          aria-label="Ir al slide anterior"
-          type="button">
-          <i class="ph ph-arrow-circle-left" aria-hidden="true"></i>
-        </button>
-        <button class="swiper-slide-button experience-carousel__next"
-          aria-label="Ir al siguiente slide"
-          type="button">
-          <i class="ph ph-arrow-circle-right" aria-hidden="true"></i>
-        </button>
+      <div class="experience-carousel__slide swiper-slide" role="listitem">
+        <div class="experience-carousel__video-card experience-carousel__video-card--vertical">
+          <div
+            class="experience-carousel__video-container"
+            data-video-id="coJHjliTbKM"
+            data-video-orientation="vertical"
+            data-is-first-video="false"
+            style="aspect-ratio:9/16"></div>
+        </div>
+      </div>
+      <div class="experience-carousel__slide swiper-slide" role="listitem">
+        <div class="experience-carousel__testimonial-card">
+          <p
+            class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-text">
+            Actualmente me desempeño en la organización Terpel en el área de Inteligencia de
+            Negocios. Mis funciones en la compañía son hacer estudios de mercado y encontrar
+            oportunidades de mejora.
+          </p>
+          <div class="experience-carousel__testimonial-user">
+            <div class="experience-carousel__testimonial-avatar">
+              <img
+                data-lfr-editable-id="image"
+                data-lfr-editable-type="image"
+                src="https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773710/Preview-1000x0/CarlosAlbertoHerna%CC%81ndez.png?t=1719869232728"
+                alt="Carlos Gómez"
+                class="image image--no-zoom" />
+            </div>
+            <div class="experience-carousel__testimonial-info">
+              <h4
+                class="experience-carousel__testimonial-name"
+                data-lfr-editable-id="experience-name-2"
+                data-lfr-editable-type="text">
+                Carlos Gómez
+              </h4>
+              <p
+                class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-job">
+                Analista de Negocios en Terpel
+              </p>
+            </div>
+            <a
+              href="#"
+              class="experience-carousel__testimonial-linkedin"
+              target="_blank"
+              rel="noopener noreferrer">
+              <span class="icon icon--neutral icon--xs">
+                <i class="ph ph-linkedin-logo" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="experience-carousel__slide swiper-slide" role="listitem">
+        <div class="experience-carousel__video-card experience-carousel__video-card--vertical">
+          <div
+            class="experience-carousel__video-container"
+            data-video-id="IWZvfiu3gX4"
+            data-video-orientation="vertical"
+            data-is-first-video="false"
+            style="aspect-ratio:9/16"></div>
+        </div>
+      </div>
+      <div class="experience-carousel__slide swiper-slide" role="listitem">
+        <div class="experience-carousel__testimonial-card">
+          <p
+            class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-text">
+            La Javeriana me dio las herramientas para liderar proyectos empresariales. Hoy
+            impulso estrategias de crecimiento en una multinacional.
+          </p>
+          <div class="experience-carousel__testimonial-user">
+            <div class="experience-carousel__testimonial-avatar">
+              <img
+                data-lfr-editable-id="image"
+                data-lfr-editable-type="image"
+                src="https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461"
+                alt="Anamaría López"
+                class="image image--no-zoom" />
+            </div>
+            <div class="experience-carousel__testimonial-info">
+              <h4
+                class="experience-carousel__testimonial-name"
+                data-lfr-editable-id="experience-name-4"
+                data-lfr-editable-type="text">
+                Anamaría López
+              </h4>
+              <p
+                class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-job">
+                Gerente de Estrategia en GlobalCorp
+              </p>
+            </div>
+            <a
+              href="#"
+              class="experience-carousel__testimonial-linkedin"
+              target="_blank"
+              rel="noopener noreferrer">
+              <span class="icon icon--neutral icon--xs">
+                <i class="ph ph-linkedin-logo" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="experience-carousel__slide swiper-slide" role="listitem">
+        <div class="experience-carousel__video-card experience-carousel__video-card--vertical">
+          <div
+            class="experience-carousel__video-container"
+            data-video-id="wUmYyNrVjfg"
+            data-video-orientation="vertical"
+            data-is-first-video="false"
+            style="aspect-ratio:9/16"></div>
+        </div>
+      </div>
     </div>
+    <div
+      class="swiper-pagination experience-carousel__pagination"
+      role="tablist"
+      aria-label="Control de páginas del carrusel"></div>
+    <button
+      class="swiper-slide-button experience-carousel__prev"
+      aria-label="Ir al slide anterior"
+      type="button">
+      <i class="ph ph-arrow-circle-left" aria-hidden="true"></i>
+    </button>
+    <button
+      class="swiper-slide-button experience-carousel__next"
+      aria-label="Ir al siguiente slide"
+      type="button">
+      <i class="ph ph-arrow-circle-right" aria-hidden="true"></i>
+    </button>
   </div>
+</div>
