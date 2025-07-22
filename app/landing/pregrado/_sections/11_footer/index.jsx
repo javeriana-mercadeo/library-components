@@ -1,13 +1,25 @@
 'use client'
+import { useEffect } from 'react'
 import { Title, Container } from '@library/components'
 
 import LogoBlanco from '@library/components/logo_institucional_blanco'
 import UniversidadTour from '../../../../../assets/pieDePagina/universidad-tour.gif'
 import Vigilada from '../../../../../assets/pieDePagina/vigilada.png'
+import script from './script.js'
+import info from './info.json'
 
 import './styles.scss'
 
 const Footer = () => {
+  const elementName = info.name || 'footer'
+  
+  useEffect(() => {
+    const initScript = script()
+    if (typeof initScript === 'function') {
+      initScript()
+    }
+  }, [])
+  
   return (
     <footer id="footer">
       <div className="color-container-footer">

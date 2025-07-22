@@ -67,12 +67,12 @@ export default () => {
             centeredSlides: false
           },
           768: {
-            slidesPerView: 2.5,
+            slidesPerView: 3,
             spaceBetween: 20,
             centeredSlides: false
           },
           1024: {
-            slidesPerView: 3.5,
+            slidesPerView: 4,
             spaceBetween: 25,
             centeredSlides: false
           }
@@ -99,11 +99,11 @@ export default () => {
   const loadVideos = () => {
     const videoContainers = document.querySelectorAll('.experience-carousel__video-container[data-video-id]')
     console.log('🎬 [VIDEO] Encontrados', videoContainers.length, 'contenedores de video')
-    
+
     videoContainers.forEach((container, index) => {
       const videoId = container.getAttribute('data-video-id')
       const orientation = container.getAttribute('data-video-orientation') || 'vertical'
-      
+
       if (!videoId) return
 
       const iframe = document.createElement('iframe')
@@ -117,7 +117,7 @@ export default () => {
         enablejsapi: '1',
         rel: '0'
       })
-      
+
       iframe.src = `https://www.youtube.com/embed/${videoId}?${params.toString()}`
       iframe.style.width = '100%'
       iframe.style.height = '100%'
@@ -127,7 +127,7 @@ export default () => {
       iframe.allow = 'autoplay; encrypted-media; fullscreen'
       iframe.allowFullscreen = true
       iframe.loading = 'lazy'
-      
+
       // Marcar como cargado cuando el iframe esté listo
       iframe.addEventListener('load', () => {
         iframe.style.opacity = '1'
@@ -139,7 +139,7 @@ export default () => {
       iframe.addEventListener('error', () => {
         console.error(`🎬 [VIDEO] Error cargando video: ${videoId}`)
       })
-      
+
       container.innerHTML = ''
       container.appendChild(iframe)
       console.log(`🎬 [VIDEO] Iniciando carga de video: ${videoId}`)
