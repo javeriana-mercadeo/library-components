@@ -1,59 +1,88 @@
 @use '@styles/autoload' as *;
 
-.related-programs__wrapper{
-  height: 386px;
+.related-programs__wrapper {
+  min-height: 386px;
 }
 
-.card-wrapper{
+.related-programs__slide {
+  width: auto;
+  flex-shrink: 0;
+
+  // En móviles, permitir que Swiper maneje el ancho
+  @media (max-width: $breakpoint-sm) {
+    width: auto;
+  }
+}
+
+.card-wrapper {
   display: flex;
-  
 }
 
-.card-item{
+.card-item {
   display: flex;
   height: auto !important;
+  width: auto;
+  flex-shrink: 0;
   border-radius: var(--border-radius-lg);
 }
 
-.card-link{
+.card-link {
   display: flex;
   height: 100%;
   width: 100%;
   border-radius: var(--border-radius-lg);
 }
 
-.related-programs__item{
+.related-programs__item {
   margin-top: auto;
 }
 
-.related-programs__content{
+.related-programs__content {
   position: absolute;
   bottom: 0;
   left: 0;
   padding: var(--spacing-lg);
   width: 100%;
-  z-index: 2;
+  z-index: 3;
 }
 
-.related-programs__program-card{
+.related-programs__program-card {
+  width: 270px;
+  height: 386px;
+  flex-shrink: 0;
+  margin: 0 auto; // ✅ CLAVE: Centrado automático como planEstudio
+
+  // Ajustes para móviles - ancho fijo más conservador
+  @media (max-width: $breakpoint-sm) {
+    width: 280px; // Ancho fijo que asegura centrado
+    height: 370px;
+    margin: 0 auto; // ✅ Mantener centrado en móviles
+  }
+}
+
+.related-programs__image-container {
+  position: relative;
+  width: 100%;
   height: 100%;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
 }
 
-.related-programs__name{
+.related-programs__name {
   font-size: var(--font-size-subtitle);
   font-weight: var(--font-weight-bold);
-  color:var(--neutral);
+  color: var(--neutral);
   line-height: 30px;
 }
 
-.related-programs__image{
+.related-programs__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius:var(--border-radius-lg);
+  display: block;
 }
 
-.related-programs__faculty{
+.related-programs__faculty {
   font-size: 18px;
   font-weight: var(--font-weight-regular);
   color: var(--neutral);
@@ -63,43 +92,206 @@
 
 .related-programs__overlay {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(180deg, rgba(2, 111, 193, 0) 19.88%, var(--primary) 84.25%);
-  border-radius:16px;
+  z-index: 2;
 }
 
-.related-programs__link{
+.related-programs__link {
   font-size: var(--font-size-paragraph);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-base);
   color: var(--neutral);
 }
 
-.related-programs__prev{
-  left: 0;
-}
-
-.related-programs__next{
-  right: 0;
-}
-
 .related-programs__carousel-container {
-  display: flex;
-  align-items: center;
-  gap: 20px; // Espacio entre botones y carousel
+  width: 100%;
+  min-height: 386px;
 
-  .swiper-slide-button{
-  z-index: 3;
-  top:0;
-  width: auto;
-  font-size: var(--icon-size-lg);
-  color: var(--neutral-300);
-}
+  // Estrategia simple de planEstudio - sin romper contenedores
+  //padding: var(--spacing-lg) var(--spacing-sm); // Mobile - igual que planEstudio
+
+  @include responsive($breakpoint-sm) {
+    padding: var(--spacing-sm) var(--spacing-2xl); // Desktop - igual que planEstudio
+  }
+
+  @include responsive($breakpoint-md) {
+    padding: var(--spacing-xs) var(--spacing-2xl);
+  }
+
+  @include responsive($breakpoint-lg) {
+    padding: var(--spacing-xs) var(--spacing-3xl);
+  }
 }
 
 .related-programs__carousel {
-  flex: 1; // El carousel ocupa el espacio restante
+  position: relative; // Para botones absolutos
+  width: 100%;
+  overflow: hidden;
+
+  // Ajustes para móviles - permitir que Swiper + margin auto manejen el centrado
+  @media (max-width: $breakpoint-sm) {
+    overflow: hidden; // Mantener hidden para que Swiper funcione
+  }
+
+  // Estilos para botones con posicionamiento absoluto - estrategia planEstudio
+  .swiper-slide-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 11;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--neutral-700);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    background-color: rgba(var(--background-100-rgb, 255, 255, 255), 0.95);
+
+    // Ajustes para móviles
+    @media (max-width: $breakpoint-sm) {
+      width: 40px;
+      height: 40px;
+    }
+
+    i {
+      font-size: 24px;
+      color: var(--primary);
+      z-index: 100;
+      transition: all 0.3s ease;
+
+      @media (max-width: $breakpoint-sm) {
+        font-size: 20px;
+      }
+    }
+
+    &:hover {
+      transform: translateY(-50%) scale(1.05);
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary-500);
+      box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+
+      i {
+        color: var(--primary-600);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      pointer-events: none;
+      transform: translateY(-50%) scale(0.8);
+    }
+
+    // Soporte para tema oscuro
+    @include dark-theme {
+      background-color: rgba(var(--background-200-rgb), 0.95);
+      border-color: var(--neutral-600);
+
+      &:hover {
+        background-color: rgba(var(--primary-rgb), 0.15);
+        border-color: var(--primary-400);
+      }
+    }
+  }
+}
+
+// Posicionamiento específico para botones prev y next - evitar recorte en bordes
+.related-programs__prev {
+  left: 8px; // Más hacia el centro para evitar recorte
+
+  @include responsive($breakpoint-sm) {
+    left: 4px;
+  }
+  @include responsive($breakpoint-md) {
+    left: 0px;
+  }
+  @include responsive($breakpoint-lg) {
+    left: -4px;
+  }
+}
+
+.related-programs__next {
+  right: 8px; // Más hacia el centro para evitar recorte
+
+  @include responsive($breakpoint-sm) {
+    right: 4px;
+  }
+  @include responsive($breakpoint-md) {
+    right: 0px;
+  }
+  @include responsive($breakpoint-lg) {
+    right: -4px;
+  }
+}
+
+.related-programs__pagination {
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  left: 0;
+  right: 0;
+}
+
+// Estilos específicos para los bullets de Swiper con mayor especificidad
+.related-programs .swiper-pagination,
+.related-programs__carousel .swiper-pagination {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: 10px !important;
+  margin-top: 20px !important;
+
+  .swiper-pagination-bullet {
+    width: 10px !important;
+    height: 10px !important;
+    margin: 0 6px !important;
+    background: var(--neutral-400) !important;
+    opacity: 0.6 !important;
+    transition: all 0.3s ease !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+
+    &.swiper-pagination-bullet-active {
+      background: var(--primary) !important;
+      opacity: 1 !important;
+      transform: scale(1.2) !important;
+    }
+
+    &:hover {
+      opacity: 0.8 !important;
+      transform: scale(1.1) !important;
+    }
+  }
+}
+
+// Estilos específicos para el carousel de relacionados - sin afectar otros
+.related-programs__carousel .swiper-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.related-programs__carousel .swiper-slide {
+  height: auto;
+  display: flex;
+}
+
+// Habilitar pointer events para la interactividad
+.related-programs__carousel * {
+  pointer-events: auto;
 }

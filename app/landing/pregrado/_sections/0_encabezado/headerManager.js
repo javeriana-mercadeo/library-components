@@ -288,7 +288,6 @@ const ContactModal = {
   },
 
   async open() {
-
     // Aplicar 'show' inmediatamente (patrón similar al menú móvil)
     DOMHelpers.toggleClasses(this.modal, ['show'], true)
     DOMHelpers.toggleClasses(this.overlay, ['active'], true)
@@ -310,22 +309,22 @@ const ContactModal = {
 
   async initializeForm() {
     // Delegar toda la lógica del formulario al ModalForm
-    if (typeof window !== 'undefined' && window.ModalForm) {
+    if (typeof window !== 'undefined' && window.ModalFormManager) {
       try {
-        await window.ModalForm.initLocationData()
-        
+        await window.ModalFormManager.initLocationData()
+
         TimingUtils.delay(() => {
-          window.ModalForm.initFormAnimations()
+          window.ModalFormManager.initFormAnimations()
         }, 50)
 
         TimingUtils.delay(() => {
           const firstInput = DOMHelpers.findElement('input:not([type="radio"]):not([type="checkbox"])', this.modal)
           if (firstInput) firstInput.focus()
         }, 100)
-        
+
         // Configurar validación del formulario
         if (this.form) {
-          window.ModalForm.setupFormValidation(this.form)
+          window.ModalFormManager.setupFormValidation(this.form)
         }
       } catch (error) {
         console.error('Error al inicializar formulario del modal:', error)
@@ -334,7 +333,6 @@ const ContactModal = {
   },
 
   close() {
-
     // Quitar 'active' inmediatamente para comenzar animación de salida
     DOMHelpers.toggleClasses(this.modal, ['active'], false)
 
@@ -357,13 +355,16 @@ const ContactModal = {
       document.body.style.overflow = ''
       document.body.style.position = ''
       document.body.style.width = ''
+      document.body.style.height = ''
 
       // Reset completo del modal - forzar estado inicial
       this.modal.style.transform = ''
       this.modal.style.opacity = ''
       this.modal.style.visibility = ''
+      this.modal.style.pointerEvents = ''
       this.overlay.style.opacity = ''
       this.overlay.style.visibility = ''
+      this.overlay.style.pointerEvents = ''
 
       // Asegurar limpieza completa SOLO de nuestro modal
       if (this.modal && this.modal.classList.contains('contact-modal')) {
@@ -373,9 +374,10 @@ const ContactModal = {
         this.overlay.classList.remove('active')
       }
 
+      // Forzar reflow para asegurar que los cambios se apliquen
+      this.overlay.offsetHeight
     }, 200)
   },
-
 
   cleanup() {
     this.initialized = false
@@ -411,4 +413,4 @@ const HeaderManager = {
   }
 }
 
-export default HeaderManager
+export { HeaderManager }
