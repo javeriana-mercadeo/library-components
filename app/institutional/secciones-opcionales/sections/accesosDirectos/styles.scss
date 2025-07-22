@@ -686,6 +686,10 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     border-radius: 24px 24px 0 0 !important;
     margin: 0 !important;
   }
+
+  .floating-menu.mobile-expanded + .whatsapp-floating-button {
+    top: rem(283px);
+  }
 }
 
 @media (max-width: 480px) {
