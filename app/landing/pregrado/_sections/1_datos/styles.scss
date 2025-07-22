@@ -113,7 +113,7 @@
     }
 
     span.program-data_title-program {
-      color: var(--primary-600) !important;
+      color: var(--primary) !important;
     }
   }
 
@@ -153,7 +153,7 @@
         height: var(--icon-size-xl);
         font-size: var(--icon-size-md);
         border-radius: 50%;
-        background-color: var(--primary-600);
+        background-color: var(--primary) !important;
         color: var(--neutral);
         flex-shrink: 0;
       }
@@ -321,7 +321,7 @@
         height: rem(40px);
         margin: rem(-20px) 0 0 rem(-20px);
         border: rem(4px) solid var(--neutral-600);
-        border-top-color: var(--primary-600);
+        border-top-color: var(--primary);
         border-radius: 50%;
         animation: videoLoading 1s linear infinite;
         z-index: 2;
