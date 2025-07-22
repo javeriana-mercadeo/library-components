@@ -328,6 +328,49 @@ $experience-nav-offset: rem(25px);
     &.video-loaded::before {
       opacity: 0;
     }
+
+    // Botón de mute personalizado - solo desktop
+    .video-mute-button {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 10;
+      width: 36px;
+      height: 36px;
+      background: rgba(0, 0, 0, 0.7);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      display: none; // Oculto por defecto (móvil)
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(4px);
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.9);
+        transform: scale(1.1);
+      }
+
+      &.muted {
+        background: rgba(220, 38, 38, 0.8);
+        
+        &:hover {
+          background: rgba(220, 38, 38, 1);
+        }
+      }
+
+      i {
+        font-size: 18px;
+        color: white;
+      }
+
+      // Solo mostrar en desktop
+      @media (min-width: $breakpoint-lg) {
+        display: flex;
+      }
+    }
   }
 
   @keyframes pulse {

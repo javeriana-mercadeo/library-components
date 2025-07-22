@@ -142,8 +142,62 @@ export default () => {
 
       container.innerHTML = ''
       container.appendChild(iframe)
+      
+      // Agregar botón de mute solo en desktop
+      createMuteButton(container, iframe, videoId)
+      
       console.log(`🎬 [VIDEO] Iniciando carga de video: ${videoId}`)
     })
+  }
+
+  // Función para crear botón de mute personalizado
+  const createMuteButton = (container, iframe, videoId) => {
+    // Solo crear en desktop (verificar ancho de pantalla)
+    if (window.innerWidth < 1024) return // breakpoint-lg
+    
+    const muteButton = document.createElement('button')
+    muteButton.className = 'video-mute-button'
+    muteButton.setAttribute('aria-label', 'Silenciar/Activar audio del video')
+    muteButton.setAttribute('data-video-id', videoId)
+    
+    // Estado inicial: sin silenciar (mute está en 1 por defecto en el iframe)
+    let isMuted = true // Los videos inician silenciados
+    updateMuteButtonIcon(muteButton, isMuted)
+    
+    // Event listener para toggle mute
+    muteButton.addEventListener('click', (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      
+      try {
+        if (isMuted) {
+          // Activar sonido
+          iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*')
+          isMuted = false
+          muteButton.classList.remove('muted')
+          console.log(`🔊 [VIDEO] Audio activado: ${videoId}`)
+        } else {
+          // Silenciar
+          iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*')
+          isMuted = true
+          muteButton.classList.add('muted')
+          console.log(`🔇 [VIDEO] Audio silenciado: ${videoId}`)
+        }
+        
+        updateMuteButtonIcon(muteButton, isMuted)
+      } catch (error) {
+        console.error(`❌ [VIDEO] Error controlando audio: ${videoId}`, error)
+      }
+    })
+    
+    container.appendChild(muteButton)
+    console.log(`🔊 [VIDEO] Botón de mute creado para: ${videoId}`)
+  }
+
+  // Función para actualizar el ícono del botón de mute
+  const updateMuteButtonIcon = (button, isMuted) => {
+    const iconClass = isMuted ? 'ph-speaker-slash' : 'ph-speaker-high'
+    button.innerHTML = `<i class="ph ${iconClass}"></i>`
   }
 
   // Función para pausar videos
@@ -158,10 +212,23 @@ export default () => {
     })
   }
 
+  // Función para manejar resize y mostrar/ocultar botones de mute
+  const handleResize = () => {
+    const muteButtons = document.querySelectorAll('.video-mute-button')
+    const isDesktop = window.innerWidth >= 1024
+    
+    muteButtons.forEach(button => {
+      button.style.display = isDesktop ? 'flex' : 'none'
+    })
+  }
+
   // Patrón exacto de planEstudio - inicialización directa
   const checkAndInit = () => {
     if (typeof window !== 'undefined' && window.Swiper) {
       initializeSwiper()
+      
+      // Agregar listener para resize
+      window.addEventListener('resize', handleResize)
     } else {
       setTimeout(checkAndInit, 300)
     }
