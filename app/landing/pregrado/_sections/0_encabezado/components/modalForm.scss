@@ -10,7 +10,7 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.65);
 $modal-backdrop-blur: 10px;
 $modal-shadow: 0 var(--spacing-lg) var(--spacing-4xl) rgba(0, 0, 0, 0.25);
 $modal-max-width-mobile: var(--max-width-sm);
-$modal-max-width-desktop: var(--max-width-xl);
+$modal-max-width-desktop: var(--max-width-lg);
 
 // Animaciones unificadas para mobile y desktop
 $modal-animation-duration: calc(var(--transition) * 0.67); // 0.2s uniforme
@@ -84,7 +84,7 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   border-radius: var(--border-radius-lg);
   box-shadow: $modal-shadow;
   width: 100%;
-  height: 100%;
+  height: 80%;
   max-height: calc(100vh - rem(40px));
   overflow: visible;
   position: relative;
@@ -110,11 +110,8 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   @include responsive {
     max-width: $modal-max-width-desktop;
     flex-direction: row;
+    height: 100%;
     max-height: rem(650px);
-  }
-
-  @include responsive(375px) {
-    border-radius: rem(8px);
   }
 
   // Estados (patrón similar al menú móvil)
@@ -155,9 +152,10 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   flex-direction: column;
   border-radius: var(--border-radius-lg);
   min-height: 0;
-  padding: 0 var(--spacing-xs) var(--spacing-2xl) var(--spacing-2xl);
+  padding: var(--spacing-md);
 
   @include responsive {
+    padding: 0 var(--spacing-xs) var(--spacing-md) var(--spacing-2xl);
     border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
   }
 }
@@ -193,6 +191,7 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
 // CONTENIDO DEL MODAL
 // ===========================================
 .modal-content {
+  height: 100%;
   padding: var(--spacing-lg);
   overflow-y: auto;
   flex: 1;
@@ -262,6 +261,18 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
 
       &:last-child {
         margin-bottom: 0;
+      }
+
+      input,
+      select,
+      textarea,
+      input:focus,
+      select:focus,
+      textarea:focus,
+      input:active,
+      select:active,
+      textarea:active {
+        background-color: var(--background-100) !important;
       }
     }
 

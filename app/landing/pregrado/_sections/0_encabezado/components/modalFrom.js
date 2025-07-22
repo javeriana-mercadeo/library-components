@@ -23,7 +23,8 @@ const ModalForm = {
         sandboxMode: true,
         debugMode: true,
         devMode: false,
-        debugEmail: 'gavilanm-j@javeriana.edu.co'
+        debugEmail: 'gavilanm-j@javeriana.edu.co',
+        thankYouUrl: 'https://www.javeriana.edu.co/info-prg/thank-you-pregrado'
       })
 
       await this.formModulesInstance.initialize()
