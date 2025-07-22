@@ -67,12 +67,12 @@ export default () => {
             centeredSlides: false
           },
           768: {
-            slidesPerView: 2.5,
+            slidesPerView: 3,
             spaceBetween: 20,
             centeredSlides: false
           },
           1024: {
-            slidesPerView: 3.5,
+            slidesPerView: 4,
             spaceBetween: 25,
             centeredSlides: false
           }
@@ -99,11 +99,11 @@ export default () => {
   const loadVideos = () => {
     const videoContainers = document.querySelectorAll('.experience-carousel__video-container[data-video-id]')
     console.log('🎬 [VIDEO] Encontrados', videoContainers.length, 'contenedores de video')
-    
+
     videoContainers.forEach((container, index) => {
       const videoId = container.getAttribute('data-video-id')
       const orientation = container.getAttribute('data-video-orientation') || 'vertical'
-      
+
       if (!videoId) return
 
       const iframe = document.createElement('iframe')
@@ -117,7 +117,7 @@ export default () => {
         enablejsapi: '1',
         rel: '0'
       })
-      
+
       iframe.src = `https://www.youtube.com/embed/${videoId}?${params.toString()}`
       iframe.style.width = '100%'
       iframe.style.height = '100%'
@@ -127,7 +127,7 @@ export default () => {
       iframe.allow = 'autoplay; encrypted-media; fullscreen'
       iframe.allowFullscreen = true
       iframe.loading = 'lazy'
-      
+
       // Marcar como cargado cuando el iframe esté listo
       iframe.addEventListener('load', () => {
         iframe.style.opacity = '1'
@@ -139,11 +139,65 @@ export default () => {
       iframe.addEventListener('error', () => {
         console.error(`🎬 [VIDEO] Error cargando video: ${videoId}`)
       })
-      
+
       container.innerHTML = ''
       container.appendChild(iframe)
+      
+      // Agregar botón de mute solo en desktop
+      createMuteButton(container, iframe, videoId)
+      
       console.log(`🎬 [VIDEO] Iniciando carga de video: ${videoId}`)
     })
+  }
+
+  // Función para crear botón de mute personalizado
+  const createMuteButton = (container, iframe, videoId) => {
+    // Solo crear en desktop (verificar ancho de pantalla)
+    if (window.innerWidth < 1024) return // breakpoint-lg
+    
+    const muteButton = document.createElement('button')
+    muteButton.className = 'video-mute-button'
+    muteButton.setAttribute('aria-label', 'Silenciar/Activar audio del video')
+    muteButton.setAttribute('data-video-id', videoId)
+    
+    // Estado inicial: sin silenciar (mute está en 1 por defecto en el iframe)
+    let isMuted = true // Los videos inician silenciados
+    updateMuteButtonIcon(muteButton, isMuted)
+    
+    // Event listener para toggle mute
+    muteButton.addEventListener('click', (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      
+      try {
+        if (isMuted) {
+          // Activar sonido
+          iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*')
+          isMuted = false
+          muteButton.classList.remove('muted')
+          console.log(`🔊 [VIDEO] Audio activado: ${videoId}`)
+        } else {
+          // Silenciar
+          iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*')
+          isMuted = true
+          muteButton.classList.add('muted')
+          console.log(`🔇 [VIDEO] Audio silenciado: ${videoId}`)
+        }
+        
+        updateMuteButtonIcon(muteButton, isMuted)
+      } catch (error) {
+        console.error(`❌ [VIDEO] Error controlando audio: ${videoId}`, error)
+      }
+    })
+    
+    container.appendChild(muteButton)
+    console.log(`🔊 [VIDEO] Botón de mute creado para: ${videoId}`)
+  }
+
+  // Función para actualizar el ícono del botón de mute
+  const updateMuteButtonIcon = (button, isMuted) => {
+    const iconClass = isMuted ? 'ph-speaker-slash' : 'ph-speaker-high'
+    button.innerHTML = `<i class="ph ${iconClass}"></i>`
   }
 
   // Función para pausar videos
@@ -158,10 +212,23 @@ export default () => {
     })
   }
 
+  // Función para manejar resize y mostrar/ocultar botones de mute
+  const handleResize = () => {
+    const muteButtons = document.querySelectorAll('.video-mute-button')
+    const isDesktop = window.innerWidth >= 1024
+    
+    muteButtons.forEach(button => {
+      button.style.display = isDesktop ? 'flex' : 'none'
+    })
+  }
+
   // Patrón exacto de planEstudio - inicialización directa
   const checkAndInit = () => {
     if (typeof window !== 'undefined' && window.Swiper) {
       initializeSwiper()
+      
+      // Agregar listener para resize
+      window.addEventListener('resize', handleResize)
     } else {
       setTimeout(checkAndInit, 300)
     }
