@@ -1,351 +1,704 @@
-// ===== FLOATING MENU SCRIPT =====
-// Script independiente para el menú flotante de accesibilidad
+// ===== FLOATING MENU SCRIPT CON ZOOM SIMPLE (COMO TU EJEMPLO) =====
+(function(window, document, Liferay) {
+  'use strict';
 
-const FloatingMenuScript = {
-  // ===== CONFIGURACIÓN INICIAL =====
-  config: {
-    version: '3.0.0',
-    initialization: {
-      delayAfterMount: 1500,
+  // Evitar múltiples instancias
+  if (window.FloatingMenuLiferay) {
+    console.log('FloatingMenu ya existe, reinicializando...');
+    window.FloatingMenuLiferay.destroy();
+  }
+
+  // ===== FUNCIONES DE UTILIDAD (BASADAS EN TU EJEMPLO) =====
+  function parseThemeBase(themeId) {
+    if (!themeId) return "light";
+    return themeId.includes("dark") ? "dark" : "light";
+  }
+
+  function detectCurrentTheme() {
+    // Usar variables globales directas como en tu ejemplo
+    if (typeof currentBase !== "undefined") return currentBase;
+    if (typeof themeDisplay !== "undefined") {
+      return parseThemeBase(themeDisplay.getThemeId());
+    }
+    return document.body.classList.contains("dark") ? "dark" : "light";
+  }
+
+  var FloatingMenuLiferay = {
+    // ===== CONFIGURACIÓN =====
+    config: {
+      version: '3.4.0-liferay-simple-zoom',
+      initialization: {
+        delayAfterMount: 300
+      },
+      breakpoints: {
+        mobile: 768
+      }
     },
-    breakpoints: {
-      mobile: 768
-    }
-  },
 
-  // ===== ESTADO INTERNO =====
-  state: {
-    isMobile: false,
-    isMenuExpanded: false,
-    showShareModal: false,
-    initialized: false
-  },
+    // ===== ESTADO =====
+    state: {
+      isMobile: false,
+      isMenuExpanded: false,
+      showShareModal: false,
+      initialized: false,
+      themeState: 'light',
+      scaleLevel: 0, // Como en tu ejemplo
+      isGrayscaleActive: false
+    },
 
-  // ===== ELEMENTOS DOM =====
-  elements: {},
+    // ===== ELEMENTOS DOM =====
+    elements: {},
+    eventListeners: [],
 
-  // ===== EVENT LISTENERS =====
-  eventListeners: [],
-  modalElementsCached: false,
-  modalListenersSetup: false,
-
-  // ===== MÉTODOS DE INICIALIZACIÓN =====
-  init(customConfig = {}) {
-    // Combinar configuración personalizada
-    this.config = { ...this.config, ...customConfig };
-    
-    // Verificar que el DOM esté cargado
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.initializeComponent());
-    } else {
-      this.initializeComponent();
-    }
-  },
-
-  initializeComponent() {
-    console.log('Inicializando FloatingMenu v' + this.config.version);
-    
-    // Cache de elementos DOM
-    this.cacheElements();
-    
-    // Estado inicial
-    this.updateInitialState();
-    
-    // Asegurar que el modal esté oculto al inicio
-    this.ensureModalHidden();
-    
-    // Configurar con delay
-    setTimeout(() => {
-      this.loadPhosphorIcons();
-      this.setupEventListeners();
-      this.updateState({ initialized: true });
-      this.updateMenuDisplay();
-      // Forzar ocultamiento de botones en desktop al inicializar
-      this.forceHideToggleButtonsOnDesktop();
-      console.log('FloatingMenu inicializado correctamente');
-    }, this.config.initialization.delayAfterMount);
-  },
-
-  cacheElements() {
-    this.elements = {
-      container: document.getElementById('floating-menu-container'),
-      mainMenu: document.getElementById('floating-menu-main'),
-      toggleButton: document.querySelector('.menu-toggle-button'),
-      closeButton: document.querySelector('.menu-close-button'),
-      menuItems: document.querySelectorAll('.menu-item'), // Incluye todos los menu-item (toggle, close y regulares)
-      whatsappButton: document.getElementById('whatsapp-floating-button'),
-      shareModal: document.getElementById('share-modal-overlay'),
-      shareOptions: document.querySelectorAll('.share-option'),
-      notifications: document.getElementById('floating-menu-notifications')
-    };
-
-    // Verificar elementos críticos
-    if (!this.elements.container) {
-      console.error('FloatingMenu: Contenedor principal no encontrado');
-      return false;
-    }
-
-    // Debug: verificar que los botones se encontraron
-    console.log('FloatingMenu: Toggle button found:', !!this.elements.toggleButton);
-    console.log('FloatingMenu: Close button found:', !!this.elements.closeButton);
-    console.log('FloatingMenu: Total menu items found:', this.elements.menuItems.length);
-
-    return true;
-  },
-
-  // Método para cache dinámico de elementos del modal (cuando se abre)
-  cacheModalElements() {
-    if (!this.modalElementsCached) {
-      this.elements.shareCloseButton = document.querySelector('.share-modal-close');
-      this.modalElementsCached = true;
-    }
-  },
-
-  ensureModalHidden() {
-    // Asegurar que el modal esté oculto al inicio
-    if (this.elements.shareModal) {
-      this.elements.shareModal.classList.add('share-modal-hidden');
-      this.elements.shareModal.classList.remove('share-modal-visible');
-      console.log('FloatingMenu: Modal asegurado como oculto');
-    }
-  },
-
-  // ===== UTILIDADES =====
-  checkMobileDevice() {
-    return window.innerWidth <= this.config.breakpoints.mobile;
-  },
-
-  loadPhosphorIcons() {
-    if (typeof document === 'undefined') return;
-    
-    if (!document.querySelector('link[href*="phosphor-icons"]')) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = 'https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css';
-      document.head.appendChild(link);
-      console.log('FloatingMenu: Phosphor Icons cargados');
-    }
-  },
-
-  updateInitialState() {
-    const isMobile = this.checkMobileDevice();
-    this.updateState({
-      isMobile,
-      isMenuExpanded: !isMobile // Desktop: expandido, Mobile: colapsado
-    });
-    
-    // Debug: verificar estado inicial
-    console.log('FloatingMenu: Estado inicial -', {
-      isMobile,
-      isMenuExpanded: !isMobile,
-      windowWidth: window.innerWidth
-    });
-  },
-
-  updateState(newState) {
-    Object.assign(this.state, newState);
-    this.updateMenuDisplay();
-  },
-
-  // ===== MÉTODO PRINCIPAL DE DISPLAY CORREGIDO =====
-  updateMenuDisplay() {
-    if (!this.elements.mainMenu) return;
-
-    const { isMobile, isMenuExpanded, showShareModal } = this.state;
-    
-    // Debug: estado actual
-    console.log('FloatingMenu: Actualizando display -', {
-      isMobile,
-      isMenuExpanded,
-      windowWidth: window.innerWidth
-    });
-    
-    // Actualizar clases del menú principal
-    const menuClasses = ['floating-menu'];
-    if (isMobile && isMenuExpanded) {
-      menuClasses.push('mobile-expanded');
-    } else if (isMobile && !isMenuExpanded) {
-      menuClasses.push('collapsed');
-    }
-    // Desktop no necesita clase especial
-    
-    this.elements.mainMenu.className = menuClasses.join(' ');
-    
-    // CONTROL ESTRICTO DE BOTONES TOGGLE/CLOSE
-    // REGLA: Desktop = NUNCA visibles, Mobile = según estado
-    
-    if (this.elements.toggleButton) {
-      if (!isMobile) {
-        // Desktop: SIEMPRE oculto
-        this.elements.toggleButton.style.display = 'none';
-        console.log('FloatingMenu: Toggle button - OCULTO en desktop');
-      } else {
-        // Mobile: solo visible cuando collapsed
-        const shouldShowToggle = !isMenuExpanded;
-        this.elements.toggleButton.style.display = shouldShowToggle ? 'flex' : 'none';
-        console.log('FloatingMenu: Toggle button - Mobile:', shouldShowToggle ? 'VISIBLE' : 'OCULTO');
-      }
-    }
-    
-    if (this.elements.closeButton) {
-      if (!isMobile) {
-        // Desktop: SIEMPRE oculto
-        this.elements.closeButton.style.display = 'none';
-        console.log('FloatingMenu: Close button - OCULTO en desktop');
-      } else {
-        // Mobile: solo visible cuando expanded
-        const shouldShowClose = isMenuExpanded;
-        this.elements.closeButton.style.display = shouldShowClose ? 'flex' : 'none';
-        console.log('FloatingMenu: Close button - Mobile:', shouldShowClose ? 'VISIBLE' : 'OCULTO');
-      }
-    }
-    
-    // Control de visibilidad de menu items principales (excluyendo toggle/close)
-    this.elements.menuItems.forEach(item => {
-      const isToggleButton = item.classList.contains('menu-toggle-button');
-      const isCloseButton = item.classList.contains('menu-close-button');
+    // ===== INICIALIZACIÓN =====
+    init: function(customConfig, portletId) {
+      console.log('=== INICIANDO FLOATING MENU LIFERAY v' + this.config.version + ' ===');
       
-      if (!isToggleButton && !isCloseButton) {
-        if (isMobile && !isMenuExpanded) {
-          // Mobile collapsed: ocultar items principales
-          item.style.display = 'none';
-        } else {
-          // Desktop o mobile expanded: mostrar items principales
-          item.style.display = 'flex';
+      if (customConfig) {
+        for (var key in customConfig) {
+          if (customConfig.hasOwnProperty(key)) {
+            this.config[key] = customConfig[key];
+          }
         }
       }
-    });
-    
-    // Mostrar/ocultar modal de compartir con clases CSS
-    if (this.elements.shareModal) {
-      if (showShareModal) {
-        this.elements.shareModal.classList.remove('share-modal-hidden');
-        this.elements.shareModal.classList.add('share-modal-visible');
+      
+      // Verificar que el DOM esté cargado
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', this.initializeComponent.bind(this));
       } else {
-        this.elements.shareModal.classList.remove('share-modal-visible');
+        this.initializeComponent();
+      }
+    },
+
+    initializeComponent: function() {
+      console.log('=== INICIALIZANDO COMPONENTE ===');
+      
+      try {
+        // Cache de elementos DOM
+        if (!this.cacheElements()) {
+          console.error('FloatingMenu: No se pudieron encontrar los elementos necesarios');
+          return;
+        }
+
+        // Estado inicial
+        this.updateInitialState();
+
+        // Detectar tema actual
+        this.state.themeState = detectCurrentTheme();
+        currentBase = this.state.themeState;
+        window.currentBase = this.state.themeState;
+        console.log('Tema inicial detectado:', this.state.themeState);
+
+        // Asegurar modal oculto
+        this.ensureModalHidden();
+
+        // Aplicar display inicial
+        this.applyInitialDisplay();
+
+        // Configurar con delay mínimo
+        setTimeout(function() {
+          this.loadPhosphorIcons();
+          this.setupEventListeners();
+          this.updateState({ initialized: true });
+          this.forceCorrectDisplay();
+          console.log('=== FLOATING MENU INICIALIZADO CORRECTAMENTE ===');
+        }.bind(this), this.config.initialization.delayAfterMount);
+
+      } catch (error) {
+        console.error('Error inicializando FloatingMenu:', error);
+      }
+    },
+
+    cacheElements: function() {
+      console.log('=== BUSCANDO ELEMENTOS DOM ===');
+      
+      this.elements = {
+        container: document.getElementById('floating-menu-container'),
+        mainMenu: document.getElementById('floating-menu-main'),
+        toggleButton: document.querySelector('.menu-toggle-button'),
+        closeButton: document.querySelector('.menu-close-button'),
+        menuItems: document.querySelectorAll('.menu-item'),
+        whatsappButton: document.getElementById('whatsapp-floating-button'),
+        shareModal: document.getElementById('share-modal-overlay'),
+        shareOptions: document.querySelectorAll('.share-option'),
+        
+        // Elementos específicos por ID (como en tu ejemplo)
+        btnIncreaseFontSize: document.getElementById('btnIncreaseFontSize'),
+        btnDecreaseFontSize: document.getElementById('btnDecreaseFontSize'),
+        btnThemeToggle: document.getElementById('btnThemeToggle'),
+        btnGrayscale: document.getElementById('btnGrayscale'),
+        btnShare: document.getElementById('btnShare'),
+        btnWhatsapp: document.getElementById('btnWhatsapp')
+      };
+
+      var found = {
+        container: !!this.elements.container,
+        mainMenu: !!this.elements.mainMenu,
+        btnIncreaseFontSize: !!this.elements.btnIncreaseFontSize,
+        btnDecreaseFontSize: !!this.elements.btnDecreaseFontSize,
+        btnThemeToggle: !!this.elements.btnThemeToggle,
+        btnGrayscale: !!this.elements.btnGrayscale,
+        btnShare: !!this.elements.btnShare,
+        btnWhatsapp: !!this.elements.btnWhatsapp
+      };
+
+      console.log('Elementos encontrados:', found);
+
+      if (!this.elements.container || !this.elements.mainMenu) {
+        console.error('FloatingMenu: Elementos críticos no encontrados');
+        return false;
+      }
+
+      return true;
+    },
+
+    ensureModalHidden: function() {
+      if (this.elements.shareModal) {
         this.elements.shareModal.classList.add('share-modal-hidden');
+        this.elements.shareModal.classList.remove('share-modal-visible');
       }
-    }
-    
-    // Mostrar/ocultar botón WhatsApp
-    if (this.elements.whatsappButton) {
-      // En desktop siempre visible, en mobile solo cuando no está collapsed
-      const shouldShowWhatsApp = !isMobile || isMenuExpanded;
-      this.elements.whatsappButton.style.display = shouldShowWhatsApp ? 'block' : 'none';
-      console.log('FloatingMenu: WhatsApp button display =', shouldShowWhatsApp ? 'VISIBLE' : 'OCULTO');
-    }
-  },
+    },
 
-  // ===== MÉTODO ADICIONAL PARA FORZAR OCULTAMIENTO EN DESKTOP =====
-  forceHideToggleButtonsOnDesktop() {
-    if (!this.state.isMobile) {
+    // ===== UTILIDADES =====
+    checkMobileDevice: function() {
+      return window.innerWidth <= this.config.breakpoints.mobile;
+    },
+
+    loadPhosphorIcons: function() {
+      if (document.querySelector('link[href*="phosphor-icons"]')) {
+        console.log('Phosphor Icons ya cargados');
+        return;
+      }
+      
+      try {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css';
+        link.onload = function() { console.log('Phosphor Icons cargados'); };
+        link.onerror = function() { console.warn('Error cargando Phosphor Icons'); };
+        document.head.appendChild(link);
+      } catch (error) {
+        console.warn('Error cargando iconos:', error);
+      }
+    },
+
+    updateInitialState: function() {
+      var isMobile = this.checkMobileDevice();
+      console.log('Estado inicial - Es móvil:', isMobile, '(ancho:', window.innerWidth + 'px)');
+      
+      this.state.isMobile = isMobile;
+      this.state.isMenuExpanded = !isMobile; // Desktop expandido, móvil colapsado
+    },
+
+    updateState: function(newState) {
+      for (var key in newState) {
+        if (newState.hasOwnProperty(key)) {
+          this.state[key] = newState[key];
+        }
+      }
+      this.updateMenuDisplay();
+    },
+
+    applyInitialDisplay: function() {
+      console.log('=== APLICANDO DISPLAY INICIAL ===');
+      
+      if (!this.elements.mainMenu) return;
+      
+      var isMobile = this.state.isMobile;
+      var isExpanded = this.state.isMenuExpanded;
+      
+      console.log('Display inicial:', { isMobile: isMobile, isExpanded: isExpanded });
+      
+      // Aplicar clases correctas
+      if (isMobile) {
+        this.elements.mainMenu.className = isExpanded ? 'floating-menu mobile-expanded' : 'floating-menu collapsed';
+      } else {
+        this.elements.mainMenu.className = 'floating-menu';
+      }
+      
+      // Forzar visibilidad
+      this.elements.mainMenu.style.display = 'flex';
+      this.elements.mainMenu.style.visibility = 'visible';
+      this.elements.mainMenu.style.opacity = '1';
+      
+      console.log('Clases aplicadas:', this.elements.mainMenu.className);
+    },
+
+    forceCorrectDisplay: function() {
+      console.log('=== FORZANDO DISPLAY CORRECTO ===');
+      
+      var isMobile = this.state.isMobile;
+      
+      if (!isMobile) {
+        // Desktop: ocultar botones toggle/close
+        if (this.elements.toggleButton) this.elements.toggleButton.style.display = 'none';
+        if (this.elements.closeButton) this.elements.closeButton.style.display = 'none';
+        
+        // Mostrar todos los elementos principales
+        if (this.elements.btnIncreaseFontSize) this.elements.btnIncreaseFontSize.style.display = 'flex';
+        if (this.elements.btnDecreaseFontSize) this.elements.btnDecreaseFontSize.style.display = 'flex';
+        if (this.elements.btnThemeToggle) this.elements.btnThemeToggle.style.display = 'flex';
+        if (this.elements.btnGrayscale) this.elements.btnGrayscale.style.display = 'flex';
+        if (this.elements.btnShare) this.elements.btnShare.style.display = 'flex';
+        
+        this.elements.mainMenu.className = 'floating-menu';
+        console.log('Modo desktop: todos los elementos visibles');
+        
+      } else {
+        // Mobile: aplicar lógica móvil
+        this.updateMenuDisplay();
+        console.log('Modo móvil: aplicando lógica móvil');
+      }
+    },
+
+    // ===== FUNCIONES DE ZOOM SIMPLE (EXACTAMENTE COMO TU EJEMPLO) =====
+    
+    // 🔠 Escala de fuente - AUMENTAR (como tu ejemplo)
+    increaseFontSize: function() {
+      console.log('=== AUMENTAR FUENTE (MÉTODO SIMPLE) ===');
+      
+      // Exactamente como tu ejemplo
+      var scaleSteps = [1, 1.1, 1.2];
+      this.state.scaleLevel = (this.state.scaleLevel + 1) % scaleSteps.length;
+      
+      // Tu línea exacta
+      document.documentElement.style.fontSize = (16 * scaleSteps[this.state.scaleLevel]) + 'px';
+      
+      console.log('Escala aplicada:', scaleSteps[this.state.scaleLevel], '- Tamaño:', (16 * scaleSteps[this.state.scaleLevel]) + 'px');
+      this.showNotification('Fuente: ' + Math.round(scaleSteps[this.state.scaleLevel] * 100) + '%');
+    },
+
+    // 🔠 Escala de fuente - DISMINUIR (adaptación de tu ejemplo)
+    decreaseFontSize: function() {
+      console.log('=== DISMINUIR FUENTE (MÉTODO SIMPLE) ===');
+      
+      // Ciclo hacia atrás en el array
+      var scaleSteps = [1, 1.1, 1.2];
+      this.state.scaleLevel = this.state.scaleLevel === 0 ? scaleSteps.length - 1 : this.state.scaleLevel - 1;
+      
+      // Tu línea exacta
+      document.documentElement.style.fontSize = (16 * scaleSteps[this.state.scaleLevel]) + 'px';
+      
+      console.log('Escala aplicada:', scaleSteps[this.state.scaleLevel], '- Tamaño:', (16 * scaleSteps[this.state.scaleLevel]) + 'px');
+      this.showNotification('Fuente: ' + Math.round(scaleSteps[this.state.scaleLevel] * 100) + '%');
+    },
+
+    // 🌓 Alternar tema (exactamente como tu ejemplo)
+    themeToggle: function() {
+      console.log('=== CAMBIO DE TEMA ===');
+      
+      try {
+        if (typeof applyTheme !== "function") {
+          console.warn("⚠️ applyTheme no está disponible.");
+          this.showNotification('Función de tema no disponible');
+          return;
+        }
+        
+        var newTheme = this.state.themeState === "dark" ? "light" : "dark";
+        console.log('Cambiando tema de', this.state.themeState, 'a', newTheme);
+        
+        // Actualizar variables globales (como en tu ejemplo)
+        this.state.themeState = newTheme;
+        currentBase = newTheme;
+        window.currentBase = newTheme;
+        
+        applyTheme(newTheme, currentFaculty || "default");
+        
+        this.showNotification('Tema: ' + (newTheme === 'dark' ? 'Oscuro' : 'Claro'));
+        console.log("🌓 Tema cambiado a:", newTheme);
+        
+        this.updateThemeIcon();
+        
+      } catch (error) {
+        console.error("❌ Error al cambiar el tema:", error);
+        this.showNotification('Error al cambiar el tema');
+      }
+    },
+
+    updateThemeIcon: function() {
+      var themeButton = this.elements.btnThemeToggle;
+      if (themeButton) {
+        var iconElement = themeButton.querySelector('i');
+        if (iconElement) {
+          var isDark = this.state.themeState === 'dark';
+          iconElement.className = isDark ? 'ph ph-moon' : 'ph ph-sun';
+          console.log('Icono actualizado:', isDark ? 'luna' : 'sol');
+        }
+      }
+    },
+
+    // ⚫ Escala de grises (exactamente como tu ejemplo)
+    toggleGrayscale: function() {
+      console.log('=== TOGGLE ESCALA DE GRISES ===');
+      
+      var htmlElement = document.documentElement;
+      console.log('Antes:', htmlElement.classList.contains('grayscale'));
+      
+      htmlElement.classList.toggle("grayscale");
+      
+      var isActive = htmlElement.classList.contains('grayscale');
+      this.state.isGrayscaleActive = isActive;
+      
+      console.log('Después:', isActive);
+      this.showNotification(isActive ? 'Escala de grises activada' : 'Escala de grises desactivada');
+    },
+
+    // ===== FUNCIONES DE COMPARTIR =====
+    shareOnFacebook: function() {
+      var url = encodeURIComponent(window.location.href);
+      var text = encodeURIComponent(document.title);
+      var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + url + "&quote=" + text;
+      window.open(shareUrl, "_blank");
+    },
+
+    shareOnWhatsApp: function() {
+      var url = encodeURIComponent(window.location.href);
+      var text = encodeURIComponent('¡Mira este programa académico de la Pontificia Universidad Javeriana!');
+      var whatsappUrl = "https://wa.me/?text=" + text + "%20" + url;
+      window.open(whatsappUrl, "_blank");
+    },
+
+    // ===== MANEJADORES DE ACCIONES =====
+    handleMenuAction: function(action) {
+      console.log('=== ACCIÓN:', action, '===');
+      
+      switch (action) {
+        case 'toggleMenu':
+          this.toggleMobileMenu();
+          break;
+        case 'share':
+          this.openShareModal();
+          break;
+        case 'increaseFontSize':
+          this.increaseFontSize();
+          break;
+        case 'decreaseFontSize':
+          this.decreaseFontSize();
+          break;
+        case 'themeToggle':
+          this.themeToggle();
+          break;
+        case 'grayscale':
+          this.toggleGrayscale();
+          break;
+        case 'whatsapp':
+          this.shareOnWhatsApp();
+          break;
+        default:
+          console.log('Acción no reconocida:', action);
+      }
+    },
+
+    // ===== DISPLAY Y RESPONSIVE =====
+    updateMenuDisplay: function() {
+      if (!this.elements.mainMenu) return;
+
+      var isMobile = this.state.isMobile;
+      var isExpanded = this.state.isMenuExpanded;
+      var menuClasses = ['floating-menu'];
+      
+      console.log('Actualizando display:', { isMobile: isMobile, isExpanded: isExpanded });
+      
+      if (isMobile && isExpanded) {
+        menuClasses.push('mobile-expanded');
+      } else if (isMobile && !isExpanded) {
+        menuClasses.push('collapsed');
+      }
+
+      this.elements.mainMenu.className = menuClasses.join(' ');
+
+      // Control de visibilidad de elementos
+      this.updateToggleButtons();
+      this.updateMenuItems();
+      this.updateWhatsAppButton();
+      this.updateShareModal();
+    },
+
+    updateToggleButtons: function() {
+      var isMobile = this.state.isMobile;
+      var isExpanded = this.state.isMenuExpanded;
+
       if (this.elements.toggleButton) {
-        this.elements.toggleButton.style.display = 'none';
+        this.elements.toggleButton.style.display = !isMobile ? 'none' : (!isExpanded ? 'flex' : 'none');
       }
+
       if (this.elements.closeButton) {
-        this.elements.closeButton.style.display = 'none';
+        this.elements.closeButton.style.display = !isMobile ? 'none' : (isExpanded ? 'flex' : 'none');
       }
-      console.log('FloatingMenu: Botones toggle/close forzados a ocultos en desktop');
-    }
-  },
-
- 
-  themeToggle() {
-    const rootElement = document.documentElement;
-    const currentTheme = rootElement.getAttribute('data-theme') || 'light';
-    const isDark = currentTheme.includes('-dark');
-    
-    let newTheme;
-    if (isDark) {
-      // Cambiar a tema claro
-      newTheme = currentTheme.replace('-dark', '');
-    } else {
-      // Cambiar a tema oscuro
-      newTheme = currentTheme === 'light' ? 'dark' : `${currentTheme}-dark`;
-    }
-    
-    rootElement.setAttribute('data-theme', newTheme);
-    
-    // Actualizar icono
-    this.updateThemeIcon();
-    
-    this.showNotification(`Tema: ${isDark ? 'Claro' : 'Oscuro'}`);
-    console.log(`Tema cambiado a: ${newTheme}`);
-  },
-
-  updateThemeIcon() {
-    const themeButton = document.querySelector('[data-action="themeToggle"] i');
-    if (themeButton) {
-      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-      const isDark = currentTheme.includes('-dark');
-      themeButton.className = isDark ? 'ph ph-moon' : 'ph ph-sun';
-    }
-  },
-
-  toggleGrayscale() {
-    const rootElement = document.documentElement;
-    const isGrayscale = rootElement.classList.contains('grayscale-mode');
-    
-    if (isGrayscale) {
-      rootElement.classList.remove('grayscale-mode');
-      rootElement.style.filter = '';
-  
-      this.showNotification('Escala de grises desactivada');
-    } else {
-      rootElement.classList.add('grayscale-mode');
-      rootElement.style.filter = 'grayscale(100%)';
-  
-      this.showNotification('Escala de grises activada');
-    }
-    
-    console.log(`Escala de grises: ${!isGrayscale ? 'activada' : 'desactivada'}`);
-  },
-
-  // ===== FUNCIONES DE COMPARTIR =====
-  shareActions: {
-    whatsapp() {
-      const url = encodeURIComponent(window.location.href);
-      const text = encodeURIComponent('¡Mira este programa académico de la Pontificia Universidad Javeriana!');
-      const whatsappUrl = `https://wa.me/?text=${text}%20${url}`;
-      window.open(whatsappUrl, '_blank');
     },
 
-    facebook() {
-      const url = encodeURIComponent(window.location.href);
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    updateMenuItems: function() {
+      var isMobile = this.state.isMobile;
+      var isExpanded = this.state.isMenuExpanded;
+
+      // Actualizar elementos principales por ID
+      var mainItems = [
+        this.elements.btnIncreaseFontSize,
+        this.elements.btnDecreaseFontSize,
+        this.elements.btnThemeToggle,
+        this.elements.btnGrayscale,
+        this.elements.btnShare
+      ];
+
+      for (var i = 0; i < mainItems.length; i++) {
+        var item = mainItems[i];
+        if (item) {
+          if (isMobile && !isExpanded) {
+            item.style.display = 'none';
+          } else {
+            item.style.display = 'flex';
+          }
+        }
+      }
     },
 
-    instagram() {
-      // Instagram no permite compartir URLs directamente
-      FloatingMenuScript.copyToClipboard();
-      FloatingMenuScript.showNotification('Enlace copiado. Compártelo en tu historia de Instagram.');
+    updateWhatsAppButton: function() {
+      if (this.elements.whatsappButton) {
+        var shouldShow = !this.state.isMobile || this.state.isMenuExpanded;
+        this.elements.whatsappButton.style.display = shouldShow ? 'block' : 'none';
+      }
     },
 
-    linkedin() {
-      const url = encodeURIComponent(window.location.href);
-      const title = encodeURIComponent(document.title);
-      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}`, '_blank');
+    updateShareModal: function() {
+      if (this.elements.shareModal) {
+        if (this.state.showShareModal) {
+          this.elements.shareModal.classList.remove('share-modal-hidden');
+          this.elements.shareModal.classList.add('share-modal-visible');
+        } else {
+          this.elements.shareModal.classList.remove('share-modal-visible');
+          this.elements.shareModal.classList.add('share-modal-hidden');
+        }
+      }
     },
 
-    email() {
-      const subject = encodeURIComponent(`Programa académico - ${document.title}`);
-      const body = encodeURIComponent(`Te comparto este programa de la Pontificia Universidad Javeriana: ${window.location.href}`);
-      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    toggleMobileMenu: function() {
+      if (!this.state.isMobile) {
+        console.log('Intento de toggle en desktop - ignorado');
+        return;
+      }
+
+      console.log('Toggle móvil:', this.state.isMenuExpanded, '->', !this.state.isMenuExpanded);
+      
+      this.updateState({
+        isMenuExpanded: !this.state.isMenuExpanded
+      });
     },
 
-    copy() {
-      FloatingMenuScript.copyToClipboard();
-    }
-  },
+    // ===== MODAL DE COMPARTIR =====
+    openShareModal: function() {
+      console.log('Abriendo modal de compartir');
+      this.updateState({ showShareModal: true });
+      document.body.style.overflow = 'hidden';
+    },
 
-  async copyToClipboard() {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      this.showNotification('Enlace copiado al portapapeles');
-    } catch (err) {
-      // Fallback para navegadores que no soportan clipboard API
-      const textArea = document.createElement('textarea');
+    closeShareModal: function() {
+      console.log('Cerrando modal de compartir');
+      this.updateState({ showShareModal: false });
+      document.body.style.overflow = '';
+    },
+
+    // ===== NOTIFICACIONES =====
+    showNotification: function(message) {
+      var notification = document.createElement('div');
+      notification.textContent = message;
+      notification.className = 'floating-menu-notification';
+      notification.style.cssText = 
+        'position: fixed; top: 20px; right: 20px; background: #4866d1; color: white; ' +
+        'padding: 12px 24px; border-radius: 8px; z-index: 10000; font-size: 14px; ' +
+        'box-shadow: 0 4px 12px rgba(0,0,0,0.2); opacity: 0; transform: translateX(100%); ' +
+        'transition: all 0.3s ease;';
+
+      document.body.appendChild(notification);
+
+      setTimeout(function() {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateX(0)';
+      }, 10);
+
+      setTimeout(function() {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(function() {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    },
+
+    // ===== EVENT LISTENERS =====
+    setupEventListeners: function() {
+      console.log('=== CONFIGURANDO EVENT LISTENERS ===');
+      
+      var self = this;
+
+      // Resize listener
+      this.addEventListener(window, 'resize', function() {
+        var isMobile = self.checkMobileDevice();
+        var wasInMobile = self.state.isMobile;
+
+        if (isMobile !== wasInMobile) {
+          console.log('Cambio de viewport:', wasInMobile ? 'mobile' : 'desktop', '->', isMobile ? 'mobile' : 'desktop');
+          
+          self.updateState({
+            isMobile: isMobile,
+            isMenuExpanded: !isMobile
+          });
+
+          if (!isMobile) {
+            self.forceCorrectDisplay();
+          }
+        }
+      });
+
+      // Event listeners por elemento específico
+      if (this.elements.btnIncreaseFontSize) {
+        this.addEventListener(this.elements.btnIncreaseFontSize, 'click', function(e) {
+          e.preventDefault();
+          self.increaseFontSize();
+        });
+        console.log('Listener configurado para aumentar fuente');
+      }
+
+      if (this.elements.btnDecreaseFontSize) {
+        this.addEventListener(this.elements.btnDecreaseFontSize, 'click', function(e) {
+          e.preventDefault();
+          self.decreaseFontSize();
+        });
+        console.log('Listener configurado para disminuir fuente');
+      }
+
+      if (this.elements.btnThemeToggle) {
+        this.addEventListener(this.elements.btnThemeToggle, 'click', function(e) {
+          e.preventDefault();
+          self.themeToggle();
+        });
+        console.log('Listener configurado para cambio de tema');
+      }
+
+      if (this.elements.btnGrayscale) {
+        this.addEventListener(this.elements.btnGrayscale, 'click', function(e) {
+          e.preventDefault();
+          self.toggleGrayscale();
+        });
+        console.log('Listener configurado para escala de grises');
+      }
+
+      if (this.elements.btnShare) {
+        this.addEventListener(this.elements.btnShare, 'click', function(e) {
+          e.preventDefault();
+          self.openShareModal();
+        });
+        console.log('Listener configurado para compartir');
+      }
+
+      if (this.elements.btnWhatsapp) {
+        this.addEventListener(this.elements.btnWhatsapp, 'click', function(e) {
+          e.preventDefault();
+          self.shareOnWhatsApp();
+        });
+        console.log('Listener configurado para WhatsApp');
+      }
+
+      // Toggle buttons para mobile
+      if (this.elements.toggleButton) {
+        this.addEventListener(this.elements.toggleButton, 'click', function(e) {
+          e.preventDefault();
+          self.toggleMobileMenu();
+        });
+      }
+
+      if (this.elements.closeButton) {
+        this.addEventListener(this.elements.closeButton, 'click', function(e) {
+          e.preventDefault();
+          self.toggleMobileMenu();
+        });
+      }
+
+      // Modal close
+      var closeButton = document.querySelector('.share-modal-close');
+      if (closeButton) {
+        this.addEventListener(closeButton, 'click', function(e) {
+          e.preventDefault();
+          self.closeShareModal();
+        });
+      }
+
+      // Share options
+      if (this.elements.shareOptions) {
+        for (var i = 0; i < this.elements.shareOptions.length; i++) {
+          var option = this.elements.shareOptions[i];
+          var shareType = option.getAttribute('data-share');
+          if (shareType) {
+            (function(type) {
+              self.addEventListener(option, 'click', function(e) {
+                e.preventDefault();
+                self.handleShareAction(type);
+              });
+            })(shareType);
+          }
+        }
+      }
+
+      // ESC key
+      this.addEventListener(document, 'keydown', function(e) {
+        if (e.key === 'Escape' && self.state.showShareModal) {
+          self.closeShareModal();
+        }
+      });
+
+      console.log('Event listeners configurados exitosamente');
+    },
+
+    handleShareAction: function(shareType) {
+      console.log('Acción de compartir:', shareType);
+      
+      switch(shareType) {
+        case 'whatsapp':
+          this.shareOnWhatsApp();
+          break;
+        case 'facebook':
+          this.shareOnFacebook();
+          break;
+        case 'instagram':
+          this.copyToClipboard();
+          this.showNotification('Enlace copiado. Compártelo en tu historia de Instagram.');
+          break;
+        case 'linkedin':
+          var url = encodeURIComponent(window.location.href);
+          var title = encodeURIComponent(document.title);
+          window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + url + '&title=' + title, '_blank');
+          break;
+        case 'email':
+          var subject = encodeURIComponent('Programa académico - ' + document.title);
+          var body = encodeURIComponent('Te comparto este programa de la Pontificia Universidad Javeriana: ' + window.location.href);
+          window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+          break;
+        case 'copy':
+          this.copyToClipboard();
+          break;
+      }
+      
+      this.closeShareModal();
+    },
+
+    copyToClipboard: function() {
+      var self = this;
+      
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(window.location.href).then(function() {
+          self.showNotification('Enlace copiado al portapapeles');
+        }).catch(function() {
+          self.fallbackCopyToClipboard();
+        });
+      } else {
+        this.fallbackCopyToClipboard();
+      }
+    },
+
+    fallbackCopyToClipboard: function() {
+      var textArea = document.createElement('textarea');
       textArea.value = window.location.href;
       textArea.style.position = 'fixed';
       textArea.style.left = '-999999px';
@@ -353,311 +706,89 @@ const FloatingMenuScript = {
       document.body.appendChild(textArea);
       textArea.focus();
       textArea.select();
-      
+
       try {
         document.execCommand('copy');
         this.showNotification('Enlace copiado al portapapeles');
       } catch (err) {
         this.showNotification('No se pudo copiar el enlace');
       }
-      
+
       document.body.removeChild(textArea);
-    }
-  },
+    },
 
-  shareOnWhatsApp() {
-    this.shareActions.whatsapp();
-  },
+    addEventListener: function(element, event, handler) {
+      element.addEventListener(event, handler);
+      this.eventListeners.push({ element: element, event: event, handler: handler });
+    },
 
-  // ===== MANEJADORES DE ACCIONES =====
-  toggleMobileMenu() {
-    if (!this.state.isMobile) {
-      console.log('FloatingMenu: Intento de toggle en desktop - ignorado');
-      return;
-    }
-    
-    const newExpandedState = !this.state.isMenuExpanded;
-    console.log('FloatingMenu: Toggling menu -', {
-      from: this.state.isMenuExpanded,
-      to: newExpandedState
-    });
-    
-    this.updateState({
-      isMenuExpanded: newExpandedState
-    });
-  },
+    // ===== CLEANUP =====
+    destroy: function() {
+      console.log('=== DESTRUYENDO FLOATING MENU ===');
 
-  openShareModal() {
-    console.log('FloatingMenu: Abriendo modal de compartir');
-    this.updateState({ showShareModal: true });
-    document.body.style.overflow = 'hidden';
-    
-    // Cache elementos del modal cuando se abre (ya están en el DOM)
-    this.cacheModalElements();
-    this.setupModalEventListeners();
-  },
-
-  closeShareModal() {
-    console.log('FloatingMenu: Cerrando modal de compartir');
-    this.updateState({ showShareModal: false });
-    document.body.style.overflow = '';
-  },
-
-  // Setup específico para event listeners del modal
-  setupModalEventListeners() {
-    // Evitar duplicar listeners
-    if (this.modalListenersSetup) return;
-    
-    // Botón cerrar del modal
-    if (this.elements.shareCloseButton) {
-      this.addEventListener(this.elements.shareCloseButton, 'click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.closeShareModal();
-      });
-      
-      this.addEventListener(this.elements.shareCloseButton, 'keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          this.closeShareModal();
-        }
-      });
-      
-      console.log('FloatingMenu: Modal close button event listeners configurados');
-    } else {
-      console.warn('FloatingMenu: Botón de cerrar modal no encontrado');
-    }
-    
-    this.modalListenersSetup = true;
-  },
-
-  handleMenuAction(action) {
-    switch (action) {
-      case 'toggleMenu':
-        this.toggleMobileMenu();
-        break;
-      case 'share':
-        this.openShareModal();
-        break;
-      case 'increaseFontSize':
-        this.increaseFontSize();
-        break;
-      case 'decreaseFontSize':
-        this.decreaseFontSize();
-        break;
-      case 'themeToggle':
-        this.themeToggle();
-        break;
-      case 'grayscale':
-        this.toggleGrayscale();
-        break;
-      case 'whatsapp':
-        this.shareOnWhatsApp();
-        break;
-      default:
-        console.log('Acción no reconocida:', action);
-    }
-  },
-
-  handleShareAction(shareType) {
-    if (this.shareActions[shareType]) {
-      this.shareActions[shareType]();
-    }
-    this.closeShareModal();
-  },
-
-  // ===== NOTIFICACIONES =====
-  showNotification(message) {
-    const notification = document.createElement('div');
-    notification.textContent = message;
-    notification.className = 'floating-menu-notification';
-    notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--primary-600);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      z-index: 10000;
-      font-size: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      opacity: 0;
-      transform: translateX(100%);
-      transition: all 0.3s ease;
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Animación de entrada
-    setTimeout(() => {
-      notification.style.opacity = '1';
-      notification.style.transform = 'translateX(0)';
-    }, 10);
-    
-    // Animación de salida y eliminación
-    setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transform = 'translateX(100%)';
-      
-      setTimeout(() => {
-        if (notification.parentNode) {
-          notification.parentNode.removeChild(notification);
-        }
-      }, 300);
-    }, 3000);
-  },
-
-  // ===== EVENT LISTENERS =====
-  setupEventListeners() {
-    // Resize listener para responsividad - ACTUALIZADO
-    const handleResize = () => {
-      const isMobile = this.checkMobileDevice();
-      const wasInMobile = this.state.isMobile;
-      
-      // Si cambió de desktop ↔ mobile, resetear estado
-      if (isMobile !== wasInMobile) {
-        console.log('FloatingMenu: Cambio de viewport detectado -', {
-          from: wasInMobile ? 'mobile' : 'desktop',
-          to: isMobile ? 'mobile' : 'desktop',
-          windowWidth: window.innerWidth
-        });
-        
-        this.updateState({ 
-          isMobile, 
-          isMenuExpanded: !isMobile // Desktop: expanded, Mobile: collapsed
-        });
-        
-        // Forzar ocultamiento si cambió a desktop
-        if (!isMobile) {
-          this.forceHideToggleButtonsOnDesktop();
-        }
+      for (var i = 0; i < this.eventListeners.length; i++) {
+        var listener = this.eventListeners[i];
+        listener.element.removeEventListener(listener.event, listener.handler);
       }
-    };
+      this.eventListeners = [];
+
+      document.body.style.overflow = '';
+
+      this.state = {
+        isMobile: false,
+        isMenuExpanded: false,
+        showShareModal: false,
+        initialized: false,
+        themeState: 'light',
+        scaleLevel: 0,
+        isGrayscaleActive: false
+      };
+
+      this.elements = {};
+      console.log('FloatingMenu destruido correctamente');
+    }
+  };
+
+  // ===== REGISTRO E INICIALIZACIÓN =====
+  window.FloatingMenuLiferay = FloatingMenuLiferay;
+
+  if (typeof Liferay !== 'undefined') {
+    Liferay.FloatingMenu = FloatingMenuLiferay;
     
-    this.addEventListener(window, 'resize', handleResize);
-    
-    // Click listeners para acciones del menú - solo items regulares (no toggle/close)
-    this.elements.menuItems.forEach(item => {
-      const isToggleButton = item.classList.contains('menu-toggle-button');
-      const isCloseButton = item.classList.contains('menu-close-button');
-      
-      // Solo agregar listeners a items regulares
-      if (!isToggleButton && !isCloseButton) {
-        const action = item.getAttribute('data-action');
-        if (action) {
-          this.addEventListener(item, 'click', (e) => this.handleClickEvent(e, action));
-          this.addEventListener(item, 'keydown', (e) => this.handleKeyboardEvent(e, action));
-        }
+    Liferay.on('portletDestroy', function(event) {
+      if (FloatingMenuLiferay.state.portletId === event.portletId) {
+        FloatingMenuLiferay.destroy();
       }
     });
-    
-    // Toggle button - manejo específico
-    if (this.elements.toggleButton) {
-      this.addEventListener(this.elements.toggleButton, 'click', (e) => this.handleClickEvent(e, 'toggleMenu'));
-      this.addEventListener(this.elements.toggleButton, 'keydown', (e) => this.handleKeyboardEvent(e, 'toggleMenu'));
-      console.log('FloatingMenu: Toggle button events attached');
-    }
-    
-    // Close button - manejo específico
-    if (this.elements.closeButton) {
-      this.addEventListener(this.elements.closeButton, 'click', (e) => this.handleClickEvent(e, 'toggleMenu'));
-      this.addEventListener(this.elements.closeButton, 'keydown', (e) => this.handleKeyboardEvent(e, 'toggleMenu'));
-      console.log('FloatingMenu: Close button events attached');
-    }
-    
-    // Share modal - Solo el overlay y ESC
-    if (this.elements.shareModal) {
-      this.addEventListener(this.elements.shareModal, 'click', (e) => {
-        if (e.target === this.elements.shareModal) {
-          this.closeShareModal();
-        }
-      });
-    }
-    
-    // Share options
-    this.elements.shareOptions.forEach(option => {
-      const shareType = option.getAttribute('data-share');
-      if (shareType) {
-        this.addEventListener(option, 'click', () => this.handleShareAction(shareType));
-        this.addEventListener(option, 'keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.handleShareAction(shareType);
-          }
-        });
-      }
-    });
-    
-    // ESC key listener global
-    this.addEventListener(document, 'keydown', (e) => {
-      if (e.key === 'Escape' && this.state.showShareModal) {
-        this.closeShareModal();
-      }
-    });
-    
-    console.log('FloatingMenu: Event listeners configurados');
-  },
-
-  addEventListener(element, event, handler) {
-    element.addEventListener(event, handler);
-    this.eventListeners.push({ element, event, handler });
-  },
-
-  handleKeyboardEvent(event, action) {
-    const { key } = event;
-    
-    if (key === 'Enter' || key === ' ') {
-      event.preventDefault();
-      this.handleMenuAction(action);
-    }
-  },
-
-  handleClickEvent(event, action) {
-    event.preventDefault();
-    
-    const target = event.currentTarget;
-    if (target) {
-      target.classList.add('clicked');
-      setTimeout(() => {
-        target.classList.remove('clicked');
-      }, 200);
-    }
-    
-    this.handleMenuAction(action);
-  },
-
-  // ===== CLEANUP =====
-  destroy() {
-    console.log('Destruyendo FloatingMenu...');
-    
-    // Remover todos los event listeners
-    this.eventListeners.forEach(({ element, event, handler }) => {
-      element.removeEventListener(event, handler);
-    });
-    this.eventListeners = [];
-    
-    // Restaurar estilos del body
-    document.body.style.overflow = '';
-    
-    // Reset estado
-    this.state = {
-      isMobile: false,
-      isMenuExpanded: false,
-      showShareModal: false,
-      initialized: false
-    };
-    
-    // Limpiar elementos
-    this.elements = {};
-    
-    // Reset flags
-    this.modalElementsCached = false;
-    this.modalListenersSetup = false;
-    
-    console.log('FloatingMenu destruido correctamente');
   }
-};
 
-// Exportar para uso como módulo
-export default FloatingMenuScript;
+  // ===== INICIALIZACIÓN CON VERIFICACIÓN =====
+  var checkInterval = setInterval(function() {
+    var elementsReady = document.getElementById('floating-menu-container') &&
+                       document.getElementById('floating-menu-main') &&
+                       document.getElementById('btnIncreaseFontSize') &&
+                       document.getElementById('btnDecreaseFontSize') &&
+                       document.getElementById('btnThemeToggle') &&
+                       document.getElementById('btnGrayscale');
+    
+    if (elementsReady) {
+      console.log('✅ Elementos detectados, inicializando FloatingMenu');
+      FloatingMenuLiferay.init();
+      clearInterval(checkInterval);
+    } else {
+      console.log('⏳ Esperando elementos del DOM...');
+    }
+  }, 300);
+
+  // Timeout de seguridad
+  setTimeout(function() {
+    clearInterval(checkInterval);
+    if (!FloatingMenuLiferay.state.initialized) {
+      console.warn('⚠️ Timeout: Inicializando FloatingMenu sin todos los elementos');
+      FloatingMenuLiferay.init();
+    }
+  }, 5000);
+
+  return FloatingMenuLiferay;
+
+})(window, document, window.Liferay || {});

@@ -10,6 +10,11 @@ html {
   --javeriana-acc-transition: all 0.3s ease;
 }
 
+//escala de grises 
+html.grayscale {
+  filter: grayscale(100%);
+}
+
 // ===== PROTECCIÓN CONTRA ZOOM =====
 .floating-menu,
 .floating-menu *,
@@ -399,6 +404,7 @@ html {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    display: none;
 
     .share-modal {
       transform: scale(0.8) translateY(rem(20px));
@@ -409,6 +415,7 @@ html {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+    display: flex;
 
     .share-modal {
       transform: scale(1) translateY(0);

@@ -129,11 +129,10 @@ const FloatingMenu = ({ configuration = {} }) => {
       {/* Modal de Compartir */}
       <div 
         id="share-modal-overlay"
-        className="share-modal-overlay" 
         role="dialog"
         aria-modal="true"
         aria-labelledby="share-modal-title"
-        style={{ display: 'none' }}
+        className="share-modal-overlay share-modal-hidden"
       >
         <div className="share-modal">
           <div className="share-modal-header">
