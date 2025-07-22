@@ -101,13 +101,10 @@
           this.setupEventListeners();
           this.updateState({ initialized: true });
           this.forceCorrectDisplay();
-<<<<<<< HEAD
           
           // Mostrar el menú cuando esté listo
           this.showMenuWhenReady();
           
-=======
->>>>>>> 07b12853ddfb10d8b49076d8d67b4974c4b81a86
           console.log('=== FLOATING MENU INICIALIZADO CORRECTAMENTE ===');
         }.bind(this), this.config.initialization.delayAfterMount);
 
@@ -116,7 +113,6 @@
       }
     },
 
-<<<<<<< HEAD
     // Solo mostrar cuando esté listo
     showMenuWhenReady: function() {
       setTimeout(function() {
@@ -125,8 +121,6 @@
       }, 500);
     },
 
-=======
->>>>>>> 07b12853ddfb10d8b49076d8d67b4974c4b81a86
     cacheElements: function() {
       console.log('=== BUSCANDO ELEMENTOS DOM ===');
       
@@ -270,7 +264,6 @@
       }
     },
 
-<<<<<<< HEAD
     // ===== FUNCIONES DE ZOOM  =====
     
     // 🔠 Escala de fuente - AUMENTAR (corregido)
@@ -315,41 +308,6 @@ decreaseFontSize: function() {
   }
 },
     // TEMA CLARO /OSCURO 
-=======
-    // ===== FUNCIONES DE ZOOM SIMPLE (EXACTAMENTE COMO TU EJEMPLO) =====
-    
-    // 🔠 Escala de fuente - AUMENTAR (como tu ejemplo)
-    increaseFontSize: function() {
-      console.log('=== AUMENTAR FUENTE (MÉTODO SIMPLE) ===');
-      
-      // Exactamente como tu ejemplo
-      var scaleSteps = [1, 1.1, 1.2];
-      this.state.scaleLevel = (this.state.scaleLevel + 1) % scaleSteps.length;
-      
-      // Tu línea exacta
-      document.documentElement.style.fontSize = (16 * scaleSteps[this.state.scaleLevel]) + 'px';
-      
-      console.log('Escala aplicada:', scaleSteps[this.state.scaleLevel], '- Tamaño:', (16 * scaleSteps[this.state.scaleLevel]) + 'px');
-      this.showNotification('Fuente: ' + Math.round(scaleSteps[this.state.scaleLevel] * 100) + '%');
-    },
-
-    // 🔠 Escala de fuente - DISMINUIR (adaptación de tu ejemplo)
-    decreaseFontSize: function() {
-      console.log('=== DISMINUIR FUENTE (MÉTODO SIMPLE) ===');
-      
-      // Ciclo hacia atrás en el array
-      var scaleSteps = [1, 1.1, 1.2];
-      this.state.scaleLevel = this.state.scaleLevel === 0 ? scaleSteps.length - 1 : this.state.scaleLevel - 1;
-      
-      // Tu línea exacta
-      document.documentElement.style.fontSize = (16 * scaleSteps[this.state.scaleLevel]) + 'px';
-      
-      console.log('Escala aplicada:', scaleSteps[this.state.scaleLevel], '- Tamaño:', (16 * scaleSteps[this.state.scaleLevel]) + 'px');
-      this.showNotification('Fuente: ' + Math.round(scaleSteps[this.state.scaleLevel] * 100) + '%');
-    },
-
-    // 🌓 Alternar tema (exactamente como tu ejemplo)
->>>>>>> 07b12853ddfb10d8b49076d8d67b4974c4b81a86
     themeToggle: function() {
       console.log('=== CAMBIO DE TEMA ===');
       
@@ -569,11 +527,7 @@ decreaseFontSize: function() {
       notification.textContent = message;
       notification.className = 'floating-menu-notification';
       notification.style.cssText = 
-<<<<<<< HEAD
         'position: fixed; top: 20px; right: 20px; background: var(--primary); color: white; ' +
-=======
-        'position: fixed; top: 20px; right: 20px; background: #4866d1; color: white; ' +
->>>>>>> 07b12853ddfb10d8b49076d8d67b4974c4b81a86
         'padding: 12px 24px; border-radius: 8px; z-index: 10000; font-size: 14px; ' +
         'box-shadow: 0 4px 12px rgba(0,0,0,0.2); opacity: 0; transform: translateX(100%); ' +
         'transition: all 0.3s ease;';
