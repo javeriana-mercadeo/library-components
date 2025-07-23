@@ -5,6 +5,7 @@ import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 import Load from '@/app/_components/load/load'
 
 // Lazy load heavy sections with client-side loading
+
 const Encabezado = dynamic(() => import('./_sections/0_encabezado'), { ssr: false, loading: () => <Load /> })
 const Datos = dynamic(() => import('./_sections/1_datos'), { ssr: false, loading: () => <Load /> })
 const PlanEstudio = dynamic(() => import('./_sections/2_planEstudio'), { ssr: false, loading: () => <Load /> })
@@ -29,9 +30,9 @@ export default function Profesional() {
       </ViewComponent>
 
       {/* <Datos /> */}
-      {/* <ViewComponent path={`${basePath}/_sections/1_datos`}>
+      <ViewComponent path={`${basePath}/_sections/1_datos`}>
         <Datos />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/* <PlanEstudio /> */}
       {/* <ViewComponent path={`${basePath}/_sections/2_planEstudio`}>
@@ -59,9 +60,9 @@ export default function Profesional() {
       </ViewComponent> */}
 
       {/* <Experiencia /> */}
-      <ViewComponent path={`${basePath}/_sections/7_experiencia`}>
+      {/* <ViewComponent path={`${basePath}/_sections/7_experiencia`}>
         <Experiencia />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Cita /> */}
       {/* <ViewComponent path={`${basePath}/_sections/8_cita`}>
@@ -79,9 +80,9 @@ export default function Profesional() {
       </ViewComponent>
 
       {/* <Footer /> */}
-      <ViewComponent path={`${basePath}/_sections/11_footer`}>
+      {/* <ViewComponent path={`${basePath}/_sections/11_footer`}>
         <Footer />
-      </ViewComponent>
+      </ViewComponent> */}
     </>
   )
 }
