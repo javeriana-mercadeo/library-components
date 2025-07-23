@@ -12,17 +12,16 @@ const ModalForm = {
       console.log(`Iniciando FormModules para el programa: ${programa} con código: ${codPrograma}`)
 
       this.formModulesInstance = new window.FormModules('formProgram', {
+        // Datos del evento
         eventName: `Landing Page: ${programa}`,
-        eventDate: '2024-07-15',
-        campaign: 'PREGRADO_MODAL_2024',
-        article: 'landing_pregrado',
-        source: 'modal_landing',
-        medium: 'organico',
+        eventDate: '', // Qué fecha se usará para el evento
+        campaign: codPrograma,
         typeAttendee: ['Aspirante'],
         programs: [codPrograma],
-        sandboxMode: true,
-        debugMode: true,
-        devMode: false,
+        // Configuración del formulario
+        test: false,
+        debug: true,
+        development: false,
         debugEmail: 'gavilanm-j@javeriana.edu.co',
         thankYouUrl: 'https://www.javeriana.edu.co/info-prg/thank-you-pregrado'
       })
