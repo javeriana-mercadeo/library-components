@@ -1,4 +1,4 @@
-const codProgram = configuration["codeProgram"] // Tomada de liferay
+const codProgram = configuration['codeProgram'] // Tomada de liferay
 let statusPage = {}
 
 // ===========================================
@@ -106,8 +106,6 @@ const loadDataProgram = async codPrg => {
     // Logs para debugging
     console.log('🔍 Programa principal:', programData)
     console.log('🔍 Programa complementario:', consolidatedData.complementaryProgram)
-    console.log('🔍 Todos los programas:', allPrograms);
-
 
     dispatchEvent(nameEvent, {
       dataProgram: consolidatedData.mainProgram,
