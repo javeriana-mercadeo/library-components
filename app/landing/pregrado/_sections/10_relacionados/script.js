@@ -1,7 +1,4 @@
 export default () => {
-  console.log('📍 [SCRIPT] Script relacionados cargado y ejecutándose - TEST BÁSICO')
-  console.log('📍 [TEST] El script SÍ se está ejecutando')
-
   // ==========================================
   // CONFIGURACIÓN DEL CARRUSEL
   // ==========================================
@@ -63,18 +60,30 @@ export default () => {
       enableSameFacultyPriority: true,
       enableAreaBasedFallback: true
     },
-    displaySettings: {
-      showProgramType: true,
-      showFaculty: true,
-      enableDebugLogs: true,
-      showStatistics: true,
-      enableAllLogs: true
+    logSettings: {
+      enableLogs: false // Control maestro - cambiar a false desactiva TODOS los logs
     }
   }
 
   // ==========================================
+  // SISTEMA DE LOGGING CENTRALIZADO
+  // ==========================================
+
+  // ==========================================
   // FUNCIONES DE NORMALIZACIÓN DE FACULTADES
   // ==========================================
+
+  /**
+   * Función centralizada para manejo de logs - control maestro simple
+   */
+  function logMessage(message, ...args) {
+    if (CAROUSEL_CONFIG.logSettings.enableLogs) {
+      console.log(message, ...args)
+    }
+  }
+
+  // Log de inicialización
+  logMessage('📍 [SCRIPT] Sistema de programas relacionados iniciado')
 
   /**
    * Normaliza nombres de facultades para hacer comparaciones flexibles
@@ -122,55 +131,26 @@ export default () => {
       const { facultad, programa, snies, codPrograma, urlImagen, area, url } = dataProgram
 
       // 📋 TABLA DE INFORMACIÓN CONSULTADA
-      console.log('📋 INFORMACIÓN DEL PROGRAMA ACTUAL:')
-      console.table({
-        Código: codPrograma || 'N/A',
-        Programa: programa || 'N/A',
-        Facultad: Array.isArray(facultad) ? facultad.join(', ') : facultad || 'N/A',
-        Áreas: Array.isArray(area) ? area.join(', ') : area || 'N/A',
-        SNIES: snies || 'N/A',
-        URL: url || 'N/A',
-        Imagen: urlImagen || 'N/A'
-      })
-
-      console.log('📊 RESUMEN DE TODOS LOS PROGRAMAS:')
-      const programSummary = allPrograms.reduce((acc, prog) => {
-        const type = prog.tipoPrograma || 'Sin tipo'
-        acc[type] = (acc[type] || 0) + 1
-        return acc
-      }, {})
-      console.table(programSummary)
-
-      // DEBUG: Ver estructura de datos
-      if (allPrograms.length > 0) {
-        console.log('🔍 [DEBUG] Primer programa de allPrograms:', allPrograms[0])
-        console.log('🔍 [DEBUG] Campos clave del primer programa:')
-        const firstProg = allPrograms[0]
-        console.log('  - nombre:', firstProg.nombre)
-        console.log('  - urlPrograma:', firstProg.urlPrograma)
-        console.log('  - urlImagenPrograma:', firstProg.urlImagenPrograma)
-        console.log('  - facultad:', firstProg.facultad)
-        console.log('  - areas:', firstProg.areas)
-        console.log('  - tipoPrograma:', firstProg.tipoPrograma)
+      logMessage('📋 INFORMACIÓN DEL PROGRAMA ACTUAL:')
+      if (CAROUSEL_CONFIG.logSettings.enableLogs) {
+        console.table({
+          Código: codPrograma || 'N/A',
+          Programa: programa || 'N/A',
+          Facultad: Array.isArray(facultad) ? facultad.join(', ') : facultad || 'N/A',
+          Áreas: Array.isArray(area) ? area.join(', ') : area || 'N/A',
+          SNIES: snies || 'N/A',
+          URL: url || 'N/A',
+          Imagen: urlImagen || 'N/A'
+        })
       }
 
-      // DEBUG: Ver estadísticas por tipo como la versión anterior
-      if (CAROUSEL_CONFIG.displaySettings.enableAllLogs && CAROUSEL_CONFIG.displaySettings.showStatistics) {
-        console.log(`📊 ESTADÍSTICAS DE TODOS LOS ${allPrograms.length} PROGRAMAS:`)
-        const statsByType = allPrograms.reduce((acc, prog) => {
-          acc[prog.tipoPrograma] = (acc[prog.tipoPrograma] || 0) + 1
-          return acc
-        }, {})
-        console.table(statsByType)
-
-        // Mostrar configuración actual
-        console.log('⚙️ CONFIGURACIÓN ACTUAL DEL CARRUSEL:')
-        const enabledTypes = Object.entries(CAROUSEL_CONFIG.programTypes)
-          .filter(([_, config]) => config.enabled)
-          .map(([type, config]) => `${type} (P${config.priority})`)
-        console.log('✅ Tipos habilitados:', enabledTypes.join(', '))
-        console.log('📊 Máximo de programas:', CAROUSEL_CONFIG.filterSettings.maxPrograms)
-      }
+      // Mostrar configuración actual
+      logMessage('⚙️ CONFIGURACIÓN ACTUAL DEL CARRUSEL:')
+      const enabledTypes = Object.entries(CAROUSEL_CONFIG.programTypes)
+        .filter(([_, config]) => config.enabled)
+        .map(([type, config]) => `${type} (P${config.priority})`)
+      logMessage('✅ Tipos habilitados:', enabledTypes.join(', '))
+      logMessage('📊 Máximo de programas:', CAROUSEL_CONFIG.filterSettings.maxPrograms)
 
       let automationUpdates = {}
 
@@ -198,8 +178,6 @@ export default () => {
           areaRelated: []
         }
 
-        console.log(`🔄 [DEBUG] Iniciando evaluación de ${allPrograms.length} programas...`)
-
         let debugCount = 0
         let excludedCurrent = 0
         let excludedType = 0
@@ -213,18 +191,12 @@ export default () => {
           // Excluir programa actual (prog.codigo vs codPrograma)
           if (prog.codigo === codPrograma) {
             excludedCurrent++
-            if (debugCount <= 10 && CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
-              console.log(`  🚫 Excluido programa actual: ${prog.nombre} (${prog.codigo})`)
-            }
             return
           }
 
           const programTypeConfig = CAROUSEL_CONFIG.programTypes[prog.tipoPrograma]
           if (!programTypeConfig || !programTypeConfig.enabled) {
             excludedType++
-            if (debugCount <= 10 && CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
-              console.log(`  ❌ Tipo no habilitado: ${prog.nombre} (${prog.tipoPrograma})`)
-            }
             return
           }
 
@@ -253,145 +225,15 @@ export default () => {
             }
           }
 
-          // DEBUG detallado para los primeros 10 programas
-          if (debugCount <= 10 && CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
-            console.log(`  🔍 Evaluando: ${prog.nombre}`)
-            console.log(`    - Facultad prog: "${progFaculty}" → normalizada: "${normalizedProgFaculty}"`)
-            console.log(`    - Facultad actual: "${faculty}" → normalizada: "${normalizedCurrentFaculty}" = ${isSameFaculty}`)
-            console.log(`    - Areas prog: [${prog.areas?.join(', ')}] vs actual: "${area}" = ${hasCommonArea}`)
-          }
-
           if (isSameFaculty) {
             priorities.sameFaculty.push(prog)
             addedFaculty++
-            if (debugCount <= 10 && CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
-              console.log(`    ✅ Agregado a sameFaculty`)
-            }
           } else if (hasCommonArea) {
             priorities.areaRelated.push(prog)
             addedArea++
-            if (debugCount <= 10 && CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
-              console.log(`    ✅ Agregado a areaRelated`)
-            }
           } else {
             noCriteria++
-            if (debugCount <= 10 && CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
-              console.log(`    ❌ No cumple criterios`)
-            }
           }
-        })
-
-        // Mostrar estadísticas completas de la evaluación
-        console.log(`📊 [EVALUACIÓN COMPLETA] Estadísticas de ${allPrograms.length} programas:`)
-        console.log(`  🚫 Excluidos por ser programa actual: ${excludedCurrent}`)
-        console.log(`  ❌ Excluidos por tipo no habilitado: ${excludedType}`)
-        console.log(`  ⭐ Agregados por misma facultad: ${addedFaculty}`)
-        console.log(`  📚 Agregados por área común: ${addedArea}`)
-        console.log(`  ❌ No cumplen criterios: ${noCriteria}`)
-        console.log(`  ✅ Total candidatos: ${addedFaculty + addedArea}`)
-
-        // DEBUG: TABLA DE TODAS LAS FACULTADES
-        console.log(`🏛️ [DEBUG FACULTADES] Análisis de todas las facultades en la API:`)
-
-        // Extraer todas las facultades únicas de todos los programas
-        const todasLasFacultades = new Set()
-        allPrograms.forEach(prog => {
-          const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
-          if (progFaculty && typeof progFaculty === 'string') {
-            todasLasFacultades.add(progFaculty.trim())
-          }
-        })
-
-        // Convertir a array y ordenar alfabéticamente
-        const facultadesArray = Array.from(todasLasFacultades).sort()
-
-        console.log(`📊 TABLA DE FACULTADES (${facultadesArray.length} facultades únicas):`)
-        console.table(
-          facultadesArray.map((facultad, index) => ({
-            'No.': index + 1,
-            'Nombre Completo': facultad,
-            'Nombre Limpio': facultad.replace(/^Facultad de /i, '').trim(),
-            Longitud: facultad.length
-          }))
-        )
-
-        // Buscar facultades que contengan "Económicas" o "Administrativas"
-        const facultadesEconomicas = facultadesArray.filter(
-          fac =>
-            fac.toLowerCase().includes('económicas') ||
-            fac.toLowerCase().includes('economicas') ||
-            fac.toLowerCase().includes('administrativas')
-        )
-
-        if (facultadesEconomicas.length > 0) {
-          console.log(`💼 Facultades relacionadas con Económicas/Administrativas encontradas:`)
-          facultadesEconomicas.forEach(fac => {
-            console.log(`  - "${fac}"`)
-          })
-        } else {
-          console.log(`❌ No se encontraron facultades con "Económicas" o "Administrativas"`)
-        }
-
-        // DEBUG ESPECÍFICO: Todos los programas de "Facultad de Ciencias Económicas y Administrativas"
-        console.log(`💼 [DEBUG] Programas de "Facultad de Ciencias Económicas y Administrativas":`)
-
-        const programasEconomicas = allPrograms.filter(prog => {
-          const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
-          return progFaculty && progFaculty.includes('Facultad de Ciencias Económicas y Administrativas')
-        })
-
-        console.log(`📊 TABLA DE PROGRAMAS DE CS.ECONÓMICAS (${programasEconomicas.length} programas):`)
-        console.table(
-          programasEconomicas.map((prog, index) => ({
-            'No.': index + 1,
-            Nombre: prog.nombre,
-            Código: prog.codigo,
-            Tipo: prog.tipoPrograma,
-            'Facultad Completa': Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad,
-            Areas: prog.areas ? prog.areas.join(', ') : 'Sin áreas'
-          }))
-        )
-
-        // Contar por tipo de programa
-        const tiposPorEconomicas = programasEconomicas.reduce((acc, prog) => {
-          acc[prog.tipoPrograma] = (acc[prog.tipoPrograma] || 0) + 1
-          return acc
-        }, {})
-
-        console.log(`📈 Distribución por tipo de programa en Cs.Económicas:`)
-        console.table(tiposPorEconomicas)
-
-        // DEBUG ADICIONAL: Búsqueda flexible de cualquier facultad con "Económicas" y "Administrativas"
-        console.log(`🔍 [DEBUG] Búsqueda flexible - cualquier facultad con "Económicas" Y "Administrativas":`)
-
-        const programasFlexible = allPrograms.filter(prog => {
-          const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
-          if (!progFaculty) return false
-          const facultyLower = progFaculty.toLowerCase()
-          return facultyLower.includes('económicas') && facultyLower.includes('administrativas')
-        })
-
-        console.log(`📊 BÚSQUEDA FLEXIBLE (${programasFlexible.length} programas encontrados):`)
-        if (programasFlexible.length > 0) {
-          console.table(
-            programasFlexible.slice(0, 5).map((prog, index) => ({
-              'No.': index + 1,
-              Nombre: prog.nombre,
-              Código: prog.codigo,
-              Tipo: prog.tipoPrograma,
-              'Facultad Exacta': Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
-            }))
-          )
-        } else {
-          console.log(`❌ No se encontraron programas con facultad que contenga "Económicas" Y "Administrativas"`)
-        }
-
-        // DEBUG: Mostrar algunos programas de pregrado que SÍ pasaron el filtro
-        const pregradoPrograms = allPrograms.filter(prog => prog.tipoPrograma === 'Pregrado - Carrera' && prog.codigo !== codPrograma)
-        console.log(`🎓 [DEBUG] TODOS los ${pregradoPrograms.length} programas de Pregrado - Carrera (excluyendo actual):`)
-        pregradoPrograms.forEach((prog, i) => {
-          const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
-          console.log(`  ${i + 1}. ${prog.nombre} - Facultad: "${progFaculty}" - Areas: [${prog.areas?.join(', ')}]`)
         })
 
         const sortByPriority = (a, b) => {
@@ -409,80 +251,21 @@ export default () => {
 
       let compiledPrograms = compileOrderedPrograms(currentProgram, allPrograms)
 
-      console.log('🎯 [CAROUSEL] Programas encontrados:', compiledPrograms.length)
+      // Logs de resultados
+      logMessage('🎯 [CAROUSEL] Programas encontrados:', compiledPrograms.length)
       if (compiledPrograms.length > 0) {
-        console.log('🎯 [CAROUSEL] Lista de programas filtrados:')
+        logMessage('🎯 [CAROUSEL] Lista de programas filtrados:')
         compiledPrograms.forEach((prog, index) => {
-          console.log(`  ${index + 1}. ${prog.nombre || prog.programa} (Código: ${prog.codigo})`)
+          logMessage(`  ${index + 1}. ${prog.nombre || prog.programa} (Código: ${prog.codigo})`)
         })
       } else {
-        console.log('❌ [CAROUSEL] No se encontraron programas relacionados')
-        console.log('🔍 [DEBUG] Datos del programa actual para debug:')
-        console.log('  - Código:', codPrograma)
-        console.log('  - Facultad ACTUAL:', faculty)
-        console.log('  - Área:', area)
-
-        // DEBUG ESPECÍFICO: Comparar nombres de facultad para Económicas
-        if (faculty && faculty.toLowerCase().includes('económicas')) {
-          console.log('💼 [DEBUG FACULTAD ECONÓMICAS] Análisis de coincidencia de nombres:')
-          console.log(`  - Facultad del programa actual: "${faculty}"`)
-          console.log(`  - Facultad normalizada programa actual: "${normalizeFacultyName(faculty)}"`)
-
-          // Buscar programas que contengan "Económicas" para comparar nombres
-          const ejemplosEconomicas = allPrograms
-            .filter(prog => {
-              const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
-              return progFaculty && progFaculty.toLowerCase().includes('económicas')
-            })
-            .slice(0, 3)
-
-          if (ejemplosEconomicas.length > 0) {
-            console.log(`  - Ejemplos de facultad en allPrograms:`)
-            ejemplosEconomicas.forEach((prog, i) => {
-              const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
-              const normalizedProgFaculty = normalizeFacultyName(progFaculty)
-              const match = normalizeFacultyName(faculty) === normalizedProgFaculty
-              console.log(`    ${i + 1}. "${progFaculty}" → normalizada: "${normalizedProgFaculty}" → Match: ${match}`)
-            })
-          }
-        }
-        console.log('🔍 [DEBUG] Verificar primeros 5 programas de allPrograms:')
-        allPrograms.slice(0, 5).forEach((prog, i) => {
-          console.log(`  Programa ${i + 1}:`, {
-            nombre: prog.nombre,
-            codigo: prog.codigo,
-            facultad: prog.facultad,
-            tipoPrograma: prog.tipoPrograma,
-            areas: prog.areas
-          })
-        })
-
-        // DEBUG ESPECÍFICO: Ver programas de la misma facultad
-        console.log('🔍 [DEBUG] Buscando programas de la facultad "Arquitectura y Diseño":')
-        const sameF = allPrograms.filter(prog => {
-          const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
-          return progFaculty === 'Arquitectura y Diseño'
-        })
-        console.log(`  Encontrados ${sameF.length} programas en la misma facultad:`)
-        sameF.slice(0, 3).forEach(prog => {
-          console.log(`    - ${prog.nombre} (${prog.tipoPrograma})`)
-        })
-
-        // DEBUG ESPECÍFICO: Ver programas con área similar
-        console.log('🔍 [DEBUG] Buscando programas con área "Arquitectura, Diseño y Urbanismo":')
-        const sameArea = allPrograms.filter(prog => {
-          return prog.areas?.includes('Arquitectura, Diseño y Urbanismo')
-        })
-        console.log(`  Encontrados ${sameArea.length} programas con área similar:`)
-        sameArea.slice(0, 3).forEach(prog => {
-          console.log(`    - ${prog.nombre} (${prog.tipoPrograma}) Areas: ${prog.areas?.join(', ')}`)
-        })
+        logMessage('❌ [CAROUSEL] No se encontraron programas relacionados')
       }
 
       const relatedPrograms = document.getElementById('relatedPrograms')
 
       if (!relatedPrograms) {
-        console.error("❌ Error: Contenedor 'relatedPrograms' no se encuentra en el DOM.")
+        logMessage("❌ Error: Contenedor 'relatedPrograms' no se encuentra en el DOM.")
         return
       }
 
@@ -512,15 +295,6 @@ export default () => {
           urlImage = cleanUrl.replace(/\/?documents\//, newStart)
         }
 
-        // DEBUG: Ver datos que se van a usar en la card
-        console.log(`🎯 [CARD ${index + 1}] Datos para ${programName}:`, {
-          nombre: programName,
-          facultad: programFaculty,
-          url: programUrl,
-          imagen: urlImage,
-          programa_completo: program
-        })
-
         const card = document.createElement('div')
         card.classList.add('swiper-slide')
 
@@ -543,18 +317,11 @@ export default () => {
         relatedPrograms.appendChild(card)
       })
 
-      if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
-        console.log('🎯 Cards creadas exitosamente:', compiledPrograms.length)
-        console.log('✅ [CAROUSEL] Cards creadas y agregadas al DOM')
-        console.log('🎯 [DEBUG] Contenedor final:', relatedPrograms)
-        console.log('🎯 [DEBUG] Slides en contenedor:', relatedPrograms.children.length)
-      }
+      logMessage('✅ [CAROUSEL] Cards creadas y agregadas al DOM')
 
       // Inicializar Swiper después de crear las cards - igual que la versión anterior
       setTimeout(() => {
-        if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
-          console.log('⚡ Inicializando Swiper...')
-        }
+        logMessage('⚡ Inicializando Swiper...')
         this.initializeSwiper()
       }, 100)
     },
@@ -567,9 +334,7 @@ export default () => {
       }
 
       if (!window.Swiper) {
-        if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
-          console.log('⏳ Swiper no disponible, reintentando...')
-        }
+        logMessage('⏳ Swiper no disponible, reintentando...')
         setTimeout(() => this.initializeSwiper(), 300)
         return
       }
@@ -578,16 +343,14 @@ export default () => {
       const element = document.querySelector('.related-programs-swiper') || document.querySelector('.related-programs__carousel')
 
       if (!element) {
-        console.error('❌ Elemento swiper no encontrado')
+        logMessage('❌ Elemento swiper no encontrado')
         return
       }
 
       // Contar slides disponibles - igual que la versión anterior
       const totalSlides = element.querySelectorAll('.swiper-slide').length
 
-      if (CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
-        console.log('🎯 [SWIPER] Inicializando con', totalSlides, 'slides')
-      }
+      logMessage('🎯 [SWIPER] Inicializando con', totalSlides, 'slides')
 
       window.relatedProgramsSwiper = new window.Swiper(element, {
         loop: false,
@@ -639,7 +402,7 @@ export default () => {
         }
       })
 
-      console.log('✅ [SWIPER] Inicializado correctamente')
+      logMessage('✅ [SWIPER] Inicializado correctamente')
     }
   }
 
