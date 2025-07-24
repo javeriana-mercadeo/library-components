@@ -57,7 +57,7 @@ export default () => {
       }
     },
     filterSettings: {
-      maxPrograms: 6,
+      maxPrograms: 10,
       enableFacultyFilter: true,
       enableAreaFilter: true,
       enableSameFacultyPriority: true,
@@ -70,6 +70,36 @@ export default () => {
       showStatistics: true,
       enableAllLogs: true
     }
+  }
+
+  // ==========================================
+  // FUNCIONES DE NORMALIZACIÓN DE FACULTADES
+  // ==========================================
+
+  /**
+   * Normaliza nombres de facultades para hacer comparaciones flexibles
+   * Maneja abreviaciones y variaciones comunes
+   */
+  function normalizeFacultyName(facultyName) {
+    if (!facultyName || typeof facultyName !== 'string') return ''
+
+    // Limpiar espacios y quitar "Facultad de" al inicio
+    let clean = facultyName.replace(/^Facultad de /i, '').trim()
+
+    // Mapeo de abreviaciones conocidas a nombres completos
+    const facultyMappings = {
+      'Cs.Económicas y Administrativ.': 'Ciencias Económicas y Administrativas',
+      'Arquitectura y Diseño': 'Arquitectura y Diseño',
+      'Cs.Económicas y Administrativas': 'Ciencias Económicas y Administrativas'
+      // Agregar más mapeos según sea necesario
+    }
+
+    // Aplicar mapeo si existe
+    if (facultyMappings[clean]) {
+      return facultyMappings[clean]
+    }
+
+    return clean
   }
 
   // ==========================================
@@ -206,10 +236,10 @@ export default () => {
             return // Saltar este programa si no tiene facultad válida
           }
 
-          // Comparación flexible de facultades - quitar "Facultad de" para comparar
-          const cleanFaculty = faculty.replace(/^Facultad de /i, '').trim()
-          const cleanProgFaculty = progFaculty.replace(/^Facultad de /i, '').trim()
-          const isSameFaculty = cleanFaculty === cleanProgFaculty
+          // Comparación flexible de facultades - usar normalización
+          const normalizedCurrentFaculty = normalizeFacultyName(faculty)
+          const normalizedProgFaculty = normalizeFacultyName(progFaculty)
+          const isSameFaculty = normalizedCurrentFaculty === normalizedProgFaculty
 
           // Comparar areas - IGUAL que la versión anterior que funcionaba
           let hasCommonArea = false
@@ -226,8 +256,8 @@ export default () => {
           // DEBUG detallado para los primeros 10 programas
           if (debugCount <= 10 && CAROUSEL_CONFIG.displaySettings.enableAllLogs) {
             console.log(`  🔍 Evaluando: ${prog.nombre}`)
-            console.log(`    - Facultad prog: "${progFaculty}" (limpia: "${cleanProgFaculty}")`)
-            console.log(`    - Facultad actual: "${faculty}" (limpia: "${cleanFaculty}") = ${isSameFaculty}`)
+            console.log(`    - Facultad prog: "${progFaculty}" → normalizada: "${normalizedProgFaculty}"`)
+            console.log(`    - Facultad actual: "${faculty}" → normalizada: "${normalizedCurrentFaculty}" = ${isSameFaculty}`)
             console.log(`    - Areas prog: [${prog.areas?.join(', ')}] vs actual: "${area}" = ${hasCommonArea}`)
           }
 
@@ -260,36 +290,101 @@ export default () => {
         console.log(`  ❌ No cumplen criterios: ${noCriteria}`)
         console.log(`  ✅ Total candidatos: ${addedFaculty + addedArea}`)
 
-        // DEBUG ESPECÍFICO PARA ESPECIALIZACIONES
-        console.log(`🔍 [DEBUG ESPECIALIZACIONES] Análisis detallado:`)
+        // DEBUG: TABLA DE TODAS LAS FACULTADES
+        console.log(`🏛️ [DEBUG FACULTADES] Análisis de todas las facultades en la API:`)
 
-        const totalEspecializaciones = allPrograms.filter(prog => prog.tipoPrograma === 'Especialización').length
-        console.log(`  Total especializaciones en la base: ${totalEspecializaciones}`)
-
-        // Ver si "Especialización" está en la configuración
-        const especializacionConfig = CAROUSEL_CONFIG.programTypes['Especialización']
-        console.log(`  Config para "Especialización":`, especializacionConfig)
-
-        // Ver especializaciones de Arquitectura y Diseño
-        const especializacionesArqui = allPrograms.filter(prog => {
-          if (prog.tipoPrograma !== 'Especialización') return false
+        // Extraer todas las facultades únicas de todos los programas
+        const todasLasFacultades = new Set()
+        allPrograms.forEach(prog => {
           const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
-
-          // Validar que progFaculty no sea undefined/null
-          if (!progFaculty || typeof progFaculty !== 'string') return false
-
-          const cleanProgFaculty = progFaculty.replace(/^Facultad de /i, '').trim()
-          return cleanProgFaculty === 'Arquitectura y Diseño'
-        })
-        console.log(`  Especializaciones de Arquitectura y Diseño: ${especializacionesArqui.length}`)
-        especializacionesArqui.forEach(prog => {
-          console.log(`    - ${prog.nombre}`)
+          if (progFaculty && typeof progFaculty === 'string') {
+            todasLasFacultades.add(progFaculty.trim())
+          }
         })
 
-        // Test del acceso a la configuración
-        const testAccess = CAROUSEL_CONFIG.programTypes
-        console.log(`  Claves disponibles en programTypes:`, Object.keys(testAccess))
-        console.log(`  ¿Existe "Especialización"?`, 'Especialización' in testAccess)
+        // Convertir a array y ordenar alfabéticamente
+        const facultadesArray = Array.from(todasLasFacultades).sort()
+
+        console.log(`📊 TABLA DE FACULTADES (${facultadesArray.length} facultades únicas):`)
+        console.table(
+          facultadesArray.map((facultad, index) => ({
+            'No.': index + 1,
+            'Nombre Completo': facultad,
+            'Nombre Limpio': facultad.replace(/^Facultad de /i, '').trim(),
+            Longitud: facultad.length
+          }))
+        )
+
+        // Buscar facultades que contengan "Económicas" o "Administrativas"
+        const facultadesEconomicas = facultadesArray.filter(
+          fac =>
+            fac.toLowerCase().includes('económicas') ||
+            fac.toLowerCase().includes('economicas') ||
+            fac.toLowerCase().includes('administrativas')
+        )
+
+        if (facultadesEconomicas.length > 0) {
+          console.log(`💼 Facultades relacionadas con Económicas/Administrativas encontradas:`)
+          facultadesEconomicas.forEach(fac => {
+            console.log(`  - "${fac}"`)
+          })
+        } else {
+          console.log(`❌ No se encontraron facultades con "Económicas" o "Administrativas"`)
+        }
+
+        // DEBUG ESPECÍFICO: Todos los programas de "Facultad de Ciencias Económicas y Administrativas"
+        console.log(`💼 [DEBUG] Programas de "Facultad de Ciencias Económicas y Administrativas":`)
+
+        const programasEconomicas = allPrograms.filter(prog => {
+          const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
+          return progFaculty && progFaculty.includes('Facultad de Ciencias Económicas y Administrativas')
+        })
+
+        console.log(`📊 TABLA DE PROGRAMAS DE CS.ECONÓMICAS (${programasEconomicas.length} programas):`)
+        console.table(
+          programasEconomicas.map((prog, index) => ({
+            'No.': index + 1,
+            Nombre: prog.nombre,
+            Código: prog.codigo,
+            Tipo: prog.tipoPrograma,
+            'Facultad Completa': Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad,
+            Areas: prog.areas ? prog.areas.join(', ') : 'Sin áreas'
+          }))
+        )
+
+        // Contar por tipo de programa
+        const tiposPorEconomicas = programasEconomicas.reduce((acc, prog) => {
+          acc[prog.tipoPrograma] = (acc[prog.tipoPrograma] || 0) + 1
+          return acc
+        }, {})
+
+        console.log(`📈 Distribución por tipo de programa en Cs.Económicas:`)
+        console.table(tiposPorEconomicas)
+
+        // DEBUG ADICIONAL: Búsqueda flexible de cualquier facultad con "Económicas" y "Administrativas"
+        console.log(`🔍 [DEBUG] Búsqueda flexible - cualquier facultad con "Económicas" Y "Administrativas":`)
+
+        const programasFlexible = allPrograms.filter(prog => {
+          const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
+          if (!progFaculty) return false
+          const facultyLower = progFaculty.toLowerCase()
+          return facultyLower.includes('económicas') && facultyLower.includes('administrativas')
+        })
+
+        console.log(`📊 BÚSQUEDA FLEXIBLE (${programasFlexible.length} programas encontrados):`)
+        if (programasFlexible.length > 0) {
+          console.table(
+            programasFlexible.slice(0, 5).map((prog, index) => ({
+              'No.': index + 1,
+              Nombre: prog.nombre,
+              Código: prog.codigo,
+              Tipo: prog.tipoPrograma,
+              'Facultad Exacta': Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
+            }))
+          )
+        } else {
+          console.log(`❌ No se encontraron programas con facultad que contenga "Económicas" Y "Administrativas"`)
+        }
 
         // DEBUG: Mostrar algunos programas de pregrado que SÍ pasaron el filtro
         const pregradoPrograms = allPrograms.filter(prog => prog.tipoPrograma === 'Pregrado - Carrera' && prog.codigo !== codPrograma)
@@ -324,8 +419,33 @@ export default () => {
         console.log('❌ [CAROUSEL] No se encontraron programas relacionados')
         console.log('🔍 [DEBUG] Datos del programa actual para debug:')
         console.log('  - Código:', codPrograma)
-        console.log('  - Facultad:', faculty)
+        console.log('  - Facultad ACTUAL:', faculty)
         console.log('  - Área:', area)
+
+        // DEBUG ESPECÍFICO: Comparar nombres de facultad para Económicas
+        if (faculty && faculty.toLowerCase().includes('económicas')) {
+          console.log('💼 [DEBUG FACULTAD ECONÓMICAS] Análisis de coincidencia de nombres:')
+          console.log(`  - Facultad del programa actual: "${faculty}"`)
+          console.log(`  - Facultad normalizada programa actual: "${normalizeFacultyName(faculty)}"`)
+
+          // Buscar programas que contengan "Económicas" para comparar nombres
+          const ejemplosEconomicas = allPrograms
+            .filter(prog => {
+              const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
+              return progFaculty && progFaculty.toLowerCase().includes('económicas')
+            })
+            .slice(0, 3)
+
+          if (ejemplosEconomicas.length > 0) {
+            console.log(`  - Ejemplos de facultad en allPrograms:`)
+            ejemplosEconomicas.forEach((prog, i) => {
+              const progFaculty = Array.isArray(prog.facultad) ? prog.facultad[0] : prog.facultad
+              const normalizedProgFaculty = normalizeFacultyName(progFaculty)
+              const match = normalizeFacultyName(faculty) === normalizedProgFaculty
+              console.log(`    ${i + 1}. "${progFaculty}" → normalizada: "${normalizedProgFaculty}" → Match: ${match}`)
+            })
+          }
+        }
         console.log('🔍 [DEBUG] Verificar primeros 5 programas de allPrograms:')
         allPrograms.slice(0, 5).forEach((prog, i) => {
           console.log(`  Programa ${i + 1}:`, {
