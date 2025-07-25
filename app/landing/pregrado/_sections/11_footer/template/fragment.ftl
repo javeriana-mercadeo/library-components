@@ -35,10 +35,17 @@
           <div class="footer__middle">
             <div class="footer__video">
               <div class="footer__mp4">
-                <img
-                  src="https://www.javeriana.edu.co/recursosdb/d/info-prg/captura-de-pantalla-2025-06-06-040044"
-                  alt="Tour virtual universidad"
-                  class="video-gif" />
+                <video
+                  src="http://www.javeriana.edu.co/recursosdb/d/info-prg/javeriana-somos-todos-1"
+                  class="video-player"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="auto"
+                  aria-label="Video institucional Universidad Javeriana">
+                  Tu navegador no soporta el elemento video.
+                </video>
                 <a
                   href="https://www.javeriana.edu.co/tour-virtual-javeriana/index.htm"
                   target="_blank"
@@ -91,10 +98,6 @@
             </p>
           </div>
           <p>Copyright © 2024 Pontificia Universidad Javeriana</p>
-          <div class="footer__links">
-            <a href="#">Políticas de Privacidad</a>
-            <a href="#">Accesibilidad Digital</a>
-          </div>
         </div>
       </div>
     </div>
