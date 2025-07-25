@@ -7,6 +7,7 @@ let statusPage = {}
 const nameEvent = 'data_load-program'
 const URL_API_JAVERIANA = 'https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals'
 const URL_API_SEARCH = 'https://www.javeriana.edu.co/prg-api/searchpuj/general-search-program'
+const URL_JSON_WHATSAPP = 'https://www.javeriana.edu.co/recursosdb/d/info-prg/whatsapps'
 
 // ===========================================
 // UTILIDADES
@@ -57,6 +58,14 @@ const fetchAllPrograms = async () => {
   return response.json()
 }
 
+const fetchWhatsApps = async () => {
+  const response = await fetch(URL_JSON_WHATSAPP)
+  if (!response.ok) {
+    throw new Error(`Error al cargar la configuración de WhatsApp: ${response.status} ${response.statusText}`)
+  }
+  return response.json()
+}
+
 // ===========================================
 // PROCESAMIENTO DE DATOS
 // ===========================================
@@ -94,7 +103,7 @@ const loadDataProgram = async codPrg => {
       codigo: codPrg
     })
 
-    const [programData, allPrograms] = await Promise.all([fetchProgramData(codPrg), fetchAllPrograms()])
+    const [programData, allPrograms, whatsApps] = await Promise.all([fetchProgramData(codPrg), fetchAllPrograms(), fetchWhatsApps()])
     const consolidatedData = processData(programData, allPrograms, codPrg)
 
     updateStatus({
@@ -110,7 +119,8 @@ const loadDataProgram = async codPrg => {
     dispatchEvent(nameEvent, {
       dataProgram: consolidatedData.mainProgram,
       consolidatedData,
-      allPrograms
+      allPrograms,
+      whatsApps
     })
 
     return
