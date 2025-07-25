@@ -6,7 +6,7 @@ export default () => {
     
     if (copyrightElement) {
       const currentYear = new Date().getFullYear()
-      const copyrightText = `Copyright (c) ${currentYear} Pontificia Universidad Javeriana`
+      const copyrightText = `Copyright © ${currentYear} Pontificia Universidad Javeriana`
       
       if (copyrightElement.textContent !== copyrightText) {
         copyrightElement.textContent = copyrightText

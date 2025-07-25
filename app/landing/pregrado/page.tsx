@@ -30,9 +30,9 @@ export default function Profesional() {
       </ViewComponent>
 
       {/* <Datos /> */}
-      <ViewComponent path={`${basePath}/_sections/1_datos`}>
+      {/* <ViewComponent path={`${basePath}/_sections/1_datos`}>
         <Datos />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <PlanEstudio /> */}
       {/* <ViewComponent path={`${basePath}/_sections/2_planEstudio`}>
@@ -75,14 +75,14 @@ export default function Profesional() {
       </ViewComponent> */}
 
       {/* <Relacionados /> */}
-      <ViewComponent path={`${basePath}/_sections/10_relacionados`}>
+      {/* <ViewComponent path={`${basePath}/_sections/10_relacionados`}>
         <Relacionados />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Footer /> */}
-      {/* <ViewComponent path={`${basePath}/_sections/11_footer`}>
+      <ViewComponent path={`${basePath}/_sections/11_footer`}>
         <Footer />
-      </ViewComponent> */}
+      </ViewComponent>
     </>
   )
 }

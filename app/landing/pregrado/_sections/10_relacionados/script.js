@@ -98,8 +98,9 @@ export default () => {
     // Mapeo de abreviaciones conocidas a nombres completos
     const facultyMappings = {
       'Cs.Económicas y Administrativ.': 'Ciencias Económicas y Administrativas',
-      'Arquitectura y Diseño': 'Arquitectura y Diseño',
-      'Cs.Económicas y Administrativas': 'Ciencias Económicas y Administrativas'
+      'Cs.Económicas y Administrativas': 'Ciencias Económicas y Administrativas',
+      'Cs.Políticas y Relaciones Int.': 'Ciencias Políticas y Relaciones Internacionales',
+      'Arquitectura y Diseño': 'Arquitectura y Diseño'
       // Agregar más mapeos según sea necesario
     }
 
