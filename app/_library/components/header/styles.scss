@@ -1,6 +1,28 @@
 @use '@styles/autoload' as *;
 @use './components/modalForm.scss' as *;
 
+// ==========================================
+// ESTILOS DEL BODY ASOCIADOS AL HEADER
+// ==========================================
+
+// Modo edición de Liferay
+body:has(.header).has-edit-mode-menu,
+body:has(.header).signed-in {
+  padding-top: rem(0px);
+}
+
+body:has(.header) {
+  padding-top: rem(70px);
+
+  @include responsive {
+    padding-top: rem(100px);
+  }
+
+  @include only-dev-mode {
+    padding-top: rem(0px);
+  }
+}
+
 // ===========================================
 // HEADER CONTAINER
 // ===========================================
