@@ -126,7 +126,13 @@ const Diferenciales = () => {
       <Container id={elementName} className={`${baseClass}__container`}>
         {/* Header de la sección */}
         <header className={`${baseClass}__header`}>
-          <Title id={`title-${elementName}-title`} className={`${baseClass}__title`} weight="semibold" size="2xl" align="center">
+          <Title
+            id={`title-${elementName}-title`}
+            hierarchy="h2"
+            className={`${baseClass}__title`}
+            weight="semibold"
+            size="2xl"
+            align="center">
             ¿Por qué elegir la Javeriana?
           </Title>
         </header>

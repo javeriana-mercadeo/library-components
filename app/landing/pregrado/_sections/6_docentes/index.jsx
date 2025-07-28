@@ -77,7 +77,7 @@ const Docentes = () => {
 
           <div className={`${baseClass}_card-content`}>
             <Title
-              hierarchy="h3"
+              hierarchy="h2"
               size="md"
               weight="bold"
               className={`${baseClass}_card-name`}

@@ -6,7 +6,7 @@ import Load from '@/app/_components/load/load'
 
 // Lazy load heavy sections with client-side loading
 
-const Encabezado = dynamic(() => import('./_sections/0_encabezado'), { ssr: false, loading: () => <Load /> })
+const Header = dynamic(() => import('@library/components/header'), { ssr: false, loading: () => <Load /> })
 const Datos = dynamic(() => import('./_sections/1_datos'), { ssr: false, loading: () => <Load /> })
 const PlanEstudio = dynamic(() => import('./_sections/2_planEstudio'), { ssr: false, loading: () => <Load /> })
 const Perfiles = dynamic(() => import('./_sections/3_perfiles'), { ssr: false, loading: () => <Load /> })
@@ -17,16 +17,17 @@ const Experiencia = dynamic(() => import('./_sections/7_experiencia'), { ssr: fa
 const Cita = dynamic(() => import('./_sections/8_cita'), { ssr: false, loading: () => <Load /> })
 const PreguntasFrecuentes = dynamic(() => import('./_sections/9_preguntasFrecuentes'), { ssr: false, loading: () => <Load /> })
 const Relacionados = dynamic(() => import('./_sections/10_relacionados'), { ssr: false, loading: () => <Load /> })
-const Footer = dynamic(() => import('./_sections/11_footer'), { ssr: false, loading: () => <Load /> })
+const Footer = dynamic(() => import('@library/components/footer'), { ssr: false, loading: () => <Load /> })
 
 export default function Profesional() {
   const basePath = '/landing/pregrado'
+  const libraryPath = '/_library/components/'
 
   return (
     <>
       {/* <Encabezado /> */}
-      <ViewComponent path={`${basePath}/_sections/0_encabezado`}>
-        <Encabezado />
+      <ViewComponent path={`${libraryPath}/header`}>
+        <Header />
       </ViewComponent>
 
       {/* <Datos /> */}
@@ -80,7 +81,7 @@ export default function Profesional() {
       </ViewComponent>
 
       {/* <Footer /> */}
-      <ViewComponent path={`${basePath}/_sections/11_footer`}>
+      <ViewComponent path={`${libraryPath}/footer`}>
         <Footer />
       </ViewComponent>
     </>

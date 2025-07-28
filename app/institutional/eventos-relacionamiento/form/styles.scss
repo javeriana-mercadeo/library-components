@@ -1,0 +1,256 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// EVENTOS RELACIONAMIENTO PAGE - MOBILE FIRST
+// ==========================================
+
+.eventos-page {
+  
+  background: url('https://www.javeriana.edu.co/recursosdb/d/info-prg/2-eventos_pregrado?imagePreview=1') no-repeat center center;
+  background-size: cover;
+  background-attachment: scroll;
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xl) 0;
+
+  // Desktop
+  @include responsive {
+    background-attachment: fixed;
+    padding: var(--spacing-3xl) 0;
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+    min-height: 80vh;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+    align-items: center;
+    width: 100%;
+    text-align: center;
+
+    // Desktop: Grid de 2 columnas
+    @include responsive {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-4xl);
+      text-align: left;
+    }
+  }
+
+  &__left {
+    color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    align-items: center;
+
+    // Desktop: Alineación natural
+    @include responsive {
+      align-items: flex-start;
+      gap: var(--spacing-xl);
+    }
+  }
+
+  &__logo {
+    width: #{rem(200px)};
+    height: auto;
+
+    // Tablet
+    @include responsive($breakpoint-sm) {
+      width: #{rem(260px)};
+    }
+
+    // Desktop
+    @include responsive {
+      width: #{rem(320px)};
+    }
+  }
+
+  &__title {
+    color: var(--color-white);
+    font-size: #{rem(40px)};
+    line-height: 1.1;
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+
+    // Tablet
+    @include responsive($breakpoint-sm) {
+      font-size: #{rem(52px)};
+    }
+
+    // Desktop
+    @include responsive {
+      font-size: #{rem(64px)};
+    }
+  }
+
+  &__right {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    // Desktop: Mantener centrado
+    @include responsive {
+      justify-content: center;
+    }
+  }
+}
+
+// ==========================================
+// TARJETA DEL FORMULARIO - MOBILE FIRST
+// ==========================================
+
+.eventos-form-card {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: 0 #{rem(20px)} #{rem(40px)} rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: #{rem(420px)};
+
+  // Tablet
+  @include responsive($breakpoint-sm) {
+    padding: var(--spacing-2xl);
+    border-radius: var(--border-radius-xl);
+  }
+
+  // Desktop
+  @include responsive {
+    max-width: #{rem(480px)};
+    padding: var(--spacing-3xl);
+  }
+
+  &__title {
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-lg);
+    font-size: #{rem(24px)};
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+
+    // Desktop
+    @include responsive {
+      font-size: #{rem(28px)};
+      margin-bottom: var(--spacing-xl);
+    }
+  }
+}
+
+// ==========================================
+// FORMULARIO BASE - MOBILE FIRST
+// ==========================================
+
+.eventos-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+
+  // Desktop
+  @include responsive {
+    gap: var(--spacing-lg);
+  }
+
+  // Form header fijo
+  .form-header {
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-neutral-200);
+
+    #title-form {
+      font-size: #{rem(14px)};
+      color: var(--color-neutral-600);
+      margin: 0;
+      text-align: center;
+
+      @include responsive {
+        font-size: #{rem(16px)};
+      }
+    }
+  }
+
+  // Contenido con scroll
+  .form-content {
+    max-height: #{rem(400px)};
+    overflow-y: auto;
+    padding: var(--spacing-md) 0;
+
+    @include responsive {
+      max-height: #{rem(500px)};
+      padding: var(--spacing-lg) 0;
+    }
+  }
+
+  // Footer fijo
+  .form-footer {
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-neutral-200);
+  }
+
+  // Campos básicos
+  .field {
+    margin-bottom: var(--spacing-md);
+
+    input, select {
+      width: 100%;
+      padding: var(--spacing-sm);
+      border: 1px solid var(--color-neutral-300);
+      border-radius: var(--border-radius-sm);
+      font-size: #{rem(16px)};
+
+      &:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.1);
+      }
+    }
+  }
+
+  // Grupos de campos
+  .field-group {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+
+    .field {
+      flex: 1;
+      margin-bottom: 0;
+    }
+  }
+
+  // Sección de autorización
+  .authorization-section {
+    margin: var(--spacing-lg) 0;
+
+    p {
+      font-size: #{rem(14px)};
+      color: var(--color-neutral-700);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .radio-group {
+      display: flex;
+      gap: var(--spacing-md);
+
+      .radio-option {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+
+        input[type="radio"] {
+          width: auto;
+          margin: 0;
+        }
+
+        label {
+          font-size: #{rem(14px)};
+          color: var(--color-neutral-700);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
