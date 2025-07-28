@@ -7,7 +7,6 @@ import { Metadata } from 'next'
 import { Providers } from './providers'
 import { siteConfig } from '@/config/site'
 
-import Footer from './_components/footer/footer'
 import ThemeSwitch from './_components/themeSwitch/theme-switch'
 import BtnReturn from './_components/btnReturn/btnReturn'
 import { ClientSideUtils } from './_components/clientSideUtils/ClientSideUtils'
@@ -31,6 +30,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
         <link rel="stylesheet" href="http://127.0.0.1:5500/build/form-modules-style.css" />
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+
         {/* <link rel="stylesheet" href="https://www.javeriana.edu.co/recursosdb/d/info-prg/form-modules-style" /> */}
         {/* Utilidades globales - DEBE CARGARSE PRIMERO */}
         <title>Librería de componentes</title>
@@ -42,7 +45,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ThemeSwitch />
             <BtnReturn />
             <main className="global-container">{children}</main>
-            <Footer />
           </div>
         </Providers>
 
@@ -59,9 +61,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* <!-- Swiper JS --> */}
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-        {/* <!-- Iconos Phosphor --> */}
-        <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
         {/* <!-- Tailwind css --> */}
         {/* <script src="https://www.javeriana.edu.co/planestudio/pages/libraries/tailwindcss/tailwindcss.js"></script> */}

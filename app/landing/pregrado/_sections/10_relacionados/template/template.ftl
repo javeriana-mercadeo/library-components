@@ -28,7 +28,7 @@
                     data-lfr-editable-id="program-name-${cur_related_program_single_card?index}"
                     data-lfr-editable-type="text">
                     <#if (cur_related_program_single_card.related_program_title.getData())??>
-                      ${cur_related_program_single_card.related_program_title.getData()}
+                      Estudiar ${cur_related_program_single_card.related_program_title.getData()}
                     </#if>
                   </h3>
                   <p class="paragraph paragraph-neutral paragraph-md related-programs__faculty">

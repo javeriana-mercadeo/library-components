@@ -7,6 +7,8 @@ import script from './script.js'
 import './styles.scss'
 
 const Insignias = () => {
+  const elementName = 'insignias'
+
   useEffect(() => {
     script()
   }, [])
@@ -47,9 +49,10 @@ const Insignias = () => {
   return (
     <section id="section-five">
       <Container className="container academic-carousel">
-        <Title className="academic-carousel__title" size="lg" weight="bold">
+        <Title id={`title-${elementName}`} hierarchy="h2" className="academic-carousel__title" size="lg" weight="bold">
           Reconocimientos Académicos
         </Title>
+
         <div className="slider">
           <div className="slider-track">
             {/* Solo el grupo original - JS creará los duplicados */}
