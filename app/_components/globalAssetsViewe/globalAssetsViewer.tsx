@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useMemo } from 'react'
-import { Button, Tabs, Tab, Snippet, Card, CardBody, Spinner, Badge, Pagination } from '@heroui/react'
+import { Button, Tabs, Tab, Snippet, Card, CardBody, Spinner, Chip, Pagination } from '@heroui/react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { a11yDark } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
@@ -179,13 +179,13 @@ export default function GlobalAssetsViewer() {
           </div>
           {assets.lastBuild && (
             <div className="flex gap-2">
-              <Badge color="success" variant="flat" size="sm">
+              <Chip color="success" variant="flat" size="sm">
                 Compilado: {new Date(assets.lastBuild).toLocaleTimeString()}
-              </Badge>
+              </Chip>
               {assets.cached && (
-                <Badge color="secondary" variant="flat" size="sm">
+                <Chip color="secondary" variant="flat" size="sm">
                   Cache
-                </Badge>
+                </Chip>
               )}
             </div>
           )}
@@ -247,12 +247,12 @@ export default function GlobalAssetsViewer() {
                 <div className="flex items-center gap-2">
                   <i className="ph ph-file-css text-lg text-blue-500"></i>
                   <span>CSS Global</span>
-                  <Badge size="sm" variant="flat" color="primary">
+                  <Chip size="sm" variant="flat" color="primary">
                     {(assets.css.length / 1024).toFixed(1)}KB
-                  </Badge>
-                  <Badge size="sm" variant="flat" color="warning">
+                  </Chip>
+                  <Chip size="sm" variant="flat" color="warning">
                     {assets.css.split('\n').length} líneas
-                  </Badge>
+                  </Chip>
                 </div>
               }>
               <div className="space-y-4">
@@ -261,9 +261,9 @@ export default function GlobalAssetsViewer() {
                   <div className="flex items-center gap-4">
                     <p className="text-sm text-[var(--neutral-400)]">Estilos compilados desde SCSS</p>
                     {cssPages.length > 1 && (
-                      <Badge color="danger" variant="flat">
+                      <Chip color="danger" variant="flat">
                         ⚠️ Archivo muy grande: {cssPages.length} páginas
-                      </Badge>
+                      </Chip>
                     )}
                   </div>
                   <div className="flex gap-2">
@@ -352,12 +352,12 @@ export default function GlobalAssetsViewer() {
                 <div className="flex items-center gap-2">
                   <i className="ph ph-file-js text-lg text-yellow-500"></i>
                   <span>JavaScript Global</span>
-                  <Badge size="sm" variant="flat" color="warning">
+                  <Chip size="sm" variant="flat" color="warning">
                     {(assets.js.length / 1024).toFixed(1)}KB
-                  </Badge>
-                  <Badge size="sm" variant="flat" color="success">
+                  </Chip>
+                  <Chip size="sm" variant="flat" color="success">
                     {assets.js.split('\n').length} líneas
-                  </Badge>
+                  </Chip>
                 </div>
               }>
               <div className="space-y-4">
@@ -365,9 +365,9 @@ export default function GlobalAssetsViewer() {
                   <div className="flex items-center gap-4">
                     <p className="text-sm text-[var(--neutral-400)]">JavaScript compilado con librerías externas</p>
                     {jsPages.length > 1 && (
-                      <Badge color="warning" variant="flat">
+                      <Chip color="warning" variant="flat">
                         {jsPages.length} páginas
-                      </Badge>
+                      </Chip>
                     )}
                   </div>
                   <div className="flex gap-2">

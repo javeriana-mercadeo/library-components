@@ -1,6 +1,6 @@
 'use client'
+import { UniversalComponent as UC, Container } from '@library/components'
 
-import Container from '@library/components/container'
 import GlobalAssetsViewer from '../globalAssetsViewe/globalAssetsViewer'
 
 export default function GlobalAssetsSection() {

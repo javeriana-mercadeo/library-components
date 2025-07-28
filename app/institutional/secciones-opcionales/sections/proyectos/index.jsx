@@ -1,9 +1,8 @@
 'use client'
+import { UniversalComponent as UC, Container } from '@library/components'
+
 import React, { Component } from 'react'
 import DetalleProyecto from './components/detalleProyecto'
-import Title from '@library/components/contain/title'
-import Paragraph from '@library/components/contain/paragraph'
-import Container from '@library/components/container'
 
 import script from './script.js'
 import './styles.scss'

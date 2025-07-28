@@ -1,9 +1,9 @@
 'use client'
+import { UniversalComponent as UC, Container } from '@library/components'
+
 import React, { useEffect, useState } from 'react'
 import './styles.scss'
-import Title from '@library/components/contain/title'
-import Paragraph from '@library/components/contain/paragraph'
-import Container from '@library/components/container'
+
 import {
   buttonColor,
   labImages,
