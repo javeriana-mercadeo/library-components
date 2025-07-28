@@ -84,7 +84,7 @@ const Footer = () => {
                       <a href="https://www.tiktok.com/@unijaveriana" aria-label="TikTok">
                         <i className="ph ph-tiktok-logo"></i>
                       </a>
-                      <a href="#" aria-label="WhatsApp">
+                      <a href="#" data-puj-link-whatsapp="true" aria-label="WhatsApp">
                         <i class="ph ph-whatsapp-logo"></i>
                       </a>
                     </div>
