@@ -1,8 +1,9 @@
 'use client'
+import { UniversalComponent as UC, Container } from '@library/components'
+
 import React, { Component } from 'react'
 
 import Title from '@library/components/contain/title/index.jsx'
-import Container from '@library/components/container'
 
 import { ImageSliderLogic } from './script.js'
 import './styles.scss'

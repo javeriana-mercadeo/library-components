@@ -6,18 +6,59 @@
     display: block;
     max-width: 100%;
     height: auto;
-    transition: all 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      filter 0.3s ease,
+      opacity 0.3s ease;
+    will-change: transform;
+
+    // ==========================================
+    // ZOOM SUTIL EN HOVER (POR DEFECTO)
+    // ==========================================
+    &:hover {
+      transform: scale(1.05);
+      filter: brightness(1.02);
+    }
+
+    // ==========================================
+    // VARIANTES DE ZOOM
+    // ==========================================
+    &--zoom-subtle {
+      &:hover {
+        transform: scale(1.03);
+      }
+    }
+
+    &--zoom-medium {
+      &:hover {
+        transform: scale(1.08);
+      }
+    }
+
+    &--zoom-large {
+      &:hover {
+        transform: scale(1.12);
+      }
+    }
+
+    // Desactivar zoom
+    &--no-zoom {
+      &:hover {
+        transform: none;
+        filter: none;
+      }
+    }
 
     // ==========================================
     // ESTADO CLICKEABLE
     // ==========================================
-    &.image-clickable {
+    &-clickable {
       cursor: pointer;
-      transition: all 0.3s ease;
 
       &:hover {
         opacity: 0.9;
-        transform: scale(1.02);
+        transform: scale(1.05);
+        filter: brightness(1.05);
       }
 
       &:active {
@@ -44,6 +85,7 @@
         &:hover {
           border-color: var(--primary-600);
           background: rgba(var(--primary-rgb), 0.05);
+          transform: none; // Desactivar zoom en modo edición
         }
 
         &:focus {
@@ -57,10 +99,22 @@
     // ==========================================
     // RESPONSIVE
     // ==========================================
-    // En móviles, reducir un poco las transformaciones
+    // En móviles, reducir las transformaciones
     @media (max-width: $breakpoint-sm) {
-      &.image-clickable:hover {
-        transform: scale(1.01);
+      &:hover {
+        transform: scale(1.02);
+      }
+
+      &-clickable:hover {
+        transform: scale(1.03);
+      }
+
+      &--zoom-medium:hover {
+        transform: scale(1.04);
+      }
+
+      &--zoom-large:hover {
+        transform: scale(1.06);
       }
     }
 
@@ -73,6 +127,10 @@
       animation: imageLoading 1.5s infinite;
       min-height: rem(200px);
       border-radius: rem(4px);
+
+      &:hover {
+        transform: none; // Sin zoom mientras carga
+      }
     }
 
     // Error de carga
@@ -85,9 +143,35 @@
       justify-content: center;
       min-height: rem(200px);
 
+      &:hover {
+        transform: none; // Sin zoom en error
+      }
+
       &::after {
         content: '⚠️ Error al cargar imagen';
         font-size: var(--font-size-small);
+      }
+    }
+  }
+
+  // ==========================================
+  // CONTENEDOR PARA IMÁGENES CON ZOOM
+  // ==========================================
+  .image-zoom-container {
+    overflow: hidden;
+    display: inline-block;
+    border-radius: inherit;
+
+    // Asegurar que la imagen dentro tenga el efecto zoom
+    .image,
+    img {
+      transition:
+        transform 0.3s ease,
+        filter 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        filter: brightness(1.02);
       }
     }
   }
@@ -109,12 +193,18 @@
 // MEJORAS DE ACCESIBILIDAD
 // ==========================================
 @media (prefers-reduced-motion: reduce) {
-  .image {
-    transition: none !important;
+  .image,
+  .image-zoom-container img {
+    transition: opacity 0.3s ease !important;
     animation: none !important;
 
-    &.image-clickable:hover {
+    &:hover,
+    &-clickable:hover,
+    &--zoom-subtle:hover,
+    &--zoom-medium:hover,
+    &--zoom-large:hover {
       transform: none !important;
+      filter: brightness(1.1); // Solo cambio de brillo para indicar hover
     }
   }
 }

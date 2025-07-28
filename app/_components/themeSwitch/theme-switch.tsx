@@ -8,7 +8,7 @@ import { useTheme } from '../../../hooks/usetheme' // Ajusta la ruta según tu e
 const CollapsibleThemeSwitch = () => {
   const { themeBase, themeFaculty, setBaseTheme, setFacultyTheme, isLoading } = useTheme()
   const [isExpanded, setIsExpanded] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
+  const [isMinimized, setIsMinimized] = useState(true)
 
   const isSSR = useIsSSR()
 

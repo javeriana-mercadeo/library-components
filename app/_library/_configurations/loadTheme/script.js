@@ -29,6 +29,10 @@ try {
       html.setAttribute('data-theme-faculty', faculty)
     }
 
+    window.currentBase = currentBase
+    window.currentFaculty = currentFaculty
+    window.applyTheme = applyTheme
+
     // Construir tema combinado para compatibilidad
     let combinedTheme
     if (faculty === 'default' || !faculty) {

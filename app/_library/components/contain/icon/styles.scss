@@ -1,0 +1,222 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use '@styles/autoload' as *;
+
+// ===========================================
+// VARIABLES GLOBALES DEL COMPONENTE
+// ===========================================
+$icon-transition: all 0.3s ease;
+$icon-font-family: 'Phosphor';
+
+// Tamaños responsive para íconos
+$icon-sizes: (
+  'xs': (
+    mobile: rem(12px),
+    desktop: rem(14px)
+  ),
+  'sm': (
+    mobile: rem(16px),
+    desktop: rem(18px)
+  ),
+  'md': (
+    mobile: rem(20px),
+    desktop: rem(24px)
+  ),
+  'lg': (
+    mobile: rem(28px),
+    desktop: rem(32px)
+  ),
+  'xl': (
+    mobile: rem(36px),
+    desktop: rem(40px)
+  ),
+  '2xl': (
+    mobile: rem(44px),
+    desktop: rem(48px)
+  ),
+  '3xl': (
+    mobile: rem(52px),
+    desktop: rem(64px)
+  )
+);
+
+// ===========================================
+// MIXIN PRINCIPAL
+// ===========================================
+@mixin icon {
+  // Elemento base del icono
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: auto !important;
+    line-height: 1;
+    vertical-align: middle;
+    transition: $icon-transition;
+    color: var(--neutral-600);
+
+    // Tamaños usando el mapa - Mobile First
+    @each $size, $values in $icon-sizes {
+      &.icon--#{$size} {
+        font-size: map.get($values, 'mobile');
+
+        @include responsive($breakpoint-md) {
+          font-size: map.get($values, 'desktop');
+        }
+      }
+    }
+
+    // Pesos específicos para Phosphor Icons
+    &.icon--thin {
+      font-weight: 100;
+    }
+
+    &.icon--light {
+      font-weight: 200;
+    }
+
+    &.icon--regular {
+      font-weight: 400;
+    }
+
+    &.icon--bold {
+      font-weight: 700;
+    }
+
+    &.icon--fill {
+      font-weight: 900;
+    }
+
+    // Alineaciones del contenedor
+    &.icon__container--left {
+      justify-content: flex-start;
+    }
+
+    &.icon__container--center {
+      justify-content: center;
+    }
+
+    &.icon__container--right {
+      justify-content: flex-end;
+    }
+
+    // Estado clickeable
+    &.icon__container--clickable {
+      cursor: pointer;
+      border-radius: rem(4px);
+      padding: rem(4px);
+      transition: $icon-transition;
+
+      &:hover {
+        background-color: rgba(var(--neutral-50-rgb), 0.1);
+        transform: translateY(rem(-1px));
+      }
+
+      &:active {
+        transform: translateY(0);
+        background-color: rgba(var(--neutral-50-rgb), 0.2);
+      }
+
+      // Focus state para accesibilidad
+      &:focus-visible {
+        outline: rem(2px) solid var(--primary-400);
+        outline-offset: rem(2px);
+        border-radius: rem(6px);
+      }
+
+      @include dark-theme {
+        &:hover {
+          background-color: rgba(var(--neutral-700-rgb), 0.3);
+        }
+
+        &:active {
+          background-color: rgba(var(--neutral-700-rgb), 0.5);
+        }
+      }
+
+      // Efectos en el icono cuando el contenedor es clickeable
+      &:hover i {
+        transform: scale(1.05);
+      }
+
+      &:active i {
+        transform: scale(0.98);
+      }
+    }
+
+    // El elemento i interno
+    i {
+      display: inline-block;
+      transition: $icon-transition;
+      line-height: inherit;
+    }
+
+    // Estilos para modo de edición de Liferay
+    @include liferay-edit-mode {
+      &:empty::before {
+        content: 'Ícono: ' attr(data-lfr-editable-id);
+        opacity: 0.5;
+        font-style: italic;
+        font-size: rem(12px);
+        color: var(--neutral-400);
+        border: rem(1px) dashed var(--neutral-300);
+        padding: rem(8px) rem(12px);
+        border-radius: rem(4px);
+        display: inline-block;
+      }
+    }
+  }
+
+  // Integrar variantes de color
+  @include colors-variants('icon', meta.get-mixin('icon-color-styles'));
+}
+
+// ===========================================
+// MIXIN DE TEMAS POR COLOR
+// ===========================================
+@mixin icon-color-styles($color-values, $color-name) {
+  color: var(--#{$color-name}-600);
+
+  // Estados interactivos para íconos clickeables
+  &.icon__container--clickable:hover {
+    color: var(--#{$color-name}-700);
+  }
+
+  &.icon__container--clickable:active {
+    color: var(--#{$color-name}-800);
+  }
+
+  &.icon__container--clickable:focus-visible {
+    color: var(--#{$color-name}-600);
+  }
+
+  // Variantes adicionales
+  &.icon--muted {
+    color: var(--#{$color-name}-400);
+  }
+
+  &.icon--strong {
+    color: var(--#{$color-name}-700);
+  }
+
+  // Tema oscuro
+  @include dark-theme {
+    color: var(--#{$color-name}-400);
+
+    &.icon__container--clickable:hover {
+      color: var(--#{$color-name}-300);
+    }
+
+    &.icon__container--clickable:active {
+      color: var(--#{$color-name}-200);
+    }
+
+    &.icon--muted {
+      color: var(--#{$color-name}-500);
+    }
+
+    &.icon--strong {
+      color: var(--#{$color-name}-300);
+    }
+  }
+}

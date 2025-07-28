@@ -1,0 +1,129 @@
+{
+  "fieldSets": [
+    {
+      "label": "Configuración de Tema",
+      "fields": [
+        {
+          "name": "whatsAppAcademicLevel",
+          "label": "Nivel Académico del WhatsApp",
+          "description": "Selecciona el nivel académico del WhatsApp",
+          "type": "select",
+          "dataType": "string",
+          "typeOptions": {
+            "validValues": [
+              {
+                "label": "🌟 Automático (desde API)",
+                "value": "default"
+              },
+              {
+                "label": "🎓 Pregrado",
+                "value": "pre"
+              },
+              {
+                "label": "🏛️ Posgrado",
+                "value": "pos"
+              }
+            ]
+          },
+          "defaultValue": "pre"
+        },
+        {
+          "name": "whatsAppFaculty",
+          "label": "WhatsApp de la Facultad",
+          "description": "Selecciona los números de WhatsApp específicos de tu facultad",
+          "type": "select",
+          "dataType": "string",
+          "typeOptions": {
+            "validValues": [
+              {
+                "label": "🏛️ Institucional (Por defecto)",
+                "value": "default"
+              },
+              {
+                "label": "🏗️ Arquitectura y Diseño",
+                "value": "arquitectura-diseno"
+              },
+              {
+                "label": "🎨 Artes",
+                "value": "artes"
+              },
+              {
+                "label": "🔬 Ciencias",
+                "value": "ciencias"
+              },
+              {
+                "label": "💼 Ciencias Económicas y Administrativas",
+                "value": "ciencias-economicas-administrativas"
+              },
+              {
+                "label": "⚖️ Ciencias Jurídicas",
+                "value": "ciencias-juridicas"
+              },
+              {
+                "label": "🌍 Ciencias Políticas y Relaciones Internacionales",
+                "value": "ciencias-politicas-relaciones-internacionales"
+              },
+              {
+                "label": "👥 Ciencias Sociales",
+                "value": "ciencias-sociales"
+              },
+              {
+                "label": "📱 Comunicación y Lenguaje",
+                "value": "comunicacion-lenguaje"
+              },
+              {
+                "label": "📜 Derecho Canónico",
+                "value": "derecho-canonico"
+              },
+              {
+                "label": "🎓 Educación",
+                "value": "educacion"
+              },
+              {
+                "label": "🏥 Enfermería",
+                "value": "enfermeria"
+              },
+              {
+                "label": "🌱 Estudios Ambientales y Rurales",
+                "value": "estudios-ambientales-rurales"
+              },
+              {
+                "label": "🤔 Filosofía",
+                "value": "filosofia"
+              },
+              {
+                "label": "⚙️ Ingeniería",
+                "value": "ingenieria"
+              },
+              {
+                "label": "💭 Instituto Pensar",
+                "value": "instituto-pensar"
+              },
+              {
+                "label": "🏥 Instituto de Salud Pública",
+                "value": "instituto-salud-publica"
+              },
+              {
+                "label": "⚕️ Medicina",
+                "value": "medicina"
+              },
+              {
+                "label": "🦷 Odontología",
+                "value": "odontologia"
+              },
+              {
+                "label": "🧠 Psicología",
+                "value": "psicologia"
+              },
+              {
+                "label": "✝️ Teología",
+                "value": "teologia"
+              }
+            ]
+          },
+          "defaultValue": "default"
+        }
+      ]
+    }
+  ]
+}
