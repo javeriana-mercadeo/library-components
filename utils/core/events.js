@@ -3,13 +3,7 @@
  * @module EventManager
  */
 
-// Fallback para Logger en caso de que no esté disponible
-const getLogger = () => (typeof window !== 'undefined' && window.Logger) || {
-  debug: (...args) => console.log('[DEBUG]', ...args),
-  error: (...args) => console.error('[ERROR]', ...args),
-  info: (...args) => console.info('[INFO]', ...args),
-  table: (data) => console.table ? console.table(data) : console.log(data)
-}
+import { Logger } from './logger.js'
 
 // Crear instancia única de EventManager
 const EventManagerInstance = {
@@ -23,9 +17,8 @@ const EventManagerInstance = {
     element.addEventListener(event, handler, options)
 
     this.listeners.set(key, { element, event, handler, options })
-    const Logger = getLogger()
     Logger.debug(`Event listener agregado: ${event} en ${element.tagName || element.constructor.name}`)
-    
+
     return key
   },
 
@@ -35,38 +28,35 @@ const EventManagerInstance = {
     const { element, event, handler } = this.listeners.get(key)
     element.removeEventListener(event, handler)
     this.listeners.delete(key)
-    
-    const Logger = getLogger()
+
     Logger.debug(`Event listener removido: ${key}`)
     return true
   },
 
   removeByElement(element) {
     let removedCount = 0
-    
+
     for (const [key, listener] of this.listeners.entries()) {
       if (listener.element === element) {
         this.remove(key)
         removedCount++
       }
     }
-    
-    const Logger = getLogger()
+
     Logger.debug(`${removedCount} event listeners removidos del elemento`)
     return removedCount
   },
 
   removeByEvent(eventType) {
     let removedCount = 0
-    
+
     for (const [key, listener] of this.listeners.entries()) {
       if (listener.event === eventType) {
         this.remove(key)
         removedCount++
       }
     }
-    
-    const Logger = getLogger()
+
     Logger.debug(`${removedCount} event listeners removidos del tipo: ${eventType}`)
     return removedCount
   },
@@ -75,15 +65,14 @@ const EventManagerInstance = {
     for (const [key] of this.listeners.entries()) {
       this.remove(key)
     }
-    
-    const Logger = getLogger()
+
     Logger.debug('Todos los event listeners limpiados')
   },
 
   delegate(container, selector, event, handler, options = {}) {
     if (!container) return false
 
-    const delegatedHandler = (e) => {
+    const delegatedHandler = e => {
       const target = e.target.closest(selector)
       if (target && container.contains(target)) {
         handler.call(target, e)
@@ -96,7 +85,7 @@ const EventManagerInstance = {
   once(element, event, handler, options = {}) {
     if (!element) return false
 
-    const onceHandler = (e) => {
+    const onceHandler = e => {
       handler(e)
       element.removeEventListener(event, onceHandler)
     }
@@ -115,8 +104,7 @@ const EventManagerInstance = {
 
     const event = new CustomEvent(eventType, { ...defaultOptions, ...options })
     element.dispatchEvent(event)
-    
-    const Logger = getLogger()
+
     Logger.debug(`Evento custom emitido: ${eventType}`)
     return event
   },
@@ -125,17 +113,15 @@ const EventManagerInstance = {
     if (!this.eventBus.has(eventName)) {
       this.eventBus.set(eventName, new Set())
     }
-    
+
     this.eventBus.get(eventName).add(handler)
-    const Logger = getLogger()
     Logger.debug(`Handler agregado al event bus: ${eventName}`)
   },
 
   off(eventName, handler) {
     if (this.eventBus.has(eventName)) {
       this.eventBus.get(eventName).delete(handler)
-      const Logger = getLogger()
-      Logger.debug(`Handler removido del event bus: ${eventName}`)
+        Logger.debug(`Handler removido del event bus: ${eventName}`)
     }
   },
 
@@ -146,13 +132,11 @@ const EventManagerInstance = {
         try {
           handler(...args)
         } catch (error) {
-          const Logger = getLogger()
-          Logger.error(`Error ejecutando handler para ${eventName}:`, error)
+                Logger.error(`Error ejecutando handler para ${eventName}:`, error)
         }
       })
-      
-      const Logger = getLogger()
-      Logger.debug(`Event bus disparado: ${eventName} con ${handlers.size} handlers`)
+
+        Logger.debug(`Event bus disparado: ${eventName} con ${handlers.size} handlers`)
     }
   },
 
@@ -169,17 +153,17 @@ const EventManagerInstance = {
   },
 
   debug() {
-    const Logger = getLogger()
     Logger.info(`Event Manager Stats:`)
     Logger.info(`  DOM Listeners: ${this.getListenerCount()}`)
     Logger.info(`  Event Bus Handlers: ${this.getEventBusCount()}`)
-    Logger.table(Array.from(this.listeners.entries()).map(([key, listener]) => ({
-      key,
-      element: listener.element.tagName || listener.element.constructor.name,
-      event: listener.event
-    })))
+    Logger.table(
+      Array.from(this.listeners.entries()).map(([key, listener]) => ({
+        key,
+        element: listener.element.tagName || listener.element.constructor.name,
+        event: listener.event
+      }))
+    )
   }
 }
 
 export const EventManager = EventManagerInstance
-export default EventManager

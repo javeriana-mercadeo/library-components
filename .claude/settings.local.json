@@ -41,7 +41,8 @@
       "Bash(npm run build:*)",
       "Bash(npx tsc:*)",
       "Bash(npm run lint)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(pkill:*)"
     ],
     "deny": []
   }

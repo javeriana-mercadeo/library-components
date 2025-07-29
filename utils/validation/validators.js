@@ -14,7 +14,8 @@ const ValidatorUtils = {
   },
 
   emailStrict(value) {
-    const strictEmailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+    const strictEmailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
     return strictEmailRegex.test(value)
   },
 
@@ -58,7 +59,7 @@ const ValidatorUtils = {
     const hasNumber = /\d/.test(value)
     const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(value)
     const isLongEnough = value.length >= 8
-    
+
     return isLongEnough && hasUpper && hasLower && hasNumber && hasSpecial
   },
 
@@ -67,7 +68,7 @@ const ValidatorUtils = {
     const hasLower = /[a-z]/.test(value)
     const hasNumber = /\d/.test(value)
     const isLongEnough = value.length >= 6
-    
+
     return isLongEnough && ((hasUpper && hasLower) || (hasNumber && (hasUpper || hasLower)))
   },
 
@@ -161,22 +162,22 @@ const ValidatorUtils = {
   creditCard(value) {
     const cleaned = value.replace(/[\s-]/g, '')
     if (!/^\d{13,19}$/.test(cleaned)) return false
-    
+
     let sum = 0
     let isEven = false
-    
+
     for (let i = cleaned.length - 1; i >= 0; i--) {
       let digit = parseInt(cleaned[i])
-      
+
       if (isEven) {
         digit *= 2
         if (digit > 9) digit -= 9
       }
-      
+
       sum += digit
       isEven = !isEven
     }
-    
+
     return sum % 10 === 0
   },
 
@@ -201,22 +202,19 @@ const ValidatorUtils = {
     const date = new Date(value)
     const start = new Date(startDate)
     const end = new Date(endDate)
-    return this.date(value) && this.date(startDate) && this.date(endDate) && 
-           date >= start && date <= end
+    return this.date(value) && this.date(startDate) && this.date(endDate) && date >= start && date <= end
   },
 
   age(value, minAge = 0, maxAge = 150) {
     const birthDate = new Date(value)
     if (!this.date(value)) return false
-    
+
     const today = new Date()
     const age = today.getFullYear() - birthDate.getFullYear()
     const monthDiff = today.getMonth() - birthDate.getMonth()
-    
-    const actualAge = monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()) 
-      ? age - 1 
-      : age
-    
+
+    const actualAge = monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()) ? age - 1 : age
+
     return actualAge >= minAge && actualAge <= maxAge
   },
 
@@ -280,7 +278,7 @@ const ValidatorUtils = {
   },
 
   compose(...validators) {
-    return (value) => {
+    return value => {
       for (const validator of validators) {
         if (!validator(value)) return false
       }
@@ -293,4 +291,4 @@ const ValidatorUtils = {
   }
 }
 
-export default ValidatorUtils
+export { ValidatorUtils }

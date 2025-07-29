@@ -6,31 +6,33 @@
 // Fallbacks para utilidades en caso de que no estén disponibles
 const getUtilities = () => {
   return {
-    ValidatorUtils: (typeof window !== 'undefined' && window.ValidatorUtils) || window.Validators || {
-      required: (value) => value != null && value.toString().trim().length > 0,
-      email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-    },
-    DOMUtils: (typeof window !== 'undefined' && window.DOMUtils) || window.DOMHelpers || {
-      findElements: (selector, context = document) => Array.from((context || document).querySelectorAll(selector)),
-      findElement: (selector, context = document) => (context || document).querySelector(selector),
-      addClass: (el, className) => el && el.classList.add(className),
-      removeClass: (el, className) => el && el.classList.remove(className),
-      createElement: (tag, options = {}) => {
-        const el = document.createElement(tag)
-        if (options.className) el.className = options.className
-        if (options.content) el.textContent = options.content
-        if (options.attributes) {
-          Object.entries(options.attributes).forEach(([key, value]) => el.setAttribute(key, value))
-        }
-        return el
+    ValidatorUtils: (typeof window !== 'undefined' && window.ValidatorUtils) ||
+      window.Validators || {
+        required: value => value != null && value.toString().trim().length > 0,
+        email: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
       },
-      findParent: (el, selector) => el && el.closest(selector),
-      remove: (el) => el && el.remove(),
-      scrollTo: (el, options) => el && el.scrollIntoView(options)
-    },
+    DOMUtils: (typeof window !== 'undefined' && window.DOMUtils) ||
+      window.DOMHelpers || {
+        findElements: (selector, context = document) => Array.from((context || document).querySelectorAll(selector)),
+        findElement: (selector, context = document) => (context || document).querySelector(selector),
+        addClass: (el, className) => el && el.classList.add(className),
+        removeClass: (el, className) => el && el.classList.remove(className),
+        createElement: (tag, options = {}) => {
+          const el = document.createElement(tag)
+          if (options.className) el.className = options.className
+          if (options.content) el.textContent = options.content
+          if (options.attributes) {
+            Object.entries(options.attributes).forEach(([key, value]) => el.setAttribute(key, value))
+          }
+          return el
+        },
+        findParent: (el, selector) => el && el.closest(selector),
+        remove: el => el && el.remove(),
+        scrollTo: (el, options) => el && el.scrollIntoView(options)
+      },
     EventManager: (typeof window !== 'undefined' && window.EventManager) || {
       add: (el, event, handler) => el && el.addEventListener(event, handler),
-      removeByElement: (el) => console.log('EventManager.removeByElement not available')
+      removeByElement: el => console.log('EventManager.removeByElement not available')
     },
     Logger: (typeof window !== 'undefined' && window.Logger) || {
       warning: (...args) => console.warn('[WARNING]', ...args),
@@ -40,7 +42,7 @@ const getUtilities = () => {
     TimingUtils: (typeof window !== 'undefined' && window.TimingUtils) || {
       debounce: (func, wait) => {
         let timeout
-        return function(...args) {
+        return function (...args) {
           clearTimeout(timeout)
           timeout = setTimeout(() => func(...args), wait)
         }
@@ -62,7 +64,7 @@ function createFormManager() {
     pattern: 'Formato inválido',
     custom: 'Valor inválido'
   }
-  
+
   return {
     setDefaultMessages(messages) {
       Object.assign(defaultMessages, messages)
@@ -81,12 +83,12 @@ function createFormManager() {
 
     validateField(field, customRules = {}) {
       const formId = field.form?.id || 'default'
-      const rules = { 
-        ...fieldRules.get(formId), 
+      const rules = {
+        ...fieldRules.get(formId),
         ...fieldRules.get('default'),
-        ...customRules 
+        ...customRules
       }
-      
+
       const { name, value, type } = field
       const rule = rules[name]
 
@@ -95,9 +97,11 @@ function createFormManager() {
       }
 
       const validators = Array.isArray(rule.validators) ? rule.validators : [rule.validators || rule.validator]
-      
+
       for (const validatorConfig of validators) {
-        let validator, options = {}, message = rule.message
+        let validator,
+          options = {},
+          message = rule.message
         const { ValidatorUtils, Logger } = getUtilities()
 
         if (typeof validatorConfig === 'string') {
@@ -105,9 +109,7 @@ function createFormManager() {
         } else if (typeof validatorConfig === 'function') {
           validator = validatorConfig
         } else if (typeof validatorConfig === 'object') {
-          validator = typeof validatorConfig.validator === 'string' 
-            ? ValidatorUtils[validatorConfig.validator] 
-            : validatorConfig.validator
+          validator = typeof validatorConfig.validator === 'string' ? ValidatorUtils[validatorConfig.validator] : validatorConfig.validator
           options = validatorConfig.options || {}
           message = validatorConfig.message || message
         }
@@ -135,7 +137,7 @@ function createFormManager() {
 
     interpolateMessage(message, options) {
       if (!message || typeof message !== 'string') return message
-      
+
       return message.replace(/\{(\w+)\}/g, (match, key) => {
         return options[key] !== undefined ? options[key] : match
       })
@@ -158,9 +160,10 @@ function createFormManager() {
       if (!form) return { isValid: false, results: {} }
 
       const { DOMUtils } = getUtilities()
-      const fields = DOMUtils.findElements('input, select, textarea', form)
-        .filter(field => field.name && (field.required || this.hasRule(form.id, field.name)))
-      
+      const fields = DOMUtils.findElements('input, select, textarea', form).filter(
+        field => field.name && (field.required || this.hasRule(form.id, field.name))
+      )
+
       return this.validateFields(fields, customRules)
     },
 
@@ -175,7 +178,7 @@ function createFormManager() {
       const { DOMUtils } = getUtilities()
       const fieldId = field.id || field.name
       const container = this.getFieldContainer(field)
-      
+
       if (!container) return
 
       this.clearFieldError(field)
@@ -197,7 +200,7 @@ function createFormManager() {
       })
 
       container.appendChild(errorElement)
-      
+
       field.setAttribute('aria-invalid', 'true')
       field.setAttribute('aria-describedby', `${fieldId}-error`)
       errorElement.id = `${fieldId}-error`
@@ -209,7 +212,7 @@ function createFormManager() {
       const { DOMUtils } = getUtilities()
       const fieldId = field.id || field.name
       const container = this.getFieldContainer(field)
-      
+
       if (!container) return
 
       DOMUtils.removeClass(field, 'error')
@@ -245,12 +248,7 @@ function createFormManager() {
     setupLiveValidation(form, options = {}) {
       if (!form) return
 
-      const { 
-        customRules = {}, 
-        validateOnBlur = true, 
-        validateOnInput = false,
-        debounceMs = 300 
-      } = options
+      const { customRules = {}, validateOnBlur = true, validateOnInput = false, debounceMs = 300 } = options
 
       const { DOMUtils, EventManager, TimingUtils } = getUtilities()
       const fields = DOMUtils.findElements('input, select, textarea', form)
@@ -301,7 +299,7 @@ function createFormManager() {
       const { customRules = {}, preventDefault = true } = options
       const { EventManager, DOMUtils } = getUtilities()
 
-      EventManager.add(form, 'submit', (e) => {
+      EventManager.add(form, 'submit', e => {
         if (preventDefault) {
           e.preventDefault()
         }
@@ -408,7 +406,7 @@ function createFormManager() {
         } else {
           field.value = ''
         }
-        
+
         this.clearFieldError(field)
         DOMUtils.removeClass(field, ['error', 'validated', 'focused'])
       })
@@ -438,4 +436,4 @@ function createFormManager() {
 // Crear instancia única
 const FormManager = createFormManager()
 
-export default FormManager
+export { FormManager }

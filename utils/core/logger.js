@@ -40,7 +40,7 @@ class LoggerClass {
     if (levelNum < this.level) return
 
     const formattedMessage = this._formatMessage(level, message, emoji)
-    
+
     if (levelNum >= LogLevel.ERROR) {
       console.error(formattedMessage, ...args)
       if (this.enableStackTrace) console.trace()
@@ -92,5 +92,5 @@ class LoggerClass {
   }
 }
 
+// Exportar instancia única
 export const Logger = new LoggerClass()
-export default Logger
