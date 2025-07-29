@@ -210,6 +210,13 @@ function cleanJavaScriptExports(content: string): string {
       return cleaned
     }
 
+    // Convertir export class a class normal (NUEVO)
+    if (trimmed.startsWith('export class ')) {
+      const cleaned = line.replace('export class ', 'class ')
+      console.log(`🔄 Export class: ${trimmed} → ${cleaned.trim()}`)
+      return cleaned
+    }
+
     // Convertir export const a const normal
     if (trimmed.startsWith('export const ')) {
       const cleaned = line.replace('export const ', 'const ')
@@ -238,17 +245,22 @@ function cleanJavaScriptExports(content: string): string {
       return cleaned
     }
 
-    // Eliminar líneas de export { ... }
-    if (
-      trimmed.match(/^export\s*\{.*\}/) ||
-      (trimmed.startsWith('export ') &&
+    // Manejar export { ... } de forma más inteligente
+    if (trimmed.match(/^export\s*\{.*\}/)) {
+      console.log(`🗑️ Removiendo export destructuring: ${trimmed}`)
+      return '// ' + line
+    }
+
+    // Solo comentar exports que no sean declaraciones
+    if (trimmed.startsWith('export ') && 
         !trimmed.includes('function') &&
         !trimmed.includes('const') &&
         !trimmed.includes('let') &&
-        !trimmed.includes('var'))
-    ) {
-      console.log(`🗑️ Removiendo export: ${trimmed}`)
-      return '// ' + line // Comentar la línea en lugar de eliminarla
+        !trimmed.includes('var') &&
+        !trimmed.includes('class') &&
+        !trimmed.includes('default')) {
+      console.log(`🗑️ Removiendo export genérico: ${trimmed}`)
+      return '// ' + line
     }
 
     return line

@@ -39,7 +39,9 @@
       "Bash(grep:*)",
       "Bash(rg:*)",
       "Bash(npm run build:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm run lint)",
+      "Bash(curl:*)"
     ],
     "deny": []
   }

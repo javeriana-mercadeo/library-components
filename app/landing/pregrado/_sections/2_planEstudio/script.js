@@ -1,7 +1,7 @@
 export default () => {
   const initializeSwiper = () => {
     // Destruir instancia existente si existe
-    if (window.planEstudioSwiper) {
+    if (window.planEstudioSwiper && typeof window.planEstudioSwiper.destroy === 'function') {
       window.planEstudioSwiper.destroy(true, true)
     }
 
@@ -247,7 +247,7 @@ export default () => {
     }
 
     resizeTimeout = setTimeout(() => {
-      if (window.planEstudioSwiper) {
+      if (window.planEstudioSwiper && typeof window.planEstudioSwiper.update === 'function') {
         window.planEstudioSwiper.update()
       }
     }, 250)
