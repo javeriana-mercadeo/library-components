@@ -9,6 +9,7 @@ import Load from '@/app/_components/load/load'
 const Header = dynamic(() => import('@library/components/header'), { ssr: false, loading: () => <Load /> })
 const Datos = dynamic(() => import('./_sections/1_datos'), { ssr: false, loading: () => <Load /> })
 const PlanEstudio = dynamic(() => import('./_sections/2_planEstudio'), { ssr: false, loading: () => <Load /> })
+const DoblePlanEstudio = dynamic(() => import('./_sections/2-1_doblePlanEstudio'), { ssr: false, loading: () => <Load /> })
 const Perfiles = dynamic(() => import('./_sections/3_perfiles'), { ssr: false, loading: () => <Load /> })
 const Diferenciales = dynamic(() => import('./_sections/4_diferenciales'), { ssr: false, loading: () => <Load /> })
 const Insignias = dynamic(() => import('./_sections/5_insignias'), { ssr: false, loading: () => <Load /> })
@@ -38,6 +39,11 @@ export default function Profesional() {
       {/* <PlanEstudio /> */}
       <ViewComponent path={`${basePath}/_sections/2_planEstudio`}>
         <PlanEstudio />
+      </ViewComponent>
+
+      {/* <DoblePlanEstudio /> */}
+      <ViewComponent path={`${basePath}/_sections/2-1_doblePlanEstudio`}>
+        <DoblePlanEstudio />
       </ViewComponent>
 
       {/* <Perfiles /> */}

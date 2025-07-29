@@ -1,34 +1,52 @@
 import { Caption, Paragraph, Button as Btn } from '@library/components'
 import PropTypes from 'prop-types'
+import { useMemo } from 'react'
 
-/**
- * Función para generar atributos dinámicos basados en el ID
- */
+// Cache para atributos generados
+const attributeCache = new Map()
+
 const generateDynamicAttributes = id => {
   if (!id) return {}
-
-  if (id.startsWith('data-puj-') || id.startsWith('puj-')) {
-    return { [id]: 'true' }
+  
+  // Usar cache para evitar recalcular
+  if (attributeCache.has(id)) {
+    return attributeCache.get(id)
   }
 
-  let attributeName = id
-    .replace(/^(data-puj-|puj-data-|puj-)/i, '')
-    .replace(/([A-Z])/g, '-$1')
-    .toLowerCase()
-    .replace(/^-/, '')
-
-  return { [`data-puj-${attributeName}`]: 'true' }
+  let result
+  if (id.startsWith('data-puj-') || id.startsWith('puj-')) {
+    result = { [id]: 'true' }
+  } else {
+    const attributeName = id
+      .replace(/^(data-puj-|puj-data-|puj-)/i, '')
+      .replace(/([A-Z])/g, '-$1')
+      .toLowerCase()
+      .replace(/^-/, '')
+    result = { [`data-puj-${attributeName}`]: 'true' }
+  }
+  
+  attributeCache.set(id, result)
+  return result
 }
 
-/**
- * Componente genérico para mostrar detalles del programa
- * Soporta diferentes tipos: normal, modal
- */
 const ProgramDetail = ({ id, icon, label, value, type = 'normal', modalContent = null, className = '' }) => {
-  const itemClass = ['program-detail', type !== 'normal' ? `program-detail--${type}` : '', className].filter(Boolean).join(' ')
+  // Memoizar cálculos costosos
+  const itemClass = useMemo(() => 
+    ['program-detail', type !== 'normal' ? `program-detail--${type}` : '', className]
+      .filter(Boolean)
+      .join(' '), 
+    [type, className]
+  )
 
-  const modalId = `modal-${id}-${Math.random().toString(36).substr(2, 9)}`
-  const dynamicAttributes = generateDynamicAttributes(id)
+  const modalId = useMemo(() => 
+    `modal-${id}-${Date.now().toString(36)}`, 
+    [id]
+  )
+  
+  const dynamicAttributes = useMemo(() => 
+    generateDynamicAttributes(id), 
+    [id]
+  )
 
   return (
     <>
@@ -89,7 +107,6 @@ const ProgramDetail = ({ id, icon, label, value, type = 'normal', modalContent =
   )
 }
 
-// PropTypes
 ProgramDetail.propTypes = {
   id: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
