@@ -17,7 +17,8 @@ const TIMEOUT_MS = 25000
 
 // URLs de las librerías externas
 const EXTERNAL_LIBRARIES = [
-  'https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js'
+  ''
+  //'https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js'
   //'https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js',
   //'https://www.javeriana.edu.co/planestudio/pages/libraries/simple_datatables/simple-datatables.js'
 ]
@@ -210,13 +211,6 @@ function cleanJavaScriptExports(content: string): string {
       return cleaned
     }
 
-    // Convertir export class a class normal (NUEVO)
-    if (trimmed.startsWith('export class ')) {
-      const cleaned = line.replace('export class ', 'class ')
-      console.log(`🔄 Export class: ${trimmed} → ${cleaned.trim()}`)
-      return cleaned
-    }
-
     // Convertir export const a const normal
     if (trimmed.startsWith('export const ')) {
       const cleaned = line.replace('export const ', 'const ')
@@ -245,22 +239,17 @@ function cleanJavaScriptExports(content: string): string {
       return cleaned
     }
 
-    // Manejar export { ... } de forma más inteligente
-    if (trimmed.match(/^export\s*\{.*\}/)) {
-      console.log(`🗑️ Removiendo export destructuring: ${trimmed}`)
-      return '// ' + line
-    }
-
-    // Solo comentar exports que no sean declaraciones
-    if (trimmed.startsWith('export ') && 
+    // Eliminar líneas de export { ... }
+    if (
+      trimmed.match(/^export\s*\{.*\}/) ||
+      (trimmed.startsWith('export ') &&
         !trimmed.includes('function') &&
         !trimmed.includes('const') &&
         !trimmed.includes('let') &&
-        !trimmed.includes('var') &&
-        !trimmed.includes('class') &&
-        !trimmed.includes('default')) {
-      console.log(`🗑️ Removiendo export genérico: ${trimmed}`)
-      return '// ' + line
+        !trimmed.includes('var'))
+    ) {
+      console.log(`🗑️ Removiendo export: ${trimmed}`)
+      return '// ' + line // Comentar la línea en lugar de eliminarla
     }
 
     return line
@@ -399,12 +388,17 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
 }
 
 // Función auxiliar para optimizar CSS
-function optimizeCSSThemes(css) {
-  const themes = new Map()
+interface ThemeBlock {
+  selector: string
+  variables: string[]
+}
+
+function optimizeCSSThemes(css: string): string {
+  const themes = new Map<string, ThemeBlock>()
 
   // Encontrar y agrupar bloques :root
   const rootBlockRegex = /:root(\[data-theme='([^']+)'\])?\s*\{([^}]+)\}/g
-  let match
+  let match: RegExpExecArray | null
 
   while ((match = rootBlockRegex.exec(css)) !== null) {
     const [fullMatch, themeSelector, themeName, content] = match
@@ -419,18 +413,18 @@ function optimizeCSSThemes(css) {
 
     // Extraer variables
     const variableRegex = /--([^:]+):\s*([^;]+);/g
-    let varMatch
+    let varMatch: RegExpExecArray | null
     while ((varMatch = variableRegex.exec(content)) !== null) {
       const [, name, value] = varMatch
-      themes.get(themeKey).variables.push(`  --${name.trim()}: ${value.trim()};`)
+      themes.get(themeKey)!.variables.push(`  --${name.trim()}: ${value.trim()};`)
     }
   }
 
   // Remover bloques originales y regenerar optimizados
-  let optimizedCSS = css.replace(rootBlockRegex, '')
+  let optimizedCSS: string = css.replace(rootBlockRegex, '')
 
   const optimizedBlocks: string[] = []
-  themes.forEach(theme => {
+  themes.forEach((theme: ThemeBlock) => {
     // Eliminar duplicados y ordenar
     const uniqueVars = [...new Set(theme.variables)].sort()
     optimizedBlocks.push(`${theme.selector} {\n${uniqueVars.join('\n')}\n}`)

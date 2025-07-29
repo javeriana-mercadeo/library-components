@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { initGlobalUtils } from '@/utils/index.js'
+import initGlobalUtils from '@/utils/main.js'
 
 declare global {
   interface Window {
@@ -34,7 +34,7 @@ export function ClientSideUtils() {
           logLevel: 'DEBUG'
         })
         console.log('✅ Utilidades globales v2.0 cargadas correctamente desde ClientSideUtils')
-        
+
         // Verificar que las utilidades estén disponibles
         const utilsCheck = {
           Logger: !!window.Logger,
@@ -45,14 +45,14 @@ export function ClientSideUtils() {
           StringUtils: !!window.StringUtils,
           DataUtils: !!window.DataUtils
         }
-        
+
         console.log('🔍 Utilidades verificadas:', utilsCheck)
       } else if (typeof window !== 'undefined') {
         console.log('ℹ️ Utilidades globales ya estaban cargadas')
       }
     } catch (error) {
       console.error('❌ Error al cargar utilidades globales:', error)
-      
+
       // Fallback de emergencia - cargar la versión legacy
       try {
         const legacyInit = require('@/utils/main.js').default

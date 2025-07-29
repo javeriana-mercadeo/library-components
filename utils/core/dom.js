@@ -17,7 +17,7 @@ const DOMUtils = {
   toggleClasses(element, classes, force = null) {
     if (!element) return
     const classArray = Array.isArray(classes) ? classes : [classes]
-    
+
     classArray.forEach(className => {
       if (force === null) {
         element.classList.toggle(className)
@@ -47,7 +47,7 @@ const DOMUtils = {
     if (typeof document === 'undefined') return null
 
     const element = document.createElement(tag)
-    
+
     if (options.className) element.className = options.className
     if (options.id) element.id = options.id
     if (options.content) element.innerHTML = options.content
@@ -60,7 +60,7 @@ const DOMUtils = {
     if (options.styles) {
       Object.assign(element.style, options.styles)
     }
-    
+
     return element
   },
 
@@ -81,7 +81,7 @@ const DOMUtils = {
 
   findSiblings(element, selector = null) {
     if (!element || !element.parentNode) return []
-    
+
     const siblings = Array.from(element.parentNode.children).filter(child => child !== element)
     return selector ? siblings.filter(sibling => sibling.matches(selector)) : siblings
   },
@@ -112,7 +112,7 @@ const DOMUtils = {
 
   getOffset(element) {
     if (!element) return { top: 0, left: 0 }
-    
+
     const rect = element.getBoundingClientRect()
     return {
       top: rect.top + window.pageYOffset,
@@ -129,71 +129,62 @@ const DOMUtils = {
 
   isInViewport(element, threshold = 0) {
     if (!element) return false
-    
+
     const rect = element.getBoundingClientRect()
     const windowHeight = window.innerHeight || document.documentElement.clientHeight
     const windowWidth = window.innerWidth || document.documentElement.clientWidth
-    
+
     return (
-      rect.top >= -threshold &&
-      rect.left >= -threshold &&
-      rect.bottom <= windowHeight + threshold &&
-      rect.right <= windowWidth + threshold
+      rect.top >= -threshold && rect.left >= -threshold && rect.bottom <= windowHeight + threshold && rect.right <= windowWidth + threshold
     )
   },
 
   scrollTo(element, options = {}) {
     if (!element) return
-    
+
     const defaultOptions = {
       behavior: 'smooth',
       block: 'start',
       inline: 'nearest'
     }
-    
+
     element.scrollIntoView({ ...defaultOptions, ...options })
   },
 
   animate(element, keyframes, options = {}) {
     if (!element || !element.animate) return null
-    
+
     const defaultOptions = {
       duration: 300,
       easing: 'ease-in-out',
       fill: 'both'
     }
-    
+
     return element.animate(keyframes, { ...defaultOptions, ...options })
   },
 
   fadeIn(element, duration = 300) {
     if (!element) return
-    
+
     element.style.opacity = '0'
     element.style.display = 'block'
-    
-    return this.animate(element, [
-      { opacity: 0 },
-      { opacity: 1 }
-    ], { duration })
+
+    return this.animate(element, [{ opacity: 0 }, { opacity: 1 }], { duration })
   },
 
   fadeOut(element, duration = 300) {
     if (!element) return
-    
-    const animation = this.animate(element, [
-      { opacity: 1 },
-      { opacity: 0 }
-    ], { duration })
-    
+
+    const animation = this.animate(element, [{ opacity: 1 }, { opacity: 0 }], { duration })
+
     if (animation) {
       animation.addEventListener('finish', () => {
         element.style.display = 'none'
       })
     }
-    
+
     return animation
   }
 }
 
-export default DOMUtils
+export { DOMUtils }

@@ -1,6 +1,6 @@
 /**
  * ARCHIVO LEGACY - MANTENIDO POR COMPATIBILIDAD
- * 
+ *
  * ⚠️  NOTA: Este archivo se mantiene por compatibilidad con código existente.
  * 📦 Para nuevos proyectos, usa: import { Logger, DOMUtils, etc } from './utils/index.js'
  * 🔄 Este archivo redirige automáticamente a la nueva estructura modular.
