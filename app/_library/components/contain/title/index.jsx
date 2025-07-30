@@ -101,7 +101,7 @@ const Title = ({
   if (isEditable) {
     const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
     baseProps['data-lfr-editable-id'] = editableId
-    baseProps['data-lfr-editable-type'] = 'rich-text'
+    baseProps['data-lfr-editable-type'] = 'text'
   }
 
   // Configurar elemento HTML según jerarquía

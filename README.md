@@ -119,7 +119,7 @@ El sistema incluye **42 temas** diferentes:
 
 ```jsx
 // En componentes React
-const MiComponente = () => <div className="bg-[var(--primary-600)] text-[var(--neutral-100)]">Contenido</div>
+const MiComponente = () => <div className='bg-[var(--primary-600)] text-[var(--neutral-100)]'>Contenido</div>
 ```
 
 ## 🧩 Creación de Componentes
@@ -261,8 +261,7 @@ Envuelve componentes para mostrar código y permitir descarga:
 
 ```jsx
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-
-;<ViewComponent path="ruta/al/componente">
+;<ViewComponent path='ruta/al/componente'>
   <MiComponente />
 </ViewComponent>
 ```
@@ -307,8 +306,7 @@ Edita `styles/abstracts/_colors.scss`:
 ```scss
 $color-base: (
   'primary': #tu-color-primario,
-  'secondary': #tu-color-secundario,
-  // ...
+  'secondary': #tu-color-secundario // ...
 );
 ```
 
@@ -322,8 +320,7 @@ $colors-theme: (
     'primary': generate-color-scale(#mi-color),
     'secondary': generate-color-scale(#otro-color),
     // ...
-  ),
-  // ...
+  ) // ...
 );
 ```
 
@@ -390,9 +387,9 @@ npm run lint         # Linter con ESLint
 ```jsx
 // ✅ CORRECTO - Solo JSX estático
 const MiComponente = ({ datos }) => (
-  <div className="mi-componente" data-component="mi-componente">
+  <div className='mi-componente' data-component='mi-componente'>
     <h2>{datos.titulo}</h2>
-    <button className="mi-boton">Click me</button>
+    <button className='mi-boton'>Click me</button>
   </div>
 )
 

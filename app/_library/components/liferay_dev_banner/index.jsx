@@ -1,5 +1,7 @@
+import { UniversalComponent as UC, Container } from '@library/components'
+
 import PropTypes from 'prop-types'
-import Container from '@library/components/container'
+
 import './styles.scss'
 
 /**
@@ -37,7 +39,7 @@ const LiferayDevBanner = ({ children, icon, className = '', variant = 'info', id
       <Container className={`${ELEMENT_NAME}__container`}>
         {icon && (
           <div className={`${ELEMENT_NAME}__icon`}>
-            <i className={icon} aria-hidden="true"></i>
+            <i className={icon} aria-hidden='true'></i>
           </div>
         )}
 

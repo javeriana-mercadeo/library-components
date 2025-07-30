@@ -1,15 +1,11 @@
 export default function swiperCarousel() {
-
   const loadSwiper = async () => {
-
     if (typeof window !== 'undefined' && !window.Swiper) {
-
       const script = document.createElement('script')
       script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'
       script.async = true
 
       script.onload = () => {
-
         setTimeout(() => {
           initializeSwiper()
         }, 100)
@@ -22,24 +18,19 @@ export default function swiperCarousel() {
       link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
       document.head.appendChild(link)
     } else if (window.Swiper) {
-
       setTimeout(() => {
         initializeSwiper()
       }, 100)
     }
   }
 
-
   const initializeSwiper = () => {
-
     const swiperContainer = document.querySelector('.subjects-swiper')
-    
-    if (window.Swiper && swiperContainer) {
 
+    if (window.Swiper && swiperContainer) {
       if (swiperContainer.swiper) {
         swiperContainer.swiper.destroy(true, true)
       }
-
 
       const swiper = new window.Swiper('.subjects-swiper', {
         loop: true,
@@ -52,13 +43,12 @@ export default function swiperCarousel() {
           clickable: true,
           dynamicBullets: true
         },
-        
 
         navigation: {
           nextEl: '.subjects-next',
           prevEl: '.subjects-prev'
         },
-        
+
         // Responsive breakpoints
         breakpoints: {
           0: {

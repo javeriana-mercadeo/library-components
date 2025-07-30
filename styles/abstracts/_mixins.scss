@@ -84,6 +84,13 @@
   }
 }
 
+@mixin liferay-edit-mode-body {
+  .has-edit-mode-menu,
+  .signed-in {
+    @content;
+  }
+}
+
 @mixin only-dev-mode {
   [data-env='development'] & {
     @content;
