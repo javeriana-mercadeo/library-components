@@ -42,7 +42,11 @@
       "Bash(npx tsc:*)",
       "Bash(npm run lint)",
       "Bash(curl:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(npm outdated)",
+      "Bash(npm audit:*)",
+      "Bash(npm view:*)",
+      "WebFetch(domain:www.heroui.com)"
     ],
     "deny": []
   }
