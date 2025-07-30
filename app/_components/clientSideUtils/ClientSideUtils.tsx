@@ -28,11 +28,7 @@ export function ClientSideUtils() {
     // Cargar utilidades globales inmediatamente si no están ya cargadas
     try {
       if (typeof window !== 'undefined' && !window.__GLOBAL_UTILS_LOADED__) {
-        initGlobalUtils({
-          exposeToWindow: true,
-          enableLegacySupport: true,
-          logLevel: 'DEBUG'
-        })
+        initGlobalUtils()
         console.log('✅ Utilidades globales v2.0 cargadas correctamente desde ClientSideUtils')
 
         // Verificar que las utilidades estén disponibles
