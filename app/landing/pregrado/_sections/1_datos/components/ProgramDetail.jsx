@@ -7,7 +7,7 @@ const attributeCache = new Map()
 
 const generateDynamicAttributes = id => {
   if (!id) return {}
-  
+
   // Usar cache para evitar recalcular
   if (attributeCache.has(id)) {
     return attributeCache.get(id)
@@ -24,64 +24,56 @@ const generateDynamicAttributes = id => {
       .replace(/^-/, '')
     result = { [`data-puj-${attributeName}`]: 'true' }
   }
-  
+
   attributeCache.set(id, result)
   return result
 }
 
 const ProgramDetail = ({ id, icon, label, value, type = 'normal', modalContent = null, className = '' }) => {
   // Memoizar cálculos costosos
-  const itemClass = useMemo(() => 
-    ['program-detail', type !== 'normal' ? `program-detail--${type}` : '', className]
-      .filter(Boolean)
-      .join(' '), 
+  const itemClass = useMemo(
+    () => ['program-detail', type !== 'normal' ? `program-detail--${type}` : '', className].filter(Boolean).join(' '),
     [type, className]
   )
 
-  const modalId = useMemo(() => 
-    `modal-${id}-${Date.now().toString(36)}`, 
-    [id]
-  )
-  
-  const dynamicAttributes = useMemo(() => 
-    generateDynamicAttributes(id), 
-    [id]
-  )
+  const modalId = useMemo(() => `modal-${id}-${Date.now().toString(36)}`, [id])
+
+  const dynamicAttributes = useMemo(() => generateDynamicAttributes(id), [id])
 
   return (
     <>
       <div className={itemClass}>
-        <div className="program-detail_icon">
+        <div className='program-detail_icon'>
           <i className={`ph ${icon}`}></i>
         </div>
 
-        <div className="program-detail_content">
-          <Caption className="program-detail_label" color="neutral" size="md" isEditable={false}>
+        <div className='program-detail_content'>
+          <Caption className='program-detail_label' color='neutral' size='md' isEditable={false}>
             {label}
           </Caption>
 
           {/* Tipo normal */}
           {type === 'normal' && (
-            <Paragraph className="program-detail_value" color="neutral" size="md" bold={true} isEditable={false} {...dynamicAttributes}>
+            <Paragraph className='program-detail_value' color='neutral' size='md' bold={true} isEditable={false} {...dynamicAttributes}>
               {value}
             </Paragraph>
           )}
 
           {/* Tipo modal - Clickeable */}
           {type === 'modal' && (
-            <div className="program-detail_content--clickable">
-              <Paragraph className="program-detail_value" color="neutral" size="md" bold={true} isEditable={false} {...dynamicAttributes}>
+            <div className='program-detail_content--clickable'>
+              <Paragraph className='program-detail_value' color='neutral' size='md' bold={true} isEditable={false} {...dynamicAttributes}>
                 {value}
               </Paragraph>
 
               <Btn
-                variant="faded"
-                size="sm"
-                className="program-detail_value--clickable"
+                variant='faded'
+                size='sm'
+                className='program-detail_value--clickable'
                 data-modal-target={modalId}
                 aria-label={`Ver más detalles sobre ${label}`}
                 isEditable={false}
-                endIcon={<i className="ph ph-info"></i>}>
+                endIcon={<i className='ph ph-info'></i>}>
                 Ver detalles
               </Btn>
             </div>
@@ -91,15 +83,15 @@ const ProgramDetail = ({ id, icon, label, value, type = 'normal', modalContent =
 
       {/* Modal pequeño */}
       {type === 'modal' && (
-        <div id={modalId} className="program-detail-modal">
-          <div className="program-detail-modal__content">
-            <div className="program-detail-modal__header">
-              <h3 className="program-detail-modal__title">{label}</h3>
-              <button className="program-detail-modal__close" aria-label="Cerrar modal">
-                <i className="ph ph-x"></i>
+        <div id={modalId} className='program-detail-modal'>
+          <div className='program-detail-modal__content'>
+            <div className='program-detail-modal__header'>
+              <h3 className='program-detail-modal__title'>{label}</h3>
+              <button className='program-detail-modal__close' aria-label='Cerrar modal'>
+                <i className='ph ph-x'></i>
               </button>
             </div>
-            <div className="program-detail-modal__body">{modalContent}</div>
+            <div className='program-detail-modal__body'>{modalContent}</div>
           </div>
         </div>
       )}

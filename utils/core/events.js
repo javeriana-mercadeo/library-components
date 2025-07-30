@@ -121,7 +121,7 @@ const EventManagerInstance = {
   off(eventName, handler) {
     if (this.eventBus.has(eventName)) {
       this.eventBus.get(eventName).delete(handler)
-        Logger.debug(`Handler removido del event bus: ${eventName}`)
+      Logger.debug(`Handler removido del event bus: ${eventName}`)
     }
   },
 
@@ -132,11 +132,11 @@ const EventManagerInstance = {
         try {
           handler(...args)
         } catch (error) {
-                Logger.error(`Error ejecutando handler para ${eventName}:`, error)
+          Logger.error(`Error ejecutando handler para ${eventName}:`, error)
         }
       })
 
-        Logger.debug(`Event bus disparado: ${eventName} con ${handlers.size} handlers`)
+      Logger.debug(`Event bus disparado: ${eventName} con ${handlers.size} handlers`)
     }
   },
 

@@ -192,8 +192,6 @@ const ResponsiveVideoSystem = {
   }
 }
 
-
-
 // Sistema de Modales
 
 const ModalSystem = {
@@ -261,7 +259,6 @@ const ModalSystem = {
     document.body.style.overflow = ''
   }
 }
-
 
 // Inicialización Principal
 

@@ -10,7 +10,7 @@ const EventosFormManager = {
     // Solo ejecutar en el cliente
     if (typeof window === 'undefined') return
 
-    console.log('🚀 [EVENTOS] Inicializando FormModules para eventos')
+
 
     try {
       // Verificar que FormModules esté disponible
@@ -37,7 +37,7 @@ const EventosFormManager = {
       })
 
       await this.formModulesInstance.initialize()
-      console.log('✅ [EVENTOS] FormModules inicializado exitosamente')
+
     } catch (error) {
       console.error('❌ [EVENTOS] Error al inicializar FormModules:', error)
     }

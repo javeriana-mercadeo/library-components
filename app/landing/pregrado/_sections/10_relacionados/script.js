@@ -66,24 +66,8 @@ export default () => {
   }
 
   // ==========================================
-  // SISTEMA DE LOGGING CENTRALIZADO
-  // ==========================================
-
-  // ==========================================
   // FUNCIONES DE NORMALIZACIÓN DE FACULTADES
   // ==========================================
-
-  /**
-   * Función centralizada para manejo de logs - control maestro simple
-   */
-  function logMessage(message, ...args) {
-    if (CAROUSEL_CONFIG.logSettings.enableLogs) {
-      console.log(message, ...args)
-    }
-  }
-
-  // Log de inicialización
-  logMessage('📍 [SCRIPT] Sistema de programas relacionados iniciado')
 
   /**
    * Normaliza nombres de facultades para hacer comparaciones flexibles
@@ -131,27 +115,6 @@ export default () => {
       // Extraer campos
       const { facultad, programa, snies, codPrograma, urlImagen, area, url } = dataProgram
 
-      // 📋 TABLA DE INFORMACIÓN CONSULTADA
-      logMessage('📋 INFORMACIÓN DEL PROGRAMA ACTUAL:')
-      if (CAROUSEL_CONFIG.logSettings.enableLogs) {
-        console.table({
-          Código: codPrograma || 'N/A',
-          Programa: programa || 'N/A',
-          Facultad: Array.isArray(facultad) ? facultad.join(', ') : facultad || 'N/A',
-          Áreas: Array.isArray(area) ? area.join(', ') : area || 'N/A',
-          SNIES: snies || 'N/A',
-          URL: url || 'N/A',
-          Imagen: urlImagen || 'N/A'
-        })
-      }
-
-      // Mostrar configuración actual
-      logMessage('⚙️ CONFIGURACIÓN ACTUAL DEL CARRUSEL:')
-      const enabledTypes = Object.entries(CAROUSEL_CONFIG.programTypes)
-        .filter(([_, config]) => config.enabled)
-        .map(([type, config]) => `${type} (P${config.priority})`)
-      logMessage('✅ Tipos habilitados:', enabledTypes.join(', '))
-      logMessage('📊 Máximo de programas:', CAROUSEL_CONFIG.filterSettings.maxPrograms)
 
       let automationUpdates = {}
 
@@ -252,21 +215,10 @@ export default () => {
 
       let compiledPrograms = compileOrderedPrograms(currentProgram, allPrograms)
 
-      // Logs de resultados
-      logMessage('🎯 [CAROUSEL] Programas encontrados:', compiledPrograms.length)
-      if (compiledPrograms.length > 0) {
-        logMessage('🎯 [CAROUSEL] Lista de programas filtrados:')
-        compiledPrograms.forEach((prog, index) => {
-          logMessage(`  ${index + 1}. ${prog.nombre || prog.programa} (Código: ${prog.codigo})`)
-        })
-      } else {
-        logMessage('❌ [CAROUSEL] No se encontraron programas relacionados')
-      }
 
       const relatedPrograms = document.getElementById('relatedPrograms')
 
       if (!relatedPrograms) {
-        logMessage("❌ Error: Contenedor 'relatedPrograms' no se encuentra en el DOM.")
         return
       }
 
@@ -318,11 +270,8 @@ export default () => {
         relatedPrograms.appendChild(card)
       })
 
-      logMessage('✅ [CAROUSEL] Cards creadas y agregadas al DOM')
-
-      // Inicializar Swiper después de crear las cards - igual que la versión anterior
+      // Inicializar Swiper después de crear las cards
       setTimeout(() => {
-        logMessage('⚡ Inicializando Swiper...')
         this.initializeSwiper()
       }, 100)
     },
@@ -335,23 +284,19 @@ export default () => {
       }
 
       if (!window.Swiper) {
-        logMessage('⏳ Swiper no disponible, reintentando...')
         setTimeout(() => this.initializeSwiper(), 300)
         return
       }
 
-      // Buscar el wrapper con un solo fallback - igual que la versión anterior
+      // Buscar el wrapper con un solo fallback
       const element = document.querySelector('.related-programs-swiper') || document.querySelector('.related-programs__carousel')
 
       if (!element) {
-        logMessage('❌ Elemento swiper no encontrado')
         return
       }
 
-      // Contar slides disponibles - igual que la versión anterior
+      // Contar slides disponibles
       const totalSlides = element.querySelectorAll('.swiper-slide').length
-
-      logMessage('🎯 [SWIPER] Inicializando con', totalSlides, 'slides')
 
       window.relatedProgramsSwiper = new window.Swiper(element, {
         loop: false,
@@ -402,8 +347,6 @@ export default () => {
           }
         }
       })
-
-      logMessage('✅ [SWIPER] Inicializado correctamente')
     }
   }
 

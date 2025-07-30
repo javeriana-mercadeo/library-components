@@ -21,7 +21,7 @@ const getGlobalUtils = () => {
         groupEnd: console.groupEnd || (() => {})
       },
       DOMUtils: {
-        findElement: (selector) => document.querySelector(selector),
+        findElement: selector => document.querySelector(selector),
         findElements: (selector, context = document) => Array.from(context.querySelectorAll(selector)),
         createElement: (tag, options = {}) => {
           const element = document.createElement(tag)
@@ -29,8 +29,10 @@ const getGlobalUtils = () => {
           if (options.textContent) element.textContent = options.textContent
           return element
         },
-        empty: (element) => { if (element) element.innerHTML = '' },
-        isReady: (callback) => {
+        empty: element => {
+          if (element) element.innerHTML = ''
+        },
+        isReady: callback => {
           if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', callback)
           } else {
@@ -40,7 +42,7 @@ const getGlobalUtils = () => {
       },
       HTTPClient: class {
         constructor() {}
-        async get(url) { 
+        async get(url) {
           const response = await fetch(url)
           return { data: await response.json() }
         }
@@ -63,21 +65,21 @@ const getGlobalUtils = () => {
         }
       },
       StringUtils: {
-        capitalize: (str) => str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : '',
-        capitalizeWords: (str) => str ? str.replace(/\b\w/g, char => char.toUpperCase()) : '',
-        isEmpty: (str) => !str || str.toString().trim().length === 0,
-        isAlphanumeric: (str) => /^[a-zA-Z0-9]+$/.test(str),
+        capitalize: str => (str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : ''),
+        capitalizeWords: str => (str ? str.replace(/\b\w/g, char => char.toUpperCase()) : ''),
+        isEmpty: str => !str || str.toString().trim().length === 0,
+        isAlphanumeric: str => /^[a-zA-Z0-9]+$/.test(str),
         replace: (str, search, replacement) => str.replace(new RegExp(search, 'g'), replacement),
-        trim: (str) => str ? str.trim() : ''
+        trim: str => (str ? str.trim() : '')
       },
       DataUtils: {
         deepMerge: (target, source) => ({ ...target, ...source }),
-        filterBy: (array, filters) => array.filter(item => 
-          Object.entries(filters).every(([key, value]) => item[key] === value)
-        ),
+        filterBy: (array, filters) => array.filter(item => Object.entries(filters).every(([key, value]) => item[key] === value)),
         pick: (obj, keys) => {
           const result = {}
-          keys.forEach(key => { if (key in obj) result[key] = obj[key] })
+          keys.forEach(key => {
+            if (key in obj) result[key] = obj[key]
+          })
           return result
         }
       }
@@ -96,14 +98,7 @@ const getGlobalUtils = () => {
 }
 
 // Obtener utilidades con fallback seguro
-const {
-  Logger,
-  DOMUtils,
-  HTTPClient,
-  EventManager,
-  StringUtils,
-  DataUtils
-} = getGlobalUtils()
+const { Logger, DOMUtils, HTTPClient, EventManager, StringUtils, DataUtils } = getGlobalUtils()
 let statusPage = {}
 
 // ===========================================
@@ -127,11 +122,45 @@ const CONFIG = {
 }
 
 // Cliente HTTP configurado con reintentos y timeout
-const apiClient = HTTPClient ? new HTTPClient('', {
-  timeout: CONFIG.TIMEOUT,
-  retries: CONFIG.RETRY_ATTEMPTS,
-  retryDelay: 1000
-}) : new (getGlobalUtils().HTTPClient)()
+const apiClient = HTTPClient
+  ? new HTTPClient('', {
+      timeout: CONFIG.TIMEOUT,
+      retries: CONFIG.RETRY_ATTEMPTS,
+      retryDelay: 1000
+    })
+  : new (getGlobalUtils().HTTPClient)()
+
+// ===========================================
+// NORMALIZACIÓN DE FACULTADES
+// ===========================================
+const FacultyNormalizer = {
+  /**
+   * Normaliza nombres de facultades para hacer comparaciones flexibles
+   * Maneja abreviaciones y variaciones comunes
+   */
+  normalize(facultyName) {
+    if (!facultyName || typeof facultyName !== 'string') return ''
+
+    // Limpiar espacios y quitar "Facultad de" al inicio
+    let clean = facultyName.replace(/^Facultad de /i, '').trim()
+
+    // Mapeo de abreviaciones conocidas a nombres completos
+    const facultyMappings = {
+      'Cs.Económicas y Administrativ.': 'Ciencias Económicas y Administrativas',
+      'Cs.Económicas y Administrativas': 'Ciencias Económicas y Administrativas',
+      'Cs.Políticas y Relaciones Int.': 'Ciencias Políticas y Relaciones Internacionales',
+      'Arquitectura y Diseño': 'Arquitectura y Diseño'
+      // Agregar más mapeos según sea necesario
+    }
+
+    // Aplicar mapeo si existe
+    if (facultyMappings[clean]) {
+      return facultyMappings[clean]
+    }
+
+    return clean
+  }
+}
 
 // ===========================================
 // SISTEMA DE FORMATEO DE DATOS
@@ -396,7 +425,6 @@ const DOMUpdater = {
         }
       }
 
-      Logger.debug(`DOM actualizado: ${elementId} = ${value}`)
     } catch (error) {
       Logger.error(`Error actualizando DOM para ${elementId}:`, error)
     }
@@ -436,7 +464,6 @@ const DOMUpdater = {
         container.appendChild(dateItem)
       })
 
-      Logger.success(`Fechas de registro actualizadas: ${fechasData.length} elementos`)
       return true
     } catch (error) {
       Logger.error('Error actualizando fechas de registro:', error)
@@ -446,7 +473,6 @@ const DOMUpdater = {
 
   clearCache() {
     this._elementCache.clear()
-    Logger.debug('Cache de elementos DOM limpiado')
   }
 }
 
@@ -473,7 +499,9 @@ const ProgramDataProcessor = {
     let automationUpdates = {}
 
     if (facultad) {
-      DOMUpdater.updateElementsText('data-puj-faculty', DataFormatter.formatProgramName(facultad))
+      // Aplicar normalización de facultad antes del formateo
+      const normalizedFaculty = FacultyNormalizer.normalize(facultad)
+      DOMUpdater.updateElementsText('data-puj-faculty', DataFormatter.formatProgramName(normalizedFaculty))
       automationUpdates.faculty = true
     }
 
@@ -537,7 +565,6 @@ const ProgramDataProcessor = {
       })
     }
 
-    Logger.info(`DOM actualizado con ${Object.keys(automationUpdates).length} campos del programa`)
     return automationUpdates
   }
 }
@@ -561,12 +588,10 @@ const updateDisplay = (text, isError = false) => {
 
 const updateStatus = updates => {
   statusPage = DataUtils.deepMerge(statusPage, updates)
-  Logger.debug('Status actualizado:', updates)
 }
 
 const dispatchEvent = (eventName, detail) => {
   EventManager.emit(document, eventName, detail)
-  Logger.debug(`Evento disparado: ${eventName}`, detail)
 }
 
 // ===========================================
@@ -574,9 +599,7 @@ const dispatchEvent = (eventName, detail) => {
 // ===========================================
 const fetchProgramData = async codPrg => {
   try {
-    Logger.debug(`Buscando datos del programa: ${codPrg}`)
     const response = await apiClient.get(`${CONFIG.API_ENDPOINTS.JAVERIANA}/filterprograma?codprograma=${codPrg}`)
-    Logger.success(`Datos del programa ${codPrg} obtenidos exitosamente`)
     return response.data
   } catch (error) {
     Logger.error(`Error obteniendo datos del programa ${codPrg}:`, error)
@@ -586,7 +609,6 @@ const fetchProgramData = async codPrg => {
 
 const fetchAllPrograms = async () => {
   try {
-    Logger.debug('Obteniendo lista completa de programas')
     const response = await apiClient.post(CONFIG.API_ENDPOINTS.SEARCH, {
       query: '',
       visibilidad: 'yes',
@@ -594,7 +616,6 @@ const fetchAllPrograms = async () => {
       areas: '',
       facultad: ''
     })
-    Logger.success(`Lista de programas obtenida: ${response.data?.length || 0} programas`)
     return response.data
   } catch (error) {
     Logger.error('Error obteniendo lista de programas:', error)
@@ -604,9 +625,7 @@ const fetchAllPrograms = async () => {
 
 const fetchWhatsApps = async () => {
   try {
-    Logger.debug('Obteniendo configuración de WhatsApp')
     const response = await apiClient.get(CONFIG.API_ENDPOINTS.WHATSAPP)
-    Logger.success('Configuración de WhatsApp obtenida exitosamente')
     return response.data
   } catch (error) {
     Logger.error('Error obteniendo configuración de WhatsApp:', error)
@@ -618,8 +637,6 @@ const fetchWhatsApps = async () => {
 // PROCESAMIENTO DE DATOS
 // ===========================================
 const processData = (programData, allPrograms, codPrg) => {
-  Logger.debug(`Procesando datos para programa ${codPrg}`)
-
   // Buscar datos complementarios usando DataUtils
   const complementaryProgramData =
     DataUtils.filterBy(allPrograms, {
@@ -644,12 +661,6 @@ const processData = (programData, allPrograms, codPrg) => {
     }
   }
 
-  Logger.info(`Datos consolidados para ${codPrg}:`, {
-    mainFields: Object.keys(consolidatedData.mainProgram).length,
-    hasComplementary: !!complementaryProgramData,
-    totalPrograms: allPrograms.length
-  })
-
   return consolidatedData
 }
 
@@ -660,8 +671,6 @@ const loadDataProgram = async codPrg => {
   const startTime = performance.now()
 
   try {
-    Logger.info(`🚀 Iniciando carga de datos para programa: ${codPrg}`)
-
     updateStatus({
       loadDataProgram: '🟡 Cargando información del programa...',
       codigo: codPrg,
@@ -669,7 +678,6 @@ const loadDataProgram = async codPrg => {
     })
 
     // Realizar todas las llamadas en paralelo con manejo de errores robusto
-    Logger.debug('Ejecutando llamadas paralelas a APIs')
     const [programData, allPrograms, whatsApps] = await Promise.all([fetchProgramData(codPrg), fetchAllPrograms(), fetchWhatsApps()])
 
     const consolidatedData = processData(programData, allPrograms, codPrg)
@@ -683,15 +691,7 @@ const loadDataProgram = async codPrg => {
       endTime: new Date().toISOString()
     })
 
-    // Logs estructurados para debugging
-    Logger.group(`📊 Datos del programa ${codPrg}`)
-    Logger.info('Programa principal:', programData)
-    Logger.info('Programa complementario:', consolidatedData.complementaryProgram)
-    Logger.info('Tiempo de carga:', `${loadTime.toFixed(2)}ms`)
-    Logger.groupEnd()
-
     // Procesar y actualizar DOM automáticamente
-    Logger.debug('Actualizando DOM con datos del programa')
     const domUpdates = ProgramDataProcessor.processAndUpdateDOM(consolidatedData.mainProgram)
 
     // Disparar evento con datos consolidados
@@ -707,7 +707,6 @@ const loadDataProgram = async codPrg => {
       }
     })
 
-    Logger.success(`✅ Programa ${codPrg} cargado exitosamente en ${loadTime.toFixed(2)}ms`)
     return consolidatedData
   } catch (error) {
     const loadTime = performance.now() - startTime
@@ -731,8 +730,6 @@ const loadDataProgram = async codPrg => {
 // ===========================================
 const initializeLoader = async () => {
   try {
-    Logger.info('🔧 Inicializando cargador de programa')
-
     // Validación mejorada del código de programa
     if (!codProgram || StringUtils.isEmpty(codProgram.toString().trim())) {
       throw new Error('Código de programa no definido o vacío')
@@ -744,7 +741,6 @@ const initializeLoader = async () => {
     }
 
     updateDisplay(`Código de programa: ${codProgram}`)
-    Logger.debug(`Código de programa validado: ${codProgram}`)
 
     // Cargar datos del programa
     await loadDataProgram(codProgram)
@@ -763,59 +759,24 @@ const initializeLoader = async () => {
 
 // Configurar interceptors solo si están disponibles (HTTPClient completo)
 if (apiClient.addRequestInterceptor) {
-  // Agregar interceptor de request para logging automático
-  apiClient.addRequestInterceptor(async config => {
-    Logger.debug(`🌐 Request: ${config.method} ${config.url}`)
-    return config
-  })
-
-  // Agregar interceptor de response para métricas
-  apiClient.addResponseInterceptor(async (response, config) => {
-    Logger.debug(`✅ Response: ${config.method} ${config.url} - ${response.status}`)
-    return response
-  })
-
   // Agregar interceptor de errores para logging consistente
   apiClient.addErrorInterceptor(async (error, config) => {
     Logger.error(`❌ API Error: ${config.method} ${config.url}`, error)
     throw error
   })
-} else {
-  Logger.debug('HTTPClient básico sin interceptors disponible')
 }
 
 // Configurar event listeners solo si EventManager está disponible
 if (EventManager && EventManager.add) {
   // Cleanup cuando la página se descarga
   EventManager.add(window, 'beforeunload', () => {
-    Logger.debug('🧹 Limpiando recursos antes de salir')
     DOMUpdater.clearCache()
     if (EventManager.cleanup) EventManager.cleanup()
   })
-
-  // Listener para cambios de visibilidad de página (optimización)
-  EventManager.add(document, 'visibilitychange', () => {
-    if (document.visibilityState === 'hidden') {
-      Logger.debug('📱 Página oculta - pausando operaciones no críticas')
-    } else {
-      Logger.debug('📱 Página visible - reanudando operaciones')
-    }
-  })
 } else {
   // Fallback básico sin EventManager
-  Logger.debug('EventManager no disponible, usando listeners básicos')
-  
   window.addEventListener('beforeunload', () => {
-    Logger.debug('🧹 Limpiando recursos antes de salir')
     DOMUpdater.clearCache()
-  })
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') {
-      Logger.debug('📱 Página oculta - pausando operaciones no críticas')
-    } else {
-      Logger.debug('📱 Página visible - reanudando operaciones')
-    }
   })
 }
 

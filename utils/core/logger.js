@@ -13,7 +13,7 @@ export const LogLevel = {
 
 class LoggerClass {
   constructor() {
-    this.level = LogLevel.DEBUG
+    this.level = LogLevel.ERROR // Solo mostrar errores
     this.enableTimestamp = true
     this.enableStackTrace = false
   }

@@ -47,7 +47,7 @@ export default () => {
     // Solo proceder si la tab clickeada no está ya activa
     if (!clickedButton.classList.contains('active')) {
       setActiveTab(container, clickedIndex)
-      
+
       // Actualizar el swiper activo si es necesario
       setTimeout(() => {
         const activePanel = document.querySelector('.plan-estudio__tab-panel:not(.hidden)')
@@ -58,7 +58,7 @@ export default () => {
             if (activePanel.id.includes('nocturna')) {
               jornadaId = 'nocturna'
             }
-            
+
             // Si no existe el swiper para esta jornada, crearlo
             if (!window.planEstudioSwipers[jornadaId]) {
               initializeSwiper(jornadaId, swiperContainer)
@@ -110,7 +110,7 @@ export default () => {
           if (activePanel.id.includes('nocturna')) {
             jornadaId = 'nocturna'
           }
-          
+
           if (!window.planEstudioSwipers[jornadaId]) {
             initializeSwiper(jornadaId, swiperContainer)
           } else {
@@ -167,7 +167,7 @@ export default () => {
     }
 
     console.log(`Inicializando swiper para jornada: ${jornadaId}`)
-    
+
     // Destruir instancia existente si existe
     if (window.planEstudioSwipers[jornadaId] && typeof window.planEstudioSwipers[jornadaId].destroy === 'function') {
       window.planEstudioSwipers[jornadaId].destroy(true, true)
@@ -304,12 +304,12 @@ export default () => {
       nextBtn.style.display = 'flex'
       nextBtn.style.visibility = 'visible'
 
-      prevBtn.classList.add('show-navigation')  
+      prevBtn.classList.add('show-navigation')
       prevBtn.classList.remove('swiper-button-hidden')
       prevBtn.setAttribute('aria-hidden', 'false')
       prevBtn.style.display = 'flex'
       prevBtn.style.visibility = 'visible'
-      
+
       updateButtonStates(swiper, container)
     } else {
       nextBtn.classList.remove('show-navigation')
@@ -404,17 +404,17 @@ export default () => {
   const initializeAllSwipers = () => {
     // Buscar todos los contenedores de swiper con la clase original
     const swiperContainers = document.querySelectorAll('.subjects-swiper')
-    
+
     swiperContainers.forEach(container => {
       // Determinar la jornada basándose en el panel padre
       const panel = container.closest('.plan-estudio__tab-panel')
       if (!panel) return
-      
+
       let jornadaId = 'diurna'
       if (panel.id.includes('nocturna')) {
         jornadaId = 'nocturna'
       }
-      
+
       // Solo inicializar si no existe ya
       if (!window.planEstudioSwipers[jornadaId]) {
         initializeSwiper(jornadaId, container)
@@ -426,7 +426,7 @@ export default () => {
     if (typeof window !== 'undefined') {
       // Inicializar pestañas
       initializeTabs()
-      
+
       // Si Swiper está disponible, inicializar todos los swipers
       if (window.Swiper) {
         setTimeout(() => {

@@ -148,9 +148,12 @@ export default () => {
     }
 
     // Obtener los slides visibles actuales desde la instancia de swiper
-    const slidesPerView = swiper.params.slidesPerView === 'auto' ? 
-      (swiper.slidesPerViewDynamic ? swiper.slidesPerViewDynamic() : 1) : 
-      (swiper.params.slidesPerView || 1)
+    const slidesPerView =
+      swiper.params.slidesPerView === 'auto'
+        ? swiper.slidesPerViewDynamic
+          ? swiper.slidesPerViewDynamic()
+          : 1
+        : swiper.params.slidesPerView || 1
 
     // Si todos los slides son visibles, ocultar navegación
     const needsNavigation = totalSlides > slidesPerView
