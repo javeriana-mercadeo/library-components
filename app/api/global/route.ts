@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
+
+import { NextResponse } from 'next/server'
 import * as sass from 'sass'
 
 // 📌 CONFIGURACIÓN
@@ -17,7 +18,8 @@ const TIMEOUT_MS = 25000
 
 // URLs de las librerías externas
 const EXTERNAL_LIBRARIES = [
-  'https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js'
+  ''
+  //'https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js'
   //'https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js',
   //'https://www.javeriana.edu.co/planestudio/pages/libraries/simple_datatables/simple-datatables.js'
 ]
@@ -39,15 +41,19 @@ async function fetchExternalLibrary(url: string): Promise<string> {
 
     if (!response.ok) {
       console.warn(`⚠️ No se pudo cargar la librería (${response.status}): ${url}`)
+
       return ''
     }
 
     const content = await response.text()
+
     console.log(`✅ Descargado (${content.length} chars): ${url}`)
+
     return content
   } catch (error) {
     clearTimeout(timeoutId)
     console.warn(`❌ Error al cargar la librería ${url}:`, error)
+
     return ''
   }
 }
@@ -56,6 +62,7 @@ async function fetchExternalLibrary(url: string): Promise<string> {
 async function resolveJavaScriptImports(jsContent: string, basePath: string, visited = new Set<string>()): Promise<string> {
   if (!jsContent) {
     console.log('⚠️ No hay contenido JS para resolver')
+
     return ''
   }
 
@@ -66,6 +73,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
   // Buscar todas las líneas de import con regex más específico
   const importLines = jsContent.split('\n').filter(line => {
     const trimmed = line.trim()
+
     return trimmed.startsWith('import ') && trimmed.includes('from ')
   })
 
@@ -74,6 +82,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
   if (importLines.length === 0) {
     console.log(`✅ No hay imports que resolver, devolviendo contenido original`)
+
     return jsContent
   }
 
@@ -87,16 +96,19 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
       // Extraer la ruta del import usando regex más robusto
       const importMatch = importLine.match(/from\s+['"`]([^'"`]+)['"`]/)
+
       if (!importMatch) {
         console.warn(`⚠️ No se pudo extraer ruta de: ${importLine}`)
         continue
       }
 
       const importPath = importMatch[1]
+
       console.log(`📁 Ruta extraída: ${importPath}`)
 
       // Construir la ruta absoluta
       let fullPath: string
+
       if (importPath.startsWith('./') || importPath.startsWith('../')) {
         // Ruta relativa
         fullPath = path.resolve(path.dirname(basePath), importPath)
@@ -113,6 +125,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
       for (const ext of extensions) {
         const testPath = fullPath.endsWith('.js') || fullPath.endsWith('.ts') ? fullPath : fullPath + ext
+
         try {
           await fs.access(testPath)
           resolvedPath = testPath
@@ -132,6 +145,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
       // Evitar imports circulares
       const normalizedPath = path.normalize(resolvedPath)
+
       if (visited.has(normalizedPath)) {
         console.log(`🔄 Import circular detectado, saltando: ${normalizedPath}`)
         continue
@@ -141,6 +155,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
       // Leer el archivo importado
       const importedContent = await fs.readFile(resolvedPath, 'utf8')
+
       console.log(`📖 Archivo leído: ${resolvedPath} (${importedContent.length} chars)`)
 
       // Recursivamente resolver imports del archivo importado
@@ -190,6 +205,7 @@ function cleanJavaScriptImports(content: string): string {
   })
 
   const result = cleanedLines.join('\n')
+
   console.log(`✅ Imports limpiados: ${lines.length} → ${cleanedLines.length} líneas`)
 
   return result
@@ -206,35 +222,45 @@ function cleanJavaScriptExports(content: string): string {
     // Convertir export function a function normal
     if (trimmed.startsWith('export function ')) {
       const cleaned = line.replace('export function ', 'function ')
+
       console.log(`🔄 Export function: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
     // Convertir export const a const normal
     if (trimmed.startsWith('export const ')) {
       const cleaned = line.replace('export const ', 'const ')
+
       console.log(`🔄 Export const: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
     // Convertir export let a let normal
     if (trimmed.startsWith('export let ')) {
       const cleaned = line.replace('export let ', 'let ')
+
       console.log(`🔄 Export let: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
     // Convertir export var a var normal
     if (trimmed.startsWith('export var ')) {
       const cleaned = line.replace('export var ', 'var ')
+
       console.log(`🔄 Export var: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
     // Eliminar export default (mantener solo la declaración)
     if (trimmed.startsWith('export default ')) {
       const cleaned = line.replace('export default ', '')
+
       console.log(`🔄 Export default: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
@@ -248,6 +274,7 @@ function cleanJavaScriptExports(content: string): string {
         !trimmed.includes('var'))
     ) {
       console.log(`🗑️ Removiendo export: ${trimmed}`)
+
       return '// ' + line // Comentar la línea en lugar de eliminarla
     }
 
@@ -255,6 +282,7 @@ function cleanJavaScriptExports(content: string): string {
   })
 
   const result = cleanedLines.join('\n')
+
   console.log(`✅ Exports limpiados`)
 
   return result
@@ -289,9 +317,11 @@ async function compileJavaScript(jsContent: string, jsPath: string): Promise<str
     ].join('\n')
 
     console.log(`✅ JavaScript procesado correctamente: ${combinedJS.length} caracteres`)
+
     return combinedJS
   } catch (error) {
     console.error('❌ Error procesando JavaScript:', error)
+
     return jsContent || '// Error procesando JavaScript'
   }
 }
@@ -311,6 +341,7 @@ async function needsRecompilation(componentPath: string): Promise<boolean> {
 
     if (!compilationInfo) {
       console.log('📝 No hay información de compilación previa - necesita compilar')
+
       return true
     }
 
@@ -323,13 +354,16 @@ async function needsRecompilation(componentPath: string): Promise<boolean> {
 
     if (scssModified || jsModified) {
       console.log('🔄 Archivos fuente modificados - necesita recompilar')
+
       return true
     }
 
     console.log('✅ Archivos compilados están actualizados')
+
     return false
   } catch (error) {
     console.log('⚠️ Error verificando recompilación:', error)
+
     return true // Si hay error, mejor recompilar
   }
 }
@@ -344,12 +378,14 @@ async function loadCompiledFiles(componentPath: string): Promise<{ css: string; 
 
     if (css || js) {
       console.log(`📁 Cargados archivos compilados existentes: CSS(${css.length}), JS(${js.length})`)
+
       return { css, js }
     }
 
     return null
   } catch (error) {
     console.log('⚠️ No se pudieron cargar archivos compilados existentes')
+
     return null
   }
 }
@@ -387,12 +423,17 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
 }
 
 // Función auxiliar para optimizar CSS
-function optimizeCSSThemes(css) {
-  const themes = new Map()
+interface ThemeBlock {
+  selector: string
+  variables: string[]
+}
+
+function optimizeCSSThemes(css: string): string {
+  const themes = new Map<string, ThemeBlock>()
 
   // Encontrar y agrupar bloques :root
   const rootBlockRegex = /:root(\[data-theme='([^']+)'\])?\s*\{([^}]+)\}/g
-  let match
+  let match: RegExpExecArray | null
 
   while ((match = rootBlockRegex.exec(css)) !== null) {
     const [fullMatch, themeSelector, themeName, content] = match
@@ -407,20 +448,24 @@ function optimizeCSSThemes(css) {
 
     // Extraer variables
     const variableRegex = /--([^:]+):\s*([^;]+);/g
-    let varMatch
+    let varMatch: RegExpExecArray | null
+
     while ((varMatch = variableRegex.exec(content)) !== null) {
       const [, name, value] = varMatch
-      themes.get(themeKey).variables.push(`  --${name.trim()}: ${value.trim()};`)
+
+      themes.get(themeKey)!.variables.push(`  --${name.trim()}: ${value.trim()};`)
     }
   }
 
   // Remover bloques originales y regenerar optimizados
-  let optimizedCSS = css.replace(rootBlockRegex, '')
+  let optimizedCSS: string = css.replace(rootBlockRegex, '')
 
   const optimizedBlocks: string[] = []
-  themes.forEach(theme => {
+
+  themes.forEach((theme: ThemeBlock) => {
     // Eliminar duplicados y ordenar
     const uniqueVars = [...new Set(theme.variables)].sort()
+
     optimizedBlocks.push(`${theme.selector} {\n${uniqueVars.join('\n')}\n}`)
   })
 
@@ -429,6 +474,7 @@ function optimizeCSSThemes(css) {
 
 export async function GET(req: Request) {
   const startTime = Date.now()
+
   console.log('🚀 === INICIANDO COMPILACIÓN DE ASSETS ===')
 
   // Verificar si forzar recompilación
@@ -436,14 +482,17 @@ export async function GET(req: Request) {
   const forceRecompile = url.searchParams.get('force') === 'true'
 
   const componentPath = path.join(process.cwd(), COMPONENT_PATH)
+
   console.log('📁 Directorio de trabajo:', componentPath)
 
   try {
     // 📌 Verificar si necesita recompilación (a menos que se fuerce)
     if (!forceRecompile && !(await needsRecompilation(componentPath))) {
       const existingFiles = await loadCompiledFiles(componentPath)
+
       if (existingFiles) {
         console.log(`⚡ Usando archivos compilados existentes (${Date.now() - startTime}ms)`)
+
         return NextResponse.json({
           ...existingFiles,
           cached: true,
@@ -498,6 +547,7 @@ export async function GET(req: Request) {
 
       // 📌 Compilar SCSS
       let compiledCSS = ''
+
       if (scssContent) {
         console.log('🎨 Compilando SCSS...')
         try {
@@ -512,6 +562,7 @@ export async function GET(req: Request) {
                   if (url.startsWith('@styles/')) {
                     const fileName = url.substring(8)
                     const fullPath = path.join(process.cwd(), 'styles', fileName)
+
                     return resolveScssFile(fullPath)
                   }
 
@@ -519,6 +570,7 @@ export async function GET(req: Request) {
                   if (url.startsWith('@library/')) {
                     const fileName = url.substring(9)
                     const fullPath = path.join(process.cwd(), 'app/_library', fileName)
+
                     return resolveScssFile(fullPath)
                   }
 
@@ -565,6 +617,7 @@ export async function GET(req: Request) {
     const result = await Promise.race([compilationPromise(), timeoutPromise])
 
     const endTime = Date.now()
+
     console.log(`🎉 Compilación completada en ${endTime - startTime}ms`)
 
     return NextResponse.json({
@@ -579,6 +632,7 @@ export async function GET(req: Request) {
     })
   } catch (error) {
     const endTime = Date.now()
+
     console.error(`❌ Error después de ${endTime - startTime}ms:`, error)
 
     return NextResponse.json(
@@ -600,9 +654,11 @@ function resolveScssFile(basePath: string): URL | null {
 
   for (const ext of extensions) {
     const fullPath = basePath + ext
+
     try {
       require('fs').accessSync(fullPath)
       console.log(`✅ Archivo encontrado: ${fullPath}`)
+
       return new URL(`file://${fullPath.replace(/\\/g, '/')}`)
     } catch {
       continue
@@ -610,5 +666,6 @@ function resolveScssFile(basePath: string): URL | null {
   }
 
   console.warn(`⚠️ No se encontró: ${basePath}`)
+
   return null
 }

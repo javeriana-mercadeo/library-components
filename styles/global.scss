@@ -15,6 +15,8 @@
 @use '@library/components/contain/title/styles.scss' as *;
 @use '@library/components/contain/caption/styles.scss' as *;
 @use '@library/components/contain/paragraph/styles.scss' as *;
+@use '@library/components/contain/image/styles.scss' as *;
+@use '@library/components/contain/icon/styles.scss' as *;
 @use '@library/components/logo_institucional/styles.scss' as *;
 @use '@library/components/liferay_dev_banner/styles.scss' as *;
 
@@ -23,6 +25,8 @@
 @include title;
 @include caption;
 @include paragraph;
+@include image;
+@include icon;
 @include general-btn;
 @include liferay-dev-banner;
 
@@ -44,6 +48,10 @@ body {
   background-color: var(--background-100);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  @include dark-theme {
+    background-color: var(--background-200);
+  }
 
   @include responsive {
     background-attachment: scroll;
