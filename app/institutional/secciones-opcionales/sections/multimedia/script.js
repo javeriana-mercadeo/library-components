@@ -1,7 +1,7 @@
 export class ImageSliderLogic {
   constructor(component) {
     this.component = component
-    
+
     // Datos para las slides
     this.slides = [
       {

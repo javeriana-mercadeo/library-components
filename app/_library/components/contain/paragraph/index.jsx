@@ -124,7 +124,7 @@ const Paragraph = ({
     const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
 
     return (
-      <lfr-editable id={editableId} type="rich-text" {...baseProps}>
+      <lfr-editable id={editableId} type='rich-text' {...baseProps}>
         {children}
       </lfr-editable>
     )

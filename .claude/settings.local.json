@@ -42,7 +42,25 @@
       "Bash(npx tsc:*)",
       "Bash(npm run lint)",
       "Bash(curl:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(npm outdated)",
+      "Bash(npm audit:*)",
+      "Bash(npm view:*)",
+      "WebFetch(domain:www.heroui.com)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run format:check:*)",
+      "Bash(npm run dev:*)",
+      "Bash(cd:*)",
+      "Bash(cd:*)",
+      "Bash(cd:*)",
+      "WebFetch(domain:nextjs.org)",
+      "Bash(cd:*)",
+      "Bash(cd:*)",
+      "Bash(cd:*)",
+      "Bash(timeout 60s npm run build)",
+      "Bash(true)",
+      "Bash(timeout 20s npm run dev)",
+      "Bash(timeout 15s npm run dev)"
     ],
     "deny": []
   }

@@ -150,16 +150,16 @@ class Proyectos extends Component {
     }
 
     return (
-      <section className="hero-carousel">
+      <section className='hero-carousel'>
         <div>
-          <Title className="carousel-title">
+          <Title className='carousel-title'>
             <h1>Proyectos</h1>
           </Title>
         </div>
-        <Container className="main-container">
+        <Container className='main-container'>
           <div>
             <div
-              className="carousel-container"
+              className='carousel-container'
               onTouchStart={this.handleTouchStart}
               onTouchMove={this.handleTouchMove}
               onTouchEnd={this.handleTouchEnd}>
@@ -169,8 +169,8 @@ class Proyectos extends Component {
                   className={`carousel-slide ${getPositionClass(index)}`}
                   onClick={() => this.openModal(index)}
                   style={{ cursor: 'pointer' }}>
-                  <div className="slide-image" style={{ backgroundImage: `url(${slide.image})` }}>
-                    <div className="slide-content">
+                  <div className='slide-image' style={{ backgroundImage: `url(${slide.image})` }}>
+                    <div className='slide-content'>
                       <h2>{slide.title}</h2>
                       <Paragraph>
                         <p>{slide.description}</p>
@@ -181,16 +181,16 @@ class Proyectos extends Component {
               ))}
             </div>
 
-            <div className="carousel-controls">
-              <button className="carousel-control prev" onClick={this.prevSlide}>
-                <i className="ph ph-arrow-circle-left"></i>
+            <div className='carousel-controls'>
+              <button className='carousel-control prev' onClick={this.prevSlide}>
+                <i className='ph ph-arrow-circle-left'></i>
               </button>
-              <button className="carousel-control next" onClick={this.nextSlide}>
-                <i className="ph ph-arrow-circle-right"></i>
+              <button className='carousel-control next' onClick={this.nextSlide}>
+                <i className='ph ph-arrow-circle-right'></i>
               </button>
             </div>
 
-            <div className="carousel-indicators">
+            <div className='carousel-indicators'>
               {slides.map((_, index) => (
                 <button
                   key={index}
@@ -203,12 +203,12 @@ class Proyectos extends Component {
         </Container>
 
         {showModal && selectedSlide && (
-          <div className="modal-backdrop">
-            <div className="modal-content">
-              <button className="modal-close" onClick={this.closeModal}>
+          <div className='modal-backdrop'>
+            <div className='modal-content'>
+              <button className='modal-close' onClick={this.closeModal}>
                 ×
               </button>
-              <div className="modal-body">
+              <div className='modal-body'>
                 <DetalleProyecto
                   proyecto={selectedSlide}
                   slideData={selectedSlide.slideData}

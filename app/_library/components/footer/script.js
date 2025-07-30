@@ -42,7 +42,7 @@ export default () => {
 
       if (copyrightElement.textContent !== copyrightText) {
         copyrightElement.textContent = copyrightText
-        logMessage(`✅ [FOOTER] Copyright actualizado exitosamente a año ${currentYear}`)
+
       } else {
         logMessage(`ℹ️  [FOOTER] El copyright ya está actualizado con el año ${currentYear}`)
       }
@@ -52,7 +52,7 @@ export default () => {
   }
 
   const initializeFooter = () => {
-    logMessage('🚀 [FOOTER] Inicializando footer script...')
+
     updateCopyrightYear()
 
     if (FOOTER_CONFIG.updateSettings.enableAutoUpdate) {

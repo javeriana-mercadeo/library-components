@@ -44,15 +44,15 @@ const Laboratorios = () => {
   const buttonStyle = getButtonStyle(buttonColor)
 
   return (
-    <Container className="lab-slider-container">
+    <Container className='lab-slider-container'>
       <div>
-        <Title className="lab-slider-title">
+        <Title className='lab-slider-title'>
           {' '}
           <h1>Laboratorios</h1>
         </Title>
 
-        <div className="lab-slider-content">
-          <div className="lab-slider-text" style={{}}>
+        <div className='lab-slider-content'>
+          <div className='lab-slider-text' style={{}}>
             <h3>Lorem ipsum dolor sit amet consectetur.</h3>
             <Paragraph>
               {' '}
@@ -63,12 +63,12 @@ const Laboratorios = () => {
               </p>
             </Paragraph>
 
-            <div style={navContainerStyle} className="lab-slider-navigation">
+            <div style={navContainerStyle} className='lab-slider-navigation'>
               <button
                 style={buttonStyle}
                 onClick={prevSlide}
-                aria-label="Previous image"
-                className="nav-button prev"
+                aria-label='Previous image'
+                className='nav-button prev'
                 onMouseOver={e => {
                   e.currentTarget.style.backgroundColor = darkenColor(buttonColor, 20)
                   e.currentTarget.style.transform = 'translateY(-2px)'
@@ -84,8 +84,8 @@ const Laboratorios = () => {
               <button
                 style={buttonStyle}
                 onClick={nextSlide}
-                aria-label="Next image"
-                className="nav-button next"
+                aria-label='Next image'
+                className='nav-button next'
                 onMouseOver={e => {
                   e.currentTarget.style.backgroundColor = darkenColor(buttonColor, 20)
                   e.currentTarget.style.transform = 'translateY(-2px)'
@@ -101,16 +101,16 @@ const Laboratorios = () => {
             </div>
           </div>
 
-          <div className="lab-slider-images">
-            <div className="image-container">
-              <img src={firstImage.imageSrc} alt="Laboratory" className="lab-image" />
-              <div className="image-label">{firstImage.label}</div>
+          <div className='lab-slider-images'>
+            <div className='image-container'>
+              <img src={firstImage.imageSrc} alt='Laboratory' className='lab-image' />
+              <div className='image-label'>{firstImage.label}</div>
             </div>
 
             {/* Second image only shows on desktop */}
-            <div className="image-container desktop-only">
-              <img src={secondImage.imageSrc} alt="Laboratory" className="lab-image" />
-              <div className="image-label">{secondImage.label}</div>
+            <div className='image-container desktop-only'>
+              <img src={secondImage.imageSrc} alt='Laboratory' className='lab-image' />
+              <div className='image-label'>{secondImage.label}</div>
             </div>
           </div>
         </div>

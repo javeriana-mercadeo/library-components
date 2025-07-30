@@ -47,18 +47,18 @@ const Insignias = () => {
   ]
 
   return (
-    <section id="section-five">
-      <Container className="container academic-carousel">
-        <Title id={`title-${elementName}`} hierarchy="h2" className="academic-carousel__title" size="lg" weight="bold">
+    <section id='section-five'>
+      <Container className='container academic-carousel'>
+        <Title id={`title-${elementName}`} hierarchy='h2' className='academic-carousel__title' size='lg' weight='bold'>
           Reconocimientos Académicos
         </Title>
 
-        <div className="slider">
-          <div className="slider-track">
+        <div className='slider'>
+          <div className='slider-track'>
             {/* Solo el grupo original - JS creará los duplicados */}
-            <div className="slider-items slider-items--original">
+            <div className='slider-items slider-items--original'>
               {reconocimientos.map((reconocimiento, index) => (
-                <div key={index} className="img-logos">
+                <div key={index} className='img-logos'>
                   <img src={reconocimiento.src} alt={reconocimiento.alt} />
                   <p>{reconocimiento.description}</p>
                 </div>

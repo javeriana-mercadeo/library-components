@@ -82,7 +82,7 @@ const StorageUtils = {
       if (parsedData && typeof parsedData === 'object' && 'value' in parsedData) {
         if (parsedData.ttl && Date.now() > parsedData.timestamp + parsedData.ttl) {
           this.remove(key, { storage })
-              Logger.debug(`Dato expirado removido: ${key}`)
+          Logger.debug(`Dato expirado removido: ${key}`)
           return defaultValue
         }
 

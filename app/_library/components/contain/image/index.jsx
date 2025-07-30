@@ -21,11 +21,13 @@ const Image = ({ id, elementId, className = '', src, alt, isEditable = true, ena
 
   // Construcción de clases CSS
   const classNames = [
-    ELEMENT_NAME, 
+    ELEMENT_NAME,
     onClick ? `${ELEMENT_NAME}-clickable` : null,
     !enableZoom ? `${ELEMENT_NAME}--no-zoom` : null,
     className
-  ].filter(Boolean).join(' ')
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   // Manejar el evento onClick
   const handleClick = event => {

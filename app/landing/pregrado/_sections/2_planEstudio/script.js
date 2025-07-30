@@ -222,7 +222,6 @@ export default () => {
         bullet.setAttribute('aria-label', `Ir a slide ${index + 1}`)
         bullet.style.display = 'block'
       })
-
     } else {
       pagination.style.display = 'none'
       pagination.classList.add('swiper-pagination-hidden')

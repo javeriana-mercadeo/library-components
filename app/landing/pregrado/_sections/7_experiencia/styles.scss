@@ -289,9 +289,7 @@ $experience-nav-offset: rem(25px);
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, 
-        var(--primary-100) 0%, 
-        var(--primary-200) 100%);
+      background: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 100%);
       opacity: 0.3;
       z-index: 1;
     }
@@ -355,7 +353,7 @@ $experience-nav-offset: rem(25px);
 
       &.muted {
         background: rgba(220, 38, 38, 0.8);
-        
+
         &:hover {
           background: rgba(220, 38, 38, 1);
         }
@@ -426,7 +424,7 @@ $experience-nav-offset: rem(25px);
     transform: translateY(-50%) scale(1.05);
     background: rgba(var(--primary-rgb), 0.1);
     border-color: var(--primary);
-    
+
     i {
       color: var(--primary-600);
     }
