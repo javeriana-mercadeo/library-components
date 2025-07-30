@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react'
 import { UniversalComponent as UC, Btn, Container, Logo } from '@library/components'
-import ModalForm from './components/ModalForm.jsx'
 
 import script from './script.js'
 import './styles.scss'
@@ -124,8 +123,6 @@ const EncabezadoFix = () => {
           </Btn>
         </Container>
       </div>
-
-      <ModalForm />
     </>
   )
 }

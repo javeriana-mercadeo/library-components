@@ -195,6 +195,17 @@ export default function ViewComponent({ path, children }: { path?: string; child
     if (!codeLoaded) {
       await loadAndProcessCode()
     }
+
+    console.log('🔍 ViewComponent Download Debug:', {
+      path,
+      codeLoaded,
+      info,
+      htmlLength: htmlContent?.length || 0,
+      cssLength: cssContent?.length || 0,
+      jsLength: jsContent?.length || 0,
+      configLength: configContent?.length || 0
+    })
+
     await handleZipExport(info, htmlContent, cssContent, jsContent, configContent, containerRef)
   }
 

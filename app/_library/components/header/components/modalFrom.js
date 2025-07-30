@@ -20,10 +20,10 @@ const ModalForm = {
         programs: [codPrograma],
         // Configuración del formulario
         test: false,
-        debug: true,
+        debug: false,
         development: false,
-        debugEmail: 'gavilanm-j@javeriana.edu.co',
-        thankYouUrl: 'https://www.javeriana.edu.co/info-prg/thank-you-pregrado'
+        debugEmail: '', // Email para debug
+        retUrl: 'https://www.javeriana.edu.co/info-prg/thank-you-pregrado'
       })
 
       await this.formModulesInstance.initialize()

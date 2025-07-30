@@ -1,10 +1,9 @@
 // ===========================================
-// SCRIPT PRINCIPAL - HEADER Y MODAL
+// SCRIPT PRINCIPAL - HEADER
 // ===========================================
 
 // Importar módulos separados
 import { HeaderManager } from './headerManager.js'
-import { ModalForm } from './components/modalFrom.js'
 
 // ███████████████████████████████████████████████████████████████████████████████
 // █                        UTILIDADES DE ESPERA                               █
@@ -98,28 +97,17 @@ function createFallbackUtils() {
 
 const AppSystem = {
   init() {
-
-
     try {
-      // Inicializar sistemas con el patrón simple que funciona
+      // Inicializar solo el menú móvil
       const systems = {
-        mobileMenu: this.initMobileMenu(),
-        contactModal: this.initContactModal(),
-        modalForm: this.initModalForm()
+        mobileMenu: this.initMobileMenu()
       }
-
-      const activeSystems = Object.entries(systems)
-        .filter(([_, isActive]) => isActive)
-        .map(([name]) => name)
-
 
       return systems
     } catch (error) {
       console.error('❌ [HEADER] Error al inicializar:', error)
       return {
-        mobileMenu: false,
-        contactModal: false,
-        modalForm: false
+        mobileMenu: false
       }
     }
   },
@@ -133,32 +121,10 @@ const AppSystem = {
     }
   },
 
-  initContactModal() {
-    try {
-      return HeaderManager.init().contactModal || false
-    } catch (error) {
-      console.error('Error en contact modal:', error)
-      return false
-    }
-  },
-
-  initModalForm() {
-    try {
-      // Exponer ModalForm globalmente
-      window.ModalForm = ModalForm
-      ModalForm.init()
-      return true
-    } catch (error) {
-      console.error('Error en modal form:', error)
-      return false
-    }
-  },
-
   cleanup() {
-    // Limpiar solo si existen
+    // Limpiar solo si existe
     try {
       if (window.HeaderManager) HeaderManager.cleanup()
-      if (window.ModalForm) ModalForm.cleanup()
     } catch (error) {
       console.debug('Cleanup warning:', error)
     }
