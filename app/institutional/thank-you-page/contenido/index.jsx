@@ -1,3 +1,6 @@
+'use client'
+
+import { useEffect } from 'react'
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
 import Image from '@library/components/contain/image'
@@ -5,11 +8,16 @@ import Paragraph from '@library/components/contain/paragraph'
 import Btn from '@library/components/contain/btn'
 
 import './styles.scss'
+import script from './script.js'
 import info from './info.json'
 
 export default function ThankYouPage() {
   const elementName = info.id || 'thank-you-page'
   const baseClass = 'thanks'
+
+  useEffect(() => {
+    script()
+  }, [])
 
   return (
     <Container id={elementName} className={`${baseClass}__main`}>
