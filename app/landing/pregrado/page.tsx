@@ -1,8 +1,9 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import ViewComponent from '@/app/_components/viewComponent/viewComponent'
-import Load from '@/app/_components/load/load'
+
+import ViewComponent from '@/components/viewComponent/viewComponent'
+import Load from '@/components/load/load'
 
 // Lazy load heavy sections with client-side loading
 

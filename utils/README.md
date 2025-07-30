@@ -52,6 +52,7 @@ DOMHelpers.findElement('#myElement')
 ## 📋 Módulos Principales
 
 ### 🔍 Logger
+
 Sistema de logging con niveles y configuración avanzada.
 
 ```javascript
@@ -71,6 +72,7 @@ Logger.time('Operación')
 ```
 
 ### 🎯 DOMUtils
+
 Utilidades mejoradas para manipular el DOM.
 
 ```javascript
@@ -78,7 +80,7 @@ import { DOMUtils } from './utils/index.js'
 
 // Funciones existentes mejoradas
 DOMUtils.findElement('#myElement')
-DOMUtils.createElement('div', { 
+DOMUtils.createElement('div', {
   className: 'my-class',
   attributes: { 'data-id': '123' },
   styles: { color: 'red' }
@@ -91,6 +93,7 @@ DOMUtils.animate(element, keyframes)
 ```
 
 ### ⚡ EventManager
+
 Gestor de eventos centralizado y avanzado.
 
 ```javascript
@@ -111,6 +114,7 @@ EventManager.trigger('myEvent', data)
 ```
 
 ### ⏱️ TimingUtils
+
 Control de tiempo y flujo mejorado.
 
 ```javascript
@@ -131,6 +135,7 @@ const rateLimiter = TimingUtils.createRateLimiter(10, 60000)
 ```
 
 ### ✅ ValidatorUtils
+
 Sistema de validación extensible y robusto.
 
 ```javascript
@@ -148,14 +153,11 @@ ValidatorUtils.fileSize(file, 1024 * 1024) // 1MB
 ValidatorUtils.similarity(str1, str2) // 0-1
 
 // Composición de validadores
-const validator = ValidatorUtils.compose(
-  ValidatorUtils.required,
-  ValidatorUtils.minLength(8),
-  ValidatorUtils.passwordStrong
-)
+const validator = ValidatorUtils.compose(ValidatorUtils.required, ValidatorUtils.minLength(8), ValidatorUtils.passwordStrong)
 ```
 
 ### 📝 FormManager
+
 Gestión avanzada de formularios con configuración flexible.
 
 ```javascript
@@ -169,10 +171,7 @@ FormManager.setupForm(form, {
       message: 'Email válido requerido'
     },
     password: {
-      validators: [
-        'required',
-        { validator: 'minLength', options: { min: 8 }, message: 'Mínimo 8 caracteres' }
-      ]
+      validators: ['required', { validator: 'minLength', options: { min: 8 }, message: 'Mínimo 8 caracteres' }]
     }
   },
   liveValidation: true,
@@ -183,6 +182,7 @@ FormManager.setupForm(form, {
 ```
 
 ### 🌐 HTTPClient
+
 Cliente HTTP avanzado con interceptors y manejo de errores.
 
 ```javascript
@@ -199,7 +199,7 @@ const client = new HTTPClient('https://api.example.com', {
 })
 
 // Interceptors
-client.addRequestInterceptor(async (config) => {
+client.addRequestInterceptor(async config => {
   config.headers.Authorization = `Bearer ${token}`
   return config
 })
@@ -209,6 +209,7 @@ await client.uploadFile('/upload', file)
 ```
 
 ### 📊 DataUtils
+
 Utilidades poderosas para manipulación de datos.
 
 ```javascript
@@ -226,6 +227,7 @@ const tree = DataUtils.createTree(flatData)
 ```
 
 ### 🔤 StringUtils
+
 Utilidades completas para manipulación de strings.
 
 ```javascript
@@ -242,6 +244,7 @@ StringUtils.levenshteinDistance('kitten', 'sitting') // 3
 ```
 
 ### 💾 StorageUtils
+
 Gestión avanzada de almacenamiento con encriptación y TTL.
 
 ```javascript
@@ -269,10 +272,10 @@ import { initGlobalUtils } from './utils/index.js'
 
 // Configuración personalizada
 initGlobalUtils({
-  exposeToWindow: true,           // Exponer globalmente
-  logLevel: 'INFO',               // Nivel de logging
-  namespace: 'MyApp',             // Namespace personalizado
-  enableLegacySupport: true       // Soporte para código legacy
+  exposeToWindow: true, // Exponer globalmente
+  logLevel: 'INFO', // Nivel de logging
+  namespace: 'MyApp', // Namespace personalizado
+  enableLegacySupport: true // Soporte para código legacy
 })
 ```
 
@@ -289,11 +292,13 @@ const config = {
 ## 🔄 Migración desde v1.0
 
 ### Cambios Breaking
+
 - Los nombres de las clases han cambiado: `DOMHelpers` → `DOMUtils`
 - Algunas funciones tienen nuevos parámetros opcionales
 - El sistema de validación es más estricto
 
 ### Migración Gradual
+
 1. **Sin cambios**: El archivo `main.js` legacy sigue funcionando
 2. **Migración gradual**: Cambia imports uno por uno
 3. **Migración completa**: Usa la nueva estructura modular
@@ -322,6 +327,7 @@ window.addEventListener('beforeunload', cleanupUtils)
 ## 📈 Performance
 
 ### Optimizaciones Incluidas
+
 - **Lazy loading**: Los módulos se cargan bajo demanda
 - **Tree shaking**: Importa solo lo que necesitas
 - **Caching**: Respuestas HTTP y validaciones cacheadas
@@ -329,6 +335,7 @@ window.addEventListener('beforeunload', cleanupUtils)
 - **Memory management**: Limpieza automática de event listeners
 
 ### Mejores Prácticas
+
 ```javascript
 // ✅ Bueno: Importación específica
 import { Logger } from './utils/index.js'
@@ -344,12 +351,14 @@ FormManager.destroyAll()
 ## 🎯 Roadmap
 
 ### v2.1 (Próximo)
+
 - [ ] Soporte para Web Workers
 - [ ] Validadores i18n
 - [ ] Plugin system
 - [ ] Performance metrics
 
 ### v2.2 (Futuro)
+
 - [ ] React/Vue adapters
 - [ ] TypeScript definitions
 - [ ] Testing utilities

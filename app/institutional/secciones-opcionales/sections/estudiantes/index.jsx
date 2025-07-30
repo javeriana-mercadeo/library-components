@@ -60,39 +60,39 @@ class StudentSlider extends React.Component {
     const { students, currentSlide } = this.state
 
     return (
-      <Container className="slider-container">
+      <Container className='slider-container'>
         <div onMouseEnter={this.stopAutoSlide} onMouseLeave={this.startAutoSlide}>
-          <Title className="slider-title">
+          <Title className='slider-title'>
             <h2>Estudiantes</h2>
           </Title>
 
-          <div className="slider-content">
-            <div className="carousel-controls">
-              <button className="carousel-control prev" onClick={this.prevSlide}>
-                <i className="ph ph-arrow-circle-left"></i>
+          <div className='slider-content'>
+            <div className='carousel-controls'>
+              <button className='carousel-control prev' onClick={this.prevSlide}>
+                <i className='ph ph-arrow-circle-left'></i>
               </button>
-              <button className="carousel-control next" onClick={this.nextSlide}>
-                <i className="ph ph-arrow-circle-right"></i>
+              <button className='carousel-control next' onClick={this.nextSlide}>
+                <i className='ph ph-arrow-circle-right'></i>
               </button>
             </div>
 
-            <div className="slider-cards">
+            <div className='slider-cards'>
               {students.map((student, index) => (
                 <div key={index} className={`student-card ${this.getSlideClassForIndex(index)}`}>
-                  <div className="student-image">
+                  <div className='student-image'>
                     <img src={student.image} alt={student.name} />
                   </div>
-                  <div className="student-info">
+                  <div className='student-info'>
                     <h3>{student.name}</h3>
                     <p>{student.position}</p>
-                    <img src={student.logo} alt={student.company} className="company-logo" />
+                    <img src={student.logo} alt={student.company} className='company-logo' />
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="slider-dots">
+          <div className='slider-dots'>
             {students.map((_, index) => (
               <span key={index} className={`dot ${index === currentSlide ? 'active' : ''}`} onClick={() => this.goToSlide(index)}></span>
             ))}

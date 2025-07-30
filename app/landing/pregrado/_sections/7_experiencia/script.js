@@ -26,7 +26,7 @@ export default () => {
       return
     }
 
-    console.log(`🎠 [EXPERIENCE] Inicializando carrusel con ${totalSlides} slides`)
+
 
     // Usar el selector correcto
     const swiperSelector = element ? '.experience-carousel__wrapper.experience-swiper' : '.experience-swiper'
@@ -80,7 +80,7 @@ export default () => {
 
         on: {
           init: function (swiper) {
-            console.log('✅ [EXPERIENCE] Swiper inicializado correctamente')
+
             setTimeout(() => {
               loadVideos()
             }, 100)
@@ -98,7 +98,7 @@ export default () => {
   // Sistema de carga de videos
   const loadVideos = () => {
     const videoContainers = document.querySelectorAll('.experience-carousel__video-container[data-video-id]')
-    console.log('🎬 [VIDEO] Encontrados', videoContainers.length, 'contenedores de video')
+
 
     videoContainers.forEach((container, index) => {
       const videoId = container.getAttribute('data-video-id')
@@ -133,20 +133,20 @@ export default () => {
         iframe.style.opacity = '1'
         iframe.classList.add('loaded')
         container.classList.add('video-loaded')
-        console.log(`🎬 [VIDEO] Video completamente cargado: ${videoId}`)
+
       })
 
       iframe.addEventListener('error', () => {
-        console.error(`🎬 [VIDEO] Error cargando video: ${videoId}`)
+
       })
 
       container.innerHTML = ''
       container.appendChild(iframe)
-      
+
       // Agregar botón de mute solo en desktop
       createMuteButton(container, iframe, videoId)
-      
-      console.log(`🎬 [VIDEO] Iniciando carga de video: ${videoId}`)
+
+
     })
   }
 
@@ -154,28 +154,28 @@ export default () => {
   const createMuteButton = (container, iframe, videoId) => {
     // Solo crear en desktop (verificar ancho de pantalla)
     if (window.innerWidth < 1024) return // breakpoint-lg
-    
+
     const muteButton = document.createElement('button')
     muteButton.className = 'video-mute-button'
     muteButton.setAttribute('aria-label', 'Silenciar/Activar audio del video')
     muteButton.setAttribute('data-video-id', videoId)
-    
+
     // Estado inicial: sin silenciar (mute está en 1 por defecto en el iframe)
     let isMuted = true // Los videos inician silenciados
     updateMuteButtonIcon(muteButton, isMuted)
-    
+
     // Event listener para toggle mute
-    muteButton.addEventListener('click', (e) => {
+    muteButton.addEventListener('click', e => {
       e.preventDefault()
       e.stopPropagation()
-      
+
       try {
         if (isMuted) {
           // Activar sonido
           iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*')
           isMuted = false
           muteButton.classList.remove('muted')
-          console.log(`🔊 [VIDEO] Audio activado: ${videoId}`)
+
         } else {
           // Silenciar
           iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*')
@@ -183,15 +183,15 @@ export default () => {
           muteButton.classList.add('muted')
           console.log(`🔇 [VIDEO] Audio silenciado: ${videoId}`)
         }
-        
+
         updateMuteButtonIcon(muteButton, isMuted)
       } catch (error) {
         console.error(`❌ [VIDEO] Error controlando audio: ${videoId}`, error)
       }
     })
-    
+
     container.appendChild(muteButton)
-    console.log(`🔊 [VIDEO] Botón de mute creado para: ${videoId}`)
+
   }
 
   // Función para actualizar el ícono del botón de mute
@@ -216,7 +216,7 @@ export default () => {
   const handleResize = () => {
     const muteButtons = document.querySelectorAll('.video-mute-button')
     const isDesktop = window.innerWidth >= 1024
-    
+
     muteButtons.forEach(button => {
       button.style.display = isDesktop ? 'flex' : 'none'
     })
@@ -226,7 +226,7 @@ export default () => {
   const checkAndInit = () => {
     if (typeof window !== 'undefined' && window.Swiper) {
       initializeSwiper()
-      
+
       // Agregar listener para resize
       window.addEventListener('resize', handleResize)
     } else {
