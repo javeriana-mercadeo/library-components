@@ -27,7 +27,7 @@ import { prettierFormat } from './utils/prettierFormat'
 const LINES_PER_PAGE = 300 // Líneas por página para la paginación
 
 export default function ViewComponent({ path, children }: { path?: string; children: React.ReactNode }) {
-  const [activeCodeTab, setActiveCodeTab] = useState('html')
+  const [activeCodeTab, setActiveCodeTab] = useState('')
   const containerRef = useRef<HTMLDivElement>(null)
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -35,6 +35,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
   const [htmlPage, setHtmlPage] = useState(1)
   const [cssPage, setCssPage] = useState(1)
   const [jsPage, setJsPage] = useState(1)
+  const [configPage, setConfigPage] = useState(1)
 
   // Estados para la información básica (solo para descarga)
   const [info, setInfo] = useState<any>({})
@@ -46,6 +47,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
   const [htmlContent, setHtmlContent] = useState<string>('')
   const [cssContent, setCssContent] = useState<string>('')
   const [jsContent, setJsContent] = useState<string>('')
+  const [configContent, setConfigContent] = useState<string>('')
 
   // Función para dividir contenido en páginas
   const createPages = (content: string) => {
@@ -68,6 +70,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
   const htmlPages = useMemo(() => createPages(htmlContent), [htmlContent])
   const cssPages = useMemo(() => createPages(cssContent), [cssContent])
   const jsPages = useMemo(() => createPages(jsContent), [jsContent])
+  const configPages = useMemo(() => createPages(configContent), [configContent])
 
   // Cargar solo la información básica al montar (solo si hay path válido)
   useEffect(() => {
@@ -96,7 +99,8 @@ export default function ViewComponent({ path, children }: { path?: string; child
 
     try {
       let css = '',
-        js = ''
+        js = '',
+        config = ''
 
       // Solo hacer llamado a API si hay path válido
       if (path && path.trim() !== '') {
@@ -105,18 +109,21 @@ export default function ViewComponent({ path, children }: { path?: string; child
 
         css = data.css || ''
         js = data.js || ''
+        config = data.configuration ? JSON.stringify(data.configuration, null, 2) : ''
       }
 
       // Procesar código en paralelo
-      const [formattedHtml, formattedCss, formattedJs] = await Promise.all([
+      const [formattedHtml, formattedCss, formattedJs, formattedConfig] = await Promise.all([
         children ? prettierFormat(ReactDOMServer.renderToString(children), 'html') : '',
         css ? prettierFormat(css, 'css') : '',
-        js ? prettierFormat(js, 'js') : ''
+        js ? prettierFormat(js, 'js') : '',
+        config ? prettierFormat(config, 'json') : ''
       ])
 
       setHtmlContent(formattedHtml)
       setCssContent(formattedCss)
       setJsContent(formattedJs)
+      setConfigContent(formattedConfig)
       setCodeLoaded(true)
     } catch (error) {
       console.error('Error procesando el código:', error)
@@ -157,9 +164,27 @@ export default function ViewComponent({ path, children }: { path?: string; child
           pages: jsPages,
           currentPage: jsPage,
           setPage: setJsPage
+        },
+        {
+          type: 'json',
+          code: configContent,
+          label: 'CONFIG',
+          pages: configPages,
+          currentPage: configPage,
+          setPage: setConfigPage
         }
       ].filter(({ code }) => code.trim() !== '')
     : []
+
+  // Asegurar que activeCodeTab esté sincronizado con elementos disponibles
+  React.useEffect(() => {
+    if (codeLoaded && codeElements.length > 0) {
+      const hasActiveTab = codeElements.some(el => el.type === activeCodeTab)
+      if (!hasActiveTab) {
+        setActiveCodeTab(codeElements[0].type)
+      }
+    }
+  }, [codeElements, activeCodeTab, codeLoaded])
 
   // Función para manejar la descarga
   const handleDownload = async () => {
@@ -170,7 +195,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
     if (!codeLoaded) {
       await loadAndProcessCode()
     }
-    await handleZipExport(info, htmlContent, cssContent, jsContent, containerRef)
+    await handleZipExport(info, htmlContent, cssContent, jsContent, configContent, containerRef)
   }
 
   // Función para resetear páginas al cambiar de tab
@@ -180,6 +205,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
     setHtmlPage(1)
     setCssPage(1)
     setJsPage(1)
+    setConfigPage(1)
   }
 
   return (
@@ -260,7 +286,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
                   )}
 
                   {/* Content - Solo mostrar si no está cargando y hay elementos */}
-                  {!isLoading && codeElements.length > 0 && (
+                  {!isLoading && codeLoaded && codeElements.length > 0 && (
                     <Tabs
                       aria-label='Opciones de código'
                       selectedKey={activeCodeTab}
@@ -371,6 +397,14 @@ export default function ViewComponent({ path, children }: { path?: string; child
                     <div className='flex flex-col items-center justify-center py-12 gap-4 text-default-500'>
                       <i className='ph ph-file-code text-4xl' />
                       <p>No hay código disponible para mostrar</p>
+                    </div>
+                  )}
+
+                  {/* Estado inicial cuando no se ha cargado nada */}
+                  {!isLoading && !codeLoaded && (
+                    <div className='flex flex-col items-center justify-center py-12 gap-4 text-default-500'>
+                      <i className='ph ph-code text-4xl' />
+                      <p>Haz clic en "Ver Código" para cargar el contenido</p>
                     </div>
                   )}
                 </div>

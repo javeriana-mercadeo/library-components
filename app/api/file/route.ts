@@ -119,12 +119,14 @@ export async function GET(req: Request) {
   try {
     // 📌 Definir rutas de archivos
     const infoPath = path.join(componentPath, 'info.json')
+    const configPath = path.join(componentPath, 'configuration.json')
     const scssPath = path.join(componentPath, 'styles.scss')
     const jsPath = path.join(componentPath, 'script.js')
 
     // 📌 Leer archivos de forma asíncrona
-    const [infoContent, scssContent] = await Promise.all([
+    const [infoContent, configContent, scssContent] = await Promise.all([
       fs.readFile(infoPath, 'utf8').catch(() => null),
+      fs.readFile(configPath, 'utf8').catch(() => null),
       fs.readFile(scssPath, 'utf8').catch(() => null)
     ])
 
@@ -189,6 +191,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json({
       info: infoContent ? JSON.parse(infoContent) : {},
+      configuration: configContent ? JSON.parse(configContent) : null,
       css: compiledCSS,
       js: jsContent || '',
       jsCompiled: hasImports // Indicar si se compilaron imports
