@@ -28,14 +28,14 @@ const files = [
 function optimizeImports() {
   files.forEach(file => {
     const filePath = path.join(process.cwd(), file)
-    
+
     if (!fs.existsSync(filePath)) {
       console.log(`File not found: ${file}`)
       return
     }
-    
+
     let content = fs.readFileSync(filePath, 'utf8')
-    
+
     // Replace old imports with optimized imports
     const oldImports = [
       /import\s+Container\s+from\s+['"]@library\/components\/container['"]/g,
@@ -48,9 +48,9 @@ function optimizeImports() {
       /import\s+ImageBackground\s+from\s+['"]@library\/components\/contain\/imageBackground['"]/g,
       /import\s+Caption\s+from\s+['"]@library\/components\/contain\/caption['"]/g
     ]
-    
+
     let hasChanges = false
-    
+
     // Remove old imports
     oldImports.forEach(pattern => {
       if (pattern.test(content)) {
@@ -58,15 +58,15 @@ function optimizeImports() {
         hasChanges = true
       }
     })
-    
+
     if (hasChanges) {
       // Add optimized import at the top
       const importLine = "import { UniversalComponent as UC, Container } from '@library/components'\n"
-      
+
       // Find the first import or 'use client' directive
       const lines = content.split('\n')
       let insertIndex = 0
-      
+
       for (let i = 0; i < lines.length; i++) {
         if (lines[i].includes("'use client'") || lines[i].includes('"use client"')) {
           insertIndex = i + 1
@@ -76,13 +76,13 @@ function optimizeImports() {
           break
         }
       }
-      
+
       lines.splice(insertIndex, 0, importLine)
       content = lines.join('\n')
-      
+
       // Clean up empty lines
       content = content.replace(/\n\s*\n\s*\n/g, '\n\n')
-      
+
       fs.writeFileSync(filePath, content, 'utf8')
       console.log(`✅ Optimized imports in: ${file}`)
     } else {

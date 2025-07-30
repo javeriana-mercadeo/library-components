@@ -1,5 +1,2 @@
-/* En tu archivo CSS */
-.tab-selector[data-selected='true'] {
-  color: var(--neutral-500) !important;
-  border-color: var(--neutral-500) !important;
-}
+// Main styles for the application
+@use '../styles/global.scss';

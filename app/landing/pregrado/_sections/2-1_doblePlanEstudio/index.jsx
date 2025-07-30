@@ -170,20 +170,20 @@ const DoblePlanEstudio = () => {
     const { year, semester, credits, subjects } = semesterData
 
     return (
-      <div key={`${jornadaId}-${index}`} className={`${baseClass}_slide swiper-slide`} role="listitem">
+      <div key={`${jornadaId}-${index}`} className={`${baseClass}_slide swiper-slide`} role='listitem'>
         <div className={`${baseClass}_card`}>
           <div className={`${baseClass}_card-header`}>
             <span className={`${baseClass}_badge ${baseClass}_badge`}>{year}</span>
           </div>
 
-          <Title hierarchy="h2" className={`${baseClass}_semester-title`} size="lg" weight="bold" isEditable={false}>
+          <Title hierarchy='h2' className={`${baseClass}_semester-title`} size='lg' weight='bold' isEditable={false}>
             {semester}
           </Title>
 
           <ul className={`${baseClass}_subjects`}>
             {subjects.map((subject, subjectIndex) => (
               <li key={`${jornadaId}-${index}-subject-${subjectIndex}`}>
-                <i className="ph ph-check" aria-hidden="true"></i>
+                <i className='ph ph-check' aria-hidden='true'></i>
                 {subject}
               </li>
             ))}
@@ -205,28 +205,28 @@ const DoblePlanEstudio = () => {
       <div className={`${baseClass}_jornada-content`}>
         <Btn
           href={jornadaData.downloadUrl}
-          target="_blank"
-          variant="bordered"
+          target='_blank'
+          variant='bordered'
           className={`${baseClass}_download-btn`}
-          endIcon={<i className="ph ph-download" aria-hidden="true"></i>}>
+          endIcon={<i className='ph ph-download' aria-hidden='true'></i>}>
           Descargar Plan de estudios - {jornadaData.title}
         </Btn>
 
         <div className={`${baseClass}_carousel swiper`}>
           <div className={`${baseClass}_wrapper subjects-swiper`}>
-            <div className={`${baseClass}_slides swiper-wrapper`} role="list">
+            <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
               {jornadaData.semesters.map((semesterData, index) => renderSemesterCard(semesterData, index, jornadaId))}
             </div>
 
             {/* Paginación */}
-            <div className={`swiper-pagination ${baseClass}_pagination`} role="tablist" aria-label="Control de páginas del carrusel"></div>
+            <div className={`swiper-pagination ${baseClass}_pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
 
             {/* Botones de navegación */}
-            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label="Ir al slide anterior" type="button">
-              <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
+            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label='Ir al slide anterior' type='button'>
+              <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
             </button>
-            <button className={`swiper-slide-button ${baseClass}_next`} aria-label="Ir al siguiente slide" type="button">
-              <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+            <button className={`swiper-slide-button ${baseClass}_next`} aria-label='Ir al siguiente slide' type='button'>
+              <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
             </button>
           </div>
         </div>
@@ -238,11 +238,11 @@ const DoblePlanEstudio = () => {
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
         <div className={`${baseClass}_header`}>
-          <Title weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
+          <Title weight='semibold' size='2xl' align='center' id={`${elementName}-title`}>
             Plan de Estudios por Modalidad
           </Title>
 
-          <Paragraph id={`${elementName}-description`} align="center" className={`${baseClass}_subtitle`}>
+          <Paragraph id={`${elementName}-description`} align='center' className={`${baseClass}_subtitle`}>
             Conoce el plan de estudios según la modalidad de tu preferencia: diurna o nocturna.
           </Paragraph>
         </div>
@@ -250,7 +250,7 @@ const DoblePlanEstudio = () => {
         {/* Sistema de pestañas para jornadas */}
         <div className={`${baseClass}__tabs-container`}>
           {/* Navegación de tabs */}
-          <div className={`${baseClass}__tabs-nav`} role="tablist" aria-label="Modalidades del programa">
+          <div className={`${baseClass}__tabs-nav`} role='tablist' aria-label='Modalidades del programa'>
             <div className={`${baseClass}__tabs-wrapper`}>
               {jornadaTabs.map((tab, index) => (
                 <button
@@ -258,12 +258,12 @@ const DoblePlanEstudio = () => {
                   className={`${baseClass}__tab-button ${index === 0 ? 'active' : ''}`}
                   id={`${tab.id}-tab`}
                   data-tabs-target={`#${tab.id}-panel`}
-                  type="button"
-                  role="tab"
+                  type='button'
+                  role='tab'
                   aria-controls={`${tab.id}-panel`}
                   aria-selected={index === 0 ? 'true' : 'false'}
                   tabIndex={index === 0 ? 0 : -1}>
-                  <i className={`ph ${index === 0 ? 'ph-sun' : 'ph-moon'}`} aria-hidden="true"></i>
+                  <i className={`ph ${index === 0 ? 'ph-sun' : 'ph-moon'}`} aria-hidden='true'></i>
                   <span>{tab.label}</span>
                 </button>
               ))}
@@ -277,7 +277,7 @@ const DoblePlanEstudio = () => {
                 key={tab.id}
                 className={`${baseClass}__tab-panel ${index !== 0 ? 'hidden' : ''}`}
                 id={`${tab.id}-panel`}
-                role="tabpanel"
+                role='tabpanel'
                 aria-labelledby={`${tab.id}-tab`}
                 aria-hidden={index !== 0 ? 'true' : 'false'}>
                 {renderCarousel(tab.data, tab.id)}

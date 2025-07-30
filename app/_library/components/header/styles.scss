@@ -5,18 +5,14 @@
 // ESTILOS DEL BODY ASOCIADOS AL HEADER
 // ==========================================
 
-// Modo edición de Liferay
-body:has(.header).has-edit-mode-menu,
-body:has(.header).signed-in {
-  padding-top: rem(0px);
+@include liferay-edit-mode-body {
+  &:has(.header) {
+    padding-top: rem(0px);
+  }
 }
 
 body:has(.header) {
   padding-top: rem(70px);
-
-  @include responsive {
-    padding-top: rem(100px);
-  }
 
   @include only-dev-mode {
     padding-top: rem(0px);
@@ -44,7 +40,6 @@ body:has(.header) {
   }
 
   @include dark-theme {
-    position: relative;
     background-color: var(--background-200);
     box-shadow: rem(0px) rem(4px) rem(6px) rgba(0, 0, 0, 0.2);
 

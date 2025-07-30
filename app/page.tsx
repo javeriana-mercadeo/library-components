@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import { Tabs, Tab } from '@heroui/react'
 
-import ComponentCatalog from './_components/componentCatalog'
-import ConfigurationSection from './_components/configurationSection'
-import GlobalAssetsSection from './_components/globalAssetsSection'
+import ComponentCatalog from '../components/componentCatalog'
+import ConfigurationSection from '../components/configurationSection'
+import GlobalAssetsSection from '../components/globalAssetsSection'
 
 import './style.scss'
 
@@ -13,24 +13,20 @@ export default function ComponentLibraryTabs() {
   const [selectedTab, setSelectedTab] = useState('landing-pages')
 
   return (
-    <div className="w-full px-4 py-8 flex flex-col items-center bg-[var(--background-100)]">
+    <div className='w-full px-4 py-8 flex flex-col items-center bg-[var(--background-100)]'>
       {/* Header principal */}
-      <div className="text-center mb-8">
-        <h1 className="text-[var(--neutral-200)] text-4xl font-bold mb-2">Biblioteca de Componentes</h1>
-        <p className="text-[var(--neutral-500)] max-w-xl mx-auto">
+      <div className='text-center mb-8'>
+        <h1 className='text-[var(--neutral-200)] text-4xl font-bold mb-2'>Biblioteca de Componentes</h1>
+        <p className='text-[var(--neutral-500)] mx-auto'>
           Explora y visualiza los diferentes componentes y páginas disponibles para la construcción de sitios web.
         </p>
       </div>
 
-      <div className="max-w-6xl w-full">
+      <div className='max-w-6xl w-full'>
         {/* Tabs principales de navegación */}
         <Tabs
-          aria-label="Categorías"
-          color="default"
-          variant="underlined"
-          selectedKey={selectedTab}
-          onSelectionChange={key => setSelectedTab(String(key))}
-          className="mb-8"
+          aria-label='Categorías'
+          className='mb-8'
           classNames={{
             base: 'tabs-container',
             tabList: 'tabs-list',
@@ -39,30 +35,34 @@ export default function ComponentLibraryTabs() {
             cursor: 'bg-[var(--primary-500)]',
             panel: 'tab-panel',
             tabWrapper: 'tab-wrapper'
-          }}>
+          }}
+          color='default'
+          selectedKey={selectedTab}
+          variant='underlined'
+          onSelectionChange={key => setSelectedTab(String(key))}>
           <Tab
-            key="landing-pages"
+            key='landing-pages'
             title={
-              <div className="flex items-center gap-2">
-                <i className="ph ph-monitor text-lg"></i>
+              <div className='flex items-center gap-2'>
+                <i className='ph ph-monitor text-lg' />
                 <span>Landing Pages</span>
               </div>
             }
           />
           <Tab
-            key="institutional"
+            key='institutional'
             title={
-              <div className="flex items-center gap-2">
-                <i className="ph ph-buildings text-lg"></i>
+              <div className='flex items-center gap-2'>
+                <i className='ph ph-buildings text-lg' />
                 <span>Institucional</span>
               </div>
             }
           />
           <Tab
-            key="components"
+            key='components'
             title={
-              <div className="flex items-center gap-2">
-                <i className="ph ph-puzzle-piece text-lg"></i>
+              <div className='flex items-center gap-2'>
+                <i className='ph ph-puzzle-piece text-lg' />
                 <span>Componentes</span>
               </div>
             }

@@ -15,7 +15,7 @@ const FAQAccordionSystem = {
   },
 
   init() {
-    console.log('🚀 [FAQ] Inicializando sistema de acordeón con animaciones...')
+
 
     const faqItems = document.querySelectorAll(this.config.itemSelector)
 
@@ -33,7 +33,7 @@ const FAQAccordionSystem = {
     // Configurar sub-preguntas
     this.setupSubQuestions()
 
-    console.log(`✅ [FAQ] Acordeón inicializado: ${faqItems.length} items`)
+
     return true
   },
 
@@ -42,7 +42,7 @@ const FAQAccordionSystem = {
 
     faqItems.forEach(item => {
       const answer = item.querySelector(this.config.answerSelector)
-      
+
       if (!item.classList.contains(this.config.activeClass)) {
         // Ocultar respuestas que no están activas
         answer.classList.add(this.config.hiddenClass)
@@ -57,7 +57,7 @@ const FAQAccordionSystem = {
 
   openAccordionItem(item, answer, icon) {
     console.log('📖 [FAQ] Abriendo item:', item)
-    
+
     // Preparar animación de entrada con más efectos
     answer.style.opacity = '0'
     answer.style.transform = 'translateY(-20px) scale(0.95)'
@@ -114,7 +114,7 @@ const FAQAccordionSystem = {
       max-height ${this.config.animationDuration + 200}ms cubic-bezier(0.4, 0, 0.2, 1),
       padding ${this.config.animationDuration + 100}ms cubic-bezier(0.4, 0, 0.2, 1)
     `
-    
+
     // Animar hacia estado cerrado con padding gradual
     setTimeout(() => {
       answer.style.opacity = '0'
@@ -128,7 +128,7 @@ const FAQAccordionSystem = {
       // Transición final más suave
       answer.style.transition = 'all 100ms ease-out'
       answer.style.minHeight = '0'
-      
+
       // Ocultar completamente después de un delay adicional
       setTimeout(() => {
         answer.style.display = 'none'
@@ -167,11 +167,14 @@ const FAQAccordionSystem = {
     if (!isCurrentlyActive) {
       const answer = clickedItem.querySelector(this.config.answerSelector)
       const icon = clickedItem.querySelector(this.config.iconSelector)
-      
+
       // Delay para permitir que se complete la animación de cierre más suavizada
-      setTimeout(() => {
-        this.openAccordionItem(clickedItem, answer, icon)
-      }, activeItems.length > 0 ? this.config.animationDuration + 250 : 0)
+      setTimeout(
+        () => {
+          this.openAccordionItem(clickedItem, answer, icon)
+        },
+        activeItems.length > 0 ? this.config.animationDuration + 250 : 0
+      )
     }
   },
 
@@ -197,7 +200,7 @@ const FAQAccordionSystem = {
       max-height ${this.config.animationDuration + 200}ms cubic-bezier(0.4, 0, 0.2, 1),
       padding ${this.config.animationDuration + 100}ms cubic-bezier(0.4, 0, 0.2, 1)
     `
-    
+
     // Animar hacia estado cerrado con padding gradual
     setTimeout(() => {
       answer.style.opacity = '0'
@@ -211,12 +214,12 @@ const FAQAccordionSystem = {
       // Transición final más suave
       answer.style.transition = 'all 100ms ease-out'
       answer.style.minHeight = '0'
-      
+
       // Ocultar completamente después de un delay adicional
       setTimeout(() => {
         answer.style.display = 'none'
         answer.classList.add(this.config.hiddenClass)
-        
+
         // Limpiar estilos de animación
         answer.style.transition = ''
         answer.style.transform = ''
@@ -245,13 +248,13 @@ const FAQAccordionSystem = {
       question.parentNode.replaceChild(newQuestion, question)
 
       // Agregar evento de click
-      newQuestion.addEventListener('click', (e) => {
+      newQuestion.addEventListener('click', e => {
         e.preventDefault()
         this.toggleAccordion(item)
       })
 
       // Soporte de teclado para accesibilidad
-      newQuestion.addEventListener('keydown', (e) => {
+      newQuestion.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           this.toggleAccordion(item)
@@ -262,16 +265,15 @@ const FAQAccordionSystem = {
 
   setupSubQuestions() {
     const subQuestions = document.querySelectorAll(this.config.subQuestionSelector)
-    
+
     subQuestions.forEach(subQuestion => {
-      subQuestion.addEventListener('click', function(e) {
+      subQuestion.addEventListener('click', function (e) {
         e.stopPropagation() // Evitar que se active el acordeón padre
         console.log('🔍 [FAQ] Sub-pregunta clickeada:', this.textContent)
-        
+
         // Aquí se puede agregar funcionalidad adicional
         // Por ejemplo, abrir un modal o expandir contenido adicional
       })
-
     })
   }
 }
@@ -281,7 +283,7 @@ const FAQAccordionSystem = {
 // ===========================================
 const FAQSystem = {
   init() {
-    console.log('🚀 [FAQ] Inicializando sistema de preguntas frecuentes...')
+
 
     const systems = {
       accordion: FAQAccordionSystem.init()
@@ -291,7 +293,7 @@ const FAQSystem = {
       .filter(([_, isActive]) => isActive)
       .map(([name]) => name)
 
-    console.log(`✅ [FAQ] Sistema iniciado - ${activeSystems.length} sistemas activos: ${activeSystems.join(', ')}`)
+
     return systems
   }
 }

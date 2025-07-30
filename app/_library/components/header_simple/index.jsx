@@ -13,33 +13,32 @@ const EncabezadoFix = () => {
 
   return (
     <>
-      <header className="header">
-        <Container className="header__container">
+      <header className='header'>
+        <Container className='header__container'>
           <Logo />
 
           {/* Navegación desktop */}
-          <nav className="header__nav">
-            <ul className="header__nav-list">
+          <nav className='header__nav'>
+            <ul className='header__nav-list'>
               <li>
-                <Btn href="#" variant="light" isEditable={false}>
+                <Btn href='https://www.javeriana.edu.co/info-prg/centro-de-ayuda' target='_blank' variant='light' isEditable={false}>
                   Centro de Ayuda
                 </Btn>
               </li>
             </ul>
           </nav>
 
-
           {/* Botón de menú móvil con icono animado */}
           <Btn
-            className="header__menu-toggle"
-            elementId="menu-toggle"
-            aria-label="Abrir menú de navegación"
-            data-menu-target="mobile-menu"
+            className='header__menu-toggle'
+            elementId='menu-toggle'
+            aria-label='Abrir menú de navegación'
+            data-menu-target='mobile-menu'
             isEditable={false}
-            variant="light"
-            type="button"
+            variant='light'
+            type='button'
             startIcon={
-              <div className="menu-icon" id="menu-icon">
+              <div className='menu-icon' id='menu-icon'>
                 <span></span>
                 <span></span>
                 <span></span>
@@ -49,21 +48,22 @@ const EncabezadoFix = () => {
           />
 
           {/* Overlay para cerrar menú */}
-          <div className="header__overlay" id="menu-overlay"></div>
+          <div className='header__overlay' id='menu-overlay'></div>
 
           {/* Menú móvil */}
-          <div className="header__mobile-menu" id="mobile-menu">
-            <div className="header__mobile-menu-content">
+          <div className='header__mobile-menu' id='mobile-menu'>
+            <div className='header__mobile-menu-content'>
               <Logo />
 
               <nav>
-                <ul className="header__mobile-menu-list">
+                <ul className='header__mobile-menu-list'>
                   <li>
                     <Btn
-                      href="#"
-                      className="header__mobile-menu-link"
-                      variant="light"
-                      startIcon={<i className="ph ph-question"></i>}
+                      href='https://www.javeriana.edu.co/info-prg/centro-de-ayuda'
+                      target='_blank'
+                      className='header__mobile-menu-link'
+                      variant='light'
+                      startIcon={<i className='ph ph-question'></i>}
                       isEditable={false}>
                       Centro de Ayuda
                     </Btn>
@@ -74,8 +74,6 @@ const EncabezadoFix = () => {
           </div>
         </Container>
       </header>
-
-
     </>
   )
 }

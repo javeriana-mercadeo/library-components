@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
+
+import { NextResponse } from 'next/server'
 import * as sass from 'sass'
 
 // Función para resolver imports de JavaScript recursivamente
@@ -12,6 +13,7 @@ async function resolveJavaScriptImports(
 ): Promise<string> {
   // Evitar imports circulares
   const normalizedPath = path.normalize(filePath)
+
   if (visited.has(normalizedPath)) {
     return `/* Circular import detected: ${normalizedPath} */\n`
   }
@@ -60,6 +62,7 @@ async function resolveJavaScriptImports(
           await fs.access(resolvedPath)
           const importedContent = await resolveJavaScriptImports(resolvedPath, basePath, new Set(visited), false)
           const relativePath = path.relative(basePath, resolvedPath)
+
           resolvedContent += `\n// ==================================================================================\n`
           resolvedContent += `// INICIO DE: ${relativePath}\n`
           resolvedContent += `// ==================================================================================\n`
@@ -127,6 +130,7 @@ export async function GET(req: Request) {
 
     // 📌 Resolver JavaScript con imports
     let jsContent = ''
+
     try {
       await fs.access(jsPath)
       jsContent = await resolveJavaScriptImports(jsPath, basePath)
@@ -135,6 +139,7 @@ export async function GET(req: Request) {
     }
 
     let compiledCSS = ''
+
     if (scssContent) {
       try {
         compiledCSS = sass.compileString(scssContent, {
@@ -149,11 +154,14 @@ export async function GET(req: Request) {
 
                   // Intentar diferentes extensiones
                   const extensions = ['', '.scss', '.sass', '.css']
+
                   for (const ext of extensions) {
                     const filePathWithExt = fullPath + ext
+
                     try {
                       // Verificar si el archivo existe de forma síncrona
                       require('fs').accessSync(filePathWithExt)
+
                       return new URL(`file://${filePathWithExt.replace(/\\/g, '/')}`)
                     } catch {
                       continue
@@ -161,6 +169,7 @@ export async function GET(req: Request) {
                   }
 
                   console.warn(`No se encontró el archivo: ${fullPath}`)
+
                   return null
                 }
 
@@ -186,6 +195,7 @@ export async function GET(req: Request) {
     })
   } catch (error) {
     console.error('Error al cargar el componente:', error)
+
     return new NextResponse('Error al cargar el componente', { status: 500 })
   }
 }

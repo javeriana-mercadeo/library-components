@@ -211,7 +211,7 @@ const AccordionSystem = {
 // ===========================================
 const DiferencialesSystem = {
   init() {
-    Logger.debug('🚀 Inicializando sistema de diferenciales...')
+
 
     const systems = {
       accordion: AccordionSystem.init()
@@ -221,7 +221,7 @@ const DiferencialesSystem = {
       .filter(([_, isActive]) => isActive)
       .map(([name]) => name)
 
-    Logger.success(`✅ Diferenciales iniciado - ${activeSystems.length} sistemas activos: ${activeSystems.join(', ')}`)
+
     return systems
   }
 }

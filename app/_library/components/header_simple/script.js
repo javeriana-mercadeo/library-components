@@ -21,8 +21,7 @@ function waitForGlobalUtils() {
       // Verificar solo las utilidades básicas necesarias
       if (
         typeof window !== 'undefined' &&
-        (window.__GLOBAL_UTILS_LOADED__ || 
-         (window.Logger && window.DOMHelpers && window.EventManager && window.TimingUtils))
+        (window.__GLOBAL_UTILS_LOADED__ || (window.Logger && window.DOMHelpers && window.EventManager && window.TimingUtils))
       ) {
         resolve(true)
       } else if (attempts >= maxAttempts) {
@@ -46,7 +45,7 @@ function createFallbackUtils() {
     window.Logger = {
       debug: (msg, ...args) => console.log(`🔍 [DEBUG] ${msg}`, ...args),
       info: (msg, ...args) => console.log(`ℹ️ [INFO] ${msg}`, ...args),
-      success: (msg, ...args) => console.log(`✅ [SUCCESS] ${msg}`, ...args),
+
       warning: (msg, ...args) => console.warn(`⚠️ [WARNING] ${msg}`, ...args),
       error: (msg, ...args) => console.error(`❌ [ERROR] ${msg}`, ...args)
     }
@@ -89,7 +88,7 @@ function createFallbackUtils() {
   }
 
   window.__GLOBAL_UTILS_LOADED__ = true
-  console.log('✅ Utilidades de fallback creadas')
+
 }
 
 // ███████████████████████████████████████████████████████████████████████████████
@@ -98,7 +97,7 @@ function createFallbackUtils() {
 
 const AppSystem = {
   init() {
-    console.log('🚀 [HEADER] Inicializando sistema del header...')
+
 
     try {
       // Inicializar sistemas con el patrón simple que funciona
@@ -110,7 +109,7 @@ const AppSystem = {
         .filter(([_, isActive]) => isActive)
         .map(([name]) => name)
 
-      console.log(`✅ [HEADER] Sistema iniciado - ${activeSystems.length} sistemas activos:`, activeSystems.join(', '))
+
       return systems
     } catch (error) {
       console.error('❌ [HEADER] Error al inicializar:', error)
@@ -129,7 +128,6 @@ const AppSystem = {
     }
   },
 
-
   cleanup() {
     // Limpiar solo si existen
     try {
@@ -145,25 +143,27 @@ const AppSystem = {
 // ===========================================
 
 function initHeaderSystem() {
-  console.log('🔧 [INIT] Iniciando sistema del header...')
+
 
   // Usar patrón similar a otros scripts que funcionan
   const initWhenReady = () => {
     try {
       // Esperar a que las utilidades globales estén disponibles con timeout corto
-      waitForGlobalUtils().then(() => {
-        // Pequeño delay para React
-        setTimeout(() => {
-          AppSystem.init()
-          console.log('🔧 [INIT] Sistema del header listo')
-        }, 100)
-      }).catch(() => {
-        // Si falla, usar fallback (ya está configurado en waitForGlobalUtils)
-        setTimeout(() => {
-          AppSystem.init()
-          console.log('🔧 [INIT] Sistema del header listo (fallback)')
-        }, 100)
-      })
+      waitForGlobalUtils()
+        .then(() => {
+          // Pequeño delay para React
+          setTimeout(() => {
+            AppSystem.init()
+
+          }, 100)
+        })
+        .catch(() => {
+          // Si falla, usar fallback (ya está configurado en waitForGlobalUtils)
+          setTimeout(() => {
+            AppSystem.init()
+
+          }, 100)
+        })
 
       // Cleanup global
       window.addEventListener('beforeunload', AppSystem.cleanup)
