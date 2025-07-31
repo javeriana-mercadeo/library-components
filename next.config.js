@@ -14,8 +14,18 @@ const nextConfig = {
       '@library': './app/_library',
       '@styles': './styles'
     }
+    
+    // Excluir esbuild del bundling para evitar conflictos
+    config.externals = {
+      ...config.externals,
+      'esbuild': 'esbuild'
+    }
+    
     return config
-  }
+  },
+  
+  // Configuración para evitar problemas con esbuild
+  serverExternalPackages: ['esbuild']
 }
 
 export default nextConfig

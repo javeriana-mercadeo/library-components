@@ -204,8 +204,10 @@ function initHeaderSystem() {
     }
   }
 
-  // Usar DOMHelpers si está disponible, sino usar fallback (patrón de experiencia)
-  if (typeof DOMHelpers !== 'undefined' && DOMHelpers.isReady) {
+  // Usar DOMUtils si está disponible, fallback a DOMHelpers, sino usar fallback (patrón de experiencia)
+  if (typeof DOMUtils !== 'undefined' && DOMUtils.isReady) {
+    DOMUtils.isReady(initWhenReady)
+  } else if (typeof DOMHelpers !== 'undefined' && DOMHelpers.isReady) {
     DOMHelpers.isReady(initWhenReady)
   } else {
     // Fallback simple - verificar que document existe

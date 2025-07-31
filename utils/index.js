@@ -17,82 +17,18 @@ import { StorageUtils } from './helpers/storage-utils.js'
 
 // Función de inicialización global
 function initGlobalUtils(options = {}) {
-  const { exposeToWindow = true, logLevel = 'DEBUG', namespace = '', enableLegacySupport = true } = options
+  const { exposeToWindow = true, logLevel = 'INFO', namespace = '' } = options
 
   // Configurar logger si está disponible
   if (Logger && logLevel) {
     const levels = { DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3 }
     if (Logger.setLevel) {
-      Logger.setLevel(levels[logLevel] || 0)
+      Logger.setLevel(levels[logLevel] || 1)
     }
   }
 
-  // Exponer utilidades globalmente solo en el navegador
-  if (typeof window !== 'undefined' && exposeToWindow) {
-    const utils = {
-      LogLevel,
-      Logger,
-      DOMUtils,
-      EventManager,
-      TimingUtils,
-      ValidatorUtils,
-      FormManager,
-      HTTPClient,
-      DataUtils,
-      StringUtils,
-      StorageUtils
-    }
-
-    // Legacy compatibility - mantener nombres anteriores
-    if (enableLegacySupport) {
-      if (DOMUtils) utils.DOMHelpers = DOMUtils
-      if (ValidatorUtils) utils.Validators = ValidatorUtils
-
-      // APIManager como wrapper del HTTPClient
-      if (HTTPClient) {
-        try {
-          const client = new HTTPClient()
-          utils.APIManager = {
-            get: (url, options) => client.get(url, options),
-            post: (url, data, options) => client.post(url, data, options),
-            put: (url, data, options) => client.put(url, data, options),
-            patch: (url, data, options) => client.patch(url, data, options),
-            delete: (url, options) => client.delete(url, options)
-          }
-          utils.apiClient = client
-          utils.createAPIClient = (baseURL, options) => new HTTPClient(baseURL, options)
-        } catch (error) {
-          console.warn('Error creating HTTPClient instance:', error)
-        }
-      }
-    }
-
-    if (namespace) {
-      window[namespace] = utils
-    } else {
-      Object.assign(window, utils)
-    }
-
-    // Marcar como cargadas
-    window.__GLOBAL_UTILS_LOADED__ = true
-    window.__GLOBAL_UTILS_VERSION__ = '2.0.0'
-
-    if (Logger && Logger.success) {
-      Logger.success('✨ Utilidades globales v2.0 inicializadas')
-      Logger.info(`📦 Módulos cargados: ${Object.keys(utils).length}`)
-
-      if (enableLegacySupport) {
-        Logger.info('🔄 Soporte legacy habilitado')
-      }
-    } else {
-      console.log('✨ Utilidades globales v2.0 inicializadas')
-      console.log(`📦 Módulos cargados: ${Object.keys(utils).length}`)
-    }
-
-    return utils
-  }
-
-  return {
+  // Crear objeto de utilidades limpio
+  const utils = {
     LogLevel,
     Logger,
     DOMUtils,
@@ -105,15 +41,41 @@ function initGlobalUtils(options = {}) {
     StringUtils,
     StorageUtils
   }
+
+  // Exponer utilidades globalmente solo en el navegador
+  if (typeof window !== 'undefined' && exposeToWindow) {
+    if (namespace) {
+      window[namespace] = utils
+    } else {
+      // Exponer cada utilidad individualmente
+      Object.assign(window, utils)
+    }
+
+    // Marcar como cargadas
+    window.__GLOBAL_UTILS_LOADED__ = true
+    window.__GLOBAL_UTILS_VERSION__ = '3.0.0'
+
+    if (Logger && Logger.success) {
+      Logger.success('✨ Utilidades globales v3.0 inicializadas')
+      Logger.info(`📦 Módulos cargados: ${Object.keys(utils).length}`)
+    } else {
+      console.log('✨ Utilidades globales v3.0 inicializadas')
+      console.log(`📦 Módulos cargados: ${Object.keys(utils).length}`)
+    }
+
+    return utils
+  }
+
+  return utils
 }
 
 // Función para obtener información del sistema de utilidades
 function getUtilsInfo() {
   return {
-    version: '2.0.0',
+    version: '3.0.0',
     modules: [
       'LogLevel',
-      'Logger',
+      'Logger', 
       'DOMUtils',
       'EventManager',
       'TimingUtils',

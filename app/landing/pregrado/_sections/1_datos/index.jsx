@@ -24,26 +24,7 @@ const DatosProgramaVideo = () => {
       icon: 'ph-graduation-cap',
       label: 'Título',
       value: 'Cargando título...',
-      type: 'modal',
-      modalContent: (
-        <Paragraph className={`${baseClass}__modal-content`} id={`${elementName}-horarios-modal`}>
-          <p>
-            <strong>Jornada de atención:</strong>
-          </p>
-          <ul>
-            <li>
-              <strong>Lunes a viernes:</strong> 7:00 a.m. a 11:00 a.m.
-            </li>
-            <li>
-              <strong>Sábados:</strong> 8:00 a.m. a 12:00 p.m. (solo con cita previa)
-            </li>
-          </ul>
-          <p>
-            Si necesitas atención en un horario diferente, por favor comunícate con nosotros con antelación para agendar una cita
-            personalizada.
-          </p>
-        </Paragraph>
-      )
+      type: 'normal'
     },
     {
       id: 'data-puj-academic-level',
@@ -113,10 +94,10 @@ const DatosProgramaVideo = () => {
       <Container id={elementName} className={`${baseClass}_container`}>
         {/* === FACULTAD === */}
         <div className={`${baseClass}_faculty-container`}>
-          <Caption className={`${baseClass}_faculty`} color='primary' size='md' bold={true} isEditable={false}>
+          <Caption className={`${baseClass}_faculty`} size='md' bold={true} isEditable={false}>
             Facultad de{' '}
           </Caption>
-          <Caption data-puj-faculty='true' className={`${baseClass}_faculty`} color='primary' size='md' bold={true} isEditable={false}>
+          <Caption data-puj-faculty='true' className={`${baseClass}_faculty`} size='md' bold={true} isEditable={false}>
             Cargando facultad...
           </Caption>
         </div>
@@ -185,7 +166,7 @@ const DatosProgramaVideo = () => {
           </div>
 
           <Btn
-            id={`${elementName}-enrollment-link`}
+            id={`${elementName}-enrollment-link-1`}
             className='program-data_enrollment-link mt-6'
             href='https://www.javeriana.edu.co/info-prg/proceso_de_inscripcion'
             target='_blank'

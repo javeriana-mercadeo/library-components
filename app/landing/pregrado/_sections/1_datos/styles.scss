@@ -16,7 +16,6 @@
 
   &_container {
     display: grid;
-    margin-top: rem(86px);
     padding-top: var(--spacing-2xl);
     padding-bottom: var(--spacing-md);
 
@@ -34,15 +33,7 @@
       'dates'
       'enrollment';
 
-    @include dark-theme {
-      margin-top: rem(76px);
-    }
-
     @include liferay-edit-mode {
-      margin-top: rem(0px);
-    }
-
-    @include only-dev-mode {
       margin-top: rem(0px);
     }
 
@@ -94,6 +85,7 @@
   }
 
   &_faculty {
+    color: var(--primary);
     grid-area: faculty;
   }
 

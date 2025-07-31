@@ -60,7 +60,9 @@
       "Bash(timeout 60s npm run build)",
       "Bash(true)",
       "Bash(timeout 20s npm run dev)",
-      "Bash(timeout 15s npm run dev)"
+      "Bash(timeout 15s npm run dev)",
+      "Bash(npm remove:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": []
   }

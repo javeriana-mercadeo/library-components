@@ -335,9 +335,23 @@ const DatosProgramaVideoSystem = {
 // AUTO-INICIALIZACIÓN
 // ===========================================
 export default () => {
-  DOMHelpers.isReady(async () => {
-    await DatosProgramaVideoSystem.init()
-  })
+  const domReady = (typeof DOMUtils !== 'undefined' && DOMUtils.isReady) ? DOMUtils : 
+                   (typeof DOMHelpers !== 'undefined' && DOMHelpers.isReady) ? DOMHelpers : null
+  
+  if (domReady) {
+    domReady.isReady(async () => {
+      await DatosProgramaVideoSystem.init()
+    })
+  } else {
+    // Fallback si no hay utilidades DOM disponibles
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', async () => {
+        await DatosProgramaVideoSystem.init()
+      })
+    } else {
+      DatosProgramaVideoSystem.init()
+    }
+  }
 
   // Exponer solo en desarrollo (sistemas locales)
   if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {

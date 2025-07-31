@@ -58,11 +58,61 @@ async function fetchExternalLibrary(url: string): Promise<string> {
   }
 }
 
-// 📌 FUNCIÓN PARA RESOLVER IMPORTS DE JAVASCRIPT
+// 📌 ALMACÉN GLOBAL PARA EVITAR DUPLICADOS
+interface ImportedModule {
+  content: string;
+  exports: string[];
+  path: string;
+}
+
+const globalModuleCache = new Map<string, ImportedModule>();
+const globalExports = new Set<string>();
+
+// 📌 FUNCIÓN PARA EXTRAER EXPORTS DE UN ARCHIVO
+function extractExports(content: string): string[] {
+  const exports: string[] = [];
+  const lines = content.split('\n');
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    
+    // export const/let/var NAME
+    const constMatch = trimmed.match(/^export\s+(const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/);
+    if (constMatch) {
+      exports.push(constMatch[2]);
+      continue;
+    }
+    
+    // export function NAME
+    const funcMatch = trimmed.match(/^export\s+function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/);
+    if (funcMatch) {
+      exports.push(funcMatch[1]);
+      continue;
+    }
+    
+    // export class NAME
+    const classMatch = trimmed.match(/^export\s+class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/);
+    if (classMatch) {
+      exports.push(classMatch[1]);
+      continue;
+    }
+    
+    // export { name1, name2 }
+    const namedMatch = trimmed.match(/^export\s*\{\s*([^}]+)\s*\}/);
+    if (namedMatch) {
+      const names = namedMatch[1].split(',').map(n => n.trim().split(' as ')[0].trim());
+      exports.push(...names);
+      continue;
+    }
+  }
+  
+  return exports;
+}
+
+// 📌 FUNCIÓN PARA RESOLVER IMPORTS DE JAVASCRIPT CON DEDUPLICACIÓN
 async function resolveJavaScriptImports(jsContent: string, basePath: string, visited = new Set<string>()): Promise<string> {
   if (!jsContent) {
     console.log('⚠️ No hay contenido JS para resolver')
-
     return ''
   }
 
@@ -73,7 +123,6 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
   // Buscar todas las líneas de import con regex más específico
   const importLines = jsContent.split('\n').filter(line => {
     const trimmed = line.trim()
-
     return trimmed.startsWith('import ') && trimmed.includes('from ')
   })
 
@@ -82,12 +131,10 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
   if (importLines.length === 0) {
     console.log(`✅ No hay imports que resolver, devolviendo contenido original`)
-
     return jsContent
   }
 
   // Resolver cada import
-  let resolvedContent = jsContent
   const importedContents: string[] = []
 
   for (const importLine of importLines) {
@@ -103,7 +150,6 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
       }
 
       const importPath = importMatch[1]
-
       console.log(`📁 Ruta extraída: ${importPath}`)
 
       // Construir la ruta absoluta
@@ -151,24 +197,71 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
         continue
       }
 
+      // Verificar si ya hemos procesado este módulo
+      if (globalModuleCache.has(normalizedPath)) {
+        console.log(`♻️ Módulo ya procesado, reutilizando: ${normalizedPath}`)
+        const cached = globalModuleCache.get(normalizedPath)!
+        
+        // Solo agregar referencia, no duplicar contenido
+        importedContents.push(`\n// ===== REFERENCIA A: ${importPath} =====`)
+        importedContents.push(`// Ya procesado: ${cached.exports.join(', ')}`)
+        continue
+      }
+
       visited.add(normalizedPath)
 
       // Leer el archivo importado
       const importedContent = await fs.readFile(resolvedPath, 'utf8')
-
       console.log(`📖 Archivo leído: ${resolvedPath} (${importedContent.length} chars)`)
 
       // Recursivamente resolver imports del archivo importado
-      const resolvedImported = await resolveJavaScriptImports(importedContent, resolvedPath, new Set(visited))
+      const resolvedImported = await resolveJavaScriptImports(importedContent, resolvedPath, visited)
+
+      // Extraer exports antes de limpiar
+      const moduleExports = extractExports(resolvedImported)
+      console.log(`📤 Exports encontrados en ${importPath}: ${moduleExports.join(', ')}`)
+
+      // Verificar conflictos de nombres
+      const conflicts = moduleExports.filter(exp => globalExports.has(exp))
+      let processedContent = resolvedImported
+      
+      if (conflicts.length > 0) {
+        console.warn(`⚠️ Conflictos de nombres detectados: ${conflicts.join(', ')} en ${importPath}`)
+        // Renombrar conflictos agregando sufijo
+        processedContent = conflicts.reduce((content, conflict) => {
+          const newName = `${conflict}_${path.basename(importPath, path.extname(importPath))}`
+          console.log(`🔄 Renombrando ${conflict} -> ${newName}`)
+          return content.replace(new RegExp(`\\b${conflict}\\b`, 'g'), newName)
+        }, processedContent)
+        
+        // Actualizar exports
+        const updatedExports = moduleExports.map(exp => 
+          conflicts.includes(exp) ? `${exp}_${path.basename(importPath, path.extname(importPath))}` : exp
+        )
+        
+        moduleExports.splice(0, moduleExports.length, ...updatedExports)
+      }
 
       // Limpiar exports del contenido importado
-      const cleanedContent = cleanJavaScriptExports(resolvedImported)
+      const cleanedContent = cleanJavaScriptExports(processedContent)
+
+      // Guardar en cache
+      globalModuleCache.set(normalizedPath, {
+        content: cleanedContent,
+        exports: moduleExports,
+        path: resolvedPath
+      })
+
+      // Agregar exports al conjunto global
+      moduleExports.forEach(exp => globalExports.add(exp))
 
       importedContents.push(`\n// ===== IMPORTADO DE: ${importPath} =====`)
       importedContents.push(`// Archivo: ${resolvedPath}`)
+      importedContents.push(`// Exports: ${moduleExports.join(', ')}`)
       importedContents.push(cleanedContent)
 
-      visited.delete(normalizedPath)
+      // NO eliminar de visited para mantener la deduplicación global
+      // visited.delete(normalizedPath)
     } catch (error) {
       console.error(`❌ Error procesando import "${importLine}":`, error)
       importedContents.push(`// ❌ Error importando: ${importLine} - ${error}`)
@@ -176,14 +269,18 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
   }
 
   // Limpiar imports del contenido principal
-  const mainContent = cleanJavaScriptImports(resolvedContent)
+  const mainContent = cleanJavaScriptImports(jsContent)
 
-  // Combinar todo
-  const combined = [...importedContents, '\n// ===== CÓDIGO PRINCIPAL =====', mainContent].join('\n')
+  // Combinar todo SIN el helper duplicado
+  const combined = [
+    ...importedContents, 
+    '\n// ===== CÓDIGO PRINCIPAL =====', 
+    mainContent
+  ].join('\n')
 
-  console.log(`✅ JavaScript resuelto: ${combined.length} caracteres`)
-  console.log(`📄 Resultado (primeras líneas):`)
-  console.log(combined.split('\n').slice(0, 10).join('\n'))
+  console.log(`✅ JavaScript resuelto con deduplicación: ${combined.length} caracteres`)
+  console.log(`📊 Módulos únicos procesados: ${globalModuleCache.size}`)
+  console.log(`📤 Exports globales: ${Array.from(globalExports).join(', ')}`)
 
   return combined
 }
@@ -215,77 +312,87 @@ function cleanJavaScriptImports(content: string): string {
 function cleanJavaScriptExports(content: string): string {
   console.log(`🧹 Limpiando exports de contenido (${content.length} chars)`)
 
-  const lines = content.split('\n')
+  // Primero manejar exports multi-línea con llaves
+  let cleanedContent = content.replace(/export\s*\{[\s\S]*?\}/g, (match) => {
+    console.log(`🗑️ Removiendo export multi-línea: ${match.replace(/\n/g, '\\n')}`)
+    return '// ' + match.replace(/\n/g, '\n// ')
+  })
+
+  const lines = cleanedContent.split('\n')
   const cleanedLines = lines.map(line => {
     const trimmed = line.trim()
+
+    // Si ya está comentado, dejarlo como está
+    if (trimmed.startsWith('//')) {
+      return line
+    }
 
     // Convertir export function a function normal
     if (trimmed.startsWith('export function ')) {
       const cleaned = line.replace('export function ', 'function ')
-
       console.log(`🔄 Export function: ${trimmed} → ${cleaned.trim()}`)
-
       return cleaned
     }
 
     // Convertir export const a const normal
     if (trimmed.startsWith('export const ')) {
       const cleaned = line.replace('export const ', 'const ')
-
       console.log(`🔄 Export const: ${trimmed} → ${cleaned.trim()}`)
-
       return cleaned
     }
 
     // Convertir export let a let normal
     if (trimmed.startsWith('export let ')) {
       const cleaned = line.replace('export let ', 'let ')
-
       console.log(`🔄 Export let: ${trimmed} → ${cleaned.trim()}`)
-
       return cleaned
     }
 
     // Convertir export var a var normal
     if (trimmed.startsWith('export var ')) {
       const cleaned = line.replace('export var ', 'var ')
-
       console.log(`🔄 Export var: ${trimmed} → ${cleaned.trim()}`)
+      return cleaned
+    }
 
+    // Convertir export class a class normal
+    if (trimmed.startsWith('export class ')) {
+      const cleaned = line.replace('export class ', 'class ')
+      console.log(`🔄 Export class: ${trimmed} → ${cleaned.trim()}`)
       return cleaned
     }
 
     // Eliminar export default (mantener solo la declaración)
     if (trimmed.startsWith('export default ')) {
       const cleaned = line.replace('export default ', '')
-
       console.log(`🔄 Export default: ${trimmed} → ${cleaned.trim()}`)
-
       return cleaned
     }
 
-    // Eliminar líneas de export { ... }
-    if (
-      trimmed.match(/^export\s*\{.*\}/) ||
-      (trimmed.startsWith('export ') &&
+    // Eliminar líneas de export restantes (que no tengan function, const, let, var, class)
+    if (trimmed.startsWith('export ') && 
         !trimmed.includes('function') &&
         !trimmed.includes('const') &&
         !trimmed.includes('let') &&
-        !trimmed.includes('var'))
-    ) {
-      console.log(`🗑️ Removiendo export: ${trimmed}`)
-
-      return '// ' + line // Comentar la línea en lugar de eliminarla
+        !trimmed.includes('var') &&
+        !trimmed.includes('class')) {
+      console.log(`🗑️ Removiendo export simple: ${trimmed}`)
+      return '// ' + line
     }
 
     return line
   })
 
   const result = cleanedLines.join('\n')
-
   console.log(`✅ Exports limpiados`)
-
   return result
+}
+
+// 📌 FUNCIÓN PARA LIMPIAR CACHE GLOBAL
+function clearGlobalCache() {
+  globalModuleCache.clear();
+  globalExports.clear();
+  console.log('🧹 Cache global limpiado');
 }
 
 async function compileJavaScript(jsContent: string, jsPath: string): Promise<string> {
@@ -293,6 +400,9 @@ async function compileJavaScript(jsContent: string, jsPath: string): Promise<str
     console.log('🔄 === INICIANDO PROCESAMIENTO DE JAVASCRIPT ===')
     console.log(`📁 Archivo base: ${jsPath}`)
     console.log(`📄 Contenido inicial: ${jsContent ? jsContent.length : 0} caracteres`)
+
+    // Limpiar cache al inicio de cada compilación
+    clearGlobalCache();
 
     // Obtener librerías externas
     console.log('📥 Descargando librerías externas...')
@@ -305,6 +415,72 @@ async function compileJavaScript(jsContent: string, jsPath: string): Promise<str
     console.log(`📊 Resultado de resolución:`)
     console.log(`  - Código original: ${jsContent?.length || 0} caracteres`)
     console.log(`  - Código resuelto: ${resolvedCustomCode.length} caracteres`)
+    console.log(`  - Módulos únicos: ${globalModuleCache.size}`)
+    console.log(`  - Exports únicos: ${globalExports.size}`)
+
+    // Crear globals helper una sola vez
+    const globalsHelper = `
+// ===== SISTEMA DE UTILIDADES GLOBALES =====
+// Auto-generado para evitar conflictos y mejorar compatibilidad
+
+function getGlobalUtils() {
+  // Asegurar que las utilidades estén disponibles globalmente
+  if (typeof window !== 'undefined') {
+    // Configurar alias para compatibilidad
+    if (typeof DOMUtils !== 'undefined' && !window.DOMHelpers) {
+      window.DOMHelpers = DOMUtils;
+    }
+    
+    // HTTPClient como constructor disponible globalmente
+    if (typeof HTTPClient !== 'undefined') {
+      window.HTTPClient = HTTPClient;
+    }
+    
+    // LogLevel global
+    if (typeof LogLevel !== 'undefined') {
+      window.LogLevel = LogLevel;
+    }
+    
+    // Logger global
+    if (typeof Logger !== 'undefined') {
+      window.Logger = Logger;
+    }
+    
+    // Retornar objeto con todas las utilidades
+    return {
+      LogLevel: window.LogLevel || {},
+      Logger: window.Logger || console,
+      DOMHelpers: window.DOMHelpers || window.DOMUtils || {},
+      DOMUtils: window.DOMUtils || window.DOMHelpers || {},
+      HTTPClient: window.HTTPClient || function() { console.warn('HTTPClient no disponible'); },
+      TimingUtils: window.TimingUtils || {},
+      EventManager: window.EventManager || {},
+      ValidatorUtils: window.ValidatorUtils || {},
+      FormManager: window.FormManager || {},
+      DataUtils: window.DataUtils || {},
+      StringUtils: window.StringUtils || {},
+      StorageUtils: window.StorageUtils || {}
+    };
+  }
+  
+  return {};
+}
+
+// Ejecutar inicialización de utilidades globales
+if (typeof window !== 'undefined') {
+  window.getGlobalUtils = getGlobalUtils;
+  
+  // Auto-ejecutar después de que se carguen todos los módulos
+  setTimeout(() => {
+    const utils = getGlobalUtils();
+    
+    // Hacer disponibles globalmente
+    Object.assign(window, utils);
+    
+    console.log('✨ Utilidades globales inicializadas:', Object.keys(utils));
+  }, 100);
+}
+`;
 
     const combinedJS = [
       '// ===== LIBRERÍAS EXTERNAS =====',
@@ -313,6 +489,7 @@ async function compileJavaScript(jsContent: string, jsPath: string): Promise<str
       ...externalLibraries.filter(lib => lib.length > 0),
       '',
       '// ===== CÓDIGO PERSONALIZADO =====',
+      globalsHelper,
       resolvedCustomCode || '// No hay código JavaScript personalizado'
     ].join('\n')
 

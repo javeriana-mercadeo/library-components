@@ -78,7 +78,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
 
     async function loadBasicInfo() {
       try {
-        const res = await fetch(`/api/file?path=${encodeURIComponent(path ?? '')}`)
+        const res = await fetch(`/api/build-modules?path=${encodeURIComponent(path ?? '')}`)
         const { info, js } = await res.json()
 
         if (info) setInfo(info)
@@ -104,7 +104,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
 
       // Solo hacer llamado a API si hay path válido
       if (path && path.trim() !== '') {
-        const res = await fetch(`/api/file?path=${encodeURIComponent(path)}`)
+        const res = await fetch(`/api/build-modules?path=${encodeURIComponent(path)}`)
         const data = await res.json()
 
         css = data.css || ''

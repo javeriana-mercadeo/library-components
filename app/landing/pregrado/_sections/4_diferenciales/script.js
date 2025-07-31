@@ -230,9 +230,23 @@ const DiferencialesSystem = {
 // AUTO-INICIALIZACIÓN
 // ===========================================
 export default () => {
-  DOMHelpers.isReady(() => {
-    DiferencialesSystem.init()
-  })
+  const domReady = (typeof DOMUtils !== 'undefined' && DOMUtils.isReady) ? DOMUtils : 
+                   (typeof DOMHelpers !== 'undefined' && DOMHelpers.isReady) ? DOMHelpers : null
+  
+  if (domReady) {
+    domReady.isReady(() => {
+      DiferencialesSystem.init()
+    })
+  } else {
+    // Fallback si no hay utilidades DOM disponibles
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        DiferencialesSystem.init()
+      })
+    } else {
+      DiferencialesSystem.init()
+    }
+  }
 
   // Exponer para debugging
   if (typeof window !== 'undefined') {
