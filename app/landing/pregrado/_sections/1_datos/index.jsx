@@ -131,7 +131,7 @@ const DatosProgramaVideo = () => {
         </Paragraph>
 
         {/* === VIDEOS RESPONSIVOS === */}
-        <div className={`${baseClass}_media`} data-video-mobile='HxlTZ8DQAaY' data-video-desktop='IWZvfiu3gX4' data-breakpoint='768'>
+        <div id={`${baseClass}-media`} className={`${baseClass}_media`} data-video-mobile='HxlTZ8DQAaY' data-video-desktop='IWZvfiu3gX4' data-breakpoint='768'>
           {/* Placeholder para videos que se cargarán via JavaScript */}
         </div>
 

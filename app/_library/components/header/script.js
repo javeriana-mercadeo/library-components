@@ -46,7 +46,7 @@ function createFallbackUtils() {
     window.Logger = {
       debug: (msg, ...args) => console.log(`🔍 [DEBUG] ${msg}`, ...args),
       info: (msg, ...args) => console.log(`ℹ️ [INFO] ${msg}`, ...args),
-
+      success: (msg, ...args) => console.log(`✅ [SUCCESS] ${msg}`, ...args),
       warning: (msg, ...args) => console.warn(`⚠️ [WARNING] ${msg}`, ...args),
       error: (msg, ...args) => console.error(`❌ [ERROR] ${msg}`, ...args)
     }
@@ -118,7 +118,11 @@ const AppSystem = {
 
       return systems
     } catch (error) {
-      console.error('❌ [HEADER] Error al inicializar:', error)
+      if (typeof Logger !== 'undefined' && Logger.error) {
+        Logger.error('❌ [HEADER] Error al inicializar:', error)
+      } else {
+        console.error('❌ [HEADER] Error al inicializar:', error)
+      }
       return {
         mobileMenu: false,
         contactModal: false,
@@ -131,7 +135,11 @@ const AppSystem = {
     try {
       return HeaderManager.init().mobileMenu || false
     } catch (error) {
-      console.error('Error en mobile menu:', error)
+      if (typeof Logger !== 'undefined' && Logger.error) {
+        Logger.error('Error en mobile menu:', error)
+      } else {
+        console.error('Error en mobile menu:', error)
+      }
       return false
     }
   },
@@ -140,7 +148,11 @@ const AppSystem = {
     try {
       return HeaderManager.init().contactModal || false
     } catch (error) {
-      console.error('Error en contact modal:', error)
+      if (typeof Logger !== 'undefined' && Logger.error) {
+        Logger.error('Error en contact modal:', error)
+      } else {
+        console.error('Error en contact modal:', error)
+      }
       return false
     }
   },
@@ -152,7 +164,11 @@ const AppSystem = {
       ModalForm.init()
       return true
     } catch (error) {
-      console.error('Error en modal form:', error)
+      if (typeof Logger !== 'undefined' && Logger.error) {
+        Logger.error('Error en modal form:', error)
+      } else {
+        console.error('Error en modal form:', error)
+      }
       return false
     }
   },
@@ -163,7 +179,11 @@ const AppSystem = {
       if (window.HeaderManager) HeaderManager.cleanup()
       if (window.ModalForm) ModalForm.cleanup()
     } catch (error) {
-      console.debug('Cleanup warning:', error)
+      if (typeof Logger !== 'undefined' && Logger.debug) {
+        Logger.debug('Cleanup warning:', error)
+      } else {
+        console.debug('Cleanup warning:', error)
+      }
     }
   }
 }
@@ -199,7 +219,11 @@ function initHeaderSystem() {
       // Cleanup global
       window.addEventListener('beforeunload', AppSystem.cleanup)
     } catch (error) {
-      console.error('❌ [INIT] Error al inicializar:', error)
+      if (typeof Logger !== 'undefined' && Logger.error) {
+        Logger.error('❌ [INIT] Error al inicializar:', error)
+      } else {
+        console.error('❌ [INIT] Error al inicializar:', error)
+      }
     }
   }
 

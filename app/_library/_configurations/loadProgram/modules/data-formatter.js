@@ -218,6 +218,15 @@ export const DataFormatter = {
     return result
   },
 
+  capitalizeFirst(str) {
+    if (typeof StringUtils !== 'undefined' && StringUtils.capitalize) {
+      return StringUtils.capitalize(str)
+    }
+    // Fallback
+    if (!str) return ''
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+  },
+
   capitalizeWords(str) {
     if (typeof StringUtils !== 'undefined' && StringUtils.capitalizeWords) {
       return StringUtils.capitalizeWords(str)
@@ -258,5 +267,37 @@ export const DataFormatter = {
       currency: 'COP',
       maximumFractionDigits: 0
     }).format(amount)
+  },
+
+  cleanDate(dateString) {
+    if (!dateString || typeof dateString !== 'string') {
+      return dateString || ''
+    }
+    
+    try {
+      // Limpiar formato de fecha común: "YYYY-MM-DD" o "DD/MM/YYYY"
+      const cleanedDate = dateString.trim()
+      
+      // Si es formato ISO (YYYY-MM-DD), convertir a formato legible
+      if (/^\d{4}-\d{2}-\d{2}/.test(cleanedDate)) {
+        const date = new Date(cleanedDate)
+        if (!isNaN(date.getTime())) {
+          return date.toLocaleDateString('es-CO', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })
+        }
+      }
+      
+      return cleanedDate
+    } catch (error) {
+      if (typeof Logger !== 'undefined' && Logger.warning) {
+        Logger.warning('Error limpiando fecha:', error)
+      } else {
+        console.warn('Error limpiando fecha:', error)
+      }
+      return dateString
+    }
   }
 }

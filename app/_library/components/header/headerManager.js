@@ -327,7 +327,11 @@ const ContactModal = {
           window.ModalFormManager.setupFormValidation(this.form)
         }
       } catch (error) {
-        console.error('Error al inicializar formulario del modal:', error)
+        if (typeof Logger !== 'undefined' && Logger.error) {
+          Logger.error('📋 [MODAL] Error al inicializar formulario:', error)
+        } else {  
+          console.error('Error al inicializar formulario del modal:', error)
+        }
       }
     }
   },

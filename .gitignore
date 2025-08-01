@@ -235,7 +235,7 @@ $RECYCLE.BIN/
 # build output
 /build/
 !build/script.js
-!build/style.scss
+!build/styles.scss
 
 # 📌 Archivos compilados en secciones - Excluir carpetas build/
 # Excluir todas las carpetas build dentro de secciones de componentes y páginas

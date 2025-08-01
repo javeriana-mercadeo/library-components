@@ -302,8 +302,8 @@
       justify-self: end;
     }
 
-    // Estados de carga
-    &:not(.responsive-video-ready) {
+    // Estados de carga - mostrar loader hasta que esté completamente listo
+    &:not(.video-loaded) {
       &::before {
         content: '';
         position: absolute;
@@ -316,11 +316,47 @@
         border-top-color: var(--primary);
         border-radius: 50%;
         animation: videoLoading 1s linear infinite;
-        z-index: 2;
+        z-index: 12; // Por encima de la capa protectora
+        background: transparent;
+        pointer-events: none;
+        opacity: 1;
+        transition: opacity 0.3s ease-out;
       }
     }
 
-    // Overlay sutil
+    // Ocultar loader cuando el video está listo
+    &.video-loaded {
+      &::before {
+        opacity: 0;
+        animation: none;
+        transition: opacity 0.3s ease-out;
+      }
+    }
+
+    // Capa protectora invisible para bloquear clics (solo cuando está completamente listo)
+    &.video-loaded.responsive-video-ready::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: transparent;
+      pointer-events: auto; // Captura todos los clics
+      cursor: default;
+      z-index: 10; // Por encima del video
+      user-select: none;
+      border: none;
+      border-radius: 0;
+      animation: none;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 1;
+      transition: none;
+    }
+
+    // Overlay sutil para feedback visual (opcional)
     &::after {
       content: '';
       position: absolute;
@@ -328,7 +364,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.05);
       pointer-events: none;
       z-index: 1;
       opacity: 0;
@@ -354,7 +390,7 @@
   }
 
   // ==========================================
-  // IFRAME DEL VIDEO - MANTIENE RELACIÓN EXACTA
+  // IFRAME DEL VIDEO - MANTIENE RELACIÓN EXACTA Y MÁXIMA LIMPIEZA
   // ==========================================
   &__iframe {
     position: absolute;
@@ -367,14 +403,23 @@
     object-position: center; // Centra el contenido
     will-change: auto;
     backface-visibility: hidden;
-    pointer-events: none;
+    pointer-events: none; // Completamente no interactivo
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.6s ease-in-out; // Transición suave después del loader
 
-    // Mostrar cuando está cargado
-    &[src]:not([src='']) {
-      opacity: 1;
-    }
+    // Bloquear completamente la interacción
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
+    // Optimizaciones adicionales
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    contain: strict;
+
+    // Estado inicial - oculto hasta que JavaScript lo muestre
+    filter: brightness(0.99); // Hack para evitar flash de controles
 
     // MODIFICADOR MOBILE
     &--mobile {

@@ -1,4 +1,9 @@
-export default () => {
+// ===========================================
+// PROGRAMAS RELACIONADOS - SCRIPT v3.0
+// Compatible con utilidades globales v3.0
+// ===========================================
+
+const RelatedProgramsScript = () => {
   // ==========================================
   // CONFIGURACIÓN DEL CARRUSEL
   // ==========================================
@@ -70,30 +75,39 @@ export default () => {
   // ==========================================
 
   /**
-   * Normaliza nombres de facultades para hacer comparaciones flexibles
+   * Normaliza nombres de facultades usando el sistema global FacultyNormalizer
    * Maneja abreviaciones y variaciones comunes
    */
   function normalizeFacultyName(facultyName) {
     if (!facultyName || typeof facultyName !== 'string') return ''
 
-    // Limpiar espacios y quitar "Facultad de" al inicio
-    let clean = facultyName.replace(/^Facultad de /i, '').trim()
+    try {
+      // Intentar usar FacultyNormalizer global si está disponible
+      if (typeof window !== 'undefined' && window.FacultyNormalizer && window.FacultyNormalizer.normalize) {
+        return window.FacultyNormalizer.normalize(facultyName)
+      }
 
-    // Mapeo de abreviaciones conocidas a nombres completos
-    const facultyMappings = {
-      'Cs.Económicas y Administrativ.': 'Ciencias Económicas y Administrativas',
-      'Cs.Económicas y Administrativas': 'Ciencias Económicas y Administrativas',
-      'Cs.Políticas y Relaciones Int.': 'Ciencias Políticas y Relaciones Internacionales',
-      'Arquitectura y Diseño': 'Arquitectura y Diseño'
-      // Agregar más mapeos según sea necesario
+      // Fallback local si no está disponible el sistema global
+      let clean = facultyName.replace(/^Facultad de /i, '').trim()
+
+      // Mapeo de abreviaciones conocidas a nombres completos
+      const facultyMappings = {
+        'Cs.Económicas y Administrativ.': 'Ciencias Económicas y Administrativas',
+        'Cs.Económicas y Administrativas': 'Ciencias Económicas y Administrativas',
+        'Cs.Políticas y Relaciones Int.': 'Ciencias Políticas y Relaciones Internacionales',
+        'Arquitectura y Diseño': 'Arquitectura y Diseño'
+      }
+
+      return facultyMappings[clean] || clean
+    } catch (error) {
+      // Usar Logger si está disponible, sino console
+      if (typeof Logger !== 'undefined' && Logger.warning) {
+        Logger.warning('Error normalizando nombre de facultad:', error)
+      } else {
+        console.warn('Error normalizando nombre de facultad:', error)
+      }
+      return facultyName
     }
-
-    // Aplicar mapeo si existe
-    if (facultyMappings[clean]) {
-      return facultyMappings[clean]
-    }
-
-    return clean
   }
 
   // ==========================================
@@ -137,23 +151,73 @@ export default () => {
     },
 
     /**
-     * Formatear nombre de programa de forma local
+     * Formatear nombre de programa usando utilidades globales v3.0
      */
     formatProgramName(programName) {
       if (!programName || typeof programName !== 'string') {
         return programName || ''
       }
 
-      // Formateo básico: capitalizar primera letra de cada palabra, conectores en minúscula
-      return programName
-        .toLowerCase()
-        .replace(/(?:^|\s)([a-záéíóúüñ])/g, (match, letter) => {
+      try {
+        // Usar StringUtils.trim si está disponible, sino trim nativo
+        const trimmed = typeof StringUtils !== 'undefined' && StringUtils.trim 
+          ? StringUtils.trim(programName) 
+          : programName.trim()
+
+        // Usar StringUtils.capitalizeWords si está disponible
+        if (typeof StringUtils !== 'undefined' && StringUtils.capitalizeWords) {
+          const capitalized = StringUtils.capitalizeWords(trimmed)
+          return this.clearUpperUnions(capitalized)
+        }
+
+        // Fallback con soporte para acentos españoles
+        const capitalized = trimmed.toLowerCase().replace(/(?:^|\s)([a-záéíóúüñ])/g, (match, letter) => {
           return match.replace(letter, letter.toUpperCase())
         })
-        .replace(
-          /\b(de|del|al|y|e|con|en|por|para|sin|sobre|bajo|entre|hacia|hasta|desde|durante|mediante|ante|tras|según|como|a|que|cual|donde|cuando)\b/g,
-          match => match.toLowerCase()
-        )
+        return this.clearUpperUnions(capitalized)
+      } catch (error) {
+        // Usar Logger si está disponible, sino console
+        if (typeof Logger !== 'undefined' && Logger.warning) {
+          Logger.warning('Error formateando nombre de programa:', error)
+        } else {
+          console.warn('Error formateando nombre de programa:', error)
+        }
+        return programName
+      }
+    },
+
+    /**
+     * Limpiar conectores que deben ir en minúsculas (excepto al inicio)
+     */
+    clearUpperUnions(title) {
+      if (!title || typeof title !== 'string') return title || ''
+
+      // Conectores que deben ir en minúsculas (excepto al inicio)
+      const connectors = [
+        // Artículos
+        'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas',
+        // Preposiciones
+        'de', 'del', 'al', 'en', 'con', 'por', 'para', 'sin', 'sobre', 'bajo', 
+        'entre', 'hacia', 'hasta', 'desde', 'durante', 'mediante', 'ante', 'tras', 
+        'según', 'como', 'a',
+        // Conjunciones
+        'y', 'e', 'o', 'u', 'pero', 'mas', 'sino', 'aunque',
+        // Otros conectores
+        'que', 'cual', 'donde', 'cuando'
+      ]
+
+      let result = title
+
+      // Aplicar minúsculas a conectores que no estén al inicio
+      connectors.forEach(connector => {
+        const regex = new RegExp(`\\b${connector}\\b`, 'gi')
+        result = result.replace(regex, (match, offset) => {
+          // No cambiar si está al inicio de la cadena
+          return offset === 0 ? match : connector
+        })
+      })
+
+      return result
     },
 
     generateRelatedCarousel(currentProgram, allPrograms) {
@@ -311,6 +375,9 @@ export default () => {
       }
 
       if (!window.Swiper) {
+        if (typeof Logger !== 'undefined' && Logger.warning) {
+          Logger.warning('🔗 [RELATED] Swiper no disponible, reintentando...')
+        }
         setTimeout(() => this.initializeSwiper(), 300)
         return
       }
@@ -319,6 +386,9 @@ export default () => {
       const element = document.querySelector('.related-programs-swiper') || document.querySelector('.related-programs__carousel')
 
       if (!element) {
+        if (typeof Logger !== 'undefined' && Logger.warning) {
+          Logger.warning('🔗 [RELATED] No se encontró contenedor del carrusel')
+        }
         return
       }
 
@@ -374,9 +444,48 @@ export default () => {
           }
         }
       })
+
+      if (typeof Logger !== 'undefined' && Logger.success) {
+        Logger.success(`🔗 [RELATED] Swiper inicializado con ${totalSlides} programas`)
+      }
     }
   }
 
-  // Inicializar el sistema (patrón exacto de 1_datos)
-  RelatedProgramsSystem.init()
+  // Inicializar el sistema
+  try {
+    if (typeof Logger !== 'undefined' && Logger.debug) {
+      Logger.debug('🔗 [RELATED] Inicializando sistema de programas relacionados...')
+    }
+    
+    RelatedProgramsSystem.init()
+    
+    if (typeof Logger !== 'undefined' && Logger.success) {
+      Logger.success('🔗 [RELATED] Sistema inicializado correctamente')
+    }
+  } catch (error) {
+    if (typeof Logger !== 'undefined' && Logger.error) {
+      Logger.error('🔗 [RELATED] Error:', error)
+    } else {
+      console.error('🔗 [RELATED] Error:', error)
+    }
+  }
+}
+
+// Inicialización compatible con compilación IIFE y módulos
+const initRelatedPrograms = () => {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      RelatedProgramsScript()
+    })
+  } else {
+    RelatedProgramsScript()
+  }
+}
+
+// Exportar función e inicializar inmediatamente
+export default initRelatedPrograms
+
+// También ejecutar inmediatamente en caso de compilación IIFE
+if (typeof window !== 'undefined') {
+  initRelatedPrograms()
 }
