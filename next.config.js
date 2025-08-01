@@ -8,22 +8,22 @@ const nextConfig = {
     }
   },
   // Configuración para Webpack (fallback)
-  webpack: (config) => {
+  webpack: config => {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@library': './app/_library',
       '@styles': './styles'
     }
-    
+
     // Excluir esbuild del bundling para evitar conflictos
     config.externals = {
       ...config.externals,
-      'esbuild': 'esbuild'
+      esbuild: 'esbuild'
     }
-    
+
     return config
   },
-  
+
   // Configuración para evitar problemas con esbuild
   serverExternalPackages: ['esbuild']
 }

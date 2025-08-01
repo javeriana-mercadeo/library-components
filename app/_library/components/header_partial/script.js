@@ -21,7 +21,7 @@ function waitForGlobalUtils() {
       // Verificar solo las utilidades básicas necesarias
       if (
         typeof window !== 'undefined' &&
-        (window.__GLOBAL_UTILS_LOADED__ || (window.Logger && window.DOMHelpers && window.EventManager && window.TimingUtils))
+        (window.__GLOBAL_UTILS_LOADED__ || (window.Logger && window.DOMUtils && window.EventManager && window.TimingUtils))
       ) {
         resolve(true)
       } else if (attempts >= maxAttempts) {
@@ -51,8 +51,8 @@ function createFallbackUtils() {
     }
   }
 
-  if (!window.DOMHelpers) {
-    window.DOMHelpers = {
+  if (!window.DOMUtils) {
+    window.DOMUtils = {
       findElement: (selector, context = document) => context?.querySelector(selector) || null,
       findElements: (selector, context = document) => Array.from(context?.querySelectorAll(selector) || []),
       toggleClasses: (element, classes, force = null) => {
@@ -64,6 +64,13 @@ function createFallbackUtils() {
             element.classList.toggle(className, force)
           }
         })
+      },
+      isReady: callback => {
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', callback)
+        } else {
+          callback()
+        }
       }
     }
   }
@@ -88,7 +95,6 @@ function createFallbackUtils() {
   }
 
   window.__GLOBAL_UTILS_LOADED__ = true
-
 }
 
 // ███████████████████████████████████████████████████████████████████████████████
@@ -141,8 +147,6 @@ function initHeaderSystem() {
     return
   }
 
-
-
   // Usar patrón similar a otros scripts que funcionan
   const initWhenReady = () => {
     try {
@@ -152,14 +156,12 @@ function initHeaderSystem() {
           // Pequeño delay para React
           setTimeout(() => {
             AppSystem.init()
-
           }, 100)
         })
         .catch(() => {
           // Si falla, usar fallback (ya está configurado en waitForGlobalUtils)
           setTimeout(() => {
             AppSystem.init()
-
           }, 100)
         })
 
@@ -170,9 +172,9 @@ function initHeaderSystem() {
     }
   }
 
-  // Usar DOMHelpers si está disponible, sino usar fallback (patrón de experiencia)
-  if (typeof DOMHelpers !== 'undefined' && DOMHelpers.isReady) {
-    DOMHelpers.isReady(initWhenReady)
+  // Usar DOMUtils si está disponible, sino usar fallback
+  if (typeof DOMUtils !== 'undefined' && DOMUtils.isReady) {
+    DOMUtils.isReady(initWhenReady)
   } else {
     // Fallback simple - verificar que document existe
     if (typeof document !== 'undefined') {

@@ -75,7 +75,7 @@ function getUtilsInfo() {
     version: '3.0.0',
     modules: [
       'LogLevel',
-      'Logger', 
+      'Logger',
       'DOMUtils',
       'EventManager',
       'TimingUtils',

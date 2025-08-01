@@ -335,11 +335,8 @@ const DatosProgramaVideoSystem = {
 // AUTO-INICIALIZACIÓN
 // ===========================================
 export default () => {
-  const domReady = (typeof DOMUtils !== 'undefined' && DOMUtils.isReady) ? DOMUtils : 
-                   (typeof DOMHelpers !== 'undefined' && DOMHelpers.isReady) ? DOMHelpers : null
-  
-  if (domReady) {
-    domReady.isReady(async () => {
+  if (typeof DOMUtils !== 'undefined' && DOMUtils.isReady) {
+    DOMUtils.isReady(async () => {
       await DatosProgramaVideoSystem.init()
     })
   } else {

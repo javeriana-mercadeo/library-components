@@ -49,7 +49,6 @@ export const DOMUpdater = {
           element.textContent = value
         }
       }
-
     } catch (error) {
       Logger.error(`Error actualizando DOM para ${elementId}:`, error)
     }

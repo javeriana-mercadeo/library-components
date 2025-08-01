@@ -18,19 +18,19 @@ const MobileMenu = {
     }
 
     // Verificar que las utilidades globales estén disponibles
-    if (typeof window === 'undefined' || !window.DOMHelpers || !window.Logger || !window.EventManager) {
+    if (typeof window === 'undefined' || !window.DOMUtils || !window.Logger || !window.EventManager) {
       return false
     }
 
     // Buscar elementos del menú móvil
-    this.mobileMenu = DOMHelpers.findElement('#mobile-menu')
-    this.menuOverlay = DOMHelpers.findElement('#menu-overlay')
-    this.menuIcon = DOMHelpers.findElement('#menu-icon')
-    this.triggers = DOMHelpers.findElements('[data-menu-target="mobile-menu"]')
+    this.mobileMenu = DOMUtils.findElement('#mobile-menu')
+    this.menuOverlay = DOMUtils.findElement('#menu-overlay')
+    this.menuIcon = DOMUtils.findElement('#menu-icon')
+    this.triggers = DOMUtils.findElements('[data-menu-target="mobile-menu"]')
 
     // Fallback para el trigger si no usa data-attribute
     if (this.triggers.length === 0) {
-      const fallbackTrigger = DOMHelpers.findElement('#menu-toggle')
+      const fallbackTrigger = DOMUtils.findElement('#menu-toggle')
       if (fallbackTrigger) {
         this.triggers = [fallbackTrigger]
       }
@@ -103,7 +103,7 @@ const MobileMenu = {
   },
 
   setupLinkHandlers() {
-    const menuLinks = DOMHelpers.findElements('a', this.mobileMenu)
+    const menuLinks = DOMUtils.findElements('a', this.mobileMenu)
     menuLinks.forEach(link => {
       EventManager.add(link, 'click', () => {
         this.close()
@@ -113,18 +113,18 @@ const MobileMenu = {
 
   open() {
     // Aplicar 'show' inmediatamente
-    DOMHelpers.toggleClasses(this.mobileMenu, ['show'], true)
+    DOMUtils.toggleClasses(this.mobileMenu, ['show'], true)
 
     if (this.menuOverlay) {
-      DOMHelpers.toggleClasses(this.menuOverlay, ['active'], true)
+      DOMUtils.toggleClasses(this.menuOverlay, ['active'], true)
     }
 
     // Aplicar 'active' con delay para animación
     TimingUtils.delay(() => {
-      DOMHelpers.toggleClasses(this.mobileMenu, ['active'], true)
+      DOMUtils.toggleClasses(this.mobileMenu, ['active'], true)
 
       if (this.menuIcon) {
-        DOMHelpers.toggleClasses(this.menuIcon, ['active'], true)
+        DOMUtils.toggleClasses(this.menuIcon, ['active'], true)
       }
     }, 10)
   },
@@ -132,18 +132,18 @@ const MobileMenu = {
   close() {
     // Quitar clases del menú
     if (this.menuIcon) {
-      DOMHelpers.toggleClasses(this.menuIcon, ['active'], false)
+      DOMUtils.toggleClasses(this.menuIcon, ['active'], false)
     }
 
     // Quitar 'active' inmediatamente
-    DOMHelpers.toggleClasses(this.mobileMenu, ['active'], false)
+    DOMUtils.toggleClasses(this.mobileMenu, ['active'], false)
 
     // Quitar 'show' y overlay con delay para animación
     TimingUtils.delay(() => {
-      DOMHelpers.toggleClasses(this.mobileMenu, ['show'], false)
+      DOMUtils.toggleClasses(this.mobileMenu, ['show'], false)
 
       if (this.menuOverlay) {
-        DOMHelpers.toggleClasses(this.menuOverlay, ['active'], false)
+        DOMUtils.toggleClasses(this.menuOverlay, ['active'], false)
       }
     }, 300)
   },

@@ -15,8 +15,6 @@ const FAQAccordionSystem = {
   },
 
   init() {
-
-
     const faqItems = document.querySelectorAll(this.config.itemSelector)
 
     if (faqItems.length === 0) {
@@ -32,7 +30,6 @@ const FAQAccordionSystem = {
 
     // Configurar sub-preguntas
     this.setupSubQuestions()
-
 
     return true
   },
@@ -283,8 +280,6 @@ const FAQAccordionSystem = {
 // ===========================================
 const FAQSystem = {
   init() {
-
-
     const systems = {
       accordion: FAQAccordionSystem.init()
     }
@@ -292,7 +287,6 @@ const FAQSystem = {
     const activeSystems = Object.entries(systems)
       .filter(([_, isActive]) => isActive)
       .map(([name]) => name)
-
 
     return systems
   }

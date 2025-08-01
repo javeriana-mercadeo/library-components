@@ -211,8 +211,6 @@ const AccordionSystem = {
 // ===========================================
 const DiferencialesSystem = {
   init() {
-
-
     const systems = {
       accordion: AccordionSystem.init()
     }
@@ -220,7 +218,6 @@ const DiferencialesSystem = {
     const activeSystems = Object.entries(systems)
       .filter(([_, isActive]) => isActive)
       .map(([name]) => name)
-
 
     return systems
   }
@@ -230,11 +227,8 @@ const DiferencialesSystem = {
 // AUTO-INICIALIZACIÓN
 // ===========================================
 export default () => {
-  const domReady = (typeof DOMUtils !== 'undefined' && DOMUtils.isReady) ? DOMUtils : 
-                   (typeof DOMHelpers !== 'undefined' && DOMHelpers.isReady) ? DOMHelpers : null
-  
-  if (domReady) {
-    domReady.isReady(() => {
+  if (typeof DOMUtils !== 'undefined' && DOMUtils.isReady) {
+    DOMUtils.isReady(() => {
       DiferencialesSystem.init()
     })
   } else {

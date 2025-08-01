@@ -11,25 +11,24 @@ const getUtilities = () => {
         required: value => value != null && value.toString().trim().length > 0,
         email: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
       },
-    DOMUtils: (typeof window !== 'undefined' && window.DOMUtils) ||
-      window.DOMHelpers || {
-        findElements: (selector, context = document) => Array.from((context || document).querySelectorAll(selector)),
-        findElement: (selector, context = document) => (context || document).querySelector(selector),
-        addClass: (el, className) => el && el.classList.add(className),
-        removeClass: (el, className) => el && el.classList.remove(className),
-        createElement: (tag, options = {}) => {
-          const el = document.createElement(tag)
-          if (options.className) el.className = options.className
-          if (options.content) el.textContent = options.content
-          if (options.attributes) {
-            Object.entries(options.attributes).forEach(([key, value]) => el.setAttribute(key, value))
-          }
-          return el
-        },
-        findParent: (el, selector) => el && el.closest(selector),
-        remove: el => el && el.remove(),
-        scrollTo: (el, options) => el && el.scrollIntoView(options)
+    DOMUtils: (typeof window !== 'undefined' && window.DOMUtils) || {
+      findElements: (selector, context = document) => Array.from((context || document).querySelectorAll(selector)),
+      findElement: (selector, context = document) => (context || document).querySelector(selector),
+      addClass: (el, className) => el && el.classList.add(className),
+      removeClass: (el, className) => el && el.classList.remove(className),
+      createElement: (tag, options = {}) => {
+        const el = document.createElement(tag)
+        if (options.className) el.className = options.className
+        if (options.content) el.textContent = options.content
+        if (options.attributes) {
+          Object.entries(options.attributes).forEach(([key, value]) => el.setAttribute(key, value))
+        }
+        return el
       },
+      findParent: (el, selector) => el && el.closest(selector),
+      remove: el => el && el.remove(),
+      scrollTo: (el, options) => el && el.scrollIntoView(options)
+    },
     EventManager: (typeof window !== 'undefined' && window.EventManager) || {
       add: (el, event, handler) => el && el.addEventListener(event, handler),
       removeByElement: el => console.log('EventManager.removeByElement not available')

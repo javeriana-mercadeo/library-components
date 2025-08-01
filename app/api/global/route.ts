@@ -60,53 +60,53 @@ async function fetchExternalLibrary(url: string): Promise<string> {
 
 // 📌 ALMACÉN GLOBAL PARA EVITAR DUPLICADOS
 interface ImportedModule {
-  content: string;
-  exports: string[];
-  path: string;
+  content: string
+  exports: string[]
+  path: string
 }
 
-const globalModuleCache = new Map<string, ImportedModule>();
-const globalExports = new Set<string>();
+const globalModuleCache = new Map<string, ImportedModule>()
+const globalExports = new Set<string>()
 
 // 📌 FUNCIÓN PARA EXTRAER EXPORTS DE UN ARCHIVO
 function extractExports(content: string): string[] {
-  const exports: string[] = [];
-  const lines = content.split('\n');
-  
+  const exports: string[] = []
+  const lines = content.split('\n')
+
   for (const line of lines) {
-    const trimmed = line.trim();
-    
+    const trimmed = line.trim()
+
     // export const/let/var NAME
-    const constMatch = trimmed.match(/^export\s+(const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/);
+    const constMatch = trimmed.match(/^export\s+(const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/)
     if (constMatch) {
-      exports.push(constMatch[2]);
-      continue;
+      exports.push(constMatch[2])
+      continue
     }
-    
+
     // export function NAME
-    const funcMatch = trimmed.match(/^export\s+function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/);
+    const funcMatch = trimmed.match(/^export\s+function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/)
     if (funcMatch) {
-      exports.push(funcMatch[1]);
-      continue;
+      exports.push(funcMatch[1])
+      continue
     }
-    
+
     // export class NAME
-    const classMatch = trimmed.match(/^export\s+class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/);
+    const classMatch = trimmed.match(/^export\s+class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/)
     if (classMatch) {
-      exports.push(classMatch[1]);
-      continue;
+      exports.push(classMatch[1])
+      continue
     }
-    
+
     // export { name1, name2 }
-    const namedMatch = trimmed.match(/^export\s*\{\s*([^}]+)\s*\}/);
+    const namedMatch = trimmed.match(/^export\s*\{\s*([^}]+)\s*\}/)
     if (namedMatch) {
-      const names = namedMatch[1].split(',').map(n => n.trim().split(' as ')[0].trim());
-      exports.push(...names);
-      continue;
+      const names = namedMatch[1].split(',').map(n => n.trim().split(' as ')[0].trim())
+      exports.push(...names)
+      continue
     }
   }
-  
-  return exports;
+
+  return exports
 }
 
 // 📌 FUNCIÓN PARA RESOLVER IMPORTS DE JAVASCRIPT CON DEDUPLICACIÓN
@@ -201,7 +201,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
       if (globalModuleCache.has(normalizedPath)) {
         console.log(`♻️ Módulo ya procesado, reutilizando: ${normalizedPath}`)
         const cached = globalModuleCache.get(normalizedPath)!
-        
+
         // Solo agregar referencia, no duplicar contenido
         importedContents.push(`\n// ===== REFERENCIA A: ${importPath} =====`)
         importedContents.push(`// Ya procesado: ${cached.exports.join(', ')}`)
@@ -224,7 +224,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
       // Verificar conflictos de nombres
       const conflicts = moduleExports.filter(exp => globalExports.has(exp))
       let processedContent = resolvedImported
-      
+
       if (conflicts.length > 0) {
         console.warn(`⚠️ Conflictos de nombres detectados: ${conflicts.join(', ')} en ${importPath}`)
         // Renombrar conflictos agregando sufijo
@@ -233,12 +233,12 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
           console.log(`🔄 Renombrando ${conflict} -> ${newName}`)
           return content.replace(new RegExp(`\\b${conflict}\\b`, 'g'), newName)
         }, processedContent)
-        
+
         // Actualizar exports
-        const updatedExports = moduleExports.map(exp => 
+        const updatedExports = moduleExports.map(exp =>
           conflicts.includes(exp) ? `${exp}_${path.basename(importPath, path.extname(importPath))}` : exp
         )
-        
+
         moduleExports.splice(0, moduleExports.length, ...updatedExports)
       }
 
@@ -272,11 +272,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
   const mainContent = cleanJavaScriptImports(jsContent)
 
   // Combinar todo SIN el helper duplicado
-  const combined = [
-    ...importedContents, 
-    '\n// ===== CÓDIGO PRINCIPAL =====', 
-    mainContent
-  ].join('\n')
+  const combined = [...importedContents, '\n// ===== CÓDIGO PRINCIPAL =====', mainContent].join('\n')
 
   console.log(`✅ JavaScript resuelto con deduplicación: ${combined.length} caracteres`)
   console.log(`📊 Módulos únicos procesados: ${globalModuleCache.size}`)
@@ -313,7 +309,7 @@ function cleanJavaScriptExports(content: string): string {
   console.log(`🧹 Limpiando exports de contenido (${content.length} chars)`)
 
   // Primero manejar exports multi-línea con llaves
-  let cleanedContent = content.replace(/export\s*\{[\s\S]*?\}/g, (match) => {
+  let cleanedContent = content.replace(/export\s*\{[\s\S]*?\}/g, match => {
     console.log(`🗑️ Removiendo export multi-línea: ${match.replace(/\n/g, '\\n')}`)
     return '// ' + match.replace(/\n/g, '\n// ')
   })
@@ -370,12 +366,14 @@ function cleanJavaScriptExports(content: string): string {
     }
 
     // Eliminar líneas de export restantes (que no tengan function, const, let, var, class)
-    if (trimmed.startsWith('export ') && 
-        !trimmed.includes('function') &&
-        !trimmed.includes('const') &&
-        !trimmed.includes('let') &&
-        !trimmed.includes('var') &&
-        !trimmed.includes('class')) {
+    if (
+      trimmed.startsWith('export ') &&
+      !trimmed.includes('function') &&
+      !trimmed.includes('const') &&
+      !trimmed.includes('let') &&
+      !trimmed.includes('var') &&
+      !trimmed.includes('class')
+    ) {
       console.log(`🗑️ Removiendo export simple: ${trimmed}`)
       return '// ' + line
     }
@@ -390,9 +388,9 @@ function cleanJavaScriptExports(content: string): string {
 
 // 📌 FUNCIÓN PARA LIMPIAR CACHE GLOBAL
 function clearGlobalCache() {
-  globalModuleCache.clear();
-  globalExports.clear();
-  console.log('🧹 Cache global limpiado');
+  globalModuleCache.clear()
+  globalExports.clear()
+  console.log('🧹 Cache global limpiado')
 }
 
 async function compileJavaScript(jsContent: string, jsPath: string): Promise<string> {
@@ -402,7 +400,7 @@ async function compileJavaScript(jsContent: string, jsPath: string): Promise<str
     console.log(`📄 Contenido inicial: ${jsContent ? jsContent.length : 0} caracteres`)
 
     // Limpiar cache al inicio de cada compilación
-    clearGlobalCache();
+    clearGlobalCache()
 
     // Obtener librerías externas
     console.log('📥 Descargando librerías externas...')
@@ -480,7 +478,7 @@ if (typeof window !== 'undefined') {
     console.log('✨ Utilidades globales inicializadas:', Object.keys(utils));
   }, 100);
 }
-`;
+`
 
     const combinedJS = [
       '// ===== LIBRERÍAS EXTERNAS =====',

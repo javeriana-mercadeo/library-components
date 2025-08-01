@@ -115,17 +115,45 @@ export default () => {
       // Extraer campos
       const { facultad, programa, snies, codPrograma, urlImagen, area, url } = dataProgram
 
-
       let automationUpdates = {}
 
+      // Actualizar elementos si hay facultad disponible
       if (facultad) {
-        DOMUpdater.updateElementsText('data-puj-faculty', DataFormatter.formatProgramName(facultad))
+        const facultyElements = document.querySelectorAll('[data-puj-faculty]')
+        const formattedFaculty = this.formatProgramName(facultad)
+        facultyElements.forEach(el => {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.value = formattedFaculty
+          } else {
+            el.textContent = formattedFaculty
+          }
+        })
         automationUpdates.faculty = true
       }
 
       if (allPrograms && Array.isArray(allPrograms) && allPrograms.length > 0) {
         this.generateRelatedCarousel(dataProgram, allPrograms)
       }
+    },
+
+    /**
+     * Formatear nombre de programa de forma local
+     */
+    formatProgramName(programName) {
+      if (!programName || typeof programName !== 'string') {
+        return programName || ''
+      }
+
+      // Formateo básico: capitalizar primera letra de cada palabra, conectores en minúscula
+      return programName
+        .toLowerCase()
+        .replace(/(?:^|\s)([a-záéíóúüñ])/g, (match, letter) => {
+          return match.replace(letter, letter.toUpperCase())
+        })
+        .replace(
+          /\b(de|del|al|y|e|con|en|por|para|sin|sobre|bajo|entre|hacia|hasta|desde|durante|mediante|ante|tras|según|como|a|que|cual|donde|cuando)\b/g,
+          match => match.toLowerCase()
+        )
     },
 
     generateRelatedCarousel(currentProgram, allPrograms) {
@@ -214,7 +242,6 @@ export default () => {
       }
 
       let compiledPrograms = compileOrderedPrograms(currentProgram, allPrograms)
-
 
       const relatedPrograms = document.getElementById('relatedPrograms')
 

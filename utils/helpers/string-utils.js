@@ -11,7 +11,10 @@ const StringUtils = {
 
   capitalizeWords(str) {
     if (!str) return ''
-    return str.replace(/\b\w/g, char => char.toUpperCase())
+    // Soporte para caracteres acentuados en español
+    return str.toLowerCase().replace(/(?:^|\s)([a-záéíóúüñ])/g, (match, letter) => {
+      return match.replace(letter, letter.toUpperCase())
+    })
   },
 
   camelCase(str) {
@@ -322,6 +325,14 @@ const StringUtils = {
     return template.replace(/{(\d+)}/g, (match, index) => {
       return typeof args[index] !== 'undefined' ? args[index] : match
     })
+  },
+
+  isEmpty(str) {
+    return !str || str.toString().trim().length === 0
+  },
+
+  trim(str) {
+    return str ? str.toString().trim() : ''
   }
 }
 

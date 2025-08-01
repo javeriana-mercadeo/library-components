@@ -21,9 +21,14 @@ export const CONFIG = {
 // Estado global compartido
 export let statusPage = {}
 
+// Hacer statusPage disponible globalmente para compatibilidad
+if (typeof window !== 'undefined') window.statusPage = statusPage
+
 // Funciones de utilidad para el estado
-export const updateStatus = (updates) => {
+export const updateStatus = updates => {
   statusPage = DataUtils.deepMerge(statusPage, updates)
+  // Sincronizar con window.statusPage
+  if (typeof window !== 'undefined') window.statusPage = statusPage
 }
 
 export const dispatchEvent = (eventName, detail) => {
@@ -37,7 +42,7 @@ export const updateDisplay = (text, isError = false) => {
     displayElement.textContent = text
     displayElement.style.color = isError ? '#dc3545' : '#28a745'
   }
-  
+
   if (isError) {
     Logger.error(`Display: ${text}`)
   } else {

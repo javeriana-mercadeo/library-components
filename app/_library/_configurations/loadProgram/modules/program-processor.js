@@ -106,7 +106,7 @@ export const ProgramDataProcessor = {
 // FUNCIÓN PRINCIPAL DE CARGA
 // ===========================================
 
-export const loadDataProgram = async (codPrg) => {
+export const loadDataProgram = async codPrg => {
   const startTime = performance.now()
 
   try {
@@ -117,11 +117,7 @@ export const loadDataProgram = async (codPrg) => {
     })
 
     // Realizar todas las llamadas en paralelo con manejo de errores robusto
-    const [programData, allPrograms, whatsApps] = await Promise.all([
-      fetchProgramData(codPrg),
-      fetchAllPrograms(),
-      fetchWhatsApps()
-    ])
+    const [programData, allPrograms, whatsApps] = await Promise.all([fetchProgramData(codPrg), fetchAllPrograms(), fetchWhatsApps()])
 
     const consolidatedData = processData(programData, allPrograms, codPrg)
     const loadTime = performance.now() - startTime

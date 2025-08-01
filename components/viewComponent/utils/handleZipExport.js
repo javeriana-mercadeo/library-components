@@ -2,12 +2,12 @@ import html2canvas from 'html2canvas'
 import JSZip from 'jszip'
 
 const handleZipExport = async (info, htmlFormat, cssFormat, jsFormat, configFormat, previewRef) => {
-  console.log('🔍 Debug ZIP Export:', { 
-    info, 
-    htmlLength: htmlFormat?.length || 0, 
-    cssLength: cssFormat?.length || 0, 
-    jsLength: jsFormat?.length || 0, 
-    configLength: configFormat?.length || 0 
+  console.log('🔍 Debug ZIP Export:', {
+    info,
+    htmlLength: htmlFormat?.length || 0,
+    cssLength: cssFormat?.length || 0,
+    jsLength: jsFormat?.length || 0,
+    configLength: configFormat?.length || 0
   })
 
   const zip = new JSZip()
@@ -30,21 +30,21 @@ const handleZipExport = async (info, htmlFormat, cssFormat, jsFormat, configForm
     // Agregar archivos solo si tienen contenido
     assetsFolder.file('thumbnail.png', blob)
     console.log('✅ Added thumbnail.png')
-    
+
     if (htmlFormat && htmlFormat.trim()) {
       assetsFolder.file('index.html', htmlFormat)
       console.log('✅ Added index.html:', htmlFormat.length, 'characters')
     } else {
       console.log('❌ No HTML content to add')
     }
-    
+
     if (cssFormat && cssFormat.trim()) {
       assetsFolder.file('index.css', cssFormat)
       console.log('✅ Added index.css:', cssFormat.length, 'characters')
     } else {
       console.log('❌ No CSS content to add')
     }
-    
+
     if (jsFormat && jsFormat.trim()) {
       assetsFolder.file('index.js', jsFormat)
       console.log('✅ Added index.js:', jsFormat.length, 'characters')
@@ -53,13 +53,11 @@ const handleZipExport = async (info, htmlFormat, cssFormat, jsFormat, configForm
     }
 
     // Usar configuration.json si existe, sino crear uno vacío
-    const configContent = configFormat && configFormat.trim() 
-      ? configFormat 
-      : JSON.stringify({ fieldSets: [] }, null, 2)
-    
+    const configContent = configFormat && configFormat.trim() ? configFormat : JSON.stringify({ fieldSets: [] }, null, 2)
+
     assetsFolder.file('configuration.json', configContent)
     console.log('✅ Added configuration.json:', configContent.length, 'characters')
-    
+
     // Crear fragment.json con las rutas correctas
     const fragmentConfig = {
       name: info.name || 'component',
@@ -72,11 +70,11 @@ const handleZipExport = async (info, htmlFormat, cssFormat, jsFormat, configForm
     if (htmlFormat && htmlFormat.trim()) {
       fragmentConfig.htmlPath = 'index.html'
     }
-    
+
     if (cssFormat && cssFormat.trim()) {
       fragmentConfig.cssPath = 'index.css'
     }
-    
+
     if (jsFormat && jsFormat.trim()) {
       fragmentConfig.jsPath = 'index.js'
     }

@@ -230,14 +230,27 @@ export default () => {
   }
 
   const checkAndInit = () => {
-    if (typeof window !== 'undefined' && window.Swiper) {
-      initializeSwiper()
+    // Verificar que Swiper esté disponible Y que el DOM esté listo
+    if (typeof window !== 'undefined' && window.Swiper && document.readyState === 'complete') {
+      // Verificar que el elemento exista antes de inicializar
+      const element = document.querySelector('.plan-estudio_wrapper') || document.querySelector('.subjects-swiper')
+      if (element) {
+        initializeSwiper()
+      } else {
+        // Si no existe el elemento, intentar de nuevo en 500ms
+        setTimeout(checkAndInit, 500)
+      }
     } else {
       setTimeout(checkAndInit, 300)
     }
   }
 
-  checkAndInit()
+  // Esperar a que el DOM esté completamente cargado
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkAndInit)
+  } else {
+    checkAndInit()
+  }
 
   let resizeTimeout
   window.addEventListener('resize', () => {

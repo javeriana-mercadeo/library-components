@@ -11,7 +11,14 @@ const getGlobalUtils = () => {
     return {
       StringUtils: {
         removeAccents: str => str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '',
-        slugify: str => str?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/[\s-]+/g, '-') || ''
+        slugify: str =>
+          str
+            ?.toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s-]/g, '')
+            .trim()
+            .replace(/[\s-]+/g, '-') || ''
       }
     }
   }
@@ -20,7 +27,14 @@ const getGlobalUtils = () => {
   return {
     StringUtils: window.StringUtils || {
       removeAccents: str => str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '',
-      slugify: str => str?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/[\s-]+/g, '-') || ''
+      slugify: str =>
+        str
+          ?.toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9\s-]/g, '')
+          .trim()
+          .replace(/[\s-]+/g, '-') || ''
     }
   }
 }
@@ -107,7 +121,7 @@ try {
     if (facultad && currentFaculty === 'default') {
       // Aplicar normalización de facultad antes del procesamiento
       const normalizedFaculty = normalizeFacultyName(facultad)
-      
+
       // Usar StringUtils para crear slug de forma más eficiente
       const facultySlug = StringUtils.slugify(normalizedFaculty)
 

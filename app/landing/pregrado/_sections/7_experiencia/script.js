@@ -26,8 +26,6 @@ export default () => {
       return
     }
 
-
-
     // Usar el selector correcto
     const swiperSelector = element ? '.experience-carousel__wrapper.experience-swiper' : '.experience-swiper'
 
@@ -80,7 +78,6 @@ export default () => {
 
         on: {
           init: function (swiper) {
-
             setTimeout(() => {
               loadVideos()
             }, 100)
@@ -98,7 +95,6 @@ export default () => {
   // Sistema de carga de videos
   const loadVideos = () => {
     const videoContainers = document.querySelectorAll('.experience-carousel__video-container[data-video-id]')
-
 
     videoContainers.forEach((container, index) => {
       const videoId = container.getAttribute('data-video-id')
@@ -133,20 +129,15 @@ export default () => {
         iframe.style.opacity = '1'
         iframe.classList.add('loaded')
         container.classList.add('video-loaded')
-
       })
 
-      iframe.addEventListener('error', () => {
-
-      })
+      iframe.addEventListener('error', () => {})
 
       container.innerHTML = ''
       container.appendChild(iframe)
 
       // Agregar botón de mute solo en desktop
       createMuteButton(container, iframe, videoId)
-
-
     })
   }
 
@@ -175,7 +166,6 @@ export default () => {
           iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*')
           isMuted = false
           muteButton.classList.remove('muted')
-
         } else {
           // Silenciar
           iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*')
@@ -191,7 +181,6 @@ export default () => {
     })
 
     container.appendChild(muteButton)
-
   }
 
   // Función para actualizar el ícono del botón de mute

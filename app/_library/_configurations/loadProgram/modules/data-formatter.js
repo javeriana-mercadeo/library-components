@@ -25,10 +25,10 @@ export const FacultyNormalizer = {
 
 // Sistema principal de formateo
 export const DataFormatter = {
-  // Cache para números convertidos - usando Map nativo optimizado
+  // Cache para números convertidos
   _numberWordsCache: new Map(),
 
-  // Diccionarios optimizados (solo hasta 20 para casos comunes)
+  // Diccionarios para conversión de números a palabras
   _numberDictionary: {
     units: [
       '',
@@ -65,15 +65,6 @@ export const DataFormatter = {
       'ochocientos',
       'novecientos'
     ]
-  },
-
-  capitalizeFirst(str) {
-    return StringUtils.capitalize(str)
-  },
-
-  cleanDate(dateStr) {
-    if (!dateStr) return dateStr
-    return StringUtils.replace(dateStr, '.', '').trim()
   },
 
   numberToWords(number) {
@@ -164,51 +155,78 @@ export const DataFormatter = {
   },
 
   clearUpperUnions(title) {
-    const connectorsMap = {
-      En: 'en',
-      La: 'la',
-      Los: 'los',
-      Las: 'las',
-      El: 'el',
-      Y: 'y',
-      E: 'e',
-      O: 'o',
-      Para: 'para',
-      De: 'de',
-      Del: 'del',
-      Al: 'al',
-      Desde: 'desde',
-      Como: 'como',
-      Con: 'con',
-      Sin: 'sin',
-      Por: 'por',
-      Sobre: 'sobre',
-      Bajo: 'bajo',
-      Entre: 'entre',
-      Hacia: 'hacia',
-      Hasta: 'hasta',
-      Según: 'según',
-      Durante: 'durante',
-      Mediante: 'mediante',
-      Ante: 'ante',
-      Tras: 'tras',
-      Él: 'el',
-      UN: 'un',
-      UNA: 'una',
-      UNOS: 'unos',
-      UNAS: 'unas'
-    }
+    // Conectores que deben ir en minúsculas (excepto al inicio)
+    const connectors = [
+      // Artículos
+      'el',
+      'la',
+      'los',
+      'las',
+      'un',
+      'una',
+      'unos',
+      'unas',
+      // Preposiciones
+      'de',
+      'del',
+      'al',
+      'en',
+      'con',
+      'por',
+      'para',
+      'sin',
+      'sobre',
+      'bajo',
+      'entre',
+      'hacia',
+      'hasta',
+      'desde',
+      'durante',
+      'mediante',
+      'ante',
+      'tras',
+      'según',
+      'como',
+      'a',
+      // Conjunciones
+      'y',
+      'e',
+      'o',
+      'u',
+      'pero',
+      'mas',
+      'sino',
+      'aunque',
+      // Otros conectores
+      'que',
+      'cual',
+      'donde',
+      'cuando'
+    ]
 
     let result = title
-    for (const [upperCase, lowerCase] of Object.entries(connectorsMap)) {
-      const regex = new RegExp(` ${upperCase} `, 'g')
-      result = result.replace(regex, ` ${lowerCase} `)
-    }
+
+    // Aplicar minúsculas a conectores que no estén al inicio
+    connectors.forEach(connector => {
+      const regex = new RegExp(`\\b${connector}\\b`, 'gi')
+      result = result.replace(regex, (match, offset) => {
+        // No cambiar si está al inicio de la cadena
+        return offset === 0 ? match : connector
+      })
+    })
+
     return result
   },
 
   capitalizeWords(str) {
-    return StringUtils.capitalizeWords(str)
+    if (typeof StringUtils !== 'undefined' && StringUtils.capitalizeWords) {
+      return StringUtils.capitalizeWords(str)
+    }
+
+    // Fallback con soporte para acentos españoles
+    return str.toLowerCase().replace(/(?:^|\s)([a-záéíóúüñ])/g, (match, letter) => {
+      return match.replace(letter, letter.toUpperCase())
+    })
   },
 
   formatProgramName(programName) {
@@ -217,12 +235,19 @@ export const DataFormatter = {
     }
 
     try {
-      const trimmed = StringUtils.trim(programName)
+      // Usar StringUtils.trim si está disponible, sino trim nativo
+      const trimmed = typeof StringUtils !== 'undefined' && StringUtils.trim ? StringUtils.trim(programName) : programName.trim()
+
       const capitalized = this.capitalizeWords(trimmed)
       const formatted = this.clearUpperUnions(capitalized)
       return formatted
     } catch (error) {
-      Logger.warning('Error formateando nombre de programa:', error)
+      // Usar Logger si está disponible, sino console
+      if (typeof Logger !== 'undefined' && Logger.warning) {
+        Logger.warning('Error formateando nombre de programa:', error)
+      } else {
+        console.warn('Error formateando nombre de programa:', error)
+      }
       return programName
     }
   },

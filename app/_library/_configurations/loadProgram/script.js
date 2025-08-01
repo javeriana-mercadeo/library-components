@@ -19,26 +19,39 @@ const initializeLoader = async () => {
     // Inicializar cliente API
     initializeApiClient()
 
-    // Validar código de programa
-    if (!codProgram || StringUtils.isEmpty(codProgram.toString().trim())) {
-      throw new Error('Código de programa no definido o vacío')
+    // Verificar disponibilidad de utilidades
+    if (typeof StringUtils === 'undefined' || !StringUtils) {
+      throw new Error('StringUtils no está disponible. Verificar carga de utilidades globales.')
     }
+
+    // Validar código de programa
+    const isEmptyCode = StringUtils.isEmpty
+      ? StringUtils.isEmpty(codProgram?.toString()?.trim())
+      : !codProgram || codProgram.toString().trim().length === 0
+
+    if (!codProgram || isEmptyCode) throw new Error('Código de programa no definido o vacío')
 
     // Validar que sea un código válido (números y letras)
-    if (!StringUtils.isAlphanumeric(codProgram.toString().replace(/[-_]/g, ''))) {
-      throw new Error(`Código de programa inválido: ${codProgram}`)
-    }
+    const cleanCode = codProgram.toString().replace(/[-_]/g, '')
+    const isValidCode = StringUtils.isAlphanumeric ? StringUtils.isAlphanumeric(cleanCode) : /^[a-zA-Z0-9]+$/.test(cleanCode)
+    if (!isValidCode) throw new Error(`Código de programa inválido: ${codProgram}`)
 
     updateDisplay(`Código de programa: ${codProgram}`)
-
-    // Cargar datos del programa
     await loadDataProgram(codProgram)
   } catch (error) {
-    Logger.error('💥 Error al inicializar cargador:', error)
+    // Usar Logger si está disponible, sino console
+    if (typeof Logger !== 'undefined' && Logger.error) {
+      Logger.error('💥 Error al inicializar cargador:', error)
+    } else {
+      console.error('💥 Error al inicializar cargador:', error)
+    }
+
     updateDisplay(`Error: ${error.message}`, true)
 
-    // Limpiar cache en caso de error
-    DOMUpdater.clearCache()
+    // Limpiar cache en caso de error si DOMUpdater está disponible
+    if (typeof DOMUpdater !== 'undefined' && DOMUpdater.clearCache) {
+      DOMUpdater.clearCache()
+    }
   }
 }
 

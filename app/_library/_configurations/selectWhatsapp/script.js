@@ -4,7 +4,14 @@ const whatsAppConfig = configuration
 // Obtener utilidades globales
 const StringUtils = window.StringUtils || {
   removeAccents: str => str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '',
-  slugify: str => str?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/[\s-]+/g, '-') || ''
+  slugify: str =>
+    str
+      ?.toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/[\s-]+/g, '-') || ''
 }
 
 try {
@@ -48,7 +55,7 @@ try {
     if (faculty === 'default' && dataProgram.facultad) {
       // Aplicar normalización de facultad antes del procesamiento
       const normalizedFaculty = normalizeFacultyName(dataProgram.facultad)
-      
+
       // Usar StringUtils para crear slug de forma más eficiente
       finalFaculty = StringUtils.slugify(normalizedFaculty)
     }

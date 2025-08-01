@@ -152,7 +152,8 @@ const globalUtilsPlugin = {
 // 📌 FUNCIÓN PARA VERIFICAR SI NECESITA RECOMPILACIÓN
 async function needsRecompilation(componentPath: string): Promise<boolean> {
   try {
-    const compilationInfoPath = path.join(componentPath, COMPILATION_INFO_FILE)
+    const buildPath = path.join(componentPath, 'build')
+    const compilationInfoPath = path.join(buildPath, COMPILATION_INFO_FILE)
     const scssPath = path.join(componentPath, SCSS_FILE)
     const jsPath = path.join(componentPath, JS_FILE)
 
@@ -183,11 +184,12 @@ async function needsRecompilation(componentPath: string): Promise<boolean> {
   }
 }
 
-// 📌 FUNCIÓN PARA CARGAR ARCHIVOS COMPILADOS EXISTENTES
+// 📌 FUNCIÓN PARA CARGAR ARCHIVOS COMPILADOS EXISTENTES DESDE CARPETA BUILD
 async function loadCompiledFiles(componentPath: string): Promise<{ css: string; js: string } | null> {
   try {
-    const cssPath = path.join(componentPath, COMPILED_CSS_FILE)
-    const jsPath = path.join(componentPath, COMPILED_JS_FILE)
+    const buildPath = path.join(componentPath, 'build')
+    const cssPath = path.join(buildPath, COMPILED_CSS_FILE)
+    const jsPath = path.join(buildPath, COMPILED_JS_FILE)
 
     const [css, js] = await Promise.all([fs.readFile(cssPath, 'utf8').catch(() => ''), fs.readFile(jsPath, 'utf8').catch(() => '')])
 
@@ -201,31 +203,82 @@ async function loadCompiledFiles(componentPath: string): Promise<{ css: string; 
   }
 }
 
-// 📌 FUNCIÓN PARA GUARDAR ARCHIVOS COMPILADOS
+// 📌 FUNCIÓN PARA GUARDAR ARCHIVOS COMPILADOS (SIN CARPETA BUILD)
 async function saveCompiledFiles(componentPath: string, css: string, js: string): Promise<void> {
   try {
-    const cssPath = path.join(componentPath, COMPILED_CSS_FILE)
-    const jsPath = path.join(componentPath, COMPILED_JS_FILE)
-    const infoPath = path.join(componentPath, COMPILATION_INFO_FILE)
+    // Verificar si hay contenido para guardar
+    const hasCSS = css && css.trim().length > 0 && !css.includes('No se encontró archivo SCSS')
+    const hasJS = js && js.trim().length > 0 && !js.includes('No se encontró archivo JavaScript')
+
+    if (!hasCSS && !hasJS) {
+      console.log(`⚠️ [BUILD-MODULES] No hay contenido para guardar, saltando creación de archivos`)
+      return
+    }
+
+    const buildPath = path.join(componentPath, 'build')
+
+    console.log(`🔨 [BUILD-MODULES] Guardando en directorio: ${buildPath}`)
+
+    // Crear carpeta si no existe
+    await fs.mkdir(buildPath, { recursive: true })
+
+    const cssPath = path.join(buildPath, COMPILED_CSS_FILE)
+    const jsPath = path.join(buildPath, COMPILED_JS_FILE)
+    const infoPath = path.join(buildPath, COMPILATION_INFO_FILE)
+
+    console.log(`📝 [BUILD-MODULES] Guardando archivos compilados`)
 
     // Información de compilación
     const compilationInfo = {
       timestamp: new Date().toISOString(),
-      cssSize: css.length,
-      jsSize: js.length,
+      cssSize: hasCSS ? css.length : 0,
+      jsSize: hasJS ? js.length : 0,
       version: '1.0.0',
-      method: 'esbuild'
+      method: 'esbuild',
+      files: {
+        css: hasCSS,
+        js: hasJS
+      }
     }
 
+    // Preparar array de promesas solo para archivos con contenido
+    const writePromises = []
+
+    if (hasCSS) {
+      writePromises.push(fs.writeFile(cssPath, css, 'utf8'))
+      console.log(`  ✅ Guardando CSS: ${COMPILED_CSS_FILE}`)
+    } else {
+      console.log(`  ⚠️ Saltando CSS vacío`)
+    }
+
+    if (hasJS) {
+      writePromises.push(fs.writeFile(jsPath, js, 'utf8'))
+      console.log(`  ✅ Guardando JS: ${COMPILED_JS_FILE}`)
+    } else {
+      console.log(`  ⚠️ Saltando JS vacío`)
+    }
+
+    // Siempre guardar info si hay al menos un archivo
+    writePromises.push(fs.writeFile(infoPath, JSON.stringify(compilationInfo, null, 2), 'utf8'))
+
     // Guardar archivos en paralelo
-    await Promise.all([
-      fs.writeFile(cssPath, css, 'utf8'),
-      fs.writeFile(jsPath, js, 'utf8'),
-      fs.writeFile(infoPath, JSON.stringify(compilationInfo, null, 2), 'utf8')
-    ])
-  } catch {
+    await Promise.all(writePromises)
+
+    console.log(`✅ [BUILD-MODULES] Archivos guardados exitosamente en: ${buildPath}`)
+  } catch (error) {
+    console.error(`❌ [BUILD-MODULES] Error guardando archivos:`, error)
     // No lanzar error, continuar con la respuesta
   }
+}
+
+// 📌 FUNCIÓN PARA LIMPIAR Y NORMALIZAR PATH
+function cleanPath(inputPath: string): string {
+  // Decodificar URL primero
+  const decoded = decodeURIComponent(inputPath)
+  return decoded
+    .replace(/\/+/g, '/') // Reemplazar múltiples barras por una sola
+    .replace(/^\//, '') // Remover barra inicial
+    .replace(/\/$/, '') // Remover barra final
 }
 
 // 📌 ENDPOINT PRINCIPAL DE COMPILACIÓN CON ESBUILD
@@ -236,10 +289,13 @@ export async function GET(req: NextRequest) {
   const forceRecompile = url.searchParams.get('force') === 'true'
   const specificPath = url.searchParams.get('path') // Para componentes individuales
 
-  // Si se especifica un path, usar ese; si no, usar el path global
-  const componentPath = specificPath 
-    ? path.join(process.cwd(), specificPath)
-    : path.join(process.cwd(), COMPONENT_PATH)
+  // Si se especifica un path, limpiar y usar ese; si no, usar el path global
+  const componentPath = specificPath ? path.join(process.cwd(), 'app', cleanPath(specificPath)) : path.join(process.cwd(), COMPONENT_PATH)
+
+  // Debug logging (opcional - comentar en producción)
+  // console.log(`🔍 [BUILD-MODULES] Raw path: ${specificPath}`)
+  // console.log(`🔍 [BUILD-MODULES] Clean path: ${specificPath ? cleanPath(specificPath) : 'N/A'}`)
+  // console.log(`🔍 [BUILD-MODULES] Component path: ${componentPath}`)
 
   try {
     // 📌 Verificar si necesita recompilación (a menos que se fuerce)
@@ -359,17 +415,18 @@ export async function GET(req: NextRequest) {
             entryPoints: [jsPath],
             bundle: true,
             write: false,
-            format: 'iife',
-            target: 'es2020',
+            format: 'esm', // Cambiado de 'iife' a 'esm'
+            target: 'esnext', // Cambio de 'es2022' a 'esnext' para preservar const/let
             platform: 'browser',
             minify: false, // Para debugging en desarrollo
             sourcemap: false,
-            plugins: [localImportsPlugin, globalUtilsPlugin],
+            // Temporalmente quitar plugins para test
+            // plugins: [localImportsPlugin, globalUtilsPlugin],
             define: {
               'process.env.NODE_ENV': '"production"'
             },
             banner: {
-              js: `// ===== CÓDIGO COMPILADO CON ESBUILD =====\n// Compilado el: ${new Date().toISOString()}\n// Archivo fuente: ${JS_FILE}\n// Sistema de utilidades globales v3.0\n`
+              js: `// ===== CÓDIGO COMPILADO CON ESBUILD (ESM) =====\n// Compilado el: ${new Date().toISOString()}\n// Archivo fuente: ${JS_FILE}\n// Sistema de utilidades globales v3.0\n`
             }
           })
 
@@ -419,8 +476,8 @@ export async function GET(req: NextRequest) {
       // 📌 Guardar archivos compilados
       await saveCompiledFiles(componentPath, compiledCSS, compiledJS)
 
-      return { 
-        css: compiledCSS, 
+      return {
+        css: compiledCSS,
         js: compiledJS,
         info,
         configuration
