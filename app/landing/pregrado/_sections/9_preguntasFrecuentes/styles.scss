@@ -4,10 +4,10 @@
   background-color: var(--background-100);
   .faq {
     text-align: center;
-    padding: var(--spacing-xl) var(--spacing-lg);
+    padding: var(--spacing-xl) 0;
 
     @media (max-width: $breakpoint-md) {
-      padding: var(--spacing-lg) var(--spacing-sm);
+      padding: var(--spacing-lg) 0;
       text-align: left;
     }
 
@@ -93,7 +93,7 @@
     &__answer {
       display: none;
       padding: 0 0 var(--spacing-lg) 0;
-      color: var(--secondary);
+      color: var(--neutral-400);
       text-align: left;
       line-height: 1.6;
       will-change: opacity, transform, max-height;
@@ -165,6 +165,55 @@
 
       &:hover {
         background-color: rgba(var(--primary-rgb), 0.02);
+      }
+    }
+
+    // Estilos específicos para enlaces dentro de las respuestas
+    &__answer {
+      a {
+        color: var(--primary);
+        text-decoration: underline;
+        font-weight: var(--font-weight-medium);
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: var(--primary-600);
+          text-decoration: none;
+        }
+
+        &:visited {
+          color: var(--primary-700);
+        }
+
+        &:focus {
+          color: var(--primary);
+          outline: 2px solid var(--primary);
+          outline-offset: 2px;
+        }
+      }
+    }
+
+    &__sub-questions {
+      a {
+        color: var(--primary);
+        text-decoration: underline;
+        font-weight: var(--font-weight-medium);
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: var(--primary-600);
+          text-decoration: none;
+        }
+
+        &:visited {
+          color: var(--primary-700);
+        }
+
+        &:focus {
+          color: var(--primary);
+          outline: 2px solid var(--primary);
+          outline-offset: 2px;
+        }
       }
     }
 
