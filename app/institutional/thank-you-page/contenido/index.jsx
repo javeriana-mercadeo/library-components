@@ -16,7 +16,12 @@ export default function ThankYouPage() {
   const baseClass = 'thanks'
 
   useEffect(() => {
-    script()
+    // Solo ejecutar el script después de la hidratación
+    const timer = setTimeout(() => {
+      script()
+    }, 100) // Pequeño delay para asegurar que la hidratación esté completa
+
+    return () => clearTimeout(timer)
   }, [])
 
   return (
@@ -31,12 +36,15 @@ export default function ThankYouPage() {
       </div>
       <div className={`${baseClass}__content`}>
         <Btn
-          href='#'
-          target='_blank'
+          // Sin href - se comporta como botón
           variant='link'
           className={`${baseClass}__card-link`}
           id={`${elementName}-back-to-program`}
-          isEditable={false}>
+          isEditable={false}
+          onClick={e => {
+            e.preventDefault() // Por si acaso
+            window.history.back() // Ir a la página anterior en el historial
+          }}>
           <i className='ph ph-arrow-bend-up-left'></i>
           Volver al programa
         </Btn>
@@ -63,7 +71,7 @@ export default function ThankYouPage() {
               Recorre cada espacio de nuestra universidad sin moverte de casa. Conoce los lugares donde vivirás experiencias inolvidables.
             </Paragraph>
             <Btn
-              href='#'
+              href='https://www.javeriana.edu.co/tour-virtual-javeriana/index.htm'
               target='_blank'
               variant='link'
               size='md'
@@ -87,7 +95,7 @@ export default function ThankYouPage() {
               Charlas, talleres y ferias académicas diseñadas para ti. Descubre becas, financiación y mucho más.
             </Paragraph>
             <Btn
-              href='#'
+              href='https://www.javeriana.edu.co/relacionamiento/'
               target='_blank'
               variant='link'
               size='md'
@@ -135,7 +143,7 @@ export default function ThankYouPage() {
               Desde procesos de inscripción hasta opciones de financiación. Explora nuestro Centro de Ayuda.
             </Paragraph>
             <Btn
-              href='#'
+              href='https://www.javeriana.edu.co/info-prg/centro-de-ayuda'
               target='_blank'
               variant='link'
               size='md'
