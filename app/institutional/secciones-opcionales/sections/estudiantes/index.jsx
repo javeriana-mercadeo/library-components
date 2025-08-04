@@ -67,11 +67,11 @@ const StudentSlider = () => {
         <Title className="slider-title">Estudiantes</Title>
 
         <div className="slider-content" id={`${elementName}-content`}>
-          <div className="carousel-controls">
-            <button className="carousel-control prev" id={`${elementName}-prev`} aria-label="Anterior estudiante" type="button">
+          <div className="carousel-controlsE">
+            <button className="carousel-controlE prev" id={`${elementName}-prev`} aria-label="Anterior estudiante" type="button">
               <i className="ph ph-arrow-circle-left"></i>
             </button>
-            <button className="carousel-control next" id={`${elementName}-next`} aria-label="Siguiente estudiante" type="button">
+            <button className="carousel-controlE next" id={`${elementName}-next`} aria-label="Siguiente estudiante" type="button">
               <i className="ph ph-arrow-circle-right"></i>
             </button>
           </div>

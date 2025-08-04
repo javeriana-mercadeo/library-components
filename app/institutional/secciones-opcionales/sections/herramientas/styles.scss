@@ -26,6 +26,15 @@
   --transition-hover: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/*  CSS para manejar etiquetas <picture> automáticas */
+.tools-logos-grid .columna-logos .logo-item picture {
+  width: 100%;
+  height: 100%;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
 .tools-container {
   width: 100%;
 
