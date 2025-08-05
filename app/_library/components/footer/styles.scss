@@ -1,6 +1,8 @@
 @use '@styles/autoload' as *;
 
 #footer {
+  width: 100dvw;
+
   .color-container-footer {
     background-color: #1d2124;
     display: flex;

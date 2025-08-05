@@ -28,11 +28,12 @@ const ModalForm = {
           debug: false,
           development: false,
           debugEmail: '', // Email para debug
-          retUrl: 'https://www.javeriana.edu.co/info-prg/thank-you-pregrado'
+          retUrl: 'https://www.javeriana.edu.co/info-prg/thank-you-pregrado',
+          requestOrigin: "Web to Lead",
         })
 
         await this.formModulesInstance.initialize()
-        
+
         if (typeof Logger !== 'undefined' && Logger.success) {
           Logger.success(`📋 [FORM] FormModules inicializado correctamente para ${programa}`)
         }
