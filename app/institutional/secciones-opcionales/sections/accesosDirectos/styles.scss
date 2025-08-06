@@ -1,4 +1,5 @@
-/* Variables locales */
+@use '@styles/autoload' as *;
+
 html {
   --javeriana-acc-menu-hover: var(--primary);
   --javeriana-acc-whatsapp: #25d366;
@@ -26,6 +27,7 @@ body.floating-menu-ready .floating-menu,
 body.floating-menu-ready .whatsapp-floating-button {
   opacity: 1 !important;
   visibility: visible !important;
+	
 }
 
 /* ===== AISLAMIENTO DE LA BARRA DEL ZOOM ===== */
@@ -767,6 +769,7 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
   }
 }
 
+/* DESKTOP: Asegurar que el modal funcione correctamente */
 @media (min-width: 769px) {
   .share-modal-overlay {
     align-items: center !important;

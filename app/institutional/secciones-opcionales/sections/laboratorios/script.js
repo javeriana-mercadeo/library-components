@@ -1,8 +1,17 @@
+// Lab Slider - Versión corregida y optimizada
 (function() {
   'use strict';
 
-  if (typeof window === 'undefined') {
+  // ✅ Verificación de entorno mejorada
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    console.log('LabSlider: Entorno servidor detectado, script no ejecutado');
     return;
+  }
+
+  // ✅ Evitar múltiples instancias
+  if (window.LabSliderInstance) {
+    console.log('LabSlider ya existe, limpiando instancia anterior...');
+    window.LabSliderInstance.cleanup();
   }
 
   function createLabSlider() {
@@ -26,7 +35,12 @@
     var slides = [];
     var currentSlide = 0;
     var isInitialized = false;
-    var isAnimating = false; // Evita múltiples animaciones simultáneas
+    var isAnimating = false;
+    
+    // ✅ NUEVO: Referencias de event listeners para limpieza
+    var eventListeners = [];
+    var resizeHandler = null;
+    var mutationObserver = null;
 
     function initializeSlides() {
       if (window.liferayLabSlides && Array.isArray(window.liferayLabSlides) && window.liferayLabSlides.length > 0) {
@@ -107,14 +121,13 @@
       };
     }
 
-    // Función principal de actualización con animación integrada
+    // ✅ MEJORADO: Función de animación con mejor manejo de errores
     function updateContentWithAnimation() {
       if (isAnimating) return;
       
       try {
         isAnimating = true;
         
-        // Busca el elemento principal del contenido que cambia
         var sliderContent = document.querySelector('.lab-slider-content');
         var sliderText = document.querySelector('.lab-slider-text');
         var sliderImages = document.querySelector('.lab-slider-images');
@@ -125,34 +138,45 @@
           return;
         }
 
-        // Aplica la animación a todos los elementos que cambian
         var elementsToAnimate = [sliderContent];
         if (sliderText) elementsToAnimate.push(sliderText);
         if (sliderImages) elementsToAnimate.push(sliderImages);
 
-        // Reinicia las clases de animación
+        // Reiniciar animaciones
         elementsToAnimate.forEach(function(element) {
-          element.classList.remove('lab-slider-transition');
+          if (element) {
+            element.classList.remove('lab-slider-transition');
+          }
         });
         
-        // Fuerza el reflow para reiniciar las animaciones
-        void sliderContent.offsetWidth;
+        // Forzar reflow
+        if (sliderContent) {
+          void sliderContent.offsetWidth;
+        }
 
-        // Agrega las clases para animar
+        // Aplicar animaciones
         elementsToAnimate.forEach(function(element) {
-          element.classList.add('lab-slider-transition');
+          if (element) {
+            element.classList.add('lab-slider-transition');
+          }
         });
 
-        // Actualiza el contenido inmediatamente para que la animación sea visible
+        // Actualizar contenido
         updateContent();
 
-        // Quita las clases al finalizar la animación
+        // Limpiar después de la animación
         setTimeout(function() {
-          elementsToAnimate.forEach(function(element) {
-            element.classList.remove('lab-slider-transition');
-          });
+          try {
+            elementsToAnimate.forEach(function(element) {
+              if (element) {
+                element.classList.remove('lab-slider-transition');
+              }
+            });
+          } catch (e) {
+            console.warn('Error limpiando animaciones:', e);
+          }
           isAnimating = false;
-        }, 450); // Un poco más de tiempo que la animación CSS
+        }, 450);
 
       } catch (error) {
         console.error('Error actualizando contenido con animación:', error);
@@ -160,7 +184,6 @@
       }
     }
 
-    // Función de actualización sin animación (para uso interno)
     function updateContent() {
       try {
         updateText();
@@ -188,31 +211,41 @@
         '.paragraph-lab'
       ];
 
+      // Buscar y actualizar título
       var titleElement = null;
       for (var i = 0; i < titleSelectors.length; i++) {
         titleElement = document.querySelector(titleSelectors[i]);
         if (titleElement) break;
       }
 
-      if (titleElement) {
-        if (titleElement.hasAttribute('data-lfr-editable-id')) {
-          titleElement.innerHTML = currentSlideData.title;
-        } else {
-          titleElement.textContent = currentSlideData.title;
+      if (titleElement && currentSlideData.title) {
+        try {
+          if (titleElement.hasAttribute('data-lfr-editable-id')) {
+            titleElement.innerHTML = currentSlideData.title;
+          } else {
+            titleElement.textContent = currentSlideData.title;
+          }
+        } catch (e) {
+          console.warn('Error actualizando título:', e);
         }
       }
 
+      // Buscar y actualizar descripción
       var paragraphElement = null;
       for (var i = 0; i < descriptionSelectors.length; i++) {
         paragraphElement = document.querySelector(descriptionSelectors[i]);
         if (paragraphElement) break;
       }
 
-      if (paragraphElement) {
-        if (paragraphElement.hasAttribute('data-lfr-editable-id')) {
-          paragraphElement.innerHTML = currentSlideData.description;
-        } else {
-          paragraphElement.textContent = currentSlideData.description;
+      if (paragraphElement && currentSlideData.description) {
+        try {
+          if (paragraphElement.hasAttribute('data-lfr-editable-id')) {
+            paragraphElement.innerHTML = currentSlideData.description;
+          } else {
+            paragraphElement.textContent = currentSlideData.description;
+          }
+        } catch (e) {
+          console.warn('Error actualizando descripción:', e);
         }
       }
     }
@@ -245,23 +278,42 @@
         if (imageLabels.length > 0) break;
       }
 
+      // Actualizar primera imagen
       if (imageContainers[0] && images.firstImage.imageSrc) {
-        imageContainers[0].src = images.firstImage.imageSrc;
-        imageContainers[0].alt = images.firstImage.label || 'Laboratorio';
+        try {
+          imageContainers[0].src = images.firstImage.imageSrc;
+          imageContainers[0].alt = images.firstImage.label || 'Laboratorio';
+        } catch (e) {
+          console.warn('Error actualizando primera imagen:', e);
+        }
       }
       if (imageLabels[0]) {
-        imageLabels[0].textContent = images.firstImage.label || 'Lab';
+        try {
+          imageLabels[0].textContent = images.firstImage.label || 'Lab';
+        } catch (e) {
+          console.warn('Error actualizando primera etiqueta:', e);
+        }
       }
 
+      // Actualizar segunda imagen
       if (imageContainers[1] && images.secondImage && images.secondImage.imageSrc) {
-        imageContainers[1].src = images.secondImage.imageSrc;
-        imageContainers[1].alt = images.secondImage.label || 'Laboratorio';
+        try {
+          imageContainers[1].src = images.secondImage.imageSrc;
+          imageContainers[1].alt = images.secondImage.label || 'Laboratorio';
+        } catch (e) {
+          console.warn('Error actualizando segunda imagen:', e);
+        }
       }
       if (imageLabels[1] && images.secondImage) {
-        imageLabels[1].textContent = images.secondImage.label || 'Lab';
+        try {
+          imageLabels[1].textContent = images.secondImage.label || 'Lab';
+        } catch (e) {
+          console.warn('Error actualizando segunda etiqueta:', e);
+        }
       }
     }
 
+    // ✅ MEJORADO: Inicialización de botones con mejor manejo
     function initializeButtons() {
       var buttonSelectors = [
         '[data-testid="prev-button"], [data-testid="next-button"]',
@@ -277,25 +329,35 @@
 
       for (var i = 0; i < buttons.length; i++) {
         var button = buttons[i];
-        button.style.border = 'none';
-        button.style.borderRadius = '50%';
-        button.style.cursor = 'pointer';
-        button.style.transition = 'all 0.3s ease';
-        button.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        if (!button) continue;
 
-        if (window.innerWidth <= 768) {
-          button.style.width = '32px';
-          button.style.height = '32px';
-          button.style.fontSize = '18px';
-        } else {
-          button.style.width = '40px';
-          button.style.height = '40px';
-          button.style.fontSize = '20px';
+        try {
+          button.style.border = 'none';
+          button.style.borderRadius = '50%';
+          button.style.cursor = 'pointer';
+          button.style.transition = 'all 0.3s ease';
+          button.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+
+          if (window.innerWidth <= 768) {
+            button.style.width = '32px';
+            button.style.height = '32px';
+            button.style.fontSize = '18px';
+          } else {
+            button.style.width = '40px';
+            button.style.height = '40px';
+            button.style.fontSize = '20px';
+          }
+        } catch (e) {
+          console.warn('Error estilizando botón:', e);
         }
       }
     }
 
+    // ✅ MEJORADO: Bind events con limpieza mejorada
     function bindEvents() {
+      // Limpiar eventos anteriores
+      clearEventListeners();
+
       var prevSelectors = [
         '[data-testid="prev-button"]',
         '[data-action="prev"]',
@@ -310,46 +372,87 @@
         '.nav-button.next'
       ];
 
+      // Buscar botón anterior
       var prevButton = null;
       for (var i = 0; i < prevSelectors.length; i++) {
         prevButton = document.querySelector(prevSelectors[i]);
         if (prevButton) break;
       }
 
+      // Buscar botón siguiente
       var nextButton = null;
       for (var i = 0; i < nextSelectors.length; i++) {
         nextButton = document.querySelector(nextSelectors[i]);
         if (nextButton) break;
       }
 
+      // Evento botón anterior
       if (prevButton) {
-        prevButton.onclick = null;
-        prevButton.addEventListener('click', function(e) {
+        var prevHandler = function(e) {
           e.preventDefault();
           e.stopImmediatePropagation();
           prevSlide();
-        }, { passive: false });
+        };
+        prevButton.addEventListener('click', prevHandler, { passive: false });
+        eventListeners.push({ element: prevButton, event: 'click', handler: prevHandler });
       }
 
+      // Evento botón siguiente
       if (nextButton) {
-        nextButton.onclick = null;
-        nextButton.addEventListener('click', function(e) {
+        var nextHandler = function(e) {
           e.preventDefault();
           e.stopImmediatePropagation();
           nextSlide();
-        }, { passive: false });
+        };
+        nextButton.addEventListener('click', nextHandler, { passive: false });
+        eventListeners.push({ element: nextButton, event: 'click', handler: nextHandler });
       }
     }
 
-    function handleResize() {
-      if (isInitialized) {
-        initializeButtons();
+    // ✅ NUEVO: Función para limpiar event listeners
+    function clearEventListeners() {
+      for (var i = 0; i < eventListeners.length; i++) {
+        var listener = eventListeners[i];
+        try {
+          if (listener.element && listener.element.removeEventListener) {
+            listener.element.removeEventListener(listener.event, listener.handler);
+          }
+        } catch (e) {
+          console.warn('Error removiendo event listener:', e);
+        }
       }
+      eventListeners = [];
     }
 
+    // ✅ MEJORADO: Handle resize con throttling
+    function createResizeHandler() {
+      var throttleTimeout = null;
+      return function() {
+        if (throttleTimeout) return;
+        
+        throttleTimeout = setTimeout(function() {
+          if (isInitialized) {
+            try {
+              initializeButtons();
+            } catch (e) {
+              console.warn('Error en resize handler:', e);
+            }
+          }
+          throttleTimeout = null;
+        }, 250);
+      };
+    }
+
+    // ✅ MEJORADO: Inicialización con mejor manejo de errores
     function initialize() {
       return new Promise(function(resolve) {
         try {
+          // Evitar doble inicialización
+          if (isInitialized) {
+            resolve(true);
+            return;
+          }
+
           initializeSlides();
 
           var keySelectors = [
@@ -382,12 +485,18 @@
               updateContent(); // Inicialización sin animación
               bindEvents();
 
-              window.removeEventListener('resize', handleResize);
-              window.addEventListener('resize', handleResize);
+              // Configurar resize handler
+              if (resizeHandler) {
+                window.removeEventListener('resize', resizeHandler);
+              }
+              resizeHandler = createResizeHandler();
+              window.addEventListener('resize', resizeHandler, { passive: true });
 
               isInitialized = true;
+              console.log('LabSlider inicializado correctamente');
               resolve(true);
             } catch (error) {
+              console.error('Error en proceedWithInit:', error);
               resolve(false);
             }
           }
@@ -395,21 +504,50 @@
           tryNextSelector();
 
         } catch (error) {
+          console.error('Error en initialize:', error);
           resolve(false);
         }
       });
     }
 
+    // ✅ MEJORADO: Cleanup completo
     function cleanup() {
       try {
+        console.log('Limpiando LabSlider...');
+        
         isInitialized = false;
         isAnimating = false;
-        window.removeEventListener('resize', handleResize);
+        
+        // Limpiar event listeners
+        clearEventListeners();
+        
+        // Limpiar resize handler
+        if (resizeHandler) {
+          window.removeEventListener('resize', resizeHandler);
+          resizeHandler = null;
+        }
+        
+        // Limpiar mutation observer
+        if (mutationObserver) {
+          mutationObserver.disconnect();
+          mutationObserver = null;
+        }
+        
+        // Limpiar variables globales
+        if (window.labSliderInstance === this) {
+          window.labSliderInstance = null;
+        }
+        if (window.labSliderDebug) {
+          window.labSliderDebug = null;
+        }
+        
+        console.log('LabSlider limpiado correctamente');
       } catch (error) {
-        console.error('Error en limpieza:', error);
+        console.error('Error en cleanup:', error);
       }
     }
 
+    // ✅ API pública
     return {
       nextSlide: nextSlide,
       prevSlide: prevSlide,
@@ -423,44 +561,54 @@
     };
   }
 
+  // ✅ Crear instancia
   var labSliderInstance = createLabSlider();
 
+  // ✅ MEJORADO: Función de inicialización única
   function executeInit() {
+    var initPromise = null;
+    var hasInitialized = false;
+
+    function performInit() {
+      if (hasInitialized || initPromise) return initPromise;
+      
+      hasInitialized = true;
+      initPromise = labSliderInstance.initialize();
+      return initPromise;
+    }
+
+    // DOM ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-          labSliderInstance.initialize();
-        }, 100);
+        setTimeout(performInit, 100);
       });
     } else {
-      setTimeout(function() {
-        labSliderInstance.initialize();
-      }, 100);
+      setTimeout(performInit, 100);
     }
 
+    // Liferay ready
     if (typeof window.Liferay !== 'undefined' && window.Liferay.on) {
       window.Liferay.on('allPortletsReady', function() {
-        setTimeout(function() {
-          labSliderInstance.initialize();
-        }, 200);
+        setTimeout(performInit, 200);
       });
     }
 
-    if ('MutationObserver' in window) {
+    // ✅ MEJORADO: MutationObserver con mejor gestión
+    if ('MutationObserver' in window && !labSliderInstance.isInitialized()) {
       var observer = new MutationObserver(function(mutations) {
+        if (hasInitialized) return;
+
         var labSliderAdded = mutations.some(function(mutation) {
           return Array.from(mutation.addedNodes).some(function(node) {
             return node.nodeType === 1 &&
-                   (node.classList && node.classList.contains('lab-slider')) ||
-                   (node.querySelector && node.querySelector('.lab-slider'));
+                   ((node.classList && node.classList.contains('lab-slider')) ||
+                    (node.querySelector && node.querySelector('.lab-slider')));
           });
         });
 
-        if (labSliderAdded && !labSliderInstance.isInitialized()) {
+        if (labSliderAdded) {
           observer.disconnect();
-          setTimeout(function() {
-            labSliderInstance.initialize();
-          }, 300);
+          setTimeout(performInit, 300);
         }
       });
 
@@ -469,68 +617,62 @@
         subtree: true
       });
 
+      // Cleanup después de 15 segundos
       setTimeout(function() {
-        if (observer) observer.disconnect();
+        try {
+          if (observer) {
+            observer.disconnect();
+          }
+        } catch (e) {
+          console.warn('Error desconectando MutationObserver:', e);
+        }
       }, 15000);
     }
   }
 
+  // ✅ Ejecutar inicialización
   executeInit();
 
-  window.labSliderInstance = labSliderInstance;
+  // ✅ MEJORADO: Exports globales más limpios
+  window.LabSliderInstance = labSliderInstance;
 
-  window.labSliderDebug = {
-    next: function() { return labSliderInstance.nextSlide(); },
-    prev: function() { return labSliderInstance.prevSlide(); },
-    getState: function() { return labSliderInstance.getCurrentSlide(); },
-    init: function() { return labSliderInstance.initialize(); },
-    cleanup: function() { return labSliderInstance.cleanup(); },
-    getData: function() { return labSliderInstance.getSlides(); }
-  };
+  // Debug API (solo en desarrollo)
+  if (typeof window.location !== 'undefined' && 
+      (window.location.hostname === 'localhost' || window.location.search.includes('debug=true'))) {
+    window.labSliderDebug = {
+      next: function() { return labSliderInstance.nextSlide(); },
+      prev: function() { return labSliderInstance.prevSlide(); },
+      getState: function() { return labSliderInstance.getCurrentSlide(); },
+      init: function() { return labSliderInstance.initialize(); },
+      cleanup: function() { return labSliderInstance.cleanup(); },
+      getData: function() { return labSliderInstance.getSlides(); }
+    };
+  }
 
-  // Exports para repositorio Node.js local
+  // ✅ CORREGIDO: API para exports (solo si es necesario)
   var LabSliderAPI = {
     init: labSliderInstance.initialize,
     cleanup: labSliderInstance.cleanup,
-    next: function() { return labSliderInstance.nextSlide(); },
-    prev: function() { return labSliderInstance.prevSlide(); },
-    getState: function() { return labSliderInstance.getCurrentSlide(); },
-    getImages: function() { return labSliderInstance.getCurrentImages(); },
-    isInitialized: function() { return labSliderInstance.isInitialized(); },
-    getCurrentSlide: function() { return labSliderInstance.getCurrentSlide(); },
-    getCurrentImages: function() { return labSliderInstance.getCurrentImages(); },
-    getSlides: function() { return labSliderInstance.getSlides(); },
+    next: labSliderInstance.nextSlide,
+    prev: labSliderInstance.prevSlide,
+    getState: labSliderInstance.getCurrentSlide,
+    getImages: labSliderInstance.getCurrentImages,
+    isInitialized: labSliderInstance.isInitialized,
+    getSlides: labSliderInstance.getSlides,
     updateSlideData: labSliderInstance.updateSlideData,
     getInstance: function() { return labSliderInstance; }
   };
 
-  // CommonJS export (Node.js)
+  // Solo exports si es necesario
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = LabSliderAPI;
-    module.exports.default = LabSliderAPI;
-    module.exports.LabSlider = LabSliderAPI;
-    module.exports.labSliderInstance = labSliderInstance;
   }
 
-  // AMD export (RequireJS)
   if (typeof define === 'function' && define.amd) {
     define([], function() {
       return LabSliderAPI;
     });
   }
 
-  // ES6 export para bundlers modernos
-  if (typeof window !== 'undefined') {
-    window.LabSlider = LabSliderAPI;
-    window.LabSliderAPI = LabSliderAPI;
-  }
-
-  // Global export
-  if (typeof globalThis !== 'undefined') {
-    globalThis.LabSlider = LabSliderAPI;
-    globalThis.LabSliderAPI = LabSliderAPI;
-  }
-
-  return LabSliderAPI;
-
+  // ✅ CORREGIDO: No return innecesario
 })();

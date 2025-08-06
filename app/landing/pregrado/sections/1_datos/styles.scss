@@ -264,101 +264,102 @@
   // ==========================================
   // VIDEO/MEDIA CONTAINER - ASPECT RATIO EXACTO
   // ==========================================
-  &_media {
-    grid-area: video;
-    position: relative;
-    overflow: hidden;
-    background: var(--neutral-900);
-    border-radius: var(--border-radius-lg);
+&_media {
+  grid-area: video;
+  position: relative;
+  overflow: hidden;
+  background: var(--neutral-900);
+  border-radius: var(--border-radius-lg);
 
-    aspect-ratio: 1 / 1;
-    width: clamp(280px, 85vw, 350px);
-    height: clamp(280px, 85vw, 350px);
-    max-width: 428px;
-    max-height: 428px;
+  aspect-ratio: 1 / 1;
+  width: clamp(280px, 85vw, 350px);
+  height: clamp(280px, 85vw, 350px);
+  max-width: 428px;
+  max-height: 428px;
 
-    // Centrar en móvil
+  // Centrar en móvil
+  justify-self: center;
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+
+  // ✅ CORRECCIÓN: Mover TODAS las propiedades CSS ARRIBA de las reglas anidadas
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  contain: layout style paint;
+
+  @include responsive {
+    aspect-ratio: 612 / 880;
+    height: auto;
+    max-height: 880px;
     justify-self: center;
-    margin-top: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
+    align-self: start;
+    margin-top: 0;
+    margin-bottom: 0;
+    min-width: 300px;
+    min-height: calc(300px / (612 / 880));
+    max-height: 880px;
+  }
 
-    @include responsive {
-      aspect-ratio: 612 / 880;
-      height: auto;
-      max-height: 880px;
-      justify-self: center;
-      align-self: start;
-      margin-top: 0;
-      margin-bottom: 0;
-      min-width: 300px;
-      min-height: calc(300px / (612 / 880));
-      max-height: 880px;
-    }
+  @include responsive($breakpoint-lg) {
+    width: clamp(400px, 38vw, 520px);
+  }
 
-    @include responsive($breakpoint-lg) {
-      width: clamp(400px, 38vw, 520px);
-    }
+  @include responsive($breakpoint-xl) {
+    justify-self: end;
+  }
 
-    @include responsive($breakpoint-xl) {
-      justify-self: end;
-    }
-
-    // GPU acceleration y optimizaciones
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    contain: layout style paint;
-
-    // Estados de carga
-    &:not(.responsive-video-ready) {
-      &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: rem(40px);
-        height: rem(40px);
-        margin: rem(-20px) 0 0 rem(-20px);
-        border: rem(4px) solid var(--neutral-600);
-        border-top-color: var(--primary-600);
-        border-radius: 50%;
-        animation: videoLoading 1s linear infinite;
-        z-index: 2;
-      }
-    }
-
-    // Overlay sutil
-    &::after {
+  // ✅ AHORA SÍ: Reglas anidadas DESPUÉS de todas las propiedades CSS
+  // Estados de carga
+  &:not(.responsive-video-ready) {
+    &::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.1);
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    &:hover::after {
-      opacity: 1;
-    }
-
-    // Estados según dispositivo actual
-    &[data-current-video='mobile'] {
-      .program-data__iframe--desktop {
-        display: none !important;
-      }
-    }
-
-    &[data-current-video='desktop'] {
-      .program-data__iframe--mobile {
-        display: none !important;
-      }
+      top: 50%;
+      left: 50%;
+      width: rem(40px);
+      height: rem(40px);
+      margin: rem(-20px) 0 0 rem(-20px);
+      border: rem(4px) solid var(--neutral-600);
+      border-top-color: var(--primary-600);
+      border-radius: 50%;
+      animation: videoLoading 1s linear infinite;
+      z-index: 2;
     }
   }
+
+  // Overlay sutil
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+
+  // Estados según dispositivo actual
+  &[data-current-video='mobile'] {
+    .program-data__iframe--desktop {
+      display: none !important;
+    }
+  }
+
+  &[data-current-video='desktop'] {
+    .program-data__iframe--mobile {
+      display: none !important;
+    }
+  }
+}
 
   // ==========================================
   // IFRAME DEL VIDEO - MANTIENE RELACIÓN EXACTA
