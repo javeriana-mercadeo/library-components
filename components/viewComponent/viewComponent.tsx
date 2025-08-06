@@ -105,6 +105,10 @@ export default function ViewComponent({ path, children }: { path?: string; child
       // Solo hacer llamado a API si hay path válido
       if (path && path.trim() !== '') {
         const res = await fetch(`/api/build-modules?path=${encodeURIComponent(path)}`)
+
+        if (!res.ok) {
+          throw new Error(`Error al cargar módulos: ${res.status}`)
+        }
         const data = await res.json()
 
         css = data.css || ''
@@ -125,17 +129,38 @@ export default function ViewComponent({ path, children }: { path?: string; child
       setJsContent(formattedJs)
       setConfigContent(formattedConfig)
       setCodeLoaded(true)
-    } catch (error) {
-      console.error('Error procesando el código:', error)
+    } catch {
+      // Mostrar contenido vacío en caso de error para evitar que el modal se quede cargando indefinidamente
+      setHtmlContent('')
+      setCssContent('')
+      setJsContent('')
+      setConfigContent('')
+      setCodeLoaded(true)
     } finally {
       setIsLoading(false)
     }
   }
 
+  // Efecto para cargar código cuando se abre el modal
+  useEffect(() => {
+    if (isOpen && !codeLoaded && !isLoading) {
+      loadAndProcessCode()
+    }
+  }, [isOpen, codeLoaded, isLoading])
+
+  // Efecto para resetear páginas cuando se cierra el modal
+  useEffect(() => {
+    if (!isOpen) {
+      setHtmlPage(1)
+      setCssPage(1)
+      setJsPage(1)
+      setConfigPage(1)
+    }
+  }, [isOpen])
+
   // Manejar apertura del modal
-  const handleOpenModal = async () => {
+  const handleOpenModal = () => {
     onOpen()
-    await loadAndProcessCode()
   }
 
   // 📌 Filtrar solo los lenguajes con contenido (solo si ya está cargado)
@@ -180,6 +205,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
   React.useEffect(() => {
     if (codeLoaded && codeElements.length > 0) {
       const hasActiveTab = codeElements.some(el => el.type === activeCodeTab)
+
       if (!hasActiveTab) {
         setActiveCodeTab(codeElements[0].type)
       }
@@ -209,14 +235,9 @@ export default function ViewComponent({ path, children }: { path?: string; child
     await handleZipExport(info, htmlContent, cssContent, jsContent, configContent, containerRef)
   }
 
-  // Función para resetear páginas al cambiar de tab
+  // Función para cambiar de tab
   const handleTabChange = (key: string) => {
     setActiveCodeTab(key)
-    // Resetear las páginas cuando se cambia de tab
-    setHtmlPage(1)
-    setCssPage(1)
-    setJsPage(1)
-    setConfigPage(1)
   }
 
   return (
@@ -270,8 +291,38 @@ export default function ViewComponent({ path, children }: { path?: string; child
           body: 'p-0 overflow-auto',
           footer: 'border-t border-divider flex-shrink-0'
         }}
+        closeButton={
+          <button
+            aria-label='Cerrar modal'
+            className='absolute top-3 right-3 z-10 flex items-center justify-center w-6 h-6 rounded-full bg-default-100 hover:bg-default-200 transition-colors'>
+            <i className='ph ph-x text-sm' />
+          </button>
+        }
+        isDismissable={true}
+        isKeyboardDismissDisabled={false}
         isOpen={isOpen}
+        motionProps={{
+          variants: {
+            enter: {
+              y: 0,
+              opacity: 1,
+              transition: {
+                duration: 0.3,
+                ease: 'easeOut'
+              }
+            },
+            exit: {
+              y: -20,
+              opacity: 0,
+              transition: {
+                duration: 0.2,
+                ease: 'easeIn'
+              }
+            }
+          }
+        }}
         placement='center'
+        scrollBehavior='inside'
         size='5xl'
         onOpenChange={onOpenChange}>
         <ModalContent>
@@ -415,7 +466,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
                   {!isLoading && !codeLoaded && (
                     <div className='flex flex-col items-center justify-center py-12 gap-4 text-default-500'>
                       <i className='ph ph-code text-4xl' />
-                      <p>Haz clic en "Ver Código" para cargar el contenido</p>
+                      <p>Haz clic en &apos;Ver Código&apos; para cargar el contenido</p>
                     </div>
                   )}
                 </div>
