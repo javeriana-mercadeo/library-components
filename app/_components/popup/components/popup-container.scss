@@ -11,7 +11,7 @@
   background-color: rgba(0, 0, 0, 0.5);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 
-  z-index: 1000;
+  z-index: 10001;
   display: none;
 }
 
@@ -20,7 +20,8 @@
 
   position: relative;
 
-  width: 70%;
+  width: 80%;
+  max-width: 65%;
   max-height: 90%;
   overflow-y: auto;
 
@@ -68,4 +69,16 @@
 .has-edit-mode-menu .popup-overlay {
   position: initial;
   display: flex !important;
+}
+
+@media screen and (max-width: 768px) {
+
+  .popup-overlay {
+    z-index: 10001;
+  }
+
+  .popup-content {
+    width: 90%;
+  }
+  
 }
