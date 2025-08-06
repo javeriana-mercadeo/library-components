@@ -8,10 +8,8 @@ export default () => {
     // Buscar el elemento con la nueva clase
     const element = document.querySelector('.plan-estudio_wrapper')
     if (!element) {
-      console.warn('Elemento .plan-estudio_wrapper no encontrado')
       const fallbackElement = document.querySelector('.subjects-swiper')
       if (!fallbackElement) {
-        console.error('Ningún elemento swiper encontrado')
         return
       }
     }
@@ -21,7 +19,6 @@ export default () => {
     const totalSlides = slides.length
 
     if (!window.Swiper) {
-      console.error('Swiper no está disponible')
       return
     }
 
@@ -121,7 +118,6 @@ export default () => {
     const prevBtn = document.querySelector('.plan-estudio_prev') || document.querySelector('.subjects-prev')
 
     if (!nextBtn || !prevBtn) {
-      console.warn('Botones de navegación no encontrados')
       return
     }
 
@@ -205,7 +201,6 @@ export default () => {
     const pagination = document.querySelector('.plan-estudio_pagination') || document.querySelector('.subjects-pagination')
 
     if (!pagination) {
-      console.warn('Paginación no encontrada')
       return
     }
 

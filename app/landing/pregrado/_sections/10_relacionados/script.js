@@ -375,9 +375,6 @@ const RelatedProgramsScript = () => {
       }
 
       if (!window.Swiper) {
-        if (typeof Logger !== 'undefined' && Logger.warning) {
-          Logger.warning('🔗 [RELATED] Swiper no disponible, reintentando...')
-        }
         setTimeout(() => this.initializeSwiper(), 300)
         return
       }
@@ -386,9 +383,6 @@ const RelatedProgramsScript = () => {
       const element = document.querySelector('.related-programs-swiper') || document.querySelector('.related-programs__carousel')
 
       if (!element) {
-        if (typeof Logger !== 'undefined' && Logger.warning) {
-          Logger.warning('🔗 [RELATED] No se encontró contenedor del carrusel')
-        }
         return
       }
 
@@ -445,29 +439,14 @@ const RelatedProgramsScript = () => {
         }
       })
 
-      if (typeof Logger !== 'undefined' && Logger.success) {
-        Logger.success(`🔗 [RELATED] Swiper inicializado con ${totalSlides} programas`)
-      }
     }
   }
 
   // Inicializar el sistema
   try {
-    if (typeof Logger !== 'undefined' && Logger.debug) {
-      Logger.debug('🔗 [RELATED] Inicializando sistema de programas relacionados...')
-    }
-    
     RelatedProgramsSystem.init()
-    
-    if (typeof Logger !== 'undefined' && Logger.success) {
-      Logger.success('🔗 [RELATED] Sistema inicializado correctamente')
-    }
   } catch (error) {
-    if (typeof Logger !== 'undefined' && Logger.error) {
-      Logger.error('🔗 [RELATED] Error:', error)
-    } else {
-      console.error('🔗 [RELATED] Error:', error)
-    }
+    console.error('Error inicializando sistema de programas relacionados:', error)
   }
 }
 

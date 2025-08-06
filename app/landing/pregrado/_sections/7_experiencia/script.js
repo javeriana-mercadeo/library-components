@@ -88,7 +88,7 @@ export default () => {
         }
       })
     } catch (error) {
-      console.error('❌ [EXPERIENCE] Error inicializando Swiper:', error)
+      console.error('[EXPERIENCE] Error inicializando Swiper:', error)
     }
   }
 
@@ -171,12 +171,11 @@ export default () => {
           iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*')
           isMuted = true
           muteButton.classList.add('muted')
-          console.log(`🔇 [VIDEO] Audio silenciado: ${videoId}`)
         }
 
         updateMuteButtonIcon(muteButton, isMuted)
       } catch (error) {
-        console.error(`❌ [VIDEO] Error controlando audio: ${videoId}`, error)
+        console.error(`[VIDEO] Error controlando audio: ${videoId}`, error)
       }
     })
 

@@ -8,7 +8,6 @@ export default () => {
   const initializeTabs = () => {
     const tabsContainer = document.querySelector('.plan-estudio__tabs-container')
     if (!tabsContainer) {
-      console.warn('Contenedor de pestañas no encontrado')
       return
     }
 
@@ -16,7 +15,6 @@ export default () => {
     const tabPanels = tabsContainer.querySelectorAll('.plan-estudio__tab-panel')
 
     if (!tabButtons.length || !tabPanels.length) {
-      console.warn('No se encontraron botones o paneles de pestañas')
       return
     }
 
@@ -147,13 +145,11 @@ export default () => {
   const initializeSwiperForActiveTab = () => {
     const activePanel = document.querySelector('.plan-estudio__tab-panel:not(.hidden)')
     if (!activePanel) {
-      console.warn('No se encontró panel activo')
       return
     }
 
     const swiperContainer = activePanel.querySelector('.subjects-swiper')
     if (!swiperContainer) {
-      console.warn('No se encontró contenedor de swiper en panel activo')
       return
     }
 
@@ -166,7 +162,6 @@ export default () => {
       jornadaId = 'diurna'
     }
 
-    console.log(`Inicializando swiper para jornada: ${jornadaId}`)
 
     // Destruir instancia existente si existe
     if (window.planEstudioSwipers[jornadaId] && typeof window.planEstudioSwipers[jornadaId].destroy === 'function') {
@@ -184,12 +179,10 @@ export default () => {
     const totalSlides = slides.length
 
     if (!window.Swiper) {
-      console.error('Swiper no está disponible')
       return
     }
 
     if (totalSlides === 0) {
-      console.warn(`No se encontraron slides para la jornada ${jornadaId}`)
       return
     }
 
@@ -282,7 +275,7 @@ export default () => {
     try {
       window.planEstudioSwipers[jornadaId] = new window.Swiper(container, swiperConfig)
     } catch (error) {
-      console.error(`Error creando swiper para jornada ${jornadaId}:`, error)
+      console.error('Error creando swiper:', error)
     }
   }
 

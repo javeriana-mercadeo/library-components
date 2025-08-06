@@ -19,7 +19,6 @@ const ModalForm = {
         this.formModulesInstance = new window.FormModules('formProgram', {
           // Datos del evento
           eventName: `Landing Page: ${programa}`,
-          eventDate: '', // Qué fecha se usará para el evento
           campaign: codPrograma,
           typeAttendee: ['Aspirante'],
           programs: [codPrograma],

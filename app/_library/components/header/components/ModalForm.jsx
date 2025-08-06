@@ -42,7 +42,9 @@ const ModalForm = () => {
             <form id='formProgram' className='form-modules' aria-label='Prueba 1: Configuración Base' noValidate>
               {/* HEADER: Solo título fijo */}
               <div className='form-header'>
-                <Paragraph id='title-form'>Déjanos tus datos y te contactaremos para brindarte toda la información.</Paragraph>
+                <Paragraph id='title-form' isEditable={false}>
+                  Déjanos tus datos y te contactaremos para brindarte toda la información.
+                </Paragraph>
               </div>
 
               {/* CONTENT: Descripción + campos + autorización con scroll */}

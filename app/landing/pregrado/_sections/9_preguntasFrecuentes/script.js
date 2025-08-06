@@ -53,7 +53,6 @@ const FAQAccordionSystem = {
   },
 
   openAccordionItem(item, answer, icon) {
-    console.log('📖 [FAQ] Abriendo item:', item)
 
     // Preparar animación de entrada con más efectos
     answer.style.opacity = '0'
@@ -90,7 +89,6 @@ const FAQAccordionSystem = {
   },
 
   closeAccordionItem(item, answer, icon) {
-    console.log('📕 [FAQ] Cerrando item:', item)
 
     // Actualizar estado visual
     item.classList.remove(this.config.activeClass)
@@ -176,7 +174,6 @@ const FAQAccordionSystem = {
   },
 
   closeAccordionItemWithAnimation(item, answer, icon) {
-    console.log('📕 [FAQ] Cerrando item con animación completa:', item)
 
     // Actualizar estado visual inmediatamente
     item.classList.remove(this.config.activeClass)
@@ -266,7 +263,6 @@ const FAQAccordionSystem = {
     subQuestions.forEach(subQuestion => {
       subQuestion.addEventListener('click', function (e) {
         e.stopPropagation() // Evitar que se active el acordeón padre
-        console.log('🔍 [FAQ] Sub-pregunta clickeada:', this.textContent)
 
         // Aquí se puede agregar funcionalidad adicional
         // Por ejemplo, abrir un modal o expandir contenido adicional

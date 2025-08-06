@@ -25,27 +25,19 @@ const ResponsiveVideoSystem = {
 
   init() {
     try {
-      console.log('🎥 [DEBUG] Iniciando sistema de video...')
-      
       // Buscar por ID específico
       const videoContainer = document.getElementById('program-data-media')
       
       if (!videoContainer) {
-        console.log('🎥 [DEBUG] No se encontró contenedor con ID: program-data-media')
         return false
       }
-
-      console.log('🎥 [DEBUG] Contenedor encontrado:', videoContainer)
 
       // Obtener códigos de video (configuración o HTML)
       const mobileVideoId = this.getVideoCode('codeVideoMobile', videoContainer.dataset.videoMobile)
       const desktopVideoId = this.getVideoCode('codeVideoDesktop', videoContainer.dataset.videoDesktop)
       const breakpoint = parseInt(videoContainer.dataset.breakpoint) || this.config.defaultBreakpoint
 
-      console.log('🎥 [DEBUG] Videos:', { mobileVideoId, desktopVideoId, breakpoint })
-
       if (!mobileVideoId || !desktopVideoId) {
-        console.log('🎥 [DEBUG] Faltan códigos de video')
         return false
       }
 
@@ -53,10 +45,8 @@ const ResponsiveVideoSystem = {
       this.setupVideo(videoContainer, mobileVideoId, desktopVideoId, breakpoint)
       this.setupResponsiveListener(videoContainer, breakpoint)
 
-      console.log('🎥 [DEBUG] Sistema inicializado correctamente')
       return true
     } catch (error) {
-      console.error('🎥 [DEBUG] Error:', error)
       return false
     }
   },
@@ -78,7 +68,6 @@ const ResponsiveVideoSystem = {
     const videoId = isMobile ? mobileVideoId : desktopVideoId
     const deviceType = isMobile ? 'mobile' : 'desktop'
 
-    console.log(`🎥 [DEBUG] Dispositivo: ${deviceType}, cargando video: ${videoId}`)
 
     // Crear solo el iframe necesario
     const iframe = this.createIframe(videoId, deviceType)
@@ -140,7 +129,6 @@ const ResponsiveVideoSystem = {
 
     // Solo recargar si cambió el tipo de dispositivo
     if (currentDevice && currentDevice !== newDevice) {
-      console.log(`🎥 [DEBUG] Cambio de dispositivo: ${currentDevice} → ${newDevice}`)
       
       const mobileVideoId = container.getAttribute('data-mobile-video')
       const desktopVideoId = container.getAttribute('data-desktop-video')
@@ -166,14 +154,11 @@ const ResponsiveVideoSystem = {
 
 // Inicialización
 const initVideoSystem = () => {
-  console.log('🎥 [DEBUG] initVideoSystem llamado')
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('🎥 [DEBUG] DOMContentLoaded event')
       ResponsiveVideoSystem.init()
     })
   } else {
-    console.log('🎥 [DEBUG] DOM ya está listo, inicializando inmediatamente')
     ResponsiveVideoSystem.init()
   }
 }
@@ -183,6 +168,5 @@ export default initVideoSystem
 
 // También ejecutar inmediatamente en caso de compilación IIFE
 if (typeof window !== 'undefined') {
-  console.log('🎥 [DEBUG] Script cargado, ejecutando inicialización...')
   initVideoSystem()
 }
