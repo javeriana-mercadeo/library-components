@@ -6,7 +6,7 @@ import StateProgram from '@library/_configurations/stateProgram'
 import LoadTheme from '@library/_configurations/loadTheme'
 import LoadProgram from '@library/_configurations/loadProgram'
 import SelectWhatsapp from '@library/_configurations/selectWhatsapp'
-import selectWhatsappGral from '@library/_configurations/selectWhatsapp_gral'
+import SelectWhatsappGral from '@library/_configurations/selectWhatsapp_gral'
 import Splash from '@library/components/splash'
 import ViewComponent from '../viewComponent/viewComponent'
 
@@ -57,7 +57,7 @@ export default function ConfigurationSection() {
             </ViewComponent>
 
             <ViewComponent path='/_library/_configurations/selectWhatsapp_gral'>
-              <selectWhatsappGral />
+              <SelectWhatsappGral />
             </ViewComponent>
 
             <ViewComponent path='/_library/components/splash'>
