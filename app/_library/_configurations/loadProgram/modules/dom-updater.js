@@ -5,50 +5,10 @@
 import { DataFormatter } from './data-formatter.js'
 
 export const DOMUpdater = {
-  // Cache para elementos DOM - mejorado con TTL
-  _elementCache: new Map(),
-  _cacheTimeout: 60000, // 1 minuto
-
-  _getCachedElements(elementId) {
-    const cacheKey = elementId
-    const cached = this._elementCache.get(cacheKey)
-
-    if (cached && Date.now() - cached.timestamp < this._cacheTimeout) {
-      return cached.elements
-    }
-
-    // Usar DOMUtils global para búsqueda optimizada
-    let elements = DOMUtils.findElements(`[${elementId}='true']`)
-
-    // Fallback por ID si no se encuentra por atributo
-    if (elements.length === 0) {
-      const element = DOMUtils.findElement(`#${elementId}`)
-      elements = element ? [element] : []
-    }
-
-    this._elementCache.set(cacheKey, {
-      elements,
-      timestamp: Date.now()
-    })
-
-    return elements
-  },
-
   updateElementsText(elementId, value) {
     try {
-      const elements = this._getCachedElements(elementId)
-
-      for (const element of elements) {
-        const leadElements = DOMUtils.findElements('.lead', element)
-
-        if (leadElements.length > 0) {
-          leadElements.forEach(lead => {
-            lead.textContent = value
-          })
-        } else {
-          element.textContent = value
-        }
-      }
+      const elements = DOMUtils.findElements(`[${elementId}]`)
+      for (const element of elements) element.innerHTML = value
     } catch (error) {
       Logger.error(`Error actualizando DOM para ${elementId}:`, error)
     }
@@ -65,6 +25,23 @@ export const DOMUpdater = {
       // Limpiar contenedor existente
       DOMUtils.empty(container)
 
+      // Si no hay fechas disponibles, mostrar mensaje de próxima apertura
+      if (!fechasData || fechasData.length === 0) {
+        const dateItem = DOMUtils.createElement('div', {
+          className: 'program-dates_date-item'
+        })
+
+        const messageElement = DOMUtils.createElement('p', {
+          className: 'paragraph paragraph-neutral paragraph-md program-dates_date-period',
+          attributes: { 'data-component': 'paragraph' },
+          textContent: 'Próxima apertura siguiente semestre'
+        })
+
+        dateItem.appendChild(messageElement)
+        container.appendChild(dateItem)
+        return true
+      }
+
       // Crear elementos DOM de forma más segura
       fechasData.forEach(fecha => {
         const dateItem = DOMUtils.createElement('div', {
@@ -74,7 +51,7 @@ export const DOMUpdater = {
         const periodElement = DOMUtils.createElement('p', {
           className: 'paragraph paragraph-neutral paragraph-md paragraph-bold program-dates_date-period',
           attributes: { 'data-component': 'paragraph' },
-          textContent: `${DataFormatter.capitalizeFirst(fecha.descCiclo)}:`
+          textContent: `${DataFormatter.capitalizeFirst(fecha.descCiclo)}: `
         })
 
         const valueElement = DOMUtils.createElement('p', {
@@ -93,9 +70,5 @@ export const DOMUpdater = {
       Logger.error('Error actualizando fechas de registro:', error)
       return false
     }
-  },
-
-  clearCache() {
-    this._elementCache.clear()
   }
 }

@@ -8,8 +8,6 @@ export default function () {
       <LiferayDevBanner icon='ph ph-info' variant='info'>
         <span id='code-program-configuration'>meta data</span>
       </LiferayDevBanner>
-
-      
     </>
   )
 }

@@ -57,8 +57,8 @@ const DatosProgramaVideo = () => {
     {
       id: 'data-puj-clock',
       icon: 'ph-clock',
-      label: 'Horarios',
-      value: 'Cargando horarios...',
+      label: 'Horario',
+      value: 'Cargando horario...',
       type: 'normal'
     }
     /* {
@@ -97,7 +97,7 @@ const DatosProgramaVideo = () => {
           <Caption className={`${baseClass}_faculty`} size='md' bold={true} isEditable={false}>
             Facultad de{' '}
           </Caption>
-          <Caption data-puj-faculty='true' className={`${baseClass}_faculty`} size='md' bold={true} isEditable={false}>
+          <Caption data-puj-faculty className={`${baseClass}_faculty`} size='md' bold={true} isEditable={false}>
             Cargando facultad...
           </Caption>
         </div>
@@ -131,7 +131,12 @@ const DatosProgramaVideo = () => {
         </Paragraph>
 
         {/* === VIDEOS RESPONSIVOS === */}
-        <div id={`${baseClass}-media`} className={`${baseClass}_media`} data-video-mobile='HxlTZ8DQAaY' data-video-desktop='IWZvfiu3gX4' data-breakpoint='768'>
+        <div
+          id={`${baseClass}-media`}
+          className={`${baseClass}_media`}
+          data-video-mobile='HxlTZ8DQAaY'
+          data-video-desktop='IWZvfiu3gX4'
+          data-breakpoint='768'>
           {/* Placeholder para videos que se cargarán via JavaScript */}
         </div>
 

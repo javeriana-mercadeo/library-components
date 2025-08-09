@@ -126,25 +126,6 @@ const RelatedProgramsScript = () => {
     },
 
     processData(dataProgram, allPrograms) {
-      // Extraer campos
-      const { facultad, programa, snies, codPrograma, urlImagen, area, url } = dataProgram
-
-      let automationUpdates = {}
-
-      // Actualizar elementos si hay facultad disponible
-      if (facultad) {
-        const facultyElements = document.querySelectorAll('[data-puj-faculty]')
-        const formattedFaculty = this.formatProgramName(facultad)
-        facultyElements.forEach(el => {
-          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-            el.value = formattedFaculty
-          } else {
-            el.textContent = formattedFaculty
-          }
-        })
-        automationUpdates.faculty = true
-      }
-
       if (allPrograms && Array.isArray(allPrograms) && allPrograms.length > 0) {
         this.generateRelatedCarousel(dataProgram, allPrograms)
       }
@@ -160,9 +141,7 @@ const RelatedProgramsScript = () => {
 
       try {
         // Usar StringUtils.trim si está disponible, sino trim nativo
-        const trimmed = typeof StringUtils !== 'undefined' && StringUtils.trim 
-          ? StringUtils.trim(programName) 
-          : programName.trim()
+        const trimmed = typeof StringUtils !== 'undefined' && StringUtils.trim ? StringUtils.trim(programName) : programName.trim()
 
         // Usar StringUtils.capitalizeWords si está disponible
         if (typeof StringUtils !== 'undefined' && StringUtils.capitalizeWords) {
@@ -195,15 +174,50 @@ const RelatedProgramsScript = () => {
       // Conectores que deben ir en minúsculas (excepto al inicio)
       const connectors = [
         // Artículos
-        'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas',
+        'el',
+        'la',
+        'los',
+        'las',
+        'un',
+        'una',
+        'unos',
+        'unas',
         // Preposiciones
-        'de', 'del', 'al', 'en', 'con', 'por', 'para', 'sin', 'sobre', 'bajo', 
-        'entre', 'hacia', 'hasta', 'desde', 'durante', 'mediante', 'ante', 'tras', 
-        'según', 'como', 'a',
+        'de',
+        'del',
+        'al',
+        'en',
+        'con',
+        'por',
+        'para',
+        'sin',
+        'sobre',
+        'bajo',
+        'entre',
+        'hacia',
+        'hasta',
+        'desde',
+        'durante',
+        'mediante',
+        'ante',
+        'tras',
+        'según',
+        'como',
+        'a',
         // Conjunciones
-        'y', 'e', 'o', 'u', 'pero', 'mas', 'sino', 'aunque',
+        'y',
+        'e',
+        'o',
+        'u',
+        'pero',
+        'mas',
+        'sino',
+        'aunque',
         // Otros conectores
-        'que', 'cual', 'donde', 'cuando'
+        'que',
+        'cual',
+        'donde',
+        'cuando'
       ]
 
       let result = title
@@ -438,7 +452,6 @@ const RelatedProgramsScript = () => {
           }
         }
       })
-
     }
   }
 

@@ -32,7 +32,6 @@ export const ProgramDataProcessor = {
     let automationUpdates = {}
 
     if (facultad) {
-      // Aplicar normalización de facultad antes del formateo
       const normalizedFaculty = FacultyNormalizer.normalize(facultad)
       DOMUpdater.updateElementsText('data-puj-faculty', DataFormatter.formatProgramName(normalizedFaculty))
       automationUpdates.faculty = true
@@ -81,7 +80,7 @@ export const ProgramDataProcessor = {
       automationUpdates.schedule = true
     }
 
-    if (datosFechaCierreInscripcion && Array.isArray(datosFechaCierreInscripcion)) {
+    if (Array.isArray(datosFechaCierreInscripcion)) {
       DOMUpdater.updateRegistrationDates(datosFechaCierreInscripcion)
       automationUpdates.deadline = true
     }
