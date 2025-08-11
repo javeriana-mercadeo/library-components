@@ -7,6 +7,7 @@ const nextConfig = {
       '@styles': './styles'
     }
   },
+  
   // Configuración para Webpack (fallback)
   webpack: config => {
     config.resolve.alias = {

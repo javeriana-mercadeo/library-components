@@ -74,26 +74,35 @@ export default function ViewComponent({ path, children }: { path?: string; child
 
   // Cargar solo la información básica al montar (solo si hay path válido)
   useEffect(() => {
-    if (!path || path.trim() === '') return // No hacer nada si no hay path válido
+    if (!path || path.trim() === '') return
+
+    let isMounted = true // Flag para evitar memory leaks
 
     async function loadBasicInfo() {
       try {
-        const res = await fetch(`/api/build-modules?path=${encodeURIComponent(path ?? '')}`)
-        const { info, js } = await res.json()
+        const res = await fetch(`/api/component-info?path=${encodeURIComponent(path ?? '')}`)
+        const { info } = await res.json()
 
-        if (info) setInfo(info)
-        if (js) setScriptContent(js)
-      } catch (error) {
-        throw new Error('Error al cargar la información básica del componente', { cause: error })
+        // Solo actualizar estado si el componente sigue montado
+        if (isMounted) {
+          if (info) setInfo(info)
+          // No cargamos el script aquí, solo la info básica
+        }
+      } catch {
+        // console.error('Error al cargar la información básica del componente:', error)
       }
     }
 
     loadBasicInfo()
+
+    return () => {
+      isMounted = false
+    }
   }, [path])
 
-  // Función para cargar y procesar todo el código
+  // Función para cargar y procesar todo el código con manejo mejorado de memoria
   const loadAndProcessCode = async () => {
-    if (codeLoaded) return // Ya está cargado
+    if (codeLoaded) return
 
     setIsLoading(true)
 
@@ -102,9 +111,15 @@ export default function ViewComponent({ path, children }: { path?: string; child
         js = '',
         config = ''
 
-      // Solo hacer llamado a API si hay path válido
       if (path && path.trim() !== '') {
-        const res = await fetch(`/api/build-modules?path=${encodeURIComponent(path)}`)
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 30000) // Timeout de 30s
+
+        const res = await fetch(`/api/build-modules?path=${encodeURIComponent(path)}`, {
+          signal: controller.signal
+        })
+
+        clearTimeout(timeoutId)
 
         if (!res.ok) {
           throw new Error(`Error al cargar módulos: ${res.status}`)
@@ -116,21 +131,51 @@ export default function ViewComponent({ path, children }: { path?: string; child
         config = data.configuration ? JSON.stringify(data.configuration, null, 2) : ''
       }
 
-      // Procesar código en paralelo
-      const [formattedHtml, formattedCss, formattedJs, formattedConfig] = await Promise.all([
-        children ? prettierFormat(ReactDOMServer.renderToString(children), 'html') : '',
-        css ? prettierFormat(css, 'css') : '',
-        js ? prettierFormat(js, 'js') : '',
-        config ? prettierFormat(config, 'json') : ''
+      // Procesar código con límites de memoria
+      const processWithLimit = async (content: string, type: string) => {
+        if (content.length > 1000000) {
+          content = content.substring(0, 1000000) + '\n\n// ... contenido truncado por tamaño'
+        }
+
+        return content ? prettierFormat(content, type) : ''
+      }
+
+      // Generar HTML de forma más eficiente
+      let htmlContent = ''
+
+      if (children) {
+        try {
+          const htmlString = ReactDOMServer.renderToString(children)
+          
+          // Limpiar específicamente los links de preload que genera Next.js
+          const cleanedHtml = htmlString
+            .replace(/<link[^>]*rel="preload"[^>]*>/g, '') // Remover links de preload
+            .replace(/<!--\$-->/g, '') // Remover comentarios de React
+            .replace(/<!--\/\$-->/g, '') // Remover comentarios de cierre de React
+            .replace(/\s*rel="preload"/g, '') // Remover atributos preload sobrantes
+            .replace(/\s*fetchpriority="[^"]*"/g, '') // Remover fetchpriority
+            .replace(/\s*data-nimg="[^"]*"/g, '') // Remover data-nimg de Next.js
+            .replace(/\n\s*\n/g, '\n') // Limpiar líneas vacías extra
+          
+          htmlContent = await processWithLimit(cleanedHtml, 'html')
+        } catch (error) {
+          console.error('Error renderizando HTML:', error)
+          htmlContent = '<!-- Error renderizando componente -->'
+        }
+      }
+
+      const [formattedCss, formattedJs, formattedConfig] = await Promise.all([
+        processWithLimit(css, 'css'),
+        processWithLimit(js, 'js'),
+        processWithLimit(config, 'json')
       ])
 
-      setHtmlContent(formattedHtml)
+      setHtmlContent(htmlContent)
       setCssContent(formattedCss)
       setJsContent(formattedJs)
       setConfigContent(formattedConfig)
       setCodeLoaded(true)
     } catch {
-      // Mostrar contenido vacío en caso de error para evitar que el modal se quede cargando indefinidamente
       setHtmlContent('')
       setCssContent('')
       setJsContent('')
@@ -148,6 +193,36 @@ export default function ViewComponent({ path, children }: { path?: string; child
     }
   }, [isOpen, codeLoaded, isLoading])
 
+  // Función para recompilar el código
+  const handleRecompile = React.useCallback(async () => {
+    // Resetear el estado de carga de código
+    setCodeLoaded(false)
+    setHtmlContent('')
+    setCssContent('')
+    setJsContent('')
+    setConfigContent('')
+
+    // Resetear páginas
+    setHtmlPage(1)
+    setCssPage(1)
+    setJsPage(1)
+    setConfigPage(1)
+    setActiveCodeTab('')
+
+    // Forzar recarga del código
+    await loadAndProcessCode()
+  }, [])
+
+  // Función para resetear estados cuando se cierra el modal
+  const resetModalStates = React.useCallback(() => {
+    // Resetear páginas y estados
+    setHtmlPage(1)
+    setCssPage(1)
+    setJsPage(1)
+    setConfigPage(1)
+    setActiveCodeTab('')
+  }, [])
+
   // Efecto para resetear páginas cuando se cierra el modal
   useEffect(() => {
     if (!isOpen) {
@@ -155,11 +230,62 @@ export default function ViewComponent({ path, children }: { path?: string; child
       setCssPage(1)
       setJsPage(1)
       setConfigPage(1)
+      setActiveCodeTab('')
     }
   }, [isOpen])
 
-  // Manejar apertura del modal
+  // Efecto para manejar el scroll cuando el modal cambie de estado
+  useEffect(() => {
+    if (isOpen) {
+      // Asegurar que el cuerpo permita scroll
+      document.body.style.overflow = 'hidden'
+    } else {
+      // Restaurar scroll cuando se cierre
+      document.body.style.overflow = 'auto'
+      document.documentElement.style.overflow = 'auto'
+
+      // Limpiar focus residual
+      if (document.activeElement && document.activeElement !== document.body) {
+        ;(document.activeElement as HTMLElement).blur()
+      }
+
+      // Forzar scroll enable después de un pequeño delay
+      setTimeout(() => {
+        document.body.style.removeProperty('overflow')
+        document.documentElement.style.removeProperty('overflow')
+      }, 300)
+    }
+  }, [isOpen])
+
+  // Cleanup cuando el componente se desmonta
+  useEffect(() => {
+    return () => {
+      // Restaurar scroll si el modal estaba abierto
+      document.body.style.overflow = 'auto'
+      document.documentElement.style.overflow = 'auto'
+      document.body.style.removeProperty('overflow')
+      document.documentElement.style.removeProperty('overflow')
+
+      // Limpiar todos los estados para liberar memoria
+      setHtmlContent('')
+      setCssContent('')
+      setJsContent('')
+      setConfigContent('')
+      setCodeLoaded(false)
+      setInfo({})
+      setScriptContent('')
+    }
+  }, [])
+
+  // Manejar apertura del modal con limpieza de memoria
   const handleOpenModal = () => {
+    // Limpiar estados previos para evitar acumulación de memoria
+    if (!codeLoaded) {
+      setHtmlContent('')
+      setCssContent('')
+      setJsContent('')
+      setConfigContent('')
+    }
     onOpen()
   }
 
@@ -222,16 +348,6 @@ export default function ViewComponent({ path, children }: { path?: string; child
       await loadAndProcessCode()
     }
 
-    console.log('🔍 ViewComponent Download Debug:', {
-      path,
-      codeLoaded,
-      info,
-      htmlLength: htmlContent?.length || 0,
-      cssLength: cssContent?.length || 0,
-      jsLength: jsContent?.length || 0,
-      configLength: configContent?.length || 0
-    })
-
     await handleZipExport(info, htmlContent, cssContent, jsContent, configContent, containerRef)
   }
 
@@ -280,7 +396,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
         {children}
       </div>
 
-      {/* Modal para ver código */}
+      {/* Modal para ver código - Siguiendo patrón HeroUI recomendado */}
       <Modal
         backdrop='blur'
         classNames={{
@@ -289,15 +405,9 @@ export default function ViewComponent({ path, children }: { path?: string; child
           base: 'max-h-[80vh] max-w-[80vw] m-4',
           header: 'border-b border-divider flex-shrink-0',
           body: 'p-0 overflow-auto',
-          footer: 'border-t border-divider flex-shrink-0'
+          footer: 'border-t border-divider flex-shrink-0',
+          closeButton: 'cursor-pointer hover:bg-default-200 transition-colors'
         }}
-        closeButton={
-          <button
-            aria-label='Cerrar modal'
-            className='absolute top-3 right-3 z-10 flex items-center justify-center w-6 h-6 rounded-full bg-default-100 hover:bg-default-200 transition-colors'>
-            <i className='ph ph-x text-sm' />
-          </button>
-        }
         isDismissable={true}
         isKeyboardDismissDisabled={false}
         isOpen={isOpen}
@@ -324,7 +434,10 @@ export default function ViewComponent({ path, children }: { path?: string; child
         placement='center'
         scrollBehavior='inside'
         size='5xl'
-        onOpenChange={onOpenChange}>
+        onOpenChange={() => {
+          resetModalStates()
+          onOpenChange()
+        }}>
         <ModalContent>
           {onClose => (
             <>
@@ -354,24 +467,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
                       selectedKey={activeCodeTab}
                       onSelectionChange={key => handleTabChange(key.toString())}>
                       {codeElements.map(({ type, code, label, pages, currentPage, setPage }) => (
-                        <Tab
-                          key={type}
-                          title={
-                            <div className='flex items-center gap-2'>
-                              <span>{label}</span>
-                              <Chip color='default' size='sm' variant='flat'>
-                                {(code.length / 1024).toFixed(1)}KB
-                              </Chip>
-                              <Chip color='primary' size='sm' variant='flat'>
-                                {code.split('\n').length} líneas
-                              </Chip>
-                              {pages.length > 1 && (
-                                <Chip color='warning' size='sm' variant='flat'>
-                                  {pages.length} páginas
-                                </Chip>
-                              )}
-                            </div>
-                          }>
+                        <Tab key={type} title={<span>{label}</span>}>
                           <div className='h-full flex flex-col space-y-4'>
                             {/* Actions bar */}
                             <div className='flex justify-between items-center bg-default-50 border border-divider rounded-lg p-3 flex-shrink-0'>
@@ -379,23 +475,42 @@ export default function ViewComponent({ path, children }: { path?: string; child
                                 <p className='text-sm text-default-600'>
                                   {info.name} • {label}
                                 </p>
-                                {pages.length > 1 && (
-                                  <Chip color='warning' size='sm' variant='flat'>
-                                    Archivo grande: {pages.length} páginas
+                                <div className='flex items-center gap-2'>
+                                  <Chip color='default' size='sm' variant='flat'>
+                                    {(code.length / 1024).toFixed(1)}KB
                                   </Chip>
-                                )}
+                                  <Chip color='primary' size='sm' variant='flat'>
+                                    {code.split('\n').length} líneas
+                                  </Chip>
+                                  {pages.length > 1 && (
+                                    <Chip color='warning' size='sm' variant='flat'>
+                                      {pages.length} páginas
+                                    </Chip>
+                                  )}
+                                </div>
                               </div>
-                              <Snippet
-                                classNames={{
-                                  base: 'bg-default-100',
-                                  copyButton: 'text-default-600 hover:text-primary'
-                                }}
-                                codeString={code}
-                                size='sm'
-                                symbol=''
-                                variant='flat'>
-                                <span className='text-xs'>Copiar {label} completo</span>
-                              </Snippet>
+                              <div className='flex items-center gap-2'>
+                                <Button
+                                  color='warning'
+                                  isDisabled={isLoading}
+                                  size='sm'
+                                  startContent={<i className='ph ph-arrow-clockwise' />}
+                                  variant='flat'
+                                  onPress={handleRecompile}>
+                                  {isLoading ? 'Recompilando...' : 'Recompilar'}
+                                </Button>
+                                <Snippet
+                                  classNames={{
+                                    base: 'bg-default-100',
+                                    copyButton: 'text-default-600 hover:text-primary'
+                                  }}
+                                  codeString={code}
+                                  size='sm'
+                                  symbol=''
+                                  variant='flat'>
+                                  <span className='text-xs'>Copiar {label} completo</span>
+                                </Snippet>
+                              </div>
                             </div>
 
                             {/* Paginación superior */}

@@ -1,4 +1,4 @@
-import { Button as Btn, Paragraph, Title } from '@library/components'
+import { Button as Btn, Paragraph, Title, Image } from '@library/components'
 
 const ModalForm = () => {
   return (
@@ -10,11 +10,12 @@ const ModalForm = () => {
         aria-modal='true'
         aria-labelledby='modal-title'>
         {/* Imagen lateral - Solo visible en desktop */}
-        <div
+
+        <Image
+          id='modal-image'
+          src='https://www.javeriana.edu.co/recursosdb/d/info-prg/img_7769-1-'
+          alt='Imagen decorativa del modal'
           className='modal-image'
-          style={{
-            backgroundImage: 'url("https://bienalsca.co/wp-content/uploads/2022/11/APR2085.jpg")'
-          }}
         />
 
         {/* Contenedor del formulario */}
@@ -149,7 +150,13 @@ const ModalForm = () => {
 
                 {/* Autorización de datos dentro del scroll */}
                 <div className='authorization-section'>
-                  <p>¿Autorizas el tratamiento de tus datos personales?</p>
+                  <p>
+                    ¿Autorizas el tratamiento de tus datos personales de acuerdo con la
+                    <a href='https://cloud.cx.javeriana.edu.co/tratamiento_Datos_Javeriana_Eventos.html' target='_blank'>
+                      Política de Protección de Datos Personales
+                    </a>
+                    ?
+                  </p>
                   <div className='radio-group'>
                     <div className='radio-option'>
                       <input type='radio' id='auth_si_1' name='authorization_data' value='1' />

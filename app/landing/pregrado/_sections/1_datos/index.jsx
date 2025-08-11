@@ -104,6 +104,9 @@ const DatosProgramaVideo = () => {
 
         {/* === TÍTULO === */}
         <Title hierarchy='h1' isEditable={false} className={`${baseClass}_title`}>
+          <Caption id={`${elementName}_title-study`} className={`${baseClass}_title-program`}>
+            Estudia{' '}
+          </Caption>
           <Caption id={`${elementName}_title-program`} className={`${baseClass}_title-program`} data-puj-name='true'>
             Ingeniería Civil
           </Caption>
@@ -181,8 +184,8 @@ const DatosProgramaVideo = () => {
             Conoce el proceso de inscripción
           </Btn>
 
-          <Paragraph id={`${elementName}-enrollment-note`} className={`${baseClass}_enrollment-note`} size='sm'>
-            *Aspirantes 2025: El valor de matrícula corresponde al costo fijado para el año 2025.
+          <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
+            *Aspirantes 2025: el valor de matrícula corresponde al costo fijado para el año 2025.
           </Paragraph>
         </div>
 
@@ -213,7 +216,7 @@ const DatosProgramaVideo = () => {
               / Lugar donde se oferta:{' '}
             </Paragraph>
 
-            <Paragraph data-puj-location='true' className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
+            <Paragraph data-puj-full-location className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
               Cargando lugar...
             </Paragraph>
           </div>

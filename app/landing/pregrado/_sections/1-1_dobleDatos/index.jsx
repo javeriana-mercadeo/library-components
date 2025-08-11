@@ -48,10 +48,7 @@ const DatosProgramaVideo = () => {
       icon: 'ph-sun',
       label: 'Modalidad',
       value: 'Cargando modalidad...',
-      value2: 'Modalidad adicional...',
-      prefix: 'Diurna',
-      prefix2: 'Nocturna',
-      type: 'doble'
+      type: 'normal'
     },
     {
       id: 'data-puj-price',
@@ -116,6 +113,9 @@ const DatosProgramaVideo = () => {
 
         {/* === TÍTULO === */}
         <Title hierarchy='h1' isEditable={false} className={`${baseClass}_title`}>
+          <Caption id={`${elementName}_title-study`} className={`${baseClass}_title-program`}>
+            Estudia{' '}
+          </Caption>
           <Caption id={`${elementName}_title-program`} className={`${baseClass}_title-program`} data-puj-name='true'>
             Ingeniería Civil
           </Caption>
@@ -193,8 +193,8 @@ const DatosProgramaVideo = () => {
             Conoce el proceso de inscripción
           </Btn>
 
-          <Paragraph id={`${elementName}-enrollment-note`} className={`${baseClass}_enrollment-note`} size='sm'>
-            *Aspirantes 2025: El valor de matrícula corresponde al costo fijado para el año 2025.
+          <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
+            *Aspirantes 2025: el valor de matrícula corresponde al costo fijado para el año 2025.
           </Paragraph>
         </div>
 
@@ -211,13 +211,27 @@ const DatosProgramaVideo = () => {
               Acreditación de Alta Calidad: 9406 del 27 de mayo del 2022, vigente por 8 años, hasta el 27 de mayo de 2030.
             </Paragraph>
 
-            <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
+            <Paragraph id={`${elementName}-enrollment-duration`} className={`${baseClass}_enrollment-note`} size='sm'>
               {' '}
-              | Duración estimada:{' '}
+              | Duración estimada diurno:{' '}
             </Paragraph>
 
             <Paragraph data-puj-duration='true' className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
               Cargando duración...
+            </Paragraph>
+
+            <Paragraph id={`${elementName}-enrollment-duration-1`} className={`${baseClass}_enrollment-note`} size='sm'>
+              {' '}
+              | Duración estimada nocturno:{' '}
+            </Paragraph>
+
+            <Paragraph
+              id={`${elementName}-enrollment-duration-2`}
+              data-puj-duration='true'
+              className={`${baseClass}_enrollment-note`}
+              size='sm'
+              isEditable={false}>
+              0 semestres
             </Paragraph>
 
             <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
@@ -225,7 +239,7 @@ const DatosProgramaVideo = () => {
               / Lugar donde se oferta:{' '}
             </Paragraph>
 
-            <Paragraph data-puj-location='true' className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
+            <Paragraph data-puj-full-location className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
               Cargando lugar...
             </Paragraph>
           </div>

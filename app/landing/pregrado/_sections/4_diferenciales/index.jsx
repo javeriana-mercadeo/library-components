@@ -125,17 +125,24 @@ const Diferenciales = () => {
     <section id='section-four' className={baseClass}>
       <Container id={elementName} className={`${baseClass}__container`}>
         {/* Header de la sección */}
-        <header className={`${baseClass}__header`}>
-          <Title
-            id={`title-${elementName}-title`}
-            hierarchy='h2'
-            className={`${baseClass}__title`}
-            weight='semibold'
-            size='2xl'
-            align='center'>
-            ¿Por qué elegir la Javeriana?
-          </Title>
-        </header>
+        <Title className={`${baseClass}__header`} hierarchy='h2' weight='semibold' size='2xl' align='center' isEditable={false}>
+          <Caption id={`title-${elementName}-title`} className={`${baseClass}__title`}>
+            ¿Por qué estudiar{' '}
+          </Caption>
+          <Caption className={`${baseClass}__title`} data-puj-name isEditable={false}>
+            cargando programa...
+          </Caption>
+          <Caption id={`title-${elementName}-title-2`} className={`${baseClass}__title`}>
+            {' '}
+            en la Javeriana{' '}
+          </Caption>
+          <Caption className={`${baseClass}__title`} data-puj-simple-location isEditable={false}>
+            cargando ubicación...
+          </Caption>
+          <Caption id={`title-${elementName}-title-three`} className={`${baseClass}__title`}>
+            ?
+          </Caption>
+        </Title>
 
         {/* Contenido principal */}
         <div className={`${baseClass}__content`}>

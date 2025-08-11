@@ -63,29 +63,28 @@ const ProgramDetail = ({ id, icon, label, value, value2, prefix, prefix2, type =
           {type === 'doble' && (
             <div className='program-detail_content--doble'>
               {/* Primer valor desde API con estructura separada - todo en una línea */}
-              <Paragraph className='program-detail_value program-detail_value--primary' color='neutral' size='md' bold={true} isEditable={false}>
-                <Caption color='neutral' size='md' bold={true} isEditable={false}>
-                  {prefix || 'Diurna'}
-                </Caption>
-                <Caption color='neutral' size='md' bold={true} isEditable={false}>
-                  :{' '}
-                </Caption>
-                <Caption color='neutral' size='md' bold={true} isEditable={false} {...dynamicAttributes}>
+              <Paragraph
+                className='program-detail_value program-detail_value--primary'
+                color='neutral'
+                size='md'
+                bold={true}
+                isEditable={false}>
+                <Caption id={`${modalId}-prefix1`}>{prefix || 'Diurna'}: </Caption>
+
+                <Caption size='md' bold={true} isEditable={false} {...dynamicAttributes}>
                   {value}
                 </Caption>
               </Paragraph>
 
               {/* Segundo valor editable con estructura separada - todo en una línea */}
-              <Paragraph className='program-detail_value program-detail_value--primary' color='neutral' size='md' bold={true} isEditable={false}>
-                <Caption color='neutral' size='md' bold={true} isEditable={true}>
-                  {prefix2 || 'Nocturna'}
-                </Caption>
-                <Caption color='neutral' size='md' bold={true} isEditable={false}>
-                  :{' '}
-                </Caption>
-                <Caption color='neutral' size='md' bold={true} isEditable={true}>
-                  {value2}
-                </Caption>
+              <Paragraph
+                className='program-detail_value program-detail_value--primary'
+                color='neutral'
+                size='md'
+                bold={true}
+                isEditable={false}>
+                <Caption id={`${modalId}-prefix2`}>{prefix2 || 'Nocturna'}: </Caption>
+                <Caption id={`${modalId}-value2`}>{value2}</Caption>
               </Paragraph>
             </div>
           )}

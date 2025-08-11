@@ -3,7 +3,7 @@
 // ===========================================
 // Usa las utilidades globales disponibles en window
 
-import { FacultyNormalizer, DataFormatter } from './data-formatter.js'
+import { FacultyNormalizer, LocationNormalizer, DataFormatter } from './data-formatter.js'
 import { DOMUpdater } from './dom-updater.js'
 import { fetchProgramData, fetchAllPrograms, fetchWhatsApps, processData } from './api-client.js'
 import { CONFIG, updateStatus, dispatchEvent } from './utils.js'
@@ -86,7 +86,13 @@ export const ProgramDataProcessor = {
     }
 
     if (ciudad) {
-      DOMUpdater.updateElementsText('data-puj-location', DataFormatter.formatProgramName(ciudad))
+      const normalizedLocation = LocationNormalizer.normalize(ciudad)
+      DOMUpdater.updateElementsText('data-puj-full-location', normalizedLocation)
+
+      // Para data-puj-simple-location: si es Bogotá D.C., mostrar solo "Bogotá"
+      const simpleLocation = normalizedLocation === 'Bogotá D.C.' ? 'Bogotá' : normalizedLocation
+      DOMUpdater.updateElementsText('data-puj-simple-location', simpleLocation)
+
       automationUpdates.city = true
     }
 

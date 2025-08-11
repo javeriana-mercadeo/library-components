@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:memory": "node --max-old-space-size=4096 ./node_modules/.bin/next dev --turbopack",
+    "dev:memory-limit": "node --max-old-space-size=2048 --expose-gc ./node_modules/.bin/next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --fix",

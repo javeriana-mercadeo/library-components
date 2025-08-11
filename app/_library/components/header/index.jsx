@@ -32,7 +32,7 @@ const EncabezadoFix = () => {
           {/* CTA Buttons - Solo desktop */}
           <div className='header__cta'>
             <Btn elementId='info-btn' variant='faded' data-modal-target='contact-modal' isEditable={false}>
-              Recibe más Información
+              Recibe más información
             </Btn>
 
             <Btn
@@ -40,7 +40,7 @@ const EncabezadoFix = () => {
               isEditable={false}
               href='https://cs.javeriana.edu.co:9443/psp/CSADGST/EMPLOYEE/SA/c/UJ_INSCRIPCIONES_AUTOSERVICIO.UJ_AUTO_BIENVENIDO.GBL'
               target='_blank'>
-              ¡Inscríbete Ahora!
+              Inscríbete ahora
             </Btn>
           </div>
 
@@ -81,7 +81,7 @@ const EncabezadoFix = () => {
                       variant='light'
                       startIcon={<i className='ph ph-clipboard-text'></i>}
                       isEditable={false}>
-                      Proceso de Inscripción
+                      Proceso de inscripción
                     </Btn>
                   </li>
                   <li>
@@ -124,7 +124,7 @@ const EncabezadoFix = () => {
             isEditable={false}
             href='https://cs.javeriana.edu.co:9443/psp/CSADGST/EMPLOYEE/SA/c/UJ_INSCRIPCIONES_AUTOSERVICIO.UJ_AUTO_BIENVENIDO.GBL'
             target='_blank'>
-            ¡Inscríbete Ahora!
+            Inscríbete ahora
           </Btn>
           <Btn
             className='mobile-cta-fixed__btn'
@@ -134,7 +134,7 @@ const EncabezadoFix = () => {
             variant='faded'
             data-modal-target='contact-modal'
             isEditable={false}>
-            Recibe más Información
+            Recibe más información
           </Btn>
         </Container>
       </div>

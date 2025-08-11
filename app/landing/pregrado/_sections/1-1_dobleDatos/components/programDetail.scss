@@ -80,23 +80,20 @@
       &_value--primary,
       &_value--secondary {
         opacity: 1;
-        /* border: .0625rem dashed var(--neutral-600); */
-        /* background-color: var(--background-200); */
-        /* border-radius: .25rem; */
-        /* padding: .125rem .375rem; */
-        /* transition: all .2s; */
-        
+
         // Hacer que todos los elementos hijos se vean inline
         > * {
           display: inline;
           margin: 0;
         }
-        
+
         // También intentar con selectores más específicos
         .caption,
-        [class*="caption"],
+        [class*='caption'],
         span,
         p {
+          font-weight: var(--font-weight-bold) !important;
+          color: var(--neutral-500) !important;
           display: inline !important;
           margin: 0 !important;
         }

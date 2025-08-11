@@ -291,14 +291,14 @@ export async function GET(req: NextRequest) {
     // 📌 TEMPORAL: Deshabilitar cache para debuggear problema de archivos obsoletos
     // TODO: Volver a habilitar cuando se confirme que funciona correctamente
     const DISABLE_CACHE = true
-    
+
     // 📌 Verificar si necesita recompilación (a menos que se fuerce o esté deshabilitado el cache)
     if (!forceRecompile && !DISABLE_CACHE && !(await needsRecompilation(componentPath))) {
       const existingFiles = await loadCompiledFiles(componentPath)
 
       if (existingFiles) {
         // Usando cache
-        
+
         // Cargar información adicional si es un componente específico (para caché también)
         let info = null
         let configuration = null
@@ -435,7 +435,7 @@ export async function GET(req: NextRequest) {
               'process.env.NODE_ENV': '"production"'
             },
             banner: {
-              js: `// ===== CÓDIGO COMPILADO CON ESBUILD (IIFE) =====\n// Compilado el: ${colombianTime} (COT)\n// Archivo fuente: ${JS_FILE}\n// Sistema de utilidades globales v3.0\n`
+              js: `// ===== CÓDIGO COMPILADO CON ESBUILD (IIFE) =====\n// Compilado el: ${colombianTime} (COT)\n`
             }
           })
 

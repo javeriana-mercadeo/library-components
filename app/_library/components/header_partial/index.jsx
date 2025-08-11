@@ -35,7 +35,7 @@ const EncabezadoFix = () => {
               isEditable={false}
               href='https://cs.javeriana.edu.co:9443/psp/CSADGST/EMPLOYEE/SA/c/UJ_INSCRIPCIONES_AUTOSERVICIO.UJ_AUTO_BIENVENIDO.GBL'
               target='_blank'>
-              ¡Inscríbete Ahora!
+              Inscríbete ahora
             </Btn>
           </div>
 
@@ -76,7 +76,7 @@ const EncabezadoFix = () => {
                       variant='light'
                       startIcon={<i className='ph ph-clipboard-text'></i>}
                       isEditable={false}>
-                      Proceso de Inscripción
+                      Proceso de inscripción
                     </Btn>
                   </li>
                   <li>
@@ -119,7 +119,7 @@ const EncabezadoFix = () => {
             isEditable={false}
             href='https://cs.javeriana.edu.co:9443/psp/CSADGST/EMPLOYEE/SA/c/UJ_INSCRIPCIONES_AUTOSERVICIO.UJ_AUTO_BIENVENIDO.GBL'
             target='_blank'>
-            ¡Inscríbete Ahora!
+            Inscríbete ahora
           </Btn>
         </Container>
       </div>

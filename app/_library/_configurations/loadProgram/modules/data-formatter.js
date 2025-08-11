@@ -23,6 +23,30 @@ export const FacultyNormalizer = {
   }
 }
 
+// Normalización de ubicaciones/ciudades
+export const LocationNormalizer = {
+  normalize(locationName) {
+    if (!locationName || typeof locationName !== 'string') return ''
+
+    // Usar StringUtils.trim() global si está disponible
+    const trimmed = typeof StringUtils !== 'undefined' && StringUtils.trim 
+      ? StringUtils.trim(locationName) 
+      : locationName.trim()
+
+    // Mapeo de ubicaciones conocidas con formato inconsistente
+    const locationMappings = {
+      'Bogotá D.c.': 'Bogotá D.C.',
+      'Bogota D.c.': 'Bogotá D.C.',
+      'Bogota D.C.': 'Bogotá D.C.',
+      'BOGOTÁ D.c.': 'Bogotá D.C.',
+      'BOGOTA D.c.': 'Bogotá D.C.',
+      'bogotá d.c.': 'Bogotá D.C.'
+    }
+
+    return locationMappings[trimmed] || trimmed
+  }
+}
+
 // Sistema principal de formateo
 export const DataFormatter = {
   // Cache para números convertidos
@@ -232,10 +256,16 @@ export const DataFormatter = {
       return StringUtils.capitalizeWords(str)
     }
 
-    // Fallback con soporte para acentos españoles
-    return str.toLowerCase().replace(/(?:^|\s)([a-záéíóúüñ])/g, (match, letter) => {
+    // Fallback con soporte para acentos españoles y excepciones especiales
+    let result = str.toLowerCase().replace(/(?:^|\s)([a-záéíóúüñ])/g, (match, letter) => {
       return match.replace(letter, letter.toUpperCase())
     })
+
+    // Manejar excepciones especiales para siglas y abreviaciones
+    result = result.replace(/d\.c\./gi, 'D.C.')  // Cualquier variante de d.c.
+    result = result.replace(/D\.c\./g, 'D.C.')   // Específicamente D.c. → D.C.
+
+    return result
   },
 
   formatProgramName(programName) {
