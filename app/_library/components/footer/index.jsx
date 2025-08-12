@@ -31,7 +31,7 @@ const Footer = () => {
                 <div className='footer__video'>
                   <div className='footer__mp4'>
                     <video
-                      src='http://www.javeriana.edu.co/recursosdb/d/info-prg/javeriana-somos-todos-1'
+                      src='http://www.javeriana.edu.co/recursosdb/d/info-prg/javeriana_somos-todos-1'
                       className='video-player'
                       autoPlay
                       muted
@@ -67,19 +67,22 @@ const Footer = () => {
                   <div className='footer__icons'>
                     <p>Síguenos en nuestras redes sociales:</p>
                     <div className='footer__icons-links'>
-                      <a href='https://www.facebook.com/unijaveriana' aria-label='Facebook'>
+                      <a href='https://www.facebook.com/unijaveriana' target='_blank' aria-label='Facebook'>
                         <i className='ph ph-facebook-logo'></i>
                       </a>
-                      <a href='https://www.instagram.com/unijaveriana' aria-label='Instagram'>
+                      <a href='https://www.instagram.com/unijaveriana' target='_blank' aria-label='Instagram'>
                         <i className='ph ph-instagram-logo'></i>
                       </a>
-                      <a href='https://www.linkedin.com/school/pontificia-universidad-javeriana/mycompany/' aria-label='LinkedIn'>
+                      <a
+                        href='https://www.linkedin.com/school/pontificia-universidad-javeriana/mycompany/'
+                        target='_blank'
+                        aria-label='LinkedIn'>
                         <i className='ph ph-linkedin-logo'></i>
                       </a>
-                      <a href='https://www.tiktok.com/@unijaveriana' aria-label='TikTok'>
+                      <a href='https://www.tiktok.com/@unijaveriana' target='_blank' aria-label='TikTok'>
                         <i className='ph ph-tiktok-logo'></i>
                       </a>
-                      <a href='#' data-puj-link-whatsapp='true' aria-label='WhatsApp'>
+                      <a href='#' data-puj-link-whatsapp='true' target='_blank' aria-label='WhatsApp'>
                         <i className='ph ph-whatsapp-logo'></i>
                       </a>
                     </div>
@@ -101,7 +104,7 @@ const Footer = () => {
                   Sujeta a inspección y vigilancia por parte del Ministerio de Educación Nacional (Artículo 39 del decreto 1295 de 2010).
                 </p>
               </div>
-              <p>Copyright © 2024 Pontificia Universidad Javeriana</p>
+              <p>Copyright © 2025 Pontificia Universidad Javeriana</p>
             </div>
           </Container>
         </div>
