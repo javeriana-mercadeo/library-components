@@ -559,6 +559,59 @@ $nav-button-size-mobile: rem(30px);
 }
 
 // ==========================================
+// MODO GRID PARA THUMBNAILS (CENTRADO)
+// ==========================================
+.multimedia-slider_grid-mode {
+  .multimedia-slider_thumbs-wrapper {
+    // Los estilos Grid se aplican vía JavaScript para mayor flexibilidad
+    // Estilos adicionales para mejorar la apariencia
+    
+    .swiper-slide {
+      // Asegurar que los slides mantengan su tamaño
+      width: $multimedia-thumb-width !important;
+      height: $multimedia-thumb-height !important;
+      flex-shrink: 0;
+      
+      // Mejorar la transición del estado activo
+      transition: $multimedia-transition;
+      opacity: 0.7;
+      
+      &.swiper-slide-thumb-active {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+      
+      // Efecto hover para mejor UX
+      &:hover {
+        opacity: 1;
+        transform: scale(1.02);
+      }
+    }
+  }
+  
+  // Asegurar que los botones de navegación estén ocultos
+  .multimedia-slider_thumbs-next,
+  .multimedia-slider_thumbs-prev {
+    display: none !important;
+  }
+}
+
+// ==========================================
+// RESPONSIVE ADJUSTMENTS PARA MODO GRID
+// ==========================================
+@media (max-width: $breakpoint-sm) {
+  .multimedia-slider_grid-mode {
+    .multimedia-slider_thumbs-wrapper {
+      .swiper-slide {
+        // Thumbnails más pequeños en móvil para que quepan mejor
+        width: rem(80px) !important;
+        height: rem(60px) !important;
+      }
+    }
+  }
+}
+
+// ==========================================
 // CLASE DE DEBUGGING
 // ==========================================
 .debug-multimedia-slider {

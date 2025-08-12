@@ -375,23 +375,167 @@ const initializeMultimediaSlider = () => {
     })
   }
 
-  // Actualizar visibilidad de navegación basado en mobile first
-  const updateNavigationVisibility = () => {
+  // ==========================================
+  // SISTEMA DE ALTERNANCIA GRID/SWIPER PARA THUMBNAILS
+  // ==========================================
+  
+  // Calcular cuántos slides son visibles según el ancho actual
+  const calculateVisibleSlides = () => {
+    const width = window.innerWidth
+    const breakpoints = getBreakpointConfig()
+    
+    if (width >= 1024) return breakpoints[1024].slidesPerView
+    if (width >= 768) return breakpoints[768].slidesPerView  
+    if (width >= 480) return breakpoints[480].slidesPerView
+    return breakpoints[320].slidesPerView
+  }
+  
+  // Determinar si usar modo Grid (centrado) o Swiper (slider)
+  const shouldUseGridMode = () => {
+    const totalSlides = mediaContent.length
+    const visibleSlides = calculateVisibleSlides()
+    return totalSlides <= visibleSlides
+  }
+  
+  // Activar modo Grid (thumbnails centradas)
+  const activateGridMode = () => {
+    const thumbsContainer = document.querySelector('.multimedia-slider_thumbs-swiper')
+    const thumbsWrapper = document.querySelector('.multimedia-slider_thumbs-wrapper')
     const nextBtn = document.querySelector('.multimedia-slider_thumbs-next')
     const prevBtn = document.querySelector('.multimedia-slider_thumbs-prev')
-
-    if (!nextBtn || !prevBtn) return
-
-    const totalSlides = mediaContent.length
-    const currentSlidesPerView = window.multimediaThumbsSwiper?.params?.slidesPerView || 3
-    const needsNavigation = totalSlides > currentSlidesPerView
-
-    if (needsNavigation) {
-      nextBtn.style.cssText = 'display: flex; opacity: 1;'
-      prevBtn.style.cssText = 'display: flex; opacity: 1;'
+    
+    if (!thumbsContainer || !thumbsWrapper) return
+    
+    MultimediaLogger.log('Activando modo Grid (centrado) para thumbnails')
+    
+    // Destruir Swiper si existe
+    if (window.multimediaThumbsSwiper) {
+      window.multimediaThumbsSwiper.destroy(true, false)
+      window.multimediaThumbsSwiper = null
+    }
+    
+    // Aplicar estilos Grid
+    thumbsContainer.classList.add('multimedia-slider_grid-mode')
+    thumbsWrapper.style.cssText = `
+      display: grid !important;
+      grid-auto-flow: column !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      width: 100% !important;
+      transform: none !important;
+    `
+    
+    // Agregar funcionalidad de click manual para thumbnails en modo Grid
+    setupGridModeClickHandlers()
+    
+    // Ocultar botones de navegación
+    if (nextBtn) nextBtn.style.display = 'none'
+    if (prevBtn) prevBtn.style.display = 'none'
+  }
+  
+  // Configurar manejo de clicks en modo Grid
+  const setupGridModeClickHandlers = () => {
+    const thumbSlides = document.querySelectorAll('.multimedia-slider_thumbs-wrapper .swiper-slide')
+    
+    thumbSlides.forEach((thumb, index) => {
+      // Remover listeners anteriores si existen
+      thumb.removeEventListener('click', thumb._gridClickHandler)
+      
+      // Crear nuevo handler
+      thumb._gridClickHandler = () => {
+        // Ir al slide correspondiente en el slider principal
+        if (window.multimediaMainSwiper) {
+          window.multimediaMainSwiper.slideTo(index)
+        }
+        
+        // Actualizar estado activo de thumbnails
+        thumbSlides.forEach(t => t.classList.remove('swiper-slide-thumb-active'))
+        thumb.classList.add('swiper-slide-thumb-active')
+        
+        MultimediaLogger.log(`Click en thumbnail Grid - Slide ${index}`)
+      }
+      
+      // Agregar listener
+      thumb.addEventListener('click', thumb._gridClickHandler)
+      
+      // Aplicar estilos de cursor
+      thumb.style.cursor = 'pointer'
+    })
+    
+    // Marcar el primer thumbnail como activo
+    if (thumbSlides.length > 0) {
+      thumbSlides.forEach(t => t.classList.remove('swiper-slide-thumb-active'))
+      thumbSlides[0].classList.add('swiper-slide-thumb-active')
+    }
+  }
+  
+  // Sincronizar thumbnail activo en modo Grid cuando cambie el slider principal
+  const syncGridModeActiveThumb = (activeIndex) => {
+    const thumbsContainer = document.querySelector('.multimedia-slider_thumbs-swiper')
+    
+    // Solo funciona en modo Grid
+    if (!thumbsContainer.classList.contains('multimedia-slider_grid-mode')) return
+    
+    const thumbSlides = document.querySelectorAll('.multimedia-slider_thumbs-wrapper .swiper-slide')
+    
+    thumbSlides.forEach((thumb, index) => {
+      if (index === activeIndex) {
+        thumb.classList.add('swiper-slide-thumb-active')
+      } else {
+        thumb.classList.remove('swiper-slide-thumb-active')
+      }
+    })
+    
+    MultimediaLogger.log(`Sincronizado thumbnail Grid activo: ${activeIndex}`)
+  }
+  
+  // Activar modo Swiper (slider normal)
+  const activateSwiperMode = () => {
+    const thumbsContainer = document.querySelector('.multimedia-slider_thumbs-swiper')
+    const thumbsWrapper = document.querySelector('.multimedia-slider_thumbs-wrapper')
+    const nextBtn = document.querySelector('.multimedia-slider_thumbs-next')
+    const prevBtn = document.querySelector('.multimedia-slider_thumbs-prev')
+    
+    if (!thumbsContainer || !thumbsWrapper) return
+    
+    MultimediaLogger.log('Activando modo Swiper (slider) para thumbnails')
+    
+    // Remover estilos Grid
+    thumbsContainer.classList.remove('multimedia-slider_grid-mode')
+    thumbsWrapper.style.cssText = ''
+    
+    // Recrear Swiper solo si no existe
+    if (!window.multimediaThumbsSwiper) {
+      window.multimediaThumbsSwiper = new window.Swiper('.multimedia-slider_thumbs-swiper', {
+        spaceBetween: 8,
+        slidesPerView: 3,
+        freeMode: true,
+        watchSlidesProgress: true,
+        navigation: {
+          nextEl: '.multimedia-slider_thumbs-next',
+          prevEl: '.multimedia-slider_thumbs-prev'
+        },
+        breakpoints: getBreakpointConfig()
+      })
+    }
+    
+    // Mostrar botones de navegación
+    if (nextBtn) nextBtn.style.cssText = 'display: flex; opacity: 1;'
+    if (prevBtn) prevBtn.style.cssText = 'display: flex; opacity: 1;'
+    
+    // Conectar con slider principal si existe
+    if (window.multimediaMainSwiper && window.multimediaThumbsSwiper) {
+      window.multimediaMainSwiper.controller.control = window.multimediaThumbsSwiper
+      window.multimediaThumbsSwiper.controller.control = window.multimediaMainSwiper
+    }
+  }
+  
+  // Función principal para decidir y aplicar el modo correcto
+  const updateThumbnailsMode = () => {
+    if (shouldUseGridMode()) {
+      activateGridMode()
     } else {
-      nextBtn.style.display = 'none'
-      prevBtn.style.display = 'none'
+      activateSwiperMode()
     }
   }
 
@@ -404,29 +548,16 @@ const initializeMultimediaSlider = () => {
     1024: { slidesPerView: 6, spaceBetween: 10 }
   })
 
-  // Inicializar slider de miniaturas con mobile first
-  window.multimediaThumbsSwiper = new window.Swiper('.multimedia-slider_thumbs-swiper', {
-    // Configuración base para móvil
-    spaceBetween: 8,
-    slidesPerView: 3,
-    freeMode: true,
-    watchSlidesProgress: true,
-    // Navegación
-    navigation: {
-      nextEl: '.multimedia-slider_thumbs-next',
-      prevEl: '.multimedia-slider_thumbs-prev'
-    },
-    // Breakpoints mobile first
-    breakpoints: getBreakpointConfig()
-  })
+  // Aplicar modo correcto (Grid o Swiper) según cantidad de slides
+  updateThumbnailsMode()
 
   // Inicializar slider principal
   window.multimediaMainSwiper = new window.Swiper('.multimedia-slider_main-swiper', {
     spaceBetween: 10,
     loop: true,
-    // Conectar con thumbnails
+    // Conectar con thumbnails solo si existe Swiper de thumbnails
     thumbs: {
-      swiper: window.multimediaThumbsSwiper
+      swiper: window.multimediaThumbsSwiper || null
     },
     // Eventos del slider
     on: {
@@ -437,7 +568,10 @@ const initializeMultimediaSlider = () => {
           slide.dataset.slideIndex = index
         })
 
-        updateNavigationVisibility()
+        // Conectar thumbnails si están en modo Swiper
+        if (window.multimediaThumbsSwiper) {
+          this.thumbs.swiper = window.multimediaThumbsSwiper
+        }
 
         // Controlar videos después de inicialización
         setTimeout(() => {
@@ -445,13 +579,16 @@ const initializeMultimediaSlider = () => {
         }, 200)
       },
       slideChange: function () {
+        // Sincronizar thumbnail activo en modo Grid
+        syncGridModeActiveThumb(this.realIndex)
+        
         // Manejar videos en cambio de slide
         setTimeout(() => {
           handleVideoSlides()
         }, 100)
       },
       update: function () {
-        updateNavigationVisibility()
+        updateThumbnailsMode()
       }
     }
   })
@@ -464,13 +601,16 @@ const initializeMultimediaSlider = () => {
     }
 
     resizeTimeout = setTimeout(() => {
+      // Recalcular modo según nuevo tamaño de pantalla
+      updateThumbnailsMode()
+      
+      // Actualizar sliders si están activos
       if (window.multimediaMainSwiper) {
         window.multimediaMainSwiper.update()
       }
       if (window.multimediaThumbsSwiper) {
         window.multimediaThumbsSwiper.update()
       }
-      updateNavigationVisibility()
     }, 250)
   }
 
@@ -525,4 +665,55 @@ EJEMPLO DE USO EN PRODUCCIÓN:
 - En desarrollo: enabled: true (línea 6)
 - En producción: enabled: false (línea 6)
 - Para debugging en vivo: MultimediaLogger.toggle(true) en consola
+
+CONTROL DEL SISTEMA GRID/SWIPER DESDE CONSOLA:
+- Forzar modo Grid: window.MultimediaGridControl.forceGridMode()
+- Forzar modo Swiper: window.MultimediaGridControl.forceSwiperMode()
+- Modo automático: window.MultimediaGridControl.autoMode()
+- Ver estado actual: window.MultimediaGridControl.getStatus()
 */
+
+// ==========================================
+// CONTROL GLOBAL PARA DEBUGGING
+// ==========================================
+if (typeof window !== 'undefined') {
+  window.MultimediaGridControl = {
+    forceGridMode: () => {
+      if (typeof activateGridMode === 'function') {
+        activateGridMode()
+        MultimediaLogger.log('Modo Grid forzado desde consola')
+      }
+    },
+    
+    forceSwiperMode: () => {
+      if (typeof activateSwiperMode === 'function') {
+        activateSwiperMode()
+        MultimediaLogger.log('Modo Swiper forzado desde consola')
+      }
+    },
+    
+    autoMode: () => {
+      if (typeof updateThumbnailsMode === 'function') {
+        updateThumbnailsMode()
+        MultimediaLogger.log('Modo automático activado desde consola')
+      }
+    },
+    
+    getStatus: () => {
+      const container = document.querySelector('.multimedia-slider_thumbs-swiper')
+      const isGridMode = container?.classList.contains('multimedia-slider_grid-mode')
+      const totalSlides = document.querySelectorAll('.multimedia-slider_thumbs-wrapper .swiper-slide').length
+      const visibleSlides = window.innerWidth >= 1024 ? 6 : 
+                           window.innerWidth >= 768 ? 5 :
+                           window.innerWidth >= 480 ? 4 : 3
+      
+      return {
+        currentMode: isGridMode ? 'Grid (Centrado)' : 'Swiper (Slider)',
+        totalSlides,
+        visibleSlides,
+        shouldUseGrid: totalSlides <= visibleSlides,
+        windowWidth: window.innerWidth
+      }
+    }
+  }
+}
