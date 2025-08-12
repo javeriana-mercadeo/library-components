@@ -71,25 +71,25 @@ const MultimediaSlider = () => {
   ]
 
   // ==========================================
-  // FUNCIÓN PARA PAUSAR/REPRODUCIR VIDEOS
+  // FUNCIÓN PARA CONTROLAR VISIBILIDAD DE VIDEOS
   // ==========================================
-  const controlVideoPlayback = indexToPlay => {
+  // OPTIMIZACIÓN: Usar solo CSS para control de visibilidad en lugar de postMessage API
+  // Esto evita problemas de autoplay en Liferay y mejora la compatibilidad
+  const controlVideoVisibility = indexToPlay => {
     mediaContent.forEach((item, index) => {
-      if (item.type === 'youtube' && videoRefs.current[item.videoId]?.contentWindow) {
+      if (item.type === 'youtube' && videoRefs.current[item.videoId]) {
         const iframe = videoRefs.current[item.videoId]
         if (index === indexToPlay) {
-          // Play video activo
-          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*')
-          iframe.style.display = 'block' // Mostrar el iframe
+          // Mostrar video activo
+          iframe.style.display = 'block'
           // Ocultar la imagen si existe
           const img = iframe.previousElementSibling
           if (img && img.tagName === 'IMG') {
             img.style.opacity = '0'
           }
         } else {
-          // Pausar y ocultar videos inactivos
-          iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
-          iframe.style.display = 'none' // Ocultar el iframe
+          // Ocultar videos inactivos
+          iframe.style.display = 'none'
           // Mostrar la imagen si existe
           const img = iframe.previousElementSibling
           if (img && img.tagName === 'IMG') {
@@ -147,12 +147,12 @@ const MultimediaSlider = () => {
         on: {
           init: function () {
             setCurrentSlideIndex(this.realIndex)
-            // Asegurarse de que el primer video se controle al inicio
-            controlVideoPlayback(this.realIndex)
+            // Controlar visibilidad del primer video
+            controlVideoVisibility(this.realIndex)
           },
           slideChange: function () {
             setCurrentSlideIndex(this.realIndex)
-            controlVideoPlayback(this.realIndex)
+            controlVideoVisibility(this.realIndex)
           }
           // Manejar clicks en el slide principal para videos si fuera necesario (opcional)
           // click: function(swiper, event) {
@@ -231,13 +231,14 @@ const MultimediaSlider = () => {
             style={{ zIndex: 1, position: 'absolute', width: '100%', height: '100%', objectFit: 'cover' }}
           />
           <iframe
-            ref={el => (videoRefs.current[item.videoId] = el)} // Asignar la referencia
-            src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${item.videoId}&rel=0&showinfo=0&modestbranding=1`}
+            ref={el => (videoRefs.current[item.videoId] = el)}
+            src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=1&playlist=${item.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&enablejsapi=0`}
             frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="autoplay; encrypted-media"
             allowFullScreen
+            loading="lazy"
             title={item.title}
-            style={{ display: index === currentSlideIndex ? 'block' : 'none', zIndex: 2 }} // Control de visibilidad
+            style={{ display: index === currentSlideIndex ? 'block' : 'none', zIndex: 2 }}
           ></iframe>
           {/* Overlay con texto para videos */}
           <div className={`${baseClass}_content-text-overlay`}>
