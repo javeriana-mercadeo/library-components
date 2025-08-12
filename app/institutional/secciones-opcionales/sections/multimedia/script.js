@@ -1,3 +1,63 @@
+// ==========================================
+// SISTEMA DE LOGS CONFIGURABLE
+// ==========================================
+const MultimediaLogger = {
+  // Configuración de logs (cambiar a false para producción)
+  enabled: false, // Cambiar a false para desactivar todos los logs
+
+  log: function (message, data = null) {
+    if (!this.enabled) return
+    if (data) {
+      console.log(`📱 [Multimedia] ${message}`, data)
+    } else {
+      console.log(`📱 [Multimedia] ${message}`)
+    }
+  },
+
+  warn: function (message, data = null) {
+    if (!this.enabled) return
+    if (data) {
+      console.warn(`⚠️ [Multimedia] ${message}`, data)
+    } else {
+      console.warn(`⚠️ [Multimedia] ${message}`)
+    }
+  },
+
+  error: function (message, data = null) {
+    if (!this.enabled) return
+    if (data) {
+      console.error(`❌ [Multimedia] ${message}`, data)
+    } else {
+      console.error(`❌ [Multimedia] ${message}`)
+    }
+  },
+
+  info: function (message, data = null) {
+    if (!this.enabled) return
+    if (data) {
+      console.info(`ℹ️ [Multimedia] ${message}`, data)
+    } else {
+      console.info(`ℹ️ [Multimedia] ${message}`)
+    }
+  },
+
+  // Método para activar/desactivar logs en tiempo real
+  toggle: function (enable = null) {
+    if (enable !== null) {
+      this.enabled = enable
+    } else {
+      this.enabled = !this.enabled
+    }
+    this.log(`Logs ${this.enabled ? 'activados' : 'desactivados'}`)
+    return this.enabled
+  }
+}
+
+// Exponer logger globalmente para control desde consola
+if (typeof window !== 'undefined') {
+  window.MultimediaLogger = MultimediaLogger
+}
+
 const initializeMultimediaSlider = () => {
   // Destruir instancias existentes si existen
   if (window.multimediaMainSwiper) {
@@ -9,7 +69,7 @@ const initializeMultimediaSlider = () => {
 
   // Verificar que Swiper esté disponible
   if (!window.Swiper) {
-    console.error('Swiper no está disponible')
+    MultimediaLogger.error('Swiper no está disponible')
     return
   }
 
@@ -18,49 +78,239 @@ const initializeMultimediaSlider = () => {
   const thumbsElement = document.querySelector('.multimedia-slider_thumbs-swiper')
 
   if (!mainElement || !thumbsElement) {
-    console.warn('Elementos del slider multimedia no encontrados')
+    MultimediaLogger.warn('Elementos del slider multimedia no encontrados')
     return
   }
 
-  // Datos del contenido multimedia (hardcoded para demo)
-  const mediaContent = [
-    {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-      title: 'Paisaje Natural',
-      thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
-    },
-    {
-      type: 'youtube',
-      videoId: 'dQw4w9WgXcQ',
-      title: 'Video Musical',
-      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg'
-    },
-    {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-      title: 'Arquitectura Moderna',
-      thumbnail: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
-    },
-    {
-      type: 'youtube',
-      videoId: 'jNQXAC9IVRw',
-      title: 'Video Educativo',
-      thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg'
-    },
-    {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
-      title: 'Bosque Encantado',
-      thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
-    },
-    {
-      type: 'youtube',
-      videoId: 'M7lc1UVf-VE',
-      title: 'Video Tecnológico',
-      thumbnail: 'https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg'
+  // ==========================================
+  // FUNCIÓN PARA EXTRAER DATOS DEL DOM Y INTERCALAR
+  // ==========================================
+  const extractAndIntercalateContent = () => {
+    // Extraer imágenes del DOM
+    const imageSlides = Array.from(document.querySelectorAll('.multimedia-slider_main-slide img[data-lfr-editable-id*="main-image"]')).map(
+      (img, index) => {
+        const slide = img.closest('.multimedia-slider_main-slide')
+        const titleElement = slide.querySelector('[data-lfr-editable-id*="image-title"]')
+        const paragraphElement = slide.querySelector('[data-lfr-editable-id*="image-overlay-text"]')
+
+        return {
+          type: 'image',
+          src: img.src,
+          title: titleElement ? titleElement.textContent.trim() : '',
+          paragraph: paragraphElement ? paragraphElement.textContent.trim() : '',
+          thumbnail: img.src, // Usar la misma imagen como thumbnail
+          originalIndex: index
+        }
+      }
+    )
+
+    // Extraer videos del DOM
+    const videoSlides = Array.from(document.querySelectorAll('.multimedia-slider_main-slide iframe[data-lfr-editable-id*="video-id"]')).map(
+      (iframe, index) => {
+        const slide = iframe.closest('.multimedia-slider_main-slide')
+        const titleElement = slide.querySelector('[data-lfr-editable-id*="video-title"]')
+        const paragraphElement = slide.querySelector('[data-lfr-editable-id*="video-overlay-text"]')
+
+        // Extraer videoId de la URL del iframe
+        const srcUrl = iframe.src
+        const videoIdMatch = srcUrl.match(/embed\/([a-zA-Z0-9_-]+)/)
+        const videoId = videoIdMatch ? videoIdMatch[1] : ''
+
+        return {
+          type: 'youtube',
+          videoId: videoId,
+          title: titleElement ? titleElement.textContent.trim() : '',
+          paragraph: paragraphElement ? paragraphElement.textContent.trim() : '',
+          thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+          originalIndex: index
+        }
+      }
+    )
+
+    // INTERCALACIÓN AUTOMÁTICA: Alternar imagen-video-imagen-video...
+    const intercalatedContent = []
+    const maxLength = Math.max(imageSlides.length, videoSlides.length)
+
+    for (let i = 0; i < maxLength; i++) {
+      // Agregar imagen si existe
+      if (i < imageSlides.length) {
+        intercalatedContent.push(imageSlides[i])
+      }
+
+      // Agregar video si existe
+      if (i < videoSlides.length) {
+        intercalatedContent.push(videoSlides[i])
+      }
     }
-  ]
+
+    MultimediaLogger.info(
+      `Contenido intercalado: ${imageSlides.length} imágenes + ${videoSlides.length} videos = ${intercalatedContent.length} slides totales`
+    )
+
+    return intercalatedContent
+  }
+
+  // Obtener contenido intercalado del DOM
+  const mediaContent = extractAndIntercalateContent()
+
+  // ==========================================
+  // FUNCIÓN PARA RECONSTRUIR SLIDES CON CONTENIDO INTERCALADO
+  // ==========================================
+  const rebuildSlidesWithIntercalation = content => {
+    const mainWrapper = document.querySelector('.multimedia-slider_main-wrapper')
+    const thumbsWrapper = document.querySelector('.multimedia-slider_thumbs-wrapper')
+
+    if (!mainWrapper || !thumbsWrapper) {
+      MultimediaLogger.warn('Wrappers del slider no encontrados')
+      return
+    }
+
+    // Limpiar contenido existente
+    mainWrapper.innerHTML = ''
+    thumbsWrapper.innerHTML = ''
+
+    // Crear slides intercalados
+    content.forEach((item, index) => {
+      // Crear slide principal
+      const mainSlide = createMainSlide(item, index)
+      mainWrapper.appendChild(mainSlide)
+
+      // Crear thumbnail
+      const thumbSlide = createThumbSlide(item, index)
+      thumbsWrapper.appendChild(thumbSlide)
+    })
+
+    MultimediaLogger.log(`Slider reconstruido con ${content.length} slides intercalados`)
+  }
+
+  // ==========================================
+  // FUNCIÓN PARA CREAR SLIDE PRINCIPAL
+  // ==========================================
+  const createMainSlide = (item, index) => {
+    const slide = document.createElement('div')
+    slide.className = 'multimedia-slider_main-slide swiper-slide'
+    slide.setAttribute('role', 'listitem')
+    slide.setAttribute('data-slide-index', index)
+
+    if (item.type === 'image') {
+      slide.innerHTML = `
+        <img 
+          src="${item.src}" 
+          alt="${item.title || ''}"
+          data-lfr-editable-id="multimedia-main-image-${index}"
+          data-lfr-editable-type="image"
+        />
+        <div class="multimedia-slider_content-text-overlay">
+          <div class="multimedia-slider_overlay-content">
+            ${
+              item.title
+                ? `
+              <h3 class="multimedia-slider_overlay-title"
+                  data-lfr-editable-id="multimedia-image-title-${index}"
+                  data-lfr-editable-type="text">
+                ${item.title}
+              </h3>
+            `
+                : ''
+            }
+            ${
+              item.paragraph
+                ? `
+              <p class="multimedia-slider_overlay-text"
+                 data-lfr-editable-id="multimedia-image-overlay-text-${index}"
+                 data-lfr-editable-type="rich-text">
+                ${item.paragraph}
+              </p>
+            `
+                : ''
+            }
+          </div>
+        </div>
+      `
+    } else if (item.type === 'youtube') {
+      slide.innerHTML = `
+        <img
+          src="${item.thumbnail}"
+          alt="${item.title || ''}"
+          style="z-index: 1; position: absolute; width: 100%; height: 100%; object-fit: cover;"
+        />
+        <iframe
+          src="https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=1&playlist=${item.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&enablejsapi=0"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+          loading="lazy"
+          title="${item.title || ''}"
+          style="display: none; z-index: 2;"
+          data-lfr-editable-id="multimedia-video-id-${index}"
+          data-lfr-editable-type="text"
+        ></iframe>
+        <div class="multimedia-slider_content-text-overlay">
+          <div class="multimedia-slider_overlay-content">
+            ${
+              item.title
+                ? `
+              <h3 class="multimedia-slider_overlay-title"
+                  data-lfr-editable-id="multimedia-video-title-${index}"
+                  data-lfr-editable-type="text">
+                ${item.title}
+              </h3>
+            `
+                : ''
+            }
+            ${
+              item.paragraph
+                ? `
+              <p class="multimedia-slider_overlay-text"
+                 data-lfr-editable-id="multimedia-video-overlay-text-${index}"
+                 data-lfr-editable-type="rich-text">
+                ${item.paragraph}
+              </p>
+            `
+                : ''
+            }
+          </div>
+        </div>
+      `
+    }
+
+    return slide
+  }
+
+  // ==========================================
+  // FUNCIÓN PARA CREAR THUMBNAIL
+  // ==========================================
+  const createThumbSlide = (item, index) => {
+    const slide = document.createElement('div')
+    slide.className = 'multimedia-slider_thumb-slide swiper-slide'
+    slide.setAttribute('role', 'listitem')
+
+    if (item.type === 'image') {
+      slide.innerHTML = `
+        <img 
+          src="${item.thumbnail}" 
+          alt="${item.title || ''}"
+          data-lfr-editable-id="multimedia-thumb-image-${index}"
+          data-lfr-editable-type="image"
+        />
+      `
+    } else if (item.type === 'youtube') {
+      slide.innerHTML = `
+        <img 
+          src="${item.thumbnail}" 
+          alt="${item.title || ''}"
+        />
+        <div class="multimedia-slider_video-indicator">VIDEO</div>
+      `
+    }
+
+    return slide
+  }
+
+  // Aplicar intercalación si hay contenido
+  if (mediaContent && mediaContent.length > 0) {
+    rebuildSlidesWithIntercalation(mediaContent)
+  }
 
   // Crear iframe optimizado para autoplay sin JS API
   const createAutoplayIframe = videoId => {
@@ -129,7 +379,7 @@ const initializeMultimediaSlider = () => {
   const updateNavigationVisibility = () => {
     const nextBtn = document.querySelector('.multimedia-slider_thumbs-next')
     const prevBtn = document.querySelector('.multimedia-slider_thumbs-prev')
-    
+
     if (!nextBtn || !prevBtn) return
 
     const totalSlides = mediaContent.length
@@ -186,9 +436,9 @@ const initializeMultimediaSlider = () => {
         slides.forEach((slide, index) => {
           slide.dataset.slideIndex = index
         })
-        
+
         updateNavigationVisibility()
-        
+
         // Controlar videos después de inicialización
         setTimeout(() => {
           handleVideoSlides()
@@ -212,7 +462,7 @@ const initializeMultimediaSlider = () => {
     if (resizeTimeout) {
       clearTimeout(resizeTimeout)
     }
-    
+
     resizeTimeout = setTimeout(() => {
       if (window.multimediaMainSwiper) {
         window.multimediaMainSwiper.update()
@@ -249,3 +499,30 @@ const checkAndInit = () => {
 
 // Iniciar el proceso
 checkAndInit()
+
+// ==========================================
+// INSTRUCCIONES DE USO DEL SISTEMA DE LOGS
+// ==========================================
+/* 
+CONTROL DE LOGS:
+
+1. PARA PRODUCCIÓN:
+   - Cambiar la línea 6: enabled: false
+
+2. CONTROL DESDE CONSOLA DEL NAVEGADOR:
+   - Desactivar logs: MultimediaLogger.toggle(false)
+   - Activar logs: MultimediaLogger.toggle(true)
+   - Alternar estado: MultimediaLogger.toggle()
+   - Ver estado actual: MultimediaLogger.enabled
+
+3. TIPOS DE LOGS DISPONIBLES:
+   - MultimediaLogger.log() - Información general
+   - MultimediaLogger.info() - Información detallada 
+   - MultimediaLogger.warn() - Advertencias
+   - MultimediaLogger.error() - Errores
+
+EJEMPLO DE USO EN PRODUCCIÓN:
+- En desarrollo: enabled: true (línea 6)
+- En producción: enabled: false (línea 6)
+- Para debugging en vivo: MultimediaLogger.toggle(true) en consola
+*/
