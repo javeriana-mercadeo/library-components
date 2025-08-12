@@ -1,0 +1,549 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$expert-api-card-border-radius: rem(12px);
+$expert-api-card-padding: rem(15px);
+$expert-api-card-min-height: rem(400px);
+$expert-api-card-max-width: rem(250px);
+$expert-api-transition: all 0.3s ease;
+$expert-api-image-height: rem(250px);
+
+// Navegación
+$nav-api-button-size: rem(50px);
+$nav-api-button-size-mobile: rem(40px);
+
+// ==========================================
+// CONTENEDOR PRINCIPAL
+// ==========================================
+.color-container {
+  background-color: var(--primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: rem(30px) 0;
+}
+
+// ==========================================
+// COMPONENTE PRINCIPAL
+// ==========================================
+.expert-carousel-api {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0;
+
+  // ==========================================
+  // TÍTULO Y DESCRIPCIÓN
+  // ==========================================
+  &__title {
+    color: var(--neutral) !important;
+    margin-bottom: var(--spacing-md) !important;
+
+    @include responsive($breakpoint-md) {
+      margin-bottom: var(--spacing-lg) !important;
+    }
+  }
+
+  &__description {
+    color: var(--neutral) !important;
+    width: 80%;
+    margin-bottom: 0;
+
+    @include responsive($breakpoint-md) {
+      width: 70%;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      width: 90%;
+      margin-bottom: 0;
+    }
+  }
+
+  // Estados de carga y error
+  &__loading,
+  &__error,
+  &__empty {
+    padding: rem(40px) 0;
+    text-align: center;
+
+    p {
+      color: var(--neutral) !important;
+      font-size: var(--font-size-paragraph);
+    }
+  }
+
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: rem(20px);
+
+    &::after {
+      content: '';
+      width: rem(32px);
+      height: rem(32px);
+      border: rem(3px) solid rgba(var(--neutral-rgb), 0.3);
+      border-radius: 50%;
+      border-top-color: var(--neutral);
+      animation: spin 1s ease-in-out infinite;
+    }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  // ==========================================
+  // CARRUSEL
+  // ==========================================
+  &_carousel {
+    width: 100%;
+    position: relative;
+  }
+
+  &_wrapper {
+    padding: rem(8px) rem(10px);
+    overflow: hidden;
+    position: relative;
+    max-height: rem(450px);
+    padding-top: 0;
+
+    @include responsive($breakpoint-sm) {
+      margin: 0 0 rem(25px) 0;
+      padding: rem(10px) rem(48px);
+      margin-top: rem(12.8px);
+    }
+
+    @include responsive($breakpoint-md) {
+      padding: rem(10px) rem(56px);
+      margin-top: rem(16px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      padding: rem(10px) rem(64px);
+    }
+
+    @include responsive($breakpoint-xl) {
+      margin: 0 auto;
+      max-width: rem(1400px);
+      padding: rem(10px) rem(72px);
+    }
+  }
+
+  // ==========================================
+  // SLIDES Y TARJETAS
+  // ==========================================
+  &_slides {
+    align-items: stretch !important;
+  }
+
+  &_slide {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: unset !important;
+    margin-top: rem(20px);
+    align-items: stretch;
+    justify-content: center;
+
+    // Optimización Swiper
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    @media (max-width: 575px) {
+      height: rem(360px) !important;
+      max-height: rem(360px) !important;
+    }
+  }
+
+  &_card {
+    width: 100%;
+    height: 100%;
+    min-width: rem(160px);
+    max-width: rem(200px);
+    text-align: left;
+    border-radius: $expert-api-card-border-radius;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0 auto;
+    max-height: auto;
+    padding: rem(8px);
+    transition: $expert-api-transition;
+  }
+
+  // ==========================================
+  // ELEMENTOS DE LA TARJETA
+  // ==========================================
+  &_card-header {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: rem(15px);
+    flex-shrink: 0;
+    min-width: rem(160px);
+  }
+
+  &_card-image {
+    width: rem(160px) !important;
+    height: rem(160px) !important;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    transition: $expert-api-transition;
+    flex-shrink: 0;
+    margin: 0 auto;
+  }
+
+  &_card-image-placeholder {
+    width: rem(160px);
+    height: rem(160px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(var(--neutral-rgb), 0.1);
+    border-radius: 50%;
+    color: var(--neutral);
+    
+    i {
+      font-size: rem(80px);
+      opacity: 0.5;
+    }
+  }
+
+  &_card-content {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    min-height: 0;
+    max-width: rem(160px);
+    gap: rem(0px);
+
+    @media (max-width: 575px) {
+      padding: rem(4px) 0;
+      gap: rem(4px);
+    }
+
+    > :last-child {
+      margin-top: auto;
+    }
+  }
+
+  &_card-name {
+    color: var(--neutral) !important;
+    font-size: var(--font-size-heading) !important;
+  }
+
+  &_card-title {
+    color: var(--neutral) !important;
+    font-size: var(--font-size-paragraph) !important;
+    text-align: left;
+    opacity: 0.9;
+  }
+
+  &_card-link {
+    margin-top: rem(10px);
+    align-self: flex-start;
+    font-size: rem(13px) !important;
+    color: var(--neutral) !important;
+
+    &:hover {
+      color: var(--neutral-800) !important;
+
+      @include dark-theme {
+        color: var(--neutral-400) !important;
+      }
+    }
+  }
+
+  // ==========================================
+  // PAGINACIÓN
+  // ==========================================
+  &_pagination {
+    position: relative;
+    margin-top: rem(16px);
+    text-align: center;
+    min-height: rem(20px);
+    display: none !important;
+    align-items: center;
+    justify-content: center;
+    gap: rem(6px);
+    width: 100%;
+
+    // Visible solo en móviles pequeños
+    @media (max-width: 479px) {
+      display: flex !important;
+      padding: rem(16px) 0;
+    }
+
+    // Oculto en tablet y desktop
+    @media (min-width: 480px) {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .swiper-pagination-bullet {
+      height: rem(8px);
+      width: rem(8px);
+      opacity: 0.4;
+      background: var(--neutral);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 50%;
+      border: none;
+      margin: 0 !important;
+      cursor: pointer;
+
+      // Bullets más grandes en móvil
+      @media (max-width: 479px) {
+        width: rem(12px);
+        height: rem(12px);
+        margin: 0 rem(4px) !important;
+        opacity: 0.6;
+      }
+
+      &.swiper-pagination-bullet-active {
+        opacity: 1;
+        transform: scale(1.6);
+        background: var(--neutral);
+        width: rem(12px);
+        height: rem(12px);
+
+        // Bullet activo más grande en móvil
+        @media (max-width: 479px) {
+          width: rem(16px);
+          height: rem(16px);
+          transform: scale(1.4);
+        }
+      }
+
+      &:hover:not(.swiper-pagination-bullet-active) {
+        opacity: 0.7;
+        transform: scale(1.2);
+      }
+    }
+
+    &.swiper-pagination-hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateY(rem(10px));
+    }
+  }
+
+  // ==========================================
+  // BOTONES DE NAVEGACIÓN
+  // ==========================================
+  &_prev,
+  &_next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: $nav-api-button-size;
+    height: $nav-api-button-size;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(rem(10px));
+    border: rem(2px) solid rgba(var(--neutral-700-rgb), 0.4);
+    box-shadow: 0 rem(2px) rem(8px) rgba(0, 0, 0, 0.15);
+    background: rgba(var(--primary-700-rgb), 0.3);
+
+    // Visibles en tablet y desktop
+    @include responsive($breakpoint-sm) {
+      width: rem(40px);
+      height: rem(40px);
+    }
+
+    i {
+      font-size: rem(24px);
+      color: var(--neutral);
+      z-index: 100;
+      transition: all 0.3s ease;
+
+      @include responsive($breakpoint-sm) {
+        font-size: rem(20px);
+      }
+    }
+
+    &:hover {
+      transform: translateY(-50%) scale(1.05);
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary-500);
+      box-shadow: 0 rem(4px) rem(12px) rgba(var(--primary-rgb), 0.2);
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: translateY(-50%) scale(1.05);
+
+      i {
+        color: var(--neutral);
+      }
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateY(-50%) scale(0.8);
+    }
+
+    &.swiper-button-hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      display: none !important;
+    }
+
+    // Mostrar navegación solo en desktop
+    @include responsive($breakpoint-sm) {
+      &.show-navigation {
+        display: flex !important;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  &_prev {
+    left: rem(8px);
+
+    @include responsive($breakpoint-sm) {
+      left: rem(8px);
+    }
+
+    @include responsive($breakpoint-md) {
+      left: rem(16px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      left: rem(24px);
+    }
+  }
+
+  &_next {
+    right: rem(8px);
+
+    @include responsive($breakpoint-sm) {
+      right: rem(8px);
+    }
+
+    @include responsive($breakpoint-md) {
+      right: rem(16px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      right: rem(24px);
+    }
+  }
+}
+
+// ==========================================
+// ESTILOS GLOBALES DE SWIPER
+// ==========================================
+.swiper {
+  overflow: visible;
+
+  &.swiper-container-lock {
+    .swiper-slide-button {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .swiper-pagination {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .expert-carousel-api_wrapper {
+      padding: rem(20px) 0;
+    }
+
+    .expert-carousel-api_pagination {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  }
+
+  .swiper-slide-button,
+  .swiper-pagination {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .swiper-pagination {
+    position: static !important;
+    margin-top: var(--spacing-md);
+  }
+}
+
+// ==========================================
+// TEMA OSCURO
+// ==========================================
+
+.expert-carousel-api {
+  @include dark-theme {
+    &_prev,
+    &_next {
+      background-color: rgba(var(--background-200-rgb), 0.95);
+      border-color: var(--neutral-600);
+
+      &:hover {
+        background-color: rgba(var(--primary-rgb), 0.15);
+        border-color: var(--primary-400);
+      }
+
+      &.swiper-button-disabled {
+        background-color: rgba(var(--neutral-rgb), 0.2);
+        border-color: var(--neutral-800);
+      }
+    }
+
+    &_pagination {
+      .swiper-pagination-bullet {
+        background: var(--primary-400);
+
+        &.swiper-pagination-bullet-active {
+          background: var(--primary-300);
+        }
+      }
+    }
+  }
+}
+
+// ==========================================
+// MEJORAS DE ACCESIBILIDAD
+// ==========================================
+@media (prefers-reduced-motion: reduce) {
+  .expert-carousel-api {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

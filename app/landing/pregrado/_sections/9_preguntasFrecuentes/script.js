@@ -1,14 +1,15 @@
 // ===========================================
-// SISTEMA DE ACORDEÓN CON ANIMACIONES - FAQ
+// SISTEMA DE ACORDEÓN FAQ - PREGUNTAS FRECUENTES
 // ===========================================
 
 const FAQAccordionSystem = {
   config: {
     itemSelector: '.faq__item',
-    questionSelector: '.faq__question',
+    questionSelector: '.faq__item .btn',
     answerSelector: '.faq__answer',
     iconSelector: '.faq__icon',
     subQuestionSelector: '.faq__sub-question',
+    richContentSelector: '.faq-rich-content',
     activeClass: 'active',
     hiddenClass: 'hidden',
     animationDuration: 300
@@ -18,22 +19,58 @@ const FAQAccordionSystem = {
     const faqItems = document.querySelectorAll(this.config.itemSelector)
 
     if (faqItems.length === 0) {
-      console.warn('❌ [FAQ] No se encontraron elementos del acordeón')
+      console.warn('[FAQ] No se encontraron elementos del acordeón')
       return false
     }
 
-    // Configurar comportamiento inicial
+    this.processRichContent()
     this.setupInitialState()
-
-    // Configurar eventos
     this.attachEventListeners()
-
-    // Configurar sub-preguntas
     this.setupSubQuestions()
 
     return true
   },
 
+  // Procesar contenido enriquecido desde el CMS
+  processRichContent() {
+    const richContentElements = document.querySelectorAll(this.config.richContentSelector)
+    
+    if (richContentElements.length === 0) return
+
+    richContentElements.forEach(element => {
+      let content = element.getAttribute('data-raw-content')
+      
+      if (content) {
+        content = this.decodeHtmlEntities(content)
+        
+        if (!content.includes('<') && !content.includes('&lt;')) {
+          content = content.replace(/\n\n/g, '</p><p>')
+          content = content.replace(/\n/g, '<br>')
+          content = '<p>' + content + '</p>'
+        }
+        
+        element.innerHTML = content
+      }
+    })
+  },
+
+  // Decodificar entidades HTML
+  decodeHtmlEntities(text) {
+    const textarea = document.createElement('textarea')
+    let decoded = text
+    let previousDecoded = ''
+    
+    // Hasta 3 intentos de decodificación
+    for (let i = 0; i < 3 && decoded !== previousDecoded; i++) {
+      previousDecoded = decoded
+      textarea.innerHTML = decoded
+      decoded = textarea.value
+    }
+    
+    return decoded
+  },
+
+  // Configurar estado inicial del acordeón
   setupInitialState() {
     const faqItems = document.querySelectorAll(this.config.itemSelector)
 
@@ -41,104 +78,124 @@ const FAQAccordionSystem = {
       const answer = item.querySelector(this.config.answerSelector)
 
       if (!item.classList.contains(this.config.activeClass)) {
-        // Ocultar respuestas que no están activas
         answer.classList.add(this.config.hiddenClass)
         answer.style.display = 'none'
       } else {
-        // Asegurar que la activa esté visible
         answer.classList.remove(this.config.hiddenClass)
         answer.style.display = 'block'
       }
     })
   },
 
+  // Abrir item del acordeón con animación
   openAccordionItem(item, answer, icon) {
-
-    // Preparar animación de entrada con más efectos
-    answer.style.opacity = '0'
-    answer.style.transform = 'translateY(-20px) scale(0.95)'
-    answer.style.maxHeight = '0'
-    answer.style.overflow = 'hidden'
+    // Preparar elementos para animación
     answer.style.display = 'block'
+    answer.style.height = 'auto'
+    answer.style.maxHeight = 'none'
+    answer.style.opacity = '0'
+    answer.style.overflow = 'hidden'
+    const targetHeight = answer.scrollHeight
+    
+    // Estado inicial de animación
+    answer.style.height = '0px'
+    answer.style.maxHeight = '0px'
+    answer.style.transform = 'translateY(-10px)'
+    answer.style.paddingTop = '0px'
+    answer.style.paddingBottom = '0px'
     answer.classList.remove(this.config.hiddenClass)
 
     // Actualizar estado visual
     item.classList.add(this.config.activeClass)
     icon.innerHTML = '<i class="ph ph-caret-up"></i>'
 
-    // Animar entrada con múltiples propiedades
-    setTimeout(() => {
-      answer.style.transition = `
-        opacity ${this.config.animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1),
-        transform ${this.config.animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1),
-        max-height ${this.config.animationDuration + 100}ms cubic-bezier(0.4, 0, 0.2, 1)
-      `
+    // Forzar reflow
+    answer.offsetHeight
+
+    // Aplicar transición suave
+    answer.style.transition = `
+      height ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      opacity ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      transform ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      padding ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    `
+
+    // Animar hacia estado final
+    requestAnimationFrame(() => {
+      answer.style.height = `${targetHeight}px`
+      answer.style.maxHeight = `${targetHeight + 20}px`
       answer.style.opacity = '1'
-      answer.style.transform = 'translateY(0) scale(1)'
-      answer.style.maxHeight = '500px' // Altura suficiente para el contenido
-    }, 10)
+      answer.style.transform = 'translateY(0)'
+      answer.style.paddingTop = ''
+      answer.style.paddingBottom = ''
+    })
 
     // Limpiar estilos después de la animación
     setTimeout(() => {
       answer.style.transition = ''
+      answer.style.height = 'auto'
+      answer.style.maxHeight = 'none'
       answer.style.transform = ''
       answer.style.opacity = ''
-      answer.style.maxHeight = ''
-      answer.style.overflow = ''
-    }, this.config.animationDuration + 150)
+      answer.style.overflow = 'visible'
+      answer.style.paddingTop = ''
+      answer.style.paddingBottom = ''
+    }, this.config.animationDuration + 50)
   },
 
+  // Cerrar item del acordeón con animación
   closeAccordionItem(item, answer, icon) {
-
     // Actualizar estado visual
     item.classList.remove(this.config.activeClass)
     icon.innerHTML = '<i class="ph ph-caret-down"></i>'
 
-    // Obtener la altura actual del contenido para animación suave
+    // Preparar animación de cierre
     const currentHeight = answer.scrollHeight
-    answer.style.maxHeight = currentHeight + 'px'
+    answer.style.height = `${currentHeight}px`
+    answer.style.maxHeight = `${currentHeight}px`
     answer.style.overflow = 'hidden'
+    answer.style.opacity = '1'
+    answer.style.transform = 'translateY(0)'
 
-    // Forzar un reflow para que el navegador registre la altura inicial
+    // Forzar reflow
     answer.offsetHeight
 
-    // Aplicar animación de cierre con padding para evitar saltos
+    // Aplicar transición suave
     answer.style.transition = `
-      opacity ${this.config.animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform ${this.config.animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1),
-      max-height ${this.config.animationDuration + 200}ms cubic-bezier(0.4, 0, 0.2, 1),
-      padding ${this.config.animationDuration + 100}ms cubic-bezier(0.4, 0, 0.2, 1)
+      height ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      opacity ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      transform ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      padding ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)
     `
 
-    // Animar hacia estado cerrado con padding gradual
-    setTimeout(() => {
+    // Animar hacia estado cerrado
+    requestAnimationFrame(() => {
+      answer.style.height = '0px'
+      answer.style.maxHeight = '0px'
       answer.style.opacity = '0'
-      answer.style.transform = 'translateY(-20px) scale(0.95)'
-      answer.style.maxHeight = '0'
-      answer.style.paddingBottom = '0' // Animar padding también
-    }, 10)
+      answer.style.transform = 'translateY(-10px)'
+      answer.style.paddingTop = '0px'
+      answer.style.paddingBottom = '0px'
+    })
 
-    // Ocultar después de una animación más larga para evitar saltos
+    // Ocultar completamente después de la animación
     setTimeout(() => {
-      // Transición final más suave
-      answer.style.transition = 'all 100ms ease-out'
-      answer.style.minHeight = '0'
-
-      // Ocultar completamente después de un delay adicional
-      setTimeout(() => {
-        answer.style.display = 'none'
-        answer.classList.add(this.config.hiddenClass)
-        answer.style.transition = ''
-        answer.style.transform = ''
-        answer.style.opacity = ''
-        answer.style.maxHeight = ''
-        answer.style.minHeight = ''
-        answer.style.overflow = ''
-        answer.style.paddingBottom = ''
-      }, 100)
-    }, this.config.animationDuration + 200)
+      answer.style.display = 'none'
+      answer.classList.add(this.config.hiddenClass)
+      
+      // Limpiar estilos
+      answer.style.transition = ''
+      answer.style.height = ''
+      answer.style.maxHeight = ''
+      answer.style.opacity = ''
+      answer.style.transform = ''
+      answer.style.overflow = ''
+      answer.style.paddingTop = ''
+      answer.style.paddingBottom = ''
+    }, this.config.animationDuration + 50)
   },
 
+  // Toggle del acordeón (solo una pregunta abierta a la vez)
   toggleAccordion(clickedItem) {
     const faqItems = document.querySelectorAll(this.config.itemSelector)
     const isCurrentlyActive = clickedItem.classList.contains(this.config.activeClass)
@@ -153,9 +210,9 @@ const FAQAccordionSystem = {
       }
     })
 
-    // Cerrar todos los items activos con animación completa
+    // Cerrar todos los items activos
     activeItems.forEach(({ item, answer, icon }) => {
-      this.closeAccordionItemWithAnimation(item, answer, icon)
+      this.closeAccordionItem(item, answer, icon)
     })
 
     // Si el item clickeado no estaba activo, abrirlo después del cierre
@@ -163,69 +220,16 @@ const FAQAccordionSystem = {
       const answer = clickedItem.querySelector(this.config.answerSelector)
       const icon = clickedItem.querySelector(this.config.iconSelector)
 
-      // Delay para permitir que se complete la animación de cierre más suavizada
       setTimeout(
         () => {
           this.openAccordionItem(clickedItem, answer, icon)
         },
-        activeItems.length > 0 ? this.config.animationDuration + 250 : 0
+        activeItems.length > 0 ? this.config.animationDuration + 100 : 0
       )
     }
   },
 
-  closeAccordionItemWithAnimation(item, answer, icon) {
-
-    // Actualizar estado visual inmediatamente
-    item.classList.remove(this.config.activeClass)
-    icon.innerHTML = '<i class="ph ph-caret-down"></i>'
-
-    // Obtener la altura actual del contenido para animación suave
-    const currentHeight = answer.scrollHeight
-    answer.style.maxHeight = currentHeight + 'px'
-    answer.style.overflow = 'hidden'
-
-    // Forzar un reflow para que el navegador registre la altura inicial
-    answer.offsetHeight
-
-    // Aplicar animación de cierre con padding para evitar saltos
-    answer.style.transition = `
-      opacity ${this.config.animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform ${this.config.animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1),
-      max-height ${this.config.animationDuration + 200}ms cubic-bezier(0.4, 0, 0.2, 1),
-      padding ${this.config.animationDuration + 100}ms cubic-bezier(0.4, 0, 0.2, 1)
-    `
-
-    // Animar hacia estado cerrado con padding gradual
-    setTimeout(() => {
-      answer.style.opacity = '0'
-      answer.style.transform = 'translateY(-20px) scale(0.95)'
-      answer.style.maxHeight = '0'
-      answer.style.paddingBottom = '0' // Animar padding también
-    }, 10)
-
-    // Ocultar después de una animación más larga para evitar saltos
-    setTimeout(() => {
-      // Transición final más suave
-      answer.style.transition = 'all 100ms ease-out'
-      answer.style.minHeight = '0'
-
-      // Ocultar completamente después de un delay adicional
-      setTimeout(() => {
-        answer.style.display = 'none'
-        answer.classList.add(this.config.hiddenClass)
-
-        // Limpiar estilos de animación
-        answer.style.transition = ''
-        answer.style.transform = ''
-        answer.style.opacity = ''
-        answer.style.maxHeight = ''
-        answer.style.minHeight = ''
-        answer.style.overflow = ''
-        answer.style.paddingBottom = ''
-      }, 100)
-    }, this.config.animationDuration + 200)
-  },
-
+  // Configurar event listeners
   attachEventListeners() {
     const faqItems = document.querySelectorAll(this.config.itemSelector)
 
@@ -233,15 +237,15 @@ const FAQAccordionSystem = {
       const question = item.querySelector(this.config.questionSelector)
 
       if (!question) {
-        console.warn('❌ [FAQ] Pregunta no encontrada en item:', item)
+        console.warn('[FAQ] Pregunta no encontrada en item:', item)
         return
       }
 
-      // Limpiar eventos previos clonando el elemento
+      // Limpiar eventos previos
       const newQuestion = question.cloneNode(true)
       question.parentNode.replaceChild(newQuestion, question)
 
-      // Agregar evento de click
+      // Evento de click
       newQuestion.addEventListener('click', e => {
         e.preventDefault()
         this.toggleAccordion(item)
@@ -257,22 +261,21 @@ const FAQAccordionSystem = {
     })
   },
 
+  // Configurar sub-preguntas
   setupSubQuestions() {
     const subQuestions = document.querySelectorAll(this.config.subQuestionSelector)
 
     subQuestions.forEach(subQuestion => {
       subQuestion.addEventListener('click', function (e) {
         e.stopPropagation() // Evitar que se active el acordeón padre
-
         // Aquí se puede agregar funcionalidad adicional
-        // Por ejemplo, abrir un modal o expandir contenido adicional
       })
     })
   }
 }
 
 // ===========================================
-// INICIALIZACIÓN PRINCIPAL
+// SISTEMA PRINCIPAL FAQ
 // ===========================================
 const FAQSystem = {
   init() {
@@ -289,10 +292,9 @@ const FAQSystem = {
 }
 
 // ===========================================
-// AUTO-INICIALIZACIÓN
+// INICIALIZACIÓN
 // ===========================================
 export default () => {
-  // Verificar que el DOM esté listo
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       FAQSystem.init()
@@ -301,8 +303,8 @@ export default () => {
     FAQSystem.init()
   }
 
-  // Exponer para debugging
-  if (typeof window !== 'undefined') {
+  // Exponer para debugging en desarrollo
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
     window.FAQAccordionSystem = FAQAccordionSystem
     window.FAQSystem = FAQSystem
   }

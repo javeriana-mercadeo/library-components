@@ -26,7 +26,8 @@ export const ProgramDataProcessor = {
       unidadDuracion,
       modalidad,
       datosFechaCierreInscripcion,
-      ciudad
+      ciudad,
+      tipo
     } = dataProgram
 
     let automationUpdates = {}
@@ -94,6 +95,11 @@ export const ProgramDataProcessor = {
       DOMUpdater.updateElementsText('data-puj-simple-location', simpleLocation)
 
       automationUpdates.city = true
+    }
+
+    if (tipo) {
+      DOMUpdater.updateElementsText('data-puj-type', tipo)
+      automationUpdates.type = true
     }
 
     // Actualizar statusPage usando DataUtils global para merge profundo

@@ -29,9 +29,7 @@ export const LocationNormalizer = {
     if (!locationName || typeof locationName !== 'string') return ''
 
     // Usar StringUtils.trim() global si está disponible
-    const trimmed = typeof StringUtils !== 'undefined' && StringUtils.trim 
-      ? StringUtils.trim(locationName) 
-      : locationName.trim()
+    const trimmed = typeof StringUtils !== 'undefined' && StringUtils.trim ? StringUtils.trim(locationName) : locationName.trim()
 
     // Mapeo de ubicaciones conocidas con formato inconsistente
     const locationMappings = {
@@ -262,8 +260,8 @@ export const DataFormatter = {
     })
 
     // Manejar excepciones especiales para siglas y abreviaciones
-    result = result.replace(/d\.c\./gi, 'D.C.')  // Cualquier variante de d.c.
-    result = result.replace(/D\.c\./g, 'D.C.')   // Específicamente D.c. → D.C.
+    result = result.replace(/d\.c\./gi, 'D.C.') // Cualquier variante de d.c.
+    result = result.replace(/D\.c\./g, 'D.C.') // Específicamente D.c. → D.C.
 
     return result
   },
@@ -296,18 +294,20 @@ export const DataFormatter = {
       style: 'currency',
       currency: 'COP',
       maximumFractionDigits: 0
-    }).format(amount)
+    })
+      .format(amount)
+      .replace(/\$[\s\u00A0]+/g, '$')
   },
 
   cleanDate(dateString) {
     if (!dateString || typeof dateString !== 'string') {
       return dateString || ''
     }
-    
+
     try {
       // Limpiar formato de fecha común: "YYYY-MM-DD" o "DD/MM/YYYY"
       const cleanedDate = dateString.trim()
-      
+
       // Si es formato ISO (YYYY-MM-DD), convertir a formato legible
       if (/^\d{4}-\d{2}-\d{2}/.test(cleanedDate)) {
         const date = new Date(cleanedDate)
@@ -319,7 +319,7 @@ export const DataFormatter = {
           })
         }
       }
-      
+
       return cleanedDate
     } catch (error) {
       if (typeof Logger !== 'undefined' && Logger.warning) {

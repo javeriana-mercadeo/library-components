@@ -107,10 +107,9 @@ const DatosProgramaVideo = () => {
           <Caption id={`${elementName}_title-study`} className={`${baseClass}_title-program`}>
             Estudia{' '}
           </Caption>
-          <Caption id={`${elementName}_title-program`} className={`${baseClass}_title-program`} data-puj-name='true'>
-            Ingeniería Civil
+          <Caption id={`${elementName}_title-program`} className={`${baseClass}_title-program`} data-puj-name>
+            Ingeniería Civil:{' '}
           </Caption>
-          <Caption className={`${baseClass}_title-program`}>:</Caption>{' '}
           <Caption id={`${elementName}_title-secondary`}>Construyendo el Futuro Sostenible de Colombia</Caption>
         </Title>
 

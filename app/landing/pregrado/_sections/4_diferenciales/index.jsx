@@ -137,10 +137,7 @@ const Diferenciales = () => {
             en la Javeriana{' '}
           </Caption>
           <Caption className={`${baseClass}__title`} data-puj-simple-location isEditable={false}>
-            cargando ubicación...
-          </Caption>
-          <Caption id={`title-${elementName}-title-three`} className={`${baseClass}__title`}>
-            ?
+            cargando ubicación...?
           </Caption>
         </Title>
 

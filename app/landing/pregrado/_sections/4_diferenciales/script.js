@@ -229,6 +229,13 @@ const initDiferencialesSystem = () => {
   } else {
     DiferencialesSystem.init()
   }
+
+  document.addEventListener('data_load-program', () => {
+    const context = document.getElementById('diferenciales')
+    const dataPujLocation = context.querySelector('[data-puj-simple-location]')
+    let currentContent = dataPujLocation.textContent.trim()
+    dataPujLocation.textContent = `${currentContent}?`
+  })
 }
 
 // Auto-ejecutar si no es un módulo Y está en el cliente

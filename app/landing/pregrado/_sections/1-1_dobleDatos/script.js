@@ -7,7 +7,7 @@ const ResponsiveVideoSystem = {
     defaultBreakpoint: 768,
     videoParams: {
       autoplay: '1',
-      mute: '1', 
+      mute: '1',
       loop: '1',
       controls: '0',
       showinfo: '0',
@@ -27,7 +27,7 @@ const ResponsiveVideoSystem = {
     try {
       // Buscar por ID específico
       const videoContainer = document.getElementById('program-data-media')
-      
+
       if (!videoContainer) {
         return false
       }
@@ -68,14 +68,13 @@ const ResponsiveVideoSystem = {
     const videoId = isMobile ? mobileVideoId : desktopVideoId
     const deviceType = isMobile ? 'mobile' : 'desktop'
 
-
     // Crear solo el iframe necesario
     const iframe = this.createIframe(videoId, deviceType)
     iframe.style.display = 'block'
 
     // Agregar al DOM
     container.appendChild(iframe)
-    
+
     // Marcar como listo y guardar información para cambios de dispositivo
     container.classList.add('responsive-video-ready')
     container.setAttribute('data-breakpoint', breakpoint)
@@ -86,7 +85,7 @@ const ResponsiveVideoSystem = {
 
   createIframe(videoId, type) {
     const iframe = document.createElement('iframe')
-    
+
     // URL con parámetros optimizados
     const params = { ...this.config.videoParams, playlist: videoId }
     const videoSrc = `https://www.youtube.com/embed/${videoId}?${new URLSearchParams(params)}`
@@ -129,10 +128,9 @@ const ResponsiveVideoSystem = {
 
     // Solo recargar si cambió el tipo de dispositivo
     if (currentDevice && currentDevice !== newDevice) {
-      
       const mobileVideoId = container.getAttribute('data-mobile-video')
       const desktopVideoId = container.getAttribute('data-desktop-video')
-      
+
       // Recargar con el video correcto
       this.setupVideo(container, mobileVideoId, desktopVideoId, breakpoint)
     }
@@ -140,7 +138,7 @@ const ResponsiveVideoSystem = {
 
   setupResponsiveListener(container, breakpoint) {
     let resizeTimeout
-    
+
     const handleResize = () => {
       clearTimeout(resizeTimeout)
       resizeTimeout = setTimeout(() => {
@@ -161,6 +159,13 @@ const initVideoSystem = () => {
   } else {
     ResponsiveVideoSystem.init()
   }
+
+  document.addEventListener('data_load-program', () => {
+    const context = document.getElementById('doble-datos')
+    const dataPujName = context.querySelector('[data-puj-name]')
+    let currentContent = dataPujName.textContent.trim()
+    dataPujName.textContent = `${currentContent}: `
+  })
 }
 
 // Exportar función e inicializar inmediatamente
