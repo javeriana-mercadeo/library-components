@@ -62,35 +62,29 @@ const initializeMultimediaSlider = () => {
     }
   ]
 
-  // Crear iframe para video con autoplay
+  // Crear iframe optimizado para autoplay sin JS API
   const createAutoplayIframe = videoId => {
     const iframe = document.createElement('iframe')
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&rel=0&showinfo=0&modestbranding=1&disablekb=1`
-    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-    iframe.allowFullscreen = false
-    iframe.style.cssText = 'width: 100%; height: 100%; border: none; pointer-events: none;'
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&enablejsapi=0`
+    iframe.allow = 'autoplay; encrypted-media'
+    iframe.allowFullscreen = true
+    iframe.loading = 'lazy'
+    iframe.frameBorder = '0'
+    iframe.style.cssText = 'width: 100%; height: 100%; border: none;'
     return iframe
   }
 
-  // Controlar reproducción de videos
-  const controlVideoPlayback = iframe => {
-    if (iframe && iframe.contentWindow) {
-      try {
-        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*')
-      } catch (e) {
-        console.warn('Error controlando video:', e)
-      }
+  // Controlar visibilidad de videos (sin postMessage)
+  const showVideo = iframe => {
+    if (iframe) {
+      iframe.style.display = 'block'
     }
   }
 
-  // Pausar video
-  const pauseVideo = iframe => {
-    if (iframe && iframe.contentWindow) {
-      try {
-        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
-      } catch (e) {
-        console.warn('Error pausando video:', e)
-      }
+  // Ocultar video
+  const hideVideo = iframe => {
+    if (iframe) {
+      iframe.style.display = 'none'
     }
   }
 
@@ -112,14 +106,19 @@ const initializeMultimediaSlider = () => {
             const img = slide.querySelector('img')
             if (img) {
               const newIframe = createAutoplayIframe(item.videoId)
-              slide.replaceChild(newIframe, img)
+              slide.appendChild(newIframe)
+              img.style.opacity = '0'
             }
           } else {
-            controlVideoPlayback(iframe)
+            showVideo(iframe)
           }
         } else {
           if (iframe) {
-            pauseVideo(iframe)
+            hideVideo(iframe)
+            const img = slide.querySelector('img')
+            if (img) {
+              img.style.opacity = '1'
+            }
           }
         }
       }

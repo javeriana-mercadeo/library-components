@@ -26,9 +26,9 @@ export default function SeccionesOpcionales() {
       </ViewComponent>
 
       {/* <Estudiantes />*/}
-      <ViewComponent path={`${basePath}/sections/estudiantes`}>
+      {/* <ViewComponent path={`${basePath}/sections/estudiantes`}>
         <Estudiantes />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Multimedia />*/}
       <ViewComponent path={`${basePath}/sections/multimedia`}>
@@ -53,13 +53,12 @@ export default function SeccionesOpcionales() {
       {/* <Herramientas />*/}
       <ViewComponent path={`${basePath}/sections/herramientas`}>
         <Herramientas />
-      </ViewComponent>  
-
+      </ViewComponent>
 
       {/* <AccesosDirectos/>*/}
       <ViewComponent path={`${basePath}/sections/accesosDirectos`}>
         <AccesosDirectos />
-      </ViewComponent> 
+      </ViewComponent>
     </>
   )
 }
