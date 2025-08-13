@@ -1,13 +1,12 @@
-'use client'
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 
-import VideoDoctorado from './sections/videoDoctorado'
+import VideoDoctorado from './sections/videoDoctorado/'
 
-export default function SeccionesOpcionales() {
+export default function Profesional () {
   const basePath = '/landing/doctorado'
   return (
     <>
-       <VideoDoctorado />
+    {/* <VideoDoctorado /> */}
        <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
         <VideoDoctorado />
       </ViewComponent> 

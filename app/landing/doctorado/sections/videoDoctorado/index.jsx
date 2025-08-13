@@ -53,7 +53,7 @@ const VideoDoctorado = () => {
               <div className="video-doctorado__info-grid">
                 <div className="info-item">
                   <div className="info-item__icon">
-                    <i class="ph ph-graduation-cap"></i>
+                    <i className="ph ph-graduation-cap"></i>
                   </div>
                   <div className="info-item__content">
                     <span className="info-item__label">Título</span>
@@ -64,7 +64,7 @@ const VideoDoctorado = () => {
 
                 <div className="info-item">
                   <div className="info-item__icon">
-                    <i class="ph ph-student"></i>
+                    <i className="ph ph-student"></i>
                    
                   </div>
                   <div className="info-item__content">
@@ -75,7 +75,7 @@ const VideoDoctorado = () => {
 
                 <div className="info-item">
                   <div className="info-item__icon">
-                   <i class="ph ph-calendar-dots"></i>
+                   <i className="ph ph-calendar-dots"></i>
                   </div>
                   <div className="info-item__content">
                     <span className="info-item__label">Duración & Modalidad</span>
@@ -86,7 +86,7 @@ const VideoDoctorado = () => {
 
                 <div className="info-item">
                   <div className="info-item__icon">
-                    <i class="ph ph-clock"></i>
+                    <i className="ph ph-clock"></i>
                   </div>
                   <div className="info-item__content">
                     <span className="info-item__label">Modalidad</span>
@@ -96,7 +96,7 @@ const VideoDoctorado = () => {
 
                 <div className="info-item">
                   <div className="info-item__icon">
-                    <i class="ph ph-piggy-bank"></i>
+                    <i className="ph ph-piggy-bank"></i>
                   </div>
                   <div className="info-item__content">
                     <span className="info-item__label">Inversión Semestre</span>
