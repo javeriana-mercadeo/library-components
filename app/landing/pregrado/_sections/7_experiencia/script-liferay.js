@@ -1,8 +1,10 @@
 // ===== EXPERIENCIA JAVERIANA - CARRUSEL =====
-// Script vanilla JavaScript compatible con Liferay DXP y Next.js
-// NO usar 'use strict' para máxima compatibilidad
+// Script VANILLA JavaScript - SOLO para Liferay DXP
+// SIN exports, SIN modules, SIN use strict
 
-function initExperienceCarousel() {
+// Verificar que no estamos en un contexto de módulo
+if (typeof module === 'undefined' && typeof exports === 'undefined') {
+  
   // Variables globales del componente
   var experienceSwiper = null;
   
@@ -94,13 +96,13 @@ function initExperienceCarousel() {
     if (!element) {
       var fallbackElement = document.querySelector('.experience-swiper');
       if (!fallbackElement) {
-        console.error('Ningún elemento swiper encontrado');
+        console.error('[EXPERIENCE] Ningún elemento swiper encontrado');
         return;
       }
     }
 
     if (!window.Swiper) {
-      console.error('Swiper no está disponible');
+      console.error('[EXPERIENCE] Swiper no está disponible');
       return;
     }
 
@@ -157,6 +159,8 @@ function initExperienceCarousel() {
           }
         }
       });
+
+      console.log('[EXPERIENCE] Swiper inicializado correctamente');
     } catch (error) {
       console.error('[EXPERIENCE] Error inicializando Swiper:', error);
     }
@@ -165,6 +169,7 @@ function initExperienceCarousel() {
   // Sistema de carga de videos
   function loadVideos() {
     var videoContainers = document.querySelectorAll('.experience-carousel__video-container[data-video-id]');
+    console.log('[EXPERIENCE] Cargando ' + videoContainers.length + ' videos');
 
     for (var i = 0; i < videoContainers.length; i++) {
       var container = videoContainers[i];
@@ -174,18 +179,9 @@ function initExperienceCarousel() {
       if (!videoId) continue;
 
       var iframe = document.createElement('iframe');
-      var params = new URLSearchParams({
-        autoplay: '0',
-        mute: '1',
-        loop: '0',
-        controls: '1',
-        modestbranding: '1',
-        playsinline: '1',
-        enablejsapi: '1',
-        rel: '0'
-      });
+      var params = 'autoplay=0&mute=1&loop=0&controls=1&modestbranding=1&playsinline=1&enablejsapi=1&rel=0';
 
-      iframe.src = 'https://www.youtube.com/embed/' + videoId + '?' + params.toString();
+      iframe.src = 'https://www.youtube.com/embed/' + videoId + '?' + params;
       iframe.style.width = '100%';
       iframe.style.height = '100%';
       iframe.style.border = 'none';
@@ -280,15 +276,22 @@ function initExperienceCarousel() {
     var totalSlides = slides.length;
     var windowWidth = window.innerWidth;
 
+    console.log('[EXPERIENCE] Inicializando carrusel - Slides encontrados: ' + totalSlides);
+
+    if (totalSlides === 0) {
+      console.warn('[EXPERIENCE] No se encontraron slides para inicializar');
+      return;
+    }
+
     var config = getDisplayConfig(windowWidth, totalSlides);
 
-    console.log('[INIT] Ventana: ' + windowWidth + 'px, Slides: ' + totalSlides + ', Visibles: ' + config.slidesPerView + ', Usar Grid: ' + config.useGrid);
+    console.log('[EXPERIENCE] Ventana: ' + windowWidth + 'px, Slides: ' + totalSlides + ', Visibles: ' + config.slidesPerView + ', Usar Grid: ' + config.useGrid);
 
     if (config.useGrid) {
-      console.log('[INIT] Activando modo Grid');
+      console.log('[EXPERIENCE] Activando modo Grid');
       activateGridMode();
     } else {
-      console.log('[INIT] Activando modo Swiper');
+      console.log('[EXPERIENCE] Activando modo Swiper');
       activateSwiperMode();
     }
   }
@@ -302,62 +305,69 @@ function initExperienceCarousel() {
     var config = getDisplayConfig(windowWidth, totalSlides);
     var currentlyUsingGrid = document.querySelector('.experience-carousel__slides.use-grid');
 
-    console.log('[RESIZE] Ventana: ' + windowWidth + 'px, Slides: ' + totalSlides + ', Visibles: ' + config.slidesPerView + ', Usar Grid: ' + config.useGrid);
-
     if (config.useGrid && !currentlyUsingGrid) {
-      console.log('[RESIZE] Cambiando a modo Grid');
+      console.log('[EXPERIENCE] Cambiando a modo Grid');
       if (experienceSwiper) {
         experienceSwiper.destroy(true, true);
         experienceSwiper = null;
       }
       activateGridMode();
     } else if (!config.useGrid && currentlyUsingGrid) {
-      console.log('[RESIZE] Cambiando a modo Swiper');
+      console.log('[EXPERIENCE] Cambiando a modo Swiper');
       activateSwiperMode();
     }
 
     handleResize();
   }
 
-  // Inicialización principal
+  // Función principal de inicialización
   function checkAndInit() {
-    if (typeof window !== 'undefined') {
-      initializeCarousel();
-      window.addEventListener('resize', handleCarouselResize);
-    } else {
-      setTimeout(checkAndInit, 300);
+    console.log('[EXPERIENCE] Verificando condiciones para inicializar...');
+    
+    // Verificar que existe el contenedor
+    var container = document.querySelector('.experience-carousel');
+    if (!container) {
+      console.warn('[EXPERIENCE] Contenedor .experience-carousel no encontrado');
+      return;
     }
+
+    // Inicializar carrusel
+    initializeCarousel();
+    
+    // Agregar listener para resize
+    window.addEventListener('resize', handleCarouselResize);
+    
+    console.log('[EXPERIENCE] Inicialización completada');
   }
 
-  // Inicialización automática cuando el DOM esté listo
-  if (typeof document !== 'undefined') {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', checkAndInit);
-    } else {
-      checkAndInit();
-    }
-  }
-
-  // Inicialización automática para Liferay
-  checkAndInit();
-}
-
-// Export para Next.js - ES modules
-export default initExperienceCarousel;
-
-// Export para entornos CommonJS también
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = initExperienceCarousel;
-}
-
-// Auto-inicialización para Liferay cuando se carga el script
-if (typeof window !== 'undefined' && !window.initExperienceCarousel) {
-  window.initExperienceCarousel = initExperienceCarousel;
+  // INICIALIZACIÓN AUTOMÁTICA PARA LIFERAY
+  // Múltiples estrategias para asegurar que se ejecute
   
-  // Si el DOM ya está listo, inicializar automáticamente
+  console.log('[EXPERIENCE] Script cargado - Estado del DOM:', document.readyState);
+  
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initExperienceCarousel);
+    console.log('[EXPERIENCE] DOM aún cargando, esperando DOMContentLoaded...');
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('[EXPERIENCE] DOMContentLoaded disparado');
+      setTimeout(checkAndInit, 100);
+    });
   } else {
-    initExperienceCarousel();
+    console.log('[EXPERIENCE] DOM ya listo, inicializando inmediatamente...');
+    setTimeout(checkAndInit, 100);
   }
+
+  // Backup: verificar también cuando window esté completamente cargado
+  window.addEventListener('load', function() {
+    console.log('[EXPERIENCE] Window load disparado');
+    // Solo inicializar si no se ha hecho antes
+    if (!document.querySelector('.experience-carousel__slides.use-grid') && !experienceSwiper) {
+      setTimeout(checkAndInit, 200);
+    }
+  });
+
+  // Exponer función globalmente para Liferay
+  window.initExperienceCarousel = checkAndInit;
+
+} else {
+  console.log('[EXPERIENCE] Detectado contexto de módulo, no ejecutando auto-inicialización');
 }

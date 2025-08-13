@@ -13,9 +13,8 @@ const Experiencia = () => {
   if (typeof window !== 'undefined') {
     // Usar setTimeout para asegurar que el DOM esté completamente renderizado
     setTimeout(() => {
-      const initScript = script()
-      if (typeof initScript === 'function') {
-        initScript()
+      if (typeof script === 'function') {
+        script()
       }
     }, 100)
   }

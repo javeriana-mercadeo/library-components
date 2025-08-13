@@ -1,140 +1,107 @@
 <div class="experience-carousel__carousel swiper">
   <div class="experience-carousel__wrapper experience-swiper">
     <div class="experience-carousel__slides swiper-wrapper" role="list">
-      <div class="experience-carousel__slide swiper-slide" role="listitem">
-        <a href="#" target="" class="experience-carousel__card-link">
-          <div class="experience-carousel__image-card">
-            <img
-              src="https://www.javeriana.edu.co/recursosdb/d/info-prg/dsc00979"
-              alt="Estudiantes Javeriana"
-              class="image image--no-zoom experience-carousel__image" />
+      <#if slides.getSiblings()?has_content>
+        <#list slides.getSiblings() as cur_slides>
+          <div class="experience-carousel__slide swiper-slide" role="listitem">
+            
+            <#-- CONTENIDO DINÁMICO SEGÚN TIPO -->
+            <#if (cur_slides.type_item.getData())?? && cur_slides.type_item.getData()=="type_image">
+              <#-- CONTENIDO IMAGEN -->
+              <#if (cur_slides.image.image_link.getData())??>
+                <a href="${cur_slides.image.image_link.getData()}"
+                  target=""
+                  class="experience-carousel__card-link">
+              </#if>
+              <div class="experience-carousel__image-card">
+                <#if (cur_slides.image.image_image.getData())??>
+                  <img src="${cur_slides.image.image_image.getData()}"
+                    alt="${cur_slides.image.image_image.getAttribute("alt")}"
+                    class="image image--no-zoom experience-carousel__image"
+                    loading="lazy"
+                    decoding="async" />
+                </#if>
+              </div>
+              <#if (cur_slides.image.image_link.getData())??>
+                </a>
+              </#if>
+              
+            <#elseif (cur_slides.type_item.getData())?? && cur_slides.type_item.getData()=="type_testimonial">
+              <#-- CONTENIDO TESTIMONIO -->
+              <div class="experience-carousel__testimonial-card">
+                <#if (cur_slides.testimonial.testimonial_text.getData())??>
+                  <p class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-text">
+                    ${cur_slides.testimonial.testimonial_text.getData()}
+                  </p>
+                </#if>
+                <div class="experience-carousel__testimonial-user">
+                  <div class="experience-carousel__testimonial-avatar">
+                    <#if (cur_slides.testimonial.testimonial_image.getData())??>
+                      <img alt="${cur_slides.testimonial.testimonial_image.getAttribute("alt")}"
+                        class="image image--no-zoom"
+                        src="${cur_slides.testimonial.testimonial_image.getData()}"
+                        loading="lazy"
+                        decoding="async" />
+                    </#if>
+                  </div>
+                  <div class="experience-carousel__testimonial-info">
+                    <#if (cur_slides.testimonial.testimonial_name.getData())??>
+                      <h4 class="experience-carousel__testimonial-name">
+                        ${cur_slides.testimonial.testimonial_name.getData()}
+                      </h4>
+                    </#if>
+                    <#if (cur_slides.testimonial.testimonial_work.getData())??>
+                      <p class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-job">
+                        ${cur_slides.testimonial.testimonial_work.getData()}
+                      </p>
+                    </#if>
+                  </div>
+                  <#if (cur_slides.testimonial.testimonial_link.getData())??>
+                    <a href="${cur_slides.testimonial.testimonial_link.getData()}"
+                      class="experience-carousel__testimonial-linkedin"
+                      target="_blank"
+                      rel="noopener noreferrer">
+                      <span class="icon icon--neutral icon--xs">
+                        <i class="ph ph-linkedin-logo" aria-hidden="true"></i>
+                      </span>
+                    </a>
+                  </#if>
+                </div>
+              </div>
+              
+            <#elseif (cur_slides.type_item.getData())?? && cur_slides.type_item.getData()=="type_media">
+              <#-- CONTENIDO VIDEO -->
+              <#if (cur_slides.grupo_media.media_id.getData())??>
+                <#assign videoOrientation = "vertical">
+                <#if (cur_slides.grupo_media.media_orientation.getData())??>
+                  <#assign videoOrientation = cur_slides.grupo_media.media_orientation.getData()>
+                </#if>
+                <div class="experience-carousel__video-card experience-carousel__video-card--${videoOrientation}">
+                  <div class="experience-carousel__video-container"
+                    data-video-id="${cur_slides.grupo_media.media_id.getData()}"
+                    data-video-orientation="${videoOrientation}"
+                    data-is-first-video="false"
+                    style="aspect-ratio:<#if videoOrientation == 'horizontal'>16/9<#else>9/16</#if>">
+                  </div>
+                </div>
+              </#if>
+            </#if>
+            
           </div>
-        </a>
-      </div>
-      <div class="experience-carousel__slide swiper-slide" role="listitem">
-        <div class="experience-carousel__video-card experience-carousel__video-card--vertical">
-          <div
-            class="experience-carousel__video-container"
-            data-video-id="coJHjliTbKM"
-            data-video-orientation="vertical"
-            data-is-first-video="false"
-            style="aspect-ratio:9/16"></div>
-        </div>
-      </div>
-      <div class="experience-carousel__slide swiper-slide" role="listitem">
-        <div class="experience-carousel__testimonial-card">
-          <p
-            class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-text">
-            Actualmente me desempeño en la organización Terpel en el área de Inteligencia de
-            Negocios. Mis funciones en la compañía son hacer estudios de mercado y encontrar
-            oportunidades de mejora.
-          </p>
-          <div class="experience-carousel__testimonial-user">
-            <div class="experience-carousel__testimonial-avatar">
-              <img
-                data-lfr-editable-id="image"
-                data-lfr-editable-type="image"
-                src="https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773710/Preview-1000x0/CarlosAlbertoHerna%CC%81ndez.png?t=1719869232728"
-                alt="Carlos Gómez"
-                class="image image--no-zoom" />
-            </div>
-            <div class="experience-carousel__testimonial-info">
-              <h4
-                class="experience-carousel__testimonial-name"
-                data-lfr-editable-id="experience-name-2"
-                data-lfr-editable-type="text">
-                Carlos Gómez
-              </h4>
-              <p
-                class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-job">
-                Analista de Negocios en Terpel
-              </p>
-            </div>
-            <a
-              href="#"
-              class="experience-carousel__testimonial-linkedin"
-              target="_blank"
-              rel="noopener noreferrer">
-              <span class="icon icon--neutral icon--xs">
-                <i class="ph ph-linkedin-logo" aria-hidden="true"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="experience-carousel__slide swiper-slide" role="listitem">
-        <div class="experience-carousel__video-card experience-carousel__video-card--vertical">
-          <div
-            class="experience-carousel__video-container"
-            data-video-id="IWZvfiu3gX4"
-            data-video-orientation="vertical"
-            data-is-first-video="false"
-            style="aspect-ratio:9/16"></div>
-        </div>
-      </div>
-      <div class="experience-carousel__slide swiper-slide" role="listitem">
-        <div class="experience-carousel__testimonial-card">
-          <p
-            class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-text">
-            La Javeriana me dio las herramientas para liderar proyectos empresariales. Hoy
-            impulso estrategias de crecimiento en una multinacional.
-          </p>
-          <div class="experience-carousel__testimonial-user">
-            <div class="experience-carousel__testimonial-avatar">
-              <img
-                data-lfr-editable-id="image"
-                data-lfr-editable-type="image"
-                src="https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461"
-                alt="Anamaría López"
-                class="image image--no-zoom" />
-            </div>
-            <div class="experience-carousel__testimonial-info">
-              <h4
-                class="experience-carousel__testimonial-name"
-                data-lfr-editable-id="experience-name-4"
-                data-lfr-editable-type="text">
-                Anamaría López
-              </h4>
-              <p
-                class="paragraph paragraph-neutral paragraph-md experience-carousel__testimonial-job">
-                Gerente de Estrategia en GlobalCorp
-              </p>
-            </div>
-            <a
-              href="#"
-              class="experience-carousel__testimonial-linkedin"
-              target="_blank"
-              rel="noopener noreferrer">
-              <span class="icon icon--neutral icon--xs">
-                <i class="ph ph-linkedin-logo" aria-hidden="true"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="experience-carousel__slide swiper-slide" role="listitem">
-        <div class="experience-carousel__video-card experience-carousel__video-card--vertical">
-          <div
-            class="experience-carousel__video-container"
-            data-video-id="wUmYyNrVjfg"
-            data-video-orientation="vertical"
-            data-is-first-video="false"
-            style="aspect-ratio:9/16"></div>
-        </div>
-      </div>
+        </#list>
+      </#if>
     </div>
-    <div
-      class="swiper-pagination experience-carousel__pagination"
+    
+    <div class="swiper-pagination experience-carousel__pagination"
       role="tablist"
-      aria-label="Control de páginas del carrusel"></div>
-    <button
-      class="swiper-slide-button experience-carousel__prev"
+      aria-label="Control de páginas del carrusel">
+    </div>
+    <button class="swiper-slide-button experience-carousel__prev"
       aria-label="Ir al slide anterior"
       type="button">
       <i class="ph ph-arrow-circle-left" aria-hidden="true"></i>
     </button>
-    <button
-      class="swiper-slide-button experience-carousel__next"
+    <button class="swiper-slide-button experience-carousel__next"
       aria-label="Ir al siguiente slide"
       type="button">
       <i class="ph ph-arrow-circle-right" aria-hidden="true"></i>
