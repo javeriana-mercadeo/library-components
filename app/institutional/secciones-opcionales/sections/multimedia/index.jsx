@@ -1,8 +1,16 @@
 'use client'
+<<<<<<< HEAD
 
 import { useEffect, useRef, useState } from 'react'
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
+=======
+import { UniversalComponent as UC, Container } from '@library/components'
+
+import React, { Component } from 'react'
+
+import Title from '@library/components/contain/title/index.jsx'
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
 
 import info from './info.json'
 import './styles.scss'
@@ -204,6 +212,7 @@ const MultimediaSlider = () => {
     checkSwiper()
   }, []) // Solo se ejecuta una vez al montar el componente
 
+<<<<<<< HEAD
   // ==========================================
   // FUNCIÓN PARA RENDERIZAR SLIDE PRINCIPAL
   // ==========================================
@@ -217,6 +226,95 @@ const MultimediaSlider = () => {
             <div className={`${baseClass}_overlay-content`}>
               <h3 className={`${baseClass}_overlay-title`}>{item.title}</h3>
               <p className={`${baseClass}_overlay-text`}>{item.overlayText}</p>
+=======
+  componentDidMount() {
+    this.sliderLogic.componentDidMount()
+  }
+
+  componentWillUnmount() {
+    this.sliderLogic.componentWillUnmount()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    this.sliderLogic.componentDidUpdate(prevProps, prevState)
+  }
+
+  render() {
+    const { currentIndex, slidesPerView } = this.state
+    const maxIndex = this.sliderLogic.slides.length - slidesPerView
+
+    return (
+      <div className='slider-section'>
+        <div>
+          <Title className='carousel-title'>
+            {' '}
+            <h1>Multimedia</h1>{' '}
+          </Title>
+        </div>
+        <Container className='image-slider-container'>
+          <div>
+            <div>
+              <Title className='title-gallery'>
+                {' '}
+                <h1>Lorem ipsum dolor sit amet consectetur.</h1>
+              </Title>
+            </div>
+
+            <div className='image-slider'>
+              <button
+                className={`nav-button prev-button ${currentIndex <= 0 ? 'disabled' : ''}`}
+                onClick={() => this.sliderLogic.goToSlide(currentIndex - 1)}
+                disabled={currentIndex <= 0}>
+                <span className='arrow-icon'>&#10094;</span>
+              </button>
+
+              <button
+                className={`nav-button next-button ${currentIndex >= maxIndex ? 'disabled' : ''}`}
+                onClick={() => this.sliderLogic.goToSlide(currentIndex + 1)}
+                disabled={currentIndex >= maxIndex}>
+                <span className='arrow-icon'>&#10095;</span>
+              </button>
+
+              <div className='slider-wrapper' ref={this.sliderWrapperRef} onScroll={() => this.sliderLogic.handleScroll()}>
+                {this.sliderLogic.slides.map(slide => (
+                  <div className='slide' key={slide.id}>
+                    <a href={slide.link || '#'} className='slide-link' onClick={e => (slide.link ? null : e.preventDefault())}>
+                      {slide.type === 'image' && (
+                        <div className='slide-image' style={{ backgroundImage: `url(${slide.image})` }}>
+                          <div className='slide-content'>
+                            <button className='content-button' aria-label={`Ver más de ${slide.title}`}></button>
+                          </div>
+                        </div>
+                      )}
+
+                      {slide.type === 'video' && (
+                        <div className='slide-video'>
+                          <video
+                            src={slide.videoUrl}
+                            controls
+                            preload='metadata'
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'rem(10px)' }}
+                          />
+                        </div>
+                      )}
+
+                      {slide.type === 'youtube' && (
+                        <div className='slide-video'>
+                          <iframe
+                            src={this.sliderLogic.getYouTubeEmbedUrl(slide.youtubeUrl)}
+                            frameBorder='0'
+                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                            allowFullScreen
+                            title={slide.title}
+                            style={{ width: '100%', height: '100%', borderRadius: 'rem(10px)' }}
+                          />
+                        </div>
+                      )}
+                    </a>
+                  </div>
+                ))}
+              </div>
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
             </div>
           </div>
         </div>

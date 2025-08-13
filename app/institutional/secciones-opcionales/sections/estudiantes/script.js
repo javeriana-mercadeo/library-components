@@ -24,6 +24,7 @@ const StudentSliderModule = (function () {
     lastTouchTime: 0
   }
 
+<<<<<<< HEAD
   function getNextSlide(current, total) {
     return (current + 1) % total
   }
@@ -453,3 +454,7 @@ const StudentSliderModule = (function () {
 
 // Export default para ES6 modules
 export default StudentSliderModule
+=======
+  return ''
+}
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f

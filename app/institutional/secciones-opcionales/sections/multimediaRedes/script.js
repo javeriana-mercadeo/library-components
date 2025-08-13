@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export default () => {
   const initializeSwiper = () => {
     // Destruir instancia existente si existe
@@ -13,6 +14,19 @@ export default () => {
       if (!fallbackElement) {
         console.error('Ningún elemento swiper encontrado')
         return
+=======
+export default function swiperCarousel() {
+  const loadSwiper = async () => {
+    if (typeof window !== 'undefined' && !window.Swiper) {
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'
+      script.async = true
+
+      script.onload = () => {
+        setTimeout(() => {
+          initializeSwiper()
+        }, 100)
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
       }
       console.log('📦 Usando elemento fallback: .social-swiper')
     }
@@ -21,6 +35,7 @@ export default () => {
     const slides = document.querySelectorAll('.social-carousel_slide')
     const totalSlides = slides.length
 
+<<<<<<< HEAD
     if (!window.Swiper) {
       console.error('Swiper no está disponible')
       return
@@ -208,6 +223,25 @@ export default () => {
             iframe.style.maxHeight = 'none'
           })
         })
+=======
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
+      document.head.appendChild(link)
+    } else if (window.Swiper) {
+      setTimeout(() => {
+        initializeSwiper()
+      }, 100)
+    }
+  }
+
+  const initializeSwiper = () => {
+    const swiperContainer = document.querySelector('.subjects-swiper')
+
+    if (window.Swiper && swiperContainer) {
+      if (swiperContainer.swiper) {
+        swiperContainer.swiper.destroy(true, true)
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
       }
     })
     
@@ -219,6 +253,7 @@ export default () => {
     })
   }
 
+<<<<<<< HEAD
   // Función para observar cambios en los embeds
   const observeEmbedChanges = () => {
     if (typeof window !== 'undefined' && window.MutationObserver) {
@@ -245,6 +280,49 @@ export default () => {
               window.socialCarouselSwiper.updateAutoHeight(200)
             }
           }, 100)
+=======
+      const swiper = new window.Swiper('.subjects-swiper', {
+        loop: true,
+        spaceBetween: 30,
+        grabCursor: true,
+        centeredSlides: false,
+
+        pagination: {
+          el: '.subjects-pagination',
+          clickable: true,
+          dynamicBullets: true
+        },
+
+        navigation: {
+          nextEl: '.subjects-next',
+          prevEl: '.subjects-prev'
+        },
+
+        // Responsive breakpoints
+        breakpoints: {
+          0: {
+            slidesPerView: 1,
+            spaceBetween: 20
+          },
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 25
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 30
+          }
+        },
+
+        // Eventos para debugging
+        on: {
+          init: function () {
+            console.log('Swiper inicializado correctamente')
+          },
+          slideChange: function () {
+            console.log('Slide cambiado')
+          }
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
         }
       })
       
@@ -261,6 +339,7 @@ export default () => {
     }
   }
 
+<<<<<<< HEAD
   // Resto de funciones existentes...
   const updateNavigationDisplay = (swiper, totalSlides) => {
     const carousel = document.querySelector('.social-carousel')
@@ -430,3 +509,7 @@ export default () => {
     }, 250)
   })
 }
+=======
+  loadSwiper()
+}
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f

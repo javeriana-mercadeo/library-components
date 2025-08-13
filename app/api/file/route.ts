@@ -1,7 +1,101 @@
-import { NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
+
+import { NextResponse } from 'next/server'
 import * as sass from 'sass'
+
+// Función para resolver imports de JavaScript recursivamente
+async function resolveJavaScriptImports(
+  filePath: string,
+  basePath: string,
+  visited = new Set<string>(),
+  isMainFile = true
+): Promise<string> {
+  // Evitar imports circulares
+  const normalizedPath = path.normalize(filePath)
+
+  if (visited.has(normalizedPath)) {
+    return `/* Circular import detected: ${normalizedPath} */\n`
+  }
+  visited.add(normalizedPath)
+
+  try {
+    const content = await fs.readFile(filePath, 'utf8')
+
+    // Buscar todas las declaraciones de import (tanto default como named)
+    const importRegex = /import\s+(?:(?:\{[^}]*\}|[^,\s]+)(?:\s*,\s*(?:\{[^}]*\}|[^,\s]+))*\s+from\s+)?['"`](.+?)['"`]/g
+    const imports: string[] = []
+    let match
+
+    while ((match = importRegex.exec(content)) !== null) {
+      imports.push(match[1])
+    }
+
+    // Resolver cada import
+    let resolvedContent = ''
+    const processedImports = new Set<string>()
+
+    for (const importPath of imports) {
+      if (processedImports.has(importPath)) continue
+      processedImports.add(importPath)
+
+      // Resolver la ruta del import
+      let resolvedPath = ''
+
+      if (importPath.startsWith('./') || importPath.startsWith('../')) {
+        // Import relativo
+        resolvedPath = path.resolve(path.dirname(filePath), importPath)
+
+        // Agregar extensión .js si no la tiene
+        if (!path.extname(resolvedPath)) {
+          resolvedPath += '.js'
+        }
+      } else {
+        // Import absoluto o alias - por ahora skip
+        resolvedContent += `/* Skipped import: ${importPath} */\n`
+        continue
+      }
+
+      // Verificar que el archivo existe y está dentro del basePath
+      if (resolvedPath.startsWith(basePath)) {
+        try {
+          await fs.access(resolvedPath)
+          const importedContent = await resolveJavaScriptImports(resolvedPath, basePath, new Set(visited), false)
+          const relativePath = path.relative(basePath, resolvedPath)
+
+          resolvedContent += `\n// ==================================================================================\n`
+          resolvedContent += `// INICIO DE: ${relativePath}\n`
+          resolvedContent += `// ==================================================================================\n`
+          resolvedContent += importedContent
+          resolvedContent += `// ==================================================================================\n`
+          resolvedContent += `// FINAL DE: ${relativePath}\n`
+          resolvedContent += `// ==================================================================================\n\n`
+        } catch {
+          resolvedContent += `/* Failed to import: ${importPath} (${resolvedPath}) */\n`
+        }
+      } else {
+        resolvedContent += `/* Import outside basePath: ${importPath} */\n`
+      }
+    }
+
+    // Remover las declaraciones de import del contenido original
+    let contentWithoutImports = content.replace(
+      /import\s+(?:(?:\{[^}]*\}|[^,\s]+)(?:\s*,\s*(?:\{[^}]*\}|[^,\s]+))*\s+from\s+)?['"`].+?['"`][;\s]*\n?/g,
+      ''
+    )
+
+    // Si no es el archivo principal, comentar las exportaciones para evitar conflictos
+    if (!isMainFile) {
+      // Comentar exports para archivos importados
+      contentWithoutImports = contentWithoutImports.replace(/^(\s*export\s+)/gm, '// $1')
+      contentWithoutImports = contentWithoutImports.replace(/^(\s*export\s*{[^}]*}\s*)/gm, '// $1')
+    }
+
+    return resolvedContent + contentWithoutImports
+  } catch (error) {
+    return `/* Error reading file ${filePath}: ${error} */\n`
+  }
+}
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
@@ -29,13 +123,23 @@ export async function GET(req: Request) {
     const jsPath = path.join(componentPath, 'script.js')
 
     // 📌 Leer archivos de forma asíncrona
-    const [infoContent, scssContent, jsContent] = await Promise.all([
+    const [infoContent, scssContent] = await Promise.all([
       fs.readFile(infoPath, 'utf8').catch(() => null),
-      fs.readFile(scssPath, 'utf8').catch(() => null),
-      fs.readFile(jsPath, 'utf8').catch(() => null)
+      fs.readFile(scssPath, 'utf8').catch(() => null)
     ])
 
+    // 📌 Resolver JavaScript con imports
+    let jsContent = ''
+
+    try {
+      await fs.access(jsPath)
+      jsContent = await resolveJavaScriptImports(jsPath, basePath)
+    } catch {
+      jsContent = '' // Archivo no existe
+    }
+
     let compiledCSS = ''
+
     if (scssContent) {
       try {
         compiledCSS = sass.compileString(scssContent, {
@@ -50,11 +154,14 @@ export async function GET(req: Request) {
 
                   // Intentar diferentes extensiones
                   const extensions = ['', '.scss', '.sass', '.css']
+
                   for (const ext of extensions) {
                     const filePathWithExt = fullPath + ext
+
                     try {
                       // Verificar si el archivo existe de forma síncrona
                       require('fs').accessSync(filePathWithExt)
+
                       return new URL(`file://${filePathWithExt.replace(/\\/g, '/')}`)
                     } catch {
                       continue
@@ -62,6 +169,7 @@ export async function GET(req: Request) {
                   }
 
                   console.warn(`No se encontró el archivo: ${fullPath}`)
+
                   return null
                 }
 
@@ -76,13 +184,18 @@ export async function GET(req: Request) {
       }
     }
 
+    // Verificar si el JS tiene imports
+    const hasImports = jsContent.includes('// IMPORTED FROM:')
+
     return NextResponse.json({
       info: infoContent ? JSON.parse(infoContent) : {},
       css: compiledCSS,
-      js: jsContent || ''
+      js: jsContent || '',
+      jsCompiled: hasImports // Indicar si se compilaron imports
     })
   } catch (error) {
     console.error('Error al cargar el componente:', error)
+
     return new NextResponse('Error al cargar el componente', { status: 500 })
   }
 }

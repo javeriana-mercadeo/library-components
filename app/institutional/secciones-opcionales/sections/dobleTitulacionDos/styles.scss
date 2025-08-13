@@ -15,6 +15,12 @@
 
   .content-wrapper {
     width: 100%;
+<<<<<<< HEAD
+=======
+    max-width: 1200px;
+    margin: 0 auto;
+    height: calc(100vh - 80px);
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
 
     // Desktop
     @media (min-width: 769px) {
@@ -34,10 +40,16 @@
   }
 
   .main-title {
+<<<<<<< HEAD
     color: var(--neutral-400);
     font-weight: var(--font-weight-bold);
     font-size: var(--font-size-title);
     padding: var(--spacing-xl);
+=======
+    color: #454f59;
+    font-weight: 700;
+    padding: 50px;
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
     text-align: center;
 
     // Desktop
@@ -60,6 +72,10 @@
     flex-direction: column;
     gap: 0;
     width: 100%;
+<<<<<<< HEAD
+=======
+    height: calc(100% - 60px);
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
 
     // Desktop - dos columnas
     @media (min-width: 769px) {
@@ -70,7 +86,10 @@
     }
   }
 
+<<<<<<< HEAD
   // Columna izquierda
+=======
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
   .left-column {
     width: 100%;
 
@@ -140,8 +159,13 @@
         justify-content: flex-end;
         align-items: flex-start;
         text-align: left;
+<<<<<<< HEAD
         padding: rem(20px);
         background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
+=======
+        padding: 30px;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.89), rgba(0, 0, 0, 0));
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
         color: #fff;
         z-index: 5;
 
@@ -153,9 +177,44 @@
           line-height: 1.2;
           color: white;
         }
+<<<<<<< HEAD
         @include liferay-edit-mode {
           .overlay-title {
             font-size: rem(14px);
+=======
+
+        .overlay-description {
+          font-size: 16px;
+          line-height: 1.6;
+          max-width: 80%;
+          text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .overlay-content {
+          position: static;
+          background: transparent;
+          align-items: flex-start;
+          text-align: left;
+          padding: 0;
+          height: auto;
+
+          .overlay-title {
+            font-size: clamp(1.6rem, 2vw + 1rem, 1.875rem);
+            color: #333;
+            padding: 15px 0;
+            text-shadow: none;
+          }
+
+          .overlay-description {
+            font-size: 14px;
+            color: #666;
+            padding: 15px 0;
+            line-height: 1.4;
+            max-width: 100%;
+            text-shadow: none;
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
           }
         }
 
@@ -203,11 +262,47 @@
   .right-column {
     width: 100%;
 
+<<<<<<< HEAD
     // Desktop
     @media (min-width: 769px) {
       flex: 1;
       height: 100%;
       overflow: hidden;
+=======
+      @media (max-width: 768px) {
+        width: 100%;
+        margin-bottom: 15px;
+        display: none;
+      }
+
+      .title-section {
+        .section-title {
+          font-size: 18px;
+          color: #0075c9;
+          margin-bottom: 8px;
+          font-weight: 600;
+        }
+
+        .university-info {
+          font-size: 14px;
+          color: #666;
+        }
+      }
+
+      .logo-container {
+        display: flex;
+        gap: 15px;
+
+        .university-logo {
+          height: 35px;
+          object-fit: contain;
+
+          @media (max-width: 768px) {
+            height: 25px;
+          }
+        }
+      }
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
     }
 
     .scroll-container {
@@ -220,9 +315,57 @@
         overflow-x: hidden;
         padding-right: rem(10px);
 
+<<<<<<< HEAD
         // Scrollbar personalizada
         &::-webkit-scrollbar {
           width: rem(6px);
+=======
+      &::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+      }
+    }
+
+    .program-items {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-bottom: 10px;
+      min-width: 100%;
+
+      @media (max-width: 768px) {
+        gap: 30px;
+      }
+    }
+
+    .program-item {
+      display: flex;
+      flex-direction: column;
+      border-radius: 8px;
+      overflow: hidden;
+
+      .program-image {
+        width: 100%;
+        height: 600px;
+        object-fit: cover;
+        border-radius: 15px;
+
+        @media (max-width: 1200px) {
+          height: 650px;
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
         }
 
         &::-webkit-scrollbar-track {
@@ -230,12 +373,46 @@
           border-radius: rem(3px);
         }
 
+<<<<<<< HEAD
         &::-webkit-scrollbar-thumb {
           background: rgba(193, 193, 193, 0.6);
           border-radius: rem(3px);
 
           &:hover {
             background: rgba(168, 168, 168, 0.8);
+=======
+        @media (max-width: 768px) {
+          height: 800px;
+        }
+
+        @media (max-width: 576px) {
+          height: 600px;
+        }
+
+        @media (max-width: 375px) {
+          height: 400px;
+        }
+      }
+
+      .program-info {
+        padding: 15px;
+        background-color: white;
+
+        @media (max-width: 768px) {
+          padding: 15px;
+        }
+
+        .program-title {
+          font-size: 16px;
+          font-weight: 600;
+          margin-bottom: 8px;
+          color: #333;
+
+          @media (max-width: 768px) {
+            font-size: 16px;
+            text-align: left;
+            margin-top: 0;
+>>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
           }
         }
 

@@ -1,8 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.ignoreWarnings = [/Hydration failed/, /server rendered HTML didn't match/]
+  // Configuración para Turbopack
+  turbopack: {
+    resolveAlias: {
+      '@library': './app/_library',
+      '@styles': './styles'
+    }
+  },
+  // Configuración para Webpack (fallback)
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@library': './app/_library',
+      '@styles': './styles'
     }
     return config
   }
