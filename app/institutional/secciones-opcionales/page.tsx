@@ -1,25 +1,18 @@
 'use client'
-import ViewComponent from '@/app/_components/viewComponent/viewComponent'
+import ViewComponent from '@/components/viewComponent/viewComponent'
 
-import Proyectos from './sections/proyectos'
+// import Proyectos from './sections/proyectos'
 import Laboratorios from './sections/laboratorios'
 import Estudiantes from './sections/estudiantes'
 import Multimedia from './sections/multimedia'
-import MultimediaRedes from './sections/multimediaRedes'
-import DobleTitulacionUno from './sections/dobleTitulacionUno'
+// import MultimediaRedes from './sections/multimediaRedes'
+// import DobleTitulacionUno from './sections/dobleTitulacionUno'
 import DobleTitulacionDos from './sections/dobleTitulacionDos'
 import Herramientas from './sections/herramientas'
-<<<<<<< HEAD
 import AccesosDirectos from './sections/accesosDirectos'
 
 export default function SeccionesOpcionales() {
   const basePath = '/institutional/secciones-opcionales'
-=======
-
-export default function SeccionesOpcionales() {
-  const basePath = '/institutional/pgProjects'
-
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
   return (
     <>
       {/* <Proyectos />*/}

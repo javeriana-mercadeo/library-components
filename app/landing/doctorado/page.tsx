@@ -1,4 +1,4 @@
-import ViewComponent from '@/app/_components/viewComponent/viewComponent'
+import ViewComponent from '@/components/viewComponent/viewComponent'
 
 import VideoDoctorado from './sections/videoDoctorado/'
 
