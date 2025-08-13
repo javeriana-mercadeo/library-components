@@ -85,6 +85,44 @@ $experience-nav-offset: rem(25px);
 
   &__slides {
     align-items: stretch !important;
+
+    // Modo Grid cuando hay pocos slides
+    &.use-grid {
+      display: grid !important;
+      justify-content: center !important;
+      align-items: stretch !important;
+      gap: rem(25px) !important;
+      transform: none !important; // Cancelar transformaciones de Swiper
+      width: 100% !important;
+      margin: 0 auto !important;
+
+      // Ancho fijo para mantener proporciones - móvil
+      grid-template-columns: rem(320px) !important;
+
+      // Responsive Grid con anchos fijos
+      @include responsive($breakpoint-sm) {
+        grid-template-columns: repeat(auto-fit, rem(280px)) !important;
+        max-width: rem(700px) !important; // Para centrar cuando hay pocos elementos
+      }
+
+      @include responsive($breakpoint-md) {
+        grid-template-columns: repeat(auto-fit, rem(300px)) !important;
+        max-width: rem(1000px) !important;
+      }
+
+      @include responsive($breakpoint-lg) {
+        grid-template-columns: repeat(auto-fit, rem(320px)) !important;
+        max-width: rem(1400px) !important;
+      }
+
+      // En modo grid, los slides no necesitan comportamiento de Swiper
+      .experience-carousel__slide {
+        width: auto !important;
+        margin-right: 0 !important;
+        transform: none !important;
+        max-width: none !important; // Permitir que el grid controle el ancho
+      }
+    }
   }
 
   &__slide {
@@ -96,6 +134,21 @@ $experience-nav-offset: rem(25px);
 
     @include responsive($breakpoint-sm) {
       height: rem(400px) !important;
+    }
+
+    // En modo Swiper, usar anchos fijos más angostos para que quepan exactamente
+    .experience-carousel__slides:not(.use-grid) & {
+      @include responsive($breakpoint-sm) {
+        width: rem(250px) !important; // Más angosto para que quepan 2
+      }
+
+      @include responsive($breakpoint-md) {
+        width: rem(280px) !important; // Más angosto para que quepan 3
+      }
+
+      @include responsive($breakpoint-lg) {
+        width: rem(295px) !important; // Más angosto para que quepan 4 completos
+      }
     }
   }
 

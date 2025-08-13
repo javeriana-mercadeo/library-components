@@ -1,8 +1,6 @@
 'use client'
 import { Title, Paragraph, Container, Image, Icon } from '@library/components'
 
-import { useEffect } from 'react'
-
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'
@@ -11,12 +9,16 @@ const Experiencia = () => {
   const elementName = info.id || 'experiencia'
   const baseClass = 'experience-carousel'
 
-  useEffect(() => {
-    const initScript = script()
-    if (typeof initScript === 'function') {
-      initScript()
-    }
-  }, [])
+  // Inicializar script manualmente cuando el componente se monta
+  if (typeof window !== 'undefined') {
+    // Usar setTimeout para asegurar que el DOM esté completamente renderizado
+    setTimeout(() => {
+      const initScript = script()
+      if (typeof initScript === 'function') {
+        initScript()
+      }
+    }, 100)
+  }
 
   // Datos del carrusel - estos vendrán de Liferay
   const carouselData = [
@@ -58,12 +60,12 @@ const Experiencia = () => {
           'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461',
         linkedin: '#'
       }
-    },
-    {
-      type: 'video',
-      orientation: 'vertical',
-      videoId: 'wUmYyNrVjfg'
     }
+    // {
+    //   type: 'video',
+    //   orientation: 'vertical',
+    //   videoId: 'wUmYyNrVjfg'
+    // }
   ]
 
   // Componente para renderizar imagen

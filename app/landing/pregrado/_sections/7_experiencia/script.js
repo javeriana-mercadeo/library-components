@@ -1,4 +1,90 @@
 export default () => {
+  // Función para calcular cuántos slides caben visualmente en el viewport
+  const getSlidesVisibleInViewport = (windowWidth, slideWidth, gap) => {
+    // Considerar padding del contenedor (.experience-carousel__wrapper)
+    const containerPadding = windowWidth < 768 ? 30 : 60 // padding left + right
+    const availableWidth = windowWidth - containerPadding
+    
+    // Calcular cuántos slides + gaps caben
+    const slideWithGap = slideWidth + gap
+    const slidesVisible = Math.floor((availableWidth + gap) / slideWithGap)
+    
+    return Math.max(1, slidesVisible) // Mínimo 1 slide
+  }
+
+  // Función para determinar configuración según viewport real y slides totales
+  const getDisplayConfig = (windowWidth, totalSlides) => {
+    let slidesPerView, slideWidth, gap = 25
+    
+    // Definir cuántos slides mostrar según breakpoint
+    // Usar anchos más angostos en Swiper para que quepan exactamente
+    if (windowWidth < 576) {
+      slidesPerView = 1
+      slideWidth = 320 // Grid mantiene ancho original
+    } else if (windowWidth < 768) {
+      slidesPerView = 2
+      slideWidth = 280 // Grid mantiene ancho, Swiper usa 250px
+    } else if (windowWidth < 1024) {
+      slidesPerView = 3
+      slideWidth = 300 // Grid mantiene ancho, Swiper usa 280px
+    } else {
+      slidesPerView = 4
+      slideWidth = 320 // Grid mantiene ancho, Swiper usa 300px
+    }
+    
+    // Si hay menos slides que los que se quieren mostrar → Grid (centrado)
+    // Si hay más slides → Swiper (navegación necesaria)
+    return {
+      slidesPerView: slidesPerView,
+      useGrid: totalSlides <= slidesPerView,
+      slideWidth: slideWidth,
+      gap: gap
+    }
+  }
+
+  // Función para activar modo Grid
+  const activateGridMode = () => {
+    const slidesContainer = document.querySelector('.experience-carousel__slides')
+    const paginationEl = document.querySelector('.experience-carousel__pagination')
+    const prevButton = document.querySelector('.experience-carousel__prev')
+    const nextButton = document.querySelector('.experience-carousel__next')
+
+    if (slidesContainer) {
+      slidesContainer.classList.add('use-grid')
+      slidesContainer.classList.remove('swiper-wrapper')
+    }
+
+    // Ocultar controles de navegación en modo grid
+    if (paginationEl) paginationEl.style.display = 'none'
+    if (prevButton) prevButton.style.display = 'none'
+    if (nextButton) nextButton.style.display = 'none'
+
+    // Cargar videos en modo grid también
+    setTimeout(() => {
+      loadVideos()
+    }, 100)
+  }
+
+  // Función para activar modo Swiper
+  const activateSwiperMode = () => {
+    const slidesContainer = document.querySelector('.experience-carousel__slides')
+    const paginationEl = document.querySelector('.experience-carousel__pagination')
+    const prevButton = document.querySelector('.experience-carousel__prev')
+    const nextButton = document.querySelector('.experience-carousel__next')
+
+    if (slidesContainer) {
+      slidesContainer.classList.remove('use-grid')
+      slidesContainer.classList.add('swiper-wrapper')
+    }
+
+    // Mostrar controles de navegación en modo swiper
+    if (paginationEl) paginationEl.style.display = 'flex'
+    if (prevButton) prevButton.style.display = 'flex'
+    if (nextButton) nextButton.style.display = 'flex'
+
+    initializeSwiper()
+  }
+
   const initializeSwiper = () => {
     // Destruir instancia existente si existe
     if (window.experienceSwiper) {
@@ -17,10 +103,6 @@ export default () => {
       }
     }
 
-    // Contar slides
-    const slides = document.querySelectorAll('.experience-carousel__slide')
-    const totalSlides = slides.length
-
     if (!window.Swiper) {
       console.error('Swiper no está disponible')
       return
@@ -32,11 +114,12 @@ export default () => {
     try {
       window.experienceSwiper = new window.Swiper(swiperSelector, {
         loop: false,
-        spaceBetween: 20,
+        spaceBetween: 25,
         watchOverflow: true,
-        centeredSlides: false,
+        centeredSlides: false, // No usar centeredSlides de Swiper
         grabCursor: true,
-        allowTouchMove: totalSlides > 1,
+        allowTouchMove: true,
+        slidesPerView: 1, // Default para móvil
 
         pagination: {
           el: '.experience-carousel__pagination',
@@ -54,25 +137,17 @@ export default () => {
         },
 
         breakpoints: {
-          0: {
-            slidesPerView: 1,
-            spaceBetween: 20,
-            centeredSlides: true
-          },
           576: {
-            slidesPerView: 1.2,
-            spaceBetween: 20,
-            centeredSlides: false
+            slidesPerView: 'auto',
+            spaceBetween: 25
           },
           768: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-            centeredSlides: false
+            slidesPerView: 'auto', 
+            spaceBetween: 25
           },
           1024: {
-            slidesPerView: 4,
-            spaceBetween: 25,
-            centeredSlides: false
+            slidesPerView: 'auto',
+            spaceBetween: 25
           }
         },
 
@@ -210,17 +285,67 @@ export default () => {
     })
   }
 
-  // Patrón exacto de planEstudio - inicialización directa
+  // Función principal para decidir qué modo usar
+  const initializeCarousel = () => {
+    const slides = document.querySelectorAll('.experience-carousel__slide')
+    const totalSlides = slides.length
+    const windowWidth = window.innerWidth
+
+    const config = getDisplayConfig(windowWidth, totalSlides)
+
+    console.log(`[INIT] Ventana: ${windowWidth}px, Slides: ${totalSlides}, Visibles: ${config.slidesPerView}, Usar Grid: ${config.useGrid}`)
+
+    if (config.useGrid) {
+      console.log('[INIT] Activando modo Grid')
+      activateGridMode()
+    } else {
+      console.log('[INIT] Activando modo Swiper')
+      activateSwiperMode()
+    }
+  }
+
+  // Función para manejar resize y recalcular modo
+  const handleCarouselResize = () => {
+    const slides = document.querySelectorAll('.experience-carousel__slide')
+    const totalSlides = slides.length
+    const windowWidth = window.innerWidth
+
+    const config = getDisplayConfig(windowWidth, totalSlides)
+    const currentlyUsingGrid = document.querySelector('.experience-carousel__slides.use-grid')
+
+    console.log(`[RESIZE] Ventana: ${windowWidth}px, Slides: ${totalSlides}, Visibles: ${config.slidesPerView}, Usar Grid: ${config.useGrid}`)
+
+    // Solo cambiar si el modo necesita cambiar
+    if (config.useGrid && !currentlyUsingGrid) {
+      // Destruir Swiper y activar Grid
+      console.log('[RESIZE] Cambiando a modo Grid')
+      if (window.experienceSwiper) {
+        window.experienceSwiper.destroy(true, true)
+        window.experienceSwiper = null
+      }
+      activateGridMode()
+    } else if (!config.useGrid && currentlyUsingGrid) {
+      // Activar Swiper y desactivar Grid
+      console.log('[RESIZE] Cambiando a modo Swiper')
+      activateSwiperMode()
+    }
+
+    // Manejar botones de mute
+    handleResize()
+  }
+
+  // Inicialización principal
   const checkAndInit = () => {
-    if (typeof window !== 'undefined' && window.Swiper) {
-      initializeSwiper()
+    if (typeof window !== 'undefined') {
+      initializeCarousel()
 
       // Agregar listener para resize
-      window.addEventListener('resize', handleResize)
+      window.addEventListener('resize', handleCarouselResize)
     } else {
       setTimeout(checkAndInit, 300)
     }
   }
 
-  checkAndInit()
+  // Devolver la función de inicialización para que pueda ser llamada desde React
+  return checkAndInit
 }
