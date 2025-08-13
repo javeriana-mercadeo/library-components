@@ -25,32 +25,43 @@ const Proyectos = () => {
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
       slideData: { id: 2, type: 'investigacion' }
     },
-        {
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
+    {
+      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3',
+      title: 'Campus Innovador',
+      description: 'Explora nuestras instalaciones modernas y entorno de aprendizaje',
+      slideData: { id: 3, type: 'campus' }
+    },
+    {
+      image: 'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png',
+      title: 'Oportunidades Internacionales',
+      description: 'Descubre programas de intercambio y colaboraciones globales',
+      slideData: { id: 4, type: 'internacional' }
+    },
+    {
+      image: 'https://revistaaxxis.com.co/wp-content/uploads/2024/05/Edifiico_Sapiencia_3-1024x683.png',
+      title: 'Universidad Destacada',
+      description: 'Descubre nuestros programas académicos y la experiencia universitaria',
+      slideData: { id: 5, type: 'universidad' }
+    },
+    {
+      image: 'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0009_Javeriana-Sostenible.jpg',
       title: 'Investigación de Clase Mundial',
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
-      slideData: { id: 2, type: 'investigacion' }
+      slideData: { id: 6, type: 'investigacion' }
     },
-        {
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-      title: 'Investigación de Clase Mundial',
-      description: 'Conoce nuestros proyectos de investigación y logros académicos',
-      slideData: { id: 2, type: 'investigacion' }
+    {
+      image: 'https://www.javeriana.edu.co/recursosdb/664630/725325/compromisosocial2.png/2b84da22-005b-de8f-208a-7b90a466cba1?t=1603222055696',
+      title: 'Universidad Destacada',
+      description: 'Descubre nuestros programas académicos y la experiencia universitaria',
+      slideData: { id: 7, type: 'universidad' }
     },
-
-
-  ]
-
-  const getPositionClass = (index, activeIndex, isMobile) => {
-    if (isMobile) {
-      return index === activeIndex ? 'active' : ''
-    } else {
-      if (index === activeIndex) return 'active left'
-      if (index === (activeIndex + 1) % slides.length) return 'active center'
-      if (index === (activeIndex + 2) % slides.length) return 'active right'
-      return ''
+    {
+      image: 'https://i.ytimg.com/vi/mGd4pvXwQOo/maxresdefault.jpg',
+      title: 'Campus Innovador',
+      description: 'Explora nuestras instalaciones modernas y entorno de aprendizaje',
+      slideData: { id: 8, type: 'campus' }
     }
-  }
+  ]
 
   // Obtener el slide seleccionado para el modal
   const selectedSlide = carouselManager.selectedSlideIndex !== null ? slides[carouselManager.selectedSlideIndex] : null
@@ -62,48 +73,47 @@ const Proyectos = () => {
       </div>
       <Container className="main-container">
         <div>
+          {/* ESTRUCTURA PARA SWIPER.JS */}
           <div 
-            className="carousel-container"
+            className="carousel-container swiper"
             id="carousel-container"
-            onTouchStart={carouselManager.handleTouchStart}
-            onTouchMove={carouselManager.handleTouchMove}
-            onTouchEnd={carouselManager.handleTouchEnd}
           >
-            {slides.map((slide, index) => (
-              <div
-                key={index}
-                className={`carousel-slide ${getPositionClass(index, carouselManager.activeIndex, carouselManager.isMobile)}`}
-                onClick={() => carouselManager.openModal(index)}
-                style={{ cursor: 'pointer' }}
-                data-slide-index={index}
-              >
-                <div className="slide-image" style={{ backgroundImage: `url(${slide.image})` }}>
-                  <div className="slide-content">
-                    <h2>{slide.title}</h2>
-                    <Paragraph className='description'>
-                      {slide.description}
-                    </Paragraph>
+            <div className="swiper-wrapper">
+              {slides.map((slide, index) => (
+                <div
+                  key={index}
+                  className="carousel-slide swiper-slide"
+                  data-slide-index={index}
+                >
+                  <div className="slide-image" style={{ backgroundImage: `url(${slide.image})` }}>
+                    <div className="slide-content">
+                      <h2>{slide.title}</h2>
+                      <Paragraph className='description'>
+                        {slide.description}
+                      </Paragraph>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
+          {/* CONTROLES DE NAVEGACIÓN */}
           <div className="carousel-controls">
-            <button className="carousel-control prev" onClick={carouselManager.prevSlide}>
+            <button className="carousel-control prev" id="carousel-prev">
               <i className="ph ph-arrow-circle-left"></i>
             </button>
-            <button className="carousel-control next" onClick={carouselManager.nextSlide}>
+            <button className="carousel-control next" id="carousel-next">
               <i className="ph ph-arrow-circle-right"></i>
             </button>
           </div>
 
+          {/* INDICADORES */}
           <div className="carousel-indicators" id="carousel-indicators">
             {slides.map((_, index) => (
               <button
                 key={index}
-                className={`indicator ${index === carouselManager.activeIndex ? 'active' : ''}`}
-                onClick={() => carouselManager.setActiveSlide(index)}
+                className="indicator"
                 data-indicator-index={index}
               />
             ))}
@@ -111,6 +121,7 @@ const Proyectos = () => {
         </div>
       </Container>
 
+      {/* MODAL */}
       <div className="modal-backdrop" id="modal-backdrop" style={{ display: carouselManager.showModal ? 'flex' : 'none' }}>
         <div className="modal-content">
           <button className="modal-close" onClick={carouselManager.closeModal}>

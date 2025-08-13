@@ -21,24 +21,31 @@
     position: relative;
     width: 100%;
 
-    @supports (aspect-ratio: 1 / 1) {
-      aspect-ratio: 1 / 1;
+    // Mobile first - altura fija para proporciones cuadradas
+    height: 90vw; // Cuadrado en mobile
+    max-height: rem(400px);
 
-      @media (min-width: 768px) {
-        aspect-ratio: 3 / 1;
-      }
+    @media (min-width: 768px) {
+      height: 40vw; // Reducir altura para mostrar múltiples cards
+      max-height: rem(300px);
     }
 
-    @supports not (aspect-ratio: 1 / 1) {
-      height: 0;
-      padding-bottom: 100%;
+    @media (min-width: 1024px) {
+      height: 25vw; // Altura para 3 cards cuadradas
+      max-height: rem(280px);
+      min-height: rem(240px);
+    }
 
-      @media (min-width: 768px) {
-        padding-bottom: 33.333%;
-      }
+    @media (min-width: 1200px) {
+      height: 22vw; // Altura perfecta para 4 cards cuadradas
+      max-height: rem(300px);
+      min-height: rem(260px);
     }
   }
 
+  // ==========================================
+  // CONTENEDOR PRINCIPAL - SWIPER
+  // ==========================================
   .carousel-container {
     position: absolute;
     top: 0;
@@ -46,27 +53,117 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+    
+    // Estilos por defecto para prevenir desaparición
+    &:not(.swiper-initialized) {
+      display: flex;
+      
+      .carousel-slide {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        
+        // Mostrar solo el primer slide por defecto
+        &:not(:first-child) {
+          display: none;
+        }
+        
+        &:first-child {
+          display: flex;
+        }
+      }
+    }
+
+    // ==========================================
+    // SWIPER.JS - ESTRUCTURA OPTIMIZADA
+    // ==========================================
+    &.swiper {
+      .swiper-wrapper {
+        display: flex;
+        align-items: stretch;
+        height: 100%;
+        
+        // Asegurar que los slides ocupen TODO el espacio SIN GAPS
+        .swiper-slide {
+          flex-shrink: 0;
+          width: auto;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0; // CERO margen
+          padding: 0; // CERO padding
+          
+          // DISTRIBUCIÓN EXACTA - SIN ESPACIOS
+          @media (min-width: 1200px) {
+            flex: 0 0 25% !important; // Exactamente 25% para 4 cards
+            max-width: 25% !important;
+            width: 25% !important;
+          }
+
+          @media (min-width: 1024px) and (max-width: 1199px) {
+            flex: 0 0 33.333333% !important; // Exactamente 33.33% para 3 cards
+            max-width: 33.333333% !important;
+            width: 33.333333% !important;
+          }
+
+          @media (min-width: 768px) and (max-width: 1023px) {
+            flex: 0 0 50% !important; // Exactamente 50% para 2 cards
+            max-width: 50% !important;
+            width: 50% !important;
+          }
+        }
+      }
+    }
   }
 
+  // ==========================================
+  // SLIDES - CARDS CUADRADAS SIN ESPACIOS
+  // ==========================================
   .carousel-slide {
-    position: absolute;
-    top: 0;
-    opacity: 0;
-    display: none;
-    transition: all 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .slide-image {
-      width: 100%;
-      padding-bottom: 100%;
+      position: relative;
       background-size: cover;
       background-position: center;
-      position: relative;
       cursor: pointer;
-      transition: transform 0.4s ease;
-      border-radius: 0;
+      transition: all 0.4s ease;
+      border-radius: rem(6px);
+      overflow: hidden;
+      box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.1);
+
+      // Forzar aspecto cuadrado PERFECTO sin espacios
+      width: 100%;
+      height: 0;
+      padding-bottom: 100%; // Cuadrado perfecto
+
+      // En mobile - card cuadrada completa
+      @media (max-width: 767px) {
+        width: 95%;
+        padding-bottom: 95%;
+        border-radius: rem(8px);
+      }
+
+      // En tablet y desktop - PERFECTAMENTE CUADRADAS SIN ESPACIOS
+      @media (min-width: 768px) {
+        width: 100%;
+        padding-bottom: 100%; // CUADRADO PERFECTO
+        border-radius: 0; // Sin border-radius para eliminar espacios visuales
+      }
 
       &:hover {
-        transform: scale(0.9);
+        transform: scale(1.02);
+        box-shadow: 0 rem(8px) rem(24px) rgba(0, 0, 0, 0.2);
       }
 
       .slide-content {
@@ -74,24 +171,69 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        padding: var(--spacing-lg);
-        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
         color: var(--neutral);
         opacity: 0;
         transform: translateY(rem(20px));
-        transition: all 0.3s ease;
+        transition: all 0.4s ease;
         pointer-events: none;
 
+        // Padding responsivo para diferentes tamaños
+        padding: var(--spacing-md);
+
+        @media (min-width: 1200px) {
+          padding: var(--spacing-sm); // Menos padding en 4 cards
+        }
+
         h2 {
-          font-size: var(--font-size-subtitle);
+          margin-bottom: rem(4px);
+          color: white;
+          line-height: 1.2;
+
+          // Responsive font sizes para caber en cards cuadradas
+          @media (max-width: 767px) {
+            font-size: var(--font-size-subtitle);
+          }
+
+          @media (min-width: 768px) and (max-width: 1023px) {
+            font-size: rem(16px);
+          }
+
+          @media (min-width: 1024px) and (max-width: 1199px) {
+            font-size: rem(15px);
+          }
+
+          @media (min-width: 1200px) {
+            font-size: rem(13px); // Más pequeño para caber en 4 cards
+          }
         }
 
         .description {
-          font-size: var(--font-size-paragraph);
-          color: var(--neutral);
+          color: rgba(255, 255, 255, 0.9);
+          line-height: 1.3;
           
-          @media (min-width: 768px) {
+          @media (max-width: 767px) {
             font-size: var(--font-size-paragraph);
+          }
+
+          @media (min-width: 768px) and (max-width: 1023px) {
+            font-size: rem(13px);
+          }
+
+          @media (min-width: 1024px) and (max-width: 1199px) {
+            font-size: rem(12px);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+
+          @media (min-width: 1200px) {
+            font-size: rem(11px);
+            display: -webkit-box;
+            -webkit-line-clamp: 2; // Limitar a 2 líneas en 4 cards
+            -webkit-box-orient: vertical;
+            overflow: hidden;
           }
         }
       }
@@ -101,76 +243,68 @@
         transform: translateY(0);
       }
     }
-
-    &.active {
-      display: block;
-      opacity: 1;
-      z-index: 1;
-
-      @media (min-width: 768px) {
-        width: 33.333%;
-        position: absolute;
-
-        &.left {
-          left: 0;
-        }
-
-        &.center {
-          left: 33.333%;
-        }
-
-        &.right {
-          left: 66.666%;
-        }
-      }
-
-      @media (max-width: 767px) {
-        left: 0;
-        width: 100%;
-      }
-    }
   }
 
+  // ==========================================
+  // CONTROLES DE NAVEGACIÓN - MOBILE FIRST
+  // ==========================================
   .carousel-controls {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     left: 0;
     right: 0;
-    display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 10;
-    padding: 0 rem(20px); 
     pointer-events: none;
+    
+    // Mobile - ocultos por defecto
+    display: none;
+    
+    // Tablet y desktop - visibles
+    @media (min-width: 768px) {
+      display: flex;
+      padding: 0 rem(15px);
+    }
 
-    @media (max-width: 767px) {
-      display: none !important;
+    @media (min-width: 1024px) {
+      padding: 0 rem(20px);
+    }
+
+    @media (min-width: 1200px) {
+      padding: 0 rem(25px);
     }
   }
 
   .carousel-control {
-    background: rgba(255, 255, 255, 0.9); 
+    background: rgba(255, 255, 255, 0.95);
     color: var(--primary);
-    width: rem(48px); 
-    height: rem(48px);
-    border: none; 
+    border: none;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.2); // Sombra más pronunciada
-    pointer-events: auto; // Restaurar pointer events para los botones
-    backdrop-filter: blur(4px); // Efecto blur para mejor contraste
-    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.15);
+    pointer-events: auto;
+    backdrop-filter: blur(rem(8px));
+
+    // Tamaños responsive
+    width: rem(44px);
+    height: rem(44px);
+
+    @media (min-width: 1024px) {
+      width: rem(50px);
+      height: rem(50px);
+    }
 
     &:hover {
       background: var(--primary);
       color: var(--neutral);
       transform: scale(1.1);
-      box-shadow: 0 rem(6px) rem(16px) rgba(0, 0, 0, 0.3);
+      box-shadow: 0 rem(6px) rem(20px) rgba(var(--primary-rgb), 0.3);
     }
 
     &:active {
@@ -182,20 +316,25 @@
       box-shadow: 0 0 0 rem(3px) rgba(var(--primary-rgb), 0.3);
     }
 
-    // Estilos específicos para los iconos
     i {
-      font-size: rem(24px);
       line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
+      
+      // Tamaños responsive para iconos
+      font-size: rem(20px);
+
+      @media (min-width: 1024px) {
+        font-size: rem(24px);
+      }
     }
 
+    // Estados de swiper
+    &.swiper-button-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+      transform: scale(0.9);
+    }
   }
 
-  // Posicionamiento específico para los botones
   .carousel-control.prev {
     margin-right: auto;
   }
@@ -204,36 +343,61 @@
     margin-left: auto;
   }
 
+  // ==========================================
+  // INDICADORES - MOBILE FIRST
+  // ==========================================
   .carousel-indicators {
     position: absolute;
-    bottom: rem(20px);
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
-    gap: rem(8px);
     z-index: 15;
+    
+    // Mobile first
+    bottom: rem(15px);
+    gap: rem(6px);
+    
+    @media (min-width: 768px) {
+      bottom: rem(20px);
+      gap: rem(8px);
+    }
 
-    .indicator {
-      width: rem(12px);
-      height: rem(12px);
+    .indicator,
+    .swiper-pagination-bullet {
       border-radius: 50%;
       background: rgba(235, 234, 234, 0.6);
       border: none;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 1;
+      
+      // Mobile first sizes
+      width: rem(10px);
+      height: rem(10px);
 
-      &.active {
-        background: var(--primary-600);
-        transform: scale(1.2);
+      @media (min-width: 768px) {
+        width: rem(12px);
+        height: rem(12px);
       }
 
-      &:hover {
-        background: rgba(0, 0, 0, 0.5);
+      &.active,
+      &.swiper-pagination-bullet-active {
+        background: var(--primary-600);
+        transform: scale(1.3);
+        box-shadow: 0 0 rem(8px) rgba(var(--primary-rgb), 0.4);
+      }
+
+      &:hover:not(.active):not(.swiper-pagination-bullet-active) {
+        background: rgba(255, 255, 255, 0.8);
+        transform: scale(1.1);
       }
     }
   }
 
+  // ==========================================
+  // MODAL - MANTENER DISEÑO EXISTENTE
+  // ==========================================
   .modal-body {
     width: 100%;
     height: calc(100% - 40px);
@@ -268,49 +432,162 @@
     }
   }
 
-.hero-carousel .modal-close {
-  position: absolute;
-  top: 0.625rem;
-  right: 0.9375rem;
-  width: 2.5rem;
-  height: 2.5rem;
-  color: var(--primary); 
-  border: none;
-  border-radius: 50%;
-  font-size: 2rem;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  z-index: 10;
+  .modal-close {
+    position: absolute;
+    top: rem(10px);
+    right: rem(15px);
+    width: rem(40px);
+    height: rem(40px);
+    color: var(--primary);
+    border: none;
+    border-radius: 50%;
+    font-size: rem(32px);
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+
+    &:hover {
+      color: var(--primary);
+      transform: scale(1.2);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 rem(3px) rgba(var(--primary-rgb), 0.3);
+    }
+
+    &:active {
+      transform: scale(1.1);
+    }
+  }
 }
 
-.hero-carousel .modal-close:hover {
-  color: var(--primary); /* Mantiene color primario en hover */
-  transform: scale(1.2); /* Escala en hover */
+// ==========================================
+// SWIPER OVERRIDE - ELIMINAR TODOS LOS ESPACIOS
+// ==========================================
+
+// Eliminar CUALQUIER espacio que Swiper pueda agregar
+.swiper-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
 }
 
-.hero-carousel .modal-close:focus {
-  outline: none;
-  box-shadow: 0 0 0 0.125rem rgba(var(--primary-rgb), 0.3);
+.swiper-slide {
+  margin: 0 !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  padding: 0 !important;
+  
+  // Asegurar anchuras exactas sin espacios
+  @media (min-width: 1200px) {
+    width: 25% !important;
+    flex: 0 0 25% !important;
+    max-width: 25% !important;
+  }
+
+  @media (min-width: 1024px) and (max-width: 1199px) {
+    width: 33.333333% !important;
+    flex: 0 0 33.333333% !important;
+    max-width: 33.333333% !important;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    width: 50% !important;
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
 }
 
-.hero-carousel .modal-close:active {
-  transform: scale(1.1);
-}
+// Asegurar proporción cuadrada PERFECTA
+.swiper-slide .slide-image {
+  // Cuadrado perfecto sin excepciones
+  aspect-ratio: 1 / 1 !important;
+  width: 100% !important;
+  
+  // Fallback para navegadores sin aspect-ratio
+  @supports not (aspect-ratio: 1 / 1) {
+    height: 0 !important;
+    padding-bottom: 100% !important;
+    width: 100% !important;
+  }
+  
+  // En desktop - sin borders para eliminar espacios visuales
+  @media (min-width: 768px) {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
 
-// Fallback para iconos Phosphor si no cargan
+// Eliminar espacios específicos de Swiper
+.swiper-container-horizontal > .swiper-wrapper {
+  left: 0 !important;
+}
+
+.swiper {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+// ==========================================
+// VERIFICACIÓN FINAL - CARDS CUADRADAS PERFECTAS
+// ==========================================
+
+// Eliminar cualquier espacio que pueda quedar
+* {
+  &.swiper-slide {
+    box-sizing: border-box !important;
+  }
+}
+
+// Asegurar que en desktop las 4 cards sean perfectamente cuadradas
+@media (min-width: 1200px) {
+  .hero-carousel {
+    .swiper-slide {
+      // Cada slide debe ser exactamente 1/4 sin espacios
+      width: 25% !important;
+      min-width: 25% !important;
+      max-width: 25% !important;
+      flex: 0 0 25% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      
+      .slide-image {
+        // Perfectamente cuadrado sin excepciones
+        width: 100% !important;
+        height: 0 !important;
+        padding-bottom: 100% !important;
+        margin: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-sizing: border-box !important;
+      }
+    }
+    
+    // Verificar que el wrapper no tenga espacios
+    .swiper-wrapper {
+      gap: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  }
+}
+
+// ==========================================
+// FALLBACK PARA ICONOS PHOSPHOR
+// ==========================================
 .ph-arrow-circle-left::before {
   font-size: rem(32px);
   font-weight: 100;
 }
 
 .ph-arrow-circle-right::before {
-
   font-size: rem(32px);
   font-weight: 100;
-
 }
