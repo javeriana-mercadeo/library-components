@@ -7,9 +7,6 @@ import script from './script.js'
 import './styles.scss'
 
 const PreguntasFrecuentes = () => {
-  {
-    /*Ejecutar el script cuando el componente se monta*/
-  }
   useEffect(() => {
     script()
   }, [])
@@ -30,7 +27,7 @@ const PreguntasFrecuentes = () => {
         <div className='faq__container'>
           {/* Primera pregunta expandida por defecto */}
           <div className='faq__item active'>
-            <Button variant='light' fullWidth>
+            <Button variant='light' fullWidth isEditable={false} className='faq__question'>
               ¿Cuál es el perfil de ingreso al programa?
               <span className='faq__icon'>
                 <i className='ph ph-caret-down'></i>
@@ -135,7 +132,7 @@ const PreguntasFrecuentes = () => {
 
           {/* Preguntas colapsadas */}
           <div className='faq__item'>
-            <Button variant='light' fullWidth>
+            <Button variant='light' fullWidth isEditable={false} className='faq__question'>
               ¿Qué debo tener en cuenta al momento de realizar la inscripción?
               <span className='faq__icon'>
                 <i className='ph ph-caret-up'></i>
@@ -171,7 +168,7 @@ const PreguntasFrecuentes = () => {
           </div>
 
           <div className='faq__item'>
-            <Button variant='light' fullWidth>
+            <Button variant='light' fullWidth isEditable={false} className='faq__question'>
               ¿Qué oportunidades tendré para desarrollarme profesionalmente?
               <span className='faq__icon'>
                 <i className='ph ph-caret-down'></i>
@@ -236,7 +233,7 @@ const PreguntasFrecuentes = () => {
           </div>
 
           <div className='faq__item'>
-            <Button variant='light' fullWidth>
+            <Button variant='light' fullWidth isEditable={false} className='faq__question'>
               Estoy interesado en la investigación, ¿Qué oferta tiene el programa?
               <span className='faq__icon'>
                 <i className='ph ph-caret-down'></i>

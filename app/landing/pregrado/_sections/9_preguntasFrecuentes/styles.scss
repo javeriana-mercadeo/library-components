@@ -78,7 +78,7 @@
           line-height: 1.5;
           white-space: normal;
           text-align: left;
-          padding: var(--spacing-xs) 0;
+          padding: 0;
         }
 
         // Ajustes responsivos para móvil
@@ -695,16 +695,6 @@
     // RESPONSIVE
     // ==========================================
     @include responsive($breakpoint-xl) {
-      &__question {
-        font-size: var(--font-size-paragraph);
-        padding: var(--spacing-sm) 0;
-
-        &:hover {
-          color: var(--primary);
-          border-bottom: rem(1px) solid var(--primary);
-        }
-      }
-
       &__answer {
         padding: var(--spacing-md) 0;
       }
@@ -715,14 +705,6 @@
     }
 
     @media (max-width: $breakpoint-sm) {
-      &__question {
-        font-size: var(--font-size-paragraph);
-
-        &:hover {
-          color: var(--primary);
-          border-bottom: rem(1px) solid var(--primary);
-        }
-      }
     }
   }
 }

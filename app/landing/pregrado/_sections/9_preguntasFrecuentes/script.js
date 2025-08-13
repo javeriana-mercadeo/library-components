@@ -5,7 +5,7 @@
 const FAQAccordionSystem = {
   config: {
     itemSelector: '.faq__item',
-    questionSelector: '.faq__item .btn',
+    questionSelector: '.faq__question',
     answerSelector: '.faq__answer',
     iconSelector: '.faq__icon',
     subQuestionSelector: '.faq__sub-question',
@@ -34,21 +34,21 @@ const FAQAccordionSystem = {
   // Procesar contenido enriquecido desde el CMS
   processRichContent() {
     const richContentElements = document.querySelectorAll(this.config.richContentSelector)
-    
+
     if (richContentElements.length === 0) return
 
     richContentElements.forEach(element => {
       let content = element.getAttribute('data-raw-content')
-      
+
       if (content) {
         content = this.decodeHtmlEntities(content)
-        
+
         if (!content.includes('<') && !content.includes('&lt;')) {
           content = content.replace(/\n\n/g, '</p><p>')
           content = content.replace(/\n/g, '<br>')
           content = '<p>' + content + '</p>'
         }
-        
+
         element.innerHTML = content
       }
     })
@@ -59,14 +59,14 @@ const FAQAccordionSystem = {
     const textarea = document.createElement('textarea')
     let decoded = text
     let previousDecoded = ''
-    
+
     // Hasta 3 intentos de decodificación
     for (let i = 0; i < 3 && decoded !== previousDecoded; i++) {
       previousDecoded = decoded
       textarea.innerHTML = decoded
       decoded = textarea.value
     }
-    
+
     return decoded
   },
 
@@ -96,7 +96,7 @@ const FAQAccordionSystem = {
     answer.style.opacity = '0'
     answer.style.overflow = 'hidden'
     const targetHeight = answer.scrollHeight
-    
+
     // Estado inicial de animación
     answer.style.height = '0px'
     answer.style.maxHeight = '0px'
@@ -182,7 +182,7 @@ const FAQAccordionSystem = {
     setTimeout(() => {
       answer.style.display = 'none'
       answer.classList.add(this.config.hiddenClass)
-      
+
       // Limpiar estilos
       answer.style.transition = ''
       answer.style.height = ''
@@ -233,11 +233,11 @@ const FAQAccordionSystem = {
   attachEventListeners() {
     const faqItems = document.querySelectorAll(this.config.itemSelector)
 
-    faqItems.forEach(item => {
+    faqItems.forEach((item, index) => {
       const question = item.querySelector(this.config.questionSelector)
 
       if (!question) {
-        console.warn('[FAQ] Pregunta no encontrada en item:', item)
+        console.warn(`[FAQ] Botón no encontrado en item ${index + 1}`)
         return
       }
 
@@ -283,10 +283,6 @@ const FAQSystem = {
       accordion: FAQAccordionSystem.init()
     }
 
-    const activeSystems = Object.entries(systems)
-      .filter(([_, isActive]) => isActive)
-      .map(([name]) => name)
-
     return systems
   }
 }
@@ -294,18 +290,20 @@ const FAQSystem = {
 // ===========================================
 // INICIALIZACIÓN
 // ===========================================
-export default () => {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      FAQSystem.init()
-    })
-  } else {
-    FAQSystem.init()
-  }
-
+const initializeFAQ = () => {
   // Exponer para debugging en desarrollo
   if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
     window.FAQAccordionSystem = FAQAccordionSystem
     window.FAQSystem = FAQSystem
   }
+
+  // Inicializar FAQ
+  FAQSystem.init()
+}
+
+export default initializeFAQ
+
+// También ejecutar inmediatamente en caso de compilación IIFE
+if (typeof window !== 'undefined') {
+  initializeFAQ()
 }
