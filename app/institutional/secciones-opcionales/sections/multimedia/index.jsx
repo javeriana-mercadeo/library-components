@@ -30,18 +30,18 @@ const MultimediaSlider = () => {
   // ==========================================
   // SISTEMA GRID/SWIPER PARA THUMBNAILS
   // ==========================================
-  
+
   // Calcular cuántos slides son visibles según el ancho actual
   const calculateVisibleSlides = () => {
     if (typeof window === 'undefined') return 3
-    
+
     const width = window.innerWidth
     if (width >= 1024) return 6
-    if (width >= 768) return 5  
+    if (width >= 768) return 5
     if (width >= 480) return 4
     return 3
   }
-  
+
   // Determinar si usar modo Grid (centrado) o Swiper (slider)
   const shouldUseGridMode = () => {
     const totalSlides = mediaContent.length
@@ -56,46 +56,49 @@ const MultimediaSlider = () => {
     {
       type: 'image',
       src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      title: 'Paisaje Natural',
+      title:
+        'Lorem ipsum dolor sit amet consectetur adipiscing elit, at et sapien sagittis inceptos enim, diam litora cursus nulla quisque nostra. Vel faucibus duis placerat et taciti litora suspendisse natoque',
       thumbnail:
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
-      overlayText: ''
-      // },
-      // {
-      //   type: 'youtube',
-      //   videoId: 'dQw4w9WgXcQ',
-      //   title: 'Video Musical',
-      //   thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
-      //   overlayText: ''
-      // },
-      // {
-      //   type: 'image',
-      //   src: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-      //   title: 'Arquitectura Moderna',
-      //   thumbnail: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      //   overlayText: ''
-      // },
-      // {
-      //   type: 'youtube',
-      //   videoId: 'jNQXAC9IVRw',
-      //   title: 'Video Educativo',
-      //   thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg',
-      //   overlayText: ''
-      // },
-      // {
-      //   type: 'image',
-      //   src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
-      //   title: 'Bosque Encantado',
-      //   thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      //   overlayText: ''
-      // },
-      // {
-      //   type: 'youtube',
-      //   videoId: 'M7lc1UVf-VE',
-      //   title: 'Video Tecnológico',
-      //   thumbnail: 'https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg',
-      //   overlayText: ''
+      overlayText:
+        'Lobortis magnis nisl tellus natoque vestibulum rhoncus varius commodo vel, libero dignissim ultricies consequat interdum neque sem est luctus lacinia, eget porttitor imperdiet volutpat leo egestas congue phasellus. Mollis eget cum elementum aenean netus molestie cras condimentum dis, dignissim facilisis a sagittis rutrum vulputate laoreet dictum, porttitor fringilla morbi ligula luctus massa vivamus sollicitudin.'
+    },
+    {
+      type: 'youtube',
+      videoId: 'dQw4w9WgXcQ',
+      title: 'Video Musical',
+      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+      overlayText:
+        'Lobortis magnis nisl tellus natoque vestibulum rhoncus varius commodo vel, libero dignissim ultricies consequat interdum neque sem est luctus lacinia, eget porttitor imperdiet volutpat leo egestas congue phasellus. Mollis eget cum elementum aenean netus molestie cras condimentum dis, dignissim facilisis a sagittis rutrum vulputate laoreet dictum, porttitor fringilla morbi ligula luctus massa vivamus sollicitudin.'
     }
+    // {
+    //   type: 'image',
+    //   src: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+    //   title: 'Arquitectura Moderna',
+    //   thumbnail: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
+    //   overlayText: ''
+    // },
+    // {
+    //   type: 'youtube',
+    //   videoId: 'jNQXAC9IVRw',
+    //   title: 'Video Educativo',
+    //   thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg',
+    //   overlayText: ''
+    // },
+    // {
+    //   type: 'image',
+    //   src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
+    //   title: 'Bosque Encantado',
+    //   thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
+    //   overlayText: ''
+    // },
+    // {
+    //   type: 'youtube',
+    //   videoId: 'M7lc1UVf-VE',
+    //   title: 'Video Tecnológico',
+    //   thumbnail: 'https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg',
+    //   overlayText: ''
+    //}
   ]
 
   // ==========================================
@@ -135,7 +138,9 @@ const MultimediaSlider = () => {
     const updateGridMode = () => {
       const shouldUseGrid = shouldUseGridMode()
       setUseGridMode(shouldUseGrid)
-      console.log(`🎛️ Grid Mode: ${shouldUseGrid ? 'ON' : 'OFF'} - Total slides: ${mediaContent.length}, Visible: ${calculateVisibleSlides()}`)
+      console.log(
+        `🎛️ Grid Mode: ${shouldUseGrid ? 'ON' : 'OFF'} - Total slides: ${mediaContent.length}, Visible: ${calculateVisibleSlides()}`
+      )
     }
 
     // Inicializar modo
@@ -149,7 +154,7 @@ const MultimediaSlider = () => {
     }
 
     window.addEventListener('resize', handleResize)
-    
+
     return () => {
       window.removeEventListener('resize', handleResize)
       clearTimeout(resizeTimeout)
@@ -217,7 +222,7 @@ const MultimediaSlider = () => {
             controlVideoVisibility(realIndex)
             console.log(`🔄 Main swiper slide changed to: ${realIndex}`)
           },
-          touchEnd: function() {
+          touchEnd: function () {
             // Asegurar sincronización después de interacciones táctiles
             setTimeout(() => {
               const realIndex = this.realIndex || 0
@@ -333,29 +338,29 @@ const MultimediaSlider = () => {
     // Prevenir comportamientos por defecto y propagación de eventos
     event.preventDefault()
     event.stopPropagation()
-    
+
     // Prevenir múltiples clics rápidos
     if (isNavigatingRef.current) {
       console.log(`⏸️ Navigation in progress, ignoring click on ${index}`)
       return
     }
-    
+
     // Marcar que estamos navegando
     isNavigatingRef.current = true
-    
+
     console.log(`🎯 Thumbnail clicked: ${index}, Current mode: ${useGridMode ? 'Grid' : 'Swiper'}`)
-    
+
     // Delay pequeño para asegurar que el evento se procese correctamente en móviles
     setTimeout(() => {
       if (mainSwiperRef.current?.swiper) {
         // Usar slideTo en lugar de slideToLoop para mejor compatibilidad
         mainSwiperRef.current.swiper.slideTo(index)
-        
+
         // Forzar actualización del estado para sincronización
         setCurrentSlideIndex(index)
-        
+
         console.log(`✅ Navigated to slide: ${index}`)
-        
+
         // Permitir nuevos clics después de un breve período
         setTimeout(() => {
           isNavigatingRef.current = false
@@ -376,20 +381,19 @@ const MultimediaSlider = () => {
       <div
         key={index}
         className={`${baseClass}_thumb-slide swiper-slide ${isActive ? 'swiper-slide-thumb-active' : ''}`}
-        onClick={(event) => handleThumbClick(index, event)}
-        onTouchEnd={(event) => handleThumbClick(index, event)} // Evento táctil adicional para móviles
-        style={{ 
+        onClick={event => handleThumbClick(index, event)}
+        onTouchEnd={event => handleThumbClick(index, event)} // Evento táctil adicional para móviles
+        style={{
           cursor: 'pointer',
           touchAction: 'manipulation' // Optimizar para touch en móviles
-        }}
-      >
-        <img 
-          src={item.thumbnail} 
+        }}>
+        <img
+          src={item.thumbnail}
           alt={item.title}
           style={{ pointerEvents: 'none' }} // Prevenir interferencia de la imagen
         />
         {item.type === 'youtube' && (
-          <div 
+          <div
             className={`${baseClass}_video-indicator`}
             style={{ pointerEvents: 'none' }} // Prevenir interferencia del indicador
           >
@@ -416,46 +420,50 @@ const MultimediaSlider = () => {
           </div>
 
           {/* Slider de miniaturas */}
-          <div 
-            className={`${baseClass}_thumbs-swiper swiper ${useGridMode ? `${baseClass}_grid-mode` : ''}`} 
+          <div
+            className={`${baseClass}_thumbs-swiper swiper ${useGridMode ? `${baseClass}_grid-mode` : ''}`}
             ref={thumbsSwiperRef}
-            style={useGridMode ? {
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            } : {}}
-          >
-            <div 
-              className={`${baseClass}_thumbs-wrapper swiper-wrapper`} 
+            style={
+              useGridMode
+                ? {
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }
+                : {}
+            }>
+            <div
+              className={`${baseClass}_thumbs-wrapper swiper-wrapper`}
               role="list"
-              style={useGridMode ? {
-                display: 'grid',
-                gridAutoFlow: 'column',
-                justifyContent: 'center',
-                gap: '10px',
-                width: '100%',
-                transform: 'none'
-              } : {}}
-            >
+              style={
+                useGridMode
+                  ? {
+                      display: 'grid',
+                      gridAutoFlow: 'column',
+                      justifyContent: 'center',
+                      gap: '10px',
+                      width: '100%',
+                      transform: 'none'
+                    }
+                  : {}
+              }>
               {mediaContent.map((item, index) => renderThumbnail(item, index))}
             </div>
 
             {/* Botones de navegación para thumbnails - Solo visibles en modo Swiper */}
-            <button 
-              className={`swiper-slide-button ${baseClass}_thumbs-prev`} 
-              aria-label="Ir al slide anterior" 
+            <button
+              className={`swiper-slide-button ${baseClass}_thumbs-prev`}
+              aria-label="Ir al slide anterior"
               type="button"
-              style={{ display: useGridMode ? 'none' : 'flex' }}
-            >
+              style={{ display: useGridMode ? 'none' : 'flex' }}>
               <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
             </button>
 
-            <button 
-              className={`swiper-slide-button ${baseClass}_thumbs-next`} 
-              aria-label="Ir al siguiente slide" 
+            <button
+              className={`swiper-slide-button ${baseClass}_thumbs-next`}
+              aria-label="Ir al siguiente slide"
               type="button"
-              style={{ display: useGridMode ? 'none' : 'flex' }}
-            >
+              style={{ display: useGridMode ? 'none' : 'flex' }}>
               <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
             </button>
           </div>
