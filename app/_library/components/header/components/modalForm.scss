@@ -241,7 +241,8 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   box-shadow: none;
   gap: 0;
 
-  * {
+  & > * {
+    scrollbar-color: var(--primary) #f9fafb;
   }
 
   .form-header {

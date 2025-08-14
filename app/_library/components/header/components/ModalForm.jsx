@@ -1,4 +1,4 @@
-import { Button as Btn, Paragraph, Title, Image } from '@library/components'
+import { Button as Btn, Paragraph, Image, Caption, Title } from '@library/components'
 
 const ModalForm = () => {
   return (
@@ -22,9 +22,9 @@ const ModalForm = () => {
         <div className='modal-form-container'>
           {/* Header del Modal */}
           <div className='modal-header'>
-            <Title id='title-form' hierarchy='h3' size='2xl' weight='bold' isEditable={false}>
+            <Caption id='title-form' className='title title-2xl title-bold' size='2xl' isEditable={false}>
               ¿Tienes dudas?
-            </Title>
+            </Caption>
 
             <Btn
               variant='light'
