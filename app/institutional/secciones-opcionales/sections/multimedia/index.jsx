@@ -332,44 +332,15 @@ const MultimediaSlider = () => {
   }
 
   // ==========================================
-  // FUNCIÓN PARA MANEJAR CLICKS EN THUMBNAILS (MÓVIL-OPTIMIZADO)
+  // FUNCIONES DE THUMBNAILS DELEGADAS AL SCRIPT NATIVO
   // ==========================================
-  const handleThumbClick = (index, event) => {
-    // Prevenir comportamientos por defecto y propagación de eventos
-    event.preventDefault()
-    event.stopPropagation()
-
-    // Prevenir múltiples clics rápidos
-    if (isNavigatingRef.current) {
-      console.log(`⏸️ Navigation in progress, ignoring click on ${index}`)
-      return
-    }
-
-    // Marcar que estamos navegando
-    isNavigatingRef.current = true
-
-    console.log(`🎯 Thumbnail clicked: ${index}, Current mode: ${useGridMode ? 'Grid' : 'Swiper'}`)
-
-    // Delay pequeño para asegurar que el evento se procese correctamente en móviles
-    setTimeout(() => {
-      if (mainSwiperRef.current?.swiper) {
-        // Usar slideTo en lugar de slideToLoop para mejor compatibilidad
-        mainSwiperRef.current.swiper.slideTo(index)
-
-        // Forzar actualización del estado para sincronización
-        setCurrentSlideIndex(index)
-
-        console.log(`✅ Navigated to slide: ${index}`)
-
-        // Permitir nuevos clics después de un breve período
-        setTimeout(() => {
-          isNavigatingRef.current = false
-        }, 300)
-      } else {
-        console.warn('❌ Main swiper not available')
-        isNavigatingRef.current = false
-      }
-    }, 10)
+  // ✅ Los eventos de click/touch son manejados por script-optimized.js
+  // ✅ Esto evita conflictos entre React y Vanilla JS
+  // ✅ Swiper maneja nativamente todos los eventos móviles
+  
+  const logThumbnailInteraction = (index, source = 'React') => {
+    console.log(`📱 Thumbnail interaction logged from ${source}: ${index}`)
+    // Solo logging, la navegación la maneja el script nativo
   }
 
   // ==========================================
@@ -381,11 +352,10 @@ const MultimediaSlider = () => {
       <div
         key={index}
         className={`${baseClass}_thumb-slide swiper-slide ${isActive ? 'swiper-slide-thumb-active' : ''}`}
-        onClick={event => handleThumbClick(index, event)}
-        onTouchEnd={event => handleThumbClick(index, event)} // Evento táctil adicional para móviles
+        data-swiper-slide-index={index}
         style={{
           cursor: 'pointer',
-          touchAction: 'manipulation' // Optimizar para touch en móviles
+          touchAction: 'manipulation'
         }}>
         <img
           src={item.thumbnail}
