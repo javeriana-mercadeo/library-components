@@ -72,16 +72,13 @@ const Footer = () => {
                   <div className='footer__icons'>
                     <p>Síguenos en nuestras redes sociales:</p>
                     <div className='footer__icons-links'>
-                      <a href='https://www.facebook.com/unijaveriana' target='_blank' aria-label='Facebook'>
+                      <a href='https://www.facebook.com/ViveJaveriana/' target='_blank' aria-label='Facebook'>
                         <i className='ph ph-facebook-logo'></i>
                       </a>
-                      <a href='https://www.instagram.com/unijaveriana' target='_blank' aria-label='Instagram'>
+                      <a href='https://www.instagram.com/vivejaveriana/' target='_blank' aria-label='Instagram'>
                         <i className='ph ph-instagram-logo'></i>
                       </a>
-                      <a
-                        href='https://www.linkedin.com/school/pontificia-universidad-javeriana/mycompany/'
-                        target='_blank'
-                        aria-label='LinkedIn'>
+                      <a href='https://www.linkedin.com/showcase/vive-javeriana/' target='_blank' aria-label='LinkedIn'>
                         <i className='ph ph-linkedin-logo'></i>
                       </a>
                       <a href='https://www.tiktok.com/@unijaveriana' target='_blank' aria-label='TikTok'>

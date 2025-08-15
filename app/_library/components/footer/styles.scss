@@ -3,6 +3,11 @@
 #footer {
   width: 100dvw;
 
+  // Espacio para la barra CTA fija del header en móviles
+  @media (max-width: $breakpoint-md) {
+    margin-bottom: rem(110px);
+  }
+
   .color-container-footer {
     background-color: #1d2124;
     display: flex;
@@ -355,6 +360,11 @@
       @media (max-width: $breakpoint-md) {
         flex-direction: column;
         gap: rem(24px);
+        text-align: center;
+
+        > p:last-child {
+          margin-left: 0;
+        }
       }
     }
 
@@ -388,6 +398,7 @@
   @media (max-width: $breakpoint-lg) {
     .footer {
       padding-bottom: rem(30px);
+      margin-bottom: rem(110px);
 
       &__left {
         display: flex;
