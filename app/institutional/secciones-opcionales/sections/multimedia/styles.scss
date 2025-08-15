@@ -22,9 +22,16 @@ $nav-button-size-mobile: rem(30px);
   align-items: center;
   justify-content: center;
   //flex-direction: column;
-  padding: rem(20px);
+  // ✅ PADDING CONSISTENTE CON OTRAS SECCIONES
+  // Usar el mismo padding que container global para consistencia en Liferay
+  padding: var(--spacing-lg) var(--spacing-4xl); // 24px vertical, 80px horizontal
   overflow: visible;
   min-height: auto;
+
+  // ✅ Responsive: ajustar padding en móviles
+  @include responsive($breakpoint-sm) {
+    padding: var(--spacing-md) var(--spacing-xl); // 16px vertical, 38px horizontal
+  }
 
   // ==========================================
   // CONTENEDOR PRINCIPAL - FIXED
@@ -36,7 +43,8 @@ $nav-button-size-mobile: rem(30px);
     align-items: center;
     justify-content: center;
     color: var(--neutral-100);
-    padding-bottom: rem(32px);
+    // ✅ REMOVER PADDING DUPLICADO - el padre ya tiene padding
+    // padding-bottom: rem(32px); - Movido al contenedor principal
     overflow: hidden; // Actualizado para evitar scroll horizontal
   }
 
@@ -48,8 +56,9 @@ $nav-button-size-mobile: rem(30px);
     background: var(--background-100);
     border-radius: $multimedia-border-radius;
     overflow: hidden; // Actualizado para evitar scroll horizontal
-    margin-top: rem(30px);
-    margin-bottom: rem(32px);
+    // ✅ MARGEN AJUSTADO PARA COMPENSAR NUEVO PADDING
+    margin-top: rem(20px);
+    margin-bottom: rem(24px); // Consistente con spacing-lg
     padding-bottom: rem(16px);
 
     @include dark-theme {
@@ -85,6 +94,7 @@ $nav-button-size-mobile: rem(30px);
       align-items: center;
       position: relative;
       overflow: hidden;
+      border-radius: $multimedia-border-radius;
     }
   }
 
