@@ -20,31 +20,25 @@
   .main-container {
     position: relative;
     width: 100%;
+    
+    // Altura fija basada en tamaño de card desktop
+    height: rem(280px);
+    min-height: rem(240px);
+    max-height: rem(320px);
 
-    // Mobile first - altura fija para proporciones cuadradas
-    height: 90vw; // Cuadrado en mobile
-    max-height: rem(400px);
-
-    @media (min-width: 768px) {
-      height: 40vw; // Reducir altura para mostrar múltiples cards
-      max-height: rem(300px);
+    @media (max-width: 480px) {
+      height: rem(250px);
+      min-height: rem(220px);
     }
 
-    @media (min-width: 1024px) {
-      height: 25vw; // Altura para 3 cards cuadradas
-      max-height: rem(280px);
-      min-height: rem(240px);
-    }
-
-    @media (min-width: 1200px) {
-      height: 22vw; // Altura perfecta para 4 cards cuadradas
-      max-height: rem(300px);
-      min-height: rem(260px);
+    @media (max-width: 360px) {
+      height: rem(220px);
+      min-height: rem(200px);
     }
   }
 
   // ==========================================
-  // CONTENEDOR PRINCIPAL - SWIPER
+  // CONTENEDOR - SCROLL HORIZONTAL CONTROLADO
   // ==========================================
   .carousel-container {
     position: absolute;
@@ -54,83 +48,94 @@
     height: 100%;
     overflow: hidden;
     
-    // Estilos por defecto para prevenir desaparición
+    // Fallback cuando Swiper no está inicializado
     &:not(.swiper-initialized) {
       display: flex;
+      align-items: stretch;
+      
+      .swiper-wrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: stretch;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
       
       .carousel-slide {
-        position: relative;
-        width: 100%;
         height: 100%;
         flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        opacity: 1;
+        scroll-snap-align: start;
         
-        // Mostrar solo el primer slide por defecto
-        &:not(:first-child) {
-          display: none;
+        width: rem(280px);
+        min-width: rem(240px);
+        max-width: rem(320px);
+
+        @media (max-width: 480px) {
+          width: rem(250px);
+          min-width: rem(220px);
         }
-        
-        &:first-child {
-          display: flex;
+
+        @media (max-width: 360px) {
+          width: rem(220px);
+          min-width: rem(200px);
         }
       }
     }
 
-    // ==========================================
-    // SWIPER.JS - ESTRUCTURA OPTIMIZADA
-    // ==========================================
-    &.swiper {
+    // Swiper inicializado - configuración controlada
+    &.swiper-initialized {
       .swiper-wrapper {
-        display: flex;
+        display: flex !important;
         align-items: stretch;
         height: 100%;
+      }
+
+      .swiper-slide {
+        flex-shrink: 0;
+        height: 100%;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
         
-        // Asegurar que los slides ocupen TODO el espacio SIN GAPS
-        .swiper-slide {
-          flex-shrink: 0;
-          width: auto;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0; // CERO margen
-          padding: 0; // CERO padding
-          
-          // DISTRIBUCIÓN EXACTA - SIN ESPACIOS
-          @media (min-width: 1200px) {
-            flex: 0 0 25% !important; // Exactamente 25% para 4 cards
-            max-width: 25% !important;
-            width: 25% !important;
-          }
+        // Tamaño fijo consistente
+        width: rem(280px) !important;
+        min-width: rem(240px) !important;
+        max-width: rem(320px) !important;
+        flex: 0 0 rem(280px) !important;
 
-          @media (min-width: 1024px) and (max-width: 1199px) {
-            flex: 0 0 33.333333% !important; // Exactamente 33.33% para 3 cards
-            max-width: 33.333333% !important;
-            width: 33.333333% !important;
-          }
+        @media (max-width: 480px) {
+          width: rem(250px) !important;
+          min-width: rem(220px) !important;
+          flex: 0 0 rem(250px) !important;
+        }
 
-          @media (min-width: 768px) and (max-width: 1023px) {
-            flex: 0 0 50% !important; // Exactamente 50% para 2 cards
-            max-width: 50% !important;
-            width: 50% !important;
-          }
+        @media (max-width: 360px) {
+          width: rem(220px) !important;
+          min-width: rem(200px) !important;
+          flex: 0 0 rem(220px) !important;
         }
       }
     }
   }
 
   // ==========================================
-  // SLIDES - CARDS CUADRADAS SIN ESPACIOS
+  // CARDS - TAMAÑO FIJO CUADRADO
   // ==========================================
   .carousel-slide {
     width: 100%;
     height: 100%;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
+    position: relative;
 
     .slide-image {
       position: relative;
@@ -138,34 +143,51 @@
       background-position: center;
       cursor: pointer;
       transition: all 0.4s ease;
-      border-radius: rem(6px);
       overflow: hidden;
       box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.1);
+      display: block;
 
-      // Forzar aspecto cuadrado PERFECTO sin espacios
+      // Cuadrado perfecto con tamaño fijo
       width: 100%;
-      height: 0;
-      padding-bottom: 100%; // Cuadrado perfecto
+      aspect-ratio: 1 / 1;
+      height: auto;
 
-      // En mobile - card cuadrada completa
-      @media (max-width: 767px) {
-        width: 95%;
-        padding-bottom: 95%;
+      // Fallback para navegadores sin aspect-ratio
+      @supports not (aspect-ratio: 1 / 1) {
+        height: 0;
+        padding-bottom: 100%;
+      }
+
+      // Espaciado mínimo entre cards
+      margin: 0 rem(2px);
+
+      @media (max-width: 480px) {
+        margin: 0 rem(1px);
+      }
+
+      @media (max-width: 360px) {
+        margin: 0;
+      }
+
+      // Border radius progresivo
+      border-radius: rem(6px);
+
+      @media (max-width: 768px) {
         border-radius: rem(8px);
       }
 
-      // En tablet y desktop - PERFECTAMENTE CUADRADAS SIN ESPACIOS
-      @media (min-width: 768px) {
-        width: 100%;
-        padding-bottom: 100%; // CUADRADO PERFECTO
-        border-radius: 0; // Sin border-radius para eliminar espacios visuales
+      @media (max-width: 480px) {
+        border-radius: rem(4px);
       }
 
+      // Efecto hover
       &:hover {
         transform: scale(1.02);
         box-shadow: 0 rem(8px) rem(24px) rgba(0, 0, 0, 0.2);
+        z-index: 1;
       }
 
+      // Contenido superpuesto
       .slide-content {
         position: absolute;
         bottom: 0;
@@ -178,62 +200,48 @@
         transition: all 0.4s ease;
         pointer-events: none;
 
-        // Padding responsivo para diferentes tamaños
-        padding: var(--spacing-md);
+        padding: rem(16px);
 
-        @media (min-width: 1200px) {
-          padding: var(--spacing-sm); // Menos padding en 4 cards
+        @media (max-width: 480px) {
+          padding: rem(12px);
+        }
+
+        @media (max-width: 360px) {
+          padding: rem(10px);
         }
 
         h2 {
           margin-bottom: rem(4px);
           color: white;
           line-height: 1.2;
+          font-weight: 600;
+          font-size: rem(15px);
 
-          // Responsive font sizes para caber en cards cuadradas
-          @media (max-width: 767px) {
-            font-size: var(--font-size-subtitle);
+          @media (max-width: 480px) {
+            font-size: rem(14px);
           }
 
-          @media (min-width: 768px) and (max-width: 1023px) {
-            font-size: rem(16px);
-          }
-
-          @media (min-width: 1024px) and (max-width: 1199px) {
-            font-size: rem(15px);
-          }
-
-          @media (min-width: 1200px) {
-            font-size: rem(13px); // Más pequeño para caber en 4 cards
+          @media (max-width: 360px) {
+            font-size: rem(13px);
           }
         }
 
         .description {
           color: rgba(255, 255, 255, 0.9);
           line-height: 1.3;
-          
-          @media (max-width: 767px) {
-            font-size: var(--font-size-paragraph);
-          }
+          font-size: rem(12px);
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
 
-          @media (min-width: 768px) and (max-width: 1023px) {
-            font-size: rem(13px);
-          }
-
-          @media (min-width: 1024px) and (max-width: 1199px) {
-            font-size: rem(12px);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
-
-          @media (min-width: 1200px) {
+          @media (max-width: 480px) {
             font-size: rem(11px);
-            display: -webkit-box;
-            -webkit-line-clamp: 2; // Limitar a 2 líneas en 4 cards
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+          }
+
+          @media (max-width: 360px) {
+            font-size: rem(10px);
+            -webkit-line-clamp: 1;
           }
         }
       }
@@ -246,7 +254,7 @@
   }
 
   // ==========================================
-  // CONTROLES DE NAVEGACIÓN - MOBILE FIRST
+  // CONTROLES DE NAVEGACIÓN MEJORADOS
   // ==========================================
   .carousel-controls {
     position: absolute;
@@ -254,26 +262,19 @@
     transform: translateY(-50%);
     left: 0;
     right: 0;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 10;
     pointer-events: none;
-    
-    // Mobile - ocultos por defecto
-    display: none;
-    
-    // Tablet y desktop - visibles
+    padding: 0 rem(10px);
+
     @media (min-width: 768px) {
-      display: flex;
       padding: 0 rem(15px);
     }
 
     @media (min-width: 1024px) {
       padding: 0 rem(20px);
-    }
-
-    @media (min-width: 1200px) {
-      padding: 0 rem(25px);
     }
   }
 
@@ -291,60 +292,63 @@
     pointer-events: auto;
     backdrop-filter: blur(rem(8px));
 
-    // Tamaños responsive
+    // Tamaño consistente
     width: rem(44px);
     height: rem(44px);
 
-    @media (min-width: 1024px) {
-      width: rem(50px);
-      height: rem(50px);
+    @media (min-width: 768px) {
+      width: rem(48px);
+      height: rem(48px);
     }
 
-    &:hover {
+    &:hover:not(:disabled):not(.swiper-button-disabled) {
       background: var(--primary);
       color: var(--neutral);
       transform: scale(1.1);
       box-shadow: 0 rem(6px) rem(20px) rgba(var(--primary-rgb), 0.3);
     }
 
-    &:active {
+    &:active:not(:disabled):not(.swiper-button-disabled) {
       transform: scale(0.95);
     }
 
-    &:focus {
+    &:focus:not(:disabled):not(.swiper-button-disabled) {
       outline: none;
       box-shadow: 0 0 0 rem(3px) rgba(var(--primary-rgb), 0.3);
     }
 
     i {
       line-height: 1;
-      
-      // Tamaños responsive para iconos
       font-size: rem(20px);
 
-      @media (min-width: 1024px) {
-        font-size: rem(24px);
+      @media (min-width: 768px) {
+        font-size: rem(22px);
       }
     }
 
-    // Estados de swiper
+    // ✅ ESTADO DESHABILITADO MEJORADO
+    &:disabled,
     &.swiper-button-disabled {
       opacity: 0.3;
       pointer-events: none;
+      cursor: not-allowed;
       transform: scale(0.9);
+      background: rgba(200, 200, 200, 0.5);
+      color: rgba(100, 100, 100, 0.5);
+      box-shadow: 0 rem(2px) rem(6px) rgba(0, 0, 0, 0.05);
+      
+      // Asegurar que no haya efectos hover cuando está deshabilitado
+      &:hover {
+        background: rgba(200, 200, 200, 0.5);
+        color: rgba(100, 100, 100, 0.5);
+        transform: scale(0.9);
+        box-shadow: 0 rem(2px) rem(6px) rgba(0, 0, 0, 0.05);
+      }
     }
   }
 
-  .carousel-control.prev {
-    margin-right: auto;
-  }
-
-  .carousel-control.next {
-    margin-left: auto;
-  }
-
   // ==========================================
-  // INDICADORES - MOBILE FIRST
+  // INDICADORES
   // ==========================================
   .carousel-indicators {
     position: absolute;
@@ -354,7 +358,6 @@
     justify-content: center;
     z-index: 15;
     
-    // Mobile first
     bottom: rem(15px);
     gap: rem(6px);
     
@@ -372,7 +375,6 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       opacity: 1;
       
-      // Mobile first sizes
       width: rem(10px);
       height: rem(10px);
 
@@ -396,7 +398,7 @@
   }
 
   // ==========================================
-  // MODAL - MANTENER DISEÑO EXISTENTE
+  // MODAL - mantener diseño existente
   // ==========================================
   .modal-body {
     width: 100%;
@@ -467,14 +469,15 @@
 }
 
 // ==========================================
-// SWIPER OVERRIDE - ELIMINAR TODOS LOS ESPACIOS
+// OVERRIDES PARA NAVEGACIÓN CONTROLADA
 // ==========================================
 
-// Eliminar CUALQUIER espacio que Swiper pueda agregar
+// Eliminar márgenes de Swiper
 .swiper-wrapper {
   margin: 0 !important;
   padding: 0 !important;
   gap: 0 !important;
+  box-sizing: border-box !important;
 }
 
 .swiper-slide {
@@ -482,112 +485,101 @@
   margin-right: 0 !important;
   margin-left: 0 !important;
   padding: 0 !important;
-  
-  // Asegurar anchuras exactas sin espacios
-  @media (min-width: 1200px) {
-    width: 25% !important;
-    flex: 0 0 25% !important;
-    max-width: 25% !important;
-  }
-
-  @media (min-width: 1024px) and (max-width: 1199px) {
-    width: 33.333333% !important;
-    flex: 0 0 33.333333% !important;
-    max-width: 33.333333% !important;
-  }
-
-  @media (min-width: 768px) and (max-width: 1023px) {
-    width: 50% !important;
-    flex: 0 0 50% !important;
-    max-width: 50% !important;
-  }
+  box-sizing: border-box !important;
 }
 
-// Asegurar proporción cuadrada PERFECTA
-.swiper-slide .slide-image {
-  // Cuadrado perfecto sin excepciones
+// Forzar proporciones cuadradas
+.carousel-slide .slide-image {
   aspect-ratio: 1 / 1 !important;
-  width: 100% !important;
+  object-fit: cover !important;
   
-  // Fallback para navegadores sin aspect-ratio
   @supports not (aspect-ratio: 1 / 1) {
     height: 0 !important;
     padding-bottom: 100% !important;
-    width: 100% !important;
+  }
+}
+
+// ==========================================
+// SMOOTH SCROLLING PARA FALLBACK
+// ==========================================
+.swiper-wrapper:not(.swiper-wrapper-initialized) {
+  scroll-behavior: smooth;
+  
+  &::-webkit-scrollbar {
+    display: none;
   }
   
-  // En desktop - sin borders para eliminar espacios visuales
-  @media (min-width: 768px) {
-    border-radius: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-}
-
-// Eliminar espacios específicos de Swiper
-.swiper-container-horizontal > .swiper-wrapper {
-  left: 0 !important;
-}
-
-.swiper {
-  margin: 0 !important;
-  padding: 0 !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 // ==========================================
-// VERIFICACIÓN FINAL - CARDS CUADRADAS PERFECTAS
+// RESPONSIVE SUAVE - SIN BREAKPOINTS ABRUPTOS
 // ==========================================
 
-// Eliminar cualquier espacio que pueda quedar
-* {
-  &.swiper-slide {
-    box-sizing: border-box !important;
-  }
-}
-
-// Asegurar que en desktop las 4 cards sean perfectamente cuadradas
-@media (min-width: 1200px) {
+@media (max-width: 320px) {
   .hero-carousel {
-    .swiper-slide {
-      // Cada slide debe ser exactamente 1/4 sin espacios
-      width: 25% !important;
-      min-width: 25% !important;
-      max-width: 25% !important;
-      flex: 0 0 25% !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: none !important;
-      
-      .slide-image {
-        // Perfectamente cuadrado sin excepciones
-        width: 100% !important;
-        height: 0 !important;
-        padding-bottom: 100% !important;
-        margin: 0 !important;
-        border: none !important;
-        border-radius: 0 !important;
-        box-sizing: border-box !important;
-      }
+    .main-container {
+      height: rem(200px) !important;
+      min-height: rem(180px) !important;
     }
     
-    // Verificar que el wrapper no tenga espacios
-    .swiper-wrapper {
-      gap: 0 !important;
-      margin: 0 !important;
-      padding: 0 !important;
+    .carousel-slide {
+      .slide-image {
+        border-radius: rem(2px) !important;
+      }
+    }
+  }
+}
+
+// Ajuste para tablets en orientación portrait
+@media (max-width: 768px) and (orientation: portrait) {
+  .hero-carousel {
+    .carousel-controls {
+      padding: 0 rem(8px);
+    }
+    
+    .carousel-control {
+      width: rem(40px) !important;
+      height: rem(40px) !important;
+      
+      i {
+        font-size: rem(18px) !important;
+      }
     }
   }
 }
 
 // ==========================================
-// FALLBACK PARA ICONOS PHOSPHOR
+// ESTILOS ESPECÍFICOS PARA NAVEGACIÓN CONTROLADA
 // ==========================================
-.ph-arrow-circle-left::before {
-  font-size: rem(32px);
-  font-weight: 100;
+
+// Evitar que se muestre contenido fuera del contenedor
+.carousel-container {
+  .swiper-wrapper {
+    // Asegurar que no se extienda más allá del container
+    max-width: 100%;
+    overflow: visible;
+  }
 }
 
-.ph-arrow-circle-right::before {
-  font-size: rem(32px);
-  font-weight: 100;
+// Transiciones suaves para cambios de estado de botones
+.carousel-control {
+  transition: 
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+// Prevenir selección de texto en los controles
+.carousel-controls,
+.carousel-control,
+.carousel-indicators,
+.indicator {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }

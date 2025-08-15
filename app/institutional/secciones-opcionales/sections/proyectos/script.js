@@ -1,6 +1,5 @@
-// Script completo con Swiper.js - Sin espacios entre cards y navegación funcional
+// Script con tamaño fijo de cards y navegación controlada
 const createCarouselManager = () => {
-  // Verificar si estamos en el cliente
   if (typeof window === 'undefined') {
     return {
       activeIndex: 0,
@@ -15,7 +14,7 @@ const createCarouselManager = () => {
     }
   }
 
-  console.log('🎠 Script de Proyectos con Swiper inicializado')
+  console.log('🎠 Carousel Manager con navegación controlada inicializado')
   
   const state = {
     activeIndex: 0,
@@ -24,7 +23,11 @@ const createCarouselManager = () => {
     swiper: null,
     isInitialized: false,
     initAttempts: 0,
-    maxAttempts: 10
+    maxAttempts: 15,
+    debugMode: true,
+    cardSize: 280,
+    minCardSize: 200,
+    cardSpacing: 4
   }
 
   const slides = [
@@ -78,268 +81,247 @@ const createCarouselManager = () => {
     }
   ]
 
-  // Función para asegurar que las cards sean visibles antes de init
-  const ensureCardsVisible = () => {
+  // ==========================================
+  // CÁLCULO DINÁMICO DE CARDS VISIBLES
+  // ==========================================
+
+  const calculateOptimalConfiguration = () => {
     const container = document.querySelector('.carousel-container')
+    if (!container) {
+      console.warn('⚠️ Container no encontrado para cálculos')
+      return { slidesPerView: 1, cardSize: state.minCardSize }
+    }
+
+    const containerWidth = container.getBoundingClientRect().width
+    const screenWidth = window.innerWidth
+    
+    // Determinar tamaño de card según pantalla
+    let currentCardSize = state.cardSize
+    
+    if (screenWidth <= 360) {
+      currentCardSize = 220
+    } else if (screenWidth <= 480) {
+      currentCardSize = 250
+    } else {
+      currentCardSize = state.cardSize
+    }
+
+    // Calcular cuántas cards caben
+    const availableWidth = containerWidth - (state.cardSpacing * 2)
+    const cardsToFit = Math.floor(availableWidth / (currentCardSize + state.cardSpacing))
+    const minCards = 1
+    
+    // IMPORTANTE: No mostrar más cards de las que tenemos
+    const maxCards = slides.length
+    
+    const optimalCards = Math.max(minCards, Math.min(cardsToFit, maxCards))
+    
+    // Si solo cabe 1 card pero el container es grande, ajustar el tamaño
+    let finalCardSize = currentCardSize
+    if (optimalCards === 1 && availableWidth > currentCardSize * 1.5) {
+      finalCardSize = Math.min(availableWidth - state.cardSpacing * 2, currentCardSize * 1.3)
+    }
+
+    console.log(`📐 Cálculo de configuración óptima:`)
+    console.log(`  - Ancho pantalla: ${screenWidth}px`)
+    console.log(`  - Ancho container: ${containerWidth}px`)
+    console.log(`  - Total slides: ${slides.length}`)
+    console.log(`  - Cards que caben: ${cardsToFit}`)
+    console.log(`  - Cards a mostrar: ${optimalCards}`)
+    console.log(`  - Tamaño card final: ${finalCardSize}px`)
+
+    return {
+      slidesPerView: optimalCards,
+      cardSize: finalCardSize,
+      containerWidth: containerWidth,
+      screenWidth: screenWidth,
+      totalSlides: slides.length
+    }
+  }
+
+  // ==========================================
+  // CONTROL DE NAVEGACIÓN
+  // ==========================================
+
+  const updateNavigationButtons = () => {
+    if (!state.swiper) return
+
+    const nextBtn = document.querySelector('#carousel-next')
+    const prevBtn = document.querySelector('#carousel-prev')
+    
+    if (!nextBtn || !prevBtn) return
+
+    const currentIndex = state.swiper.activeIndex
+    const config = calculateOptimalConfiguration()
+    const maxIndex = slides.length - config.slidesPerView
+
+    console.log(`🎯 Actualizando botones - Índice: ${currentIndex}, Máximo: ${maxIndex}`)
+
+    // Botón anterior - deshabilitar si estamos al inicio
+    if (currentIndex <= 0) {
+      prevBtn.classList.add('swiper-button-disabled')
+      prevBtn.disabled = true
+      console.log('🚫 Botón anterior deshabilitado')
+    } else {
+      prevBtn.classList.remove('swiper-button-disabled')
+      prevBtn.disabled = false
+      console.log('✅ Botón anterior habilitado')
+    }
+
+    // Botón siguiente - deshabilitar si estamos al final
+    if (currentIndex >= maxIndex) {
+      nextBtn.classList.add('swiper-button-disabled')
+      nextBtn.disabled = true
+      console.log('🚫 Botón siguiente deshabilitado')
+    } else {
+      nextBtn.classList.remove('swiper-button-disabled')
+      nextBtn.disabled = false
+      console.log('✅ Botón siguiente habilitado')
+    }
+  }
+
+  const applyCardSizing = (config) => {
     const slides = document.querySelectorAll('.carousel-slide')
     
-    if (!container || !slides.length) return false
-
-    console.log('🔍 Verificando visibilidad de cards...')
-    console.log(`📊 Total de slides encontrados: ${slides.length}`)
-    console.log(`📐 Ancho de ventana: ${window.innerWidth}px`)
-    
-    // Determinar cuántas cards deberían ser visibles según el breakpoint
-    let expectedVisible = 1
-    if (window.innerWidth >= 1200) {
-      expectedVisible = 4
-      console.log('🖥️ Desktop grande detectado - esperando 4 cards')
-    } else if (window.innerWidth >= 1024) {
-      expectedVisible = 3
-      console.log('💻 Desktop detectado - esperando 3 cards')
-    } else if (window.innerWidth >= 768) {
-      expectedVisible = 2
-      console.log('📟 Tablet detectado - esperando 2 cards')
-    } else {
-      expectedVisible = 1
-      console.log('📱 Mobile detectado - esperando 1 card')
-    }
-    
-    // Asegurar que al menos el primer slide sea visible
     slides.forEach((slide, index) => {
-      if (index === 0) {
-        slide.style.display = 'flex'
-        slide.style.opacity = '1'
-        slide.style.visibility = 'visible'
-        console.log(`✅ Slide ${index} visible`)
+      const slideImage = slide.querySelector('.slide-image')
+      
+      slide.style.width = `${config.cardSize}px`
+      slide.style.minWidth = `${config.cardSize}px`
+      slide.style.maxWidth = `${config.cardSize}px`
+      slide.style.flex = `0 0 ${config.cardSize}px`
+      
+      if (slideImage) {
+        slideImage.style.width = '100%'
+        slideImage.style.aspectRatio = '1 / 1'
+        slideImage.style.height = 'auto'
+        
+        if (!CSS.supports('aspect-ratio', '1 / 1')) {
+          slideImage.style.height = '0'
+          slideImage.style.paddingBottom = '100%'
+        }
+        
+        console.log(`🔲 Card ${index} - aplicado tamaño: ${config.cardSize}px`)
       }
     })
-
-    return true
   }
+
+  const ensureCardsVisibility = () => {
+    const container = document.querySelector('.carousel-container')
+    const wrapper = document.querySelector('.swiper-wrapper')
+    const slides = document.querySelectorAll('.carousel-slide')
+    
+    if (!container || !slides.length) {
+      console.warn('⚠️ No se encontraron elementos del carousel')
+      return false
+    }
+
+    const config = calculateOptimalConfiguration()
+    
+    console.log(`📱 Configurando ${config.slidesPerView} cards visibles de ${config.cardSize}px cada una`)
+
+    slides.forEach((slide, index) => {
+      const slideImage = slide.querySelector('.slide-image')
+      
+      slide.style.display = 'flex'
+      slide.style.opacity = '1'
+      slide.style.visibility = 'visible'
+      slide.style.position = 'relative'
+      slide.style.height = '100%'
+      
+      if (slideImage) {
+        slideImage.style.display = 'block'
+        slideImage.style.opacity = '1'
+        slideImage.style.visibility = 'visible'
+      }
+      
+      console.log(`✅ Card ${index} - visibilidad asegurada`)
+    })
+
+    applyCardSizing(config)
+
+    if (wrapper) {
+      wrapper.style.display = 'flex'
+      wrapper.style.height = '100%'
+      wrapper.style.alignItems = 'stretch'
+    }
+
+    return config
+  }
+
+  // ==========================================
+  // FUNCIONES DE SWIPER MEJORADAS
+  // ==========================================
 
   const waitForSwiper = () => {
     return new Promise((resolve, reject) => {
       const checkSwiper = () => {
         if (window.Swiper) {
-          console.log('✅ Swiper encontrado')
+          console.log('✅ Swiper library encontrada')
           resolve()
         } else if (state.initAttempts < state.maxAttempts) {
           state.initAttempts++
           console.log(`⏳ Esperando Swiper... intento ${state.initAttempts}/${state.maxAttempts}`)
-          setTimeout(checkSwiper, 200)
+          setTimeout(checkSwiper, 150)
         } else {
-          console.error('❌ Swiper no pudo cargarse después de múltiples intentos')
-          reject(new Error('Swiper no disponible'))
+          console.error('❌ Timeout: Swiper no disponible')
+          reject(new Error('Swiper timeout'))
         }
       }
       checkSwiper()
     })
   }
 
-  // Nueva función para forzar layout cuadrado sin espacios
-  const forceSquareLayout = () => {
-    console.log('🔲 Forzando layout cuadrado sin espacios...')
-    
-    const slides = document.querySelectorAll('.swiper-slide')
-    const container = document.querySelector('.carousel-container')
-    
-    if (!container || !slides.length) return
-    
-    const containerRect = container.getBoundingClientRect()
-    const isDesktop = window.innerWidth >= 1200
-    
-    slides.forEach((slide, index) => {
-      const slideImage = slide.querySelector('.slide-image')
-      if (!slideImage) return
-      
-      if (isDesktop) {
-        // En desktop: forzar que cada slide sea exactamente 1/4 del contenedor
-        const targetWidth = containerRect.width / 4
-        
-        // Forzar tamaños exactos
-        slide.style.width = `${targetWidth}px`
-        slide.style.minWidth = `${targetWidth}px`
-        slide.style.maxWidth = `${targetWidth}px`
-        slide.style.flex = `0 0 ${targetWidth}px`
-        slide.style.margin = '0'
-        slide.style.padding = '0'
-        
-        // Hacer la imagen perfectamente cuadrada
-        slideImage.style.width = '100%'
-        slideImage.style.height = '0'
-        slideImage.style.paddingBottom = '100%'
-        slideImage.style.margin = '0'
-        slideImage.style.border = 'none'
-        slideImage.style.borderRadius = '0'
-        
-        console.log(`🔲 Slide ${index}: ${targetWidth}px x ${targetWidth}px`)
-      }
-    })
-    
-    // Verificar resultado
-    setTimeout(() => {
-      console.log('🔍 Verificando resultado del force layout...')
-      slides.forEach((slide, index) => {
-        const rect = slide.getBoundingClientRect()
-        const imageRect = slide.querySelector('.slide-image')?.getBoundingClientRect()
-        
-        if (imageRect) {
-          const isSquare = Math.abs(imageRect.width - imageRect.height) < 2
-          console.log(`📦 Slide ${index}: ${imageRect.width.toFixed(1)}x${imageRect.height.toFixed(1)} - Cuadrado: ${isSquare ? '✅' : '❌'}`)
-        }
-      })
-    }, 100)
-  }
-
-  // Función para verificar que las cards sean cuadradas y sin espacios
-  const verifyDesktopLayout = () => {
-    if (window.innerWidth >= 1200 && state.swiper) {
-      console.log('🖥️ Verificando layout de 4 cards cuadradas sin espacios...')
-      
-      const slides = state.swiper.slides
-      const visibleSlides = state.swiper.slidesPerViewDynamic()
-      const containerWidth = state.swiper.width
-      
-      console.log(`📊 Slides totales: ${slides.length}`)
-      console.log(`👁️ Slides visibles: ${visibleSlides}`)
-      console.log(`📏 Ancho contenedor: ${containerWidth}px`)
-      console.log(`🔄 Loop: ${state.swiper.params.loop}`)
-      console.log(`🎯 Slide activo: ${state.swiper.activeIndex}`)
-      
-      // Verificar cada slide visible
-      if (slides.length >= 4) {
-        for (let i = 0; i < Math.min(4, slides.length); i++) {
-          const slide = slides[i]
-          const slideRect = slide.getBoundingClientRect()
-          const slideImage = slide.querySelector('.slide-image')
-          const imageRect = slideImage ? slideImage.getBoundingClientRect() : null
-          
-          console.log(`📦 Slide ${i}:`)
-          console.log(`  - Ancho: ${slideRect.width}px`)
-          console.log(`  - Alto: ${slideRect.height}px`)
-          console.log(`  - Es cuadrado: ${Math.abs(slideRect.width - slideRect.height) < 5 ? '✅' : '❌'}`)
-          
-          if (imageRect) {
-            console.log(`  - Imagen ancho: ${imageRect.width}px`)
-            console.log(`  - Imagen alto: ${imageRect.height}px`)
-            console.log(`  - Imagen cuadrada: ${Math.abs(imageRect.width - imageRect.height) < 5 ? '✅' : '❌'}`)
-          }
-          
-          if (i > 0) {
-            const prevSlide = slides[i - 1]
-            const prevRect = prevSlide.getBoundingClientRect()
-            const gap = slideRect.left - (prevRect.left + prevRect.width)
-            console.log(`  - Espacio con anterior: ${gap}px ${gap === 0 ? '✅' : '❌'}`)
-          }
-        }
-      }
-      
-      // Verificar proporción total
-      const expectedWidth = containerWidth / 4
-      console.log(`📐 Ancho esperado por slide: ${expectedWidth}px`)
-      
-      if (visibleSlides < 4) {
-        console.log('⚠️ No se están mostrando 4 cards, forzando actualización...')
-        
-        // Forzar configuración exacta
-        state.swiper.params.slidesPerView = 4
-        state.swiper.params.spaceBetween = 0
-        state.swiper.params.centeredSlides = false
-        state.swiper.update()
-        
-        console.log('🔄 Swiper actualizado para mostrar 4 cards sin espacios')
-        
-        // Verificar nuevamente después de 500ms
-        setTimeout(() => {
-          console.log('🔄 Re-verificando después de actualización...')
-          verifyDesktopLayout()
-        }, 500)
-      } else {
-        console.log('✅ Layout de 4 cards confirmado')
-        
-        // Verificar que no hay espacios CSS
-        const wrapper = document.querySelector('.swiper-wrapper')
-        if (wrapper) {
-          const wrapperStyle = getComputedStyle(wrapper)
-          console.log(`📏 Wrapper gap: ${wrapperStyle.gap}`)
-          console.log(`📏 Wrapper margin: ${wrapperStyle.margin}`)
-          console.log(`📏 Wrapper padding: ${wrapperStyle.padding}`)
-        }
-      }
-    }
-  }
-
   const initSwiper = async () => {
     try {
-      console.log('🚀 Iniciando Swiper...')
+      console.log('🚀 Iniciando configuración de Swiper con navegación controlada...')
       
-      // Asegurar que las cards sean visibles
-      if (!ensureCardsVisible()) {
-        throw new Error('No se encontraron cards para mostrar')
+      const config = ensureCardsVisibility()
+      if (!config) {
+        throw new Error('No se pudo calcular configuración óptima')
       }
 
-      // Esperar a que Swiper esté disponible
       await waitForSwiper()
 
-      // Destruir instancia existente si existe
       if (state.swiper) {
-        console.log('🗑️ Destruyendo instancia anterior de Swiper')
+        console.log('🗑️ Destruyendo instancia anterior')
         state.swiper.destroy(true, true)
+        state.swiper = null
       }
 
       const container = document.querySelector('.carousel-container')
       if (!container) {
-        throw new Error('Contenedor del carrusel no encontrado')
+        throw new Error('Container no encontrado')
       }
 
-      console.log('⚙️ Configurando Swiper...')
+      console.log('⚙️ Configurando Swiper con navegación controlada...')
+      console.log(`📊 Slides por vista: ${config.slidesPerView}`)
+      console.log(`📏 Total slides: ${config.totalSlides}`)
       
       state.swiper = new window.Swiper('.carousel-container', {
-        // Configuración básica - CERO ESPACIOS entre cards
-        slidesPerView: 1,
-        spaceBetween: 0, // CERO espacios
-        loop: true,
+        slidesPerView: config.slidesPerView,
+        spaceBetween: state.cardSpacing,
+        loop: false, // ✅ CAMBIO PRINCIPAL: No infinito
         grabCursor: true,
         centeredSlides: false,
         allowTouchMove: true,
+        watchSlidesProgress: true,
+        watchSlidesVisibility: true,
         
-        // Efectos y transiciones
         effect: 'slide',
-        speed: 600,
+        speed: 500,
         
-        // Configuración responsive - PERFECTAMENTE SIN ESPACIOS
-        breakpoints: {
-          // Tablet - 2 cards EXACTAS sin espacios
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 0,
-            centeredSlides: false
-          },
-          // Desktop pequeño - 3 cards EXACTAS sin espacios
-          1024: {
-            slidesPerView: 3,
-            spaceBetween: 0,
-            centeredSlides: false
-          },
-          // Desktop grande - 4 cards PERFECTAS sin espacios
-          1200: {
-            slidesPerView: 4,
-            spaceBetween: 0,
-            centeredSlides: false,
-            slidesPerGroup: 1 // Mover de uno en uno
-          }
-        },
+        // Prevenir slide más allá del último
+        slidesPerGroup: 1,
+        slidesPerGroupSkip: 0,
+        resistanceRatio: 0.85,
 
-        // Navegación - IDs específicos para evitar conflictos
         navigation: {
           nextEl: '#carousel-next',
           prevEl: '#carousel-prev',
-          disabledClass: 'swiper-button-disabled',
-          hiddenClass: 'swiper-button-hidden'
+          disabledClass: 'swiper-button-disabled'
         },
 
-        // Paginación
         pagination: {
           el: '#carousel-indicators',
           clickable: true,
@@ -350,66 +332,66 @@ const createCarouselManager = () => {
           }
         },
 
-        // Eventos
         on: {
           init: function() {
-            console.log('✅ Swiper inicializado correctamente')
-            console.log(`📱 Slides visibles: ${this.slidesPerViewDynamic()}`)
-            console.log(`📏 Ancho del contenedor: ${this.width}px`)
-            console.log(`🔄 Loop: ${this.params.loop}`)
-            console.log(`🎯 Slide inicial: ${this.activeIndex}`)
+            console.log('🎉 Swiper inicializado con navegación controlada')
             
-            state.activeIndex = this.realIndex
+            state.activeIndex = this.activeIndex
             updateModalContent()
+            updateNavigationButtons()
             
-            // Asegurar que las cards sean visibles después de init
-            setTimeout(() => {
-              ensureCardsVisible()
-              this.update() // Forzar actualización de Swiper
-              verifyDesktopLayout() // Verificar layout de desktop
-              
-              // Test navegación
-              setTimeout(() => {
-                console.log('🧪 Testing navegación...')
-                console.log(`🔘 Botón siguiente disponible: ${this.navigation.nextEl ? 'Sí' : 'No'}`)
-                console.log(`🔘 Botón anterior disponible: ${this.navigation.prevEl ? 'Sí' : 'No'}`)
-              }, 500)
-            }, 100)
+            console.log(`📊 Estado inicial:`)
+            console.log(`  - Slides por vista: ${config.slidesPerView}`)
+            console.log(`  - Índice activo: ${this.activeIndex}`)
+            console.log(`  - Total slides: ${this.slides.length}`)
+            console.log(`  - Máximo índice permitido: ${this.slides.length - config.slidesPerView}`)
           },
           
           slideChange: function() {
-            console.log(`📱 Slide cambiado de ${state.activeIndex} a ${this.realIndex}`)
-            state.activeIndex = this.realIndex
+            const oldIndex = state.activeIndex
+            const newIndex = this.activeIndex
+            console.log(`🔄 Slide cambió: ${oldIndex} → ${newIndex}`)
+            
+            state.activeIndex = newIndex
             updateModalContent()
+            updateNavigationButtons()
           },
           
-          slideChangeTransitionStart: function() {
-            console.log('🔄 Transición iniciada')
+          reachEnd: function() {
+            console.log('🛑 Llegamos al final del carousel')
+            updateNavigationButtons()
           },
           
-          slideChangeTransitionEnd: function() {
-            console.log('✅ Transición completada')
-          },
-          
-          breakpoint: function(swiper, breakpointParams) {
-            console.log('📏 Breakpoint cambiado:', breakpointParams)
-            console.log(`📱 Nuevos slides visibles: ${breakpointParams.slidesPerView}`)
+          reachBeginning: function() {
+            console.log('🛑 Llegamos al inicio del carousel')
+            updateNavigationButtons()
           },
           
           resize: function() {
-            console.log('📐 Swiper redimensionado')
-            this.update()
+            console.log('📐 Resize detectado - recalculando configuración...')
             
-            // Verificar y forzar layout después de resize
-            setTimeout(() => {
-              verifyDesktopLayout()
-              forceSquareLayout()
-            }, 100)
+            const newConfig = calculateOptimalConfiguration()
             
-            // Segunda verificación 
-            setTimeout(() => {
-              forceSquareLayout()
-            }, 300)
+            if (Math.abs(newConfig.slidesPerView - config.slidesPerView) >= 1) {
+              console.log(`🔄 Actualizando configuración: ${config.slidesPerView} → ${newConfig.slidesPerView} slides`)
+              
+              applyCardSizing(newConfig)
+              
+              this.params.slidesPerView = newConfig.slidesPerView
+              this.params.spaceBetween = state.cardSpacing
+              this.update()
+              
+              // Asegurar que no estemos más allá del nuevo límite
+              const maxIndex = slides.length - newConfig.slidesPerView
+              if (this.activeIndex > maxIndex) {
+                this.slideTo(Math.max(0, maxIndex))
+              }
+              
+              updateNavigationButtons()
+            } else {
+              this.update()
+              updateNavigationButtons()
+            }
           },
           
           click: function(swiper, event) {
@@ -419,51 +401,59 @@ const createCarouselManager = () => {
               console.log(`👆 Click en slide: ${slideIndex}`)
               openModal(slideIndex)
             }
-          },
-
-          beforeDestroy: function() {
-            console.log('🗑️ Swiper será destruido')
           }
         }
       })
 
-      // Test manual de navegación después de la inicialización
+      console.log('✅ Swiper configurado exitosamente con navegación controlada')
+      
+      // Actualizar botones después de la inicialización
       setTimeout(() => {
-        console.log('🧪 Probando navegación manual...')
-        const nextBtn = document.querySelector('#carousel-next')
-        const prevBtn = document.querySelector('#carousel-prev')
-        
-        if (nextBtn && prevBtn) {
-          console.log('✅ Botones de navegación encontrados')
-          
-          // Agregar eventos click manuales como respaldo
-          nextBtn.addEventListener('click', () => {
-            console.log('🔘 Click manual en botón siguiente')
-            if (state.swiper) {
-              state.swiper.slideNext()
-            }
-          })
-          
-          prevBtn.addEventListener('click', () => {
-            console.log('🔘 Click manual en botón anterior')
-            if (state.swiper) {
-              state.swiper.slidePrev()
-            }
-          })
-        } else {
-          console.error('❌ Botones de navegación no encontrados')
-        }
-      }, 1000)
+        updateNavigationButtons()
+      }, 500)
 
-      console.log('🎉 Swiper configurado exitosamente')
       return true
 
     } catch (error) {
       console.error('❌ Error inicializando Swiper:', error)
-      
-      // Fallback: asegurar que al menos las cards sean visibles
-      ensureCardsVisible()
+      ensureCardsVisibility()
       return false
+    }
+  }
+
+  const setupManualNavigation = () => {
+    console.log('🔧 Configurando navegación manual como fallback...')
+    
+    // Solo configurar eventos manuales si Swiper no se inicializó correctamente
+    if (!state.swiper) {
+      const nextBtn = document.querySelector('#carousel-next')
+      const prevBtn = document.querySelector('#carousel-prev')
+      
+      if (nextBtn && prevBtn) {
+        nextBtn.addEventListener('click', (e) => {
+          e.preventDefault()
+          console.log('👆 Click manual fallback - Siguiente')
+          // Implementar scroll manual como fallback
+          const container = document.querySelector('.carousel-container')
+          if (container) {
+            container.scrollLeft += 300
+          }
+        })
+        
+        prevBtn.addEventListener('click', (e) => {
+          e.preventDefault()
+          console.log('👆 Click manual fallback - Anterior')
+          // Implementar scroll manual como fallback
+          const container = document.querySelector('.carousel-container')
+          if (container) {
+            container.scrollLeft -= 300
+          }
+        })
+        
+        console.log('✅ Navegación manual fallback configurada')
+      }
+    } else {
+      console.log('✅ Usando navegación nativa de Swiper')
     }
   }
 
@@ -476,13 +466,11 @@ const createCarouselManager = () => {
 
       console.log('📦 Cargando Swiper desde CDN...')
 
-      // Cargar CSS
       const link = document.createElement('link')
       link.rel = 'stylesheet'
       link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
       document.head.appendChild(link)
 
-      // Cargar JS
       const script = document.createElement('script')
       script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'
       script.onload = () => {
@@ -496,6 +484,10 @@ const createCarouselManager = () => {
       document.head.appendChild(script)
     })
   }
+
+  // ==========================================
+  // FUNCIONES DEL MODAL (mantener originales)
+  // ==========================================
 
   const updateModalContent = () => {
     if (state.selectedSlideIndex !== null) {
@@ -531,19 +523,18 @@ const createCarouselManager = () => {
     if (direction === 'up') {
       console.log('⬆️ Swipe up en modal - siguiente slide')
       state.swiper.slideNext()
-      const nextIndex = state.swiper.realIndex
+      const nextIndex = state.swiper.activeIndex
       state.selectedSlideIndex = nextIndex
       renderModalContent()
     } else if (direction === 'down') {
       console.log('⬇️ Swipe down en modal - slide anterior')
       state.swiper.slidePrev()
-      const prevIndex = state.swiper.realIndex
+      const prevIndex = state.swiper.activeIndex
       state.selectedSlideIndex = prevIndex
       renderModalContent()
     }
   }
 
-  // Funciones del modal (mantener del script original)
   const renderModalContent = () => {
     const modalBody = document.querySelector('.modal-body')
     if (!modalBody || state.selectedSlideIndex === null) return
@@ -697,6 +688,15 @@ const createCarouselManager = () => {
       closeButton.addEventListener('click', closeModal)
       console.log('✅ Evento de cerrar modal vinculado')
     }
+
+    window.addEventListener('resize', () => {
+      setTimeout(() => {
+        console.log('📐 Resize detectado - verificando configuración...')
+        const newConfig = calculateOptimalConfiguration()
+        applyCardSizing(newConfig)
+        updateNavigationButtons()
+      }, 300)
+    })
   }
 
   const init = async () => {
@@ -705,23 +705,21 @@ const createCarouselManager = () => {
       return
     }
     
-    console.log('🔄 Iniciando carrusel...')
+    console.log('🔄 Iniciando carousel manager con navegación controlada...')
     
     const checkDOM = async () => {
       const container = document.querySelector('.carousel-container')
       const slides = document.querySelectorAll('.carousel-slide')
       
       if (container && slides.length > 0) {
-        console.log(`✅ DOM listo - encontrados ${slides.length} slides`)
+        console.log(`✅ DOM listo - ${slides.length} slides encontrados`)
         
-        // Asegurar visibilidad inicial
-        ensureCardsVisible()
+        const config = ensureCardsVisibility()
+        console.log(`🎯 Configuración inicial: ${config.slidesPerView} cards de ${config.cardSize}px`)
         
-        // Vincular eventos básicos
         bindEvents()
         
         try {
-          // Cargar e inicializar Swiper
           if (!window.Swiper) {
             await loadSwiper()
           }
@@ -729,15 +727,14 @@ const createCarouselManager = () => {
           const success = await initSwiper()
           if (success) {
             state.isInitialized = true
-            console.log('🎉 Carrusel inicializado exitosamente')
+            console.log('🎉 Carousel inicializado exitosamente con navegación controlada')
           } else {
-            console.log('⚠️ Swiper falló, pero cards están visibles')
+            console.log('⚠️ Swiper falló, pero cards están visibles como fallback')
           }
           
         } catch (error) {
           console.error('❌ Error en inicialización:', error)
-          // Asegurar que las cards sean visibles como fallback
-          ensureCardsVisible()
+          ensureCardsVisibility()
         }
         
       } else {
@@ -750,7 +747,7 @@ const createCarouselManager = () => {
   }
 
   const cleanup = () => {
-    console.log('🧹 Limpiando carrusel...')
+    console.log('🧹 Limpiando carousel...')
     if (state.swiper) {
       state.swiper.destroy(true, true)
       state.swiper = null
@@ -778,7 +775,11 @@ const createCarouselManager = () => {
     closeModal,
     handleSwipeInModal,
     cleanup,
-    init
+    init,
+    calculateOptimalConfiguration,
+    applyCardSizing,
+    ensureCardsVisibility,
+    updateNavigationButtons
   }
 }
 
