@@ -16,9 +16,9 @@ export default function SeccionesOpcionales() {
   return (
     <>
       {/* <Proyectos />*/}
-      {/* <ViewComponent path={`${basePath}/sections/proyectos`}>
+       <ViewComponent path={`${basePath}/sections/proyectos`}>
         <Proyectos />
-      </ViewComponent> */}
+      </ViewComponent> 
 
       {/* <Laboratorios />*/}
       {/* <ViewComponent path={`${basePath}/sections/laboratorios`}>
