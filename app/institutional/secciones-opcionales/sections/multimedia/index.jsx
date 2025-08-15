@@ -21,6 +21,34 @@ const MultimediaSlider = () => {
   // Referencias para los iframes de video (para controlarlos)
   const videoRefs = useRef({})
 
+  // Estado para controlar si usar Grid o Swiper en thumbnails
+  const [useGridMode, setUseGridMode] = useState(false)
+
+  // Ref para prevenir múltiples clics rápidos (debounce)
+  const isNavigatingRef = useRef(false)
+
+  // ==========================================
+  // SISTEMA GRID/SWIPER PARA THUMBNAILS
+  // ==========================================
+
+  // Calcular cuántos slides son visibles según el ancho actual
+  const calculateVisibleSlides = () => {
+    if (typeof window === 'undefined') return 3
+
+    const width = window.innerWidth
+    if (width >= 1024) return 6
+    if (width >= 768) return 5
+    if (width >= 480) return 4
+    return 3
+  }
+
+  // Determinar si usar modo Grid (centrado) o Swiper (slider)
+  const shouldUseGridMode = () => {
+    const totalSlides = mediaContent.length
+    const visibleSlides = calculateVisibleSlides()
+    return totalSlides <= visibleSlides
+  }
+
   // ==========================================
   // DATOS DINÁMICOS DEL CONTENIDO MULTIMEDIA
   // ==========================================
@@ -28,68 +56,71 @@ const MultimediaSlider = () => {
     {
       type: 'image',
       src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      title: 'Paisaje Natural',
+      title:
+        'Lorem ipsum dolor sit amet consectetur adipiscing elit, at et sapien sagittis inceptos enim, diam litora cursus nulla quisque nostra. Vel faucibus duis placerat et taciti litora suspendisse natoque',
       thumbnail:
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
-      overlayText: ''
+      overlayText:
+        'Lobortis magnis nisl tellus natoque vestibulum rhoncus varius commodo vel, libero dignissim ultricies consequat interdum neque sem est luctus lacinia, eget porttitor imperdiet volutpat leo egestas congue phasellus. Mollis eget cum elementum aenean netus molestie cras condimentum dis, dignissim facilisis a sagittis rutrum vulputate laoreet dictum, porttitor fringilla morbi ligula luctus massa vivamus sollicitudin.'
     },
     {
       type: 'youtube',
       videoId: 'dQw4w9WgXcQ',
       title: 'Video Musical',
       thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
-      overlayText: ''
-    },
-    {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-      title: 'Arquitectura Moderna',
-      thumbnail: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      overlayText: ''
-    },
-    {
-      type: 'youtube',
-      videoId: 'jNQXAC9IVRw',
-      title: 'Video Educativo',
-      thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg',
-      overlayText: ''
-    },
-    {
-      type: 'image',
-      src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
-      title: 'Bosque Encantado',
-      thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      overlayText: ''
-    },
-    {
-      type: 'youtube',
-      videoId: 'M7lc1UVf-VE',
-      title: 'Video Tecnológico',
-      thumbnail: 'https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg',
-      overlayText: ''
+      overlayText:
+        'Lobortis magnis nisl tellus natoque vestibulum rhoncus varius commodo vel, libero dignissim ultricies consequat interdum neque sem est luctus lacinia, eget porttitor imperdiet volutpat leo egestas congue phasellus. Mollis eget cum elementum aenean netus molestie cras condimentum dis, dignissim facilisis a sagittis rutrum vulputate laoreet dictum, porttitor fringilla morbi ligula luctus massa vivamus sollicitudin.'
     }
+    // {
+    //   type: 'image',
+    //   src: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+    //   title: 'Arquitectura Moderna',
+    //   thumbnail: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
+    //   overlayText: ''
+    // },
+    // {
+    //   type: 'youtube',
+    //   videoId: 'jNQXAC9IVRw',
+    //   title: 'Video Educativo',
+    //   thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg',
+    //   overlayText: ''
+    // },
+    // {
+    //   type: 'image',
+    //   src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
+    //   title: 'Bosque Encantado',
+    //   thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
+    //   overlayText: ''
+    // },
+    // {
+    //   type: 'youtube',
+    //   videoId: 'M7lc1UVf-VE',
+    //   title: 'Video Tecnológico',
+    //   thumbnail: 'https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg',
+    //   overlayText: ''
+    //}
   ]
 
   // ==========================================
-  // FUNCIÓN PARA PAUSAR/REPRODUCIR VIDEOS
+  // FUNCIÓN PARA CONTROLAR VISIBILIDAD DE VIDEOS
   // ==========================================
-  const controlVideoPlayback = indexToPlay => {
+  // OPTIMIZACIÓN: Usar solo CSS para control de visibilidad en lugar de postMessage API
+  // Esto evita problemas de autoplay en Liferay y mejora la compatibilidad
+  const controlVideoVisibility = indexToPlay => {
     mediaContent.forEach((item, index) => {
-      if (item.type === 'youtube' && videoRefs.current[item.videoId]?.contentWindow) {
+      if (item.type === 'youtube' && videoRefs.current[item.videoId]) {
         const iframe = videoRefs.current[item.videoId]
         if (index === indexToPlay) {
-          // Play video activo
-          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*')
-          iframe.style.display = 'block' // Mostrar el iframe
+          // Mostrar video activo
+          iframe.style.display = 'block'
           // Ocultar la imagen si existe
           const img = iframe.previousElementSibling
           if (img && img.tagName === 'IMG') {
             img.style.opacity = '0'
           }
         } else {
-          // Pausar y ocultar videos inactivos
-          iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
-          iframe.style.display = 'none' // Ocultar el iframe
+          // Ocultar videos inactivos
+          iframe.style.display = 'none'
           // Mostrar la imagen si existe
           const img = iframe.previousElementSibling
           if (img && img.tagName === 'IMG') {
@@ -99,6 +130,36 @@ const MultimediaSlider = () => {
       }
     })
   }
+
+  // ==========================================
+  // EFECTO PARA DETECTAR CAMBIOS DE TAMAÑO Y MODO
+  // ==========================================
+  useEffect(() => {
+    const updateGridMode = () => {
+      const shouldUseGrid = shouldUseGridMode()
+      setUseGridMode(shouldUseGrid)
+      console.log(
+        `🎛️ Grid Mode: ${shouldUseGrid ? 'ON' : 'OFF'} - Total slides: ${mediaContent.length}, Visible: ${calculateVisibleSlides()}`
+      )
+    }
+
+    // Inicializar modo
+    updateGridMode()
+
+    // Listener para resize con debounce
+    let resizeTimeout
+    const handleResize = () => {
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(updateGridMode, 250)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(resizeTimeout)
+    }
+  }, [mediaContent.length])
 
   // ==========================================
   // EFECTO PARA INICIALIZAR SWIPERS
@@ -119,23 +180,26 @@ const MultimediaSlider = () => {
         return
       }
 
-      // Inicializar Swiper de miniaturas
-      const thumbsSwiper = new window.Swiper(thumbsSwiperRef.current, {
-        spaceBetween: 10,
-        slidesPerView: 6,
-        freeMode: true,
-        watchSlidesProgress: true,
-        navigation: {
-          nextEl: `.${baseClass}_thumbs-next`,
-          prevEl: `.${baseClass}_thumbs-prev`
-        },
-        breakpoints: {
-          320: { slidesPerView: 3 },
-          480: { slidesPerView: 4 },
-          768: { slidesPerView: 5 },
-          1024: { slidesPerView: 6 }
-        }
-      })
+      // Inicializar Swiper de miniaturas solo si NO está en Grid mode
+      let thumbsSwiper = null
+      if (!useGridMode) {
+        thumbsSwiper = new window.Swiper(thumbsSwiperRef.current, {
+          spaceBetween: 10,
+          slidesPerView: 6,
+          freeMode: true,
+          watchSlidesProgress: true,
+          navigation: {
+            nextEl: `.${baseClass}_thumbs-next`,
+            prevEl: `.${baseClass}_thumbs-prev`
+          },
+          breakpoints: {
+            320: { slidesPerView: 3 },
+            480: { slidesPerView: 4 },
+            768: { slidesPerView: 5 },
+            1024: { slidesPerView: 6 }
+          }
+        })
+      }
 
       // Inicializar Swiper principal
       const mainSwiper = new window.Swiper(mainSwiperRef.current, {
@@ -146,13 +210,25 @@ const MultimediaSlider = () => {
         },
         on: {
           init: function () {
-            setCurrentSlideIndex(this.realIndex)
-            // Asegurarse de que el primer video se controle al inicio
-            controlVideoPlayback(this.realIndex)
+            const realIndex = this.realIndex || 0
+            setCurrentSlideIndex(realIndex)
+            // Controlar visibilidad del primer video
+            controlVideoVisibility(realIndex)
+            console.log(`🎬 Main swiper initialized - Index: ${realIndex}`)
           },
           slideChange: function () {
-            setCurrentSlideIndex(this.realIndex)
-            controlVideoPlayback(this.realIndex)
+            const realIndex = this.realIndex || 0
+            setCurrentSlideIndex(realIndex)
+            controlVideoVisibility(realIndex)
+            console.log(`🔄 Main swiper slide changed to: ${realIndex}`)
+          },
+          touchEnd: function () {
+            // Asegurar sincronización después de interacciones táctiles
+            setTimeout(() => {
+              const realIndex = this.realIndex || 0
+              setCurrentSlideIndex(realIndex)
+              console.log(`📱 Touch interaction completed - Synced to: ${realIndex}`)
+            }, 50)
           }
           // Manejar clicks en el slide principal para videos si fuera necesario (opcional)
           // click: function(swiper, event) {
@@ -167,7 +243,9 @@ const MultimediaSlider = () => {
 
       // Asignar instancias de Swiper a los refs para acceso futuro
       mainSwiperRef.current.swiper = mainSwiper
-      thumbsSwiperRef.current.swiper = thumbsSwiper
+      if (thumbsSwiper) {
+        thumbsSwiperRef.current.swiper = thumbsSwiper
+      }
 
       // Listener para redimensionamiento para actualizar Swipers
       let resizeTimeout
@@ -175,7 +253,9 @@ const MultimediaSlider = () => {
         clearTimeout(resizeTimeout)
         resizeTimeout = setTimeout(() => {
           mainSwiper.update()
-          thumbsSwiper.update()
+          if (thumbsSwiper) {
+            thumbsSwiper.update()
+          }
         }, 250)
       }
 
@@ -202,7 +282,7 @@ const MultimediaSlider = () => {
       }
     }
     checkSwiper()
-  }, []) // Solo se ejecuta una vez al montar el componente
+  }, [useGridMode]) // Se ejecuta cuando cambia el modo Grid
 
   // ==========================================
   // FUNCIÓN PARA RENDERIZAR SLIDE PRINCIPAL
@@ -231,14 +311,14 @@ const MultimediaSlider = () => {
             style={{ zIndex: 1, position: 'absolute', width: '100%', height: '100%', objectFit: 'cover' }}
           />
           <iframe
-            ref={el => (videoRefs.current[item.videoId] = el)} // Asignar la referencia
-            src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${item.videoId}&rel=0&showinfo=0&modestbranding=1`}
+            ref={el => (videoRefs.current[item.videoId] = el)}
+            src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=1&playlist=${item.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&enablejsapi=0`}
             frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="autoplay; encrypted-media"
             allowFullScreen
+            loading="lazy"
             title={item.title}
-            style={{ display: index === currentSlideIndex ? 'block' : 'none', zIndex: 2 }} // Control de visibilidad
-          ></iframe>
+            style={{ display: index === currentSlideIndex ? 'block' : 'none', zIndex: 2 }}></iframe>
           {/* Overlay con texto para videos */}
           <div className={`${baseClass}_content-text-overlay`}>
             <div className={`${baseClass}_overlay-content`}>
@@ -252,6 +332,18 @@ const MultimediaSlider = () => {
   }
 
   // ==========================================
+  // FUNCIONES DE THUMBNAILS DELEGADAS AL SCRIPT NATIVO
+  // ==========================================
+  // ✅ Los eventos de click/touch son manejados por script-optimized.js
+  // ✅ Esto evita conflictos entre React y Vanilla JS
+  // ✅ Swiper maneja nativamente todos los eventos móviles
+  
+  const logThumbnailInteraction = (index, source = 'React') => {
+    console.log(`📱 Thumbnail interaction logged from ${source}: ${index}`)
+    // Solo logging, la navegación la maneja el script nativo
+  }
+
+  // ==========================================
   // FUNCIÓN PARA RENDERIZAR MINIATURA
   // ==========================================
   const renderThumbnail = (item, index) => {
@@ -260,10 +352,24 @@ const MultimediaSlider = () => {
       <div
         key={index}
         className={`${baseClass}_thumb-slide swiper-slide ${isActive ? 'swiper-slide-thumb-active' : ''}`}
-        onClick={() => mainSwiperRef.current?.swiper.slideToLoop(index)} // Cambiar slide al hacer click
-      >
-        <img src={item.thumbnail} alt={item.title} />
-        {item.type === 'youtube' && <div className={`${baseClass}_video-indicator`}>VIDEO</div>}
+        data-swiper-slide-index={index}
+        style={{
+          cursor: 'pointer',
+          touchAction: 'manipulation'
+        }}>
+        <img
+          src={item.thumbnail}
+          alt={item.title}
+          style={{ pointerEvents: 'none' }} // Prevenir interferencia de la imagen
+        />
+        {item.type === 'youtube' && (
+          <div
+            className={`${baseClass}_video-indicator`}
+            style={{ pointerEvents: 'none' }} // Prevenir interferencia del indicador
+          >
+            VIDEO
+          </div>
+        )}
       </div>
     )
   }
@@ -284,17 +390,50 @@ const MultimediaSlider = () => {
           </div>
 
           {/* Slider de miniaturas */}
-          <div className={`${baseClass}_thumbs-swiper swiper`} ref={thumbsSwiperRef}>
-            <div className={`${baseClass}_thumbs-wrapper swiper-wrapper`} role="list">
+          <div
+            className={`${baseClass}_thumbs-swiper swiper ${useGridMode ? `${baseClass}_grid-mode` : ''}`}
+            ref={thumbsSwiperRef}
+            style={
+              useGridMode
+                ? {
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }
+                : {}
+            }>
+            <div
+              className={`${baseClass}_thumbs-wrapper swiper-wrapper`}
+              role="list"
+              style={
+                useGridMode
+                  ? {
+                      display: 'grid',
+                      gridAutoFlow: 'column',
+                      justifyContent: 'center',
+                      gap: '10px',
+                      width: '100%',
+                      transform: 'none'
+                    }
+                  : {}
+              }>
               {mediaContent.map((item, index) => renderThumbnail(item, index))}
             </div>
 
-            {/* Botones de navegación para thumbnails */}
-            <button className={`swiper-slide-button ${baseClass}_thumbs-prev`} aria-label="Ir al slide anterior" type="button">
+            {/* Botones de navegación para thumbnails - Solo visibles en modo Swiper */}
+            <button
+              className={`swiper-slide-button ${baseClass}_thumbs-prev`}
+              aria-label="Ir al slide anterior"
+              type="button"
+              style={{ display: useGridMode ? 'none' : 'flex' }}>
               <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
             </button>
 
-            <button className={`swiper-slide-button ${baseClass}_thumbs-next`} aria-label="Ir al siguiente slide" type="button">
+            <button
+              className={`swiper-slide-button ${baseClass}_thumbs-next`}
+              aria-label="Ir al siguiente slide"
+              type="button"
+              style={{ display: useGridMode ? 'none' : 'flex' }}>
               <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
             </button>
           </div>

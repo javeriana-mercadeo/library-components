@@ -16,19 +16,19 @@ export default function SeccionesOpcionales() {
   return (
     <>
       {/* <Proyectos />*/}
-      <ViewComponent path={`${basePath}/sections/proyectos`}>
+      {/* <ViewComponent path={`${basePath}/sections/proyectos`}>
         <Proyectos />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Laboratorios />*/}
-      <ViewComponent path={`${basePath}/sections/laboratorios`}>
+      {/* <ViewComponent path={`${basePath}/sections/laboratorios`}>
         <Laboratorios />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Estudiantes />*/}
-      <ViewComponent path={`${basePath}/sections/estudiantes`}>
+      {/* <ViewComponent path={`${basePath}/sections/estudiantes`}>
         <Estudiantes />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Multimedia />*/}
       <ViewComponent path={`${basePath}/sections/multimedia`}>
@@ -36,30 +36,29 @@ export default function SeccionesOpcionales() {
       </ViewComponent>
 
       {/*  <MultimediaRedes />*/}
-      <ViewComponent path={`${basePath}/sections/multimediaRedes`}>
+      {/* <ViewComponent path={`${basePath}/sections/multimediaRedes`}>
         <MultimediaRedes />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <DobleTitulacionUno />*/}
-      <ViewComponent path={`${basePath}/sections/dobleTitulacionUno`}>
+      {/* <ViewComponent path={`${basePath}/sections/dobleTitulacionUno`}>
         <DobleTitulacionUno />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <DobleTitulacionDos />*/}
-      <ViewComponent path={`${basePath}/sections/dobleTitulacionDos`}>
+      {/* <ViewComponent path={`${basePath}/sections/dobleTitulacionDos`}>
         <DobleTitulacionDos />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Herramientas />*/}
-      <ViewComponent path={`${basePath}/sections/herramientas`}>
+      {/* <ViewComponent path={`${basePath}/sections/herramientas`}>
         <Herramientas />
-      </ViewComponent>  
-
+      </ViewComponent> */}
 
       {/* <AccesosDirectos/>*/}
-      <ViewComponent path={`${basePath}/sections/accesosDirectos`}>
+      {/* <ViewComponent path={`${basePath}/sections/accesosDirectos`}>
         <AccesosDirectos />
-      </ViewComponent> 
+      </ViewComponent> */}
     </>
   )
 }
