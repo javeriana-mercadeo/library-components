@@ -14,7 +14,7 @@
   .footer {
     width: 100%;
     color: var(--neutral);
-    padding: var(--spacing-xl) var(--spacing-md);
+    //padding: var(--spacing-xl) var(--spacing-md);
 
     // breakpoint-md (menor a 768px)
     @media (max-width: $breakpoint-md) {
@@ -140,10 +140,45 @@
         z-index: 2;
         border-radius: rem(16px);
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+
+        .play-button {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: rgba(255, 255, 255, 0.7);
+          transition: all 0.3s ease;
+          transform: scale(1);
+          gap: rem(8px);
+
+          i {
+            font-size: rem(48px);
+          }
+
+          .play-text {
+            font-size: rem(14px);
+            font-weight: var(--font-weight-medium);
+            text-align: center;
+            white-space: nowrap;
+            color: rgba(255, 255, 255, 1);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            padding: rem(4px) rem(10px);
+            border-radius: rem(16px);
+          }
+        }
 
         &:hover {
-          background-color: rgba(0, 0, 0, 0.1);
-          transition: background-color 0.3s ease;
+          background-color: rgba(0, 0, 0, 0.2);
+
+          .play-button {
+            color: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+          }
         }
       }
 
@@ -152,12 +187,30 @@
         height: rem(350px);
         width: rem(350px);
         max-width: 100%;
+
+        .video-overlay .play-button {
+          i {
+            font-size: rem(64px);
+          }
+          .play-text {
+            font-size: rem(16px);
+          }
+        }
       }
 
       // breakpoint-sm
       @media (max-width: $breakpoint-sm) {
         height: rem(350px);
         width: rem(350px);
+
+        .video-overlay .play-button {
+          i {
+            font-size: rem(56px);
+          }
+          .play-text {
+            font-size: rem(15px);
+          }
+        }
       }
     }
 

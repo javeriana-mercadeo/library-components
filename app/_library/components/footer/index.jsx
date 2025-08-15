@@ -23,9 +23,9 @@ const Footer = () => {
             <div className='footer__container'>
               <div className='footer__left'>
                 <LogoBlanco alt='Logo Pontificia Universidad Javeriana' className='footer__logo light' isEditable={false} />
-                <Title className='footer__title'>
+                <p className='footer__title'>
                   Explora nuestro campus <br /> y su tecnología de punta.
-                </Title>
+                </p>
               </div>
               <div className='footer__middle'>
                 <div className='footer__video'>
@@ -46,7 +46,12 @@ const Footer = () => {
                       target='_blank'
                       className='video-overlay'
                       rel='noopener noreferrer'
-                      aria-label='Ir al tour virtual de la universidad'></a>
+                      aria-label='Ir al tour virtual de la universidad'>
+                      <div className='play-button'>
+                        <i className='ph ph-play-circle'></i>
+                        <span className='play-text'>Ver tour virtual</span>
+                      </div>
+                    </a>
                   </div>
                 </div>
               </div>
