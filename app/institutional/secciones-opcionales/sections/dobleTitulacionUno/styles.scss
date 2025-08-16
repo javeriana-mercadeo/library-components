@@ -54,7 +54,7 @@
       position: relative;
       z-index: 3;
       padding: rem(80px) rem(20px) rem(40px);
-      max-width: rem(600px);
+      max-width: rem(800px);
       color: white;
 
       .hero-title {
@@ -79,14 +79,17 @@
         display: flex;
         flex-direction: column;
         gap: rem(20px);
+        width: 100%;
 
         .info-card {
-          // ✅ FONDO SÓLIDO CON COLOR PRIMARY
-          background: rgba(var(--primary-rgb), 0.15);
+          width: 100%;
+          box-sizing: border-box;
+          // ✅ FONDO SÓLIDO CON COLOR PRIMARY - INTENSIDAD AUMENTADA
+          background: rgba(var(--primary-rgb), 0.35);
           backdrop-filter: blur(rem(10px));
           
-          // ✅ BORDER SUTIL SIN VARIACIONES DE COLOR
-          border: rem(1px) solid rgba(var(--primary-rgb), 0.25);
+          // ✅ BORDER SUTIL CON MAYOR INTENSIDAD
+          border: rem(1px) solid rgba(var(--primary-rgb), 0.45);
           border-radius: rem(8px);
           padding: rem(20px);
           
@@ -95,11 +98,11 @@
 
           // ✅ HOVER CON FONDO PRIMARY MÁS INTENSO
           &:hover {
-            background: rgba(var(--primary-rgb), 0.25);
-            border-color: rgba(var(--primary-rgb), 0.4);
+            background: rgba(var(--primary-rgb), 0.5);
+            border-color: rgba(var(--primary-rgb), 0.6);
             box-shadow: 
-              0 rem(8px) rem(24px) rgba(var(--primary-rgb), 0.2),
-              0 rem(2px) rem(8px) rgba(var(--primary-rgb), 0.15);
+              0 rem(8px) rem(24px) rgba(var(--primary-rgb), 0.3),
+              0 rem(2px) rem(8px) rgba(var(--primary-rgb), 0.25);
             transform: translateY(rem(-3px));
           }
           
@@ -107,21 +110,21 @@
           // Sin variaciones por tarjeta - diseño unificado
 
           .card-title {
-            font-size: var(--font-size-caption);
-            font-weight: 600;
+            font-size: var(--font-size-subtitle);
+            font-weight: var(--font-weight-bold);
             margin: 0 0 rem(12px) 0;
-            // ✅ TEXTO OPTIMIZADO PARA FONDO PRIMARY
+            // ✅ TEXTO OPTIMIZADO PARA FONDO PRIMARY CON MAYOR INTENSIDAD
             color: rgba(255, 255, 255, 0.98);
-            text-shadow: 0 rem(1px) rem(2px) rgba(0, 0, 0, 0.3);
+            text-shadow: 0 rem(1px) rem(3px) rgba(0, 0, 0, 0.5);
           }
 
           .card-description {
             font-size: var(--font-size-small);
             line-height: 1.4;
             margin: 0;
-            // ✅ CONTRASTE OPTIMIZADO PARA FONDO PRIMARY
-            color: rgba(255, 255, 255, 0.9);
-            text-shadow: 0 rem(1px) rem(2px) rgba(0, 0, 0, 0.2);
+            // ✅ CONTRASTE OPTIMIZADO PARA FONDO PRIMARY CON MAYOR INTENSIDAD
+            color: rgba(255, 255, 255, 0.92);
+            text-shadow: 0 rem(1px) rem(3px) rgba(0, 0, 0, 0.4);
             
             // ✅ TRANSICIÓN SUAVE EN HOVER
             transition: color 0.3s ease;
@@ -150,7 +153,7 @@
 
       .hero-content {
         padding: rem(100px) rem(40px) rem(60px);
-        max-width: rem(700px);
+        max-width: rem(900px);
 
         .hero-title {
           font-size: var(--font-size-principal-title);
@@ -164,17 +167,20 @@
 
         .cards-container {
           gap: rem(24px);
+          width: 100%;
 
           .info-card {
             padding: rem(24px);
+            width: 100%;
+            box-sizing: border-box;
 
             .card-title {
-              font-size: 1.2rem;
+              font-size: var(--font-size-subtitle);
               margin-bottom: rem(16px);
             }
 
             .card-description {
-              font-size: var(--font-size-paragraph);
+              font-size: var(--font-size-small);
             }
           }
         }
@@ -198,7 +204,7 @@
 
       .hero-content {
         padding: rem(120px) rem(60px) rem(80px);
-        max-width: rem(650px);
+        max-width: rem(850px);
 
         .hero-title {
           font-size: var(--font-size-principal-title);
@@ -214,26 +220,36 @@
 
         .cards-container {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: rem(20px);
           max-width: rem(900px);
+          width: 100%;
+          align-items: stretch;
 
           .info-card {
             padding: rem(24px);
             min-height: rem(160px);
+            width: 100%;
+            min-width: 0;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
+            overflow-wrap: break-word;
 
             .card-title {
-              font-size: var(--font-size-paragraph);
+              font-size: var(--font-size-subtitle);
               margin-bottom: rem(12px);
-              font-weight: 700;
+              font-weight: var(--font-weight-bold);
+              word-wrap: break-word;
+              hyphens: auto;
             }
 
             .card-description {
               font-size: var(--font-size-small);
               line-height: 1.4;
               flex-grow: 1;
+              word-wrap: break-word;
+              hyphens: auto;
             }
           }
         }
@@ -268,21 +284,35 @@
         }
 
         .cards-container {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: rem(24px);
           max-width: rem(950px);
+          width: 100%;
+          align-items: stretch;
 
           .info-card {
             padding: rem(28px);
             min-height: rem(180px);
+            width: 100%;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            overflow-wrap: break-word;
 
             .card-title {
-              font-size: var(--font-size-caption);
+              font-size: var(--font-size-subtitle);
               margin-bottom: rem(16px);
+              word-wrap: break-word;
+              hyphens: auto;
             }
 
             .card-description {
-              font-size: var(--font-size-paragraph);
+              font-size: var(--font-size-small);
               line-height: 1.45;
+              word-wrap: break-word;
+              hyphens: auto;
             }
           }
         }
@@ -296,13 +326,13 @@
 // ==========================================
 [data-theme-base='dark'] .double-titulacion-container {
   .info-card {
-    // ✅ FONDO PRIMARY ADAPTADO PARA TEMA OSCURO
-    background: rgba(var(--primary-rgb), 0.12) !important;
-    border-color: rgba(var(--primary-rgb), 0.2) !important;
+    // ✅ FONDO PRIMARY ADAPTADO PARA TEMA OSCURO - INTENSIDAD AUMENTADA
+    background: rgba(var(--primary-rgb), 0.25) !important;
+    border-color: rgba(var(--primary-rgb), 0.35) !important;
     
     &:hover {
-      background: rgba(var(--primary-rgb), 0.18) !important;
-      border-color: rgba(var(--primary-rgb), 0.3) !important;
+      background: rgba(var(--primary-rgb), 0.4) !important;
+      border-color: rgba(var(--primary-rgb), 0.5) !important;
     }
     
     .card-title {
