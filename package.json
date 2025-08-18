@@ -36,7 +36,7 @@
     "@heroui/theme": "2.4.5",
     "@react-aria/ssr": "3.9.7",
     "@react-aria/visually-hidden": "3.8.18",
-    "@tailwindcss/postcss": "^4.1.11",
+    "@tailwindcss/postcss": "^4.1.12",
     "@types/babel__standalone": "^7.1.9",
     "@vercel/ncc": "^0.38.3",
     "clsx": "2.1.1",

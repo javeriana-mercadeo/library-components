@@ -21,9 +21,9 @@ export default function SeccionesOpcionales() {
       </ViewComponent> 
 
       {/* <Laboratorios />*/}
-      {/* <ViewComponent path={`${basePath}/sections/laboratorios`}>
+      <ViewComponent path={`${basePath}/sections/laboratorios`}>
         <Laboratorios />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/* <Estudiantes />*/}
       {/* <ViewComponent path={`${basePath}/sections/estudiantes`}>
@@ -41,9 +41,9 @@ export default function SeccionesOpcionales() {
       </ViewComponent> */}
 
       {/* <DobleTitulacionUno />*/}
-      {/* <ViewComponent path={`${basePath}/sections/dobleTitulacionUno`}>
+      <ViewComponent path={`${basePath}/sections/dobleTitulacionUno`}>
         <DobleTitulacionUno />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/* <DobleTitulacionDos />*/}
       {/* <ViewComponent path={`${basePath}/sections/dobleTitulacionDos`}>
