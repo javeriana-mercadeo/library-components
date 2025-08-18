@@ -1,0 +1,350 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL MODAL
+// ==========================================
+$modal-border-radius: rem(16px);
+$modal-max-width: rem(1200px);
+$modal-max-height: 90vh;
+$modal-padding: rem(32px);
+$modal-gap: rem(24px);
+$gallery-width: 45%;
+$content-width: 55%;
+
+// ==========================================
+// OVERLAY DEL MODAL
+// ==========================================
+.investigations-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  // Z-index máximo en móviles para estar encima del header
+  @media (max-width: #{$breakpoint-md - 1}) {
+    z-index: 99999;
+  }
+  padding: var(--spacing-lg);
+  backdrop-filter: blur(rem(4px));
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.3s ease;
+
+  @include dark-theme {
+    background: rgba(0, 0, 0, 0.9);
+  }
+}
+
+// ==========================================
+// CONTENEDOR PRINCIPAL DEL MODAL
+// ==========================================
+.investigations-modal {
+  background: var(--background-100);
+  border-radius: $modal-border-radius;
+  max-width: $modal-max-width;
+  max-height: $modal-max-height;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 rem(20px) rem(60px) rgba(0, 0, 0, 0.3);
+  transform: scale(1) translateY(0);
+  transition: all 0.3s ease;
+
+  @include dark-theme {
+    background: var(--background-200);
+    box-shadow: 0 rem(20px) rem(60px) rgba(0, 0, 0, 0.5);
+  }
+
+  // Layout responsivo para móviles
+  @media (max-width: #{$breakpoint-md - 1}) {
+    flex-direction: column;
+    max-height: 95vh;
+  }
+
+  // ==========================================
+  // GALERÍA DE IMÁGENES (COLUMNA IZQUIERDA)
+  // ==========================================
+  &__gallery {
+    width: $gallery-width;
+    background: var(--neutral-800);
+    position: relative;
+    overflow: hidden;
+
+    @media (max-width: #{$breakpoint-md - 1}) {
+      width: 100%;
+      height: rem(250px);
+      flex-shrink: 0;
+    }
+
+    @include dark-theme {
+      background: var(--neutral-900);
+    }
+  }
+
+  &__images-container {
+    height: 100%;
+    overflow-y: auto;
+    padding: $modal-padding;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+
+    @media (max-width: #{$breakpoint-md - 1}) {
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: var(--spacing-md);
+      gap: var(--spacing-md);
+    }
+
+    // Scroll personalizado
+    &::-webkit-scrollbar {
+      width: rem(6px);
+
+      @media (max-width: #{$breakpoint-md - 1}) {
+        height: rem(6px);
+        width: auto;
+      }
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: rem(3px);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: rem(3px);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+
+  &__image-wrapper {
+    flex-shrink: 0;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+
+    @media (max-width: #{$breakpoint-md - 1}) {
+      min-width: rem(200px);
+      height: 100%;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: rem(200px);
+    object-fit: cover;
+    display: block;
+
+    @media (max-width: #{$breakpoint-md - 1}) {
+      width: rem(200px);
+      height: 100%;
+    }
+  }
+
+  // ==========================================
+  // CONTENIDO (COLUMNA DERECHA)
+  // ==========================================
+  &__content {
+    width: $content-width;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    @media (max-width: #{$breakpoint-md - 1}) {
+      width: 100%;
+      flex-grow: 1;
+    }
+  }
+
+  &__header {
+    padding: var(--spacing-lg) var(--spacing-lg) 0;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+
+  &__close {
+    width: rem(40px);
+    height: rem(40px);
+    border-radius: 50%;
+    border: none;
+    background: var(--neutral-200);
+    color: var(--neutral-600);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: rem(20px);
+
+    &:hover {
+      background: var(--neutral-300);
+      color: var(--neutral-800);
+      transform: scale(1.1);
+    }
+
+    @include dark-theme {
+      background: var(--neutral-700);
+      color: var(--neutral-300);
+
+      &:hover {
+        background: var(--neutral-600);
+        color: var(--neutral-100);
+      }
+    }
+  }
+
+  &__info {
+    padding: 0 var(--spacing-lg) var(--spacing-lg);
+    overflow-y: auto;
+    flex-grow: 1;
+
+    // Scroll personalizado
+    &::-webkit-scrollbar {
+      width: rem(6px);
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--neutral-200);
+      border-radius: rem(3px);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--neutral-400);
+      border-radius: rem(3px);
+
+      &:hover {
+        background: var(--neutral-500);
+      }
+    }
+
+    @include dark-theme {
+      &::-webkit-scrollbar-track {
+        background: var(--neutral-700);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--neutral-500);
+
+        &:hover {
+          background: var(--neutral-400);
+        }
+      }
+    }
+  }
+
+  &__badge {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--neutral);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--border-radius-xl);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+  }
+
+  &__title {
+    margin-bottom: var(--spacing-lg);
+    color: var(--neutral-100);
+    line-height: 1.2;
+
+    @include dark-theme {
+      color: var(--neutral-100);
+    }
+  }
+
+  // ==========================================
+  // METADATOS HORIZONTALES
+  // ==========================================
+  &__metadata {
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  &__metadata-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  &__label {
+    font-weight: var(--font-weight-semibold);
+    color: var(--neutral-600);
+    min-width: rem(80px);
+    font-size: var(--font-size-small);
+
+    @include dark-theme {
+      color: var(--neutral-400);
+    }
+  }
+
+  &__value {
+    color: var(--neutral-100);
+    font-size: var(--font-size-small);
+
+    @include dark-theme {
+      color: var(--neutral-200);
+    }
+  }
+
+  // ==========================================
+  // DESCRIPCIÓN EXPANDIDA
+  // ==========================================
+  &__description {
+    color: var(--neutral-300);
+    line-height: 1.6;
+
+    p {
+      margin-bottom: var(--spacing-lg);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    @include dark-theme {
+      color: var(--neutral-300);
+    }
+  }
+}
+
+// ==========================================
+// ANIMACIONES
+// ==========================================
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(rem(20px));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

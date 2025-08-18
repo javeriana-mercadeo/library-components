@@ -1,20 +1,41 @@
 'use client'
 
 import { Container, Title, Paragraph, Image } from '@library/components'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import React from 'react'
 
 import info from './info.json'
 import script from './script.js'
-import './style.scss'
+import ModalInvestigacion from './components/ModalInvestigacion.jsx'
+import './styles.scss'
+import './components/modalInvestigacion.scss'
 
 const Investigaciones = () => {
   const elementName = info.id || 'investigaciones'
   const baseClass = 'investigations'
+  
+  // Estado para el modal
+  const [selectedInvestigacion, setSelectedInvestigacion] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     script()
   }, [])
+
+  // Funciones para manejar el modal
+  const openModal = (investigacion) => {
+    setSelectedInvestigacion(investigacion)
+    setIsModalOpen(true)
+    // Prevenir scroll del body
+    document.body.style.overflow = 'hidden'
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setSelectedInvestigacion(null)
+    // Restaurar scroll del body
+    document.body.style.overflow = 'unset'
+  }
 
   // ==========================================
   // DATOS DINÁMICOS DE LAS INVESTIGACIONES
@@ -70,35 +91,107 @@ const Investigaciones = () => {
   ]
 
   // ==========================================
-  // FUNCIÓN PARA RENDERIZAR UNA CARD
+  // SEPARAR DATOS: PRINCIPAL Y SECUNDARIAS
   // ==========================================
-  const renderInvestigacionCard = (investigacion, index) => {
-    const { id, year, title, description, image, alt, type } = investigacion
+  const mainInvestigacion = investigacionesData.find(item => item.type === 'main')
+  const secondaryInvestigaciones = investigacionesData.filter(item => item.type === 'secondary')
+
+  // ==========================================
+  // RENDERIZAR CARD PRINCIPAL FIJA
+  // ==========================================
+  const renderMainCard = (investigacion) => {
+    const { id, year, title, description, image, alt } = investigacion
 
     return (
-      <div key={id} className={`${baseClass}_slide ${baseClass}_slide--${type} swiper-slide`} role='listitem'>
-        <div className={`${baseClass}_card ${baseClass}_card--${type}`}>
+      <div className={`${baseClass}_main-card`}>
+        <div 
+          className={`${baseClass}_card ${baseClass}_card--main`}
+          onClick={() => openModal(investigacion)}
+          style={{ cursor: 'pointer' }}
+          role='button'
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              openModal(investigacion)
+            }
+          }}
+        >
           <Image
             id={`image-${elementName}-${id}`}
             src={image}
             alt={alt}
-            className={`${baseClass}_image ${baseClass}_image--${type}`}
+            className={`${baseClass}_image ${baseClass}_image--main`}
             loading='lazy'
           />
-
+          
           <div className={`${baseClass}_content`}>
             <span className={`${baseClass}_badge`}>{year}</span>
-
-            <Title
-              hierarchy='h3'
-              isEditable={false}
+            
+            <Title 
+              hierarchy='h3' 
+              isEditable={false} 
               className={`${baseClass}_title`}
-              size={type === 'main' ? 'lg' : 'md'}
-              weight='semibold'>
+              size='lg'
+              weight='semibold'
+            >
               {title}
             </Title>
+            
+            <Paragraph className={`${baseClass}_description`}>
+              {description}
+            </Paragraph>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
-            <Paragraph className={`${baseClass}_description`}>{description}</Paragraph>
+  // ==========================================
+  // RENDERIZAR CARDS SECUNDARIAS PARA SWIPER
+  // ==========================================
+  const renderSecondaryCard = (investigacion, index) => {
+    const { id, year, title, description, image, alt } = investigacion
+
+    return (
+      <div key={id} className={`${baseClass}_slide ${baseClass}_slide--secondary swiper-slide`} role='listitem'>
+        <div 
+          className={`${baseClass}_card ${baseClass}_card--secondary`}
+          onClick={() => openModal(investigacion)}
+          style={{ cursor: 'pointer' }}
+          role='button'
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              openModal(investigacion)
+            }
+          }}
+        >
+          <Image
+            id={`image-${elementName}-${id}`}
+            src={image}
+            alt={alt}
+            className={`${baseClass}_image ${baseClass}_image--secondary`}
+            loading='lazy'
+          />
+          
+          <div className={`${baseClass}_content`}>
+            <span className={`${baseClass}_badge`}>{year}</span>
+            
+            <Title 
+              hierarchy='h3' 
+              isEditable={false} 
+              className={`${baseClass}_title`}
+              size='md'
+              weight='semibold'
+            >
+              {title}
+            </Title>
+            
+            <Paragraph className={`${baseClass}_description`}>
+              {description}
+            </Paragraph>
           </div>
         </div>
       </div>
@@ -112,25 +205,42 @@ const Investigaciones = () => {
           Investigaciones
         </Title>
 
-        <div className={`${baseClass}_carousel`}>
-          <div className={`${baseClass}_mask-container`}>
-            <div className={`${baseClass}_wrapper investigations-swiper swiper`}>
-              <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
-                {/* ✅ GENERAR CARDS DINÁMICAMENTE */}
-                {investigacionesData.map((investigacion, index) => renderInvestigacionCard(investigacion, index))}
-              </div>
-            </div>
+        {/* Layout de dos columnas: Card fija + Swiper */}
+        <div className={`${baseClass}_layout`}>
+          {/* Columna izquierda - Card principal fija */}
+          <div className={`${baseClass}_fixed-column`}>
+            {mainInvestigacion && renderMainCard(mainInvestigacion)}
+          </div>
 
-            {/* Botones de navegación */}
-            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label='Ir al slide anterior' type='button'>
-              <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
-            </button>
-            <button className={`swiper-slide-button ${baseClass}_next`} aria-label='Ir al siguiente slide' type='button'>
-              <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
-            </button>
+          {/* Columna derecha - Swiper con cards secundarias */}
+          <div className={`${baseClass}_slider-column`}>
+            <div className={`${baseClass}_mask-container`}>
+              <div className={`${baseClass}_wrapper investigations-swiper swiper`}>
+                <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
+                  {/* ✅ SOLO CARDS SECUNDARIAS EN EL SWIPER */}
+                  {secondaryInvestigaciones.map((investigacion, index) => renderSecondaryCard(investigacion, index))}
+                </div>
+              </div>
+
+              {/* Botones de navegación */}
+              <button className={`swiper-slide-button ${baseClass}_prev`} aria-label='Ir al slide anterior' type='button'>
+                <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
+              </button>
+              <button className={`swiper-slide-button ${baseClass}_next`} aria-label='Ir al siguiente slide' type='button'>
+                <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
+              </button>
+            </div>
           </div>
         </div>
       </Container>
+
+      {/* Modal de investigación */}
+      {isModalOpen && (
+        <ModalInvestigacion 
+          investigacion={selectedInvestigacion}
+          onClose={closeModal}
+        />
+      )}
     </section>
   )
 }

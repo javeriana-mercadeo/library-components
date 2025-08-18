@@ -119,14 +119,17 @@ export async function GET(req: Request) {
   try {
     // 📌 Definir rutas de archivos
     const infoPath = path.join(componentPath, 'info.json')
-    const scssPath = path.join(componentPath, 'styles.scss')
+    const scssPath1 = path.join(componentPath, 'styles.scss')
     const jsPath = path.join(componentPath, 'script.js')
 
-    // 📌 Leer archivos de forma asíncrona
-    const [infoContent, scssContent] = await Promise.all([
+    // 📌 Leer archivos de forma asíncrona - probar ambos nombres de SCSS
+    const [infoContent, scssContent1] = await Promise.all([
       fs.readFile(infoPath, 'utf8').catch(() => null),
-      fs.readFile(scssPath, 'utf8').catch(() => null)
+      fs.readFile(scssPath1, 'utf8').catch(() => null)
     ])
+
+    // Usar el archivo SCSS que exista
+    const scssContent = scssContent1
 
     // 📌 Resolver JavaScript con imports
     let jsContent = ''
