@@ -24,7 +24,8 @@ const Investigaciones = () => {
       id: 1,
       year: '2024',
       title: 'Desafíos sociales en América Latina',
-      description: 'Investigación interdisciplinaria que analizó la desigualdad y las políticas públicas en América Latina, proponiendo soluciones basadas en enfoques participativos y equitativos.',
+      description:
+        'Investigación interdisciplinaria que analizó la desigualdad y las políticas públicas en América Latina, proponiendo soluciones basadas en enfoques participativos y equitativos.',
       image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1',
       alt: 'Desafíos sociales en América Latina',
       type: 'main'
@@ -42,7 +43,8 @@ const Investigaciones = () => {
       id: 3,
       year: '2022',
       title: 'Perspectivas Críticas en Derechos Humanos',
-      description: 'Análisis comparativo de las políticas de derechos humanos en América Latina, con recomendaciones para organismos internacionales.',
+      description:
+        'Análisis comparativo de las políticas de derechos humanos en América Latina, con recomendaciones para organismos internacionales.',
       image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-3',
       alt: 'Perspectivas Críticas en Derechos Humanos',
       type: 'secondary'
@@ -74,11 +76,7 @@ const Investigaciones = () => {
     const { id, year, title, description, image, alt, type } = investigacion
 
     return (
-      <div 
-        key={id} 
-        className={`${baseClass}_slide ${baseClass}_slide--${type} swiper-slide`} 
-        role='listitem'
-      >
+      <div key={id} className={`${baseClass}_slide ${baseClass}_slide--${type} swiper-slide`} role='listitem'>
         <div className={`${baseClass}_card ${baseClass}_card--${type}`}>
           <Image
             id={`image-${elementName}-${id}`}
@@ -87,23 +85,20 @@ const Investigaciones = () => {
             className={`${baseClass}_image ${baseClass}_image--${type}`}
             loading='lazy'
           />
-          
+
           <div className={`${baseClass}_content`}>
             <span className={`${baseClass}_badge`}>{year}</span>
-            
-            <Title 
-              hierarchy='h3' 
-              isEditable={false} 
+
+            <Title
+              hierarchy='h3'
+              isEditable={false}
               className={`${baseClass}_title`}
               size={type === 'main' ? 'lg' : 'md'}
-              weight='semibold'
-            >
+              weight='semibold'>
               {title}
             </Title>
-            
-            <Paragraph className={`${baseClass}_description`}>
-              {description}
-            </Paragraph>
+
+            <Paragraph className={`${baseClass}_description`}>{description}</Paragraph>
           </div>
         </div>
       </div>
@@ -113,44 +108,24 @@ const Investigaciones = () => {
   return (
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
-        <Title 
-          weight='semibold' 
-          size='2xl' 
-          align='center' 
-          id={`${elementName}-title`}
-          className={`${baseClass}_main-title`}
-        >
-          Investigaciones Destacadas
+        <Title weight='semibold' size='2xl' align='center' id={`${elementName}-title`} className={`${baseClass}_main-title`}>
+          Investigaciones
         </Title>
 
-        <Paragraph 
-          id={`${elementName}-description`} 
-          align='center'
-          className={`${baseClass}_main-description`}
-        >
-          Descubre las investigaciones más relevantes y los avances en conocimiento que están transformando nuestra comprensión del mundo.
-        </Paragraph>
-
-        <div className={`${baseClass}_carousel swiper`}>
-          <div className={`${baseClass}_wrapper investigations-swiper`}>
-            <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
-              {/* ✅ GENERAR CARDS DINÁMICAMENTE */}
-              {investigacionesData.map((investigacion, index) => renderInvestigacionCard(investigacion, index))}
+        <div className={`${baseClass}_carousel`}>
+          <div className={`${baseClass}_mask-container`}>
+            <div className={`${baseClass}_wrapper investigations-swiper swiper`}>
+              <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
+                {/* ✅ GENERAR CARDS DINÁMICAMENTE */}
+                {investigacionesData.map((investigacion, index) => renderInvestigacionCard(investigacion, index))}
+              </div>
             </div>
 
             {/* Botones de navegación */}
-            <button 
-              className={`swiper-slide-button ${baseClass}_prev`} 
-              aria-label='Ir al slide anterior' 
-              type='button'
-            >
+            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label='Ir al slide anterior' type='button'>
               <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
             </button>
-            <button 
-              className={`swiper-slide-button ${baseClass}_next`} 
-              aria-label='Ir al siguiente slide' 
-              type='button'
-            >
+            <button className={`swiper-slide-button ${baseClass}_next`} aria-label='Ir al siguiente slide' type='button'>
               <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
             </button>
           </div>

@@ -38,7 +38,7 @@ export default () => {
         momentumBounce: false,
         momentumVelocityRatio: 0.5
       },
-      
+
       // ==========================================
       // CONFIGURACION BASICA
       // ==========================================
@@ -106,42 +106,42 @@ export default () => {
       // EVENTOS
       // ==========================================
       on: {
-        init: function(swiper) {
+        init: function (swiper) {
           console.log('[INVESTIGATIONS] Swiper inicializado con', totalSlides, 'slides')
           updateNavigationVisibility(swiper, totalSlides)
           updateButtonStates(swiper)
         },
-        
-        update: function(swiper) {
+
+        update: function (swiper) {
           updateNavigationVisibility(swiper, totalSlides)
           updateButtonStates(swiper)
         },
-        
-        resize: function(swiper) {
+
+        resize: function (swiper) {
           setTimeout(() => {
             updateNavigationVisibility(swiper, totalSlides)
             updateButtonStates(swiper)
           }, 100)
         },
-        
-        slideChange: function(swiper) {
+
+        slideChange: function (swiper) {
           updateButtonStates(swiper)
         },
-        
-        reachBeginning: function(swiper) {
+
+        reachBeginning: function (swiper) {
           updateButtonStates(swiper)
         },
-        
-        reachEnd: function(swiper) {
+
+        reachEnd: function (swiper) {
           updateButtonStates(swiper)
         },
 
         // Eventos especificos de freeMode
-        freeModeNoMomentumRelease: function(swiper) {
+        freeModeNoMomentumRelease: function (swiper) {
           updateButtonStates(swiper)
         },
 
-        setTransition: function(swiper, duration) {
+        setTransition: function (swiper, duration) {
           // Suavizar transiciones en freemode
           if (duration > 0) {
             const slides = swiper.slides
@@ -177,7 +177,7 @@ export default () => {
       prevBtn.classList.add('show-navigation')
       prevBtn.classList.remove('swiper-button-hidden')
       prevBtn.setAttribute('aria-hidden', 'false')
-      
+
       updateButtonStates(swiper)
     } else {
       nextBtn.classList.remove('show-navigation')
@@ -190,7 +190,7 @@ export default () => {
     }
   }
 
-  const updateButtonStates = (swiper) => {
+  const updateButtonStates = swiper => {
     const nextBtn = document.querySelector('.investigations_next')
     const prevBtn = document.querySelector('.investigations_prev')
 

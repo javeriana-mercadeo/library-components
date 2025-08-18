@@ -9,9 +9,9 @@ $investigations-transition: all 0.3s ease;
 $investigations-badge-border-radius: rem(24px);
 $investigations-badge-padding: var(--spacing-xs) var(--spacing-md);
 
-// Layout especifico - 50% main, 25% secondary
-$main-card-width: 50%;
-$secondary-card-width: 25%;
+// Layout especifico - Ajustado para gaps y padding
+$main-card-width: 48%;
+$secondary-card-width: 23.5%;
 $card-gap: rem(25px);
 
 // Navegacion
@@ -69,10 +69,20 @@ $nav-button-size-mobile: rem(40px);
     margin-top: var(--spacing-xl);
   }
 
+  // Contenedor con overflow hidden para cortar contenido
+  &_mask-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+
+  }
+
   &_wrapper {
     overflow: visible;
     position: relative;
-    padding: var(--spacing-lg) var(--spacing-sm);
+    
+    // En móviles, padding mínimo para permitir posicionamiento natural de Swiper
+    padding: var(--spacing-lg) var(--spacing-xs);
 
     @include responsive($breakpoint-sm) {
       padding: var(--spacing-lg) var(--spacing-md);
@@ -98,22 +108,21 @@ $nav-button-size-mobile: rem(40px);
     display: flex !important;
     flex-direction: column !important;
     height: auto !important;
-    width: auto !important;
     flex-shrink: 0 !important;
 
-    // Layout responsive para movil (por defecto)
-    width: 85% !important;
-    margin-right: rem(15px);
+    // Layout responsive para movil - cada card con su ancho natural
+    width: rem(280px) !important;
+    margin-right: rem(20px);
 
     // Layout para tablet pequena
     @include responsive($breakpoint-sm) {
-      width: 70% !important;
-      margin-right: rem(20px);
+      width: rem(320px) !important;
+      margin-right: rem(25px);
     }
 
     // Layout para tablet
     @include responsive($breakpoint-md) {
-      width: 60% !important;
+      width: calc(50% - rem(12.5px)) !important;
       margin-right: rem(25px);
     }
 
@@ -136,21 +145,21 @@ $nav-button-size-mobile: rem(40px);
 
     @include responsive($breakpoint-xl) {
       &--main {
-        width: 45% !important;
+        width: 46% !important;
       }
 
       &--secondary {
-        width: 22% !important;
+        width: 24% !important;
       }
     }
 
     @include responsive($breakpoint-2xl) {
       &--main {
-        width: 40% !important;
+        width: 47% !important;
       }
 
       &--secondary {
-        width: 20% !important;
+        width: 24.5% !important;
       }
     }
   }
@@ -373,7 +382,7 @@ $nav-button-size-mobile: rem(40px);
 }
 
 // ==========================================
-// OPTIMIZACIONES PARA SWIPER FREEMODE
+// OPTIMIZACIONES PARA SWIPER
 // ==========================================
 .swiper {
   overflow: visible !important;
@@ -388,6 +397,7 @@ $nav-button-size-mobile: rem(40px);
     &:hover {
       transform: translateY(rem(-2px)) !important;
     }
+
   }
 
   // Ocultar navegacion cuando no es necesaria
