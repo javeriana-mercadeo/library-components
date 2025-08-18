@@ -21,9 +21,9 @@ export default function Doctorado() {
   return (
     <>
       {/* <Encabezado /> */}
-      <ViewComponent path={`${libraryPath}/header`}>
+      {/* <ViewComponent path={`${libraryPath}/header`}>
         <Header />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <VideoDoctorado /> */}
       <ViewComponent path={`${basePath}/sections/videoDoctorado`}>

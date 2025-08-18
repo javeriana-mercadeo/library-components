@@ -90,14 +90,13 @@ export default () => {
             sticky: true
           }
         },
-        // Desktop: Layout especifico (1 main + partes de secondary)
+        // Desktop: Exactamente 2 slides visibles
         1024: {
-          slidesPerView: 'auto',
+          slidesPerView: 2,
           spaceBetween: 25,
           freeMode: {
-            enabled: true,
-            sticky: true,
-            momentumBounce: false
+            enabled: false, // Desactivar freemode para mejor control
+            sticky: false
           }
         }
       },

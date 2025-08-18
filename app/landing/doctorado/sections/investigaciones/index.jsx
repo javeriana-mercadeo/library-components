@@ -20,6 +20,44 @@ const Investigaciones = () => {
 
   useEffect(() => {
     script()
+    
+    // Sincronizar alturas después de que se rendericen las cards
+    const syncCardHeights = () => {
+      const mainCard = document.querySelector('.investigations_card--main')
+      const secondaryCards = document.querySelectorAll('.investigations_card--secondary')
+      
+      if (mainCard && secondaryCards.length > 0) {
+        // Resetear alturas para obtener altura natural
+        mainCard.style.height = 'auto'
+        secondaryCards.forEach(card => card.style.height = 'auto')
+        
+        // Obtener todas las alturas
+        const allCards = [mainCard, ...Array.from(secondaryCards)]
+        const heights = allCards.map(card => card.offsetHeight)
+        const maxHeight = Math.max(...heights)
+        
+        // Aplicar la altura máxima a todas las cards
+        allCards.forEach(card => {
+          card.style.height = `${maxHeight}px`
+        })
+        
+        console.log('[INVESTIGATIONS] Alturas sincronizadas:', maxHeight + 'px')
+      }
+    }
+    
+    // Ejecutar después de que se rendericen las cards
+    setTimeout(syncCardHeights, 500)
+    
+    // También sincronizar en resize
+    const handleResize = () => {
+      setTimeout(syncCardHeights, 100)
+    }
+    
+    window.addEventListener('resize', handleResize)
+    
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
   }, [])
 
   // Funciones para manejar el modal
@@ -105,7 +143,7 @@ const Investigaciones = () => {
     return (
       <div className={`${baseClass}_main-card`}>
         <div 
-          className={`${baseClass}_card ${baseClass}_card--main`}
+          className={`${baseClass}_card ${baseClass}_card--main investigations_card--main`}
           onClick={() => openModal(investigacion)}
           style={{ cursor: 'pointer' }}
           role='button'
@@ -156,7 +194,7 @@ const Investigaciones = () => {
     return (
       <div key={id} className={`${baseClass}_slide ${baseClass}_slide--secondary swiper-slide`} role='listitem'>
         <div 
-          className={`${baseClass}_card ${baseClass}_card--secondary`}
+          className={`${baseClass}_card ${baseClass}_card--secondary investigations_card--secondary`}
           onClick={() => openModal(investigacion)}
           style={{ cursor: 'pointer' }}
           role='button'

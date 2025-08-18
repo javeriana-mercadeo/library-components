@@ -59,14 +59,22 @@ $nav-button-size-mobile: rem(40px);
   // LAYOUT DE DOS COLUMNAS: FIJA + SWIPER
   // ==========================================
   &_layout {
-    display: flex;
-    gap: var(--spacing-xl);
     margin-top: var(--spacing-xl);
-    align-items: stretch;
 
+    // DESKTOP: Layout horizontal (lado a lado)
+    @include responsive($breakpoint-lg) {
+      display: flex;
+      gap: var(--spacing-xl);
+      align-items: stretch;
+      width: inherit;
+    }
+
+    // MÓVILES: Layout vertical (arriba y abajo)
     @media (max-width: #{$breakpoint-lg - 1}) {
+      display: flex;
       flex-direction: column;
       gap: var(--spacing-lg);
+      width: inherit;
     }
   }
 
@@ -74,28 +82,58 @@ $nav-button-size-mobile: rem(40px);
   // COLUMNA IZQUIERDA - CARD PRINCIPAL FIJA
   // ==========================================
   &_fixed-column {
-    width: 50%;
-    flex-shrink: 0;
+    // DESKTOP: 50% del ancho
+    @include responsive($breakpoint-lg) {
+      width: 50%;
+      flex-shrink: 0;
+    }
 
+    // MÓVILES: Ancho completo, va primero
     @media (max-width: #{$breakpoint-lg - 1}) {
       width: 100%;
+      order: 1;
     }
   }
 
   &_main-card {
     height: 100%;
+
+    // DESKTOP: Flexbox para alineación
+    @include responsive($breakpoint-lg) {
+      display: flex;
+      align-items: stretch;
+      padding: 0;
+    }
+
+    // MÓVILES: Padding que coincida con el wrapper del swiper
+    @media (max-width: #{$breakpoint-lg - 1}) {
+      display: block;
+      width: 100%;
+      padding: 0 var(--spacing-md);
+      box-sizing: border-box;
+    }
+
+    @media (max-width: #{$breakpoint-sm - 1}) {
+      padding: 0 var(--spacing-sm);
+    }
   }
 
   // ==========================================
   // COLUMNA DERECHA - SWIPER
   // ==========================================
   &_slider-column {
-    width: 50%;
-    flex-grow: 1;
-    position: relative;
+    // DESKTOP: 50% del ancho
+    @include responsive($breakpoint-lg) {
+      width: 50%;
+      flex-grow: 1;
+      position: relative;
+    }
 
+    // MÓVILES: Ancho completo, va segundo
     @media (max-width: #{$breakpoint-lg - 1}) {
       width: 100%;
+      order: 2;
+      position: relative;
     }
   }
 
@@ -109,26 +147,25 @@ $nav-button-size-mobile: rem(40px);
   &_wrapper {
     overflow: visible;
     position: relative;
-    
-    // Padding aumentado para contener sombras de hover (40px shadow + 8px translateY)
-    padding: var(--spacing-2xl) var(--spacing-xs);
 
-    @include responsive($breakpoint-sm) {
-      padding: var(--spacing-2xl) var(--spacing-md);
-    }
-
-    @include responsive($breakpoint-md) {
-      padding: var(--spacing-2xl) var(--spacing-xl);
-    }
-
+    // DESKTOP: Sin padding superior para alineación con card fija
     @include responsive($breakpoint-lg) {
-      padding: var(--spacing-2xl) var(--spacing-2xl);
+      padding: 0;
+    }
+
+    // MÓVILES: Padding simétrico estándar
+    @media (max-width: #{$breakpoint-lg - 1}) {
+      padding: 0 var(--spacing-md);
+    }
+
+    @media (max-width: #{$breakpoint-sm - 1}) {
+      padding: 0 var(--spacing-sm);
     }
   }
 
   &_slides {
     align-items: stretch !important;
-    
+
     // Asegurar que todos los slides tengan la misma altura
     .swiper-slide {
       height: auto !important;
@@ -147,40 +184,38 @@ $nav-button-size-mobile: rem(40px);
     flex-shrink: 0 !important;
 
     &--secondary {
-      // Layout responsive para movil
-      width: rem(280px) !important;
-      margin-right: rem(20px);
+      // MÓVIL: Un slide por vez, ancho completo menos padding del wrapper
+      @media (max-width: #{$breakpoint-sm - 1}) {
+        width: calc(100% - calc(var(--spacing-sm) * 2)) !important;
+        margin-right: 0;
+      }
 
-      // Layout para tablet pequena
-      @include responsive($breakpoint-sm) {
+      // MÓVIL GRANDE: Un slide por vez
+      @media (min-width: #{$breakpoint-sm}) and (max-width: #{$breakpoint-md - 1}) {
+        width: calc(100% - calc(var(--spacing-md) * 2)) !important;
+        margin-right: 0;
+      }
+
+      // TABLET: 2 slides visibles con ancho fijo
+      @include responsive($breakpoint-md) {
         width: rem(320px) !important;
         margin-right: rem(25px);
       }
 
-      // Layout para tablet
-      @include responsive($breakpoint-md) {
-        width: calc(70% - rem(12.5px)) !important;
-        margin-right: rem(25px);
-      }
-
-      // Layout para desktop - cards secundarias ocupan mas ancho en la columna del swiper
+      // DESKTOP: 2 slides exactos con swiper nativo
       @include responsive($breakpoint-lg) {
         width: calc(50% - rem(12.5px)) !important;
-        margin-right: rem(25px);
-
-        &:last-child {
-          margin-right: 0;
-        }
+        margin-right: 0;
       }
 
       @include responsive($breakpoint-xl) {
-        width: calc(45% - rem(12.5px)) !important;
-        margin-right: rem(25px);
+        width: calc(50% - rem(12.5px)) !important;
+        margin-right: 0;
       }
 
       @include responsive($breakpoint-2xl) {
-        width: calc(40% - rem(12.5px)) !important;
-        margin-right: rem(25px);
+        width: calc(50% - rem(12.5px)) !important;
+        margin-right: 0;
       }
     }
   }
@@ -194,12 +229,15 @@ $nav-button-size-mobile: rem(40px);
     background: transparent;
     border-radius: $investigations-card-border-radius;
     transition: $investigations-transition;
-    height: 100%;
+    height: auto; // JavaScript sincronizará las alturas
     overflow: hidden;
     border: rem(1px) solid transparent;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 
     &:hover {
-      transform: translateY(rem(-8px));
+      //transform: translateY(rem(-8px));
       background: var(--background-100);
       border-color: var(--primary-300);
       box-shadow: 0 rem(20px) rem(40px) rgba(0, 0, 0, 0.15);
@@ -221,17 +259,19 @@ $nav-button-size-mobile: rem(40px);
     object-fit: cover;
     display: block;
     border-radius: var(--border-radius-lg);
+    flex-shrink: 0; // Evitar que la imagen se comprima
+
+    // Altura uniforme en desktop para main y secondary
+    @include responsive($breakpoint-lg) {
+      height: rem(280px); // Altura uniforme para todas las imágenes
+    }
 
     &--main {
-      @include responsive($breakpoint-lg) {
-        height: rem(300px);
-      }
+      // Mantener la misma altura que secondary en desktop
     }
 
     &--secondary {
-      @include responsive($breakpoint-lg) {
-        height: rem(220px);
-      }
+      // Mantener la misma altura que main en desktop
     }
   }
 
@@ -243,6 +283,7 @@ $nav-button-size-mobile: rem(40px);
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    min-height: 0; // Permitir que el contenido se comprima si es necesario
   }
 
   &_badge {
@@ -315,7 +356,7 @@ $nav-button-size-mobile: rem(40px);
     }
 
     &:hover {
-      transform: translateY(-50%) scale(1.1);
+      //transform: translateY(-50%) scale(1.1);
       background: rgba(var(--primary-rgb), 0.1);
       border-color: var(--primary);
       box-shadow: 0 rem(6px) rem(20px) rgba(var(--primary-rgb), 0.25);
@@ -395,9 +436,9 @@ $nav-button-size-mobile: rem(40px);
   &-slide {
     transition: transform 0.3s ease !important;
 
-    &:hover {
-      transform: translateY(rem(-2px)) !important;
-    }
+    // &:hover {
+    //   transform: translateY(rem(-2px)) !important;
+    // }
   }
 
   // Ocultar navegacion cuando no es necesaria
@@ -446,7 +487,7 @@ $nav-button-size-mobile: rem(40px);
 .investigations_image {
   transition: opacity 0.3s ease;
 
-  &[src=""],
+  &[src=''],
   &:not([src]) {
     opacity: 0.3;
     background: var(--neutral-700);
