@@ -21,7 +21,6 @@ const PreguntasFrecuentes = dynamic(() => import('./_sections/9_preguntasFrecuen
 const Relacionados = dynamic(() => import('./_sections/10_relacionados'), { ssr: false, loading: () => <Load /> })
 const Footer = dynamic(() => import('@library/components/footer'), { ssr: false, loading: () => <Load /> })
 
-
 export default function Profesional() {
   const basePath = '/landing/pregrado'
   const libraryPath = '/_library/components/'
@@ -92,7 +91,6 @@ export default function Profesional() {
       <ViewComponent path={`${libraryPath}/footer`}>
         <Footer />
       </ViewComponent>
-
     </>
   )
 }

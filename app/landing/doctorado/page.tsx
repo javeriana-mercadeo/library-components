@@ -1,16 +1,21 @@
 import ViewComponent from '@/components/viewComponent/viewComponent'
 
 import VideoDoctorado from './sections/videoDoctorado/'
+import Investigaciones from './sections/investigaciones'
 
-export default function Profesional () {
+export default function Profesional() {
   const basePath = '/landing/doctorado'
   return (
     <>
-    {/* <VideoDoctorado /> */}
-       <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
+      {/* <VideoDoctorado /> */}
+      <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
         <VideoDoctorado />
-      </ViewComponent> 
+      </ViewComponent>
 
+      {/* <Investigaciones /> */}
+      <ViewComponent path={`${basePath}/sections/investigaciones`}>
+        <Investigaciones />
+      </ViewComponent>
     </>
   )
 }
