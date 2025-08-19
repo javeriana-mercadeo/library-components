@@ -26,12 +26,12 @@ const Experiencia = () => {
       src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/dsc00979',
       alt: 'Estudiantes Javeriana',
       link: '#'
+    },
+    {
+      type: 'video',
+      orientation: 'vertical',
+      videoId: 'coJHjliTbKM'
     }
-    // {
-    //   type: 'video',
-    //   orientation: 'vertical',
-    //   videoId: 'coJHjliTbKM'
-    // },
     // {
     //   type: 'testimonial',
     //   text: 'Actualmente me desempeño en la organización Terpel en el área de Inteligencia de Negocios. Mis funciones en la compañía son hacer estudios de mercado y encontrar oportunidades de mejora.',
@@ -59,7 +59,7 @@ const Experiencia = () => {
     //       'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461',
     //     linkedin: '#'
     //   }
-    //}
+    // },
     // {
     //   type: 'video',
     //   orientation: 'vertical',
@@ -160,9 +160,6 @@ const Experiencia = () => {
               ))}
             </div>
 
-            {/* Paginación - DENTRO del carousel como en 10_relacionados */}
-            <div className={`swiper-pagination ${baseClass}__pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
-
             {/* Botones de navegación */}
             <button className={`swiper-slide-button ${baseClass}__prev`} aria-label='Ir al slide anterior' type='button'>
               <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
@@ -170,6 +167,9 @@ const Experiencia = () => {
             <button className={`swiper-slide-button ${baseClass}__next`} aria-label='Ir al siguiente slide' type='button'>
               <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
             </button>
+
+            {/* Paginación - AL FINAL como en 10_relacionados */}
+            <div className={`swiper-pagination ${baseClass}__pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
           </div>
         </div>
       </Container>

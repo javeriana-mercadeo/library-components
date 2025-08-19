@@ -17,26 +17,30 @@ function initExperienceCarousel() {
 
   // Función para determinar configuración según viewport real y slides totales
   function getDisplayConfig(windowWidth, totalSlides) {
-    var slidesPerView, slideWidth;
+    var slidesPerView, slideWidth, useGrid;
     var gap = 25;
     
     if (windowWidth < 576) {
       slidesPerView = 1;
       slideWidth = 320;
+      useGrid = totalSlides <= 1; // Solo 1 slide = grid, 2+ = swiper
     } else if (windowWidth < 768) {
       slidesPerView = 2;
       slideWidth = 280;
+      useGrid = totalSlides <= 2; // 1-2 slides = grid, 3+ = swiper
     } else if (windowWidth < 1024) {
       slidesPerView = 3;
       slideWidth = 300;
+      useGrid = totalSlides <= 3; // 1-3 slides = grid, 4+ = swiper
     } else {
       slidesPerView = 4;
       slideWidth = 320;
+      useGrid = totalSlides <= 3; // 1-3 slides = grid, 4+ = swiper
     }
     
     return {
       slidesPerView: slidesPerView,
-      useGrid: totalSlides <= slidesPerView,
+      useGrid: useGrid,
       slideWidth: slideWidth,
       gap: gap
     };
@@ -119,8 +123,7 @@ function initExperienceCarousel() {
         pagination: {
           el: '.experience-carousel__pagination',
           clickable: true,
-          dynamicBullets: true,
-          dynamicMainBullets: 1,
+          dynamicBullets: false,
           renderBullet: function(index, className) {
             return '<span class="' + className + '" aria-label="Ir a slide ' + (index + 1) + '"></span>';
           }
