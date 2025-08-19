@@ -1,3 +1,6 @@
+// Importar módulos separados
+import { ModalInvestigacion } from './components/modalInvestigacion.js'
+
 export default () => {
   const initializeSwiper = () => {
     // Destruir instancia existente si existe
@@ -264,4 +267,32 @@ export default () => {
       }
     }, 250)
   })
+
+  // ==========================================
+  // INICIALIZAR MODAL DE INVESTIGACIONES
+  // ==========================================
+  const initModal = () => {
+    try {
+      // Exponer ModalInvestigacion globalmente
+      window.ModalInvestigacion = ModalInvestigacion
+      
+      // Intentar inicializar el modal después de que React haya renderizado
+      setTimeout(() => {
+        const success = ModalInvestigacion.init()
+        if (success) {
+          console.log('[INVESTIGATIONS] Modal system inicializado correctamente')
+        } else {
+          // Reintentar después de un tiempo si no se encontraron las cards
+          setTimeout(() => {
+            ModalInvestigacion.init()
+            console.log('[INVESTIGATIONS] Modal system reintentado')
+          }, 1000)
+        }
+      }, 500)
+    } catch (error) {
+      console.error('[INVESTIGATIONS] Error al inicializar modal:', error)
+    }
+  }
+
+  initModal()
 }

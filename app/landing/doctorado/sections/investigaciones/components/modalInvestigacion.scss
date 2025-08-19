@@ -72,7 +72,7 @@ $content-width: 55%;
   // ==========================================
   &__gallery {
     width: $gallery-width;
-    background: var(--neutral-800);
+    background: var(--background-100); // Fondo blanco como la columna derecha
     position: relative;
     overflow: hidden;
 
@@ -83,7 +83,7 @@ $content-width: 55%;
     }
 
     @include dark-theme {
-      background: var(--neutral-900);
+      background: var(--background-200); // Consistente con tema oscuro
     }
   }
 

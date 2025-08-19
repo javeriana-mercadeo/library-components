@@ -6,16 +6,13 @@ import React from 'react'
 
 import info from './info.json'
 import script from './script.js'
-import ModalInvestigacion from './components/ModalInvestigacion.jsx'
 import './styles.scss'
 
 const Investigaciones = () => {
   const elementName = info.id || 'investigaciones'
   const baseClass = 'investigations'
   
-  // Estado para el modal
-  const [selectedInvestigacion, setSelectedInvestigacion] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  // Modal manejado completamente por JavaScript vanilla
 
   useEffect(() => {
     script()
@@ -59,20 +56,7 @@ const Investigaciones = () => {
     }
   }, [])
 
-  // Funciones para manejar el modal
-  const openModal = (investigacion) => {
-    setSelectedInvestigacion(investigacion)
-    setIsModalOpen(true)
-    // Prevenir scroll del body
-    document.body.style.overflow = 'hidden'
-  }
-
-  const closeModal = () => {
-    setIsModalOpen(false)
-    setSelectedInvestigacion(null)
-    // Restaurar scroll del body
-    document.body.style.overflow = 'unset'
-  }
+  // Modal manejado por JavaScript vanilla - no necesita funciones React
 
   // ==========================================
   // DATOS DINÁMICOS DE LAS INVESTIGACIONES
@@ -142,17 +126,9 @@ const Investigaciones = () => {
     return (
       <div className={`${baseClass}_main-card`}>
         <div 
-          className={`${baseClass}_card ${baseClass}_card--main investigations_card--main`}
-          onClick={() => openModal(investigacion)}
-          style={{ cursor: 'pointer' }}
+          className={`${baseClass}_card ${baseClass}_card--main investigations_card`}
           role='button'
           tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              openModal(investigacion)
-            }
-          }}
         >
           <Image
             id={`image-${elementName}-${id}`}
@@ -193,17 +169,9 @@ const Investigaciones = () => {
     return (
       <div key={id} className={`${baseClass}_slide ${baseClass}_slide--secondary swiper-slide`} role='listitem'>
         <div 
-          className={`${baseClass}_card ${baseClass}_card--secondary investigations_card--secondary`}
-          onClick={() => openModal(investigacion)}
-          style={{ cursor: 'pointer' }}
+          className={`${baseClass}_card ${baseClass}_card--secondary investigations_card`}
           role='button'
           tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              openModal(investigacion)
-            }
-          }}
         >
           <Image
             id={`image-${elementName}-${id}`}
@@ -271,13 +239,7 @@ const Investigaciones = () => {
         </div>
       </Container>
 
-      {/* Modal de investigación */}
-      {isModalOpen && (
-        <ModalInvestigacion 
-          investigacion={selectedInvestigacion}
-          onClose={closeModal}
-        />
-      )}
+      {/* Modal se crea dinámicamente con JavaScript vanilla */}
     </section>
   )
 }
