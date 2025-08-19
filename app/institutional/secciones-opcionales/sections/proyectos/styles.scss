@@ -72,28 +72,32 @@
         justify-content: center;
         scroll-snap-align: start;
         
+        // ✅ TAMAÑOS AJUSTADOS PARA MÁXIMO 4 CARDS SIN GAPS
         width: rem(280px);
-        min-width: rem(240px);
-        max-width: rem(320px);
+        min-width: rem(200px);
+        max-width: rem(300px);
 
         @media (max-width: 480px) {
           width: rem(250px);
-          min-width: rem(220px);
+          min-width: rem(200px);
+          max-width: rem(280px);
         }
 
         @media (max-width: 360px) {
           width: rem(220px);
-          min-width: rem(200px);
+          min-width: rem(180px);
+          max-width: rem(250px);
         }
       }
     }
 
-    // Swiper inicializado - configuración controlada
+    // ✅ CONFIGURACIÓN MEJORADA PARA SWIPER CON MÁXIMO 4 CARDS
     &.swiper-initialized {
       .swiper-wrapper {
         display: flex !important;
         align-items: stretch;
         height: 100%;
+        justify-content: center; // ✅ CENTRAR CARDS CUANDO NO SE COMPLETE EL MÁXIMO
       }
 
       .swiper-slide {
@@ -105,29 +109,43 @@
         margin: 0;
         padding: 0;
         
-        // Tamaño fijo consistente
-        width: rem(280px) !important;
-        min-width: rem(240px) !important;
-        max-width: rem(320px) !important;
-        flex: 0 0 rem(280px) !important;
+        // ✅ TAMAÑOS PARA MÁXIMO 4 CARDS CON GAP MÍNIMO
+        width: auto !important;
+        min-width: rem(200px) !important;
+        max-width: rem(300px) !important;
+        flex: 0 0 auto !important;
 
-        @media (max-width: 480px) {
-          width: rem(250px) !important;
-          min-width: rem(220px) !important;
-          flex: 0 0 rem(250px) !important;
+        // Cálculo dinámico para pantallas grandes (máximo 4 cards)
+        @media (min-width: 1200px) {
+          max-width: calc(25% - 2px) !important; // 4 cards
+          width: calc(25% - 2px) !important;
+          flex: 0 0 calc(25% - 2px) !important;
         }
 
-        @media (max-width: 360px) {
-          width: rem(220px) !important;
-          min-width: rem(200px) !important;
-          flex: 0 0 rem(220px) !important;
+        @media (min-width: 900px) and (max-width: 1199px) {
+          max-width: calc(33.333% - 2px) !important; // ✅ 3 cards desde 900px
+          width: calc(33.333% - 2px) !important;
+          flex: 0 0 calc(33.333% - 2px) !important;
+        }
+
+        @media (min-width: 768px) and (max-width: 899px) {
+          max-width: calc(50% - 1px) !important; // ✅ 2 cards hasta 899px
+          width: calc(50% - 1px) !important;
+          flex: 0 0 calc(50% - 1px) !important;
+        }
+
+        @media (max-width: 767px) {
+          width: 100% !important; // 1 card en móvil
+          min-width: 100% !important;
+          max-width: 100% !important;
+          flex: 0 0 100% !important;
         }
       }
     }
   }
 
   // ==========================================
-  // CARDS - TAMAÑO FIJO CUADRADO
+  // CARDS - CLICKEABLES Y CUADRADAS
   // ==========================================
   .carousel-slide {
     width: 100%;
@@ -136,6 +154,11 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    
+    // ✅ ASEGURAR CLICKEABILIDAD
+    cursor: pointer;
+    pointer-events: auto !important;
+    z-index: 1;
 
     .slide-image {
       position: relative;
@@ -147,10 +170,13 @@
       box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.1);
       display: block;
 
-      // Cuadrado perfecto con tamaño fijo
+      // ✅ CUADRADO PERFECTO RESPONSIVO CON CLICKS HABILITADOS
       width: 100%;
       aspect-ratio: 1 / 1;
       height: auto;
+      pointer-events: auto !important;
+      position: relative;
+      z-index: 1;
 
       // Fallback para navegadores sin aspect-ratio
       @supports not (aspect-ratio: 1 / 1) {
@@ -158,33 +184,33 @@
         padding-bottom: 100%;
       }
 
-      // Espaciado mínimo entre cards
-      margin: 0 rem(2px);
-
-      @media (max-width: 480px) {
-        margin: 0 rem(1px);
-      }
-
-      @media (max-width: 360px) {
-        margin: 0;
-      }
+      // ✅ SIN ESPACIOS ENTRE CARDS
+      margin: 0;
 
       // Border radius progresivo
-      border-radius: rem(6px);
+      border-radius: rem(8px);
+
+      @media (min-width: 1200px) {
+        border-radius: rem(10px);
+      }
 
       @media (max-width: 768px) {
-        border-radius: rem(8px);
+        border-radius: rem(6px);
       }
 
       @media (max-width: 480px) {
         border-radius: rem(4px);
       }
 
-      // Efecto hover
+      // Efecto hover mejorado
       &:hover {
         transform: scale(1.02);
         box-shadow: 0 rem(8px) rem(24px) rgba(0, 0, 0, 0.2);
-        z-index: 1;
+        z-index: 2; // ✅ Subir z-index en hover
+
+        @media (min-width: 1200px) {
+          transform: scale(1.03);
+        }
       }
 
       // Contenido superpuesto
@@ -198,9 +224,17 @@
         opacity: 0;
         transform: translateY(rem(20px));
         transition: all 0.4s ease;
-        pointer-events: none;
+        pointer-events: none; // ✅ No interferir con clicks
 
         padding: rem(16px);
+
+        @media (min-width: 1200px) {
+          padding: rem(18px);
+        }
+
+        @media (max-width: 768px) {
+          padding: rem(14px);
+        }
 
         @media (max-width: 480px) {
           padding: rem(12px);
@@ -217,12 +251,20 @@
           font-weight: 600;
           font-size: rem(15px);
 
-          @media (max-width: 480px) {
+          @media (min-width: 1200px) {
+            font-size: rem(16px);
+          }
+
+          @media (max-width: 768px) {
             font-size: rem(14px);
           }
 
-          @media (max-width: 360px) {
+          @media (max-width: 480px) {
             font-size: rem(13px);
+          }
+
+          @media (max-width: 360px) {
+            font-size: rem(12px);
           }
         }
 
@@ -235,12 +277,22 @@
           -webkit-box-orient: vertical;
           overflow: hidden;
 
-          @media (max-width: 480px) {
+          @media (min-width: 1200px) {
+            font-size: rem(13px);
+            -webkit-line-clamp: 3;
+          }
+
+          @media (max-width: 768px) {
             font-size: rem(11px);
           }
 
-          @media (max-width: 360px) {
+          @media (max-width: 480px) {
             font-size: rem(10px);
+            -webkit-line-clamp: 2;
+          }
+
+          @media (max-width: 360px) {
+            font-size: rem(9px);
             -webkit-line-clamp: 1;
           }
         }
@@ -254,7 +306,7 @@
   }
 
   // ==========================================
-  // CONTROLES DE NAVEGACIÓN MEJORADOS
+  // CONTROLES DE NAVEGACIÓN SIMPLIFICADOS
   // ==========================================
   .carousel-controls {
     position: absolute;
@@ -265,9 +317,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 10;
+    z-index: 100; // ✅ Z-index alto para estar encima
     pointer-events: none;
     padding: 0 rem(10px);
+
+    @media (min-width: 1200px) {
+      padding: 0 rem(25px);
+    }
 
     @media (min-width: 768px) {
       padding: 0 rem(15px);
@@ -289,12 +345,20 @@
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.15);
-    pointer-events: auto;
     backdrop-filter: blur(rem(8px));
+    
+    // ✅ ASEGURAR FUNCIONALIDAD COMPLETA
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 101; // ✅ Z-index aún más alto
 
-    // Tamaño consistente
     width: rem(44px);
     height: rem(44px);
+
+    @media (min-width: 1200px) {
+      width: rem(52px);
+      height: rem(52px);
+    }
 
     @media (min-width: 768px) {
       width: rem(48px);
@@ -320,24 +384,27 @@
     i {
       line-height: 1;
       font-size: rem(20px);
+      pointer-events: none; // ✅ Prevenir interferencia del icono
+
+      @media (min-width: 1200px) {
+        font-size: rem(24px);
+      }
 
       @media (min-width: 768px) {
         font-size: rem(22px);
       }
     }
 
-    // ✅ ESTADO DESHABILITADO MEJORADO
+    // ✅ ESTADO DESHABILITADO CLARO
     &:disabled,
     &.swiper-button-disabled {
       opacity: 0.3;
-      pointer-events: none;
       cursor: not-allowed;
       transform: scale(0.9);
       background: rgba(200, 200, 200, 0.5);
       color: rgba(100, 100, 100, 0.5);
       box-shadow: 0 rem(2px) rem(6px) rgba(0, 0, 0, 0.05);
       
-      // Asegurar que no haya efectos hover cuando está deshabilitado
       &:hover {
         background: rgba(200, 200, 200, 0.5);
         color: rgba(100, 100, 100, 0.5);
@@ -348,7 +415,7 @@
   }
 
   // ==========================================
-  // INDICADORES
+  // INDICADORES MEJORADOS
   // ==========================================
   .carousel-indicators {
     position: absolute;
@@ -361,6 +428,11 @@
     bottom: rem(15px);
     gap: rem(6px);
     
+    @media (min-width: 1200px) {
+      bottom: rem(25px); // Más separación en pantallas grandes
+      gap: rem(10px);
+    }
+
     @media (min-width: 768px) {
       bottom: rem(20px);
       gap: rem(8px);
@@ -377,6 +449,11 @@
       
       width: rem(10px);
       height: rem(10px);
+
+      @media (min-width: 1200px) {
+        width: rem(14px);
+        height: rem(14px);
+      }
 
       @media (min-width: 768px) {
         width: rem(12px);
@@ -469,14 +546,91 @@
 }
 
 // ==========================================
-// OVERRIDES PARA NAVEGACIÓN CONTROLADA
+// OVERRIDES ESPECÍFICOS PARA MÁXIMO 4 CARDS Y CENTRADO
 // ==========================================
 
-// Eliminar márgenes de Swiper
+// ✅ CENTRADO FORZADO CON FUNCIONALIDAD RESTAURADA
+.hero-carousel .carousel-container[data-centered="true"] {
+  .swiper-wrapper {
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 2px !important;
+    width: 100% !important; // ✅ Volver a 100% para funcionalidad
+    pointer-events: auto !important; // ✅ Habilitar eventos
+  }
+}
+
+// ✅ DISTRIBUCIÓN NORMAL CON FUNCIONALIDAD RESTAURADA
+.hero-carousel .carousel-container[data-centered="false"] {
+  .swiper-wrapper {
+    justify-content: flex-start !important;
+    gap: 2px !important;
+    width: 100% !important; // ✅ Volver a 100% para funcionalidad
+    pointer-events: auto !important; // ✅ Habilitar eventos
+    
+    @media (min-width: 1200px) {
+      justify-content: flex-start !important;
+      gap: 2px !important;
+    }
+  }
+}
+
+// ✅ CONFIGURACIÓN RESTAURADA PARA FUNCIONALIDAD
+@media (min-width: 1200px) {
+  .hero-carousel .carousel-container.swiper-initialized {
+    .swiper-wrapper {
+      max-width: 100%;
+      gap: 2px !important;
+      width: 100% !important; // ✅ 100% para funcionalidad de navegación
+      pointer-events: auto !important; // ✅ Habilitar eventos
+    }
+    
+    .swiper-slide {
+      // Tamaño fijo para navegación funcional
+      width: calc(25% - 2px) !important;
+      min-width: calc(25% - 2px) !important;
+      max-width: calc(25% - 2px) !important;
+      flex: 0 0 calc(25% - 2px) !important;
+      pointer-events: auto !important; // ✅ Habilitar clicks
+      position: relative !important; // ✅ Para z-index y eventos
+      
+      // Límite en pantallas muy grandes
+      @media (min-width: 1600px) {
+        width: calc(25% - 2px) !important;
+        min-width: calc(25% - 2px) !important;
+        max-width: calc(25% - 2px) !important;
+        flex: 0 0 calc(25% - 2px) !important;
+      }
+    }
+  }
+}
+
+// ✅ CONFIGURACIÓN RESTAURADA PARA PANTALLAS MEDIANAS
+@media (min-width: 900px) and (max-width: 1199px) {
+  .hero-carousel .carousel-container.swiper-initialized {
+    .swiper-wrapper {
+      max-width: 100%;
+      gap: 2px !important;
+      width: 100% !important; // ✅ 100% para funcionalidad
+      pointer-events: auto !important;
+    }
+    
+    .swiper-slide {
+      width: calc(33.333% - 2px) !important;
+      min-width: calc(33.333% - 2px) !important;
+      max-width: calc(33.333% - 2px) !important;
+      flex: 0 0 calc(33.333% - 2px) !important;
+      pointer-events: auto !important; // ✅ Habilitar clicks
+      position: relative !important;
+    }
+  }
+}
+
+// ✅ CONFIGURAR MÁRGENES Y GAP MÍNIMO PARA SWIPER
 .swiper-wrapper {
   margin: 0 !important;
   padding: 0 !important;
-  gap: 0 !important;
+  gap: 2px !important; // ✅ GAP MÍNIMO PARA NAVEGACIÓN
   box-sizing: border-box !important;
 }
 
@@ -488,7 +642,7 @@
   box-sizing: border-box !important;
 }
 
-// Forzar proporciones cuadradas
+// ✅ FORZAR PROPORCIONES CUADRADAS
 .carousel-slide .slide-image {
   aspect-ratio: 1 / 1 !important;
   object-fit: cover !important;
@@ -514,7 +668,7 @@
 }
 
 // ==========================================
-// RESPONSIVE SUAVE - SIN BREAKPOINTS ABRUPTOS
+// RESPONSIVE SUAVE OPTIMIZADO PARA 4 CARDS
 // ==========================================
 
 @media (max-width: 320px) {
@@ -551,13 +705,11 @@
 }
 
 // ==========================================
-// ESTILOS ESPECÍFICOS PARA NAVEGACIÓN CONTROLADA
+// ESTILOS ESPECÍFICOS PARA 4 CARDS MÁXIMO
 // ==========================================
 
-// Evitar que se muestre contenido fuera del contenedor
 .carousel-container {
   .swiper-wrapper {
-    // Asegurar que no se extienda más allá del container
     max-width: 100%;
     overflow: visible;
   }
@@ -582,4 +734,36 @@
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+// ✅ REGLA ESPECÍFICA CON FUNCIONALIDAD RESTAURADA
+@media (min-width: 1400px) {
+  .hero-carousel .carousel-container.swiper-initialized .swiper-slide {
+    width: calc(25% - 2px) !important;
+    min-width: calc(25% - 2px) !important;
+    max-width: calc(25% - 2px) !important;
+    flex: 0 0 calc(25% - 2px) !important;
+    pointer-events: auto !important; // ✅ Habilitar clicks
+  }
+}
+
+// ✅ CENTRADO UNIVERSAL CON FUNCIONALIDAD
+.hero-carousel .carousel-container.swiper-initialized .swiper-wrapper {
+  gap: 2px !important;
+  width: 100% !important; // ✅ 100% para funcionalidad completa
+  pointer-events: auto !important; // ✅ Habilitar eventos
+  
+  &:not([style*="justify-content"]) {
+    justify-content: center !important;
+  }
+}
+
+// ✅ OVERRIDE PARA SWIPER CON FUNCIONALIDAD
+.swiper-container-initialized {
+  .swiper-wrapper {
+    justify-content: var(--swiper-justify, center) !important;
+    gap: 2px !important;
+    width: 100% !important; // ✅ Funcionalidad completa
+    pointer-events: auto !important;
+  }
 }
