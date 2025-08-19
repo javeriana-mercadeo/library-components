@@ -224,12 +224,7 @@ const DatosProgramaVideo = () => {
               | Duración estimada nocturno:{' '}
             </Paragraph>
 
-            <Paragraph
-              id={`${elementName}-enrollment-duration-2`}
-              data-puj-duration='true'
-              className={`${baseClass}_enrollment-note`}
-              size='sm'
-              isEditable={false}>
+            <Paragraph id={`${elementName}-enrollment-duration-2`} className={`${baseClass}_enrollment-note`} size='sm'>
               0 semestres
             </Paragraph>
 
