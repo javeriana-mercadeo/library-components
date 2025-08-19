@@ -97,11 +97,11 @@ $experience-nav-offset: rem(25px);
       margin: 0 auto !important;
 
       // Ancho fijo para mantener proporciones - móvil
-      grid-template-columns: rem(320px) !important;
+      grid-template-columns: rem(318px) !important;
 
       // Responsive Grid con anchos fijos
       @include responsive($breakpoint-sm) {
-        grid-template-columns: repeat(auto-fit, rem(280px)) !important;
+        grid-template-columns: repeat(auto-fit, rem(278px)) !important;
         max-width: rem(700px) !important; // Para centrar cuando hay pocos elementos
       }
 
@@ -111,7 +111,7 @@ $experience-nav-offset: rem(25px);
       }
 
       @include responsive($breakpoint-lg) {
-        grid-template-columns: repeat(auto-fit, rem(320px)) !important;
+        grid-template-columns: repeat(auto-fit, rem(286px)) !important;
         max-width: rem(1400px) !important;
       }
 
