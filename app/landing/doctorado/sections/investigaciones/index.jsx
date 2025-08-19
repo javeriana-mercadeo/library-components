@@ -1,6 +1,9 @@
 'use client'
 
-import { Container, Title, Paragraph, Image } from '@library/components'
+import Container from '@library/components/container'
+import Title from '@library/components/contain/title'
+import Paragraph from '@library/components/contain/paragraph'
+
 import { useEffect } from 'react'
 import React from 'react'
 

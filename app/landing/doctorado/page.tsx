@@ -1,21 +1,26 @@
+'use client'
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 
 import VideoDoctorado from './sections/videoDoctorado'
-import Investigaciones from './sections/investigaciones'
+import Proyectos from './sections/proyectos'
 
-export default function Profesional() {
-  const basePath = '/landing/doctorado'
+
+export default function Doctorados() {
+  const basePath = '/app/landing/doctorado'
   return (
     <>
+
       {/* <VideoDoctorado /> */}
-      <ViewComponent path={`${basePath}/sections/videoDoctorado/`}>
+      <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
         <VideoDoctorado />
       </ViewComponent>
 
-      {/* <Investigaciones />
-      <ViewComponent path={`${basePath}/sections/investigaciones`}>
-        <Investigaciones />
-      </ViewComponent> */}
+            <ViewComponent path={`${basePath}/sections/proyectos`}>
+        <Proyectos />
+      </ViewComponent>
+
+
+
     </>
   )
 }

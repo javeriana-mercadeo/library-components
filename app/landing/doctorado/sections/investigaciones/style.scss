@@ -148,7 +148,7 @@ $nav-button-size-mobile: rem(40px);
       }
     }
 
-    @include responsive($breakpoint-2xl) {
+    @include responsive($breakpoint-xl) {
       &--main {
         width: 40% !important;
       }

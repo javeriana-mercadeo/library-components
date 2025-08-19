@@ -1,0 +1,585 @@
+@use '@styles/autoload' as *;
+
+.hero-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  .carousel-title {
+    display: flex;
+    justify-content: center;
+    color: var(--neutral-300);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    font-size: var(--font-size-title);
+    padding-bottom: rem(20px);
+  }
+
+  .main-container {
+    position: relative;
+    width: 100%;
+    
+    // Altura fija basada en tamaño de card desktop
+    height: rem(280px);
+    min-height: rem(240px);
+    max-height: rem(320px);
+
+    @media (max-width: 480px) {
+      height: rem(250px);
+      min-height: rem(220px);
+    }
+
+    @media (max-width: 360px) {
+      height: rem(220px);
+      min-height: rem(200px);
+    }
+  }
+
+  // ==========================================
+  // CONTENEDOR - SCROLL HORIZONTAL CONTROLADO
+  // ==========================================
+  .carousel-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    
+    // Fallback cuando Swiper no está inicializado
+    &:not(.swiper-initialized) {
+      display: flex;
+      align-items: stretch;
+      
+      .swiper-wrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: stretch;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .carousel-slide {
+        height: 100%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        scroll-snap-align: start;
+        
+        width: rem(280px);
+        min-width: rem(240px);
+        max-width: rem(320px);
+
+        @media (max-width: 480px) {
+          width: rem(250px);
+          min-width: rem(220px);
+        }
+
+        @media (max-width: 360px) {
+          width: rem(220px);
+          min-width: rem(200px);
+        }
+      }
+    }
+
+    // Swiper inicializado - configuración controlada
+    &.swiper-initialized {
+      .swiper-wrapper {
+        display: flex !important;
+        align-items: stretch;
+        height: 100%;
+      }
+
+      .swiper-slide {
+        flex-shrink: 0;
+        height: 100%;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        
+        // Tamaño fijo consistente
+        width: rem(280px) !important;
+        min-width: rem(240px) !important;
+        max-width: rem(320px) !important;
+        flex: 0 0 rem(280px) !important;
+
+        @media (max-width: 480px) {
+          width: rem(250px) !important;
+          min-width: rem(220px) !important;
+          flex: 0 0 rem(250px) !important;
+        }
+
+        @media (max-width: 360px) {
+          width: rem(220px) !important;
+          min-width: rem(200px) !important;
+          flex: 0 0 rem(220px) !important;
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // CARDS - TAMAÑO FIJO CUADRADO
+  // ==========================================
+  .carousel-slide {
+    width: 100%;
+    height: 100%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    .slide-image {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      overflow: hidden;
+      box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.1);
+      display: block;
+
+      // Cuadrado perfecto con tamaño fijo
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      height: auto;
+
+      // Fallback para navegadores sin aspect-ratio
+      @supports not (aspect-ratio: 1 / 1) {
+        height: 0;
+        padding-bottom: 100%;
+      }
+
+      // Espaciado mínimo entre cards
+      margin: 0 rem(2px);
+
+      @media (max-width: 480px) {
+        margin: 0 rem(1px);
+      }
+
+      @media (max-width: 360px) {
+        margin: 0;
+      }
+
+      // Border radius progresivo
+      border-radius: rem(6px);
+
+      @media (max-width: 768px) {
+        border-radius: rem(8px);
+      }
+
+      @media (max-width: 480px) {
+        border-radius: rem(4px);
+      }
+
+      // Efecto hover
+      &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 rem(8px) rem(24px) rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+
+      // Contenido superpuesto
+      .slide-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        color: var(--neutral);
+        opacity: 0;
+        transform: translateY(rem(20px));
+        transition: all 0.4s ease;
+        pointer-events: none;
+
+        padding: rem(16px);
+
+        @media (max-width: 480px) {
+          padding: rem(12px);
+        }
+
+        @media (max-width: 360px) {
+          padding: rem(10px);
+        }
+
+        h2 {
+          margin-bottom: rem(4px);
+          color: white;
+          line-height: 1.2;
+          font-weight: 600;
+          font-size: rem(15px);
+
+          @media (max-width: 480px) {
+            font-size: rem(14px);
+          }
+
+          @media (max-width: 360px) {
+            font-size: rem(13px);
+          }
+        }
+
+        .description {
+          color: rgba(255, 255, 255, 0.9);
+          line-height: 1.3;
+          font-size: rem(12px);
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+
+          @media (max-width: 480px) {
+            font-size: rem(11px);
+          }
+
+          @media (max-width: 360px) {
+            font-size: rem(10px);
+            -webkit-line-clamp: 1;
+          }
+        }
+      }
+
+      &:hover .slide-content {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  // ==========================================
+  // CONTROLES DE NAVEGACIÓN MEJORADOS
+  // ==========================================
+  .carousel-controls {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    pointer-events: none;
+    padding: 0 rem(10px);
+
+    @media (min-width: 768px) {
+      padding: 0 rem(15px);
+    }
+
+    @media (min-width: 1024px) {
+      padding: 0 rem(20px);
+    }
+  }
+
+  .carousel-control {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--primary);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.15);
+    pointer-events: auto;
+    backdrop-filter: blur(rem(8px));
+
+    // Tamaño consistente
+    width: rem(44px);
+    height: rem(44px);
+
+    @media (min-width: 768px) {
+      width: rem(48px);
+      height: rem(48px);
+    }
+
+    &:hover:not(:disabled):not(.swiper-button-disabled) {
+      background: var(--primary);
+      color: var(--neutral);
+      transform: scale(1.1);
+      box-shadow: 0 rem(6px) rem(20px) rgba(var(--primary-rgb), 0.3);
+    }
+
+    &:active:not(:disabled):not(.swiper-button-disabled) {
+      transform: scale(0.95);
+    }
+
+    &:focus:not(:disabled):not(.swiper-button-disabled) {
+      outline: none;
+      box-shadow: 0 0 0 rem(3px) rgba(var(--primary-rgb), 0.3);
+    }
+
+    i {
+      line-height: 1;
+      font-size: rem(20px);
+
+      @media (min-width: 768px) {
+        font-size: rem(22px);
+      }
+    }
+
+    // ✅ ESTADO DESHABILITADO MEJORADO
+    &:disabled,
+    &.swiper-button-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+      cursor: not-allowed;
+      transform: scale(0.9);
+      background: rgba(200, 200, 200, 0.5);
+      color: rgba(100, 100, 100, 0.5);
+      box-shadow: 0 rem(2px) rem(6px) rgba(0, 0, 0, 0.05);
+      
+      // Asegurar que no haya efectos hover cuando está deshabilitado
+      &:hover {
+        background: rgba(200, 200, 200, 0.5);
+        color: rgba(100, 100, 100, 0.5);
+        transform: scale(0.9);
+        box-shadow: 0 rem(2px) rem(6px) rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+
+  // ==========================================
+  // INDICADORES
+  // ==========================================
+  .carousel-indicators {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 15;
+    
+    bottom: rem(15px);
+    gap: rem(6px);
+    
+    @media (min-width: 768px) {
+      bottom: rem(20px);
+      gap: rem(8px);
+    }
+
+    .indicator,
+    .swiper-pagination-bullet {
+      border-radius: 50%;
+      background: rgba(235, 234, 234, 0.6);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 1;
+      
+      width: rem(10px);
+      height: rem(10px);
+
+      @media (min-width: 768px) {
+        width: rem(12px);
+        height: rem(12px);
+      }
+
+      &.active,
+      &.swiper-pagination-bullet-active {
+        background: var(--primary-600);
+        transform: scale(1.3);
+        box-shadow: 0 0 rem(8px) rgba(var(--primary-rgb), 0.4);
+      }
+
+      &:hover:not(.active):not(.swiper-pagination-bullet-active) {
+        background: rgba(255, 255, 255, 0.8);
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  // ==========================================
+  // MODAL - mantener diseño existente
+  // ==========================================
+  .modal-body {
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-content {
+    position: relative;
+    width: 90vw;
+    height: 90vh;
+    max-width: rem(800px);
+    background-color: white;
+    border-radius: rem(8px);
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+      width: 95vw;
+      height: 95vh;
+    }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: rem(10px);
+    right: rem(15px);
+    width: rem(40px);
+    height: rem(40px);
+    color: var(--primary);
+    border: none;
+    border-radius: 50%;
+    font-size: rem(32px);
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+
+    &:hover {
+      color: var(--primary);
+      transform: scale(1.2);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 rem(3px) rgba(var(--primary-rgb), 0.3);
+    }
+
+    &:active {
+      transform: scale(1.1);
+    }
+  }
+}
+
+// ==========================================
+// OVERRIDES PARA NAVEGACIÓN CONTROLADA
+// ==========================================
+
+// Eliminar márgenes de Swiper
+.swiper-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.swiper-slide {
+  margin: 0 !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+// Forzar proporciones cuadradas
+.carousel-slide .slide-image {
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  
+  @supports not (aspect-ratio: 1 / 1) {
+    height: 0 !important;
+    padding-bottom: 100% !important;
+  }
+}
+
+// ==========================================
+// SMOOTH SCROLLING PARA FALLBACK
+// ==========================================
+.swiper-wrapper:not(.swiper-wrapper-initialized) {
+  scroll-behavior: smooth;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+// ==========================================
+// RESPONSIVE SUAVE - SIN BREAKPOINTS ABRUPTOS
+// ==========================================
+
+@media (max-width: 320px) {
+  .hero-carousel {
+    .main-container {
+      height: rem(200px) !important;
+      min-height: rem(180px) !important;
+    }
+    
+    .carousel-slide {
+      .slide-image {
+        border-radius: rem(2px) !important;
+      }
+    }
+  }
+}
+
+// Ajuste para tablets en orientación portrait
+@media (max-width: 768px) and (orientation: portrait) {
+  .hero-carousel {
+    .carousel-controls {
+      padding: 0 rem(8px);
+    }
+    
+    .carousel-control {
+      width: rem(40px) !important;
+      height: rem(40px) !important;
+      
+      i {
+        font-size: rem(18px) !important;
+      }
+    }
+  }
+}
+
+// ==========================================
+// ESTILOS ESPECÍFICOS PARA NAVEGACIÓN CONTROLADA
+// ==========================================
+
+// Evitar que se muestre contenido fuera del contenedor
+.carousel-container {
+  .swiper-wrapper {
+    // Asegurar que no se extienda más allá del container
+    max-width: 100%;
+    overflow: visible;
+  }
+}
+
+// Transiciones suaves para cambios de estado de botones
+.carousel-control {
+  transition: 
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+// Prevenir selección de texto en los controles
+.carousel-controls,
+.carousel-control,
+.carousel-indicators,
+.indicator {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
