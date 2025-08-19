@@ -8,7 +8,6 @@ import info from './info.json'
 import script from './script.js'
 import ModalInvestigacion from './components/ModalInvestigacion.jsx'
 import './styles.scss'
-import './components/modalInvestigacion.scss'
 
 const Investigaciones = () => {
   const elementName = info.id || 'investigaciones'
