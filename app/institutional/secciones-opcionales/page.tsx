@@ -1,6 +1,7 @@
 'use client'
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 
+
 import Proyectos from './sections/proyectos'
 import Laboratorios from './sections/laboratorios'
 import Estudiantes from './sections/estudiantes'
@@ -15,10 +16,12 @@ export default function SeccionesOpcionales() {
   const basePath = '/institutional/secciones-opcionales'
   return (
     <>
+
+
       {/* <Proyectos />*/}
-       <ViewComponent path={`${basePath}/sections/proyectos`}>
+      <ViewComponent path={`${basePath}/sections/proyectos`}>
         <Proyectos />
-      </ViewComponent> 
+      </ViewComponent>
 
       {/* <Laboratorios />*/}
       <ViewComponent path={`${basePath}/sections/laboratorios`}>
