@@ -137,10 +137,8 @@ const DatosProgramaVideo = () => {
           id={`${baseClass}-media`}
           className={`${baseClass}_media`}
           data-video-mobile='HxlTZ8DQAaY'
-          data-video-desktop='IWZvfiu3gX4'
-          data-breakpoint='768'>
-          {/* Placeholder para videos que se cargarán via JavaScript */}
-        </div>
+          data-video-desktop='-dHyNNd5BM4'
+          data-breakpoint='768'></div>
 
         {/* === DETALLES DEL PROGRAMA === */}
         <div className='program-details'>
