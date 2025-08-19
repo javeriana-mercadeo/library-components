@@ -1,7 +1,8 @@
 @use '@styles/autoload' as *;
 
 #footer {
-  width: 100dvw;
+  width: 100%;
+  box-sizing: border-box;
 
   // Espacio para la barra CTA fija del header en móviles
   @media (max-width: $breakpoint-md) {
@@ -214,6 +215,23 @@
           }
           .play-text {
             font-size: rem(15px);
+          }
+        }
+      }
+
+      // breakpoint-xs (pantallas muy delgadas)
+      @media (max-width: $breakpoint-xs) {
+        width: 90vw;
+        height: 90vw;
+        max-width: rem(300px);
+        max-height: rem(300px);
+
+        .video-overlay .play-button {
+          i {
+            font-size: rem(48px);
+          }
+          .play-text {
+            font-size: rem(14px);
           }
         }
       }
