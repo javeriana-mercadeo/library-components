@@ -11,9 +11,7 @@ const Header = dynamic(() => import('@library/components/header'), { ssr: false,
 const VideoDoctorado = dynamic(() => import('./sections/videoDoctorado'), { ssr: false, loading: () => <Load /> })
 const Investigaciones = dynamic(() => import('./sections/investigaciones'), { ssr: false, loading: () => <Load /> })
 const RedesSociales = dynamic(() => import('./sections/redesSociales'), { ssr: false, loading: () => <Load /> })
-
-//import VideoDoctorado from './sections/videoDoctorado/'
-//import Investigaciones from './sections/investigaciones'
+//const Snies = dynamic(() => import('./sections/Snies'), { ssr: false, loading: () => <Load /> })
 
 export default function Doctorado() {
   const basePath = '/landing/doctorado'
@@ -40,6 +38,11 @@ export default function Doctorado() {
       <ViewComponent path={`${basePath}/sections/redesSociales`}>
         <RedesSociales />
       </ViewComponent>
+
+      {/* <Snies /> */}
+      {/* <ViewComponent path={`${basePath}/sections/Snies`}>
+        <Snies />
+      </ViewComponent> */}
     </>
   )
 }
