@@ -1,338 +1,462 @@
 // ===========================================
-// DATOS PROGRAMA VIDEO - SIMPLIFIED LIFERAY SYSTEM
+// DATOS PROGRAMA VIDEO - LIFERAY NATIVO DEFINITIVO
 // ===========================================
 
-const SimplifiedVideoSystem = {
+// Sistema de video HTML5 nativo usando URLs directas de Liferay
+const liferayVideoSystem = {
+  // Configuración del sistema
   config: {
-    defaultBreakpoint: 768,
-    videoConfig: {
-      autoPlay: true,
-      loop: true,
-      mute: true,
-      hideControls: true,
-      videoWidth: null, // Se calcula dinámicamente
-      videoHeight: null // Se calcula dinámicamente
-    }
+    breakpoint: 768
   },
 
-  players: {},
-
+  // Inicializar sistema de video
   init() {
-    try {
-      const videoContainer = document.getElementById('program-data-media')
-
-      if (!videoContainer) {
-        return false
-      }
-
-      // Obtener códigos de video directamente de data attributes
-      const mobileVideoId = videoContainer.dataset.videoMobile
-      const desktopVideoId = videoContainer.dataset.videoDesktop
-      const breakpoint = parseInt(videoContainer.dataset.breakpoint) || this.config.defaultBreakpoint
-
-      if (!mobileVideoId || !desktopVideoId) {
-        return false
-      }
-
-      // Configurar estructura dual
-      this.setupDualVideoStructure(videoContainer, mobileVideoId, desktopVideoId, breakpoint)
-      this.setupResponsiveListener(videoContainer, breakpoint)
-
-      // Inicializar YouTube API
-      this.loadYouTubeAPI(mobileVideoId, desktopVideoId)
-
-      return true
-    } catch (error) {
-      console.error('Error initializing video system:', error)
-      return false
-    }
+    console.log('🎬 Inicializando sistema de video Liferay nativo...')
+    this.setupVideoContainers()
+    this.setupResponsiveDetection()
+    console.log('✅ Sistema de video Liferay nativo inicializado')
   },
 
-  setupDualVideoStructure(container, mobileVideoId, desktopVideoId, breakpoint) {
-    // Limpiar contenedor
-    container.innerHTML = ''
+  // Configurar contenedores de video
+  setupVideoContainers() {
+    const containers = document.querySelectorAll('[data-component="video-player"]')
+    console.log(`📦 Encontrados ${containers.length} contenedores de video`)
 
-    // Crear estructura simplificada para ambos videos
-    container.innerHTML = `
-      <div class="video-mobile" id="video-mobile-container" style="
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      ">
-        <div class="video-loading" style="
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 40px;
-          height: 40px;
-          border: 4px solid var(--neutral-600);
-          border-top-color: var(--primary);
-          border-radius: 50%;
-          animation: videoLoading 1s linear infinite;
-          z-index: 12;
-        "></div>
-      </div>
-      <div class="video-desktop" id="video-desktop-container" style="
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      ">
-        <div class="video-loading" style="
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 40px;
-          height: 40px;
-          border: 4px solid var(--neutral-600);
-          border-top-color: var(--primary);
-          border-radius: 50%;
-          animation: videoLoading 1s linear infinite;
-          z-index: 12;
-        "></div>
-      </div>
-      <div class="video-mask" style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: transparent;
-        pointer-events: auto;
-        cursor: default;
-        z-index: 10;
-        user-select: none;
-      "></div>
-    `
-
-    // Determinar visibilidad inicial
-    const isMobile = window.innerWidth < breakpoint
-    container.setAttribute('data-current-video', isMobile ? 'mobile' : 'desktop')
-    container.setAttribute('data-breakpoint', breakpoint)
-    container.setAttribute('data-mobile-video', mobileVideoId)
-    container.setAttribute('data-desktop-video', desktopVideoId)
-  },
-
-  getVideoDimensions(type) {
-    if (type === 'mobile') {
-      return { width: 428, height: 428 }
-    } else {
-      const width = 520
-      const height = Math.round(width * (880 / 612))
-      return { width, height }
-    }
-  },
-
-  getHighResDimensions(type) {
-    if (type === 'mobile') {
-      // Mobile: usar dimensiones 1080p cuadradas para forzar alta resolución
-      return { width: 1080, height: 1080 }
-    } else {
-      // Desktop: usar dimensiones que mantengan el aspecto pero en alta resolución
-      // Aspecto 612:880, escalado a ~1440p
-      const width = 1224 // 612 * 2
-      const height = 1760 // 880 * 2
-      return { width, height }
-    }
-  },
-
-  loadYouTubeAPI(mobileVideoId, desktopVideoId) {
-    const handleAPIReady = () => {
-      // Crear ambos players
-      this.createYouTubePlayer('video-mobile-container', mobileVideoId, 'mobile')
-      this.createYouTubePlayer('video-desktop-container', desktopVideoId, 'desktop')
-    }
-
-    if ('YT' in window && window.YT.loaded) {
-      handleAPIReady()
-    } else {
-      const oldCallback = window.onYouTubeIframeAPIReady || function () {}
-
-      window.onYouTubeIframeAPIReady = function () {
-        oldCallback()
-        handleAPIReady()
-      }
-
-      const apiSrc = '//www.youtube.com/iframe_api'
-      let script = Array.from(document.querySelectorAll('script')).find(s => s.src.includes('iframe_api'))
-
-      if (!script) {
-        script = document.createElement('script')
-        script.src = apiSrc
-        document.body.appendChild(script)
-      }
-    }
-  },
-
-  createYouTubePlayer(containerId, videoId, type) {
-    // Usar dimensiones grandes para forzar alta resolución
-    const highResDimensions = this.getHighResDimensions(type)
-
-    this.players[type] = new YT.Player(containerId, {
-      events: {
-        onReady: event => {
-          if (this.config.videoConfig.mute) {
-            event.target.mute()
-          }
-          this.showVideo(containerId, type)
-        }
-      },
-      height: highResDimensions.height,
-      width: highResDimensions.width,
-      playerVars: {
-        autoplay: this.config.videoConfig.autoPlay ? 1 : 0,
-        controls: this.config.videoConfig.hideControls ? 0 : 1,
-        loop: this.config.videoConfig.loop ? 1 : 0,
-        playlist: this.config.videoConfig.loop ? videoId : undefined,
-        mute: this.config.videoConfig.mute ? 1 : 0,
-        rel: 0,
-        showinfo: 0,
-        modestbranding: 1,
-        playsinline: 1,
-        iv_load_policy: 3,
-        disablekb: 1,
-        fs: 0,
-        cc_load_policy: 0,
-        vq: 'highres',
-        hd: 1,
-        quality: 'highres'
-      },
-      videoId: videoId
+    containers.forEach((container, index) => {
+      console.log(`📹 Inicializando contenedor ${index + 1}`)
+      this.initializeVideoContainer(container)
     })
   },
 
-  showVideo(containerId, type) {
-    try {
-      const container = document.getElementById(containerId)
-      if (!container) {
-        console.error(`Container ${containerId} not found`)
+  // Inicializar contenedor específico
+  initializeVideoContainer(container) {
+    // Verificar si ya está inicializado
+    if (container.classList.contains('video-initialized')) {
+      console.log('⏭️ Contenedor ya inicializado, saltando...')
+      return
+    }
+
+    // Limpiar cualquier contenido previo
+    container.innerHTML = ''
+
+    // Obtener URLs directas desde data attributes o configuración de Liferay
+    const mobileVideoUrl = this.getVideoUrl(container, 'mobile')
+    const desktopVideoUrl = this.getVideoUrl(container, 'desktop')
+
+    console.log('📱 Mobile Video URL:', mobileVideoUrl)
+    console.log('🖥️ Desktop Video URL:', desktopVideoUrl)
+
+    // Crear videos solo si las URLs son válidas
+    if (mobileVideoUrl) {
+      this.createVideoElement(container, mobileVideoUrl, 'mobile')
+    }
+
+    if (desktopVideoUrl) {
+      this.createVideoElement(container, desktopVideoUrl, 'desktop')
+    }
+
+    // Configurar detección responsiva
+    this.setupResponsiveVideo(container)
+
+    // Marcar como inicializado
+    container.classList.add('video-initialized')
+  },
+
+  // Obtener URL del video (simplificado para URLs directas)
+  getVideoUrl(container, type) {
+    // Primero intentar desde configuración de Liferay
+    if (typeof configuration !== 'undefined') {
+      const configUrl = type === 'mobile' ? configuration.urlVideoMobile : configuration.urlVideoDesktop
+      if (configUrl && configUrl.trim() !== '') {
+        console.log(`📋 URL desde configuración ${type}:`, configUrl)
+        return configUrl
+      }
+    }
+
+    // Obtener URL directa desde data attributes
+    const dataAttr = type === 'mobile' ? 'data-video-mobile-url' : 'data-video-desktop-url'
+    const url = container.getAttribute(dataAttr)
+
+    if (url && url.trim() !== '') {
+      console.log(`🏷️ URL desde data attribute ${type}:`, url)
+      return url
+    }
+
+    console.log(`⚠️ No se encontró URL para video ${type}`)
+    return null
+  },
+
+  // Crear elemento de video HTML5
+  createVideoElement(container, videoUrl, type) {
+    console.log(`🎞️ Creando video HTML5 ${type} para URL: ${videoUrl}`)
+
+    const video = document.createElement('video')
+
+    // Configuración del video HTML5 nativo
+    video.src = videoUrl
+    video.className = `program-data__video program-data__video--${type}`
+    video.autoplay = true
+    video.muted = true
+    video.loop = true
+    video.playsInline = true
+    video.preload = 'metadata'
+    video.controls = false
+    video.style.width = '100%'
+    video.style.height = '100%'
+    video.style.objectFit = 'cover'
+    video.style.backgroundColor = '#000'
+    video.style.transition = 'opacity 0.5s ease'
+
+    // Configuraciones adicionales para compatibilidad
+    video.setAttribute('webkit-playsinline', 'true')
+    video.setAttribute('playsinline', 'true')
+
+    // Establecer dimensiones del contenedor
+    this.setVideoSize(video, container)
+
+    // Eventos de carga con múltiples puntos de activación para ocultar loader
+    video.addEventListener('loadedmetadata', () => {
+      console.log(`✅ Video ${type}: Metadata cargada`)
+      this.hideLoader(container, video)
+    })
+
+    video.addEventListener('loadeddata', () => {
+      console.log(`📦 Video ${type}: Datos iniciales cargados`)
+      this.hideLoader(container, video)
+    })
+
+    video.addEventListener('canplay', () => {
+      console.log(`▶️ Video ${type}: Puede empezar a reproducir`)
+      this.hideLoader(container, video)
+    })
+
+    video.addEventListener('canplaythrough', () => {
+      console.log(`✅ Video ${type}: Completamente listo`)
+      this.onVideoLoad(container, video)
+    })
+
+    video.addEventListener('error', event => {
+      console.warn(`⚠️ Error cargando video ${type}:`, video.src)
+
+      if (video.error) {
+        console.warn(`🔍 Error: ${this.getVideoErrorMessage(video.error.code)}`)
+
+        // Intentar alternativas para Liferay
+        if (video.error.code === 4) {
+          this.retryVideoWithAlternatives(video, videoUrl, type)
+          return
+        }
+      }
+
+      this.showError(container, type)
+    })
+
+    // Añadir video al contenedor
+    container.appendChild(video)
+
+    // Timeout de seguridad: ocultar loader después de 3 segundos
+    setTimeout(() => {
+      this.hideLoader(container, video)
+    }, 3000)
+  },
+
+  // Método unificado para ocultar el loader
+  hideLoader(container, video) {
+    if (!container.classList.contains('video-loaded')) {
+      container.classList.add('video-loaded')
+      video.style.opacity = '1'
+      console.log('🎯 Loader CSS ocultado')
+
+      // Intentar reproducir si está pausado
+      if (video.paused) {
+        video.play().catch(error => {
+          console.warn('⚠️ Autoplay bloqueado:', error.message)
+        })
+      }
+    }
+  },
+
+  // Establecer tamaño del video con aspect ratio correcto
+  setVideoSize(video, container) {
+    const currentWidth = window.innerWidth
+    const isMobile = currentWidth < this.config.breakpoint
+
+    // Resetear estilos inline para permitir CSS natural
+    container.style.width = ''
+    container.style.height = ''
+    container.style.maxWidth = ''
+    container.style.maxHeight = ''
+
+    console.log(`📐 Ajustando video size: ${currentWidth}px (Mobile: ${isMobile})`)
+
+    if (!isMobile) {
+      // En desktop, calcular dimensiones respetando aspect ratio
+      const videoCard = container.closest('.program-data_video-card')
+      if (videoCard) {
+        // Esperar un frame para asegurar que el layout se haya actualizado
+        requestAnimationFrame(() => {
+          const cardRect = videoCard.getBoundingClientRect()
+          const aspectRatio = 612 / 880 // Relación específica para desktop
+
+          console.log(`📏 Video card dimensions: ${cardRect.width}x${cardRect.height}`)
+
+          // Solo ajustar si tenemos dimensiones válidas
+          if (cardRect.height > 0 && cardRect.width > 0) {
+            const calculatedWidth = cardRect.height * aspectRatio
+
+            // Asegurar que no exceda el ancho disponible
+            const maxWidth = Math.min(calculatedWidth, cardRect.width)
+
+            // Aplicar dimensiones con límites seguros
+            container.style.width = `${maxWidth}px`
+            container.style.height = `${cardRect.height}px`
+            container.style.maxWidth = '100%'
+
+            console.log(`✅ Dimensiones aplicadas: ${maxWidth}x${cardRect.height}px`)
+          }
+        })
+      }
+    } else {
+      // En mobile, permitir que CSS maneje completamente
+      console.log('📱 Modo mobile: usando CSS responsive')
+    }
+
+    // Asegurar que el video mantenga object-fit y llene el contenedor
+    video.style.objectFit = 'cover'
+    video.style.width = '100%'
+    video.style.height = '100%'
+    video.style.objectPosition = 'center'
+  },
+
+  // Video cargado exitosamente
+  onVideoLoad(container, video) {
+    console.log('✅ Video HTML5 completamente cargado')
+    this.hideLoader(container, video)
+  },
+
+  // Obtener mensaje de error descriptivo
+  getVideoErrorMessage(errorCode) {
+    const errorMessages = {
+      1: 'MEDIA_ERR_ABORTED - Carga abortada',
+      2: 'MEDIA_ERR_NETWORK - Error de red',
+      3: 'MEDIA_ERR_DECODE - Error decodificando',
+      4: 'MEDIA_ERR_SRC_NOT_SUPPORTED - Formato no soportado'
+    }
+    return errorMessages[errorCode] || `Error desconocido (${errorCode})`
+  },
+
+  // Reintentar video con alternativas para Liferay
+  retryVideoWithAlternatives(video, videoUrl, type) {
+    console.log(`🔧 Reintentando video ${type} con alternativas...`)
+
+    const alternatives = [
+      videoUrl + '?v=' + Date.now(), // Cache bust
+      videoUrl + '?format=mp4', // Forzar formato
+      videoUrl // URL original
+    ]
+
+    let currentIndex = 0
+
+    const tryNext = () => {
+      if (currentIndex >= alternatives.length) {
+        console.warn(`⚠️ Todas las alternativas fallaron para ${type}`)
+        this.showError(video.parentElement, type)
         return
       }
 
-      // Quitar loading
-      const loadingIndicator = container.querySelector('.video-loading')
-      if (loadingIndicator) {
-        loadingIndicator.remove()
+      const newUrl = alternatives[currentIndex]
+      console.log(`🔄 Intentando: ${newUrl}`)
+
+      video.src = newUrl
+
+      const errorHandler = () => {
+        currentIndex++
+        video.removeEventListener('error', errorHandler)
+        tryNext()
       }
 
-      // Verificar si este video debe mostrarse según el dispositivo actual
-      const mainContainer = document.getElementById('program-data-media')
-      if (mainContainer) {
-        const currentVideo = mainContainer.getAttribute('data-current-video')
-        const breakpoint = parseInt(mainContainer.getAttribute('data-breakpoint')) || 768
-        const isMobile = window.innerWidth < breakpoint
-        const shouldShowMobile = isMobile && type === 'mobile'
-        const shouldShowDesktop = !isMobile && type === 'desktop'
-
-        if (shouldShowMobile || shouldShowDesktop) {
-          // Mostrar este video
-          container.style.display = 'block'
-          container.style.opacity = '1'
-
-          // Escalar el iframe de alta resolución al tamaño del contenedor
-          const iframe = container.querySelector('iframe')
-          if (iframe) {
-            const highResDimensions = this.getHighResDimensions(type)
-            const containerDimensions = this.getVideoDimensions(type)
-
-            // Calcular escala para ajustar video de alta res al contenedor
-            const scaleX = containerDimensions.width / highResDimensions.width
-            const scaleY = containerDimensions.height / highResDimensions.height
-            const scale = Math.max(scaleX, scaleY) // Usar la escala mayor para cubrir todo
-
-            iframe.style.position = 'absolute'
-            iframe.style.top = '50%'
-            iframe.style.left = '50%'
-            iframe.style.width = `${highResDimensions.width}px`
-            iframe.style.height = `${highResDimensions.height}px`
-            iframe.style.transform = `translate(-50%, -50%) scale(${scale})`
-            iframe.style.transformOrigin = 'center center'
-            iframe.style.objectFit = 'cover'
-          }
-
-          // Marcar como listo
-          mainContainer.classList.add('video-loaded', 'responsive-video-ready')
-        } else {
-          // Mantener oculto si no corresponde al dispositivo actual
-          container.style.display = 'none'
-        }
-      }
-    } catch (error) {
-      console.error(`Error in showVideo for ${type}:`, error)
+      video.addEventListener('error', errorHandler, { once: true })
+      video.load()
     }
+
+    tryNext()
   },
 
-  updateVisibility(container, breakpoint) {
-    const isMobile = window.innerWidth < breakpoint
-    const currentVideo = container.getAttribute('data-current-video')
-    const newVideo = isMobile ? 'mobile' : 'desktop'
+  // Mostrar error
+  showError(container, type) {
+    console.warn('⚠️ Mostrando mensaje de error')
 
-    if (currentVideo !== newVideo) {
-      container.setAttribute('data-current-video', newVideo)
+    const errorDiv = document.createElement('div')
+    errorDiv.className = 'video-error'
+    errorDiv.style.cssText = `
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      background: #f5f5f5;
+      color: #666;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    `
 
-      // Obtener ambos contenedores
-      const mobileContainer = document.getElementById('video-mobile-container')
-      const desktopContainer = document.getElementById('video-desktop-container')
+    errorDiv.innerHTML = `
+      <div style="text-align: center; padding: 20px;">
+        <p style="margin: 0 0 8px 0; font-size: 14px;">⚠️ Error cargando video</p>
+        <small style="color: #999; font-size: 12px;">Video no disponible desde Liferay</small>
+      </div>
+    `
 
-      if (mobileContainer && desktopContainer) {
-        if (isMobile) {
-          // Mostrar mobile, ocultar desktop
-          mobileContainer.style.display = 'block'
-          desktopContainer.style.display = 'none'
-        } else {
-          // Mostrar desktop, ocultar mobile
-          desktopContainer.style.display = 'block'
-          mobileContainer.style.display = 'none'
-        }
-      }
-    }
+    // Limpiar contenedor y mostrar error
+    container.innerHTML = ''
+    container.appendChild(errorDiv)
+    container.classList.add('video-loaded') // Ocultar loader
   },
 
-  setupResponsiveListener(container, breakpoint) {
+  // Configurar video responsivo mejorado
+  setupResponsiveVideo(container) {
     let resizeTimeout
 
     const handleResize = () => {
+      // Debounce para evitar múltiples ejecuciones
       clearTimeout(resizeTimeout)
       resizeTimeout = setTimeout(() => {
-        this.updateVisibility(container, breakpoint)
-      }, 150)
+        const isMobile = window.innerWidth < this.config.breakpoint
+        const videos = container.querySelectorAll('video')
+
+        console.log(`🔄 Resize detectado: ${window.innerWidth}px (Mobile: ${isMobile})`)
+
+        // Resetear completamente el contenedor antes de aplicar nuevos estilos
+        container.style.width = ''
+        container.style.height = ''
+        container.style.maxWidth = ''
+        container.style.maxHeight = ''
+
+        videos.forEach(video => {
+          const isMobileVideo = video.classList.contains('program-data__video--mobile')
+          const isDesktopVideo = video.classList.contains('program-data__video--desktop')
+
+          // Mostrar/ocultar videos según breakpoint
+          if (isMobile && isMobileVideo) {
+            video.style.display = 'block'
+            container.setAttribute('data-current-video', 'mobile')
+            this.setVideoSize(video, container)
+          } else if (!isMobile && isDesktopVideo) {
+            video.style.display = 'block'
+            container.setAttribute('data-current-video', 'desktop')
+            this.setVideoSize(video, container)
+          } else {
+            video.style.display = 'none'
+          }
+        })
+
+        // Si no hay video mobile, usar desktop en mobile
+        if (isMobile && !container.querySelector('.program-data__video--mobile')) {
+          const desktopVideo = container.querySelector('.program-data__video--desktop')
+          if (desktopVideo) {
+            desktopVideo.style.display = 'block'
+            container.setAttribute('data-current-video', 'desktop-fallback')
+            this.setVideoSize(desktopVideo, container)
+          }
+        }
+      }, 100) // Debounce de 100ms
     }
 
+    // Ejecutar inicialmente
+    handleResize()
+
+    // Escuchar resize con mejor gestión
     window.addEventListener('resize', handleResize)
+
+    // También escuchar orientationchange para móviles
+    window.addEventListener('orientationchange', () => {
+      setTimeout(handleResize, 250) // Delay para orientationchange
+    })
+  },
+
+  // Configurar detección responsiva avanzada
+  setupResponsiveDetection() {
+    // Usar ResizeObserver si está disponible para mejor rendimiento
+    if (typeof ResizeObserver !== 'undefined') {
+      let observerTimeout
+
+      const resizeObserver = new ResizeObserver(entries => {
+        clearTimeout(observerTimeout)
+        observerTimeout = setTimeout(() => {
+          entries.forEach(entry => {
+            const container = entry.target
+            if (container.classList.contains('video-initialized')) {
+              console.log('🔍 ResizeObserver: Reajustando video container')
+
+              // Resetear completamente antes de reconfigurar
+              container.style.width = ''
+              container.style.height = ''
+
+              // Reconfigurar responsive
+              this.setupResponsiveVideo(container)
+            }
+          })
+        }, 150) // Debounce más largo para ResizeObserver
+      })
+
+      // Observar tanto el contenedor como su padre
+      document.querySelectorAll('[data-component="video-player"]').forEach(container => {
+        resizeObserver.observe(container)
+
+        // También observar el video-card padre si existe
+        const videoCard = container.closest('.program-data_video-card')
+        if (videoCard) {
+          resizeObserver.observe(videoCard)
+        }
+      })
+    }
   }
 }
 
-// Inicialización
-const initVideoSystem = () => {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      SimplifiedVideoSystem.init()
+// Sistema de datos del programa
+const programDataSystem = {
+  init() {
+    // Escuchar eventos de carga de datos desde Liferay
+    document.addEventListener('data_load-program', () => {
+      this.updateProgramName()
+      // Reinicializar videos con nueva configuración
+      liferayVideoSystem.init()
     })
-  } else {
-    SimplifiedVideoSystem.init()
-  }
+  },
 
-  document.addEventListener('data_load-program', () => {
+  updateProgramName() {
     const context = document.getElementById('doble-datos')
-    const dataPujName = context.querySelector('[data-puj-name]')
-    let currentContent = dataPujName.textContent.trim()
-    dataPujName.textContent = `${currentContent}: `
-  })
+    if (context) {
+      const dataPujName = context.querySelector('[data-puj-name]')
+      if (dataPujName) {
+        let currentContent = dataPujName.textContent.trim()
+        if (!currentContent.endsWith(':')) {
+          dataPujName.textContent = `${currentContent}: `
+        }
+      }
+    }
+  }
+}
+
+// Inicialización principal
+const initProgramDataVideo = () => {
+  console.log('🚀 Inicializando sistema de datos y video nativo definitivo...')
+  programDataSystem.init()
+  liferayVideoSystem.init()
+}
+
+// Ejecutar inicialización
+const initSystem = () => {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProgramDataVideo)
+  } else {
+    initProgramDataVideo()
+  }
 }
 
 // Exportar función e inicializar inmediatamente
-export default initVideoSystem
+export default initSystem
 
-// También ejecutar inmediatamente en caso de compilación IIFE
+// Ejecutar inmediatamente
 if (typeof window !== 'undefined') {
-  initVideoSystem()
+  initSystem()
 }

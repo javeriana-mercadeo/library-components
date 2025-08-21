@@ -3,26 +3,26 @@
     {
       "fields": [
         {
-          "name": "codeVideoDesktop",
-          "label": "Código del video de escritorio",
-          "description": "Código del video de escritorio que se mostrará en la sección de datos del programa.",
+          "name": "urlVideoDesktop",
+          "label": "URL del video de escritorio",
+          "description": "URL completa del video de escritorio que se mostrará en la sección de datos del programa (desde Liferay).",
           "type": "text",
           "typeOptions": {
-            "placeholder": "Ingrese el código del video de escritorio"
+            "placeholder": "https://www.javeriana.edu.co/recursosdb/d/info-prg/nombre-del-video"
           },
           "dataType": "string",
-          "defaultValue": "-dHyNNd5BM4"
+          "defaultValue": "https://www.javeriana.edu.co/recursosdb/d/info-prg/administracion-de-empresas-7-1"
         },
         {
-          "name": "codeVideoMobile",
-          "label": "Código del video móvil",
-          "description": "Código del video móvil que se mostrará en la sección de datos del programa.",
+          "name": "urlVideoMobile",
+          "label": "URL del video móvil (opcional)",
+          "description": "URL completa del video móvil que se mostrará en dispositivos móviles (opcional - si no se proporciona, se usará el de escritorio).",
           "type": "text",
           "typeOptions": {
-            "placeholder": "Ingrese el código del video móvil"
+            "placeholder": "https://www.javeriana.edu.co/recursosdb/d/info-prg/nombre-del-video-mobile"
           },
           "dataType": "string",
-          "defaultValue": "HxlTZ8DQAaY"
+          "defaultValue": ""
         }
       ]
     }

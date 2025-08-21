@@ -65,7 +65,8 @@
       "Bash(mkdir:*)",
       "Bash(git add:*)",
       "Bash(timeout 15s npm run dev:memory-limit)",
-      "Bash(npx next dev:*)"
+      "Bash(npx next dev:*)",
+      "WebFetch(domain:www.javeriana.edu.co)"
     ],
     "deny": []
   }

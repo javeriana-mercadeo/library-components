@@ -39,7 +39,7 @@
 
     @include responsive {
       gap: var(--spacing-xs);
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr min-content;
       grid-template-areas:
         'faculty video'
         'title video'
@@ -62,7 +62,8 @@
     }
 
     @include responsive($breakpoint-xl) {
-      grid-template-columns: 1.2fr 0.9fr;
+      grid-template-columns: 1fr min-content;
+      grid-template-rows: auto auto auto auto auto auto auto;
       grid-template-areas:
         'faculty video'
         'title video'
@@ -255,124 +256,97 @@
   }
 
   // ==========================================
-  // VIDEO/MEDIA CONTAINER - ASPECT RATIO EXACTO
+  // VIDEO/MEDIA CONTAINER - PATRÓN EXPERIENCIA MEJORADO
   // ==========================================
   &_media {
     grid-area: video;
-    position: relative;
-    overflow: hidden;
-    background: var(--neutral-900);
-    border-radius: var(--border-radius-lg);
-
-    aspect-ratio: 1 / 1;
-    width: clamp(280px, 85vw, 350px);
-    height: clamp(280px, 85vw, 350px);
-    max-width: 428px;
-    max-height: 428px;
-
-    // Centrar en móvil
     justify-self: center;
+    margin: auto;
     margin-top: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
 
-    // GPU acceleration y optimizaciones
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    contain: layout style paint;
-
     @include responsive {
-      aspect-ratio: 612 / 880;
-      height: auto;
-      max-height: 880px;
       justify-self: center;
-      align-self: start;
+      align-self: stretch; // Permitir que se estire con el contenido
       margin-top: 0;
       margin-bottom: 0;
-      min-width: 300px;
-      min-height: calc(300px / (612 / 880));
-      max-height: 880px;
-    }
-
-    @include responsive($breakpoint-lg) {
-      width: clamp(400px, 38vw, 520px);
+      display: flex;
+      flex-direction: column;
     }
 
     @include responsive($breakpoint-xl) {
       justify-self: end;
     }
+  }
 
-    // Estados de carga - mostrar loader hasta que esté completamente listo
+  &_video-card {
+    width: clamp(280px, 85vw, 350px);
+    max-width: 428px;
+    background: transparent; // Dejar que el contenedor interno maneje el fondo
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    position: relative;
+
+    @include responsive {
+      width: clamp(300px, 40vw, 520px);
+      max-width: 520px;
+      flex: 1; // Permitir que se estire en altura
+      display: flex;
+      flex-direction: column;
+    }
+
+    @include responsive($breakpoint-lg) {
+      width: clamp(400px, 38vw, 520px);
+    }
+  }
+
+  &_video-container {
+    position: relative;
+    width: 100%;
+    background: transparent; // Cambiar de gris a transparente
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // Aspect ratios responsivos usando CSS nativo
+    aspect-ratio: 1 / 1;
+
+    @include responsive {
+      // En desktop, el JavaScript maneja el dimensionamiento dinámico
+      aspect-ratio: auto;
+      width: clamp(300px, 35vw, 450px);
+      height: auto; // JavaScript establecerá la altura dinámicamente
+      margin: auto;
+    }
+
+    // Fondo gris solo durante la carga
     &:not(.video-loaded) {
-      &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: rem(40px);
-        height: rem(40px);
-        margin: rem(-20px) 0 0 rem(-20px);
-        border: rem(4px) solid var(--neutral-600);
-        border-top-color: var(--primary);
-        border-radius: 50%;
-        animation: videoLoading 1s linear infinite;
-        z-index: 12; // Por encima de la capa protectora
-        background: transparent;
-        pointer-events: none;
-        opacity: 1;
-        transition: opacity 0.3s ease-out;
-      }
+      background: var(--neutral-900);
     }
 
-    // Ocultar loader cuando el video está listo
-    &.video-loaded {
-      &::before {
-        opacity: 0;
-        animation: none;
-        transition: opacity 0.3s ease-out;
-      }
-    }
-
-    // Capa protectora invisible para bloquear clics (solo cuando está completamente listo)
-    &.video-loaded.responsive-video-ready::before {
+    // Loader CSS ::before - ÚNICO (el que está bien posicionado)
+    &:not(.video-loaded)::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: transparent;
-      pointer-events: auto; // Captura todos los clics
-      cursor: default;
-      z-index: 10; // Por encima del video
-      user-select: none;
-      border: none;
-      border-radius: 0;
-      animation: none;
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      opacity: 1;
-      transition: none;
+      width: rem(40px);
+      height: rem(40px);
+      margin: auto;
+      border: rem(4px) solid var(--neutral-600);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: videoLoading 1s linear infinite;
+      z-index: 3;
     }
 
-    // Overlay sutil para feedback visual (opcional)
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.05);
-      pointer-events: none;
-      z-index: 1;
+    &.video-loaded::before {
       opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    &:hover::after {
-      opacity: 1;
+      animation: none;
     }
 
     // Estados según dispositivo actual
@@ -390,36 +364,23 @@
   }
 
   // ==========================================
-  // IFRAME DEL VIDEO - MANTIENE RELACIÓN EXACTA Y MÁXIMA LIMPIEZA
+  // IFRAME DEL VIDEO - PATRÓN EXPERIENCIA SIMPLIFICADO
   // ==========================================
   &__iframe {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
     border: none;
-    object-fit: cover; // Mantiene proporciones del video original
-    object-position: center; // Centra el contenido
-    will-change: auto;
-    backface-visibility: hidden;
-    pointer-events: none; // Completamente no interactivo
+    border-radius: var(--border-radius-lg); // Agregar border radius
+    z-index: 2;
     opacity: 0;
-    transition: opacity 0.6s ease-in-out; // Transición suave después del loader
-
-    // Bloquear completamente la interacción
+    transition: opacity 0.5s ease;
+    pointer-events: none;
     user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 
-    // Optimizaciones adicionales
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    contain: strict;
-
-    // Estado inicial - oculto hasta que JavaScript lo muestre
-    filter: brightness(0.99); // Hack para evitar flash de controles
+    &.loaded {
+      opacity: 1;
+    }
 
     // MODIFICADOR MOBILE
     &--mobile {
@@ -436,12 +397,9 @@
 
       @include responsive {
         display: block;
-        object-fit: cover;
-        object-position: center;
       }
     }
   }
-
   // ==========================================
   // PRINT STYLES
   // ==========================================
@@ -532,33 +490,25 @@
 // SOPORTE PARA NAVEGADORES SIN ASPECT-RATIO
 // ==========================================
 @supports not (aspect-ratio: 1/1) {
-  .program-data_media {
-    // Fallback usando padding-bottom
+  .program-data_video-container {
+    position: relative;
 
     @media (max-width: 767px) {
-      // Móvil: 1:1
-      &::before {
-        content: '';
-        display: block;
-        padding-bottom: 100%; // 1:1 ratio
-      }
+      // Móvil: 1:1 sin pseudo-elementos
+      height: 0;
+      padding-bottom: 100%;
     }
 
     @media (min-width: 768px) {
-      // Desktop: 612:880 = 143.79%
-      &::before {
-        content: '';
-        display: block;
-        padding-bottom: 143.79%; // 880/612 * 100
-      }
+      // Desktop: 612:880 = 143.79% sin pseudo-elementos
+      height: 0;
+      padding-bottom: 143.79%;
     }
 
     .program-data__iframe {
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
     }
   }
 }

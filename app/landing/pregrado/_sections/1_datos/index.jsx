@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Container, Caption, Title, Paragraph, Button as Btn } from '@library/components'
 import ProgramDetail from './components/ProgramDetail.jsx'
 
@@ -11,10 +12,10 @@ const DatosProgramaVideo = () => {
   const elementName = info.id || 'datos-programa-video'
   const baseClass = 'program-data'
 
-  // Inicializar script inmediatamente (sin useEffect)
-  if (typeof window !== 'undefined') {
+  // Inicializar script cuando el componente se monta
+  useEffect(() => {
     script()
-  }
+  }, [])
 
   // Configuración de todos los detalles del programa
   const details = [
@@ -133,19 +134,12 @@ const DatosProgramaVideo = () => {
 
         {/* === VIDEOS RESPONSIVOS === */}
         <div className={`${baseClass}_media`}>
-          <div className={`${baseClass}_video-card`}>
-            <div
-              className={`${baseClass}_video-container`}
-              data-component="video-player"
-              data-video-mobile="HxlTZ8DQAaY"
-              data-video-desktop="-dHyNNd5BM4"
-            >
-              <div className="alert alert-info error-message" hidden role="alert">
-                <p>Error al cargar el video.</p>
-                <p>Por favor, verifica la conexión a internet.</p>
-              </div>
-            </div>
-          </div>
+          <div
+            className={`${baseClass}_video-container`}
+            id={`${elementName}-video-container`}
+            data-component='video-player'
+            data-video-desktop-url='https://www.javeriana.edu.co/recursosdb/d/info-prg/administracion-de-empresas-7-1'
+            data-video-mobile-url='https://www.javeriana.edu.co/recursosdb/d/info-prg/landing-administracion-de-empresas-mobile-vive-javeriana-360p-h264-'></div>
         </div>
 
         {/* === DETALLES DEL PROGRAMA === */}
