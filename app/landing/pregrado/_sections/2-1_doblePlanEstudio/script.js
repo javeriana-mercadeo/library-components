@@ -162,7 +162,6 @@ export default () => {
       jornadaId = 'diurna'
     }
 
-
     // Destruir instancia existente si existe
     if (window.planEstudioSwipers[jornadaId] && typeof window.planEstudioSwipers[jornadaId].destroy === 'function') {
       window.planEstudioSwipers[jornadaId].destroy(true, true)

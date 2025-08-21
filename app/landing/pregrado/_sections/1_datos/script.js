@@ -1,338 +1,263 @@
 // ===========================================
-// DATOS PROGRAMA VIDEO - SIMPLIFIED LIFERAY SYSTEM
+// DATOS PROGRAMA VIDEO - SISTEMA COMPLETO
 // ===========================================
 
-const SimplifiedVideoSystem = {
+// Sistema de video responsivo similar a Liferay
+const videoSystem = {
+  // Configuración del sistema
   config: {
-    defaultBreakpoint: 768,
-    videoConfig: {
-      autoPlay: true,
-      loop: true,
-      mute: true,
-      hideControls: true,
-      videoWidth: null,  // Se calcula dinámicamente
-      videoHeight: null  // Se calcula dinámicamente
+    breakpoint: 768,
+    // Videos por defecto para desarrollo y fallback
+    defaultVideos: {
+      mobile: 'HxlTZ8DQAaY',  // Video por defecto móvil
+      desktop: '-dHyNNd5BM4'  // Video por defecto desktop
+    },
+    videoParams: {
+      autoplay: '1',
+      mute: '1',
+      loop: '1',
+      controls: '0',
+      modestbranding: '1',
+      playsinline: '1',
+      enablejsapi: '1',
+      rel: '0'
     }
   },
 
-  players: {},
-
+  // Inicializar sistema de video
   init() {
-    try {
-      const videoContainer = document.getElementById('program-data-media')
-
-      if (!videoContainer) {
-        return false
-      }
-
-      // Obtener códigos de video directamente de data attributes
-      const mobileVideoId = videoContainer.dataset.videoMobile
-      const desktopVideoId = videoContainer.dataset.videoDesktop
-      const breakpoint = parseInt(videoContainer.dataset.breakpoint) || this.config.defaultBreakpoint
-
-      if (!mobileVideoId || !desktopVideoId) {
-        return false
-      }
-
-      // Configurar estructura dual
-      this.setupDualVideoStructure(videoContainer, mobileVideoId, desktopVideoId, breakpoint)
-      this.setupResponsiveListener(videoContainer, breakpoint)
-
-      // Inicializar YouTube API
-      this.loadYouTubeAPI(mobileVideoId, desktopVideoId)
-
-      return true
-    } catch (error) {
-      console.error('Error initializing video system:', error)
-      return false
-    }
+    this.setupVideoContainers()
+    this.setupResponsiveDetection()
+    this.setupPerformanceOptimizations()
+    this.loadVideosFromConfiguration()
   },
 
-  setupDualVideoStructure(container, mobileVideoId, desktopVideoId, breakpoint) {
-    // Limpiar contenedor
-    container.innerHTML = ''
-
-    // Crear estructura simplificada para ambos videos
-    container.innerHTML = `
-      <div class="video-mobile" id="video-mobile-container" style="
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      ">
-        <div class="video-loading" style="
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 40px;
-          height: 40px;
-          border: 4px solid var(--neutral-600);
-          border-top-color: var(--primary);
-          border-radius: 50%;
-          animation: videoLoading 1s linear infinite;
-          z-index: 12;
-        "></div>
-      </div>
-      <div class="video-desktop" id="video-desktop-container" style="
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      ">
-        <div class="video-loading" style="
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 40px;
-          height: 40px;
-          border: 4px solid var(--neutral-600);
-          border-top-color: var(--primary);
-          border-radius: 50%;
-          animation: videoLoading 1s linear infinite;
-          z-index: 12;
-        "></div>
-      </div>
-      <div class="video-mask" style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: transparent;
-        pointer-events: auto;
-        cursor: default;
-        z-index: 10;
-        user-select: none;
-      "></div>
-    `
-
-    // Determinar visibilidad inicial
-    const isMobile = window.innerWidth < breakpoint
-    container.setAttribute('data-current-video', isMobile ? 'mobile' : 'desktop')
-    container.setAttribute('data-breakpoint', breakpoint)
-    container.setAttribute('data-mobile-video', mobileVideoId)
-    container.setAttribute('data-desktop-video', desktopVideoId)
-  },
-
-  getVideoDimensions(type) {
-    if (type === 'mobile') {
-      return { width: 428, height: 428 }
-    } else {
-      const width = 520
-      const height = Math.round(width * (880 / 612))
-      return { width, height }
-    }
-  },
-
-  getHighResDimensions(type) {
-    if (type === 'mobile') {
-      // Mobile: usar dimensiones 1080p cuadradas para forzar alta resolución
-      return { width: 1080, height: 1080 }
-    } else {
-      // Desktop: usar dimensiones que mantengan el aspecto pero en alta resolución
-      // Aspecto 612:880, escalado a ~1440p
-      const width = 1224  // 612 * 2
-      const height = 1760 // 880 * 2
-      return { width, height }
-    }
-  },
-
-  loadYouTubeAPI(mobileVideoId, desktopVideoId) {
-    const handleAPIReady = () => {
-      // Crear ambos players
-      this.createYouTubePlayer('video-mobile-container', mobileVideoId, 'mobile')
-      this.createYouTubePlayer('video-desktop-container', desktopVideoId, 'desktop')
-    }
-
-    if ('YT' in window && window.YT.loaded) {
-      handleAPIReady()
-    } else {
-      const oldCallback = window.onYouTubeIframeAPIReady || function () {}
-      
-      window.onYouTubeIframeAPIReady = function () {
-        oldCallback()
-        handleAPIReady()
-      }
-
-      const apiSrc = '//www.youtube.com/iframe_api'
-      let script = Array.from(document.querySelectorAll('script')).find(s => s.src.includes('iframe_api'))
-
-      if (!script) {
-        script = document.createElement('script')
-        script.src = apiSrc
-        document.body.appendChild(script)
-      }
-    }
-  },
-
-  createYouTubePlayer(containerId, videoId, type) {
-    // Usar dimensiones grandes para forzar alta resolución
-    const highResDimensions = this.getHighResDimensions(type)
+  // Configurar contenedores de video
+  setupVideoContainers() {
+    const videoContainers = document.querySelectorAll('[data-component="video-player"]')
     
-    this.players[type] = new YT.Player(containerId, {
-      events: {
-        onReady: (event) => {
-          if (this.config.videoConfig.mute) {
-            event.target.mute()
-          }
-          this.showVideo(containerId, type)
-        }
-      },
-      height: highResDimensions.height,
-      width: highResDimensions.width,
-      playerVars: {
-        autoplay: this.config.videoConfig.autoPlay ? 1 : 0,
-        controls: this.config.videoConfig.hideControls ? 0 : 1,
-        loop: this.config.videoConfig.loop ? 1 : 0,
-        playlist: this.config.videoConfig.loop ? videoId : undefined,
-        mute: this.config.videoConfig.mute ? 1 : 0,
-        rel: 0,
-        showinfo: 0,
-        modestbranding: 1,
-        playsinline: 1,
-        iv_load_policy: 3,
-        disablekb: 1,
-        fs: 0,
-        cc_load_policy: 0,
-        vq: 'highres',
-        hd: 1,
-        quality: 'highres'
-      },
-      videoId: videoId
+    videoContainers.forEach(container => {
+      this.initializeVideoContainer(container)
     })
   },
 
-  showVideo(containerId, type) {
-    try {
-      const container = document.getElementById(containerId)
-      if (!container) {
-        console.error(`Container ${containerId} not found`)
-        return
-      }
+  // Inicializar un contenedor específico
+  initializeVideoContainer(container) {
+    // Evitar inicialización múltiple
+    if (container.classList.contains('video-initialized')) {
+      return
+    }
+    container.classList.add('video-initialized')
 
-      // Quitar loading
-      const loadingIndicator = container.querySelector('.video-loading')
-      if (loadingIndicator) {
-        loadingIndicator.remove()
-      }
+    // Obtener IDs de video desde data attributes o configuración
+    let mobileVideoId = container.getAttribute('data-video-mobile')
+    let desktopVideoId = container.getAttribute('data-video-desktop')
 
-      // Verificar si este video debe mostrarse según el dispositivo actual
-      const mainContainer = document.getElementById('program-data-media')
-      if (mainContainer) {
-        const currentVideo = mainContainer.getAttribute('data-current-video')
-        const breakpoint = parseInt(mainContainer.getAttribute('data-breakpoint')) || 768
-        const isMobile = window.innerWidth < breakpoint
-        const shouldShowMobile = isMobile && type === 'mobile'
-        const shouldShowDesktop = !isMobile && type === 'desktop'
-        
-        if (shouldShowMobile || shouldShowDesktop) {
-          // Mostrar este video
-          container.style.display = 'block'
-          container.style.opacity = '1'
-          
-          // Escalar el iframe de alta resolución al tamaño del contenedor
-          const iframe = container.querySelector('iframe')
-          if (iframe) {
-            const highResDimensions = this.getHighResDimensions(type)
-            const containerDimensions = this.getVideoDimensions(type)
-            
-            // Calcular escala para ajustar video de alta res al contenedor
-            const scaleX = containerDimensions.width / highResDimensions.width
-            const scaleY = containerDimensions.height / highResDimensions.height
-            const scale = Math.max(scaleX, scaleY) // Usar la escala mayor para cubrir todo
-            
-            iframe.style.position = 'absolute'
-            iframe.style.top = '50%'
-            iframe.style.left = '50%'
-            iframe.style.width = `${highResDimensions.width}px`
-            iframe.style.height = `${highResDimensions.height}px`
-            iframe.style.transform = `translate(-50%, -50%) scale(${scale})`
-            iframe.style.transformOrigin = 'center center'
-            iframe.style.objectFit = 'cover'
-          }
-          
-          // Marcar como listo
-          mainContainer.classList.add('video-loaded', 'responsive-video-ready')
-        } else {
-          // Mantener oculto si no corresponde al dispositivo actual
-          container.style.display = 'none'
-        }
-      }
-    } catch (error) {
-      console.error(`Error in showVideo for ${type}:`, error)
+    // Si hay configuración de Liferay disponible, usarla
+    if (typeof configuration !== 'undefined') {
+      mobileVideoId = configuration.codeVideoMobile || mobileVideoId
+      desktopVideoId = configuration.codeVideoDesktop || desktopVideoId
+    }
+
+    // Usar videos por defecto si no hay configuración
+    mobileVideoId = mobileVideoId || this.config.defaultVideos.mobile
+    desktopVideoId = desktopVideoId || this.config.defaultVideos.desktop
+    
+    if (!mobileVideoId && !desktopVideoId) {
+      this.showError(container)
+      return
+    }
+
+    // Actualizar data attributes con la configuración final
+    container.setAttribute('data-video-mobile', mobileVideoId || '')
+    container.setAttribute('data-video-desktop', desktopVideoId || '')
+
+    // Limpiar cualquier contenido previo excepto loader y error
+    const existingIframes = container.querySelectorAll('iframe')
+    existingIframes.forEach(iframe => iframe.remove())
+
+    // Crear iframes para ambos dispositivos
+    if (mobileVideoId) {
+      this.createVideoIframe(container, mobileVideoId, 'mobile')
+    }
+    if (desktopVideoId) {
+      this.createVideoIframe(container, desktopVideoId, 'desktop')
+    }
+
+    // Configurar detección responsiva
+    this.setupResponsiveVideo(container)
+  },
+
+  // Crear iframe de YouTube
+  createVideoIframe(container, videoId, type) {
+    const iframe = document.createElement('iframe')
+    const params = new URLSearchParams(this.config.videoParams)
+    params.set('playlist', videoId) // Necesario para que funcione el loop
+
+    iframe.className = `program-data__iframe program-data__iframe--${type}`
+    iframe.src = `https://www.youtube.com/embed/${videoId}?${params.toString()}`
+    iframe.title = `Video ${type}`
+    iframe.allow = 'autoplay; encrypted-media; fullscreen'
+    iframe.allowFullscreen = true
+    iframe.loading = 'lazy'
+    iframe.style.opacity = '0'
+    iframe.style.transition = 'opacity 0.5s ease'
+
+    // Eventos de carga
+    iframe.addEventListener('load', () => {
+      this.onVideoLoad(container, iframe)
+    })
+
+    iframe.addEventListener('error', () => {
+      this.showError(container)
+    })
+
+    container.appendChild(iframe)
+  },
+
+  // Manejar carga exitosa del video
+  onVideoLoad(container, iframe) {
+    // Mostrar iframe con fade in
+    iframe.style.opacity = '1'
+    iframe.classList.add('loaded')
+
+    // Agregar clases de estado - esto oculta el loader CSS ::before
+    container.classList.add('video-loaded')
+
+    // Actualizar estado actual
+    this.updateCurrentVideo(container)
+  },
+
+  // Configurar detección responsiva
+  setupResponsiveVideo(container) {
+    this.updateCurrentVideo(container)
+    
+    // Escuchar cambios de tamaño
+    const resizeObserver = new ResizeObserver(() => {
+      this.updateCurrentVideo(container)
+    })
+    
+    resizeObserver.observe(document.body)
+  },
+
+  // Actualizar video actual según breakpoint
+  updateCurrentVideo(container) {
+    const isMobile = window.innerWidth < this.config.breakpoint
+    const currentVideo = isMobile ? 'mobile' : 'desktop'
+    
+    container.setAttribute('data-current-video', currentVideo)
+  },
+
+  // Mostrar error
+  showError(container) {
+    const errorMsg = container.querySelector('.error-message')
+    
+    // Ocultar el loader CSS agregando la clase
+    container.classList.add('video-loaded')
+    
+    if (errorMsg) {
+      errorMsg.removeAttribute('hidden')
     }
   },
 
-  updateVisibility(container, breakpoint) {
-    const isMobile = window.innerWidth < breakpoint
-    const currentVideo = container.getAttribute('data-current-video')
-    const newVideo = isMobile ? 'mobile' : 'desktop'
+  // Configurar detección responsiva global
+  setupResponsiveDetection() {
+    let resizeTimer
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        const containers = document.querySelectorAll('[data-component="video-player"]')
+        containers.forEach(container => {
+          this.updateCurrentVideo(container)
+        })
+      }, 100)
+    })
+  },
 
-    if (currentVideo !== newVideo) {
-      container.setAttribute('data-current-video', newVideo)
-      
-      // Obtener ambos contenedores
-      const mobileContainer = document.getElementById('video-mobile-container')
-      const desktopContainer = document.getElementById('video-desktop-container')
-      
-      if (mobileContainer && desktopContainer) {
-        if (isMobile) {
-          // Mostrar mobile, ocultar desktop
-          mobileContainer.style.display = 'block'
-          desktopContainer.style.display = 'none'
-        } else {
-          // Mostrar desktop, ocultar mobile
-          desktopContainer.style.display = 'block'
-          mobileContainer.style.display = 'none'
-        }
+  // Optimizaciones de performance
+  setupPerformanceOptimizations() {
+    // Detectar conexión lenta
+    if (navigator.connection && navigator.connection.effectiveType) {
+      const connection = navigator.connection.effectiveType
+      if (connection === 'slow-2g' || connection === '2g' || connection === '3g') {
+        document.documentElement.setAttribute('data-connection', 'slow')
       }
+    }
+    
+    // Detectar dispositivos con poca memoria
+    if (navigator.deviceMemory && navigator.deviceMemory < 4) {
+      document.documentElement.setAttribute('data-performance', 'low')
     }
   },
 
-  setupResponsiveListener(container, breakpoint) {
-    let resizeTimeout
-
-    const handleResize = () => {
-      clearTimeout(resizeTimeout)
-      resizeTimeout = setTimeout(() => {
-        this.updateVisibility(container, breakpoint)
-      }, 150)
+  // Cargar videos desde configuración (para Liferay)
+  loadVideosFromConfiguration() {
+    // Este método se ejecutará cuando esté disponible la configuración de Liferay
+    if (typeof configuration !== 'undefined') {
+      const containers = document.querySelectorAll('[data-component="video-player"]')
+      containers.forEach(container => {
+        // Reinicializar con nueva configuración si es necesario
+        if (configuration.codeVideoMobile || configuration.codeVideoDesktop) {
+          // Limpiar contenido existente excepto elementos de UI
+          const iframes = container.querySelectorAll('iframe')
+          iframes.forEach(iframe => iframe.remove())
+          
+          // Reinicializar
+          this.initializeVideoContainer(container)
+        }
+      })
     }
-
-    window.addEventListener('resize', handleResize)
   }
 }
 
-// Inicialización
-const initVideoSystem = () => {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      SimplifiedVideoSystem.init()
+// Sistema de datos del programa
+const programDataSystem = {
+  init() {
+    // Escuchar eventos de carga de datos
+    document.addEventListener('data_load-program', () => {
+      this.updateProgramName()
     })
-  } else {
-    SimplifiedVideoSystem.init()
-  }
+    
+    // También inicializar videos cuando se cargan los datos
+    document.addEventListener('data_load-program', () => {
+      videoSystem.loadVideosFromConfiguration()
+    })
+  },
 
-  document.addEventListener('data_load-program', () => {
+  updateProgramName() {
     const context = document.getElementById('datos')
-    const dataPujName = context.querySelector('[data-puj-name]')
-    let currentContent = dataPujName.textContent.trim()
-    dataPujName.textContent = `${currentContent}: `
-  })
+    if (context) {
+      const dataPujName = context.querySelector('[data-puj-name]')
+      if (dataPujName) {
+        let currentContent = dataPujName.textContent.trim()
+        if (!currentContent.endsWith(':')) {
+          dataPujName.textContent = `${currentContent}: `
+        }
+      }
+    }
+  }
+}
+
+// Inicialización principal
+const initProgramDataVideo = () => {
+  // Inicializar sistemas
+  programDataSystem.init()
+  videoSystem.init()
+}
+
+// Ejecutar inicialización
+const initSystem = () => {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProgramDataVideo)
+  } else {
+    initProgramDataVideo()
+  }
 }
 
 // Exportar función e inicializar inmediatamente
-export default initVideoSystem
+export default initSystem
 
 // También ejecutar inmediatamente en caso de compilación IIFE
 if (typeof window !== 'undefined') {
-  initVideoSystem()
+  initSystem()
 }

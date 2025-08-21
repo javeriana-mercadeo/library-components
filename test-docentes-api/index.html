@@ -1,92 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Prueba de Concepto - Docentes API</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/phosphor-icons/2.1.1/phosphor.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/phosphor-icons/2.1.1/phosphor.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>Prueba de Concepto - Docentes API</h1>
-        
-        <!-- Controles para probar -->
-        <div class="controls">
-            <label for="programCode">Código de programa:</label>
-            <input type="text" id="programCode" value="ISIST" placeholder="Ej: ISIST">
-            <button id="loadBtn">Cargar Docentes</button>
+      <h1>Prueba de Concepto - Docentes API</h1>
+
+      <!-- Controles para probar -->
+      <div class="controls">
+        <label for="programCode">Código de programa:</label>
+        <input type="text" id="programCode" value="ISIST" placeholder="Ej: ISIST" />
+        <button id="loadBtn">Cargar Docentes</button>
+      </div>
+
+      <!-- Estados -->
+      <div id="loadingState" class="state-message" style="display: none">
+        <div class="spinner"></div>
+        <p>Cargando información de docentes...</p>
+      </div>
+
+      <div id="errorState" class="state-message error" style="display: none">
+        <p>Error al cargar los docentes: <span id="errorMessage"></span></p>
+      </div>
+
+      <div id="emptyState" class="state-message" style="display: none">
+        <p>No hay información de docentes disponible para este programa.</p>
+      </div>
+
+      <!-- Sección de docentes -->
+      <section id="docentes-section" style="display: none">
+        <div class="section-header">
+          <h2>Docentes Expertos</h2>
+          <p class="description">
+            Docentes expertos con experiencia práctica y académica, comprometidos con la excelencia e innovación en el programa.
+          </p>
+          <p class="docentes-count" id="docentes-count" style="display: none"></p>
         </div>
 
-        <!-- Estados -->
-        <div id="loadingState" class="state-message" style="display: none;">
-            <div class="spinner"></div>
-            <p>Cargando información de docentes...</p>
+        <div class="docentes-carousel swiper">
+          <div class="docentes-wrapper swiper-wrapper" id="docentes-container">
+            <!-- Los docentes se cargarán aquí dinámicamente -->
+          </div>
+
+          <!-- Navegación -->
+          <button class="swiper-slide-button docentes-prev" aria-label="Ir al slide anterior" type="button">
+            <i class="ph ph-arrow-circle-left" aria-hidden="true"></i>
+          </button>
+          <button class="swiper-slide-button docentes-next" aria-label="Ir al siguiente slide" type="button">
+            <i class="ph ph-arrow-circle-right" aria-hidden="true"></i>
+          </button>
         </div>
+      </section>
 
-        <div id="errorState" class="state-message error" style="display: none;">
-            <p>Error al cargar los docentes: <span id="errorMessage"></span></p>
+      <!-- Información de debug -->
+      <div class="debug-info">
+        <h3>Información de Debug</h3>
+        <div id="debug-content">
+          <p>Esperando carga de datos...</p>
         </div>
-
-        <div id="emptyState" class="state-message" style="display: none;">
-            <p>No hay información de docentes disponible para este programa.</p>
-        </div>
-
-        <!-- Sección de docentes -->
-        <section id="docentes-section" style="display: none;">
-            <div class="section-header">
-                <h2>Docentes Expertos</h2>
-                <p class="description">Docentes expertos con experiencia práctica y académica, comprometidos con la excelencia e innovación en el programa.</p>
-                <p class="docentes-count" id="docentes-count" style="display: none;"></p>
-            </div>
-
-            <div class="docentes-carousel swiper">
-                <div class="docentes-wrapper swiper-wrapper" id="docentes-container">
-                    <!-- Los docentes se cargarán aquí dinámicamente -->
-                </div>
-                
-                <!-- Navegación -->
-                <button class="swiper-slide-button docentes-prev" aria-label="Ir al slide anterior" type="button">
-                    <i class="ph ph-arrow-circle-left" aria-hidden="true"></i>
-                </button>
-                <button class="swiper-slide-button docentes-next" aria-label="Ir al siguiente slide" type="button">
-                    <i class="ph ph-arrow-circle-right" aria-hidden="true"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- Información de debug -->
-        <div class="debug-info">
-            <h3>Información de Debug</h3>
-            <div id="debug-content">
-                <p>Esperando carga de datos...</p>
-            </div>
-        </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script>
-        // Verificar que Swiper se cargó correctamente
-        window.addEventListener('load', () => {
-            console.log('Swiper disponible:', typeof Swiper !== 'undefined');
-            if (typeof Swiper !== 'undefined') {
-                console.log('Versión de Swiper:', Swiper.version || 'Desconocida');
-            } else {
-                console.log('Intentando cargar Swiper desde fallback...');
-                // Fallback CDN
-                const fallbackScript = document.createElement('script');
-                fallbackScript.src = 'https://unpkg.com/swiper@10/swiper-bundle.min.js';
-                fallbackScript.onload = () => {
-                    console.log('Swiper cargado desde fallback:', typeof Swiper !== 'undefined');
-                };
-                fallbackScript.onerror = () => {
-                    console.error('Error cargando Swiper desde fallback');
-                };
-                document.head.appendChild(fallbackScript);
-            }
-        });
+      // Verificar que Swiper se cargó correctamente
+      window.addEventListener('load', () => {
+        console.log('Swiper disponible:', typeof Swiper !== 'undefined')
+        if (typeof Swiper !== 'undefined') {
+          console.log('Versión de Swiper:', Swiper.version || 'Desconocida')
+        } else {
+          console.log('Intentando cargar Swiper desde fallback...')
+          // Fallback CDN
+          const fallbackScript = document.createElement('script')
+          fallbackScript.src = 'https://unpkg.com/swiper@10/swiper-bundle.min.js'
+          fallbackScript.onload = () => {
+            console.log('Swiper cargado desde fallback:', typeof Swiper !== 'undefined')
+          }
+          fallbackScript.onerror = () => {
+            console.error('Error cargando Swiper desde fallback')
+          }
+          document.head.appendChild(fallbackScript)
+        }
+      })
     </script>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

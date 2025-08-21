@@ -10,8 +10,8 @@ const SimplifiedVideoSystem = {
       loop: true,
       mute: true,
       hideControls: true,
-      videoWidth: null,  // Se calcula dinámicamente
-      videoHeight: null  // Se calcula dinámicamente
+      videoWidth: null, // Se calcula dinámicamente
+      videoHeight: null // Se calcula dinámicamente
     }
   },
 
@@ -139,7 +139,7 @@ const SimplifiedVideoSystem = {
     } else {
       // Desktop: usar dimensiones que mantengan el aspecto pero en alta resolución
       // Aspecto 612:880, escalado a ~1440p
-      const width = 1224  // 612 * 2
+      const width = 1224 // 612 * 2
       const height = 1760 // 880 * 2
       return { width, height }
     }
@@ -156,7 +156,7 @@ const SimplifiedVideoSystem = {
       handleAPIReady()
     } else {
       const oldCallback = window.onYouTubeIframeAPIReady || function () {}
-      
+
       window.onYouTubeIframeAPIReady = function () {
         oldCallback()
         handleAPIReady()
@@ -176,10 +176,10 @@ const SimplifiedVideoSystem = {
   createYouTubePlayer(containerId, videoId, type) {
     // Usar dimensiones grandes para forzar alta resolución
     const highResDimensions = this.getHighResDimensions(type)
-    
+
     this.players[type] = new YT.Player(containerId, {
       events: {
-        onReady: (event) => {
+        onReady: event => {
           if (this.config.videoConfig.mute) {
             event.target.mute()
           }
@@ -232,23 +232,23 @@ const SimplifiedVideoSystem = {
         const isMobile = window.innerWidth < breakpoint
         const shouldShowMobile = isMobile && type === 'mobile'
         const shouldShowDesktop = !isMobile && type === 'desktop'
-        
+
         if (shouldShowMobile || shouldShowDesktop) {
           // Mostrar este video
           container.style.display = 'block'
           container.style.opacity = '1'
-          
+
           // Escalar el iframe de alta resolución al tamaño del contenedor
           const iframe = container.querySelector('iframe')
           if (iframe) {
             const highResDimensions = this.getHighResDimensions(type)
             const containerDimensions = this.getVideoDimensions(type)
-            
+
             // Calcular escala para ajustar video de alta res al contenedor
             const scaleX = containerDimensions.width / highResDimensions.width
             const scaleY = containerDimensions.height / highResDimensions.height
             const scale = Math.max(scaleX, scaleY) // Usar la escala mayor para cubrir todo
-            
+
             iframe.style.position = 'absolute'
             iframe.style.top = '50%'
             iframe.style.left = '50%'
@@ -258,7 +258,7 @@ const SimplifiedVideoSystem = {
             iframe.style.transformOrigin = 'center center'
             iframe.style.objectFit = 'cover'
           }
-          
+
           // Marcar como listo
           mainContainer.classList.add('video-loaded', 'responsive-video-ready')
         } else {
@@ -278,11 +278,11 @@ const SimplifiedVideoSystem = {
 
     if (currentVideo !== newVideo) {
       container.setAttribute('data-current-video', newVideo)
-      
+
       // Obtener ambos contenedores
       const mobileContainer = document.getElementById('video-mobile-container')
       const desktopContainer = document.getElementById('video-desktop-container')
-      
+
       if (mobileContainer && desktopContainer) {
         if (isMobile) {
           // Mostrar mobile, ocultar desktop

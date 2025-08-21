@@ -7,19 +7,27 @@ const nextConfig = {
       '@styles': './styles'
     }
   },
-  
+
   // Configuración para Webpack (fallback)
-  webpack: config => {
+  webpack: (config, { isServer }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@library': './app/_library',
       '@styles': './styles'
     }
 
-    // Excluir esbuild del bundling para evitar conflictos
-    config.externals = {
-      ...config.externals,
-      esbuild: 'esbuild'
+    // Solo aplicar externals en el servidor para evitar conflictos de configuración
+    if (isServer) {
+      config.externals = config.externals || []
+      
+      if (Array.isArray(config.externals)) {
+        config.externals.push('esbuild')
+      } else if (typeof config.externals === 'object') {
+        config.externals = {
+          ...config.externals,
+          esbuild: 'esbuild'
+        }
+      }
     }
 
     return config

@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 function cleanPath(inputPath: string): string {
   // Decodificar URL primero
   const decoded = decodeURIComponent(inputPath)
+
   return decoded
     .replace(/\/+/g, '/') // Reemplazar múltiples barras por una sola
     .replace(/^\//, '') // Remover barra inicial
@@ -41,6 +42,7 @@ export async function GET(req: NextRequest) {
     try {
       const infoPath = path.join(componentPath, 'info.json')
       const infoContentString = await fs.readFile(infoPath, 'utf8')
+
       info = JSON.parse(infoContentString)
     } catch {
       // No hay info.json, usar información por defecto

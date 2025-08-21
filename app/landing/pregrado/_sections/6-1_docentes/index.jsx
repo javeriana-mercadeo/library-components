@@ -17,7 +17,7 @@ const DocentesAPI = () => {
 
   // Escuchar el evento de carga del programa
   useEffect(() => {
-    const handleDataLoad = (event) => {
+    const handleDataLoad = event => {
       if (event.detail && event.detail.program && event.detail.program.codigo) {
         setProgramCode(event.detail.program.codigo)
       }
@@ -39,17 +39,15 @@ const DocentesAPI = () => {
       try {
         setLoading(true)
         setError(null)
-        
-        const response = await fetch(
-          `https://dti-pru.javeriana.edu.co/api-portal/investigadores?idProgramaAcademico=${programCode}`
-        )
-        
+
+        const response = await fetch(`https://dti-pru.javeriana.edu.co/api-portal/investigadores?idProgramaAcademico=${programCode}`)
+
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`)
         }
-        
+
         const data = await response.json()
-        
+
         if (data.investigadores && Array.isArray(data.investigadores)) {
           setDocentes(data.investigadores)
         } else {
@@ -74,7 +72,7 @@ const DocentesAPI = () => {
   }, [loading, docentes])
 
   // Función para obtener el cargo principal en español
-  const getPrimaryCargo = (investigador) => {
+  const getPrimaryCargo = investigador => {
     if (!investigador.asociacionesOrganizacionales || investigador.asociacionesOrganizacionales.length === 0) {
       return 'Docente'
     }
@@ -108,7 +106,7 @@ const DocentesAPI = () => {
               />
             ) : (
               <div className={`${baseClass}_card-image-placeholder`}>
-                <i className="ph ph-user-circle" aria-hidden="true"></i>
+                <i className='ph ph-user-circle' aria-hidden='true'></i>
               </div>
             )}
           </div>

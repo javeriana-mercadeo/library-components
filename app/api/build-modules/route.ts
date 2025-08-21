@@ -269,6 +269,7 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
 function cleanPath(inputPath: string): string {
   // Decodificar URL primero
   const decoded = decodeURIComponent(inputPath)
+
   return decoded
     .replace(/\/+/g, '/') // Reemplazar múltiples barras por una sola
     .replace(/^\//, '') // Remover barra inicial
@@ -285,7 +286,6 @@ export async function GET(req: NextRequest) {
 
   // Si se especifica un path, limpiar y usar ese; si no, usar el path global
   const componentPath = specificPath ? path.join(process.cwd(), 'app', cleanPath(specificPath)) : path.join(process.cwd(), COMPONENT_PATH)
-
 
   try {
     // 📌 TEMPORAL: Deshabilitar cache para debuggear problema de archivos obsoletos
@@ -307,6 +307,7 @@ export async function GET(req: NextRequest) {
           try {
             const infoPath = path.join(componentPath, 'info.json')
             const infoContent = await fs.readFile(infoPath, 'utf8')
+
             info = JSON.parse(infoContent)
           } catch {
             // No hay info.json, continuar
@@ -315,6 +316,7 @@ export async function GET(req: NextRequest) {
           try {
             const configPath = path.join(componentPath, 'configuration.json')
             const configContent = await fs.readFile(configPath, 'utf8')
+
             configuration = JSON.parse(configContent)
           } catch {
             // No hay configuration.json, continuar
@@ -467,6 +469,7 @@ export async function GET(req: NextRequest) {
         try {
           const infoPath = path.join(componentPath, 'info.json')
           const infoContent = await fs.readFile(infoPath, 'utf8')
+
           info = JSON.parse(infoContent)
         } catch {
           // No hay info.json, continuar
@@ -476,6 +479,7 @@ export async function GET(req: NextRequest) {
         try {
           const configPath = path.join(componentPath, 'configuration.json')
           const configContent = await fs.readFile(configPath, 'utf8')
+
           configuration = JSON.parse(configContent)
         } catch {
           // No hay configuration.json, continuar

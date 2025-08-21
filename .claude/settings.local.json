@@ -63,7 +63,9 @@
       "Bash(timeout 15s npm run dev)",
       "Bash(npm remove:*)",
       "Bash(mkdir:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(timeout 15s npm run dev:memory-limit)",
+      "Bash(npx next dev:*)"
     ],
     "deny": []
   }

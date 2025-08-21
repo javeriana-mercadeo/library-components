@@ -28,7 +28,7 @@ const ModalForm = {
           development: false,
           debugEmail: '', // Email para debug
           retUrl: 'https://www.javeriana.edu.co/info-prg/thank-you-pregrado',
-          requestOrigin: "Web to Lead",
+          requestOrigin: 'Web to Lead'
         })
 
         await this.formModulesInstance.initialize()

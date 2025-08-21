@@ -4,111 +4,111 @@
 
 function initExperienceCarousel() {
   // Variables globales del componente
-  var experienceSwiper = null;
-  
+  var experienceSwiper = null
+
   // Función para calcular cuántos slides caben visualmente en el viewport
   function getSlidesVisibleInViewport(windowWidth, slideWidth, gap) {
-    var containerPadding = windowWidth < 768 ? 30 : 60;
-    var availableWidth = windowWidth - containerPadding;
-    var slideWithGap = slideWidth + gap;
-    var slidesVisible = Math.floor((availableWidth + gap) / slideWithGap);
-    return Math.max(1, slidesVisible);
+    var containerPadding = windowWidth < 768 ? 30 : 60
+    var availableWidth = windowWidth - containerPadding
+    var slideWithGap = slideWidth + gap
+    var slidesVisible = Math.floor((availableWidth + gap) / slideWithGap)
+    return Math.max(1, slidesVisible)
   }
 
   // Función para determinar configuración según viewport real y slides totales
   function getDisplayConfig(windowWidth, totalSlides) {
-    var slidesPerView, slideWidth, useGrid;
-    var gap = 25;
-    
+    var slidesPerView, slideWidth, useGrid
+    var gap = 25
+
     if (windowWidth < 576) {
-      slidesPerView = 1;
-      slideWidth = 320;
-      useGrid = totalSlides <= 1; // Solo 1 slide = grid, 2+ = swiper
+      slidesPerView = 1
+      slideWidth = 320
+      useGrid = totalSlides <= 1 // Solo 1 slide = grid, 2+ = swiper
     } else if (windowWidth < 768) {
-      slidesPerView = 2;
-      slideWidth = 280;
-      useGrid = totalSlides <= 2; // 1-2 slides = grid, 3+ = swiper
+      slidesPerView = 2
+      slideWidth = 280
+      useGrid = totalSlides <= 2 // 1-2 slides = grid, 3+ = swiper
     } else if (windowWidth < 1024) {
-      slidesPerView = 3;
-      slideWidth = 300;
-      useGrid = totalSlides <= 3; // 1-3 slides = grid, 4+ = swiper
+      slidesPerView = 3
+      slideWidth = 300
+      useGrid = totalSlides <= 3 // 1-3 slides = grid, 4+ = swiper
     } else {
-      slidesPerView = 4;
-      slideWidth = 320;
-      useGrid = totalSlides <= 3; // 1-3 slides = grid, 4+ = swiper
+      slidesPerView = 4
+      slideWidth = 320
+      useGrid = totalSlides <= 3 // 1-3 slides = grid, 4+ = swiper
     }
-    
+
     return {
       slidesPerView: slidesPerView,
       useGrid: useGrid,
       slideWidth: slideWidth,
       gap: gap
-    };
+    }
   }
 
   // Función para activar modo Grid
   function activateGridMode() {
-    var slidesContainer = document.querySelector('.experience-carousel__slides');
-    var paginationEl = document.querySelector('.experience-carousel__pagination');
-    var prevButton = document.querySelector('.experience-carousel__prev');
-    var nextButton = document.querySelector('.experience-carousel__next');
+    var slidesContainer = document.querySelector('.experience-carousel__slides')
+    var paginationEl = document.querySelector('.experience-carousel__pagination')
+    var prevButton = document.querySelector('.experience-carousel__prev')
+    var nextButton = document.querySelector('.experience-carousel__next')
 
     if (slidesContainer) {
-      slidesContainer.classList.add('use-grid');
-      slidesContainer.classList.remove('swiper-wrapper');
+      slidesContainer.classList.add('use-grid')
+      slidesContainer.classList.remove('swiper-wrapper')
     }
 
-    if (paginationEl) paginationEl.style.display = 'none';
-    if (prevButton) prevButton.style.display = 'none';
-    if (nextButton) nextButton.style.display = 'none';
+    if (paginationEl) paginationEl.style.display = 'none'
+    if (prevButton) prevButton.style.display = 'none'
+    if (nextButton) nextButton.style.display = 'none'
 
-    setTimeout(function() {
-      loadVideos();
-    }, 100);
+    setTimeout(function () {
+      loadVideos()
+    }, 100)
   }
 
   // Función para activar modo Swiper
   function activateSwiperMode() {
-    var slidesContainer = document.querySelector('.experience-carousel__slides');
-    var paginationEl = document.querySelector('.experience-carousel__pagination');
-    var prevButton = document.querySelector('.experience-carousel__prev');
-    var nextButton = document.querySelector('.experience-carousel__next');
+    var slidesContainer = document.querySelector('.experience-carousel__slides')
+    var paginationEl = document.querySelector('.experience-carousel__pagination')
+    var prevButton = document.querySelector('.experience-carousel__prev')
+    var nextButton = document.querySelector('.experience-carousel__next')
 
     if (slidesContainer) {
-      slidesContainer.classList.remove('use-grid');
-      slidesContainer.classList.add('swiper-wrapper');
+      slidesContainer.classList.remove('use-grid')
+      slidesContainer.classList.add('swiper-wrapper')
     }
 
-    if (paginationEl) paginationEl.style.display = 'flex';
-    if (prevButton) prevButton.style.display = 'flex';
-    if (nextButton) nextButton.style.display = 'flex';
+    if (paginationEl) paginationEl.style.display = 'flex'
+    if (prevButton) prevButton.style.display = 'flex'
+    if (nextButton) nextButton.style.display = 'flex'
 
-    initializeSwiper();
+    initializeSwiper()
   }
 
   // Función para inicializar Swiper
   function initializeSwiper() {
     // Destruir instancia existente si existe
     if (experienceSwiper) {
-      experienceSwiper.destroy(true, true);
-      experienceSwiper = null;
+      experienceSwiper.destroy(true, true)
+      experienceSwiper = null
     }
 
-    var element = document.querySelector('.experience-carousel__wrapper.experience-swiper');
+    var element = document.querySelector('.experience-carousel__wrapper.experience-swiper')
     if (!element) {
-      var fallbackElement = document.querySelector('.experience-swiper');
+      var fallbackElement = document.querySelector('.experience-swiper')
       if (!fallbackElement) {
-        console.error('Ningún elemento swiper encontrado');
-        return;
+        console.error('Ningún elemento swiper encontrado')
+        return
       }
     }
 
     if (!window.Swiper) {
-      console.error('Swiper no está disponible');
-      return;
+      console.error('Swiper no está disponible')
+      return
     }
 
-    var swiperSelector = element ? '.experience-carousel__wrapper.experience-swiper' : '.experience-swiper';
+    var swiperSelector = element ? '.experience-carousel__wrapper.experience-swiper' : '.experience-swiper'
 
     try {
       experienceSwiper = new window.Swiper(swiperSelector, {
@@ -124,8 +124,8 @@ function initExperienceCarousel() {
           el: '.experience-carousel__pagination',
           clickable: true,
           dynamicBullets: false,
-          renderBullet: function(index, className) {
-            return '<span class="' + className + '" aria-label="Ir a slide ' + (index + 1) + '"></span>';
+          renderBullet: function (index, className) {
+            return '<span class="' + className + '" aria-label="Ir a slide ' + (index + 1) + '"></span>'
           }
         },
 
@@ -140,7 +140,7 @@ function initExperienceCarousel() {
             spaceBetween: 25
           },
           768: {
-            slidesPerView: 'auto', 
+            slidesPerView: 'auto',
             spaceBetween: 25
           },
           1024: {
@@ -150,33 +150,33 @@ function initExperienceCarousel() {
         },
 
         on: {
-          init: function(swiper) {
-            setTimeout(function() {
-              loadVideos();
-            }, 100);
+          init: function (swiper) {
+            setTimeout(function () {
+              loadVideos()
+            }, 100)
           },
-          slideChange: function(swiper) {
-            pauseAllVideos();
+          slideChange: function (swiper) {
+            pauseAllVideos()
           }
         }
-      });
+      })
     } catch (error) {
-      console.error('[EXPERIENCE] Error inicializando Swiper:', error);
+      console.error('[EXPERIENCE] Error inicializando Swiper:', error)
     }
   }
 
   // Sistema de carga de videos
   function loadVideos() {
-    var videoContainers = document.querySelectorAll('.experience-carousel__video-container[data-video-id]');
+    var videoContainers = document.querySelectorAll('.experience-carousel__video-container[data-video-id]')
 
     for (var i = 0; i < videoContainers.length; i++) {
-      var container = videoContainers[i];
-      var videoId = container.getAttribute('data-video-id');
-      var orientation = container.getAttribute('data-video-orientation') || 'vertical';
+      var container = videoContainers[i]
+      var videoId = container.getAttribute('data-video-id')
+      var orientation = container.getAttribute('data-video-orientation') || 'vertical'
 
-      if (!videoId) continue;
+      if (!videoId) continue
 
-      var iframe = document.createElement('iframe');
+      var iframe = document.createElement('iframe')
       var params = new URLSearchParams({
         autoplay: '0',
         mute: '1',
@@ -186,81 +186,81 @@ function initExperienceCarousel() {
         playsinline: '1',
         enablejsapi: '1',
         rel: '0'
-      });
+      })
 
-      iframe.src = 'https://www.youtube.com/embed/' + videoId + '?' + params.toString();
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      iframe.style.border = 'none';
-      iframe.style.opacity = '0';
-      iframe.style.transition = 'opacity 0.5s ease';
-      iframe.allow = 'autoplay; encrypted-media; fullscreen';
-      iframe.allowFullscreen = true;
-      iframe.loading = 'lazy';
+      iframe.src = 'https://www.youtube.com/embed/' + videoId + '?' + params.toString()
+      iframe.style.width = '100%'
+      iframe.style.height = '100%'
+      iframe.style.border = 'none'
+      iframe.style.opacity = '0'
+      iframe.style.transition = 'opacity 0.5s ease'
+      iframe.allow = 'autoplay; encrypted-media; fullscreen'
+      iframe.allowFullscreen = true
+      iframe.loading = 'lazy'
 
-      iframe.addEventListener('load', function() {
-        this.style.opacity = '1';
-        this.classList.add('loaded');
-        this.parentNode.classList.add('video-loaded');
-      });
+      iframe.addEventListener('load', function () {
+        this.style.opacity = '1'
+        this.classList.add('loaded')
+        this.parentNode.classList.add('video-loaded')
+      })
 
-      iframe.addEventListener('error', function() {});
+      iframe.addEventListener('error', function () {})
 
-      container.innerHTML = '';
-      container.appendChild(iframe);
+      container.innerHTML = ''
+      container.appendChild(iframe)
 
-      createMuteButton(container, iframe, videoId);
+      createMuteButton(container, iframe, videoId)
     }
   }
 
   // Función para crear botón de mute personalizado
   function createMuteButton(container, iframe, videoId) {
-    if (window.innerWidth < 1024) return;
+    if (window.innerWidth < 1024) return
 
-    var muteButton = document.createElement('button');
-    muteButton.className = 'video-mute-button';
-    muteButton.setAttribute('aria-label', 'Silenciar/Activar audio del video');
-    muteButton.setAttribute('data-video-id', videoId);
+    var muteButton = document.createElement('button')
+    muteButton.className = 'video-mute-button'
+    muteButton.setAttribute('aria-label', 'Silenciar/Activar audio del video')
+    muteButton.setAttribute('data-video-id', videoId)
 
-    var isMuted = true;
-    updateMuteButtonIcon(muteButton, isMuted);
+    var isMuted = true
+    updateMuteButtonIcon(muteButton, isMuted)
 
-    muteButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+    muteButton.addEventListener('click', function (e) {
+      e.preventDefault()
+      e.stopPropagation()
 
       try {
         if (isMuted) {
-          iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-          isMuted = false;
-          muteButton.classList.remove('muted');
+          iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*')
+          isMuted = false
+          muteButton.classList.remove('muted')
         } else {
-          iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
-          isMuted = true;
-          muteButton.classList.add('muted');
+          iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*')
+          isMuted = true
+          muteButton.classList.add('muted')
         }
 
-        updateMuteButtonIcon(muteButton, isMuted);
+        updateMuteButtonIcon(muteButton, isMuted)
       } catch (error) {
-        console.error('[VIDEO] Error controlando audio: ' + videoId, error);
+        console.error('[VIDEO] Error controlando audio: ' + videoId, error)
       }
-    });
+    })
 
-    container.appendChild(muteButton);
+    container.appendChild(muteButton)
   }
 
   // Función para actualizar el ícono del botón de mute
   function updateMuteButtonIcon(button, isMuted) {
-    var iconClass = isMuted ? 'ph-speaker-slash' : 'ph-speaker-high';
-    button.innerHTML = '<i class="ph ' + iconClass + '"></i>';
+    var iconClass = isMuted ? 'ph-speaker-slash' : 'ph-speaker-high'
+    button.innerHTML = '<i class="ph ' + iconClass + '"></i>'
   }
 
   // Función para pausar videos
   function pauseAllVideos() {
-    var videos = document.querySelectorAll('.experience-carousel__video-container iframe');
+    var videos = document.querySelectorAll('.experience-carousel__video-container iframe')
     for (var i = 0; i < videos.length; i++) {
       try {
-        videos[i].contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        videos[i].contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
       } catch (e) {
         // Silenciar errores cross-origin
       }
@@ -269,98 +269,116 @@ function initExperienceCarousel() {
 
   // Función para manejar resize y mostrar/ocultar botones de mute
   function handleResize() {
-    var muteButtons = document.querySelectorAll('.video-mute-button');
-    var isDesktop = window.innerWidth >= 1024;
+    var muteButtons = document.querySelectorAll('.video-mute-button')
+    var isDesktop = window.innerWidth >= 1024
 
     for (var i = 0; i < muteButtons.length; i++) {
-      muteButtons[i].style.display = isDesktop ? 'flex' : 'none';
+      muteButtons[i].style.display = isDesktop ? 'flex' : 'none'
     }
   }
 
   // Función principal para decidir qué modo usar
   function initializeCarousel() {
-    var slides = document.querySelectorAll('.experience-carousel__slide');
-    var totalSlides = slides.length;
-    var windowWidth = window.innerWidth;
+    var slides = document.querySelectorAll('.experience-carousel__slide')
+    var totalSlides = slides.length
+    var windowWidth = window.innerWidth
 
-    var config = getDisplayConfig(windowWidth, totalSlides);
+    var config = getDisplayConfig(windowWidth, totalSlides)
 
-    console.log('[INIT] Ventana: ' + windowWidth + 'px, Slides: ' + totalSlides + ', Visibles: ' + config.slidesPerView + ', Usar Grid: ' + config.useGrid);
+    console.log(
+      '[INIT] Ventana: ' +
+        windowWidth +
+        'px, Slides: ' +
+        totalSlides +
+        ', Visibles: ' +
+        config.slidesPerView +
+        ', Usar Grid: ' +
+        config.useGrid
+    )
 
     if (config.useGrid) {
-      console.log('[INIT] Activando modo Grid');
-      activateGridMode();
+      console.log('[INIT] Activando modo Grid')
+      activateGridMode()
     } else {
-      console.log('[INIT] Activando modo Swiper');
-      activateSwiperMode();
+      console.log('[INIT] Activando modo Swiper')
+      activateSwiperMode()
     }
   }
 
   // Función para manejar resize y recalcular modo
   function handleCarouselResize() {
-    var slides = document.querySelectorAll('.experience-carousel__slide');
-    var totalSlides = slides.length;
-    var windowWidth = window.innerWidth;
+    var slides = document.querySelectorAll('.experience-carousel__slide')
+    var totalSlides = slides.length
+    var windowWidth = window.innerWidth
 
-    var config = getDisplayConfig(windowWidth, totalSlides);
-    var currentlyUsingGrid = document.querySelector('.experience-carousel__slides.use-grid');
+    var config = getDisplayConfig(windowWidth, totalSlides)
+    var currentlyUsingGrid = document.querySelector('.experience-carousel__slides.use-grid')
 
-    console.log('[RESIZE] Ventana: ' + windowWidth + 'px, Slides: ' + totalSlides + ', Visibles: ' + config.slidesPerView + ', Usar Grid: ' + config.useGrid);
+    console.log(
+      '[RESIZE] Ventana: ' +
+        windowWidth +
+        'px, Slides: ' +
+        totalSlides +
+        ', Visibles: ' +
+        config.slidesPerView +
+        ', Usar Grid: ' +
+        config.useGrid
+    )
 
     if (config.useGrid && !currentlyUsingGrid) {
-      console.log('[RESIZE] Cambiando a modo Grid');
+      console.log('[RESIZE] Cambiando a modo Grid')
       if (experienceSwiper) {
-        experienceSwiper.destroy(true, true);
-        experienceSwiper = null;
+        experienceSwiper.destroy(true, true)
+        experienceSwiper = null
       }
-      activateGridMode();
+      activateGridMode()
     } else if (!config.useGrid && currentlyUsingGrid) {
-      console.log('[RESIZE] Cambiando a modo Swiper');
-      activateSwiperMode();
+      console.log('[RESIZE] Cambiando a modo Swiper')
+      activateSwiperMode()
     }
 
-    handleResize();
+    handleResize()
   }
 
   // Inicialización principal
   function checkAndInit() {
     if (typeof window !== 'undefined') {
-      initializeCarousel();
-      window.addEventListener('resize', handleCarouselResize);
+      initializeCarousel()
+      window.addEventListener('resize', handleCarouselResize)
     } else {
-      setTimeout(checkAndInit, 300);
+      setTimeout(checkAndInit, 300)
     }
   }
 
   // Inicialización automática cuando el DOM esté listo
   if (typeof document !== 'undefined') {
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', checkAndInit);
+      document.addEventListener('DOMContentLoaded', checkAndInit)
     } else {
-      checkAndInit();
+      checkAndInit()
     }
   }
 
   // Inicialización automática para Liferay
-  checkAndInit();
+  checkAndInit()
 }
 
 // Export para Next.js - ES modules
-export default initExperienceCarousel;
+export default initExperienceCarousel
 
 // Export para entornos CommonJS también
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = initExperienceCarousel;
+  module.exports = initExperienceCarousel
 }
 
 // Auto-inicialización para Liferay cuando se carga el script
 if (typeof window !== 'undefined' && !window.initExperienceCarousel) {
-  window.initExperienceCarousel = initExperienceCarousel;
-  
+  window.initExperienceCarousel = initExperienceCarousel
+
   // Si el DOM ya está listo, inicializar automáticamente
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initExperienceCarousel);
+    document.addEventListener('DOMContentLoaded', initExperienceCarousel)
   } else {
-    initExperienceCarousel();
+    initExperienceCarousel()
   }
 }

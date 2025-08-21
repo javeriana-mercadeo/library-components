@@ -146,7 +146,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
       if (children) {
         try {
           const htmlString = ReactDOMServer.renderToString(children)
-          
+
           // Limpiar específicamente los links de preload que genera Next.js
           const cleanedHtml = htmlString
             .replace(/<link[^>]*rel="preload"[^>]*>/g, '') // Remover links de preload
@@ -156,7 +156,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
             .replace(/\s*fetchpriority="[^"]*"/g, '') // Remover fetchpriority
             .replace(/\s*data-nimg="[^"]*"/g, '') // Remover data-nimg de Next.js
             .replace(/\n\s*\n/g, '\n') // Limpiar líneas vacías extra
-          
+
           htmlContent = await processWithLimit(cleanedHtml, 'html')
         } catch (error) {
           console.error('Error renderizando HTML:', error)

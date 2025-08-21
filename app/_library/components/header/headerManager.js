@@ -329,7 +329,7 @@ const ContactModal = {
       } catch (error) {
         if (typeof Logger !== 'undefined' && Logger.error) {
           Logger.error('📋 [MODAL] Error al inicializar formulario:', error)
-        } else {  
+        } else {
           console.error('Error al inicializar formulario del modal:', error)
         }
       }

@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import { Container, Caption, Title, Paragraph, Button as Btn } from '@library/components'
 import ProgramDetail from './components/ProgramDetail.jsx'
 
@@ -12,10 +11,10 @@ const DatosProgramaVideo = () => {
   const elementName = info.id || 'datos-programa-video'
   const baseClass = 'program-data'
 
-  // Inicializar script cuando el componente se monta
-  useEffect(() => {
+  // Inicializar script inmediatamente (sin useEffect)
+  if (typeof window !== 'undefined') {
     script()
-  }, [])
+  }
 
   // Configuración de todos los detalles del programa
   const details = [
@@ -133,12 +132,21 @@ const DatosProgramaVideo = () => {
         </Paragraph>
 
         {/* === VIDEOS RESPONSIVOS === */}
-        <div
-          id={`${baseClass}-media`}
-          className={`${baseClass}_media`}
-          data-video-mobile='HxlTZ8DQAaY'
-          data-video-desktop='-dHyNNd5BM4'
-          data-breakpoint='768'></div>
+        <div className={`${baseClass}_media`}>
+          <div className={`${baseClass}_video-card`}>
+            <div
+              className={`${baseClass}_video-container`}
+              data-component="video-player"
+              data-video-mobile="HxlTZ8DQAaY"
+              data-video-desktop="-dHyNNd5BM4"
+            >
+              <div className="alert alert-info error-message" hidden role="alert">
+                <p>Error al cargar el video.</p>
+                <p>Por favor, verifica la conexión a internet.</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* === DETALLES DEL PROGRAMA === */}
         <div className='program-details'>

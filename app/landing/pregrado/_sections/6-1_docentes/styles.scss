@@ -97,7 +97,9 @@ $nav-api-button-size-mobile: rem(40px);
   }
 
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   // ==========================================
@@ -216,7 +218,7 @@ $nav-api-button-size-mobile: rem(40px);
     background-color: rgba(var(--neutral-rgb), 0.1);
     border-radius: 50%;
     color: var(--neutral);
-    
+
     i {
       font-size: rem(80px);
       opacity: 0.5;

@@ -78,6 +78,7 @@ function extractExports(content: string): string[] {
 
     // export const/let/var NAME
     const constMatch = trimmed.match(/^export\s+(const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/)
+
     if (constMatch) {
       exports.push(constMatch[2])
       continue
@@ -85,6 +86,7 @@ function extractExports(content: string): string[] {
 
     // export function NAME
     const funcMatch = trimmed.match(/^export\s+function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/)
+
     if (funcMatch) {
       exports.push(funcMatch[1])
       continue
@@ -92,6 +94,7 @@ function extractExports(content: string): string[] {
 
     // export class NAME
     const classMatch = trimmed.match(/^export\s+class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/)
+
     if (classMatch) {
       exports.push(classMatch[1])
       continue
@@ -99,8 +102,10 @@ function extractExports(content: string): string[] {
 
     // export { name1, name2 }
     const namedMatch = trimmed.match(/^export\s*\{\s*([^}]+)\s*\}/)
+
     if (namedMatch) {
       const names = namedMatch[1].split(',').map(n => n.trim().split(' as ')[0].trim())
+
       exports.push(...names)
       continue
     }
@@ -113,6 +118,7 @@ function extractExports(content: string): string[] {
 async function resolveJavaScriptImports(jsContent: string, basePath: string, visited = new Set<string>()): Promise<string> {
   if (!jsContent) {
     console.log('⚠️ No hay contenido JS para resolver')
+
     return ''
   }
 
@@ -123,6 +129,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
   // Buscar todas las líneas de import con regex más específico
   const importLines = jsContent.split('\n').filter(line => {
     const trimmed = line.trim()
+
     return trimmed.startsWith('import ') && trimmed.includes('from ')
   })
 
@@ -131,6 +138,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
   if (importLines.length === 0) {
     console.log(`✅ No hay imports que resolver, devolviendo contenido original`)
+
     return jsContent
   }
 
@@ -150,6 +158,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
       }
 
       const importPath = importMatch[1]
+
       console.log(`📁 Ruta extraída: ${importPath}`)
 
       // Construir la ruta absoluta
@@ -212,6 +221,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
       // Leer el archivo importado
       const importedContent = await fs.readFile(resolvedPath, 'utf8')
+
       console.log(`📖 Archivo leído: ${resolvedPath} (${importedContent.length} chars)`)
 
       // Recursivamente resolver imports del archivo importado
@@ -219,6 +229,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
       // Extraer exports antes de limpiar
       const moduleExports = extractExports(resolvedImported)
+
       console.log(`📤 Exports encontrados en ${importPath}: ${moduleExports.join(', ')}`)
 
       // Verificar conflictos de nombres
@@ -230,7 +241,9 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
         // Renombrar conflictos agregando sufijo
         processedContent = conflicts.reduce((content, conflict) => {
           const newName = `${conflict}_${path.basename(importPath, path.extname(importPath))}`
+
           console.log(`🔄 Renombrando ${conflict} -> ${newName}`)
+
           return content.replace(new RegExp(`\\b${conflict}\\b`, 'g'), newName)
         }, processedContent)
 
@@ -311,6 +324,7 @@ function cleanJavaScriptExports(content: string): string {
   // Primero manejar exports multi-línea con llaves
   let cleanedContent = content.replace(/export\s*\{[\s\S]*?\}/g, match => {
     console.log(`🗑️ Removiendo export multi-línea: ${match.replace(/\n/g, '\\n')}`)
+
     return '// ' + match.replace(/\n/g, '\n// ')
   })
 
@@ -326,42 +340,54 @@ function cleanJavaScriptExports(content: string): string {
     // Convertir export function a function normal
     if (trimmed.startsWith('export function ')) {
       const cleaned = line.replace('export function ', 'function ')
+
       console.log(`🔄 Export function: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
     // Convertir export const a const normal
     if (trimmed.startsWith('export const ')) {
       const cleaned = line.replace('export const ', 'const ')
+
       console.log(`🔄 Export const: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
     // Convertir export let a let normal
     if (trimmed.startsWith('export let ')) {
       const cleaned = line.replace('export let ', 'let ')
+
       console.log(`🔄 Export let: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
     // Convertir export var a var normal
     if (trimmed.startsWith('export var ')) {
       const cleaned = line.replace('export var ', 'var ')
+
       console.log(`🔄 Export var: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
     // Convertir export class a class normal
     if (trimmed.startsWith('export class ')) {
       const cleaned = line.replace('export class ', 'class ')
+
       console.log(`🔄 Export class: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
     // Eliminar export default (mantener solo la declaración)
     if (trimmed.startsWith('export default ')) {
       const cleaned = line.replace('export default ', '')
+
       console.log(`🔄 Export default: ${trimmed} → ${cleaned.trim()}`)
+
       return cleaned
     }
 
@@ -375,6 +401,7 @@ function cleanJavaScriptExports(content: string): string {
       !trimmed.includes('class')
     ) {
       console.log(`🗑️ Removiendo export simple: ${trimmed}`)
+
       return '// ' + line
     }
 
@@ -382,7 +409,9 @@ function cleanJavaScriptExports(content: string): string {
   })
 
   const result = cleanedLines.join('\n')
+
   console.log(`✅ Exports limpiados`)
+
   return result
 }
 

@@ -12,21 +12,25 @@ Este es un ejemplo funcional de cómo implementar la sección de docentes consum
 ## Funcionalidades
 
 ### 1. Consumo de API
+
 - Consume la API: `https://dti-pru.javeriana.edu.co/api-portal/investigadores?idProgramaAcademico={CODIGO}`
 - Maneja estados de carga, error y datos vacíos
 - Parsea la estructura de datos de la respuesta
 
 ### 2. Evento personalizado
+
 - Escucha el evento `data_load-program` para obtener el código del programa
 - Botón para simular el evento y probar la funcionalidad
 
 ### 3. Interfaz de usuario
+
 - Carrusel responsive con Swiper.js
 - Tarjetas de docentes con imagen, nombre, cargo y enlace al perfil
 - Placeholder para imágenes faltantes
 - Estados visuales para carga, error y datos vacíos
 
 ### 4. Debug y monitoreo
+
 - Panel de debug que muestra logs en tiempo real
 - Información detallada sobre eventos y respuestas de API
 
@@ -51,8 +55,8 @@ La API devuelve un objeto con la siguiente estructura:
   "investigadores": [
     {
       "emplid": "string",
-      "uuid": "string", 
-      "foto": [{"url": "string"}],
+      "uuid": "string",
+      "foto": [{ "url": "string" }],
       "nombresApellidos": {
         "nombres": "string",
         "apellidos": "string"

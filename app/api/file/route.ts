@@ -18,6 +18,7 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
 
     if (!hasCSS && !hasJS) {
       console.log(`⚠️ [FILE-ROUTE] No hay contenido para guardar, saltando creación de archivos`)
+
       return
     }
 
