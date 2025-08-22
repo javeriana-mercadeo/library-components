@@ -34,9 +34,9 @@ export default function Profesional() {
       </ViewComponent>
 
       {/* <Datos /> */}
-      <ViewComponent path={`${basePath}/_sections/1_datos`}>
+      {/* <ViewComponent path={`${basePath}/_sections/1_datos`}>
         <Datos />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <DobleDatos /> */}
       <ViewComponent path={`${basePath}/_sections/1-1_dobleDatos`}>

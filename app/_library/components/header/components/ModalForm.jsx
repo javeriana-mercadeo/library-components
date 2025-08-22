@@ -152,7 +152,7 @@ const ModalForm = () => {
                 <div className='authorization-section'>
                   <p>
                     ¿Autorizas el tratamiento de tus datos personales de acuerdo con la
-                    <a href='https://www.javeriana.edu.co/recursosdb/20125/12161151/politica-de-proteccion-de-datos-personales-universidad-javeriana.pdf' target='_blank'>
+                    <a href='https://www.javeriana.edu.co/recursosdb/20125/12161151/politica-de-proteccion-de-datos-personales-universidad-javeriana.pdf' rel='noopener noreferrer' target='_blank'>
                       Política de Protección de Datos Personales
                     </a>
                     ?
