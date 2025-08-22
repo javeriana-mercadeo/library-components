@@ -36,7 +36,7 @@ const ProgramDetail = ({ id, icon, label, value, value2, prefix, prefix2, type =
     [type, className]
   )
 
-  const modalId = useMemo(() => `modal-${id}-${Date.now().toString(36)}`, [id])
+  const modalId = useMemo(() => `modal-${id}`, [id])
 
   const dynamicAttributes = useMemo(() => generateDynamicAttributes(id), [id])
 

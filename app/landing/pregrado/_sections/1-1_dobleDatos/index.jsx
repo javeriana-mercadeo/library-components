@@ -65,8 +65,8 @@ const DatosProgramaVideo = () => {
       icon: 'ph-clock',
       label: 'Horario',
       value: 'Cargando horario...',
-      value2: 'Horario adicional...',
-      prefix: 'Diurno',
+      value2: '',
+      prefix: '',
       prefix2: 'Nocturno',
       type: 'doble'
     }
