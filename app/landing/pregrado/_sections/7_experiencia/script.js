@@ -64,6 +64,7 @@ function initExperienceCarousel() {
 
     setTimeout(function() {
       loadVideos();
+      setupVideoClickDetection();
     }, 100);
   }
 
@@ -153,6 +154,7 @@ function initExperienceCarousel() {
           init: function(swiper) {
             setTimeout(function() {
               loadVideos();
+              setupVideoClickDetection();
             }, 100);
           },
           slideChange: function(swiper) {
@@ -255,12 +257,19 @@ function initExperienceCarousel() {
     button.innerHTML = '<i class="ph ' + iconClass + '"></i>';
   }
 
-  // Función para pausar videos
-  function pauseAllVideos() {
+  // Función para pausar videos (con excepción opcional)
+  function pauseAllVideos(exceptIframe) {
     var videos = document.querySelectorAll('.experience-carousel__video-container iframe');
     for (var i = 0; i < videos.length; i++) {
+      var iframe = videos[i];
+      
+      // Saltar el iframe que se está reproduciendo
+      if (exceptIframe && iframe === exceptIframe) {
+        continue;
+      }
+      
       try {
-        videos[i].contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
       } catch (e) {
         // Silenciar errores cross-origin
       }
@@ -293,6 +302,58 @@ function initExperienceCarousel() {
     } else {
       console.log('[INIT] Activando modo Swiper');
       activateSwiperMode();
+    }
+  }
+
+  // Función para detectar clics en videos y pausar otros
+  function setupVideoClickDetection() {
+    var videoContainers = document.querySelectorAll('.experience-carousel__video-container');
+    
+    for (var i = 0; i < videoContainers.length; i++) {
+      var container = videoContainers[i];
+      var iframe = container.querySelector('iframe');
+      
+      if (!iframe || container.querySelector('.video-click-detector')) {
+        continue; // Saltar si no hay iframe o ya tiene detector
+      }
+      
+      // Crear overlay invisible para detectar clics
+      var overlay = document.createElement('div');
+      overlay.className = 'video-click-detector';
+      overlay.style.position = 'absolute';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.width = '100%';
+      overlay.style.height = '100%';
+      overlay.style.zIndex = '5';
+      overlay.style.cursor = 'pointer';
+      overlay.style.backgroundColor = 'transparent';
+      overlay.style.pointerEvents = 'auto';
+      
+      // Agregar data attribute para identificar el iframe
+      overlay.setAttribute('data-iframe-id', 'iframe-' + i);
+      iframe.setAttribute('data-iframe-id', 'iframe-' + i);
+      
+      overlay.addEventListener('click', function(e) {
+        var currentIframe = this.parentNode.querySelector('iframe');
+        
+        // Pausar todos los otros videos excepto este
+        pauseAllVideos(currentIframe);
+        
+        // Remover el overlay temporalmente para permitir interacción
+        this.style.pointerEvents = 'none';
+        this.style.display = 'none';
+        
+        // Volver a activar el overlay después de un tiempo
+        var self = this;
+        setTimeout(function() {
+          self.style.pointerEvents = 'auto';
+          self.style.display = 'block';
+        }, 2000); // 2 segundos para que el usuario pueda interactuar
+      });
+      
+      container.style.position = 'relative';
+      container.appendChild(overlay);
     }
   }
 
