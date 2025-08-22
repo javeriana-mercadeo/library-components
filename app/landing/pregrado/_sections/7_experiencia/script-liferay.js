@@ -179,7 +179,7 @@ if (typeof module === 'undefined' && typeof exports === 'undefined') {
       if (!videoId) continue;
 
       var iframe = document.createElement('iframe');
-      var params = 'autoplay=0&mute=1&loop=0&controls=1&modestbranding=1&playsinline=1&enablejsapi=1&rel=0';
+      var params = 'autoplay=0&mute=0&loop=0&controls=1&modestbranding=1&playsinline=1&enablejsapi=1&rel=0';
 
       iframe.src = 'https://www.youtube.com/embed/' + videoId + '?' + params;
       iframe.style.width = '100%';
@@ -215,7 +215,7 @@ if (typeof module === 'undefined' && typeof exports === 'undefined') {
     muteButton.setAttribute('aria-label', 'Silenciar/Activar audio del video');
     muteButton.setAttribute('data-video-id', videoId);
 
-    var isMuted = true;
+    var isMuted = false;
     updateMuteButtonIcon(muteButton, isMuted);
 
     muteButton.addEventListener('click', function(e) {

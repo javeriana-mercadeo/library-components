@@ -179,7 +179,7 @@ function initExperienceCarousel() {
       var iframe = document.createElement('iframe');
       var params = new URLSearchParams({
         autoplay: '0',
-        mute: '1',
+        mute: '0',
         loop: '0',
         controls: '1',
         modestbranding: '1',
@@ -222,7 +222,7 @@ function initExperienceCarousel() {
     muteButton.setAttribute('aria-label', 'Silenciar/Activar audio del video');
     muteButton.setAttribute('data-video-id', videoId);
 
-    var isMuted = true;
+    var isMuted = false;
     updateMuteButtonIcon(muteButton, isMuted);
 
     muteButton.addEventListener('click', function(e) {
