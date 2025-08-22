@@ -30,6 +30,11 @@ $nav-button-size-mobile: rem(40px);
     min-height: rem(600px);
   }
 
+  .paragraph i {
+    font-style: normal !important;
+    color: var(--primary);
+  }
+
   // ==========================================
   // TÍTULOS Y DESCRIPCIÓN
   // ==========================================

@@ -11,46 +11,46 @@ import './styles.scss'
 const Investigaciones = () => {
   const elementName = info.id || 'investigaciones'
   const baseClass = 'investigations'
-  
+
   // Modal manejado completamente por JavaScript vanilla
 
   useEffect(() => {
     script()
-    
+
     // Sincronizar alturas después de que se rendericen las cards
     const syncCardHeights = () => {
       const mainCard = document.querySelector('.investigations_card--main')
       const secondaryCards = document.querySelectorAll('.investigations_card--secondary')
-      
+
       if (mainCard && secondaryCards.length > 0) {
         // Resetear alturas para obtener altura natural
         mainCard.style.height = 'auto'
-        secondaryCards.forEach(card => card.style.height = 'auto')
-        
+        secondaryCards.forEach(card => (card.style.height = 'auto'))
+
         // Obtener todas las alturas
         const allCards = [mainCard, ...Array.from(secondaryCards)]
         const heights = allCards.map(card => card.offsetHeight)
         const maxHeight = Math.max(...heights)
-        
+
         // Aplicar la altura máxima a todas las cards
         allCards.forEach(card => {
           card.style.height = `${maxHeight}px`
         })
-        
+
         console.log('[INVESTIGATIONS] Alturas sincronizadas:', maxHeight + 'px')
       }
     }
-    
+
     // Ejecutar después de que se rendericen las cards
     setTimeout(syncCardHeights, 500)
-    
+
     // También sincronizar en resize
     const handleResize = () => {
       setTimeout(syncCardHeights, 100)
     }
-    
+
     window.addEventListener('resize', handleResize)
-    
+
     return () => {
       window.removeEventListener('resize', handleResize)
     }
@@ -120,16 +120,12 @@ const Investigaciones = () => {
   // ==========================================
   // RENDERIZAR CARD PRINCIPAL FIJA
   // ==========================================
-  const renderMainCard = (investigacion) => {
+  const renderMainCard = investigacion => {
     const { id, year, title, description, image, alt } = investigacion
 
     return (
       <div className={`${baseClass}_main-card`}>
-        <div 
-          className={`${baseClass}_card ${baseClass}_card--main investigations_card`}
-          role='button'
-          tabIndex={0}
-        >
+        <div className={`${baseClass}_card ${baseClass}_card--main investigations_card`} role='button' tabIndex={0}>
           <Image
             id={`image-${elementName}-${id}`}
             src={image}
@@ -137,22 +133,19 @@ const Investigaciones = () => {
             className={`${baseClass}_image ${baseClass}_image--main`}
             loading='lazy'
           />
-          
+
           <div className={`${baseClass}_content`}>
             <span className={`${baseClass}_badge`}>{year}</span>
-            
-            <Title 
-              hierarchy='h3' 
-              isEditable={false} 
-              className={`${baseClass}_title`}
-              size='lg'
-              weight='semibold'
-            >
+
+            <Title hierarchy='h3' isEditable={false} className={`${baseClass}_title`} size='lg' weight='semibold'>
               {title}
             </Title>
-            
+
             <Paragraph className={`${baseClass}_description`}>
               {description}
+              <span>
+                <i class='ph ph-arrow-square-in'></i>
+              </span>
             </Paragraph>
           </div>
         </div>
@@ -168,11 +161,7 @@ const Investigaciones = () => {
 
     return (
       <div key={id} className={`${baseClass}_slide ${baseClass}_slide--secondary swiper-slide`} role='listitem'>
-        <div 
-          className={`${baseClass}_card ${baseClass}_card--secondary investigations_card`}
-          role='button'
-          tabIndex={0}
-        >
+        <div className={`${baseClass}_card ${baseClass}_card--secondary investigations_card`} role='button' tabIndex={0}>
           <Image
             id={`image-${elementName}-${id}`}
             src={image}
@@ -180,22 +169,19 @@ const Investigaciones = () => {
             className={`${baseClass}_image ${baseClass}_image--secondary`}
             loading='lazy'
           />
-          
+
           <div className={`${baseClass}_content`}>
             <span className={`${baseClass}_badge`}>{year}</span>
-            
-            <Title 
-              hierarchy='h3' 
-              isEditable={false} 
-              className={`${baseClass}_title`}
-              size='md'
-              weight='semibold'
-            >
+
+            <Title hierarchy='h3' isEditable={false} className={`${baseClass}_title`} size='md' weight='semibold'>
               {title}
             </Title>
-            
+
             <Paragraph className={`${baseClass}_description`}>
               {description}
+              <span>
+                <i class='ph ph-arrow-square-in'></i>
+              </span>
             </Paragraph>
           </div>
         </div>
@@ -213,9 +199,7 @@ const Investigaciones = () => {
         {/* Layout de dos columnas: Card fija + Swiper */}
         <div className={`${baseClass}_layout`}>
           {/* Columna izquierda - Card principal fija */}
-          <div className={`${baseClass}_fixed-column`}>
-            {mainInvestigacion && renderMainCard(mainInvestigacion)}
-          </div>
+          <div className={`${baseClass}_fixed-column`}>{mainInvestigacion && renderMainCard(mainInvestigacion)}</div>
 
           {/* Columna derecha - Swiper con cards secundarias */}
           <div className={`${baseClass}_slider-column`}>
