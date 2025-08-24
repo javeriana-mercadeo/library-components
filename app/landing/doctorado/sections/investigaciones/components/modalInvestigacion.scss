@@ -276,6 +276,7 @@ $content-width: 55%;
   margin-bottom: var(--spacing-lg);
   color: var(--neutral-100);
   line-height: 1.2;
+  font-weight: var(--font-weight-bold);
 
   @include dark-theme {
     color: var(--neutral-100);
@@ -294,24 +295,27 @@ $content-width: 55%;
 
 .investigations-modal__metadata-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--spacing-sm);
 }
 
 .investigations-modal__label {
-  font-weight: var(--font-weight-semibold);
-  color: var(--neutral-600);
+  font-weight: var(--font-weight-bold);
+  color: var(--neutral-100);
   min-width: rem(80px);
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-base);
+  flex-shrink: 0;
+  line-height: 1.6; // Mismo line-height que la descripción
+  margin-top: 0;    // Asegurar que no tenga margen superior
 
   @include dark-theme {
-    color: var(--neutral-400);
+    color: var(--neutral-200);
   }
 }
 
 .investigations-modal__value {
   color: var(--neutral-100);
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-base);
 
   @include dark-theme {
     color: var(--neutral-200);
@@ -324,6 +328,7 @@ $content-width: 55%;
 .investigations-modal__description {
   color: var(--neutral-300);
   line-height: 1.6;
+  flex: 1;
 
   p {
     margin-bottom: var(--spacing-lg);

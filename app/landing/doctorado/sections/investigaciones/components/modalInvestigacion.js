@@ -95,7 +95,6 @@ const ModalInvestigacion = {
 
             <!-- Información -->
             <div class="investigations-modal__info">
-              <span class="investigations-modal__badge" id="modal-year">2024</span>
               <h2 class="investigations-modal__title" id="modal-title">Título de la Investigación</h2>
 
               <!-- Metadatos -->
@@ -111,10 +110,13 @@ const ModalInvestigacion = {
               </div>
 
               <!-- Descripción -->
-              <div class="investigations-modal__description">
-                <p id="modal-description">Descripción de la investigación...</p>
-                <p>Esta investigación aborda los complejos desafíos que enfrentan las sociedades latinoamericanas en el siglo XXI, analizando desde una perspectiva interdisciplinaria los factores económicos, políticos y culturales que configuran la región.</p>
-                <p>El estudio incluye un análisis comparativo entre diferentes países de la región, identificando patrones comunes y particularidades específicas que contribuyen a una mejor comprensión de la dinámica social contemporánea.</p>
+              <div class="investigations-modal__metadata-item">
+                <span class="investigations-modal__label">Descripción:</span>
+                <div class="investigations-modal__description">
+                  <p id="modal-description">Descripción de la investigación...</p>
+                  <p>Esta investigación aborda los complejos desafíos que enfrentan las sociedades latinoamericanas en el siglo XXI, analizando desde una perspectiva interdisciplinaria los factores económicos, políticos y culturales que configuran la región.</p>
+                  <p>El estudio incluye un análisis comparativo entre diferentes países de la región, identificando patrones comunes y particularidades específicas que contribuyen a una mejor comprensión de la dinámica social contemporánea.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -296,15 +298,11 @@ const ModalInvestigacion = {
 
   updateModalContent(data) {
     const modalTitle = document.getElementById('modal-title')
-    const modalYear = document.getElementById('modal-year')
     const modalDescription = document.getElementById('modal-description')
     const imagesContainer = document.getElementById('modal-images-container')
 
     if (modalTitle && data.title) {
       modalTitle.textContent = data.title
-    }
-    if (modalYear && data.year) {
-      modalYear.textContent = data.year
     }
     if (modalDescription && data.description) {
       modalDescription.textContent = data.description
