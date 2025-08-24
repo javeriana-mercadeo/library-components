@@ -6,6 +6,64 @@ const ModalInvestigacion = {
   isInitialized: false,
   modalHTML: null,
 
+  // Función helper para generar HTML del botón iconOnly siguiendo el patrón del sistema Btn
+  generateIconOnlyButton({ variant = 'light', color = 'secondary', size = 'md', icon = 'ph ph-x', ariaLabel = 'Cerrar modal', className = '' }) {
+    const sizeClasses = {
+      sm: 'w-8 h-8 text-sm',
+      md: 'w-10 h-10 text-base', 
+      lg: 'w-12 h-12 text-lg'
+    }
+
+    const baseClasses = `
+      inline-flex items-center justify-center
+      rounded-lg border-0 cursor-pointer
+      transition-all duration-200 ease-in-out
+      focus:outline-none focus:ring-2 focus:ring-offset-2
+      ${sizeClasses[size]}
+    `
+
+    const variantColorClasses = {
+      light: {
+        primary: 'bg-primary-50 hover:bg-primary-100 text-primary-600 hover:text-primary-700 focus:ring-primary-500',
+        secondary: 'bg-neutral-200 hover:bg-neutral-300 text-neutral-600 hover:text-neutral-800 focus:ring-neutral-500',
+        danger: 'bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 focus:ring-red-500'
+      },
+      solid: {
+        primary: 'bg-primary text-white hover:bg-primary-600 focus:ring-primary-500',
+        secondary: 'bg-neutral-600 text-white hover:bg-neutral-700 focus:ring-neutral-500',
+        danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500'
+      },
+      bordered: {
+        primary: 'border border-primary-300 text-primary-600 hover:bg-primary-50 focus:ring-primary-500',
+        secondary: 'border border-neutral-300 text-neutral-600 hover:bg-neutral-50 focus:ring-neutral-500',
+        danger: 'border border-red-300 text-red-600 hover:bg-red-50 focus:ring-red-500'
+      },
+      ghost: {
+        primary: 'bg-transparent text-primary hover:text-primary-600 focus:ring-primary-500',
+        secondary: 'bg-transparent text-neutral-600 hover:text-neutral-700 focus:ring-neutral-500',
+        danger: 'bg-transparent text-red-600 hover:text-red-700 focus:ring-red-500'
+      }
+    }
+
+    const colorClasses = variantColorClasses[variant]?.[color] || variantColorClasses.light.secondary
+
+    // Estilo hover personalizado para ghost con fondo translúcido
+    const hoverStyles = variant === 'ghost' ? `
+      style="transition: all 0.2s ease-in-out;"
+      onmouseenter="this.style.background='rgba(var(--primary-rgb, 59, 130, 246), 0.18)'"
+      onmouseleave="this.style.background='transparent'"
+    ` : ''
+
+    return `
+      <button class="${baseClasses} ${colorClasses} ${className} investigations-modal__close" 
+              aria-label="${ariaLabel}" 
+              type="button"
+              ${hoverStyles}>
+        <i class="${icon}" aria-hidden="true" style="font-size: 20px; font-weight: 500;"></i>
+      </button>
+    `
+  },
+
   // Crear el modal dinámicamente en el DOM
   createModal() {
     if (document.querySelector('.investigations-modal-overlay')) {
@@ -26,9 +84,13 @@ const ModalInvestigacion = {
           <div class="investigations-modal__content">
             <!-- Header con botón cerrar -->
             <div class="investigations-modal__header">
-              <button class="investigations-modal__close" aria-label="Cerrar modal" type="button">
-                <i class="ph ph-x"></i>
-              </button>
+              ${this.generateIconOnlyButton({
+                variant: 'ghost',
+                color: 'primary', 
+                size: 'md',
+                icon: 'ph ph-x',
+                ariaLabel: 'Cerrar modal'
+              })}
             </div>
 
             <!-- Información -->

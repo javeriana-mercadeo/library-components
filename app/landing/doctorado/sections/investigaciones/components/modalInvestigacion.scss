@@ -239,36 +239,8 @@ $content-width: 55%;
   flex-shrink: 0;
 }
 
-.investigations-modal__close {
-  width: rem(40px);
-  height: rem(40px);
-  border-radius: 50%;
-  border: none;
-  background: var(--neutral-200);
-  color: var(--neutral-600);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  font-size: rem(20px);
-
-  &:hover {
-    background: var(--neutral-300);
-    color: var(--neutral-800);
-    transform: scale(1.1);
-  }
-
-  @include dark-theme {
-    background: var(--neutral-700);
-    color: var(--neutral-300);
-
-    &:hover {
-      background: var(--neutral-600);
-      color: var(--neutral-100);
-    }
-  }
-}
+// El botón de cierre ahora usa el sistema de botones iconOnly
+// Los estilos se generan dinámicamente en JavaScript
 
 .investigations-modal__info {
   padding: 0 var(--spacing-lg) var(--spacing-lg);
