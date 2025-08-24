@@ -246,12 +246,10 @@ $nav-button-size-mobile: rem(40px);
       //transform: translateY(rem(-8px));
       background: var(--background-100);
       border-color: var(--primary-300);
-      box-shadow: 0 rem(20px) rem(40px) rgba(0, 0, 0, 0.15);
 
       @include dark-theme {
         background: var(--background-200);
         border-color: var(--primary-400);
-        box-shadow: 0 rem(20px) rem(40px) rgba(0, 0, 0, 0.3);
       }
     }
   }

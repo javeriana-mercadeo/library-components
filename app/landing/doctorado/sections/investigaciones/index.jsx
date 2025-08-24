@@ -144,7 +144,7 @@ const Investigaciones = () => {
             <Paragraph className={`${baseClass}_description`}>
               {description}
               <span>
-                <i class='ph ph-arrow-square-in'></i>
+                <i className='ph ph-arrow-square-in'></i>
               </span>
             </Paragraph>
           </div>
@@ -180,7 +180,7 @@ const Investigaciones = () => {
             <Paragraph className={`${baseClass}_description`}>
               {description}
               <span>
-                <i class='ph ph-arrow-square-in'></i>
+                <i className='ph ph-arrow-square-in'></i>
               </span>
             </Paragraph>
           </div>

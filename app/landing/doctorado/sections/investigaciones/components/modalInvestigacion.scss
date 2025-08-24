@@ -1,350 +1,374 @@
 @use '@styles/autoload' as *;
 
-// ==========================================
-// VARIABLES DEL MODAL
-// ==========================================
+// ===========================================
+// MODAL INVESTIGACIONES - NUEVO SISTEMA
+// ===========================================
+
+// Variables del modal usando variables globales
+$modal-z-index: 10000;
+$modal-overlay-bg: rgba(0, 0, 0, 0.65);
+$modal-backdrop-blur: 10px;
+$modal-shadow: 0 var(--spacing-lg) var(--spacing-4xl) rgba(0, 0, 0, 0.25);
+$modal-max-width-mobile: var(--max-width-sm);
+$modal-max-width-desktop: var(--max-width-lg);
+
+// Animaciones unificadas para mobile y desktop
+$modal-animation-duration: calc(var(--transition) * 0.67); // 0.2s uniforme
+$modal-animation-easing: cubic-bezier(0.2, 0, 0.2, 1);
+
+// Variables específicas del modal de investigaciones
 $modal-border-radius: rem(16px);
 $modal-max-width: rem(1200px);
 $modal-max-height: 90vh;
 $modal-padding: rem(32px);
-$modal-gap: rem(24px);
 $gallery-width: 45%;
 $content-width: 55%;
 
-// ==========================================
-// OVERLAY DEL MODAL
-// ==========================================
+// ===========================================
+// OVERLAY Y CONTENEDOR PRINCIPAL
+// ===========================================
 .investigations-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  z-index: $modal-z-index;
+
+  // Estados iniciales
+  opacity: 0;
+  visibility: hidden;
+  backdrop-filter: blur(0px);
+  background: transparent;
+  // Optimización de rendimiento
+  will-change: opacity, visibility, backdrop-filter;
+  // Asegurar que capture todos los eventos de pointer
+  pointer-events: auto;
+
+  // Transiciones optimizadas - solo las propiedades que cambian
+  transition:
+    opacity $modal-animation-duration $modal-animation-easing,
+    visibility $modal-animation-duration $modal-animation-easing,
+    backdrop-filter $modal-animation-duration $modal-animation-easing;
+
+  // Estado activo
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur($modal-backdrop-blur);
+    background: $modal-overlay-bg;
+    pointer-events: auto;
+  }
+
+  // Centrado responsivo usando variables globales
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-
-  // Z-index máximo en móviles para estar encima del header
-  @media (max-width: #{$breakpoint-md - 1}) {
-    z-index: 99999;
-  }
   padding: var(--spacing-lg);
-  backdrop-filter: blur(rem(4px));
-  opacity: 1;
-  visibility: visible;
-  transition: all 0.3s ease;
 
-  @include dark-theme {
-    background: rgba(0, 0, 0, 0.9);
+  @include responsive {
+    padding: var(--spacing-xl);
+    align-items: center;
+  }
+
+  @include responsive($breakpoint-sm) {
+    padding: rem(10px);
+  }
+
+  @include responsive(375px) {
+    padding: rem(8px);
   }
 }
 
-// ==========================================
-// CONTENEDOR PRINCIPAL DEL MODAL
-// ==========================================
+// ===========================================
+// CONTENEDOR DEL MODAL
+// ===========================================
 .investigations-modal {
+  align-items: normal;
+  justify-items: normal;
   background: var(--background-100);
   border-radius: $modal-border-radius;
-  max-width: $modal-max-width;
-  max-height: $modal-max-height;
+  box-shadow: $modal-shadow;
   width: 100%;
-  display: flex;
-  overflow: hidden;
-  box-shadow: 0 rem(20px) rem(60px) rgba(0, 0, 0, 0.3);
-  transform: scale(1) translateY(0);
-  transition: all 0.3s ease;
+  height: 80%;
+  max-height: calc(100vh - rem(40px));
+  overflow: visible;
+  position: relative;
 
-  @include dark-theme {
-    background: var(--background-200);
-    box-shadow: 0 rem(20px) rem(60px) rgba(0, 0, 0, 0.5);
+  // Animaciones sutiles de entrada (similar al menú móvil)
+  transform: translateY(calc(var(--spacing-md) * -1));
+  opacity: 0;
+  visibility: hidden;
+  // Optimización de rendimiento
+  will-change: transform, opacity, visibility;
+  // Transiciones específicas para mejor rendimiento
+  transition:
+    transform $modal-animation-duration $modal-animation-easing,
+    opacity $modal-animation-duration $modal-animation-easing,
+    visibility $modal-animation-duration $modal-animation-easing;
+
+  // Responsive layout
+  max-width: $modal-max-width;
+  display: flex;
+
+  @include responsive {
+    max-width: $modal-max-width-desktop;
+    flex-direction: row;
+    height: 100%;
+    max-height: rem(650px);
   }
 
-  // Layout responsivo para móviles
   @media (max-width: #{$breakpoint-md - 1}) {
     flex-direction: column;
     max-height: 95vh;
   }
 
-  // ==========================================
-  // GALERÍA DE IMÁGENES (COLUMNA IZQUIERDA)
-  // ==========================================
-  &__gallery {
-    width: $gallery-width;
-    background: var(--background-100); // Fondo blanco como la columna derecha
-    position: relative;
-    overflow: hidden;
-
-    @media (max-width: #{$breakpoint-md - 1}) {
-      width: 100%;
-      height: rem(250px);
-      flex-shrink: 0;
-    }
-
-    @include dark-theme {
-      background: var(--background-200); // Consistente con tema oscuro
-    }
+  // Estados (patrón similar al menú móvil)
+  &.show {
+    visibility: visible;
   }
 
-  &__images-container {
-    height: 100%;
-    overflow-y: auto;
-    padding: $modal-padding;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-
-    @media (max-width: #{$breakpoint-md - 1}) {
-      flex-direction: row;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: var(--spacing-md);
-      gap: var(--spacing-md);
-    }
-
-    // Scroll personalizado
-    &::-webkit-scrollbar {
-      width: rem(6px);
-
-      @media (max-width: #{$breakpoint-md - 1}) {
-        height: rem(6px);
-        width: auto;
-      }
-    }
-
-    &::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: rem(3px);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: rem(3px);
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.5);
-      }
-    }
+  &.show.active {
+    transform: translateY(0);
+    opacity: 1;
   }
 
-  &__image-wrapper {
-    flex-shrink: 0;
-    border-radius: var(--border-radius-lg);
-    overflow: hidden;
-    transition: transform 0.3s ease;
-
-    &:hover {
-      transform: scale(1.02);
-    }
-
-    @media (max-width: #{$breakpoint-md - 1}) {
-      min-width: rem(200px);
-      height: 100%;
-    }
+  @include dark-theme {
+    background: var(--background-200);
+    box-shadow: 0 rem(20px) rem(60px) rgba(0, 0, 0, 0.5);
   }
+}
 
-  &__image {
+// ===========================================
+// GALERÍA DE IMÁGENES (COLUMNA IZQUIERDA)
+// ===========================================
+.investigations-modal__gallery {
+  width: $gallery-width;
+  background: var(--background-100); // Fondo blanco como la columna derecha
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: #{$breakpoint-md - 1}) {
     width: 100%;
-    height: rem(200px);
-    object-fit: cover;
-    display: block;
-
-    @media (max-width: #{$breakpoint-md - 1}) {
-      width: rem(200px);
-      height: 100%;
-    }
-  }
-
-  // ==========================================
-  // CONTENIDO (COLUMNA DERECHA)
-  // ==========================================
-  &__content {
-    width: $content-width;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-
-    @media (max-width: #{$breakpoint-md - 1}) {
-      width: 100%;
-      flex-grow: 1;
-    }
-  }
-
-  &__header {
-    padding: var(--spacing-lg) var(--spacing-lg) 0;
-    display: flex;
-    justify-content: flex-end;
+    height: rem(250px);
     flex-shrink: 0;
   }
 
-  &__close {
-    width: rem(40px);
-    height: rem(40px);
-    border-radius: 50%;
-    border: none;
-    background: var(--neutral-200);
-    color: var(--neutral-600);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    font-size: rem(20px);
+  @include dark-theme {
+    background: var(--background-200); // Consistente con tema oscuro
+  }
+}
+
+.investigations-modal__images-container {
+  height: 100%;
+  overflow-y: auto;
+  padding: $modal-padding;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+
+  // Scroll invisible
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  // Soporte para Firefox
+  scrollbar-width: none;
+  
+  // Soporte para IE/Edge legacy
+  -ms-overflow-style: none;
+}
+
+.investigations-modal__image-wrapper {
+  flex-shrink: 0;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    min-width: rem(200px);
+    height: 100%;
+  }
+}
+
+.investigations-modal__image {
+  width: 100%;
+  height: rem(200px);
+  object-fit: cover;
+  display: block;
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    width: rem(200px);
+    height: 100%;
+  }
+}
+
+// ===========================================
+// CONTENIDO (COLUMNA DERECHA)
+// ===========================================
+.investigations-modal__content {
+  width: $content-width;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    width: 100%;
+    flex-grow: 1;
+  }
+}
+
+.investigations-modal__header {
+  padding: var(--spacing-lg) var(--spacing-lg) 0;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.investigations-modal__close {
+  width: rem(40px);
+  height: rem(40px);
+  border-radius: 50%;
+  border: none;
+  background: var(--neutral-200);
+  color: var(--neutral-600);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: rem(20px);
+
+  &:hover {
+    background: var(--neutral-300);
+    color: var(--neutral-800);
+    transform: scale(1.1);
+  }
+
+  @include dark-theme {
+    background: var(--neutral-700);
+    color: var(--neutral-300);
 
     &:hover {
-      background: var(--neutral-300);
-      color: var(--neutral-800);
-      transform: scale(1.1);
-    }
-
-    @include dark-theme {
-      background: var(--neutral-700);
-      color: var(--neutral-300);
-
-      &:hover {
-        background: var(--neutral-600);
-        color: var(--neutral-100);
-      }
-    }
-  }
-
-  &__info {
-    padding: 0 var(--spacing-lg) var(--spacing-lg);
-    overflow-y: auto;
-    flex-grow: 1;
-
-    // Scroll personalizado
-    &::-webkit-scrollbar {
-      width: rem(6px);
-    }
-
-    &::-webkit-scrollbar-track {
-      background: var(--neutral-200);
-      border-radius: rem(3px);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: var(--neutral-400);
-      border-radius: rem(3px);
-
-      &:hover {
-        background: var(--neutral-500);
-      }
-    }
-
-    @include dark-theme {
-      &::-webkit-scrollbar-track {
-        background: var(--neutral-700);
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: var(--neutral-500);
-
-        &:hover {
-          background: var(--neutral-400);
-        }
-      }
-    }
-  }
-
-  &__badge {
-    display: inline-block;
-    background: var(--primary);
-    color: var(--neutral);
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: var(--border-radius-xl);
-    font-size: var(--font-size-small);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-md);
-  }
-
-  &__title {
-    margin-bottom: var(--spacing-lg);
-    color: var(--neutral-100);
-    line-height: 1.2;
-
-    @include dark-theme {
+      background: var(--neutral-600);
       color: var(--neutral-100);
     }
   }
+}
 
-  // ==========================================
-  // METADATOS HORIZONTALES
-  // ==========================================
-  &__metadata {
-    margin-bottom: var(--spacing-xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
+.investigations-modal__info {
+  padding: 0 var(--spacing-lg) var(--spacing-lg);
+  overflow-y: auto;
+  flex-grow: 1;
+
+  // Scroll invisible
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
   }
 
-  &__metadata-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-  }
+  // Soporte para Firefox
+  scrollbar-width: none;
+  
+  // Soporte para IE/Edge legacy
+  -ms-overflow-style: none;
+}
 
-  &__label {
-    font-weight: var(--font-weight-semibold);
-    color: var(--neutral-600);
-    min-width: rem(80px);
-    font-size: var(--font-size-small);
+.investigations-modal__badge {
+  display: inline-block;
+  background: var(--primary);
+  color: var(--neutral);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-xl);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-md);
+}
 
-    @include dark-theme {
-      color: var(--neutral-400);
-    }
-  }
+.investigations-modal__title {
+  margin-bottom: var(--spacing-lg);
+  color: var(--neutral-100);
+  line-height: 1.2;
 
-  &__value {
+  @include dark-theme {
     color: var(--neutral-100);
-    font-size: var(--font-size-small);
+  }
+}
 
-    @include dark-theme {
-      color: var(--neutral-200);
+// ===========================================
+// METADATOS HORIZONTALES
+// ===========================================
+.investigations-modal__metadata {
+  margin-bottom: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.investigations-modal__metadata-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.investigations-modal__label {
+  font-weight: var(--font-weight-semibold);
+  color: var(--neutral-600);
+  min-width: rem(80px);
+  font-size: var(--font-size-small);
+
+  @include dark-theme {
+    color: var(--neutral-400);
+  }
+}
+
+.investigations-modal__value {
+  color: var(--neutral-100);
+  font-size: var(--font-size-small);
+
+  @include dark-theme {
+    color: var(--neutral-200);
+  }
+}
+
+// ===========================================
+// DESCRIPCIÓN EXPANDIDA
+// ===========================================
+.investigations-modal__description {
+  color: var(--neutral-300);
+  line-height: 1.6;
+
+  p {
+    margin-bottom: var(--spacing-lg);
+
+    &:last-child {
+      margin-bottom: 0;
     }
   }
 
-  // ==========================================
-  // DESCRIPCIÓN EXPANDIDA
-  // ==========================================
-  &__description {
+  @include dark-theme {
     color: var(--neutral-300);
-    line-height: 1.6;
-
-    p {
-      margin-bottom: var(--spacing-lg);
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    @include dark-theme {
-      color: var(--neutral-300);
-    }
   }
 }
 
-// ==========================================
-// ANIMACIONES
-// ==========================================
-@keyframes modalFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateY(rem(20px));
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes overlayFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+// ===========================================
+// ESTADOS DEL BODY
+// ===========================================
+body.modal-open {
+  overflow: hidden;
 }

@@ -1,5 +1,5 @@
 // ===========================================
-// MODAL INVESTIGACIONES - Implementación 100% Vanilla
+// MODAL INVESTIGACIONES - SISTEMA COMPLETAMENTE NUEVO
 // ===========================================
 
 const ModalInvestigacion = {
@@ -13,7 +13,7 @@ const ModalInvestigacion = {
     }
 
     const modalHTML = `
-      <div class="investigations-modal-overlay" id="investigations-modal-overlay" style="display: none;">
+      <div class="investigations-modal-overlay" id="investigations-modal-overlay">
         <div class="investigations-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
           <!-- Galería de imágenes -->
           <div class="investigations-modal__gallery">
@@ -79,7 +79,7 @@ const ModalInvestigacion = {
       this.setupEventListeners()
 
       this.isInitialized = true
-      console.log('[MODAL-INVESTIGACION] Sistema vanilla inicializado correctamente')
+      console.log('[MODAL-INVESTIGACION] Sistema inicializado correctamente')
       return true
     } catch (error) {
       console.error('[MODAL-INVESTIGACION] Error al inicializar:', error)
@@ -99,11 +99,10 @@ const ModalInvestigacion = {
         return
       }
 
-      // Cerrar modal si click en overlay (solo el overlay, no sus hijos)
-      if (event.target.classList.contains('investigations-modal-overlay') && 
-          event.target === event.currentTarget) {
+      // Cerrar modal si click en overlay (patrón exacto del header)
+      if (event.target.classList.contains('investigations-modal-overlay')) {
         event.preventDefault()
-        this.closeModal()
+        this.close()
         return
       }
 
@@ -111,23 +110,15 @@ const ModalInvestigacion = {
       const closeButton = event.target.closest('.investigations-modal__close')
       if (closeButton) {
         event.preventDefault()
-        this.closeModal()
+        this.close()
         return
-      }
-    })
-
-    // Listener específico para el overlay del modal
-    document.addEventListener('click', (event) => {
-      const overlay = document.querySelector('.investigations-modal-overlay')
-      if (overlay && event.target === overlay) {
-        this.closeModal()
       }
     })
 
     // Cerrar con tecla Escape
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        this.closeModal()
+      if (event.key === 'Escape' && this.isOpen()) {
+        this.close()
       }
     })
 
@@ -150,7 +141,7 @@ const ModalInvestigacion = {
 
       console.log('[MODAL-INVESTIGACION] Card clickeada:', { title, year, description, imageSrc })
       
-      this.openModal({
+      this.open({
         title,
         year,
         description,
@@ -162,31 +153,27 @@ const ModalInvestigacion = {
     }
   },
 
-  getTextContent(element, selector) {
-    const found = element.querySelector(selector)
-    return found ? found.textContent.trim() : null
-  },
-
-  openModal(data) {
+  // NUEVO MÉTODO DE APERTURA - COPIADO EXACTO DEL HEADER
+  open(data) {
     try {
-      const modal = document.querySelector('.investigations-modal-overlay')
+      const modalOverlay = document.querySelector('.investigations-modal-overlay')
+      const modal = document.querySelector('.investigations-modal')
       
-      if (!modal) {
+      if (!modalOverlay || !modal) {
         console.warn('[MODAL-INVESTIGACION] Modal no encontrado, recreando...')
         this.createModal()
-        return this.openModal(data)
+        return this.open(data)
       }
 
       // Actualizar contenido del modal
       this.updateModalContent(data)
 
-      // Prevenir scroll del body
-      document.body.style.overflow = 'hidden'
-      
-      // Mostrar modal
-      modal.style.display = 'flex'
-      
-      // Forzar reflow y añadir clase active
+      // PATRÓN EXACTO DEL HEADER: aplicar 'show' inmediatamente
+      modal.classList.add('show')
+      modalOverlay.classList.add('active')
+      document.body.classList.add('modal-open')
+
+      // PATRÓN EXACTO DEL HEADER: aplicar 'active' con delay de 10ms para animación
       setTimeout(() => {
         modal.classList.add('active')
       }, 10)
@@ -195,6 +182,54 @@ const ModalInvestigacion = {
     } catch (error) {
       console.error('[MODAL-INVESTIGACION] Error al abrir modal:', error)
     }
+  },
+
+  // NUEVO MÉTODO DE CIERRE - COPIADO EXACTO DEL HEADER
+  close() {
+    try {
+      const modalOverlay = document.querySelector('.investigations-modal-overlay')
+      const modal = document.querySelector('.investigations-modal')
+      
+      if (modalOverlay && modal) {
+        // PATRÓN EXACTO DEL HEADER: quitar 'active' inmediatamente para comenzar animación de salida
+        modal.classList.remove('active')
+
+        // PATRÓN EXACTO DEL HEADER: quitar 'show' y limpiar completamente con delay de 200ms
+        setTimeout(() => {
+          modal.classList.remove('show')
+          modalOverlay.classList.remove('active')
+          document.body.classList.remove('modal-open')
+
+          // Limpiar estilos del body completamente
+          document.body.style.overflow = ''
+          document.body.style.position = ''
+          document.body.style.width = ''
+          document.body.style.height = ''
+
+          // Reset completo del modal - forzar estado inicial
+          modal.style.transform = ''
+          modal.style.opacity = ''
+          modal.style.visibility = ''
+          modal.style.pointerEvents = ''
+          modalOverlay.style.opacity = ''
+          modalOverlay.style.visibility = ''
+          modalOverlay.style.pointerEvents = ''
+
+          // Forzar reflow para asegurar que los cambios se apliquen
+          modalOverlay.offsetHeight
+        }, 200)
+        
+        console.log('[MODAL-INVESTIGACION] Modal cerrado')
+      }
+    } catch (error) {
+      console.error('[MODAL-INVESTIGACION] Error al cerrar modal:', error)
+    }
+  },
+
+  // Método para verificar si el modal está abierto
+  isOpen() {
+    const modal = document.querySelector('.investigations-modal')
+    return modal && modal.classList.contains('show')
   },
 
   updateModalContent(data) {
@@ -273,32 +308,9 @@ const ModalInvestigacion = {
     return additionalImages
   },
 
-  closeModal() {
-    try {
-      const modal = document.querySelector('.investigations-modal-overlay')
-      
-      if (modal) {
-        // Remover clase active inmediatamente
-        modal.classList.remove('active')
-        
-        // Restaurar scroll del body inmediatamente
-        document.body.style.overflow = ''
-        
-        // Ocultar después de la animación
-        setTimeout(() => {
-          modal.style.display = 'none'
-        }, 300)
-        
-        console.log('[MODAL-INVESTIGACION] Modal cerrado')
-      }
-    } catch (error) {
-      console.error('[MODAL-INVESTIGACION] Error al cerrar modal:', error)
-    }
-  },
-
   cleanup() {
     try {
-      this.closeModal()
+      this.close()
       const modal = document.querySelector('.investigations-modal-overlay')
       if (modal) {
         modal.remove()
