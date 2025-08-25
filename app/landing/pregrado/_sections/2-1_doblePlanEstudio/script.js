@@ -196,8 +196,7 @@ export default () => {
       pagination: {
         el: container.querySelector('.plan-estudio_pagination'),
         clickable: true,
-        dynamicBullets: true,
-        dynamicMainBullets: 1,
+        dynamicBullets: false,
         renderBullet: function (index, className) {
           return `<span class="${className}" aria-label="Ir a slide ${index + 1}"></span>`
         }
@@ -366,27 +365,13 @@ export default () => {
 
   const updatePaginationVisibility = (swiper, totalSlides, container) => {
     const pagination = container.querySelector('.plan-estudio_pagination')
-
     if (!pagination) return
 
-    const needsPagination = totalSlides > 1
-
-    if (needsPagination) {
+    // Simple show/hide como en experiencia
+    if (totalSlides > 1) {
       pagination.style.display = 'flex'
-      pagination.classList.remove('swiper-pagination-hidden')
-      pagination.setAttribute('aria-hidden', 'false')
-
-      setTimeout(() => {
-        const bullets = pagination.querySelectorAll('.swiper-pagination-bullet')
-        bullets.forEach((bullet, index) => {
-          bullet.setAttribute('aria-label', `Ir a slide ${index + 1}`)
-          bullet.style.display = 'block'
-        })
-      }, 100)
     } else {
       pagination.style.display = 'none'
-      pagination.classList.add('swiper-pagination-hidden')
-      pagination.setAttribute('aria-hidden', 'true')
     }
   }
 

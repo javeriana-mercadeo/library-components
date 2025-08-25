@@ -31,7 +31,7 @@ const Footer = () => {
                 <div className='footer__video'>
                   <div className='footer__mp4'>
                     <video
-                      src='http://www.javeriana.edu.co/recursosdb/d/info-prg/javeriana_somos-todos-1'
+                      src='https://www.javeriana.edu.co/recursosdb/d/info-prg/javeriana_somos-todos-1'
                       className='video-player'
                       autoPlay
                       muted

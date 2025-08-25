@@ -22,7 +22,6 @@ const liferayVideoSystem = {
 
   // Inicializar sistema de video
   init() {
-    console.log('[VideoPlayer] Iniciando sistema de video...')
     
     // Sistema de inicialización múltiple para manejar diferentes estados de carga
     const initStrategies = [
@@ -39,7 +38,6 @@ const liferayVideoSystem = {
     
     const initializeWithStrategy = (strategy) => {
       if (globalInitialized) {
-        console.log('[VideoPlayer] Ya inicializado, saltando estrategia:', strategy.name)
         return
       }
       
@@ -50,8 +48,6 @@ const liferayVideoSystem = {
         
         attempts++
         const containers = document.querySelectorAll('[data-component="video-player"]')
-
-        console.log(`[VideoPlayer] Estrategia ${strategy.name}, intento ${attempts}/${strategy.maxAttempts}, encontrados: ${containers.length} contenedores`)
 
         if (containers.length > 0) {
           // Verificar que los contenedores estén realmente renderizados y visibles
@@ -64,19 +60,16 @@ const liferayVideoSystem = {
           })
           
           if (validContainers.length > 0) {
-            console.log(`[VideoPlayer] Estrategia ${strategy.name} exitosa! Contenedores válidos:`, validContainers.length)
             globalInitialized = true
             this.setupVideoContainers()
             return
           } else if (attempts < strategy.maxAttempts) {
-            console.log(`[VideoPlayer] Estrategia ${strategy.name}: contenedores encontrados pero no renderizados, reintentando...`)
             setTimeout(tryInit, strategy.delay)
           } else {
             console.warn(`[VideoPlayer] Estrategia ${strategy.name} falló después de ${strategy.maxAttempts} intentos`)
             // Intentar siguiente estrategia
             strategyIndex++
             if (strategyIndex < initStrategies.length && !globalInitialized) {
-              console.log(`[VideoPlayer] Probando estrategia ${initStrategies[strategyIndex].name}`)
               setTimeout(() => initializeWithStrategy(initStrategies[strategyIndex]), 200)
             }
           }
@@ -87,7 +80,6 @@ const liferayVideoSystem = {
           // Intentar siguiente estrategia
           strategyIndex++
           if (strategyIndex < initStrategies.length && !globalInitialized) {
-            console.log(`[VideoPlayer] Probando estrategia ${initStrategies[strategyIndex].name}`)
             setTimeout(() => initializeWithStrategy(initStrategies[strategyIndex]), 200)
           }
         }
@@ -106,7 +98,6 @@ const liferayVideoSystem = {
         console.warn('[VideoPlayer] Sistema de fallback final activado después de 8 segundos')
         const containers = document.querySelectorAll('[data-component="video-player"]')
         if (containers.length > 0) {
-          console.log('[VideoPlayer] Forzando inicialización con contenedores disponibles')
           globalInitialized = true
           this.setupVideoContainers()
         }
@@ -147,23 +138,13 @@ const liferayVideoSystem = {
         const videos = entry.target.querySelectorAll('video')
         const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 
-        console.log('[VideoPlayer] Intersection Observer:', {
-          isIntersecting: entry.isIntersecting,
-          intersectionRatio: entry.intersectionRatio,
-          videosCount: videos.length,
-          containerId: entry.target.id,
-          isMobile: isMobile
-        })
-
         videos.forEach(video => {
           if (entry.isIntersecting) {
             // En mobile, controlar reproducción por visibilidad
             // En desktop, solo remover overlay si existe
             if (isMobile) {
-              console.log('[VideoPlayer] Mobile - Video visible, intentando reproducir')
               this.playVideoSafely(video)
             } else {
-              console.log('[VideoPlayer] Desktop - Video visible, verificando si necesita reproducirse')
               // En desktop, solo reproducir si está pausado y no hay overlay
               if (video.paused && !entry.target.querySelector('.video-play-overlay')) {
                 this.playVideoSafely(video)
@@ -173,7 +154,6 @@ const liferayVideoSystem = {
             // Remover overlay de play si existe al entrar en vista (tanto mobile como desktop)
             const overlay = entry.target.querySelector('.video-play-overlay')
             if (overlay) {
-              console.log('[VideoPlayer] Removiendo overlay al entrar en vista')
               setTimeout(() => {
                 if (!video.paused) {
                   overlay.remove()
@@ -183,7 +163,6 @@ const liferayVideoSystem = {
           } else {
             // Video no visible - pausar para ahorrar recursos (tanto mobile como desktop)
             if (!video.paused) {
-              console.log('[VideoPlayer] Video no visible, pausando')
               video.pause()
             }
           }
@@ -207,7 +186,6 @@ const liferayVideoSystem = {
 
     // Si el video no está listo, esperar un poco y reintentar
     if (video.readyState < 2) {
-      console.log('[VideoPlayer] Video no está listo (readyState:', video.readyState, '), esperando...')
       
       // Intentar cargar el video si no se ha intentado
       if (video.readyState === 0 && video.src) {
@@ -219,12 +197,6 @@ const liferayVideoSystem = {
         if (video.readyState >= 2) {
           this.playVideoSafely(video)
         } else {
-          console.log('[VideoPlayer] Video aún no listo después de espera:', {
-            readyState: video.readyState,
-            src: video.src,
-            networkState: video.networkState,
-            error: video.error
-          })
           
           // Si el video definitivamente no se está cargando, activar reintentos
           if (video.readyState === 0 && video.networkState === 3) {
@@ -244,16 +216,8 @@ const liferayVideoSystem = {
     video.defaultMuted = true
     video.volume = 0
 
-    console.log('[VideoPlayer] Intentando reproducir video:', {
-      currentTime: video.currentTime,
-      duration: video.duration,
-      readyState: video.readyState,
-      paused: video.paused
-    })
-
     video.play()
       .then(() => {
-        console.log('[VideoPlayer] Video iniciado exitosamente')
       })
       .catch((error) => {
         console.warn('[VideoPlayer] Autoplay bloqueado:', error.name, error.message)
@@ -278,8 +242,6 @@ const liferayVideoSystem = {
       })
       return
     }
-
-    console.log('[VideoPlayer] Mostrando overlay de play para:', container.id)
 
     const overlay = document.createElement('div')
     overlay.className = 'video-play-overlay'
@@ -336,13 +298,6 @@ const liferayVideoSystem = {
       e.preventDefault()
       e.stopPropagation()
 
-      console.log('[VideoPlayer] Click en overlay, intentando reproducir video:', {
-        container: container.id,
-        videoReadyState: video.readyState,
-        videoPaused: video.paused,
-        videoSrc: video.src
-      })
-
       // Asegurar que está muted para autoplay
       video.muted = true
       video.defaultMuted = true
@@ -351,7 +306,6 @@ const liferayVideoSystem = {
       video
         .play()
         .then(() => {
-          console.log('[VideoPlayer] Video iniciado exitosamente desde overlay')
           overlay.remove()
         })
         .catch((error) => {
@@ -360,7 +314,6 @@ const liferayVideoSystem = {
           setTimeout(() => {
             video.play()
               .then(() => {
-                console.log('[VideoPlayer] Video iniciado en segundo intento')
                 overlay.remove()
               })
               .catch((retryError) => {
@@ -394,18 +347,10 @@ const liferayVideoSystem = {
     // Detectar dispositivo para priorizar el video correcto
     const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     
-    console.log('[VideoPlayer] Inicializando videos:', {
-      container: container.id,
-      isMobile: isMobile,
-      mobileVideoUrl: !!mobileVideoUrl,
-      desktopVideoUrl: !!desktopVideoUrl
-    })
-
     // Crear videos priorizando el apropiado para el dispositivo
     let hasValidVideo = false
 
     if (isMobile && mobileVideoUrl) {
-      console.log('[VideoPlayer] Creando video móvil como prioridad')
       this.createVideoElement(container, mobileVideoUrl, 'mobile')
       hasValidVideo = true
       
@@ -416,7 +361,6 @@ const liferayVideoSystem = {
     } else {
       // Para desktop, crear desktop primero
       if (desktopVideoUrl) {
-        console.log('[VideoPlayer] Creando video desktop como prioridad')
         this.createVideoElement(container, desktopVideoUrl, 'desktop')
         hasValidVideo = true
       }
@@ -442,8 +386,6 @@ const liferayVideoSystem = {
   retryVideoInitialization(container) {
     const containerId = container.id || 'unknown'
     const currentAttempts = this.retryAttempts.get(containerId) || 0
-    
-    console.log(`[VideoPlayer] Reintentando inicialización para ${containerId}, intento ${currentAttempts + 1}/${this.maxRetries}`)
     
     if (currentAttempts >= this.maxRetries) {
       console.warn(`[VideoPlayer] Máximo de reintentos alcanzado para ${containerId}`)
@@ -565,23 +507,11 @@ const liferayVideoSystem = {
       }
 
       // Si falla, intentar reinicializar el contenedor completo
-      console.log('[VideoPlayer] Activando sistema de reintentos para contenedor')
       this.retryVideoInitialization(container)
     })
 
     // Event listener para pausas inesperadas (común en móviles)
     video.addEventListener('pause', (e) => {
-      console.log('[VideoPlayer] Video pausado:', {
-        videoId: videoId,
-        currentTime: video.currentTime,
-        duration: video.duration,
-        readyState: video.readyState,
-        paused: video.paused,
-        ended: video.ended,
-        visible: this.isVideoVisible(container),
-        autoplayBlocked: video.currentTime === 0,
-        reason: video.currentTime === 0 ? 'autoplay_blocked' : 'unexpected_pause'
-      })
       
       if (!video.ended && this.isVideoVisible(container)) {
         // Si el video se pausó inesperadamente y está visible, mostrar overlay
@@ -590,7 +520,6 @@ const liferayVideoSystem = {
         
         setTimeout(() => {
           if (video.paused && !video.ended) {
-            console.log('[VideoPlayer] Mostrando overlay de play por pausa inesperada')
             this.showPlayOverlay(container, video)
           }
         }, timeout)
@@ -629,7 +558,6 @@ const liferayVideoSystem = {
         if (type === 'mobile') {
           const desktopVideo = container.querySelector('video[data-video-type="desktop"]')
           if (desktopVideo && desktopVideo.readyState >= 2) {
-            console.log('[VideoPlayer] Video desktop está listo, ocultando video móvil fallido')
             video.style.display = 'none'
             desktopVideo.style.display = 'block'
             return
@@ -645,12 +573,6 @@ const liferayVideoSystem = {
   // Video cargado exitosamente
   onVideoLoad(container, video, videoId, isMobile = false) {
     if (!container.classList.contains('video-loaded')) {
-      console.log('[VideoPlayer] Video cargado exitosamente:', {
-        videoId: videoId,
-        readyState: video.readyState,
-        duration: video.duration,
-        container: container.id
-      })
 
       container.classList.add('video-loaded')
       video.style.opacity = '1'
@@ -660,7 +582,6 @@ const liferayVideoSystem = {
       const containerId = container.id || 'unknown'
       if (this.retryAttempts.has(containerId)) {
         this.retryAttempts.delete(containerId)
-        console.log('[VideoPlayer] Reintentos limpiados para:', containerId)
       }
 
       // Remover loading state si existe
@@ -676,7 +597,6 @@ const liferayVideoSystem = {
       // En desktop, reproducir inmediatamente sin esperar visibilidad
       // En mobile, esperar a que esté visible (Intersection Observer)
       if (!isMobile) {
-        console.log('[VideoPlayer] Desktop detectado, reproduciendo inmediatamente')
         if (isFreshLoad) {
           this.attemptAggressivePlayback(video, isMobile)
         } else {
@@ -684,7 +604,6 @@ const liferayVideoSystem = {
         }
       } else if (this.isVideoVisible(container)) {
         // Solo para mobile, verificar visibilidad
-        console.log('[VideoPlayer] Mobile detectado, verificando visibilidad para reproducir')
         if (isFreshLoad) {
           this.attemptAggressivePlayback(video, isMobile)
         } else {
@@ -704,13 +623,6 @@ const liferayVideoSystem = {
     
     const tryPlay = () => {
       attempt++
-      
-      console.log(`[VideoPlayer] Intento de reproducción agresiva ${attempt}/${maxAttempts}`, {
-        readyState: video.readyState,
-        networkState: video.networkState,
-        paused: video.paused,
-        currentTime: video.currentTime
-      })
       
       // Asegurar configuración para autoplay
       video.muted = true
@@ -752,7 +664,6 @@ const liferayVideoSystem = {
       // Intentar reproducir
       video.play()
         .then(() => {
-          console.log('[VideoPlayer] Reproducción agresiva exitosa en intento', attempt)
         })
         .catch((error) => {
           console.warn(`[VideoPlayer] Fallo en intento agresivo ${attempt}:`, error.name)
@@ -842,7 +753,6 @@ const liferayVideoSystem = {
     const fallbackImage = container.getAttribute('data-image-fallback')
 
     if (fallbackImage && fallbackImage.trim()) {
-      console.info('[VideoPlayer] Mostrando imagen de fallback:', fallbackImage)
       this.showFallbackImage(container, fallbackImage)
     } else {
       console.error('[VideoPlayer] No hay imagen de fallback configurada')
@@ -973,15 +883,12 @@ const initProgramDataVideo = () => {
       if (interactionTriggered) return
       interactionTriggered = true
       
-      console.log('[VideoPlayer] Interacción del usuario detectada, activando reproducción')
-      
       // Intentar reproducir todos los videos cargados que estén pausados
       const containers = document.querySelectorAll('[data-component="video-player"].video-loaded')
       containers.forEach(container => {
         const videos = container.querySelectorAll('video')
         videos.forEach(video => {
           if (video.paused && liferayVideoSystem.isVideoVisible(container)) {
-            console.log('[VideoPlayer] Activando video por interacción:', container.id)
             liferayVideoSystem.playVideoSafely(video)
           }
         })
