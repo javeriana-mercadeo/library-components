@@ -1,4 +1,3 @@
-// Script optimizado para Liferay - Carousel Manager
 const createCarouselManager = () => {
   if (typeof window === 'undefined') {
     return {
@@ -42,29 +41,25 @@ const createCarouselManager = () => {
       slideData: { id: 3, type: 'campus' }
     },
     {
-      image:
-        'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png',
+      image: 'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png',
       title: 'Oportunidades Internacionales',
       description: 'Descubre programas de intercambio y colaboraciones globales',
       slideData: { id: 4, type: 'internacional' }
     },
     {
-      image:
-        'https://revistaaxxis.com.co/wp-content/uploads/2024/05/Edifiico_Sapiencia_3-1024x683.png',
+      image: 'https://revistaaxxis.com.co/wp-content/uploads/2024/05/Edifiico_Sapiencia_3-1024x683.png',
       title: 'Universidad Destacada',
       description: 'Descubre nuestros programas académicos y la experiencia universitaria',
       slideData: { id: 5, type: 'universidad' }
     },
     {
-      image:
-        'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0009_Javeriana-Sostenible.jpg',
+      image: 'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0009_Javeriana-Sostenible.jpg',
       title: 'Investigación de Clase Mundial',
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
       slideData: { id: 6, type: 'investigacion' }
     },
     {
-      image:
-        'https://www.javeriana.edu.co/recursosdb/664630/725325/compromisosocial2.png/2b84da22-005b-de8f-208a-7b90a466cba1?t=1603222055696',
+      image: 'https://www.javeriana.edu.co/recursosdb/664630/725325/compromisosocial2.png/2b84da22-005b-de8f-208a-7b90a466cba1?t=1603222055696',
       title: 'Universidad Destacada',
       description: 'Descubre nuestros programas académicos y la experiencia universitaria',
       slideData: { id: 7, type: 'universidad' }
@@ -76,10 +71,6 @@ const createCarouselManager = () => {
       slideData: { id: 8, type: 'campus' }
     }
   ]
-
-  // ==========================================
-  // CONFIGURACIÓN RESPONSIVE
-  // ==========================================
 
   const getScreenConfig = () => {
     const width = window.innerWidth
@@ -95,10 +86,7 @@ const createCarouselManager = () => {
     }
   }
 
-  // ==========================================
-  // GESTIÓN DEL MODAL - VERSIÓN LIFERAY
-  // ==========================================
-
+  // Modal controlado por eventos - NO manipula DOM directamente
   const openModal = index => {
     console.log('🔍 Abriendo modal - Índice:', index)
 
@@ -110,34 +98,16 @@ const createCarouselManager = () => {
     state.showModal = true
     state.selectedSlideIndex = index
 
-    // ✅ BUSCAR MODAL DE MÚLTIPLES FORMAS (Compatible con Liferay)
-    const modal =
-      document.getElementById('modal-backdrop') ||
-      document.querySelector('.modal-backdrop') ||
-      document.querySelector('[data-modal="backdrop"]')
-
-    if (modal) {
-      modal.style.display = 'flex'
-      modal.style.visibility = 'visible'
-      modal.style.opacity = '1'
-      modal.setAttribute('aria-hidden', 'false')
-
-      // Agregar clase activa para CSS
-      modal.classList.add('modal-active')
-
-      console.log('✅ Modal mostrado exitosamente')
-
-      // ✅ TRIGGER CUSTOM EVENT para comunicación con React/Liferay
-      const modalEvent = new CustomEvent('carouselModalOpen', {
-        detail: {
-          slideIndex: index,
-          slideData: slides[index]
-        }
-      })
-      document.dispatchEvent(modalEvent)
-    } else {
-      console.error('❌ No se encontró el modal en el DOM')
-    }
+    // Disparar evento para que React maneje el DOM
+    const modalEvent = new CustomEvent('carouselModalOpen', {
+      detail: {
+        slideIndex: index,
+        slideData: slides[index]
+      }
+    })
+    document.dispatchEvent(modalEvent)
+    
+    console.log('✅ Evento modal abierto disparado')
   }
 
   const closeModal = () => {
@@ -146,29 +116,12 @@ const createCarouselManager = () => {
     state.showModal = false
     state.selectedSlideIndex = null
 
-    const modal =
-      document.getElementById('modal-backdrop') ||
-      document.querySelector('.modal-backdrop') ||
-      document.querySelector('[data-modal="backdrop"]')
-
-    if (modal) {
-      modal.style.display = 'none'
-      modal.style.visibility = 'hidden'
-      modal.style.opacity = '0'
-      modal.setAttribute('aria-hidden', 'true')
-      modal.classList.remove('modal-active')
-
-      console.log('✅ Modal cerrado exitosamente')
-
-      // ✅ TRIGGER CUSTOM EVENT
-      const modalEvent = new CustomEvent('carouselModalClose')
-      document.dispatchEvent(modalEvent)
-    }
+    // Disparar evento para que React maneje el DOM
+    const modalEvent = new CustomEvent('carouselModalClose')
+    document.dispatchEvent(modalEvent)
+    
+    console.log('✅ Evento modal cerrado disparado')
   }
-
-  // ==========================================
-  // NAVEGACIÓN DE SWIPER - VERSIÓN LIFERAY
-  // ==========================================
 
   const updateNavigationButtons = () => {
     if (!state.swiper) return
@@ -181,7 +134,6 @@ const createCarouselManager = () => {
     const prevBtn = document.getElementById('carousel-prev')
 
     if (nextBtn && prevBtn) {
-      // Botón anterior
       if (currentIndex <= 0) {
         prevBtn.disabled = true
         prevBtn.classList.add('swiper-button-disabled')
@@ -192,7 +144,6 @@ const createCarouselManager = () => {
         prevBtn.setAttribute('aria-disabled', 'false')
       }
 
-      // Botón siguiente
       if (currentIndex >= maxIndex) {
         nextBtn.disabled = true
         nextBtn.classList.add('swiper-button-disabled')
@@ -205,13 +156,8 @@ const createCarouselManager = () => {
     }
   }
 
-  // ==========================================
-  // INICIALIZACIÓN DE SWIPER
-  // ==========================================
-
   const initSwiper = () => {
     return new Promise(resolve => {
-      // ✅ CARGAR SWIPER DINÁMICAMENTE (Compatible con Liferay)
       const loadSwiper = () => {
         if (window.Swiper) {
           console.log('✅ Swiper ya disponible')
@@ -221,13 +167,11 @@ const createCarouselManager = () => {
 
         console.log('📦 Cargando Swiper...')
 
-        // CSS
         const link = document.createElement('link')
         link.rel = 'stylesheet'
         link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
         document.head.appendChild(link)
 
-        // JS
         const script = document.createElement('script')
         script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'
         script.onload = () => {
@@ -252,11 +196,9 @@ const createCarouselManager = () => {
             grabCursor: true,
             centeredSlides: slides.length < config.slidesPerView,
             allowTouchMove: true,
-
             effect: 'slide',
             speed: 400,
 
-            // ✅ BREAKPOINTS SIMPLIFICADOS
             breakpoints: {
               768: {
                 slidesPerView: Math.min(2, slides.length),
@@ -275,7 +217,6 @@ const createCarouselManager = () => {
               }
             },
 
-            // ✅ EVENTOS SIMPLIFICADOS
             on: {
               init: function () {
                 console.log('🎉 Swiper inicializado para Liferay')
@@ -318,16 +259,10 @@ const createCarouselManager = () => {
     })
   }
 
-  // ==========================================
-  // EVENTOS DELEGADOS - COMPATIBLE CON LIFERAY
-  // ==========================================
-
   const setupEventDelegation = () => {
     console.log('🔧 Configurando eventos delegados para Liferay...')
 
-    // ✅ USAR DELEGACIÓN DE EVENTOS (funciona incluso si React recrea elementos)
     document.addEventListener('click', function (e) {
-      // Click en botón siguiente
       if (e.target.closest('#carousel-next')) {
         e.preventDefault()
         console.log('👆 Click en botón siguiente')
@@ -337,7 +272,6 @@ const createCarouselManager = () => {
         return
       }
 
-      // Click en botón anterior
       if (e.target.closest('#carousel-prev')) {
         e.preventDefault()
         console.log('👆 Click en botón anterior')
@@ -359,23 +293,9 @@ const createCarouselManager = () => {
         return
       }
 
-      // Click en cerrar modal
-      if (e.target.closest('#modal-close-btn') || e.target.closest('.modal-close')) {
-        e.preventDefault()
-        console.log('❌ Click en cerrar modal')
-        closeModal()
-        return
-      }
-
-      // Click fuera del modal para cerrar
-      if (e.target.closest('#modal-backdrop') && !e.target.closest('.modal-content')) {
-        console.log('❌ Click fuera del modal')
-        closeModal()
-        return
-      }
+      // Ya no manejamos clicks de cerrar modal aquí - React se encarga
     })
 
-    // ✅ RESIZE HANDLER
     let resizeTimeout
     window.addEventListener('resize', function () {
       clearTimeout(resizeTimeout)
@@ -393,10 +313,6 @@ const createCarouselManager = () => {
 
     console.log('✅ Eventos delegados configurados')
   }
-
-  // ==========================================
-  // INICIALIZACIÓN PRINCIPAL
-  // ==========================================
 
   const init = () => {
     if (state.isInitialized) {
@@ -416,10 +332,8 @@ const createCarouselManager = () => {
         if (container && slides.length > 0) {
           console.log('✅ DOM listo para inicialización')
 
-          // ✅ CONFIGURAR EVENTOS PRIMERO
           setupEventDelegation()
 
-          // ✅ LUEGO INICIALIZAR SWIPER
           initSwiper().then(() => {
             state.isInitialized = true
             console.log('🎉 Carousel completamente inicializado para Liferay')
@@ -435,12 +349,7 @@ const createCarouselManager = () => {
     })
   }
 
-  // ==========================================
-  // EXPOSICIÓN PÚBLICA PARA LIFERAY
-  // ==========================================
-
   const publicAPI = {
-    // Getters para estado
     get activeIndex() {
       return state.activeIndex
     },
@@ -460,12 +369,10 @@ const createCarouselManager = () => {
       return state.swiper
     },
 
-    // Métodos públicos
     openModal: openModal,
     closeModal: closeModal,
     init: init,
 
-    // ✅ MÉTODOS PARA TESTING EN LIFERAY
     test: {
       openFirstSlide: () => openModal(0),
       closeModal: closeModal,
@@ -485,19 +392,18 @@ const createCarouselManager = () => {
     }
   }
 
-  // ✅ EXPOSICIÓN GLOBAL PARA LIFERAY/DEBUGGING
   if (typeof window !== 'undefined') {
     window.CarouselManager = publicAPI
     console.log('🌍 CarouselManager disponible globalmente')
   }
 
-  // ✅ AUTO-INICIALIZACIÓN DIFERIDA (Compatible con Liferay)
   setTimeout(() => {
     init().catch(error => {
       console.error('❌ Error en inicialización:', error)
     })
-  }, 1000) // Dar tiempo a React/Liferay
+  }, 1000)
 
   return publicAPI
 }
-export default createCarouselManager;
+
+export default createCarouselManager

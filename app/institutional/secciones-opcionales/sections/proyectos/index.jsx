@@ -7,17 +7,16 @@ import Container from '@library/components/container'
 import script from './script.js'
 import './styles.scss'
 
-// ✅ COMPONENTE SIN HOOKS - COMPATIBLE CON LIFERAY
 class Proyectos extends React.Component {
   constructor(props) {
     super(props)
     
-    // ✅ ESTADO SIMPLE SIN HOOKS
     this.state = {
-      isInitialized: false
+      isInitialized: false,
+      isModalOpen: false,
+      selectedSlideIndex: null
     }
     
-    // ✅ DATOS ESTÁTICOS
     this.slides = [
       {
         image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1',
@@ -69,15 +68,32 @@ class Proyectos extends React.Component {
       }
     ]
     
-    // ✅ INICIALIZAR SCRIPT UNA SOLA VEZ
     this.carouselManager = script()
   }
 
-  // ✅ LIFECYCLE METHODS EN LUGAR DE HOOKS
   componentDidMount() {
     console.log('🚀 Componente Proyectos montado - Sin hooks')
     
-    // ✅ NOTIFICAR AL SCRIPT QUE EL COMPONENTE ESTÁ LISTO
+    // Listener para eventos del modal desde JavaScript
+    this.modalOpenListener = (event) => {
+      console.log('📤 Modal abierto desde script:', event.detail.slideIndex)
+      this.setState({
+        isModalOpen: true,
+        selectedSlideIndex: event.detail.slideIndex
+      })
+    }
+
+    this.modalCloseListener = () => {
+      console.log('📥 Modal cerrado desde script')
+      this.setState({
+        isModalOpen: false,
+        selectedSlideIndex: null
+      })
+    }
+
+    document.addEventListener('carouselModalOpen', this.modalOpenListener)
+    document.addEventListener('carouselModalClose', this.modalCloseListener)
+    
     setTimeout(() => {
       const event = new CustomEvent('reactComponentMounted', {
         detail: { 
@@ -96,29 +112,32 @@ class Proyectos extends React.Component {
   componentWillUnmount() {
     console.log('🧹 Limpiando componente Proyectos')
     
-    // ✅ LIMPIAR RECURSOS SI ES NECESARIO
+    document.removeEventListener('carouselModalOpen', this.modalOpenListener)
+    document.removeEventListener('carouselModalClose', this.modalCloseListener)
+    
     if (this.carouselManager && this.carouselManager.cleanup) {
       this.carouselManager.cleanup()
     }
   }
 
-  // ✅ MÉTODO PARA OBTENER SLIDE SELECCIONADO
   getSelectedSlide() {
-    if (this.carouselManager.selectedSlideIndex !== null) {
-      return this.slides[this.carouselManager.selectedSlideIndex]
+    if (this.state.selectedSlideIndex !== null) {
+      return this.slides[this.state.selectedSlideIndex]
     }
     return null
   }
 
-  // ✅ MÉTODO AUXILIAR PARA MANEJAR MODAL
   handleCloseModal = () => {
     console.log('🔴 Cerrando modal desde componente')
+    this.setState({
+      isModalOpen: false,
+      selectedSlideIndex: null
+    })
     if (this.carouselManager && this.carouselManager.closeModal) {
       this.carouselManager.closeModal()
     }
   }
 
-  // ✅ RENDERIZAR SLIDE INDIVIDUAL
   renderSlide(slide, index) {
     return (
       <div
@@ -152,7 +171,6 @@ class Proyectos extends React.Component {
     )
   }
 
-  // ✅ RENDERIZAR INDICADOR INDIVIDUAL
   renderIndicator(slide, index) {
     return (
       <button
@@ -167,10 +185,8 @@ class Proyectos extends React.Component {
     )
   }
 
-  // ✅ MÉTODO RENDER PRINCIPAL
   render() {
     const selectedSlide = this.getSelectedSlide()
-    const isModalOpen = this.carouselManager.showModal
     
     return (
       <section className="hero-carousel" id="carousel-section">
@@ -185,7 +201,6 @@ class Proyectos extends React.Component {
         
         <Container className="main-container" id="proyectos-container">
           <div>
-            {/* ✅ ESTRUCTURA DEL CAROUSEL */}
             <div 
               className="carousel-container swiper"
               id="carousel-container"
@@ -197,7 +212,6 @@ class Proyectos extends React.Component {
               </div>
             </div>
 
-            {/* ✅ CONTROLES DE NAVEGACIÓN */}
             <div className="carousel-controls" id="carousel-controls">
               <button 
                 className="carousel-control prev" 
@@ -219,21 +233,20 @@ class Proyectos extends React.Component {
               </button>
             </div>
 
-            {/* ✅ INDICADORES */}
             <div className="carousel-indicators" id="carousel-indicators">
               {this.slides.map((slide, index) => this.renderIndicator(slide, index))}
             </div>
           </div>
         </Container>
 
-        {/* ✅ MODAL */}
+        {/* Modal con estado sincronizado */}
         <div 
           className="modal-backdrop" 
           id="modal-backdrop" 
-          style={{ display: isModalOpen ? 'flex' : 'none' }}
+          style={{ display: this.state.isModalOpen ? 'flex' : 'none' }}
           role="dialog"
           aria-modal="true"
-          aria-hidden={isModalOpen ? 'false' : 'true'}
+          aria-hidden={this.state.isModalOpen ? 'false' : 'true'}
           data-modal="backdrop"
         >
           <div className="modal-content" id="modal-content">
@@ -249,7 +262,7 @@ class Proyectos extends React.Component {
             <div className="modal-body" id="modal-body">
               {selectedSlide && (
                 <DetalleProyecto
-                  key={`modal-${this.carouselManager.selectedSlideIndex}`}
+                  key={`modal-${this.state.selectedSlideIndex}`}
                   proyecto={selectedSlide}
                   slideData={selectedSlide.slideData}
                   title={selectedSlide.title}
@@ -262,7 +275,6 @@ class Proyectos extends React.Component {
           </div>
         </div>
 
-        {/* ✅ INDICADOR DE ESTADO PARA DEBUG */}
         {this.state.isInitialized && (
           <div 
             style={{ display: 'none' }} 

@@ -16,7 +16,6 @@ class DetalleProyecto extends Component {
   componentDidMount() {
     const element = this.projectDetailsRef.current
     if (element && this.isMobile()) {
-      // Touch events
       element.addEventListener('touchstart', this.handleTouchStart, { passive: false })
       element.addEventListener('touchmove', this.handleTouchMove, { passive: false })
       element.addEventListener('touchend', this.handleTouchEnd, { passive: false })
@@ -40,7 +39,6 @@ class DetalleProyecto extends Component {
     this.startY = e.touches[0].clientY
     this.isDragging = true
     
-    // Añadir clase para transiciones suaves
     const element = this.projectDetailsRef.current
     if (element) {
       element.style.transition = 'none'
@@ -50,13 +48,12 @@ class DetalleProyecto extends Component {
   handleTouchMove = (e) => {
     if (!this.isDragging) return
     
-    e.preventDefault() // Prevenir scroll del navegador
+    e.preventDefault()
     this.currentY = e.touches[0].clientY
     const deltaY = this.currentY - this.startY
     
     const element = this.projectDetailsRef.current
     if (element) {
-      // Aplicar transformación con resistencia en los extremos
       const resistance = this.getScrollResistance(deltaY)
       element.style.transform = `translateY(${deltaY * resistance}px)`
     }
@@ -70,23 +67,18 @@ class DetalleProyecto extends Component {
     const element = this.projectDetailsRef.current
     
     if (element) {
-      // Restaurar transición
       element.style.transition = 'transform 0.3s ease-out'
       
-      // Determinar si hacer snap o regresar
       const threshold = 50
       
-      // Dentro de handleTouchEnd en DetalleProyecto
       if (Math.abs(deltaY) > threshold) {
         console.log('Touch gesture detected:', deltaY > 0 ? 'down' : 'up')
         
-        // Esta línea ejecuta el callback del componente padre
         if (this.props.onSwipe) {
-          this.props.onSwipe(deltaY > 0 ? 'down' : 'up') // <-- Aquí se ejecuta
+          this.props.onSwipe(deltaY > 0 ? 'down' : 'up')
         }
       }
       
-      // Regresar a posición original
       element.style.transform = 'translateY(0px)'
     }
     
@@ -95,10 +87,24 @@ class DetalleProyecto extends Component {
   }
 
   getScrollResistance = (deltaY) => {
-    // Agregar resistencia cuando se llega a los límites
-    const maxScroll = window.innerHeight * 0.3 // 30% de la altura de pantalla
+    const maxScroll = window.innerHeight * 0.3
     const resistance = Math.max(0.1, 1 - Math.abs(deltaY) / maxScroll)
     return resistance
+  }
+
+  // Función para convertir URL de YouTube a embed
+  getYouTubeEmbedUrl = (url) => {
+    if (!url) return null
+    
+    // Extraer video ID de diferentes formatos de URL de YouTube
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
+    const match = url.match(regex)
+    
+    if (match && match[1]) {
+      return `https://www.youtube.com/embed/${match[1]}?rel=0&modestbranding=1`
+    }
+    
+    return null
   }
 
   getProjectData = () => {
@@ -115,7 +121,8 @@ class DetalleProyecto extends Component {
             image,
             'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg',
             'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2'
-          ]
+          ],
+          videos: ['https://www.youtube.com/watch?v=Y2KdypoCAYg&t=27s'] // Corregido: era "video", ahora es "videos"
         }
       
       case 'investigacion':
@@ -128,7 +135,8 @@ class DetalleProyecto extends Component {
             image,
             'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
             'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg'
-          ]
+          ],
+          videos: ['https://www.youtube.com/watch?v=h3GuFxrk8aIs']
         }
       
       case 'campus':
@@ -141,7 +149,8 @@ class DetalleProyecto extends Component {
             image,
             'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg',
             'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1'
-          ]
+          ],
+          videos: ['https://www.youtube.com/watch?v=Y2KdypoCAYg&t=27s']
         }
       
       case 'comunidad':
@@ -154,7 +163,8 @@ class DetalleProyecto extends Component {
             image,
             'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3',
             'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png'
-          ]
+          ],
+          videos: ['https://www.youtube.com/watch?v=h3GuFxrk8aI']
         }
       
       case 'internacional':
@@ -167,7 +177,8 @@ class DetalleProyecto extends Component {
             image,
             'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png',
             'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1'
-          ]
+          ],
+          videos: ['https://www.youtube.com/watch?v=Y2KdypoCAYg&t=27s']
         }
       
       default:
@@ -180,7 +191,8 @@ class DetalleProyecto extends Component {
             image,
             'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1',
             'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2'
-          ]
+          ],
+          videos: ['https://www.youtube.com/watch?v=h3GuFxrk8aI']
         }
     }
   }
@@ -199,35 +211,69 @@ class DetalleProyecto extends Component {
       >
         <div className="project-layout">
           <div className="project-info">
-            <Title><h2>{projectData.titulo}</h2></Title>
+            <Title className="project-title">
+              {projectData.titulo}
+            </Title>
+            
             <div className="info-row">
               <strong>Fecha</strong>
               <span>{projectData.fecha}</span>
             </div>
+            
             <div className="info-row">
               <strong>Responsable</strong>
               <span>{projectData.estudiante}</span>
             </div>
+            
             <div className="info-row">
               <strong>Descripción</strong>
-              <Paragraph> <p>{projectData.descripcion}</p></Paragraph>
+              <Paragraph className="project-description">
+                {projectData.descripcion}
+              </Paragraph>
             </div>
           </div>
 
           <div className="project-gallery">
-            {projectData.imagenes.map((src, index) => (
-              <img 
-                key={index} 
-                src={src} 
-                alt={`${projectData.titulo} - Imagen ${index + 1}`} 
-                style={{ 
-                  width: '100%', 
-                  marginBottom: '1rem', 
-                  objectFit: 'cover',
-                  pointerEvents: 'none' 
-                }} 
-              />
+            {/* Renderizar imágenes */}
+            {projectData.imagenes && projectData.imagenes.map((src, index) => (
+              <div key={`img-${index}`} className="image-wrapper">
+                <img 
+                  src={src} 
+                  alt={`${projectData.titulo} - Imagen ${index + 1}`} 
+                  style={{ 
+                    width: '100%', 
+                    marginBottom: '1rem', 
+                    objectFit: 'cover',
+                    pointerEvents: 'none' 
+                  }}
+                />
+              </div>
             ))}
+
+            {/* Renderizar videos de YouTube */}
+            {projectData.videos && projectData.videos.map((videoUrl, index) => {
+              const embedUrl = this.getYouTubeEmbedUrl(videoUrl)
+              
+              if (!embedUrl) return null
+              
+              return (
+                <div key={`video-${index}`} className="video-wrapper" style={{ marginBottom: '1rem' }}>
+                  <iframe
+                    src={embedUrl}
+                    title={`${projectData.titulo} - Video ${index + 1}`}
+                    width="100%"
+                    height="315"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    style={{
+                      borderRadius: '20px',
+                      aspectRatio: '16/9'
+                    }}
+                  />
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
