@@ -128,11 +128,13 @@ const Investigaciones = () => {
   }, [investigacionesData])
 
   // ==========================================
-  // FUNCIÓN PARA TRUNCAR TEXTO
+  // FUNCIÓN PARA TRUNCAR TEXTO POR PALABRAS
   // ==========================================
-  const truncateText = (text, maxChars = 150) => {
+  const truncateText = (text, maxWords = 20) => {
     if (!text) return ''
-    return text.length > maxChars ? text.substring(0, maxChars) + '...' : text
+    const words = text.split(' ')
+    if (words.length <= maxWords) return text
+    return words.slice(0, maxWords).join(' ') + '...'
   }
 
   // ==========================================
@@ -166,7 +168,7 @@ const Investigaciones = () => {
             </Title>
 
             <Paragraph className={`${baseClass}_description`}>
-              {truncateText(description, 150)}
+              {truncateText(description, 20)}
               <span>
                 <i className='ph ph-arrow-square-in'></i>
               </span>
@@ -202,7 +204,7 @@ const Investigaciones = () => {
             </Title>
 
             <Paragraph className={`${baseClass}_description`}>
-              {truncateText(description, 150)}
+              {truncateText(description, 20)}
               <span>
                 <i className='ph ph-arrow-square-in'></i>
               </span>
