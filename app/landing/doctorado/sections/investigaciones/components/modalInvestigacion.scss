@@ -302,7 +302,7 @@ $content-width: 55%;
 .investigations-modal__label {
   font-weight: var(--font-weight-bold);
   color: var(--neutral-100);
-  min-width: rem(80px);
+  width: rem(120px);  // Ancho fijo para crear columnas tipo tabla
   font-size: var(--font-size-base);
   flex-shrink: 0;
   line-height: 1.6; // Mismo line-height que la descripción

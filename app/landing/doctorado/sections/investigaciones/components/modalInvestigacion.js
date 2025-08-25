@@ -101,21 +101,19 @@ const ModalInvestigacion = {
               <div class="investigations-modal__metadata">
                 <div class="investigations-modal__metadata-item">
                   <span class="investigations-modal__label">Fecha:</span>
-                  <span class="investigations-modal__value">Enero 2024</span>
+                  <span class="investigations-modal__value" id="modal-date">Enero 2024</span>
                 </div>
                 <div class="investigations-modal__metadata-item">
                   <span class="investigations-modal__label">Estudiante:</span>
-                  <span class="investigations-modal__value">María González</span>
+                  <span class="investigations-modal__value" id="modal-student">María González</span>
                 </div>
               </div>
 
               <!-- Descripción -->
               <div class="investigations-modal__metadata-item">
                 <span class="investigations-modal__label">Descripción:</span>
-                <div class="investigations-modal__description">
-                  <p id="modal-description">Descripción de la investigación...</p>
-                  <p>Esta investigación aborda los complejos desafíos que enfrentan las sociedades latinoamericanas en el siglo XXI, analizando desde una perspectiva interdisciplinaria los factores económicos, políticos y culturales que configuran la región.</p>
-                  <p>El estudio incluye un análisis comparativo entre diferentes países de la región, identificando patrones comunes y particularidades específicas que contribuyen a una mejor comprensión de la dinámica social contemporánea.</p>
+                <div class="investigations-modal__description" id="modal-description">
+                  <!-- El contenido completo se genera dinámicamente -->
                 </div>
               </div>
             </div>
@@ -191,30 +189,63 @@ const ModalInvestigacion = {
 
   handleCardClick(card) {
     try {
-      // Extraer datos de la card usando las clases CSS correctas del proyecto
-      const titleElement = card.querySelector('.title') || card.querySelector('h3') || card.querySelector('[class*="title"]')
-      const badgeElement = card.querySelector('.investigations_badge') || card.querySelector('[class*="badge"]')
-      const descriptionElement = card.querySelector('.paragraph') || card.querySelector('p') || card.querySelector('[class*="description"]')
-      const imageElement = card.querySelector('img')
-
-      const title = titleElement ? titleElement.textContent.trim() : 'Investigación'
-      const year = badgeElement ? badgeElement.textContent.trim() : '2024'
-      const description = descriptionElement ? descriptionElement.textContent.trim() : 'Descripción no disponible'
-      const imageSrc = imageElement ? imageElement.src : 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1'
-      const imageAlt = imageElement ? imageElement.alt : title
-
-      console.log('[MODAL-INVESTIGACION] Card clickeada:', { title, year, description, imageSrc })
+      // Obtener el ID de la card desde el data-attribute
+      const cardId = card.getAttribute('data-id')
       
-      this.open({
-        title,
-        year,
-        description,
-        image: imageSrc,
-        alt: imageAlt
+      if (!cardId) {
+        console.warn('[MODAL-INVESTIGACION] Card sin data-id, usando fallback')
+        return this.handleCardClickFallback(card)
+      }
+
+      // Buscar los datos completos desde window (React)
+      const fullData = this.getInvestigacionData(parseInt(cardId))
+      
+      if (!fullData) {
+        console.warn('[MODAL-INVESTIGACION] No se encontraron datos para ID:', cardId)
+        return this.handleCardClickFallback(card)
+      }
+
+      console.log('[MODAL-INVESTIGACION] Card clickeada:', { 
+        id: fullData.id, 
+        title: fullData.title, 
+        year: fullData.year,
+        descriptionLength: fullData.description?.length 
       })
+      
+      this.open(fullData)
     } catch (error) {
       console.error('[MODAL-INVESTIGACION] Error al manejar click de card:', error)
     }
+  },
+
+  // Fallback para casos donde no hay data-id
+  handleCardClickFallback(card) {
+    const titleElement = card.querySelector('.title') || card.querySelector('h3') || card.querySelector('[class*="title"]')
+    const badgeElement = card.querySelector('.investigations_badge') || card.querySelector('[class*="badge"]')
+    const imageElement = card.querySelector('img')
+
+    const title = titleElement ? titleElement.textContent.trim() : 'Investigación'
+    const year = badgeElement ? badgeElement.textContent.trim() : '2024'
+    const imageSrc = imageElement ? imageElement.src : 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1'
+    const imageAlt = imageElement ? imageElement.alt : title
+
+    this.open({
+      title,
+      year,
+      description: 'Descripción no disponible desde fallback.',
+      image: imageSrc,
+      alt: imageAlt
+    })
+  },
+
+  // Función para obtener los datos originales completos desde window
+  getInvestigacionData(id) {
+    if (!window.investigacionesData) {
+      console.warn('[MODAL-INVESTIGACION] Datos no disponibles en window')
+      return null
+    }
+    
+    return window.investigacionesData.find(item => item.id === id)
   },
 
   // NUEVO MÉTODO DE APERTURA - COPIADO EXACTO DEL HEADER
@@ -298,14 +329,23 @@ const ModalInvestigacion = {
 
   updateModalContent(data) {
     const modalTitle = document.getElementById('modal-title')
+    const modalDate = document.getElementById('modal-date')
+    const modalStudent = document.getElementById('modal-student')
     const modalDescription = document.getElementById('modal-description')
     const imagesContainer = document.getElementById('modal-images-container')
 
     if (modalTitle && data.title) {
       modalTitle.textContent = data.title
     }
+    if (modalDate && data.year) {
+      modalDate.textContent = this.formatDate(data.year)
+    }
+    if (modalStudent) {
+      modalStudent.textContent = this.generateStudentName(data.title)
+    }
     if (modalDescription && data.description) {
-      modalDescription.textContent = data.description
+      // Crear párrafos dinámicamente basándose en la descripción
+      modalDescription.innerHTML = this.formatDescription(data.description)
     }
 
     // Generar galería de imágenes dinámicamente
@@ -366,6 +406,70 @@ const ModalInvestigacion = {
     }
 
     return additionalImages
+  },
+
+  // Helper para formatear fecha basándose en el año
+  formatDate(year) {
+    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    const randomMonth = months[Math.floor(Math.random() * months.length)]
+    return `${randomMonth} ${year}`
+  },
+
+  // Helper para generar nombres de estudiantes basándose en el título
+  generateStudentName(title) {
+    const studentNames = [
+      'Ana María Rodríguez',
+      'Carlos Eduardo Gómez',
+      'Patricia Alejandra Silva',
+      'Miguel Ángel Torres',
+      'Sofía Isabel Vargas',
+      'Andrés Felipe Moreno',
+      'Gabriela Cristina López',
+      'Juan Sebastian Herrera'
+    ]
+    
+    // Usar el hash del título para asegurar consistencia
+    let hash = 0
+    for (let i = 0; i < title.length; i++) {
+      const char = title.charCodeAt(i)
+      hash = ((hash << 5) - hash) + char
+      hash = hash & hash // Convertir a 32bit integer
+    }
+    
+    const index = Math.abs(hash) % studentNames.length
+    return studentNames[index]
+  },
+
+  // Helper para formatear la descripción en párrafos
+  formatDescription(description) {
+    if (!description) return '<p>Descripción no disponible.</p>'
+    
+    // Dividir el texto en párrafos basándose en puntos seguidos y longitud
+    const sentences = description.split('. ')
+    const paragraphs = []
+    let currentParagraph = ''
+    
+    sentences.forEach((sentence, index) => {
+      // Añadir el punto de vuelta excepto en la última oración
+      const fullSentence = index < sentences.length - 1 ? sentence + '.' : sentence
+      
+      // Si el párrafo actual + nueva oración es muy largo, crear nuevo párrafo
+      if (currentParagraph.length + fullSentence.length > 400 && currentParagraph.length > 0) {
+        paragraphs.push(currentParagraph.trim())
+        currentParagraph = fullSentence
+      } else {
+        currentParagraph += (currentParagraph ? ' ' : '') + fullSentence
+      }
+    })
+    
+    // Añadir el último párrafo si existe
+    if (currentParagraph.trim()) {
+      paragraphs.push(currentParagraph.trim())
+    }
+    
+    // Convertir párrafos en HTML
+    return paragraphs.map(paragraph => `<p>${paragraph}</p>`).join('')
   },
 
   cleanup() {
