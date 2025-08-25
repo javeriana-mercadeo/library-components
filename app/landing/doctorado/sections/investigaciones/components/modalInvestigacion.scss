@@ -6,6 +6,7 @@
 
 // Variables del modal usando variables globales
 $modal-z-index: 10000;
+$modal-z-index-mobile: 50000; // Z-index más alto para móviles
 $modal-overlay-bg: rgba(0, 0, 0, 0.65);
 $modal-backdrop-blur: 10px;
 $modal-shadow: 0 var(--spacing-lg) var(--spacing-4xl) rgba(0, 0, 0, 0.25);
@@ -34,6 +35,11 @@ $content-width: 55%;
   width: 100%;
   height: 100%;
   z-index: $modal-z-index;
+
+  // Z-index más alto en dispositivos móviles para evitar interferencia del header
+  @media (max-width: #{$breakpoint-md - 1}) {
+    z-index: $modal-z-index-mobile;
+  }
 
   // Estados iniciales
   opacity: 0;
@@ -92,7 +98,14 @@ $content-width: 55%;
   width: 100%;
   height: 80%;
   max-height: calc(100vh - rem(40px));
-  overflow: visible;
+  overflow: visible; // Desktop sin scroll general
+  
+  // Scroll general solo en móviles
+  @media (max-width: #{$breakpoint-md - 1}) {
+    height: auto; // Altura automática para permitir crecimiento del contenido
+    max-height: 95vh; // Límite máximo para activar scroll
+    overflow-y: auto;
+  }
   position: relative;
 
   // Animaciones sutiles de entrada (similar al menú móvil)
@@ -119,7 +132,7 @@ $content-width: 55%;
   }
 
   @media (max-width: #{$breakpoint-md - 1}) {
-    flex-direction: column;
+    flex-direction: column-reverse; // Invertir orden: info arriba, galería abajo
     max-height: 95vh;
   }
 
@@ -137,165 +150,9 @@ $content-width: 55%;
     background: var(--background-200);
     box-shadow: 0 rem(20px) rem(60px) rgba(0, 0, 0, 0.5);
   }
-}
 
-// ===========================================
-// GALERÍA DE IMÁGENES (COLUMNA IZQUIERDA)
-// ===========================================
-.investigations-modal__gallery {
-  width: $gallery-width;
-  background: var(--background-100); // Fondo blanco como la columna derecha
-  position: relative;
-  overflow: hidden;
-  border-radius: $modal-border-radius 0 0 $modal-border-radius; // Solo esquinas izquierdas
-
+  // Scroll visible personalizado solo en móviles
   @media (max-width: #{$breakpoint-md - 1}) {
-    width: 100%;
-    height: rem(250px);
-    flex-shrink: 0;
-  }
-
-  @include dark-theme {
-    background: var(--background-200); // Consistente con tema oscuro
-  }
-}
-
-.investigations-modal__images-container {
-  height: 100%;
-  overflow-y: auto;
-  padding: $modal-padding;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-
-  @media (max-width: #{$breakpoint-md - 1}) {
-    flex-direction: row;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: var(--spacing-md);
-    gap: var(--spacing-md);
-  }
-
-  // Scroll invisible
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    display: none;
-  }
-
-  // Soporte para Firefox
-  scrollbar-width: none;
-  
-  // Soporte para IE/Edge legacy
-  -ms-overflow-style: none;
-}
-
-.investigations-modal__image-wrapper {
-  flex-shrink: 0;
-  border-radius: var(--border-radius-lg);
-  overflow: hidden;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.02);
-  }
-
-  @media (max-width: #{$breakpoint-md - 1}) {
-    min-width: rem(200px);
-    height: 100%;
-  }
-}
-
-.investigations-modal__image {
-  width: 100%;
-  height: rem(200px);
-  object-fit: cover;
-  display: block;
-
-  @media (max-width: #{$breakpoint-md - 1}) {
-    width: rem(200px);
-    height: 100%;
-  }
-}
-
-// ===========================================
-// CONTENIDO (COLUMNA DERECHA)
-// ===========================================
-.investigations-modal__content {
-  width: $content-width;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  border-radius: 0 $modal-border-radius $modal-border-radius 0; // Solo esquinas derechas
-
-  @media (max-width: #{$breakpoint-md - 1}) {
-    width: 100%;
-    flex-grow: 1;
-  }
-}
-
-.investigations-modal__header {
-  padding: var(--spacing-lg) var(--spacing-lg) 0;
-  display: flex;
-  justify-content: flex-end;
-  flex-shrink: 0;
-}
-
-// El botón de cierre ahora usa el sistema de botones iconOnly
-// Los estilos se generan dinámicamente en JavaScript
-
-.investigations-modal__info {
-  padding: 0 var(--spacing-lg) var(--spacing-lg);
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.investigations-modal__badge {
-  display: inline-block;
-  background: var(--primary);
-  color: var(--neutral);
-  padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--border-radius-xl);
-  font-size: var(--font-size-small);
-  font-weight: var(--font-weight-bold);
-  margin-bottom: var(--spacing-md);
-}
-
-.investigations-modal__title {
-  margin-bottom: var(--spacing-lg);
-  color: var(--neutral-100);
-  line-height: 1.2;
-  font-weight: var(--font-weight-bold);
-
-  @include dark-theme {
-    color: var(--neutral-100);
-  }
-}
-
-// ===========================================
-// METADATOS HORIZONTALES
-// ===========================================
-.investigations-modal__metadata {
-  margin-bottom: var(--spacing-xl);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.investigations-modal__metadata-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-sm);
-  
-  // Solo aplicar scroll al metadata-item que contiene la descripción
-  &:has(.investigations-modal__description) {
-    flex: 1;
-    overflow-y: auto;
-    max-height: rem(350px); // Altura fija que funciona en múltiples pantallas
-    padding-right: var(--spacing-sm); // Espacio para evitar superposición con scrollbar
-
-    // Scroll visible personalizado
     &::-webkit-scrollbar {
       width: 6px;
     }
@@ -351,6 +208,243 @@ $content-width: 55%;
     // Para Firefox
     scrollbar-width: thin;
     scrollbar-color: var(--primary) rgba(var(--primary-rgb), 0.1);
+  }
+}
+
+// ===========================================
+// GALERÍA DE IMÁGENES (COLUMNA IZQUIERDA)
+// ===========================================
+.investigations-modal__gallery {
+  width: $gallery-width;
+  background: var(--background-100); // Fondo blanco como la columna derecha
+  position: relative;
+  overflow: hidden;
+  border-radius: $modal-border-radius 0 0 $modal-border-radius; // Solo esquinas izquierdas
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    width: 100%;
+    height: auto; // Altura automática en lugar de fija
+    min-height: rem(200px); // Altura mínima para las imágenes
+    flex-shrink: 0;
+  }
+
+  @include dark-theme {
+    background: var(--background-200); // Consistente con tema oscuro
+  }
+}
+
+.investigations-modal__images-container {
+  height: 100%;
+  padding: $modal-padding;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  
+  // Scroll en desktop solamente
+  overflow-y: auto;
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    flex-direction: row;
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+    overflow-y: visible; // Sin scroll en móviles (usa el scroll general del modal)
+    overflow-x: auto;
+  }
+
+  // Scroll invisible solo en desktop
+  @media (min-width: #{$breakpoint-md}) {
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
+
+.investigations-modal__image-wrapper {
+  flex-shrink: 0;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    min-width: rem(200px);
+    height: rem(150px); // Altura específica para móviles
+  }
+}
+
+.investigations-modal__image {
+  width: 100%;
+  height: rem(200px);
+  object-fit: cover;
+  display: block;
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    width: rem(200px);
+    height: rem(150px);
+  }
+}
+
+// ===========================================
+// CONTENIDO (COLUMNA DERECHA)
+// ===========================================
+.investigations-modal__content {
+  width: $content-width;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 0 $modal-border-radius $modal-border-radius 0; // Solo esquinas derechas
+  height: 100%; // Asegurar altura completa para flexbox
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    width: 100%;
+    flex-grow: 1;
+    min-height: 0; // Asegurar que respete los límites del contenedor flex
+  }
+}
+
+.investigations-modal__header {
+  padding: var(--spacing-lg) var(--spacing-lg) 0;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  
+  // Header fijo solo en móviles
+  @media (max-width: #{$breakpoint-md - 1}) {
+    position: sticky;
+    top: 0;
+    background: var(--background-100);
+    z-index: 10;
+    
+    @include dark-theme {
+      background: var(--background-200);
+    }
+  }
+}
+
+// El botón de cierre ahora usa el sistema de botones iconOnly
+// Los estilos se generan dinámicamente en JavaScript
+
+.investigations-modal__info {
+  padding: 0 var(--spacing-lg) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  
+  @media (max-width: #{$breakpoint-md - 1}) {
+    min-height: 0; // Asegurar que respete los límites en móviles
+    flex-shrink: 1; // Permitir que se contraiga si es necesario
+  }
+}
+
+.investigations-modal__badge {
+  display: inline-block;
+  background: var(--primary);
+  color: var(--neutral);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-xl);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-md);
+}
+
+.investigations-modal__title {
+  margin-bottom: var(--spacing-lg);
+  color: var(--neutral-100);
+  line-height: 1.2;
+  font-weight: var(--font-weight-bold);
+
+  @include dark-theme {
+    color: var(--neutral-100);
+  }
+}
+
+// ===========================================
+// METADATOS HORIZONTALES
+// ===========================================
+.investigations-modal__metadata {
+  margin-bottom: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.investigations-modal__metadata-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  
+  // Scroll específico para metadata-item con descripción solo en desktop
+  @media (min-width: #{$breakpoint-md}) {
+    &:has(.investigations-modal__description) {
+      flex: 1;
+      overflow-y: auto;
+      max-height: rem(350px);
+      padding-right: var(--spacing-sm);
+
+      // Scroll visible personalizado en desktop
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(var(--primary-rgb), 0.1);
+        border-radius: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 3px;
+        
+        &:hover {
+          background: var(--primary-dark);
+        }
+      }
+
+      // Botones de flecha (arriba)
+      &::-webkit-scrollbar-button:single-button:vertical:decrement {
+        display: block;
+        width: 6px;
+        height: 12px;
+        background: var(--primary);
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M8 2l6 6H2l6-6z'/%3E%3C/svg%3E");
+        background-size: 8px 8px;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 3px 3px 0 0;
+        
+        &:hover {
+          background-color: var(--primary-dark);
+        }
+      }
+
+      // Botones de flecha (abajo)
+      &::-webkit-scrollbar-button:single-button:vertical:increment {
+        display: block;
+        width: 6px;
+        height: 12px;
+        background: var(--primary);
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M2 6h12l-6 6-6-6z'/%3E%3C/svg%3E");
+        background-size: 8px 8px;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 0 0 3px 3px;
+        
+        &:hover {
+          background-color: var(--primary-dark);
+        }
+      }
+
+      // Para Firefox
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) rgba(var(--primary-rgb), 0.1);
+    }
   }
 }
 
