@@ -1,17 +1,17 @@
 // ===== LIBRERÍAS EXTERNAS =====
-// Compilado automáticamente el: 2025-08-25T02:48:10.857Z
+// Compilado automáticamente el: 2025-08-25T14:09:27.863Z
 
 
 // ===== CÓDIGO PERSONALIZADO =====
 
 // ===== IMPORTADO DE: ../utils/main =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\main.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\main.js
 
 // ===== IMPORTADO DE: ./index.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\index.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\index.js
 
 // ===== IMPORTADO DE: ./core/logger.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\core\logger.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\core\logger.js
 /**
  * @fileoverview Sistema de logging centralizado con diferentes niveles
  * @module Logger
@@ -111,7 +111,7 @@ const Logger = new LoggerClass()
 
 
 // ===== IMPORTADO DE: ./core/dom.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\core\dom.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\core\dom.js
 /**
  * @fileoverview Utilidades para manipulación del DOM
  * @module DOMUtils
@@ -305,10 +305,10 @@ const DOMUtils = {
 
 
 // ===== IMPORTADO DE: ./core/events.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\core\events.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\core\events.js
 
 // ===== IMPORTADO DE: ./logger.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\core\logger.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\core\logger.js
 /**
  * @fileoverview Sistema de logging centralizado con diferentes niveles
  * @module Logger
@@ -579,7 +579,7 @@ const EventManager = EventManagerInstance
 
 
 // ===== IMPORTADO DE: ./core/timing.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\core\timing.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\core\timing.js
 /**
  * @fileoverview Utilidades de tiempo y control de flujo
  * @module TimingUtils
@@ -799,7 +799,7 @@ const TimingUtils = {
 
 
 // ===== IMPORTADO DE: ./validation/validators.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\validation\validators.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\validation\validators.js
 /**
  * @fileoverview Sistema de validación robusto y extensible
  * @module Validators
@@ -1097,7 +1097,7 @@ const ValidatorUtils = {
 
 
 // ===== IMPORTADO DE: ./validation/form-manager.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\validation\form-manager.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\validation\form-manager.js
 /**
  * @fileoverview Sistema de gestión de formularios avanzado
  * @module FormManager
@@ -1540,7 +1540,7 @@ const FormManager = createFormManager()
 
 
 // ===== IMPORTADO DE: ./api/http-client.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\api\http-client.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\api\http-client.js
 /**
  * @fileoverview Cliente HTTP avanzado con interceptors y manejo de errores
  * @module HTTPClient
@@ -1899,7 +1899,7 @@ const setupCacheInterceptor = (client, cache = new Map()) => {
 
 
 // ===== IMPORTADO DE: ./helpers/data-utils.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\helpers\data-utils.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\helpers\data-utils.js
 /**
  * @fileoverview Utilidades para manipulación de datos
  * @module DataUtils
@@ -2306,7 +2306,7 @@ const DataUtils = {
 
 
 // ===== IMPORTADO DE: ./helpers/string-utils.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\helpers\string-utils.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\helpers\string-utils.js
 /**
  * @fileoverview Utilidades para manipulación de strings
  * @module StringUtils
@@ -2638,10 +2638,10 @@ const StringUtils = {
 
 
 // ===== IMPORTADO DE: ./helpers/storage-utils.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\helpers\storage-utils.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\helpers\storage-utils.js
 
 // ===== IMPORTADO DE: ../core/logger.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\utils\core\logger.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\utils\core\logger.js
 /**
  * @fileoverview Sistema de logging centralizado con diferentes niveles
  * @module Logger
@@ -3274,7 +3274,7 @@ initGlobalUtils
 
 
 // ===== IMPORTADO DE: ../app/_library/components/contain/btn/script.js =====
-// Archivo: C:\Users\ulric\OneDrive\Documents\Git\library-components\app\_library\components\contain\btn\script.js
+// Archivo: C:\Users\jogmorenor\Documents\GitHub\library-components\app\_library\components\contain\btn\script.js
 /**
  * script.js - Efecto de onda optimizado para botones
  * Versión optimizada para mejor rendimiento y compatibilidad SSR

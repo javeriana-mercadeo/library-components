@@ -2,31 +2,72 @@
 import { ModalInvestigacion } from './components/modalInvestigacion.js'
 
 export default () => {
-  const initializeSwiper = () => {
-    // Destruir instancia existente si existe
-    if (window.investigationsSwiper && typeof window.investigationsSwiper.destroy === 'function') {
-      window.investigationsSwiper.destroy(true, true)
-    }
+  // ✅ PATRÓN LIFERAY COMPATIBLE: Retornar función para ejecución diferida
+  return () => {
+    let retryCount = 0
+    const maxRetries = 10
 
-    // Buscar el elemento con la clase especifica
-    const element = document.querySelector('.investigations_wrapper')
-    if (!element) {
-      console.warn('Elemento .investigations_wrapper no encontrado')
-      const fallbackElement = document.querySelector('.investigations-swiper')
-      if (!fallbackElement) {
-        console.error('Ningun elemento swiper encontrado')
+    // ==========================================
+    // FUNCIÓN DE INICIALIZACIÓN PRINCIPAL
+    // ==========================================
+    const init = () => {
+      retryCount++
+      
+      // Verificar elementos DOM críticos
+      const swiperContainer = document.querySelector('.investigations-swiper')
+      const slides = document.querySelectorAll('.investigations_slide')
+      
+      if (!swiperContainer || slides.length === 0) {
+        if (retryCount < maxRetries) {
+          console.warn(`[INVESTIGATIONS] DOM no listo (intento ${retryCount}/${maxRetries})`)
+          setTimeout(init, 200)
+          return
+        }
+        console.error('[INVESTIGATIONS] DOM no se inicializó después de todos los reintentos')
         return
       }
+      
+      // Verificar dependencias globales
+      if (!window.Swiper) {
+        if (retryCount < maxRetries) {
+          console.warn(`[INVESTIGATIONS] Swiper no disponible (intento ${retryCount}/${maxRetries})`)
+          setTimeout(init, 200)
+          return
+        }
+        console.error('[INVESTIGATIONS] Swiper no se cargó después de todos los reintentos')
+        return
+      }
+      
+      console.log('[INVESTIGATIONS] ✅ Inicializando correctamente')
+      initializeSwiper()
+      initModal()
     }
 
-    // Contar slides
-    const slides = document.querySelectorAll('.investigations_slide')
-    const totalSlides = slides.length
+    const initializeSwiper = () => {
+      // Destruir instancia existente si existe
+      if (window.investigationsSwiper && typeof window.investigationsSwiper.destroy === 'function') {
+        window.investigationsSwiper.destroy(true, true)
+      }
 
-    if (!window.Swiper) {
-      console.error('Swiper no esta disponible')
-      return
-    }
+      // Buscar el elemento con la clase especifica
+      const element = document.querySelector('.investigations_wrapper')
+      if (!element) {
+        console.warn('Elemento .investigations_wrapper no encontrado')
+        const fallbackElement = document.querySelector('.investigations-swiper')
+        if (!fallbackElement) {
+          console.error('Ningun elemento swiper encontrado')
+          return
+        }
+      }
+
+      // Contar slides
+      const slides = document.querySelectorAll('.investigations_slide')
+      const totalSlides = slides.length
+
+      if (!window.Swiper) {
+        console.error('Swiper no esta disponible')
+        return
+      }
 
     // Usar selector correcto
     const swiperSelector = element ? '.investigations_wrapper' : '.investigations-swiper'
@@ -241,58 +282,59 @@ export default () => {
     }
   }
 
-  // ==========================================
-  // INICIALIZACION
-  // ==========================================
-  const checkAndInit = () => {
-    if (typeof window !== 'undefined' && window.Swiper) {
-      initializeSwiper()
-    } else {
-      setTimeout(checkAndInit, 300)
-    }
-  }
-
-  checkAndInit()
-
-  // Manejar resize con debounce
-  let resizeTimeout
-  window.addEventListener('resize', () => {
-    if (resizeTimeout) {
-      clearTimeout(resizeTimeout)
-    }
-
-    resizeTimeout = setTimeout(() => {
-      if (window.investigationsSwiper && typeof window.investigationsSwiper.update === 'function') {
-        window.investigationsSwiper.update()
+    // ==========================================
+    // INICIALIZAR MODAL DE INVESTIGACIONES
+    // ==========================================
+    const initModal = () => {
+      try {
+        // Exponer ModalInvestigacion globalmente
+        window.ModalInvestigacion = ModalInvestigacion
+        
+        // Intentar inicializar el modal después de que React haya renderizado
+        setTimeout(() => {
+          const success = ModalInvestigacion.init()
+          if (success) {
+            console.log('[INVESTIGATIONS] Modal system inicializado correctamente')
+          } else {
+            // Reintentar después de un tiempo si no se encontraron las cards
+            setTimeout(() => {
+              ModalInvestigacion.init()
+              console.log('[INVESTIGATIONS] Modal system reintentado')
+            }, 1000)
+          }
+        }, 500)
+      } catch (error) {
+        console.error('[INVESTIGATIONS] Error al inicializar modal:', error)
       }
-    }, 250)
-  })
+    }
 
-  // ==========================================
-  // INICIALIZAR MODAL DE INVESTIGACIONES
-  // ==========================================
-  const initModal = () => {
-    try {
-      // Exponer ModalInvestigacion globalmente
-      window.ModalInvestigacion = ModalInvestigacion
-      
-      // Intentar inicializar el modal después de que React haya renderizado
-      setTimeout(() => {
-        const success = ModalInvestigacion.init()
-        if (success) {
-          console.log('[INVESTIGATIONS] Modal system inicializado correctamente')
-        } else {
-          // Reintentar después de un tiempo si no se encontraron las cards
-          setTimeout(() => {
-            ModalInvestigacion.init()
-            console.log('[INVESTIGATIONS] Modal system reintentado')
-          }, 1000)
+    // ==========================================
+    // MANEJO DE RESIZE CON DEBOUNCE
+    // ==========================================
+    let resizeTimeout
+    const handleResize = () => {
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout)
+      }
+
+      resizeTimeout = setTimeout(() => {
+        if (window.investigationsSwiper && typeof window.investigationsSwiper.update === 'function') {
+          window.investigationsSwiper.update()
         }
-      }, 500)
-    } catch (error) {
-      console.error('[INVESTIGATIONS] Error al inicializar modal:', error)
+      }, 250)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    // ==========================================
+    // ESTRATEGIA DE INICIALIZACIÓN MÚLTIPLE
+    // ==========================================
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true })
+    } else if (document.readyState === 'interactive') {
+      setTimeout(init, 50)
+    } else {
+      setTimeout(init, 100)
     }
   }
-
-  initModal()
 }

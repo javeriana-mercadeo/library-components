@@ -15,7 +15,11 @@ const Investigaciones = () => {
   // Modal manejado completamente por JavaScript vanilla
 
   useEffect(() => {
-    script()
+    // ✅ PATRÓN LIFERAY COMPATIBLE: Verificar tipo de función antes de ejecutar
+    const initScript = script()
+    if (typeof initScript === 'function') {
+      initScript()
+    }
 
     // Sincronizar alturas después de que se rendericen las cards
     const syncCardHeights = () => {
