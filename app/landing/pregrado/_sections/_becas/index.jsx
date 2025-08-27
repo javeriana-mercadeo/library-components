@@ -1,11 +1,10 @@
-'use client'
-import { Container, Title, Paragraph, Button, Icon, Caption } from '@library/components'
-
-import { useEffect } from 'react'
+import { Container, Title, Paragraph, Button, Icon, Caption, Image } from '@library/components'
 
 import info from './info.json'
-import script from './script.js'
 import './styles.scss'
+
+// Importar el script para que se ejecute
+import './script.js'
 
 const Becas = () => {
   const elementName = info.id || 'becas'
@@ -17,6 +16,8 @@ const Becas = () => {
       id: 'becas',
       label: 'Nuestras Becas',
       icon: 'ph-graduation-cap',
+      image: 'https://www.javeriana.edu.co/recursosdb/20125/12256677/apoyo-financiero-y-descuentos.JPG/25b2a8f4-71f3-da2e-2728-b8af1111a992',
+      imageAlt: 'Apoyo financiero y descuentos - Becas Universidad Javeriana',
       title: 'Becas disponibles',
       content: (
         <>
@@ -42,6 +43,8 @@ const Becas = () => {
       id: 'financiacion',
       label: 'Programa de Financiación',
       icon: 'ph-credit-card',
+      image: 'https://www.javerianacali.edu.co/sites/default/files/styles/image_1100x700/public/2020-02/programas-academicos-1100x700.jpg.webp?itok=MglNGFBd',
+      imageAlt: 'Programas académicos - Opciones de financiación Universidad Javeriana',
       title: 'Opciones de financiación',
       content: (
         <>
@@ -58,12 +61,8 @@ const Becas = () => {
     }
   ]
 
-  useEffect(() => {
-    script()
-  }, [])
-
   return (
-    <section className={`${baseClass}-section`}>
+    <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
         {/* Título principal de la sección */}
         <Title className={`${baseClass}__main-title`} hierarchy='h2' weight='semibold' size='2xl' align='center'>
@@ -73,24 +72,23 @@ const Becas = () => {
         <div className={`${baseClass}__tabs-container`}>
           {/* Navegación de tabs */}
           <div className={`${baseClass}__tabs-nav`} role='tablist' aria-label='Opciones de becas y financiación'>
-            <ul className={`${baseClass}__tabs-list`}>
+            <div className={`${baseClass}__tabs-wrapper`}>
               {scholarshipTabs.map((tab, index) => (
-                <li key={tab.id} role='presentation'>
-                  <button
-                    className={`${baseClass}__tab-button`}
-                    id={`${tab.id}-tab`}
-                    data-tabs-target={`#${tab.id}-panel`}
-                    type='button'
-                    role='tab'
-                    aria-controls={`${tab.id}-panel`}
-                    aria-selected={index === 0 ? 'true' : 'false'}
-                    tabIndex={index === 0 ? 0 : -1}>
-                    <Icon icon={tab.icon} size='sm' className={`${baseClass}__tab-icon`} />
-                    <span>{tab.label}</span>
-                  </button>
-                </li>
+                <button
+                  key={tab.id}
+                  className={`${baseClass}__tab-button ${index === 0 ? 'active' : ''}`}
+                  id={`${tab.id}-tab`}
+                  data-tabs-target={`#${tab.id}-panel`}
+                  type='button'
+                  role='tab'
+                  aria-controls={`${tab.id}-panel`}
+                  aria-selected={index === 0 ? 'true' : 'false'}
+                  tabIndex={index === 0 ? 0 : -1}>
+                  <Icon icon={tab.icon} size='sm' className={`${baseClass}__tab-icon`} />
+                  <span>{tab.label}</span>
+                </button>
               ))}
-            </ul>
+            </div>
           </div>
 
           {/* Contenido de las tabs */}
@@ -104,8 +102,16 @@ const Becas = () => {
                 aria-labelledby={`${tab.id}-tab`}
                 aria-hidden={index !== 0 ? 'true' : 'false'}>
                 <div className={`${baseClass}__content-wrapper`}>
-                  <div className={`${baseClass}__icon-container`}>
-                    <Icon icon={tab.icon} size='lg' className={`${baseClass}__content-icon`} />
+                  <div className={`${baseClass}__media-container`}>
+                    {tab.image ? (
+                      <Image 
+                        src={tab.image} 
+                        alt={tab.imageAlt} 
+                        className={`${baseClass}__content-image`}
+                      />
+                    ) : (
+                      <Icon icon={tab.icon} size='lg' className={`${baseClass}__content-icon`} />
+                    )}
                   </div>
                   <div className={`${baseClass}__text-container`}>
                     <Caption className={`${baseClass}__content-title`} size='xl' weight='semibold' color='neutral'>

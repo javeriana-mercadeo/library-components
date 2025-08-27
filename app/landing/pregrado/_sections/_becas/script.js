@@ -1,9 +1,16 @@
 // Funcionalidad de tabs para la sección de becas
 // Compatible con Liferay DXP - JavaScript vanilla
 
-export default () => {
-  const initScholarshipsTabs = () => {
+// Función de inicialización con reintentos para asegurar que el componente esté montado
+const initScholarshipsTabs = () => {
+  const tryInitialize = (attempts = 0) => {
     const tabsContainers = document.querySelectorAll('.scholarships__tabs-container')
+    
+    if (tabsContainers.length === 0 && attempts < 20) {
+      // Si no encuentra los elementos, reintentar en 100ms
+      setTimeout(() => tryInitialize(attempts + 1), 100)
+      return
+    }
 
     tabsContainers.forEach(container => {
       const tabButtons = container.querySelectorAll('.scholarships__tab-button')
@@ -29,6 +36,9 @@ export default () => {
       }
     })
   }
+  
+  tryInitialize()
+}
 
   const activateTab = (activeButton, activePanel) => {
     if (!activeButton || !activePanel) return
@@ -46,6 +56,13 @@ export default () => {
       const isActive = button === activeButton
       button.setAttribute('aria-selected', isActive.toString())
       button.setAttribute('tabindex', isActive ? '0' : '-1')
+      
+      // Agregar/remover clase active para el nuevo estilo
+      if (isActive) {
+        button.classList.add('active')
+      } else {
+        button.classList.remove('active')
+      }
     })
 
     // Ocultar todos los paneles primero
@@ -71,11 +88,13 @@ export default () => {
       if (index === activeIndex) {
         button.setAttribute('aria-selected', 'true')
         button.setAttribute('tabindex', '0')
+        button.classList.add('active')
         panels[index]?.classList.remove('hidden')
         panels[index]?.setAttribute('aria-hidden', 'false')
       } else {
         button.setAttribute('aria-selected', 'false')
         button.setAttribute('tabindex', '-1')
+        button.classList.remove('active')
         panels[index]?.classList.add('hidden')
         panels[index]?.setAttribute('aria-hidden', 'true')
       }
@@ -117,10 +136,35 @@ export default () => {
     updateTabStates(buttons, panels, newIndex)
   }
 
-  // Ejecutar cuando el DOM esté listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initScholarshipsTabs)
-  } else {
-    initScholarshipsTabs()
-  }
+// Ejecutar cuando el DOM esté listo y también observar cambios
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initScholarshipsTabs)
+} else {
+  initScholarshipsTabs()
 }
+
+// MutationObserver para detectar cuando se agrega el componente dinámicamente
+if (typeof MutationObserver !== 'undefined') {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        const addedNodes = Array.from(mutation.addedNodes)
+        addedNodes.forEach((node) => {
+          if (node.nodeType === 1 && // Element node
+              (node.classList?.contains('scholarships_container') || 
+               node.querySelector?.('.scholarships__tabs-container'))) {
+            initScholarshipsTabs()
+          }
+        })
+      }
+    })
+  })
+  
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  })
+}
+
+// Export por defecto para compatibilidad
+export default initScholarshipsTabs
