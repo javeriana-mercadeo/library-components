@@ -36,7 +36,7 @@ const Becas = () => {
           <p className="terms-note">*Aplican términos y condiciones.</p>
         </>
       ),
-      buttonText: 'Más información sobre becas',
+      buttonText: 'Más información',
       buttonLink: '#'
     },
     {
@@ -56,7 +56,7 @@ const Becas = () => {
           </ul>
         </>
       ),
-      buttonText: 'Más información sobre financiación',
+      buttonText: 'Más información',
       buttonLink: '#'
     }
   ]
