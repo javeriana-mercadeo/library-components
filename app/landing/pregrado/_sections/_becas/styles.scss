@@ -67,13 +67,14 @@
   &__tab-button {
     display: flex;
     align-items: center;
+    flex-direction: column; // Ícono arriba en móvil
     flex-wrap: wrap; // Permitir que el contenido se ajuste
-    gap: rem(6px);
+    gap: rem(4px); // Gap más pequeño para layout vertical
     padding: rem(10px) rem(12px);
     border: none;
     background: transparent;
     color: var(--neutral-500);
-    font-size: var(--font-size-small); // Fuente más pequeña en móvil
+    font-size: var(--font-size-paragraph); // Aumentar tamaño de fuente
     font-weight: var(--font-weight-medium);
     border-radius: rem(12px);
     cursor: pointer;
@@ -96,6 +97,7 @@
       white-space: nowrap; // Restablecer a una línea en tablet+
       min-height: rem(48px); // Altura mayor en tablet+
       flex-wrap: nowrap; // Sin wrap en tablet+
+      flex-direction: row; // Volver a layout horizontal en tablet+
     }
 
     // Estados hover
@@ -143,6 +145,7 @@
     font-size: rem(16px); // Ícono más pequeño en móvil
     transition: transform 0.3s ease;
     flex-shrink: 0; // Evitar que el ícono se comprima
+    color: inherit; // Heredar el color del texto del botón
 
     @include responsive($breakpoint-sm) {
       font-size: rem(20px); // Tamaño normal en tablet+
