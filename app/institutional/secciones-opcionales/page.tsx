@@ -55,15 +55,6 @@ export default function SeccionesOpcionales() {
         <Herramientas />
       </ViewComponent> */}
 
-<<<<<<< HEAD
-      <AccesosDirectos/>
-      <ViewComponent path={`${basePath}/sections/accesosDirectos`}>
-=======
-      {/* <AccesosDirectos/>*/}
-      {/* <ViewComponent path={`${basePath}/sections/accesosDirectos`}>
->>>>>>> ed7147dae75611b7932e91032de5593204983e8c
-        <AccesosDirectos />
-      </ViewComponent> */}
     </>
   )
 }
