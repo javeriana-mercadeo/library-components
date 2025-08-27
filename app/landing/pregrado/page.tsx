@@ -20,6 +20,7 @@ const Experiencia = dynamic(() => import('./_sections/7_experiencia'), { ssr: fa
 const Cita = dynamic(() => import('./_sections/8_cita'), { ssr: false, loading: () => <Load /> })
 const PreguntasFrecuentes = dynamic(() => import('./_sections/9_preguntasFrecuentes'), { ssr: false, loading: () => <Load /> })
 const Relacionados = dynamic(() => import('./_sections/10_relacionados'), { ssr: false, loading: () => <Load /> })
+const EducacionEstrella = dynamic(() => import('./_sections/_educacionEstrella'), { ssr: false, loading: () => <Load /> })
 const Becas = dynamic(() => import('./_sections/_becas'), { ssr: false, loading: () => <Load /> })
 const Footer = dynamic(() => import('@library/components/footer'), { ssr: false, loading: () => <Load /> })
 
@@ -82,6 +83,11 @@ export default function Profesional() {
       {/* <Cita /> */}
       <ViewComponent path={`${basePath}/_sections/8_cita`}>
         <Cita />
+      </ViewComponent>
+
+      {/* <EducacionEstrella /> */}
+      <ViewComponent path={`${basePath}/_sections/_educacionEstrella`}>
+        <EducacionEstrella />
       </ViewComponent>
 
       {/* <Becas /> */}

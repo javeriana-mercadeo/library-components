@@ -1,0 +1,235 @@
+@use '@styles/autoload' as *;
+
+.educacion-estrella {
+  // Variables locales
+  --content-spacing: var(--spacing-lg);
+  
+  background-color: var(--background-100);
+
+  // Contenedor principal de la sección
+  &__container {
+    width: 100%;
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+
+    // Mobile - reducir padding vertical
+    @media (max-width: 767px) {
+      padding-top: var(--spacing-lg);
+      padding-bottom: var(--spacing-lg);
+    }
+  }
+
+  // Título principal centrado
+  &__main-title {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  &__content-wrapper {
+    display: grid;
+    
+    // Mobile por defecto - columna única, logo arriba
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: var(--spacing-lg);
+    text-align: center;
+    align-items: center;
+
+    // Tablet y Desktop - 60/40 ratio (min-width: 768px)
+    @media (min-width: 768px) {
+      grid-template-columns: 60% 40%;
+      grid-template-rows: none;
+      gap: var(--content-spacing);
+      text-align: left;
+      align-items: stretch;
+      min-height: 300px;
+    }
+
+    // Desktop - más espacio (min-width: 992px)
+    @media (min-width: 992px) {
+      gap: var(--spacing-xl);
+      min-height: 350px;
+    }
+  }
+
+  // Contenedor de media (logo)
+  &__media-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    
+    // Mobile por defecto - logo prominente centrado
+    width: 100%;
+    padding: var(--spacing-md);
+
+    // Tablet - ajustar padding
+    @media (min-width: 768px) {
+      width: 100%;
+      height: 100%;
+      padding: var(--spacing-sm);
+    }
+
+    // Desktop - más padding
+    @media (min-width: 992px) {
+      padding: var(--spacing-md);
+    }
+  }
+
+  &__logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &__logo {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+
+    // Efecto hover solo en desktop
+    @media (min-width: 993px) {
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+  }
+
+  &__text-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    // Mobile por defecto - centrado
+    justify-content: center;
+    text-align: center;
+    gap: var(--spacing-lg);
+
+    // Tablet - alinear al inicio y texto izquierda
+    @media (min-width: 768px) {
+      justify-content: flex-start;
+      text-align: left;
+      gap: var(--spacing-lg);
+      padding: var(--spacing-sm) 0;
+    }
+
+    // Desktop - más espacio vertical
+    @media (min-width: 992px) {
+      gap: var(--spacing-xl);
+      padding: var(--spacing-md) 0;
+    }
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+
+  &__subtitle {
+    color: var(--neutral-400);
+    line-height: 1.6;
+    font-size: var(--font-size-paragraph);
+    margin-bottom: 0;
+  }
+
+  &__benefits {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  &__benefits-list {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    
+    li {
+      position: relative !important;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+      padding-left: 0 !important;
+      line-height: 1.6 !important;
+      color: var(--neutral-300);
+      font-size: var(--font-size-paragraph);
+      font-family: var(--font-family);
+      margin-bottom: 0 !important;
+      
+      &::before {
+        content: '✓' !important;
+        color: var(--primary) !important;
+        font-weight: var(--font-weight-bold) !important;
+        font-size: rem(16px) !important;
+        line-height: 1.6 !important;
+        flex-shrink: 0;
+        margin-top: rem(2px);
+      }
+      
+      strong {
+        color: var(--neutral-200);
+        font-weight: var(--font-weight-semibold);
+      }
+    }
+  }
+
+  &__process-info {
+    color: var(--neutral-400);
+    font-size: var(--font-size-paragraph);
+    line-height: 1.6;
+    margin-bottom: 0;
+    font-style: normal;
+  }
+
+  &__cta {
+    display: flex;
+    
+    // Mobile - centrar botón
+    justify-content: center;
+
+    // Tablet - alinear al inicio
+    @media (min-width: 768px) {
+      justify-content: flex-start;
+    }
+  }
+
+  &__cta-button {
+    // El variant="solid" ya incluye todos los estilos necesarios
+    max-width: max-content;
+    width: auto;
+    
+    .icon {
+      margin-left: var(--spacing-xs);
+      font-size: rem(18px);
+    }
+  }
+
+  // Estados y transiciones
+  transition: all 0.3s ease;
+
+  // Soporte para tema oscuro
+  @include dark-theme {
+    // Sin estilos específicos para el logo en tema oscuro
+  }
+}
+
+// ==========================================
+// ACCESIBILIDAD - Reducir movimiento
+// ==========================================
+@media (prefers-reduced-motion: reduce) {
+  .educacion-estrella {
+    &__logo {
+      transition: none;
+    }
+    
+    * {
+      transition: none;
+    }
+  }
+}
