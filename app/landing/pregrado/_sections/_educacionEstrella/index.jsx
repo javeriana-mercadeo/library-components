@@ -1,4 +1,4 @@
-import { Container, Title, Caption, Button, Image, Icon } from '@library/components'
+import { Container, Title, Caption, Button, Image } from '@library/components'
 
 import info from './info.json'
 import './styles.scss'
@@ -59,7 +59,6 @@ const EducacionEstrella = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Icon name="arrow-square-out" />
                 Conoce más aquí
               </Button>
             </div>

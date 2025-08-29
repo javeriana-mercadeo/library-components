@@ -1,4 +1,4 @@
-import { Container, Title, Paragraph, Button, Icon, Caption, Image } from '@library/components'
+import { Container, Title, Caption, Button, Icon, Image } from '@library/components'
 
 import info from './info.json'
 import './styles.scss'
@@ -77,7 +77,14 @@ const Becas = () => {
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
         {/* Título principal de la sección */}
-        <Title className={`${baseClass}__main-title`} hierarchy='h2' weight='semibold' size='2xl' align='center'>
+        <Title 
+          id={`title-${elementName}-main-title`}
+          className={`${baseClass}__main-title`} 
+          hierarchy='h2' 
+          weight='semibold' 
+          size='2xl' 
+          align='center'
+        >
           Becas y Financiación
         </Title>
 
@@ -97,7 +104,7 @@ const Becas = () => {
                   aria-selected={index === 0 ? 'true' : 'false'}
                   tabIndex={index === 0 ? 0 : -1}>
                   <Icon icon={tab.icon} size='sm' className={`${baseClass}__tab-icon`} />
-                  <span>{tab.label}</span>
+                  <span id={`span-${elementName}-tab-${tab.id}`}>{tab.label}</span>
                 </button>
               ))}
             </div>
@@ -116,22 +123,40 @@ const Becas = () => {
                 <div className={`${baseClass}__content-wrapper`}>
                   <div className={`${baseClass}__media-container`}>
                     {tab.image ? (
-                      <Image src={tab.image} alt={tab.imageAlt} className={`${baseClass}__content-image`} />
+                      <Image 
+                        id={`image-${elementName}-${tab.id}`}
+                        src={tab.image} 
+                        alt={tab.imageAlt} 
+                        className={`${baseClass}__content-image`}
+                      />
                     ) : (
                       <Icon icon={tab.icon} size='lg' className={`${baseClass}__content-icon`} />
                     )}
                   </div>
                   <div className={`${baseClass}__text-container`}>
-                    <Caption className={`${baseClass}__content-title`} size='xl' weight='semibold' color='neutral'>
+                    <Caption 
+                      id={`caption-${elementName}-${tab.id}-title`}
+                      className={`${baseClass}__content-title`} 
+                      size='xl' 
+                      weight='semibold' 
+                      color='neutral'
+                    >
                       {tab.title}
                     </Caption>
-                    <div className={`${baseClass}__content-text`}>{tab.content}</div>
+                    <div 
+                      id={`div-${elementName}-${tab.id}-content`}
+                      className={`${baseClass}__content-text`}
+                    >
+                      {tab.content}
+                    </div>
                     <Button
+                      id={`button-${elementName}-${tab.id}`}
                       className={`${baseClass}__cta-button`}
                       variant='solid'
                       color='primary'
                       size='md'
-                      href={tab.buttonLink}>
+                      href={tab.buttonLink}
+                    >
                       {tab.buttonText}
                     </Button>
                   </div>
