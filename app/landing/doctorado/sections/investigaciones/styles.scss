@@ -111,16 +111,20 @@ $nav-button-size-mobile: rem(40px);
       padding: 0;
     }
 
-    // MÓVILES: Padding que coincida con el wrapper del swiper
+    // MÓVILES: Padding que coincida con el wrapper (patrón experiencia)
     @media (max-width: #{$breakpoint-lg - 1}) {
       display: block;
       width: 100%;
-      padding: 0 var(--spacing-md);
+      padding: rem(20px) rem(40px);
       box-sizing: border-box;
     }
 
-    @media (max-width: #{$breakpoint-sm - 1}) {
-      padding: 0 var(--spacing-sm);
+    @include responsive($breakpoint-md) {
+      padding: rem(20px) rem(30px);
+    }
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(10px) rem(15px);
     }
   }
 
@@ -151,21 +155,18 @@ $nav-button-size-mobile: rem(40px);
   }
 
   &_wrapper {
-    overflow: visible;
+    overflow: hidden;
     position: relative;
+    
+    // PATRÓN EXPERIENCIA: Padding responsivo simple
+    padding: rem(20px) rem(40px);
 
-    // DESKTOP: Sin padding superior para alineación con card fija
-    @include responsive($breakpoint-lg) {
-      padding: 0;
+    @include responsive($breakpoint-md) {
+      padding: rem(20px) rem(30px);
     }
 
-    // MÓVILES: Padding simétrico estándar
-    @media (max-width: #{$breakpoint-lg - 1}) {
-      padding: 0 var(--spacing-md);
-    }
-
-    @media (max-width: #{$breakpoint-sm - 1}) {
-      padding: 0 var(--spacing-sm);
+    @include responsive($breakpoint-sm) {
+      padding: rem(10px) rem(15px);
     }
   }
 
@@ -190,15 +191,15 @@ $nav-button-size-mobile: rem(40px);
     flex-shrink: 0 !important;
 
     &--secondary {
-      // MÓVIL: Un slide por vez, ancho completo menos padding del wrapper
+      // MÓVIL: 100% simple como experiencia (sin cálculos complejos)
       @media (max-width: #{$breakpoint-sm - 1}) {
-        width: calc(100% - calc(var(--spacing-sm) * 2)) !important;
+        width: 100% !important;
         margin-right: 0;
       }
 
-      // MÓVIL GRANDE: Un slide por vez
+      // MÓVIL GRANDE: 100% simple
       @media (min-width: #{$breakpoint-sm}) and (max-width: #{$breakpoint-md - 1}) {
-        width: calc(100% - calc(var(--spacing-md) * 2)) !important;
+        width: 100% !important;
         margin-right: 0;
       }
 

@@ -38,15 +38,14 @@ export default () => {
     try {
       window.investigationsSwiper = new window.Swiper(swiperSelector, {
         // ==========================================
-        // CONFIGURACION BASICA
+        // CONFIGURACION BASICA - PATRÓN RELACIONADOS
         // ==========================================
         loop: false,
         spaceBetween: 25,
+        grabCursor: true,
+        allowTouchMove: true,
         slidesPerView: 'auto',
         watchOverflow: true,
-        centeredSlides: false,
-        grabCursor: true,
-        allowTouchMove: totalSlides > 1,
 
         // ==========================================
         // NAVEGACION
@@ -59,28 +58,28 @@ export default () => {
         },
 
         // ==========================================
-        // BREAKPOINTS RESPONSIVOS
+        // BREAKPOINTS RESPONSIVOS - PATRÓN RELACIONADOS NATIVO
         // ==========================================
         breakpoints: {
           0: {
-            slidesPerView: 1,
             spaceBetween: 20,
+            slidesPerView: Math.min(1, totalSlides),
             centeredSlides: true
           },
           576: {
-            slidesPerView: 1.5,
             spaceBetween: 20,
-            centeredSlides: false
+            centeredSlides: false,
+            slidesPerView: Math.min(1, totalSlides)
           },
           768: {
-            slidesPerView: 2,
             spaceBetween: 25,
-            centeredSlides: false
+            centeredSlides: false,
+            slidesPerView: Math.min(2, totalSlides)
           },
           1024: {
-            slidesPerView: 2,
             spaceBetween: 25,
-            centeredSlides: false
+            centeredSlides: false,
+            slidesPerView: Math.min(2, totalSlides)
           }
         },
 
