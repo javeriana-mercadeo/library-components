@@ -79,21 +79,50 @@ const Investigaciones = () => {
   // ==========================================
   // FUNCIÓN PARA TRUNCAR TEXTO POR PALABRAS
   // ==========================================
-  const truncateText = (text, maxWords = 20) => {
+  const truncateText = (text, maxWords = 20, isMainCard = false) => {
     if (!text) return ''
     const words = text.split(' ')
-    if (words.length <= maxWords) return text
-    return words.slice(0, maxWords).join(' ') + '...'
+    const limit = isMainCard ? 35 : maxWords // Main card: más texto
+    if (words.length <= limit) return text
+    return words.slice(0, limit).join(' ') + '...'
+  }
+
+  // ==========================================
+  // VALIDACIÓN DE AÑOS ROBUSTA
+  // ==========================================
+  const validateYear = year => {
+    if (!year) return 0
+    const parsed = parseInt(year)
+    if (isNaN(parsed)) return 0
+    // Validar rango razonable (1900-2100)
+    if (parsed < 1900 || parsed > 2100) return 0
+    return parsed
   }
 
   // ==========================================
   // ORDENAMIENTO DINÁMICO: AUTO-PROMOCIÓN POR AÑO
   // ==========================================
 
+  // Validar que hay datos
+  if (!investigacionesData || investigacionesData.length === 0) {
+    return (
+      <section className={`${baseClass}_container`} data-component-id={elementName}>
+        <Container id={elementName} className={baseClass}>
+          <Title weight='semibold' size='2xl' align='center' className={`${baseClass}_main-title`}>
+            Investigaciones
+          </Title>
+          <div className={`${baseClass}_empty-state`}>
+            <Paragraph align='center'>No hay investigaciones disponibles en este momento.</Paragraph>
+          </div>
+        </Container>
+      </section>
+    )
+  }
+
   // Ordenar todas las investigaciones por año (más reciente primero)
   const sortedInvestigaciones = [...investigacionesData].sort((a, b) => {
-    const yearA = parseInt(a.year) || 0
-    const yearB = parseInt(b.year) || 0
+    const yearA = validateYear(a.year)
+    const yearB = validateYear(b.year)
     return yearB - yearA // Descendente: 2025, 2024, 2023...
   })
 
@@ -106,12 +135,35 @@ const Investigaciones = () => {
   // ==========================================
   // RENDERIZAR CARD PRINCIPAL FIJA
   // ==========================================
+  // ==========================================
+  // HANDLERS DE ACCESIBILIDAD
+  // ==========================================
+  const handleCardKeyDown = (event, id) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      const cardElement = event.currentTarget
+      cardElement.click()
+    }
+  }
+
+  const handleCardClick = id => {
+    // Modal functionality handled by script.js
+    console.log(`[INVESTIGATIONS] Card clicked: ${id}`)
+  }
+
   const renderMainCard = investigacion => {
     const { id, year, title, description, image, alt } = investigacion
 
     return (
       <div className={`${baseClass}_main-card`}>
-        <div className={`${baseClass}_card ${baseClass}_card--main investigations_card`} role='button' tabIndex={0} data-id={id}>
+        <div
+          className={`${baseClass}_card ${baseClass}_card--main investigations_card`}
+          role='button'
+          tabIndex={0}
+          data-id={id}
+          onClick={() => handleCardClick(id)}
+          onKeyDown={e => handleCardKeyDown(e, id)}
+          aria-label={`Ver detalles de la investigación: ${title}`}>
           <Image
             id={`image-${elementName}-${id}`}
             src={image}
@@ -128,7 +180,7 @@ const Investigaciones = () => {
             </Title>
 
             <Paragraph className={`${baseClass}_description`}>
-              {truncateText(description, 20)}
+              {truncateText(description, 20, true)}
               <span>
                 <i className='ph ph-arrow-square-in'></i>
               </span>
@@ -147,7 +199,14 @@ const Investigaciones = () => {
 
     return (
       <div key={id} className={`${baseClass}_slide ${baseClass}_slide--secondary swiper-slide`} role='listitem'>
-        <div className={`${baseClass}_card ${baseClass}_card--secondary investigations_card`} role='button' tabIndex={0} data-id={id}>
+        <div
+          className={`${baseClass}_card ${baseClass}_card--secondary investigations_card`}
+          role='button'
+          tabIndex={0}
+          data-id={id}
+          onClick={() => handleCardClick(id)}
+          onKeyDown={e => handleCardKeyDown(e, id)}
+          aria-label={`Ver detalles de la investigación: ${title}`}>
           <Image
             id={`image-${elementName}-${id}`}
             src={image}
@@ -179,7 +238,7 @@ const Investigaciones = () => {
     <section
       className={`${baseClass}_container`}
       data-component-id={elementName}
-      data-investigations-data={JSON.stringify(investigacionesData)}>
+      data-investigations-data={JSON.stringify(sortedInvestigaciones)}>
       <Container id={elementName} className={baseClass}>
         <Title weight='semibold' size='2xl' align='center' id={`${elementName}-title`} className={`${baseClass}_main-title`}>
           Investigaciones
