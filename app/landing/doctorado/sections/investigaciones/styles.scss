@@ -242,6 +242,7 @@ $nav-button-size-mobile: rem(40px);
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    cursor: pointer; // Cursor pointer para todas las cards
 
     &:hover {
       //transform: translateY(rem(-8px));
@@ -320,6 +321,23 @@ $nav-button-size-mobile: rem(40px);
 
     @include dark-theme {
       color: var(--neutral-300);
+    }
+
+    // Icono de arrow más prominente
+    span {
+      display: inline-flex;
+      align-items: center;
+      margin-left: var(--spacing-xs);
+      
+      i {
+        font-size: rem(20px); // Más grande que el texto
+        font-weight: bold;
+        color: var(--primary);
+        
+        @include dark-theme {
+          color: var(--primary-400);
+        }
+      }
     }
   }
 
