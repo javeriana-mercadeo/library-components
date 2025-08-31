@@ -1,7 +1,5 @@
-'use client'
-
 import { Container, Title, Paragraph, Image } from '@library/components'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import React from 'react'
 
 import info from './info.json'
@@ -12,55 +10,12 @@ const Investigaciones = () => {
   const elementName = info.id || 'investigaciones'
   const baseClass = 'investigations'
 
-  // Modal manejado completamente por JavaScript vanilla
-
   useEffect(() => {
-    // ✅ PATRÓN LIFERAY COMPATIBLE: Verificar tipo de función antes de ejecutar
     const initScript = script()
     if (typeof initScript === 'function') {
       initScript()
     }
-
-    // Sincronizar alturas después de que se rendericen las cards
-    const syncCardHeights = () => {
-      const mainCard = document.querySelector('.investigations_card--main')
-      const secondaryCards = document.querySelectorAll('.investigations_card--secondary')
-
-      if (mainCard && secondaryCards.length > 0) {
-        // Resetear alturas para obtener altura natural
-        mainCard.style.height = 'auto'
-        secondaryCards.forEach(card => (card.style.height = 'auto'))
-
-        // Obtener todas las alturas
-        const allCards = [mainCard, ...Array.from(secondaryCards)]
-        const heights = allCards.map(card => card.offsetHeight)
-        const maxHeight = Math.max(...heights)
-
-        // Aplicar la altura máxima a todas las cards
-        allCards.forEach(card => {
-          card.style.height = `${maxHeight}px`
-        })
-
-        console.log('[INVESTIGATIONS] Alturas sincronizadas:', maxHeight + 'px')
-      }
-    }
-
-    // Ejecutar después de que se rendericen las cards
-    setTimeout(syncCardHeights, 500)
-
-    // También sincronizar en resize
-    const handleResize = () => {
-      setTimeout(syncCardHeights, 100)
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
   }, [])
-
-  // Modal manejado por JavaScript vanilla - no necesita funciones React
 
   // ==========================================
   // DATOS DE LAS INVESTIGACIONES
@@ -116,20 +71,6 @@ const Investigaciones = () => {
       type: 'secondary'
     }
   ]
-
-  // ==========================================
-  // EXPONER DATOS GLOBALMENTE PARA EL MODAL
-  // ==========================================
-  useEffect(() => {
-    // Exponer los datos en window para que el modal vanilla JS pueda acceder a ellos
-    window.investigacionesData = investigacionesData
-    console.log('[INVESTIGACIONES] Datos expuestos en window para el modal')
-
-    return () => {
-      // Cleanup al desmontar el componente
-      delete window.investigacionesData
-    }
-  }, [investigacionesData])
 
   // ==========================================
   // FUNCIÓN PARA TRUNCAR TEXTO POR PALABRAS
@@ -220,7 +161,7 @@ const Investigaciones = () => {
   }
 
   return (
-    <section className={`${baseClass}_container`}>
+    <section className={`${baseClass}_container`} data-component-id={elementName} data-investigations-data={JSON.stringify(investigacionesData)}>
       <Container id={elementName} className={baseClass}>
         <Title weight='semibold' size='2xl' align='center' id={`${elementName}-title`} className={`${baseClass}_main-title`}>
           Investigaciones

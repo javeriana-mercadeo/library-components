@@ -2,199 +2,128 @@
 import { ModalInvestigacion } from './components/modalInvestigacion.js'
 
 export default () => {
-  // ✅ PATRÓN LIFERAY COMPATIBLE: Retornar función para ejecución diferida
-  return () => {
-    let retryCount = 0
-    const maxRetries = 10
-
-    // ==========================================
-    // FUNCIÓN DE INICIALIZACIÓN PRINCIPAL
-    // ==========================================
-    const init = () => {
-      retryCount++
-      
-      // Verificar elementos DOM críticos
-      const swiperContainer = document.querySelector('.investigations-swiper')
-      const slides = document.querySelectorAll('.investigations_slide')
-      
-      if (!swiperContainer || slides.length === 0) {
-        if (retryCount < maxRetries) {
-          console.warn(`[INVESTIGATIONS] DOM no listo (intento ${retryCount}/${maxRetries})`)
-          setTimeout(init, 200)
-          return
-        }
-        console.error('[INVESTIGATIONS] DOM no se inicializó después de todos los reintentos')
-        return
-      }
-      
-      // Verificar dependencias globales
-      if (!window.Swiper) {
-        if (retryCount < maxRetries) {
-          console.warn(`[INVESTIGATIONS] Swiper no disponible (intento ${retryCount}/${maxRetries})`)
-          setTimeout(init, 200)
-          return
-        }
-        console.error('[INVESTIGATIONS] Swiper no se cargó después de todos los reintentos')
-        return
-      }
-      
-      console.log('[INVESTIGATIONS] ✅ Inicializando correctamente')
-      initializeSwiper()
-      initModal()
+  // ==========================================
+  // INICIALIZAR SWIPER
+  // ==========================================
+  const initializeSwiper = () => {
+    // Destruir instancia existente si existe
+    if (window.investigationsSwiper) {
+      window.investigationsSwiper.destroy(true, true)
+      window.investigationsSwiper = null
     }
 
-    const initializeSwiper = () => {
-      // Destruir instancia existente si existe
-      if (window.investigationsSwiper && typeof window.investigationsSwiper.destroy === 'function') {
-        window.investigationsSwiper.destroy(true, true)
-      }
-
-      // Buscar el elemento con la clase especifica
-      const element = document.querySelector('.investigations_wrapper')
-      if (!element) {
-        console.warn('Elemento .investigations_wrapper no encontrado')
-        const fallbackElement = document.querySelector('.investigations-swiper')
-        if (!fallbackElement) {
-          console.error('Ningun elemento swiper encontrado')
-          return
-        }
-      }
-
-      // Contar slides
-      const slides = document.querySelectorAll('.investigations_slide')
-      const totalSlides = slides.length
-
-      if (!window.Swiper) {
-        console.error('Swiper no esta disponible')
+    // Buscar el elemento con selector primario y fallback
+    const element = document.querySelector('.investigations_wrapper.investigations-swiper')
+    if (!element) {
+      console.warn('Elemento .investigations_wrapper.investigations-swiper no encontrado')
+      const fallbackElement = document.querySelector('.investigations-swiper')
+      if (!fallbackElement) {
+        console.error('Ningún elemento swiper encontrado')
         return
       }
+    }
 
-    // Usar selector correcto
-    const swiperSelector = element ? '.investigations_wrapper' : '.investigations-swiper'
+    // Contar slides
+    const slides = document.querySelectorAll('.investigations_slide')
+    const totalSlides = slides.length
 
-    window.investigationsSwiper = new window.Swiper(swiperSelector, {
-      // ==========================================
-      // CONFIGURACION FREEMODE
-      // ==========================================
-      freeMode: {
-        enabled: true,
-        sticky: true,
-        momentumBounce: false,
-        momentumVelocityRatio: 0.5
-      },
+    if (!window.Swiper) {
+      console.error('Swiper no está disponible')
+      return
+    }
 
-      // ==========================================
-      // CONFIGURACION BASICA
-      // ==========================================
-      loop: false,
-      spaceBetween: 25,
-      slidesPerView: 'auto',
-      watchOverflow: true,
-      centeredSlides: false,
-      grabCursor: true,
-      allowTouchMove: true,
+    // Usar el selector correcto
+    const swiperSelector = element ? '.investigations_wrapper.investigations-swiper' : '.investigations-swiper'
 
-      // ==========================================
-      // NAVEGACION
-      // ==========================================
-      navigation: {
-        nextEl: '.investigations_next',
-        prevEl: '.investigations_prev',
-        disabledClass: 'swiper-button-disabled',
-        hiddenClass: 'swiper-button-hidden'
-      },
+    try {
+      window.investigationsSwiper = new window.Swiper(swiperSelector, {
+        // ==========================================
+        // CONFIGURACION BASICA
+        // ==========================================
+        loop: false,
+        spaceBetween: 25,
+        slidesPerView: 'auto',
+        watchOverflow: true,
+        centeredSlides: false,
+        grabCursor: true,
+        allowTouchMove: totalSlides > 1,
 
-      // ==========================================
-      // BREAKPOINTS RESPONSIVOS
-      // ==========================================
-      breakpoints: {
-        // Mobile: Solo 1 slide visible
-        0: {
-          slidesPerView: 1,
-          spaceBetween: 20,
-          freeMode: {
-            enabled: false // Desactivar freemode en movil
+        // ==========================================
+        // NAVEGACION
+        // ==========================================
+        navigation: {
+          nextEl: '.investigations_next',
+          prevEl: '.investigations_prev',
+          disabledClass: 'swiper-button-disabled',
+          hiddenClass: 'swiper-button-hidden'
+        },
+
+        // ==========================================
+        // BREAKPOINTS RESPONSIVOS
+        // ==========================================
+        breakpoints: {
+          0: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            centeredSlides: true
+          },
+          576: {
+            slidesPerView: 1.5,
+            spaceBetween: 20,
+            centeredSlides: false
+          },
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 25,
+            centeredSlides: false
+          },
+          1024: {
+            slidesPerView: 2,
+            spaceBetween: 25,
+            centeredSlides: false
           }
         },
-        // Tablet pequena: 1.5 slides visibles
-        576: {
-          slidesPerView: 1.5,
-          spaceBetween: 20,
-          freeMode: {
-            enabled: true,
-            sticky: false
-          }
-        },
-        // Tablet: 2 slides visibles
-        768: {
-          slidesPerView: 2,
-          spaceBetween: 25,
-          freeMode: {
-            enabled: true,
-            sticky: true
-          }
-        },
-        // Desktop: Exactamente 2 slides visibles
-        1024: {
-          slidesPerView: 2,
-          spaceBetween: 25,
-          freeMode: {
-            enabled: false, // Desactivar freemode para mejor control
-            sticky: false
-          }
-        }
-      },
 
-      // ==========================================
-      // EVENTOS
-      // ==========================================
-      on: {
-        init: function (swiper) {
-          console.log('[INVESTIGATIONS] Swiper inicializado con', totalSlides, 'slides')
-          updateNavigationVisibility(swiper, totalSlides)
-          updateButtonStates(swiper)
-        },
-
-        update: function (swiper) {
-          updateNavigationVisibility(swiper, totalSlides)
-          updateButtonStates(swiper)
-        },
-
-        resize: function (swiper) {
-          setTimeout(() => {
+        // ==========================================
+        // EVENTOS
+        // ==========================================
+        on: {
+          init: function (swiper) {
+            console.log('[INVESTIGATIONS] Swiper inicializado con', totalSlides, 'slides')
             updateNavigationVisibility(swiper, totalSlides)
             updateButtonStates(swiper)
-          }, 100)
-        },
+            
+            // Sincronizar alturas después de inicialización
+            setTimeout(() => {
+              syncCardHeights()
+            }, 100)
+          },
 
-        slideChange: function (swiper) {
-          updateButtonStates(swiper)
-        },
+          update: function (swiper) {
+            updateNavigationVisibility(swiper, totalSlides)
+            updateButtonStates(swiper)
+          },
 
-        reachBeginning: function (swiper) {
-          updateButtonStates(swiper)
-        },
+          resize: function (swiper) {
+            setTimeout(() => {
+              updateNavigationVisibility(swiper, totalSlides)
+              updateButtonStates(swiper)
+              syncCardHeights()
+            }, 100)
+          },
 
-        reachEnd: function (swiper) {
-          updateButtonStates(swiper)
-        },
-
-        // Eventos especificos de freeMode
-        freeModeNoMomentumRelease: function (swiper) {
-          updateButtonStates(swiper)
-        },
-
-        setTransition: function (swiper, duration) {
-          // Suavizar transiciones en freemode
-          if (duration > 0) {
-            const slides = swiper.slides
-            for (let i = 0; i < slides.length; i++) {
-              slides[i].style.transitionDuration = duration + 'ms'
-            }
+          slideChange: function (swiper) {
+            updateButtonStates(swiper)
           }
         }
-      }
-    })
+      })
+
+      // Configurar resize handler
+      window.addEventListener('resize', handleResize)
+      
+    } catch (error) {
+      console.error('❌ [INVESTIGATIONS] Error inicializando Swiper:', error)
+    }
   }
 
   // ==========================================
@@ -213,21 +142,21 @@ export default () => {
     const needsNavigation = totalSlides > 1
 
     if (needsNavigation) {
-      nextBtn.classList.add('show-navigation')
+      nextBtn.style.display = 'flex'
       nextBtn.classList.remove('swiper-button-hidden')
       nextBtn.setAttribute('aria-hidden', 'false')
 
-      prevBtn.classList.add('show-navigation')
+      prevBtn.style.display = 'flex'
       prevBtn.classList.remove('swiper-button-hidden')
       prevBtn.setAttribute('aria-hidden', 'false')
 
       updateButtonStates(swiper)
     } else {
-      nextBtn.classList.remove('show-navigation')
+      nextBtn.style.display = 'none'
       nextBtn.classList.add('swiper-button-hidden')
       nextBtn.setAttribute('aria-hidden', 'true')
 
-      prevBtn.classList.remove('show-navigation')
+      prevBtn.style.display = 'none'
       prevBtn.classList.add('swiper-button-hidden')
       prevBtn.setAttribute('aria-hidden', 'true')
     }
@@ -239,14 +168,12 @@ export default () => {
 
     if (!nextBtn || !prevBtn) return
 
-    // En freeMode, la logica es diferente
+    // Estados del swiper
     const isBeginning = swiper.isBeginning
     const isEnd = swiper.isEnd
-    const allowSlideNext = swiper.allowSlideNext
-    const allowSlidePrev = swiper.allowSlidePrev
 
     // Boton anterior
-    if (isBeginning || !allowSlidePrev) {
+    if (isBeginning) {
       prevBtn.classList.add('swiper-button-disabled')
       prevBtn.style.opacity = '0.3'
       prevBtn.style.pointerEvents = 'none'
@@ -259,7 +186,7 @@ export default () => {
     }
 
     // Boton siguiente
-    if (isEnd || !allowSlideNext) {
+    if (isEnd) {
       nextBtn.classList.add('swiper-button-disabled')
       nextBtn.style.opacity = '0.3'
       nextBtn.style.pointerEvents = 'none'
@@ -270,71 +197,100 @@ export default () => {
       nextBtn.style.pointerEvents = 'auto'
       nextBtn.setAttribute('aria-disabled', 'false')
     }
+  }
 
-    // Asegurar visibilidad si la navegacion esta habilitada
-    if (nextBtn.classList.contains('show-navigation')) {
-      nextBtn.style.visibility = 'visible'
-      nextBtn.style.display = 'flex'
-    }
-    if (prevBtn.classList.contains('show-navigation')) {
-      prevBtn.style.visibility = 'visible'
-      prevBtn.style.display = 'flex'
+  // ==========================================
+  // SINCRONIZAR ALTURAS DE CARDS
+  // ==========================================
+  const syncCardHeights = () => {
+    const mainCard = document.querySelector('.investigations_card--main')
+    const secondaryCards = document.querySelectorAll('.investigations_card--secondary')
+
+    if (mainCard && secondaryCards.length > 0) {
+      // Resetear alturas para obtener altura natural
+      mainCard.style.height = 'auto'
+      secondaryCards.forEach(card => (card.style.height = 'auto'))
+
+      // Obtener todas las alturas
+      const allCards = [mainCard, ...Array.from(secondaryCards)]
+      const heights = allCards.map(card => card.offsetHeight)
+      const maxHeight = Math.max(...heights)
+
+      // Aplicar la altura máxima a todas las cards
+      allCards.forEach(card => {
+        card.style.height = `${maxHeight}px`
+      })
+
+      console.log('[INVESTIGATIONS] Alturas sincronizadas:', maxHeight + 'px')
     }
   }
 
-    // ==========================================
-    // INICIALIZAR MODAL DE INVESTIGACIONES
-    // ==========================================
-    const initModal = () => {
+  // ==========================================
+  // MANEJO DE RESIZE
+  // ==========================================
+  const handleResize = () => {
+    setTimeout(() => {
+      syncCardHeights()
+      if (window.investigationsSwiper && typeof window.investigationsSwiper.update === 'function') {
+        window.investigationsSwiper.update()
+      }
+    }, 250)
+  }
+
+  // ==========================================
+  // OBTENER DATOS DESDE DOM
+  // ==========================================
+  const getInvestigacionesData = () => {
+    const container = document.querySelector('[data-component-id="investigaciones"]')
+    if (container) {
       try {
-        // Exponer ModalInvestigacion globalmente
-        window.ModalInvestigacion = ModalInvestigacion
-        
-        // Intentar inicializar el modal después de que React haya renderizado
-        setTimeout(() => {
-          const success = ModalInvestigacion.init()
-          if (success) {
-            console.log('[INVESTIGATIONS] Modal system inicializado correctamente')
-          } else {
-            // Reintentar después de un tiempo si no se encontraron las cards
-            setTimeout(() => {
-              ModalInvestigacion.init()
-              console.log('[INVESTIGATIONS] Modal system reintentado')
-            }, 1000)
-          }
-        }, 500)
-      } catch (error) {
-        console.error('[INVESTIGATIONS] Error al inicializar modal:', error)
-      }
-    }
-
-    // ==========================================
-    // MANEJO DE RESIZE CON DEBOUNCE
-    // ==========================================
-    let resizeTimeout
-    const handleResize = () => {
-      if (resizeTimeout) {
-        clearTimeout(resizeTimeout)
-      }
-
-      resizeTimeout = setTimeout(() => {
-        if (window.investigationsSwiper && typeof window.investigationsSwiper.update === 'function') {
-          window.investigationsSwiper.update()
+        const dataAttr = container.getAttribute('data-investigations-data')
+        if (dataAttr) {
+          const data = JSON.parse(dataAttr)
+          window.investigacionesData = data
+          return data
         }
-      }, 250)
+      } catch (error) {
+        console.error('[INVESTIGATIONS] Error al parsear datos:', error)
+      }
     }
+    return []
+  }
 
-    window.addEventListener('resize', handleResize)
-
-    // ==========================================
-    // ESTRATEGIA DE INICIALIZACIÓN MÚLTIPLE
-    // ==========================================
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init, { once: true })
-    } else if (document.readyState === 'interactive') {
-      setTimeout(init, 50)
-    } else {
-      setTimeout(init, 100)
+  // ==========================================
+  // INICIALIZAR MODAL
+  // ==========================================
+  const initModal = () => {
+    try {
+      // Obtener datos para el modal
+      getInvestigacionesData()
+      
+      // Exponer ModalInvestigacion globalmente
+      window.ModalInvestigacion = ModalInvestigacion
+      
+      // Inicializar el modal
+      setTimeout(() => {
+        const success = ModalInvestigacion.init()
+        if (success) {
+          console.log('[INVESTIGATIONS] Modal system inicializado correctamente')
+        }
+      }, 300)
+    } catch (error) {
+      console.error('[INVESTIGATIONS] Error al inicializar modal:', error)
     }
   }
+
+  // ==========================================
+  // PATRÓN EXACTO DE EXPERIENCIA
+  // ==========================================
+  const checkAndInit = () => {
+    if (typeof window !== 'undefined' && window.Swiper) {
+      initializeSwiper()
+      initModal()
+    } else {
+      setTimeout(checkAndInit, 300)
+    }
+  }
+
+  checkAndInit()
 }

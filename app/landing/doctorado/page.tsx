@@ -20,14 +20,14 @@ export default function Doctorado() {
   return (
     <>
       {/* <Encabezado /> */}
-      <ViewComponent path={`${libraryPath}/header`}>
+      {/* <ViewComponent path={`${libraryPath}/header`}>
         <Header />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <VideoDoctorado /> */}
-      <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
+      {/* <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
         <VideoDoctorado />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Investigaciones /> */}
       <ViewComponent path={`${basePath}/sections/investigaciones`}>
