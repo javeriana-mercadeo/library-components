@@ -88,7 +88,7 @@ export default () => {
         // ==========================================
         on: {
           init: function (swiper) {
-            console.log('[INVESTIGATIONS] Swiper inicializado con', totalSlides, 'slides')
+            log('Swiper inicializado con', totalSlides, 'slides')
             updateNavigationVisibility(swiper, totalSlides)
             updateButtonStates(swiper)
             
@@ -121,7 +121,7 @@ export default () => {
       window.addEventListener('resize', handleResize)
       
     } catch (error) {
-      console.error('❌ [INVESTIGATIONS] Error inicializando Swiper:', error)
+      error('Error inicializando Swiper:', error)
     }
   }
 
@@ -133,7 +133,7 @@ export default () => {
     const prevBtn = document.querySelector('.investigations_prev')
 
     if (!nextBtn || !prevBtn) {
-      console.warn('Botones de navegacion no encontrados')
+      warn('Botones de navegacion no encontrados')
       return
     }
 
@@ -220,7 +220,7 @@ export default () => {
         card.style.height = `${maxHeight}px`
       })
 
-      console.log('[INVESTIGATIONS] Alturas sincronizadas:', maxHeight + 'px')
+      log('Alturas sincronizadas:', maxHeight + 'px')
     }
   }
 
@@ -271,12 +271,35 @@ export default () => {
       setTimeout(() => {
         const success = ModalInvestigacion.init()
         if (success) {
-          console.log('[INVESTIGATIONS] Modal system inicializado correctamente')
+          info('Modal system inicializado correctamente')
         }
       }, 300)
     } catch (error) {
-      console.error('[INVESTIGATIONS] Error al inicializar modal:', error)
+      error('Error al inicializar modal:', error)
     }
+  }
+
+  // ==========================================
+  // SISTEMA DE LOGS CONTROLABLE
+  // ==========================================
+  const DEBUG = false // Cambiar a true para habilitar logs detallados
+  
+  const log = (message, ...args) => {
+    if (DEBUG) {
+      console.log(`[INVESTIGATIONS] ${message}`, ...args)
+    }
+  }
+  
+  const warn = (message, ...args) => {
+    console.warn(`[INVESTIGATIONS] ${message}`, ...args)
+  }
+  
+  const error = (message, ...args) => {
+    console.error(`[INVESTIGATIONS] ${message}`, ...args)
+  }
+  
+  const info = (message, ...args) => {
+    console.log(`[INVESTIGATIONS] ✓ ${message}`, ...args)
   }
 
   // ==========================================

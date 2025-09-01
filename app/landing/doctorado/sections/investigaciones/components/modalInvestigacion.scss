@@ -385,6 +385,23 @@ $content-width: 55%;
   align-items: flex-start;
   gap: var(--spacing-sm);
   
+  // MÓVILES: Layout vertical solo para descripción, horizontal para otros
+  @media (max-width: #{$breakpoint-md - 1}) {
+    // Solo la descripción tendrá layout vertical
+    &:has(.investigations-modal__description) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--spacing-xs);
+    }
+    
+    // Fecha y estudiante mantienen layout horizontal
+    &:not(:has(.investigations-modal__description)) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  
   // Scroll específico para metadata-item con descripción solo en desktop
   @media (min-width: #{$breakpoint-md}) {
     &:has(.investigations-modal__description) {
@@ -462,6 +479,23 @@ $content-width: 55%;
   line-height: 1.6; // Mismo line-height que la descripción
   margin-top: 0;    // Asegurar que no tenga margen superior
 
+  // MÓVILES: Ajustes específicos por tipo
+  @media (max-width: #{$breakpoint-md - 1}) {
+    // Para la descripción: centrado
+    .investigations-modal__metadata-item:has(.investigations-modal__description) & {
+      width: 100%;
+      text-align: center;
+      flex-shrink: 1;
+    }
+    
+    // Para fecha y estudiante: mantener ancho y alineación
+    .investigations-modal__metadata-item:not(:has(.investigations-modal__description)) & {
+      width: auto;
+      text-align: left;
+      flex-shrink: 0;
+    }
+  }
+
   @include dark-theme {
     color: var(--neutral-200);
   }
@@ -470,6 +504,14 @@ $content-width: 55%;
 .investigations-modal__value {
   color: var(--neutral-100);
   font-size: var(--font-size-base);
+
+  // MÓVILES: Ajustes específicos por tipo
+  @media (max-width: #{$breakpoint-md - 1}) {
+    // Para fecha y estudiante: alineado a la derecha
+    .investigations-modal__metadata-item:not(:has(.investigations-modal__description)) & {
+      text-align: right;
+    }
+  }
 
   @include dark-theme {
     color: var(--neutral-200);
@@ -483,6 +525,11 @@ $content-width: 55%;
   color: var(--neutral-300);
   line-height: 1.6;
   flex: 1;
+
+  // MÓVILES: Subtítulo centrado, párrafo alineado a la izquierda
+  @media (max-width: #{$breakpoint-md - 1}) {
+    text-align: left; // Párrafos alineados a la izquierda
+  }
 
   p {
     margin-bottom: var(--spacing-lg);

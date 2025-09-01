@@ -7,6 +7,30 @@ const ModalInvestigacion = {
   modalHTML: null,
   modalSwiper: null, // Instancia de Swiper para desktop
   modalSwiperMobile: null, // Instancia de Swiper para mobile
+  
+  // ==========================================
+  // SISTEMA DE LOGS CONTROLABLE
+  // ==========================================
+  DEBUG: false, // Cambiar a true para habilitar logs detallados
+  
+  log(message, ...args) {
+    if (this.DEBUG) {
+      console.log(`[MODAL-INVESTIGACION] ${message}`, ...args)
+    }
+  },
+  
+  warn(message, ...args) {
+    console.warn(`[MODAL-INVESTIGACION] ${message}`, ...args)
+  },
+  
+  error(message, ...args) {
+    console.error(`[MODAL-INVESTIGACION] ${message}`, ...args)
+  },
+  
+  info(message, ...args) {
+    // Logs importantes siempre se muestran
+    console.log(`[MODAL-INVESTIGACION] ✓ ${message}`, ...args)
+  },
 
   // Función helper para generar HTML del botón iconOnly siguiendo el patrón del sistema Btn
   generateIconOnlyButton({
@@ -118,6 +142,20 @@ const ModalInvestigacion = {
                   <!-- Las imágenes se generarán dinámicamente como slides -->
                 </div>
                 <div class="swiper-pagination investigations-modal__pagination-mobile"></div>
+                
+                <!-- Navegación horizontal -->
+                <div class="investigations-modal__nav-prev-mobile" 
+                     role="button" 
+                     tabindex="0"
+                     aria-label="Ir a imagen anterior">
+                  <i class="ph ph-arrow-left" aria-hidden="true"></i>
+                </div>
+                <div class="investigations-modal__nav-next-mobile" 
+                     role="button" 
+                     tabindex="0"
+                     aria-label="Ir a siguiente imagen">
+                  <i class="ph ph-arrow-right" aria-hidden="true"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -166,13 +204,13 @@ const ModalInvestigacion = {
 
     // Insertar modal al final del body
     document.body.insertAdjacentHTML('beforeend', modalHTML)
-    console.log('[MODAL-INVESTIGACION] Modal HTML creado dinámicamente')
+    this.log('Modal HTML creado dinámicamente')
   },
 
   init() {
     try {
       if (this.isInitialized) {
-        console.log('[MODAL-INVESTIGACION] Ya está inicializado')
+        this.log('Ya está inicializado')
         return true
       }
 
@@ -183,10 +221,10 @@ const ModalInvestigacion = {
       this.setupEventListeners()
 
       this.isInitialized = true
-      console.log('[MODAL-INVESTIGACION] Sistema inicializado correctamente')
+      this.info('Sistema inicializado correctamente')
       return true
     } catch (error) {
-      console.error('[MODAL-INVESTIGACION] Error al inicializar:', error)
+      this.error('Error al inicializar:', error)
       return false
     }
   },
@@ -226,7 +264,7 @@ const ModalInvestigacion = {
       }
     })
 
-    console.log('[MODAL-INVESTIGACION] Event listeners configurados')
+    this.log('Event listeners configurados')
   },
 
   handleCardClick(card) {
@@ -243,11 +281,11 @@ const ModalInvestigacion = {
       const fullData = this.getInvestigacionData(parseInt(cardId))
 
       if (!fullData) {
-        console.warn('[MODAL-INVESTIGACION] No se encontraron datos para ID:', cardId)
+        this.warn('No se encontraron datos para ID:', cardId)
         return this.handleCardClickFallback(card)
       }
 
-      console.log('[MODAL-INVESTIGACION] Card clickeada:', {
+      this.log('Card clickeada:', {
         id: fullData.id,
         title: fullData.title,
         year: fullData.year,
@@ -256,7 +294,7 @@ const ModalInvestigacion = {
 
       this.open(fullData)
     } catch (error) {
-      console.error('[MODAL-INVESTIGACION] Error al manejar click de card:', error)
+      this.error('Error al manejar click de card:', error)
     }
   },
 
@@ -283,7 +321,7 @@ const ModalInvestigacion = {
   // Función para obtener los datos originales completos desde window
   getInvestigacionData(id) {
     if (!window.investigacionesData) {
-      console.warn('[MODAL-INVESTIGACION] Datos no disponibles en window')
+      this.warn('Datos no disponibles en window')
       return null
     }
 
@@ -297,7 +335,7 @@ const ModalInvestigacion = {
       const modal = document.querySelector('.investigations-modal')
 
       if (!modalOverlay || !modal) {
-        console.warn('[MODAL-INVESTIGACION] Modal no encontrado, recreando...')
+        this.warn('Modal no encontrado, recreando...')
         this.createModal()
         return this.open(data)
       }
@@ -315,9 +353,9 @@ const ModalInvestigacion = {
         modal.classList.add('active')
       }, 10)
 
-      console.log('[MODAL-INVESTIGACION] Modal abierto:', data.title)
+      this.info('Modal abierto:', data.title)
     } catch (error) {
-      console.error('[MODAL-INVESTIGACION] Error al abrir modal:', error)
+      this.error('Error al abrir modal:', error)
     }
   },
 
@@ -356,10 +394,10 @@ const ModalInvestigacion = {
           modalOverlay.offsetHeight
         }, 200)
 
-        console.log('[MODAL-INVESTIGACION] Modal cerrado')
+        this.log('Modal cerrado')
       }
     } catch (error) {
-      console.error('[MODAL-INVESTIGACION] Error al cerrar modal:', error)
+      this.error('Error al cerrar modal:', error)
     }
   },
 
@@ -438,7 +476,7 @@ const ModalInvestigacion = {
       container.appendChild(imageWrapper)
     })
 
-    console.log('[MODAL-INVESTIGACION] Galería generada con', additionalImages.length + 1, 'imágenes')
+    this.log('Galería generada con', additionalImages.length + 1, 'imágenes')
   },
 
   generateAdditionalImages(baseImage, title) {
@@ -494,7 +532,7 @@ const ModalInvestigacion = {
       swiperWrapper.appendChild(slide)
     })
 
-    console.log('[MODAL-INVESTIGACION] Swiper gallery generada con', allImages.length, 'slides')
+    this.log('Swiper gallery generada con', allImages.length, 'slides')
   },
 
   // ==========================================
@@ -509,7 +547,7 @@ const ModalInvestigacion = {
 
     // Verificar que Swiper esté disponible
     if (!window.Swiper) {
-      console.warn('[MODAL-INVESTIGACION] Swiper no disponible, usando fallback')
+      this.warn('Swiper no disponible, usando fallback')
       return
     }
 
@@ -520,7 +558,7 @@ const ModalInvestigacion = {
 
     const swiperContainer = document.querySelector('.investigations-modal__swiper-container')
     if (!swiperContainer) {
-      console.warn('[MODAL-INVESTIGACION] Container de Swiper no encontrado')
+      this.warn('Container de Swiper no encontrado')
       return
     }
 
@@ -566,19 +604,19 @@ const ModalInvestigacion = {
 
         on: {
           init: function (swiper) {
-            console.log('[MODAL-INVESTIGACION] Swiper modal inicializado con', swiper.slides.length, 'slides')
+            this.log('Swiper modal inicializado con', swiper.slides.length, 'slides')
             // Configurar eventos para botones personalizados
             ModalInvestigacion.setupCustomNavigation(swiper)
           },
           slideChange: function (swiper) {
-            console.log('[MODAL-INVESTIGACION] Slide cambiado a:', swiper.activeIndex + 1)
+            this.log('Slide cambiado a:', swiper.activeIndex + 1)
           }
         }
       })
 
-      console.log('[MODAL-INVESTIGACION] Swiper vertical inicializado correctamente')
+      this.info('Swiper vertical inicializado correctamente')
     } catch (error) {
-      console.error('[MODAL-INVESTIGACION] Error inicializando Swiper:', error)
+      this.error('Error inicializando Swiper:', error)
     }
   },
 
@@ -616,7 +654,9 @@ const ModalInvestigacion = {
       swiperWrapper.appendChild(slide)
     })
 
-    console.log('[MODAL-INVESTIGACION] Mobile Swiper gallery generada con', allImages.length, 'slides')
+    // Guardar total de slides para configuración
+    this.totalMobileSlides = allImages.length
+    this.log('Mobile Swiper gallery generada con', allImages.length, 'slides')
   },
 
   // ==========================================
@@ -631,7 +671,7 @@ const ModalInvestigacion = {
 
     // Verificar que Swiper esté disponible
     if (!window.Swiper) {
-      console.warn('[MODAL-INVESTIGACION] Swiper no disponible para móvil, usando fallback')
+      this.warn('Swiper no disponible para móvil, usando fallback')
       return
     }
 
@@ -642,17 +682,20 @@ const ModalInvestigacion = {
 
     const swiperContainer = document.querySelector('.investigations-modal__swiper-container-mobile')
     if (!swiperContainer) {
-      console.warn('[MODAL-INVESTIGACION] Container de Swiper móvil no encontrado')
+      this.warn('Container de Swiper móvil no encontrado')
       return
     }
 
     try {
       this.modalSwiperMobile = new window.Swiper('.investigations-modal__swiper-container-mobile', {
-        direction: 'horizontal',
-        slidesPerView: 1.2,
-        spaceBetween: 15,
-        centeredSlides: false,
+        // ==========================================
+        // CONFIGURACIÓN EXACTA DEL PATRÓN EXITOSO
+        // ==========================================
+        loop: false,
+        spaceBetween: 25,
         grabCursor: true,
+        allowTouchMove: true,
+        slidesPerView: 'auto', // Patrón relacionados exitoso
         watchOverflow: true,
         
         pagination: {
@@ -665,30 +708,113 @@ const ModalInvestigacion = {
           }
         },
 
+        // ==========================================
+        // BREAKPOINTS EXACTOS DEL PATRÓN EXITOSO
+        // ==========================================
         breakpoints: {
           0: {
-            slidesPerView: 1.1,
-            spaceBetween: 12
+            spaceBetween: 20,
+            slidesPerView: Math.min(1, this.totalMobileSlides || 1),
+            centeredSlides: true // SOLO en móviles pequeños
           },
-          480: {
-            slidesPerView: 1.2,
-            spaceBetween: 15
+          576: {
+            spaceBetween: 25,
+            slidesPerView: 'auto', // Auto en resoluciones mayores
+            centeredSlides: false // NO centrado en resoluciones mayores
           }
         },
         
         on: {
           init: function(swiper) {
-            console.log('[MODAL-INVESTIGACION] Mobile Swiper inicializado con', swiper.slides.length, 'slides')
+            this.log('Mobile Swiper inicializado con', swiper.slides.length, 'slides')
+            // Configurar eventos para botones personalizados móviles
+            ModalInvestigacion.setupCustomNavigationMobile(swiper)
           },
           slideChange: function(swiper) {
-            console.log('[MODAL-INVESTIGACION] Mobile slide cambiado a:', swiper.activeIndex + 1)
+            this.log('Mobile slide cambiado a:', swiper.activeIndex + 1)
           }
         }
       })
 
-      console.log('[MODAL-INVESTIGACION] Mobile Swiper horizontal inicializado correctamente')
+      this.info('Mobile Swiper horizontal inicializado correctamente')
     } catch (error) {
-      console.error('[MODAL-INVESTIGACION] Error inicializando Mobile Swiper:', error)
+      this.error('Error inicializando Mobile Swiper:', error)
+    }
+  },
+
+  // ==========================================
+  // CONFIGURAR NAVEGACIÓN PERSONALIZADA MÓVIL (PHOSPHOR)
+  // ==========================================
+  setupCustomNavigationMobile(swiper) {
+    const prevButton = document.querySelector('.investigations-modal__nav-prev-mobile')
+    const nextButton = document.querySelector('.investigations-modal__nav-next-mobile')
+
+    if (prevButton && nextButton) {
+      // Event listeners para los botones
+      prevButton.addEventListener('click', () => {
+        swiper.slidePrev()
+      })
+
+      nextButton.addEventListener('click', () => {
+        swiper.slideNext()
+      })
+
+      // Soporte de teclado
+      prevButton.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          swiper.slidePrev()
+        }
+      })
+
+      nextButton.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          swiper.slideNext()
+        }
+      })
+
+      // Actualizar estados iniciales
+      this.updateCustomNavigationMobile(swiper)
+      
+      // Escuchar cambios de slide para actualizar estados
+      swiper.on('slideChange', () => {
+        this.updateCustomNavigationMobile(swiper)
+      })
+
+      this.log('Navegación personalizada móvil configurada')
+    }
+  },
+
+  // ==========================================
+  // ACTUALIZAR ESTADOS DE NAVEGACIÓN PERSONALIZADA MÓVIL
+  // ==========================================
+  updateCustomNavigationMobile(swiper) {
+    const prevButton = document.querySelector('.investigations-modal__nav-prev-mobile')
+    const nextButton = document.querySelector('.investigations-modal__nav-next-mobile')
+
+    if (prevButton && nextButton) {
+      // Actualizar estado del botón anterior
+      if (swiper.isBeginning) {
+        prevButton.classList.add('swiper-button-disabled')
+        prevButton.style.opacity = '0.3'
+        prevButton.style.pointerEvents = 'none'
+      } else {
+        prevButton.classList.remove('swiper-button-disabled')
+        prevButton.style.opacity = '1'
+        prevButton.style.pointerEvents = 'auto'
+      }
+
+      // Actualizar estado del botón siguiente
+      if (swiper.isEnd) {
+        nextButton.classList.add('swiper-button-disabled')
+        nextButton.style.opacity = '0.3'
+        nextButton.style.pointerEvents = 'none'
+      } else {
+        nextButton.classList.remove('swiper-button-disabled')
+        nextButton.style.opacity = '1'
+        nextButton.style.pointerEvents = 'auto'
+      }
     }
   },
 
@@ -732,7 +858,7 @@ const ModalInvestigacion = {
         this.updateCustomNavigation(swiper)
       })
 
-      console.log('[MODAL-INVESTIGACION] Navegación personalizada configurada')
+      this.log('Navegación personalizada configurada')
     }
   },
 
@@ -854,7 +980,7 @@ const ModalInvestigacion = {
       this.isInitialized = false
       console.log('[MODAL-INVESTIGACION] Cleanup completado')
     } catch (error) {
-      console.error('[MODAL-INVESTIGACION] Error en cleanup:', error)
+      this.error('Error en cleanup:', error)
     }
   }
 }
