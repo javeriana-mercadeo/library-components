@@ -233,20 +233,20 @@ $content-width: 55%;
   }
 }
 
-// Mobile Swiper (Horizontal) - ESTILOS FALTANTES AGREGADOS
+// Mobile Swiper (Horizontal) - ESTILOS OPTIMIZADOS PARA TOUCH
 .investigations-modal__swiper-container-mobile {
   height: 100%;
   width: 100%;
   position: relative;
-  // ✅ CRÍTICO: Habilitar touch events para Swiper
-  touch-action: pan-y pinch-zoom;
+  // ✅ OPTIMIZADO: Permitir swipe horizontal Y vertical
+  touch-action: pan-x pan-y;
   
   // Configuración específica para Swiper horizontal
   .swiper-wrapper {
     display: flex;
     flex-direction: row;
-    // ✅ CRÍTICO: Asegurar que el wrapper capture touch events
-    touch-action: pan-y pinch-zoom;
+    // ✅ OPTIMIZADO: Solo horizontal para mejor swipe
+    touch-action: pan-x;
   }
 
   .swiper-slide {
@@ -256,18 +256,20 @@ $content-width: 55%;
     align-items: center;
     justify-content: center;
     
-    // ✅ CRÍTICO: Videos no deben interferir con touch del Swiper
+    // ✅ CRÍTICO: Videos completamente transparentes al touch en móviles
     iframe {
       pointer-events: auto;
       touch-action: manipulation;
       
-      // En móviles, prevenir que videos capturen gestos de swipe
-      @media (max-width: #{$breakpoint-md - 1}) {
-        pointer-events: none;
+      // ENFOQUE AGRESIVO: Videos no interfieren con swipe en móviles/tablets
+      @media (max-width: 1024px) {
+        pointer-events: none !important;
+        touch-action: none !important;
         
-        // Cuando está enfocado, restaurar interacción
-        &:focus {
-          pointer-events: auto;
+        // Solo permitir interacción con tap/click directo
+        &:active {
+          pointer-events: auto !important;
+          touch-action: auto !important;
         }
       }
     }
