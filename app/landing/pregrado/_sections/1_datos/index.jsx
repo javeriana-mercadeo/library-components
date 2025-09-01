@@ -60,8 +60,8 @@ const DatosProgramaVideo = () => {
       label: 'Horario',
       value: 'Cargando horario...',
       type: 'normal'
-    }
-    /* {
+    },
+    {
       id: 'horarios-programa',
       icon: 'ph-clock',
       label: 'Horarios',
@@ -86,7 +86,7 @@ const DatosProgramaVideo = () => {
           </p>
         </Paragraph>
       )
-    } */
+    }
   ]
 
   return (

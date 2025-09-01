@@ -342,6 +342,9 @@ const programDataSystem = {
       // Reinicializar videos con nueva configuración
       liferayVideoSystem.init()
     })
+    
+    // Inicializar sistema de modales
+    this.initModals()
   },
 
   updateProgramName() {
@@ -354,6 +357,67 @@ const programDataSystem = {
           dataPujName.textContent = `${currentContent}: `
         }
       }
+    }
+  },
+
+  initModals() {
+    // Configurar eventos para abrir modales
+    document.addEventListener('click', (e) => {
+      // Botón para abrir modal
+      if (e.target.hasAttribute('data-modal-target') || e.target.closest('[data-modal-target]')) {
+        e.preventDefault()
+        const button = e.target.hasAttribute('data-modal-target') ? e.target : e.target.closest('[data-modal-target]')
+        const modalId = button.getAttribute('data-modal-target')
+        this.openModal(modalId)
+      }
+      
+      // Botón para cerrar modal
+      if (e.target.classList.contains('program-detail-modal__close') || e.target.closest('.program-detail-modal__close')) {
+        e.preventDefault()
+        const modal = e.target.closest('.program-detail-modal')
+        if (modal) {
+          this.closeModal(modal.id)
+        }
+      }
+    })
+
+    // Cerrar modal al hacer clic en el overlay
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('program-detail-modal') && e.target.classList.contains('program-detail-modal--active')) {
+        this.closeModal(e.target.id)
+      }
+    })
+
+    // Cerrar modal con tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const openModal = document.querySelector('.program-detail-modal--active')
+        if (openModal) {
+          this.closeModal(openModal.id)
+        }
+      }
+    })
+  },
+
+  openModal(modalId) {
+    const modal = document.getElementById(modalId)
+    if (modal) {
+      modal.classList.add('program-detail-modal--active')
+      document.body.style.overflow = 'hidden' // Prevenir scroll del body
+      
+      // Enfocar el modal para accesibilidad
+      const closeButton = modal.querySelector('.program-detail-modal__close')
+      if (closeButton) {
+        closeButton.focus()
+      }
+    }
+  },
+
+  closeModal(modalId) {
+    const modal = document.getElementById(modalId)
+    if (modal) {
+      modal.classList.remove('program-detail-modal--active')
+      document.body.style.overflow = '' // Restaurar scroll del body
     }
   }
 }
