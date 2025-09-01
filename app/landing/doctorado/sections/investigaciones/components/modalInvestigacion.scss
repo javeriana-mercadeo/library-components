@@ -545,6 +545,58 @@ $content-width: 55%;
 }
 
 // ===========================================
+// ELEMENTOS DE VIDEO
+// ===========================================
+.investigations-modal__video-wrapper {
+  flex-shrink: 0;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  position: relative;
+  aspect-ratio: 16/9;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    min-width: rem(280px);
+    height: rem(158px); // 16:9 ratio for 280px width
+  }
+}
+
+.investigations-modal__video-wrapper-mobile {
+  flex-shrink: 0;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  width: 100%;
+  height: rem(200px);
+  position: relative;
+  aspect-ratio: 16/9;
+}
+
+.investigations-modal__video {
+  width: 100%;
+  height: rem(200px);
+  border: 0;
+  border-radius: var(--border-radius-lg);
+  display: block;
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    width: rem(280px);
+    height: rem(158px);
+  }
+}
+
+.investigations-modal__video-mobile {
+  width: 100%;
+  height: rem(200px);
+  border: 0;
+  border-radius: var(--border-radius-lg);
+  display: block;
+}
+
+// ===========================================
 // ESTADOS DEL BODY
 // ===========================================
 body.modal-open {

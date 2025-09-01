@@ -72,7 +72,14 @@ const Investigaciones = () => {
       description:
         ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam luctus dolor eget urna ullamcorper posuere. Vivamus sem diam, consequat et lobortis at, aliquam vitae felis. Nulla at sodales ligula. Duis quis condimentum neque, id mattis lorem. Curabitur cursus nulla id ipsum varius, sit amet cursus augue gravida. Ut ut neque sit amet metus commodo cursus. Sed quis ante vel justo egestas suscipit in non turpis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras lobortis, nunc in ullamcorper pretium, nibh eros mollis eros, ut finibus dolor metus sit amet leo. Curabitur lorem augue, dapibus id ultrices nec, convallis quis dolor. Quisque consectetur ipsum sit amet elit tristique rhoncus. Quisque tortor elit, egestas non viverra a, scelerisque eu ex. Quisque eget elit in dui aliquet eleifend sed sit amet purus. Proin mollis orci orci, bibendum hendrerit lectus scelerisque sit amet. Vivamus aliquet, eros eget consectetur pulvinar, leo ipsum tempus justo, id volutpat magna magna eu metus. Aenean fringilla semper erat, at blandit sapien sollicitudin eget. Fusce pulvinar ante eget semper convallis. Quisque convallis dui a laoreet molestie. Maecenas eleifend massa hendrerit nisi euismod scelerisque. Aenean pharetra dictum massa et tincidunt. Maecenas mi tellus, pulvinar eu velit eget, tristique eleifend turpis. Suspendisse potenti.',
       image: 'https://sobrehistoria.com/wp-content/uploads/2010/08/era-victoriana.jpg',
-      alt: 'Desafíos sociales en América Latina'
+      alt: 'Desafíos sociales en América Latina',
+      // CONFIGURACIÓN DE VIDEO ESPECÍFICA PARA ESTA INVESTIGACIÓN
+      video: {
+        enabled: true,
+        url: 'https://youtu.be/Y2KdypoCAYg',
+        embedId: 'Y2KdypoCAYg',
+        position: 'first' // 'first', 'last', o número específico
+      }
     }
   ]
 

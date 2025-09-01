@@ -2,6 +2,43 @@
 @use './components/modalInvestigacion.scss' as *;
 
 // ==========================================
+// SOPORTE PARA VIDEOS EN SWIPER
+// ==========================================
+
+// Desktop Swiper vertical - Videos
+.investigations-modal__swiper-container {
+  .swiper-slide {
+    // Video slides en Swiper vertical desktop
+    .investigations-modal__video-wrapper {
+      height: 300px; // Altura estandarizada como las imágenes
+      width: 100%;
+    }
+
+    .investigations-modal__video {
+      height: 300px; // Altura estandarizada
+      object-fit: cover;
+    }
+  }
+}
+
+// Mobile Swiper horizontal - Videos  
+.investigations-modal__swiper-container-mobile {
+  .swiper-slide {
+    // Video slides en Swiper horizontal móvil
+    .investigations-modal__video-wrapper-mobile {
+      height: rem(200px);
+      width: 100%;
+      min-width: rem(280px);
+    }
+
+    .investigations-modal__video-mobile {
+      height: rem(200px);
+      width: 100%;
+    }
+  }
+}
+
+// ==========================================
 // VARIABLES DEL COMPONENTE
 // ==========================================
 $investigations-card-border-radius: rem(16px);

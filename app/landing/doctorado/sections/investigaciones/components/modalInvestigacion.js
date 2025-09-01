@@ -444,58 +444,137 @@ const ModalInvestigacion = {
     }
   },
 
+  // ==========================================
+  // FUNCIÓN LEGACY: Mantener para compatibilidad
+  // ==========================================
   generateImageGallery(container, data) {
     // Limpiar contenedor
     container.innerHTML = ''
 
-    // Imagen principal
-    const mainImageWrapper = document.createElement('div')
-    mainImageWrapper.className = 'investigations-modal__image-wrapper'
-
-    const mainImage = document.createElement('img')
-    mainImage.src = data.image || 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1'
-    mainImage.alt = data.alt || data.title
-    mainImage.className = 'investigations-modal__image'
-
-    mainImageWrapper.appendChild(mainImage)
-    container.appendChild(mainImageWrapper)
-
-    // Generar imágenes adicionales (simuladas basándose en la principal)
-    const additionalImages = this.generateAdditionalImages(data.image, data.title)
-
-    additionalImages.forEach((imgSrc, index) => {
-      const imageWrapper = document.createElement('div')
-      imageWrapper.className = 'investigations-modal__image-wrapper'
-
-      const image = document.createElement('img')
-      image.src = imgSrc
-      image.alt = `${data.title} - Imagen ${index + 2}`
-      image.className = 'investigations-modal__image'
-
-      imageWrapper.appendChild(image)
-      container.appendChild(imageWrapper)
+    // Generar todos los elementos multimedia
+    const allMediaItems = this.generateAdditionalMedia(data.image, data.title, data)
+    
+    allMediaItems.forEach((mediaItem, index) => {
+      const mediaElement = this.generateMediaElement(mediaItem, index, true) // true = desktop por defecto
+      container.appendChild(mediaElement)
     })
 
-    this.log('Galería generada con', additionalImages.length + 1, 'imágenes')
+    this.log('Galería generada con', allMediaItems.length, 'elementos multimedia')
   },
 
-  generateAdditionalImages(baseImage, title) {
-    // Generar 3 imágenes adicionales basándose en la imagen base
-    const additionalImages = []
-
+  generateAdditionalMedia(baseImage, title, investigationData = null) {
+    const mediaItems = []
+    
+    // ==========================================
+    // CONFIGURACIÓN FLEXIBLE DE VIDEO POR INVESTIGACIÓN
+    // ==========================================
+    
+    // Verificar si esta investigación específica tiene video configurado
+    const hasVideo = investigationData && 
+                    investigationData.video && 
+                    investigationData.video.enabled === true
+    
+    if (hasVideo) {
+      const videoConfig = investigationData.video
+      const videoItem = {
+        type: 'video',
+        src: videoConfig.url,
+        embedId: videoConfig.embedId,
+        alt: `${title} - Video presentación`,
+        thumbnail: baseImage || `https://img.youtube.com/vi/${videoConfig.embedId}/maxresdefault.jpg`
+      }
+      
+      // Insertar video según la posición configurada
+      if (videoConfig.position === 'first' || !videoConfig.position) {
+        // Video como primer slide (por defecto)
+        mediaItems.push(videoItem)
+      }
+      // Nota: 'last' y posiciones numéricas se pueden agregar después si se necesitan
+    }
+    
+    // ==========================================
+    // SLIDES DE IMÁGENES (SIEMPRE PRESENTES)
+    // ==========================================
+    
+    // Imagen principal primero (si no hay video en primera posición)
+    if (!hasVideo || investigationData.video.position !== 'first') {
+      mediaItems.unshift({
+        type: 'image', 
+        src: baseImage || 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1', 
+        alt: title
+      })
+    }
+    
+    // Imágenes adicionales
     if (baseImage) {
       // Crear variaciones de la imagen base agregando sufijos
-      additionalImages.push(`${baseImage}-2`)
-      additionalImages.push(`${baseImage}-3`)
-      additionalImages.push(`${baseImage}-4`)
+      mediaItems.push({ type: 'image', src: `${baseImage}-2`, alt: `${title} - Imagen 2` })
+      mediaItems.push({ type: 'image', src: `${baseImage}-3`, alt: `${title} - Imagen 3` })
+      mediaItems.push({ type: 'image', src: `${baseImage}-4`, alt: `${title} - Imagen 4` })
     } else {
       // Imágenes por defecto si no hay imagen base
-      additionalImages.push('https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-2')
-      additionalImages.push('https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-3')
-      additionalImages.push('https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-4')
+      mediaItems.push({ type: 'image', src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-2', alt: `${title} - Imagen 2` })
+      mediaItems.push({ type: 'image', src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-3', alt: `${title} - Imagen 3` })
+      mediaItems.push({ type: 'image', src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-4', alt: `${title} - Imagen 4` })
     }
+    
+    this.log('Media generada:', { 
+      hasVideo: !!hasVideo, 
+      totalItems: mediaItems.length, 
+      videoPosition: hasVideo ? investigationData.video.position : 'none',
+      investigationId: investigationData ? investigationData.id : 'unknown'
+    })
 
-    return additionalImages
+    return mediaItems
+  },
+
+  // ==========================================
+  // NUEVA FUNCIÓN: Generar elemento multimedia (imagen o video)
+  // ==========================================
+  generateMediaElement(mediaItem, index, isDesktop = false) {
+    if (mediaItem.type === 'video') {
+      return this.generateVideoElement(mediaItem, index, isDesktop)
+    } else {
+      return this.generateImageElement(mediaItem, index, isDesktop)
+    }
+  },
+
+  generateVideoElement(videoItem, index, isDesktop) {
+    const containerClass = isDesktop ? 'investigations-modal__video-wrapper' : 'investigations-modal__video-wrapper-mobile'
+    const videoClass = isDesktop ? 'investigations-modal__video' : 'investigations-modal__video-mobile'
+    
+    // YouTube embed iframe
+    const iframe = document.createElement('iframe')
+    iframe.src = `https://www.youtube.com/embed/${videoItem.embedId}?rel=0&modestbranding=1`
+    iframe.className = videoClass
+    iframe.setAttribute('frameborder', '0')
+    iframe.setAttribute('allowfullscreen', 'true')
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture')
+    iframe.loading = index === 0 ? 'eager' : 'lazy'
+    iframe.title = videoItem.alt
+    
+    const wrapper = document.createElement('div')
+    wrapper.className = containerClass
+    wrapper.appendChild(iframe)
+    
+    return wrapper
+  },
+
+  generateImageElement(imageItem, index, isDesktop) {
+    const containerClass = isDesktop ? 'investigations-modal__image-wrapper' : 'investigations-modal__image-wrapper-mobile'
+    const imageClass = isDesktop ? 'investigations-modal__image' : 'investigations-modal__image-mobile'
+    
+    const image = document.createElement('img')
+    image.src = imageItem.src
+    image.alt = imageItem.alt
+    image.className = imageClass
+    image.loading = index === 0 ? 'eager' : 'lazy'
+    
+    const wrapper = document.createElement('div')
+    wrapper.className = containerClass
+    wrapper.appendChild(image)
+    
+    return wrapper
   },
 
   // ==========================================
@@ -505,34 +584,20 @@ const ModalInvestigacion = {
     // Limpiar wrapper
     swiperWrapper.innerHTML = ''
 
-    // Generar todas las imágenes como slides
-    const allImages = [
-      { src: data.image || 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1', alt: data.alt || data.title },
-      ...this.generateAdditionalImages(data.image, data.title).map((src, index) => ({
-        src,
-        alt: `${data.title} - Imagen ${index + 2}`
-      }))
-    ]
+    // Generar todos los elementos multimedia como slides
+    const allMediaItems = this.generateAdditionalMedia(data.image, data.title, data)
 
-    allImages.forEach((img, index) => {
+    allMediaItems.forEach((mediaItem, index) => {
       const slide = document.createElement('div')
       slide.className = 'swiper-slide investigations-modal__slide'
 
-      const imageWrapper = document.createElement('div')
-      imageWrapper.className = 'investigations-modal__image-wrapper'
-
-      const image = document.createElement('img')
-      image.src = img.src
-      image.alt = img.alt
-      image.className = 'investigations-modal__image'
-      image.loading = index === 0 ? 'eager' : 'lazy' // Optimización de carga
-
-      imageWrapper.appendChild(image)
-      slide.appendChild(imageWrapper)
+      // Generar elemento multimedia (imagen o video)
+      const mediaElement = this.generateMediaElement(mediaItem, index, true) // true = desktop
+      slide.appendChild(mediaElement)
       swiperWrapper.appendChild(slide)
     })
 
-    this.log('Swiper gallery generada con', allImages.length, 'slides')
+    this.log('Swiper gallery generada con', allMediaItems.length, 'slides multimedia')
   },
 
   // ==========================================
@@ -627,36 +692,22 @@ const ModalInvestigacion = {
     // Limpiar wrapper
     swiperWrapper.innerHTML = ''
 
-    // Generar todas las imágenes como slides
-    const allImages = [
-      { src: data.image || 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1', alt: data.alt || data.title },
-      ...this.generateAdditionalImages(data.image, data.title).map((src, index) => ({
-        src,
-        alt: `${data.title} - Imagen ${index + 2}`
-      }))
-    ]
+    // Generar todos los elementos multimedia como slides
+    const allMediaItems = this.generateAdditionalMedia(data.image, data.title, data)
 
-    allImages.forEach((img, index) => {
+    allMediaItems.forEach((mediaItem, index) => {
       const slide = document.createElement('div')
       slide.className = 'swiper-slide investigations-modal__slide-mobile'
       
-      const imageWrapper = document.createElement('div')
-      imageWrapper.className = 'investigations-modal__image-wrapper-mobile'
-      
-      const image = document.createElement('img')
-      image.src = img.src
-      image.alt = img.alt
-      image.className = 'investigations-modal__image-mobile'
-      image.loading = index === 0 ? 'eager' : 'lazy'
-      
-      imageWrapper.appendChild(image)
-      slide.appendChild(imageWrapper)
+      // Generar elemento multimedia (imagen o video)
+      const mediaElement = this.generateMediaElement(mediaItem, index, false) // false = mobile
+      slide.appendChild(mediaElement)
       swiperWrapper.appendChild(slide)
     })
 
     // Guardar total de slides para configuración
-    this.totalMobileSlides = allImages.length
-    this.log('Mobile Swiper gallery generada con', allImages.length, 'slides')
+    this.totalMobileSlides = allMediaItems.length
+    this.log('Mobile Swiper gallery generada con', allMediaItems.length, 'slides multimedia')
   },
 
   // ==========================================
