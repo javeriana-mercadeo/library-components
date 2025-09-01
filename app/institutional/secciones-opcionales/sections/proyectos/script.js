@@ -1,448 +1,1171 @@
-// Script principal del carousel - Compatible con SSR y Liferay
-const createCarouselManager = () => {
-  // Verificar si estamos en el cliente
-  if (typeof window === 'undefined') {
+// CarouselManager.js - Módulo para JSX con múltiples videos
+
+class CarouselManager {
+  constructor() {
+    console.log('🎠 Inicializando Carousel Touch Manual v5.0 con Múltiples Videos...');
+    
+    // Variables de estado
+    this.currentSlideIndex = 0;
+    this.totalSlides = 0;
+    this.slidesPerView = 1;
+    this.isTransitioning = false;
+    this.isInitialized = false;
+
+    // Variables para carrusel infinito
+    this.originalSlides = [];
+    this.isInfiniteEnabled = false;
+    this.duplicatedSlides = 0;
+
+    // Variables para touch
+    this.touchStartX = 0;
+    this.touchStartY = 0;
+    this.touchCurrentX = 0;
+    this.touchCurrentY = 0;
+    this.isDragging = false;
+    this.startTime = 0;
+    this.startTranslateX = 0;
+
+    this.CONFIG = {
+      INIT_TIMEOUT: 100,
+      RETRY_TIMEOUT: 2000,
+      MAX_RETRIES: 5,
+      MODAL_ANIMATION_DURATION: 300,
+      SLIDE_TRANSITION_DURATION: 400,
+      TOUCH_THRESHOLD: 50,
+      VELOCITY_THRESHOLD: 0.5,
+      RESPONSIVE_BREAKPOINTS: {
+        MOBILE: 768,
+        TABLET: 900,
+        DESKTOP: 1200
+      }
+    };
+
+    this.initRetries = 0;
+
+    // Bind methods
+    this.onTouchStart = this.onTouchStart.bind(this);
+    this.onTouchMove = this.onTouchMove.bind(this);
+    this.onTouchEnd = this.onTouchEnd.bind(this);
+    this.carouselPrevSlide = this.carouselPrevSlide.bind(this);
+    this.carouselNextSlide = this.carouselNextSlide.bind(this);
+    this.openCarouselModal = this.openCarouselModal.bind(this);
+    this.closeCarouselModal = this.closeCarouselModal.bind(this);
+  }
+
+  // Utilidades para detectar DOM listo
+  waitForReady() {
+    return new Promise((resolve) => {
+      const checkReady = () => {
+        const hasRequiredElements = 
+          document.getElementById('modal-backdrop-carousel') &&
+          document.getElementById('modal-project-gallery-items') &&
+          document.getElementById('modal-project-videos') &&
+          document.getElementById('carousel-container') &&
+          document.getElementById('slides-wrapper');
+        
+        if (document.readyState === 'complete' && hasRequiredElements) {
+          console.log('✅ DOM completamente listo');
+          resolve();
+        } else if (this.initRetries < this.CONFIG.MAX_RETRIES) {
+          this.initRetries++;
+          console.log(`⏳ Esperando DOM... Intento ${this.initRetries}/${this.CONFIG.MAX_RETRIES}`);
+          setTimeout(checkReady, this.CONFIG.INIT_TIMEOUT);
+        } else {
+          console.warn('⚠️ Timeout esperando DOM, continuando...');
+          resolve();
+        }
+      };
+      checkReady();
+    });
+  }
+
+  // Campos editables
+  getEditableContent(id) {
+    const selectors = [
+      `[data-lfr-editable-id="${id}"]`,
+      `#${id}`,
+      `[id="${id}"]`
+    ];
+    
+    for (const selector of selectors) {
+      const element = document.querySelector(selector);
+      if (element) {
+        const text = element.textContent ? element.textContent.trim() : '';
+        if (text) return text;
+      }
+    }
+    return '';
+  }
+
+  getEditableHTML(id) {
+    const selectors = [
+      `[data-lfr-editable-id="${id}"]`,
+      `#${id}`,
+      `[id="${id}"]`
+    ];
+    
+    for (const selector of selectors) {
+      const element = document.querySelector(selector);
+      if (element) {
+        const html = element.innerHTML ? element.innerHTML.trim() : '';
+        if (html) return html;
+      }
+    }
+    return '';
+  }
+
+  // Función para obtener múltiples videos
+  getMultipleVideoUrls(slideIndex) {
+    const videoUrls = [];
+    let videoIndex = 0;
+    let hasMoreVideos = true;
+    
+    while (hasMoreVideos) {
+      const videoUrl = this.getEditableContent(`project-video-${slideIndex}-${videoIndex}`);
+      
+      if (videoUrl && videoUrl.trim() !== '') {
+        videoUrls.push(videoUrl.trim());
+        videoIndex++;
+      } else {
+        hasMoreVideos = false;
+      }
+    }
+    
+    console.log(`📹 Videos encontrados para slide ${slideIndex}:`, videoUrls);
+    return videoUrls;
+  }
+
+  getProjectDataFromHTML(slideIndex) {
+    const title = this.getEditableContent(`project-title-${slideIndex}`);
+    const date = this.getEditableContent(`project-date-${slideIndex}`);
+    const responsible = this.getEditableContent(`project-responsible-${slideIndex}`);
+    const description = this.getEditableHTML(`project-description-${slideIndex}`);
+    
+    const videoUrls = this.getMultipleVideoUrls(slideIndex);
+    
+    const galleryText = this.getEditableContent(`project-gallery-${slideIndex}`);
+    const gallery = galleryText 
+      ? galleryText.split(',').map(url => url.trim()).filter(url => url.length > 0)
+      : [];
+
+    if (!title && videoUrls.length === 0) {
+      return this.getFallbackData(slideIndex);
+    }
+
     return {
-      activeIndex: 0,
-      showModal: false,
-      selectedSlideIndex: null,
-      isMobile: false,
-      nextSlide: () => {},
-      prevSlide: () => {},
-      setActiveSlide: () => {},
-      openModal: () => {},
-      closeModal: () => {},
-      handleTouchStart: () => {},
-      handleTouchMove: () => {},
-      handleTouchEnd: () => {},
-      handleSwipeInModal: () => {},
-      cleanup: () => {},
-      init: () => {}
-    }
+      title: title || `Proyecto ${slideIndex + 1}`,
+      date: date || '2024',
+      responsible: responsible || 'Equipo Universitario',
+      description: description || 'Descripción del proyecto disponible próximamente.',
+      videoUrls: videoUrls,
+      gallery: gallery
+    };
   }
 
-  console.log('Script de Proyectos inicializado')
-  
-  const state = {
-    activeIndex: 0,
-    showModal: false,
-    selectedSlideIndex: null,
-    isMobile: false,
-    touchStartX: 0,
-    touchEndX: 0,
-    touchStartY: 0,
-    touchEndY: 0,
-    isInitialized: false
-  }
-
-  const slides = [
-    {
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1',
-      title: 'Universidad Destacada',
-      description: 'Descubre nuestros programas académicos y la experiencia universitaria',
-      slideData: { id: 1, type: 'universidad' }
-    },
-    {
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-      title: 'Investigación de Clase Mundial',
-      description: 'Conoce nuestros proyectos de investigación y logros académicos',
-      slideData: { id: 2, type: 'investigacion' }
-    },
-    {
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3',
-      title: 'Campus Innovador',
-      description: 'Explora nuestras instalaciones modernas y entorno de aprendizaje',
-      slideData: { id: 3, type: 'campus' }
-    },
-    {
-      image: 'https://www.lapizdeacero.org/wp-content/uploads/2023/08/Interior-image_01.jpg',
-      title: 'Comunidad Estudiantil',
-      description: 'Forma parte de nuestra comunidad diversa y vibrante',
-      slideData: { id: 4, type: 'comunidad' }
-    },
-    {
-      image: 'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png',
-      title: 'Oportunidades Internacionales',
-      description: 'Descubre programas de intercambio y colaboraciones globales',
-      slideData: { id: 5, type: 'internacional' }
-    }
-  ]
-
-  const checkMobile = () => {
-    return window.innerWidth < 768
-  }
-
-  const updateSlideClasses = () => {
-    const slideElements = document.querySelectorAll('.carousel-slide')
-    const indicators = document.querySelectorAll('.indicator')
-    
-    slideElements.forEach((slide, index) => {
-      slide.className = 'carousel-slide'
-      
-      if (state.isMobile) {
-        if (index === state.activeIndex) {
-          slide.classList.add('active')
-        }
-      } else {
-        if (index === state.activeIndex) {
-          slide.classList.add('active', 'left')
-        } else if (index === (state.activeIndex + 1) % slides.length) {
-          slide.classList.add('active', 'center')
-        } else if (index === (state.activeIndex + 2) % slides.length) {
-          slide.classList.add('active', 'right')
-        }
+  getFallbackData(slideIndex) {
+    const fallbackData = {
+      0: {
+        title: "Universidad Destacada",
+        date: "2024",
+        responsible: "Equipo Académico",
+        description: "Descubre nuestros programas académicos de alta calidad.",
+        videoUrls: ["https://www.youtube.com/watch?v=Y2KdypoCAYg&t=27s"],
+        gallery: ["https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg"]
+      },
+      1: {
+        title: "Investigación de Clase Mundial",
+        date: "2023-2024",
+        responsible: "Centro de Investigación",
+        description: "Proyectos innovadores y logros académicos destacados.",
+        videoUrls: ["https://www.youtube.com/watch?v=h3GuFxrk8aI"],
+        gallery: ["https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2"]
+      },
+      2: {
+        title: "Campus Innovador",
+        date: "2024",
+        responsible: "Departamento de Infraestructura",
+        description: "Instalaciones modernas y entorno de aprendizaje de vanguardia.",
+        videoUrls: ["https://www.youtube.com/watch?v=Y2KdypoCAYg&t=27s"],
+        gallery: ["https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg"]
+      },
+      3: {
+        title: "Oportunidades Internacionales",
+        date: "2023-2024",
+        responsible: "Oficina Internacional",
+        description: "Programas de intercambio y colaboraciones globales.",
+        videoUrls: ["https://www.youtube.com/watch?v=Y2KdypoCAYg&t=27s"],
+        gallery: ["https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png"]
       }
-    })
+    };
 
+    return fallbackData[slideIndex] || {
+      title: `Proyecto ${slideIndex + 1}`,
+      date: "2024",
+      responsible: "Equipo Universitario",
+      description: "Información disponible próximamente.",
+      videoUrls: ["https://www.youtube.com/watch?v=Y2KdypoCAYg&t=27s"],
+      gallery: []
+    };
+  }
+
+  // Carrusel infinito
+  createInfiniteCarousel() {
+    const wrapper = document.getElementById('slides-wrapper');
+    const container = document.getElementById('carousel-container');
+    
+    if (!wrapper || !container) {
+      console.error('❌ Elementos no encontrados para carrusel infinito');
+      return false;
+    }
+
+    const slides = wrapper.querySelectorAll('.carousel-slide');
+    this.originalSlides = Array.from(slides);
+    const totalOriginalSlides = this.originalSlides.length;
+    
+    const needsInfinite = totalOriginalSlides < 8;
+    
+    if (!needsInfinite) {
+      console.log('📋 Suficientes tarjetas, carrusel infinito deshabilitado');
+      this.isInfiniteEnabled = false;
+      return true;
+    }
+
+    console.log('🔄 Creando carrusel infinito...');
+    
+    const minSlidesNeeded = this.slidesPerView * 3;
+    let slidesToDuplicate = Math.ceil((minSlidesNeeded - totalOriginalSlides) / totalOriginalSlides);
+    slidesToDuplicate = Math.max(2, slidesToDuplicate);
+    
+    for (let i = 0; i < slidesToDuplicate; i++) {
+      this.originalSlides.forEach((slide, index) => {
+        const clonedSlide = slide.cloneNode(true);
+        
+        const originalIndex = parseInt(slide.getAttribute('data-slide-index')) || index;
+        clonedSlide.setAttribute('data-slide-index', `${originalIndex}-clone-${i}`);
+        clonedSlide.setAttribute('data-clone-of', originalIndex);
+        clonedSlide.classList.add('cloned-slide');
+        
+        clonedSlide.onclick = () => {
+          this.openCarouselModal(originalIndex);
+        };
+        
+        wrapper.appendChild(clonedSlide);
+        this.duplicatedSlides++;
+      });
+    }
+    
+    this.totalSlides = wrapper.querySelectorAll('.carousel-slide').length;
+    this.isInfiniteEnabled = true;
+    
+    console.log(`✅ Carrusel infinito creado: ${this.originalSlides.length} originales, ${this.duplicatedSlides} duplicadas, ${this.totalSlides} total`);
+    return true;
+  }
+
+  handleInfiniteLoop() {
+    if (!this.isInfiniteEnabled || this.originalSlides.length === 0) return;
+
+    const originalSlidesCount = this.originalSlides.length;
+    const wrapper = document.getElementById('slides-wrapper');
+    
+    const nearEnd = this.currentSlideIndex >= this.totalSlides - (originalSlidesCount * 1.5);
+    const nearStart = this.currentSlideIndex <= originalSlidesCount * 0.5;
+    
+    if (nearEnd) {
+      setTimeout(() => {
+        wrapper.classList.add('no-transition');
+        this.currentSlideIndex = this.currentSlideIndex - originalSlidesCount;
+        
+        const slidePercentage = 100 / this.slidesPerView;
+        const translateX = this.currentSlideIndex * slidePercentage;
+        wrapper.style.transform = `translateX(-${translateX}%)`;
+        
+        setTimeout(() => {
+          wrapper.classList.remove('no-transition');
+        }, 50);
+      }, this.CONFIG.SLIDE_TRANSITION_DURATION);
+    }
+    
+    if (nearStart && this.currentSlideIndex < 0) {
+      setTimeout(() => {
+        wrapper.classList.add('no-transition');
+        this.currentSlideIndex = originalSlidesCount + this.currentSlideIndex;
+        
+        const slidePercentage = 100 / this.slidesPerView;
+        const translateX = this.currentSlideIndex * slidePercentage;
+        wrapper.style.transform = `translateX(-${translateX}%)`;
+        
+        setTimeout(() => {
+          wrapper.classList.remove('no-transition');
+        }, 50);
+      }, this.CONFIG.SLIDE_TRANSITION_DURATION);
+    }
+  }
+
+  // Funciones del slider
+  calculateSlidesPerView() {
+    const containerWidth = window.innerWidth;
+    
+    if (containerWidth >= this.CONFIG.RESPONSIVE_BREAKPOINTS.DESKTOP) {
+      return 4;
+    } else if (containerWidth >= this.CONFIG.RESPONSIVE_BREAKPOINTS.TABLET) {
+      return 3;
+    } else if (containerWidth >= this.CONFIG.RESPONSIVE_BREAKPOINTS.MOBILE) {
+      return 2;
+    } else {
+      return 1;
+    }
+  }
+
+  updateSliderDimensions() {
+    const wrapper = document.getElementById('slides-wrapper');
+    const container = document.getElementById('carousel-container');
+    
+    if (!wrapper || !container) {
+      console.error('❌ Elementos del slider no encontrados');
+      return false;
+    }
+
+    const slides = wrapper.querySelectorAll('.carousel-slide');
+    this.totalSlides = slides.length;
+    this.slidesPerView = this.calculateSlidesPerView();
+    
+    if (this.totalSlides === 0) {
+      console.warn('⚠️ No se encontraron slides');
+      return false;
+    }
+
+    console.log(`📐 Dimensiones: ${this.slidesPerView} slides por vista de ${this.totalSlides} totales`);
+    
+    if (this.totalSlides <= this.slidesPerView) {
+      wrapper.style.justifyContent = 'center';
+      wrapper.classList.add('centered-slides');
+    } else {
+      wrapper.style.justifyContent = 'flex-start';
+      wrapper.classList.remove('centered-slides');
+    }
+
+    return true;
+  }
+
+  updateSliderPosition(animated = true, customTranslateX = null) {
+    const wrapper = document.getElementById('slides-wrapper');
+    if (!wrapper) return;
+
+    if (this.isInfiniteEnabled) {
+      this.handleInfiniteLoop();
+    }
+
+    const maxPosition = Math.max(0, this.totalSlides - this.slidesPerView);
+    
+    if (this.currentSlideIndex > maxPosition) {
+      this.currentSlideIndex = maxPosition;
+    }
+    
+    if (this.currentSlideIndex < 0) {
+      this.currentSlideIndex = 0;
+    }
+
+    let translateX;
+    if (customTranslateX !== null) {
+      translateX = customTranslateX;
+    } else {
+      const slidePercentage = 100 / this.slidesPerView;
+      translateX = this.currentSlideIndex * slidePercentage;
+    }
+    
+    wrapper.style.transition = animated 
+      ? `transform ${this.CONFIG.SLIDE_TRANSITION_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)` 
+      : 'none';
+    
+    wrapper.style.transform = `translateX(-${translateX}%)`;
+
+    console.log(`🎯 Posición actualizada: slide ${this.currentSlideIndex} (${translateX}%)`);
+  }
+
+  updateIndicators() {
+    const indicators = document.querySelectorAll('#carousel-indicators .indicator');
+    
     indicators.forEach((indicator, index) => {
-      indicator.classList.toggle('active', index === state.activeIndex)
-    })
-  }
-
-  const updateModal = () => {
-    const modalBackdrop = document.getElementById('modal-backdrop')
-    if (modalBackdrop) {
-      modalBackdrop.style.display = state.showModal ? 'flex' : 'none'
-    }
-  }
-
-  const handleResize = () => {
-    state.isMobile = checkMobile()
-    updateSlideClasses()
-  }
-
-  const nextSlide = () => {
-    const nextIndex = (state.activeIndex + 1) % slides.length
-    state.activeIndex = nextIndex
-    state.selectedSlideIndex = nextIndex
-    updateSlideClasses()
-  }
-
-  const prevSlide = () => {
-    const prevIndex = (state.activeIndex - 1 + slides.length) % slides.length
-    state.activeIndex = prevIndex
-    state.selectedSlideIndex = prevIndex
-    updateSlideClasses()
-  }
-
-  const setActiveSlide = (index) => {
-    state.activeIndex = index
-    updateSlideClasses()
-  }
-
-  const openModal = (index) => {
-    state.showModal = true
-    state.selectedSlideIndex = index
-    updateModal()
-    
-    // Renderizar contenido del modal
-    renderModalContent()
-  }
-
-  const closeModal = () => {
-    state.showModal = false
-    state.selectedSlideIndex = null
-    updateModal()
-  }
-
-  const handleTouchStart = (e) => {
-    state.touchStartX = e.targetTouches[0].clientX
-    state.touchStartY = e.targetTouches[0].clientY
-  }
-
-  const handleTouchMove = (e) => {
-    state.touchEndX = e.targetTouches[0].clientX
-    state.touchEndY = e.targetTouches[0].clientY
-  }
-
-  const handleTouchEnd = () => {
-    const deltaX = state.touchStartX - state.touchEndX
-    const deltaY = Math.abs(state.touchStartY - state.touchEndY)
-
-    if (deltaY < 50 && Math.abs(deltaX) > 50) {
-      if (deltaX > 0) {
-        nextSlide()
+      const indicatorIndex = parseInt(indicator.getAttribute('data-indicator-index')) || index;
+      
+      if (indicatorIndex < this.originalSlides.length) {
+        indicator.style.display = 'block';
+        
+        let isActive = false;
+        
+        if (this.isInfiniteEnabled) {
+          const currentOriginalSlide = this.currentSlideIndex % this.originalSlides.length;
+          isActive = indicatorIndex === currentOriginalSlide;
+        } else {
+          const slideStart = this.currentSlideIndex;
+          const slideEnd = this.currentSlideIndex + this.slidesPerView - 1;
+          isActive = indicatorIndex >= slideStart && indicatorIndex <= slideEnd;
+        }
+        
+        if (isActive) {
+          indicator.classList.add('active');
+        } else {
+          indicator.classList.remove('active');
+        }
       } else {
-        prevSlide()
+        indicator.style.display = 'none';
+      }
+    });
+  }
+
+  updateNavigationButtons() {
+    const prevBtn = document.getElementById('carousel-prev');
+    const nextBtn = document.getElementById('carousel-next');
+    
+    if (!prevBtn || !nextBtn) return;
+
+    if (this.isInfiniteEnabled) {
+      prevBtn.style.display = 'flex';
+      nextBtn.style.display = 'flex';
+      prevBtn.disabled = false;
+      nextBtn.disabled = false;
+      prevBtn.style.opacity = '1';
+      nextBtn.style.opacity = '1';
+      prevBtn.style.cursor = 'pointer';
+      nextBtn.style.cursor = 'pointer';
+    } else {
+      const maxPosition = Math.max(0, this.totalSlides - this.slidesPerView);
+      
+      if (this.totalSlides <= this.slidesPerView) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+      } else {
+        prevBtn.style.display = 'flex';
+        nextBtn.style.display = 'flex';
+        
+        const isPrevDisabled = this.currentSlideIndex <= 0;
+        const isNextDisabled = this.currentSlideIndex >= maxPosition;
+        
+        prevBtn.disabled = isPrevDisabled;
+        nextBtn.disabled = isNextDisabled;
+        
+        prevBtn.style.opacity = isPrevDisabled ? '0.3' : '1';
+        nextBtn.style.opacity = isNextDisabled ? '0.3' : '1';
+        
+        prevBtn.style.cursor = isPrevDisabled ? 'not-allowed' : 'pointer';
+        nextBtn.style.cursor = isNextDisabled ? 'not-allowed' : 'pointer';
       }
     }
   }
 
-  const handleSwipeInModal = (direction) => {
-    if (direction === 'up') {
-      nextSlide()
-      renderModalContent()
-    } else if (direction === 'down') {
-      prevSlide()
-      renderModalContent()
-    }
-  }
-
-  // Función para renderizar el contenido del modal
-  const renderModalContent = () => {
-    const modalBody = document.querySelector('.modal-body')
-    if (!modalBody || state.selectedSlideIndex === null) return
-
-    const selectedSlide = slides[state.selectedSlideIndex]
-    if (!selectedSlide) return
-
-    // Crear el contenido del modal con JavaScript vanilla
-    modalBody.innerHTML = createProjectDetailsHTML(selectedSlide)
+  updateSliderLayout() {
+    if (!this.updateSliderDimensions()) return;
     
-    // Agregar eventos touch al contenido del modal
-    const projectDetails = modalBody.querySelector('.project-details')
-    if (projectDetails) {
-      addTouchEventsToModal(projectDetails)
-    }
-  }
-
-  const createProjectDetailsHTML = (slide) => {
-    const projectData = getProjectData(slide.slideData, slide.title, slide.description, slide.image)
+    this.updateSliderPosition(false);
+    this.updateIndicators();
+    this.updateNavigationButtons();
     
-    return `
-      <div class="project-details" style="touch-action: pan-y; user-select: none;">
-        <div class="project-layout">
-          <div class="project-info">
-            <h2>${projectData.titulo}</h2>
-            <div class="info-row">
-              <strong>Fecha</strong>
-              <span>${projectData.fecha}</span>
-            </div>
-            <div class="info-row">
-              <strong>Responsable</strong>
-              <span>${projectData.estudiante}</span>
-            </div>
-            <div class="info-row">
-              <strong>Descripción</strong>
-              <p>${projectData.descripcion}</p>
-            </div>
-          </div>
-          <div class="project-gallery">
-            ${projectData.imagenes.map((src, index) => `
-              <img 
-                src="${src}" 
-                alt="${projectData.titulo} - Imagen ${index + 1}"
-                style="width: 100%; margin-bottom: 1rem; object-fit: cover; pointer-events: none;"
-              />
-            `).join('')}
-          </div>
-        </div>
-      </div>
-    `
+    console.log('🎨 Layout actualizado completamente');
   }
 
-  const getProjectData = (slideData, title, description, image) => {
-    switch (slideData?.type) {
-      case 'universidad':
-        return {
-          titulo: 'Universidad Destacada - Programas Académicos',
-          fecha: '2024',
-          estudiante: 'Equipo Académico',
-          descripcion: 'Descubre nuestros programas académicos de alta calidad y la experiencia universitaria integral que ofrecemos. Contamos con acreditaciones internacionales y un cuerpo docente altamente calificado que garantiza una formación de excelencia.',
-          imagenes: [
-            image,
-            'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg',
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2'
-          ]
-        }
-      
-      case 'investigacion':
-        return {
-          titulo: 'Investigación de Clase Mundial',
-          fecha: '2023-2024',
-          estudiante: 'Centro de Investigación',
-          descripcion: 'Conoce nuestros proyectos de investigación innovadores y logros académicos que contribuyen al avance del conocimiento. Nuestros centros especializados desarrollan investigación de alto impacto con colaboraciones internacionales.',
-          imagenes: [
-            image,
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-            'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg'
-          ]
-        }
-      
-      case 'campus':
-        return {
-          titulo: 'Campus Innovador - Instalaciones Modernas',
-          fecha: '2024',
-          estudiante: 'Departamento de Infraestructura',
-          descripcion: 'Explora nuestras instalaciones modernas y entorno de aprendizaje diseñado para potenciar el desarrollo académico. Contamos con laboratorios de última tecnología, bibliotecas digitales y espacios colaborativos.',
-          imagenes: [
-            image,
-            'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg',
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1'
-          ]
-        }
-      
-      case 'comunidad':
-        return {
-          titulo: 'Comunidad Estudiantil Diversa',
-          fecha: '2024',
-          estudiante: 'Bienestar Universitario',
-          descripcion: 'Forma parte de nuestra comunidad diversa y vibrante donde cada estudiante encuentra su lugar. Ofrecemos múltiples organizaciones estudiantiles, eventos culturales y programas de liderazgo que enriquecen la experiencia universitaria.',
-          imagenes: [
-            image,
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3',
-            'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png'
-          ]
-        }
-      
-      case 'internacional':
-        return {
-          titulo: 'Oportunidades Internacionales',
-          fecha: '2023-2024',
-          estudiante: 'Oficina de Relaciones Internacionales',
-          descripcion: 'Descubre programas de intercambio y colaboraciones globales que amplían tu perspectiva académica y cultural. Ofrecemos intercambios académicos, doble titulación y programas de inmersión en universidades de prestigio mundial.',
-          imagenes: [
-            image,
-            'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png',
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1'
-          ]
-        }
-      
-      default:
-        return {
-          titulo: title || 'Proyecto Universitario',
-          fecha: '2024',
-          estudiante: 'Equipo de Desarrollo',
-          descripcion: description || 'Información detallada sobre este proyecto universitario y sus características principales.',
-          imagenes: [
-            image,
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1',
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2'
-          ]
-        }
+  goToSlide(targetIndex, animated = true) {
+    if (this.isTransitioning) {
+      console.log('⏳ Transición en progreso');
+      return;
     }
+    
+    let maxPosition, clampedIndex;
+    
+    if (this.isInfiniteEnabled) {
+      clampedIndex = targetIndex;
+    } else {
+      maxPosition = Math.max(0, this.totalSlides - this.slidesPerView);
+      clampedIndex = Math.max(0, Math.min(targetIndex, maxPosition));
+    }
+    
+    if (clampedIndex === this.currentSlideIndex && !this.isInfiniteEnabled) {
+      console.log('🎯 Ya en el slide objetivo');
+      return;
+    }
+    
+    console.log(`🚀 Navegando de slide ${this.currentSlideIndex} a ${clampedIndex}`);
+    
+    if (animated) {
+      this.isTransitioning = true;
+      setTimeout(() => {
+        this.isTransitioning = false;
+      }, this.CONFIG.SLIDE_TRANSITION_DURATION);
+    }
+    
+    this.currentSlideIndex = clampedIndex;
+    
+    this.updateSliderPosition(animated);
+    this.updateIndicators();
+    this.updateNavigationButtons();
   }
 
-  const addTouchEventsToModal = (element) => {
-    let startY = 0
-    let currentY = 0
-    let isDragging = false
+  // Funciones touch
+  getTouchX(event) {
+    return event.type.includes('mouse') ? event.clientX : event.touches[0].clientX;
+  }
 
-    const handleTouchStart = (e) => {
-      startY = e.touches[0].clientY
-      isDragging = true
-      element.style.transition = 'none'
-    }
+  getTouchY(event) {
+    return event.type.includes('mouse') ? event.clientY : event.touches[0].clientY;
+  }
 
-    const handleTouchMove = (e) => {
-      if (!isDragging) return
-      
-      e.preventDefault()
-      currentY = e.touches[0].clientY
-      const deltaY = currentY - startY
-      
-      const resistance = Math.max(0.1, 1 - Math.abs(deltaY) / (window.innerHeight * 0.3))
-      element.style.transform = `translateY(${deltaY * resistance}px)`
-    }
+  onTouchStart(event) {
+    if (this.isTransitioning) return;
+    
+    const wrapper = document.getElementById('slides-wrapper');
+    if (!wrapper) return;
 
-    const handleTouchEnd = () => {
-      if (!isDragging) return
-      
-      isDragging = false
-      const deltaY = currentY - startY
-      
-      element.style.transition = 'transform 0.3s ease-out'
-      
-      const threshold = 50
-      
-      if (Math.abs(deltaY) > threshold) {
-        handleSwipeInModal(deltaY > 0 ? 'down' : 'up')
+    this.touchStartX = this.getTouchX(event);
+    this.touchStartY = this.getTouchY(event);
+    this.touchCurrentX = this.touchStartX;
+    this.touchCurrentY = this.touchStartY;
+    this.startTime = Date.now();
+    this.isDragging = false;
+
+    const currentTransform = wrapper.style.transform || 'translateX(0%)';
+    const match = currentTransform.match(/translateX\((-?\d+(?:\.\d+)?)%\)/);
+    this.startTranslateX = match ? parseFloat(match[1]) : 0;
+
+    wrapper.classList.add('no-transition');
+    
+    console.log('👆 Touch iniciado');
+  }
+
+  onTouchMove(event) {
+    if (!this.touchStartX) return;
+    
+    this.touchCurrentX = this.getTouchX(event);
+    this.touchCurrentY = this.getTouchY(event);
+    
+    const diffX = this.touchCurrentX - this.touchStartX;
+    const diffY = this.touchCurrentY - this.touchStartY;
+    
+    if (!this.isDragging && Math.abs(diffX) > 10) {
+      if (Math.abs(diffY) > Math.abs(diffX)) {
+        return;
       }
-      
-      element.style.transform = 'translateY(0px)'
-      startY = 0
-      currentY = 0
+      this.isDragging = true;
+      console.log('👆 Iniciando arrastre horizontal');
     }
+    
+    if (!this.isDragging) return;
+    
+    event.preventDefault();
+    
+    const wrapper = document.getElementById('slides-wrapper');
+    if (!wrapper) return;
 
-    if (window.innerWidth <= 768) {
-      element.addEventListener('touchstart', handleTouchStart, { passive: false })
-      element.addEventListener('touchmove', handleTouchMove, { passive: false })
-      element.addEventListener('touchend', handleTouchEnd, { passive: false })
+    const slidePercentage = 100 / this.slidesPerView;
+    const movePercentage = (diffX / wrapper.offsetWidth) * 100;
+    let newTranslateX = this.startTranslateX - movePercentage;
+    
+    if (!this.isInfiniteEnabled) {
+      const maxTranslate = (this.totalSlides - this.slidesPerView) * slidePercentage;
+      newTranslateX = Math.max(-maxTranslate, Math.min(0, newTranslateX));
+    }
+    
+    wrapper.style.transform = `translateX(${newTranslateX}%)`;
+    wrapper.classList.add('dragging');
+    
+    console.log(`👆 Arrastrando: ${newTranslateX}%`);
+  }
+
+  onTouchEnd(event) {
+    if (!this.touchStartX || !this.isDragging) {
+      this.touchStartX = 0;
+      this.isDragging = false;
+      return;
+    }
+    
+    const wrapper = document.getElementById('slides-wrapper');
+    if (!wrapper) return;
+
+    const diffX = this.touchCurrentX - this.touchStartX;
+    const diffTime = Date.now() - this.startTime;
+    const velocity = Math.abs(diffX) / diffTime;
+    
+    wrapper.classList.remove('no-transition');
+    wrapper.classList.remove('dragging');
+    
+    console.log(`👆 Touch terminado: diffX=${diffX}, velocity=${velocity}`);
+    
+    let shouldChangeSlide = false;
+    let direction = 0;
+    
+    if (Math.abs(diffX) > this.CONFIG.TOUCH_THRESHOLD || velocity > this.CONFIG.VELOCITY_THRESHOLD) {
+      shouldChangeSlide = true;
+      direction = diffX > 0 ? -1 : 1;
+    }
+    
+    if (shouldChangeSlide) {
+      const newIndex = this.currentSlideIndex + direction;
+      this.goToSlide(newIndex, true);
+    } else {
+      this.updateSliderPosition(true);
+    }
+    
+    this.touchStartX = 0;
+    this.touchCurrentX = 0;
+    this.touchCurrentY = 0;
+    this.isDragging = false;
+  }
+
+  carouselPrevSlide() {
+    console.log('⬅️ Navegación anterior');
+    
+    if (this.isInfiniteEnabled) {
+      this.goToSlide(this.currentSlideIndex - 1);
+    } else {
+      if (this.currentSlideIndex > 0) {
+        this.goToSlide(this.currentSlideIndex - 1);
+      }
     }
   }
 
-  const bindEvents = () => {
-    // Eventos de controles
-    const prevButton = document.querySelector('.carousel-control.prev')
-    const nextButton = document.querySelector('.carousel-control.next')
-    const closeButton = document.querySelector('.modal-close')
+  carouselNextSlide() {
+    console.log('➡️ Navegación siguiente');
     
-    if (prevButton) prevButton.addEventListener('click', prevSlide)
-    if (nextButton) nextButton.addEventListener('click', nextSlide)
-    if (closeButton) closeButton.addEventListener('click', closeModal)
+    if (this.isInfiniteEnabled) {
+      this.goToSlide(this.currentSlideIndex + 1);
+    } else {
+      const maxPosition = Math.max(0, this.totalSlides - this.slidesPerView);
+      if (this.currentSlideIndex < maxPosition) {
+        this.goToSlide(this.currentSlideIndex + 1);
+      }
+    }
+  }
 
-    // Eventos de slides
-    const slideElements = document.querySelectorAll('.carousel-slide')
-    slideElements.forEach((slide, index) => {
-      slide.addEventListener('click', () => openModal(index))
-    })
+  // Funciones de video
+  extractYouTubeId(url) {
+    if (!url) return null;
+    
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=)([^&\n?#]+)/,
+      /(?:youtube\.com\/embed\/)([^&\n?#]+)/,
+      /(?:youtu\.be\/)([^&\n?#]+)/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match && match[1]) return match[1];
+    }
+    
+    return null;
+  }
 
-    // Eventos de indicadores
-    const indicators = document.querySelectorAll('.indicator')
+  getTimeParam(url) {
+    const timeMatch = url.match(/[&?]t=(\d+)/);
+    return timeMatch ? `&start=${timeMatch[1]}` : '';
+  }
+
+  createVideoIframe(videoUrl, title, videoIndex = 0) {
+    const videoId = this.extractYouTubeId(videoUrl);
+    if (!videoId) return null;
+
+    const timeParam = this.getTimeParam(videoUrl);
+    const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&enablejsapi=1${timeParam}`;
+
+    const iframe = document.createElement('iframe');
+    iframe.src = embedUrl;
+    iframe.title = `${title} - Video ${videoIndex + 1}`;
+    iframe.width = '100%';
+    iframe.frameBorder = '0';
+    iframe.allowFullscreen = true;
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+
+    const isMobile = window.innerWidth <= 768;
+    const videoHeight = isMobile ? '350px' : '400px';
+    
+    iframe.style.cssText = `
+        width: 100% !important;
+        height: ${videoHeight} !important;
+        border: none !important;
+        border-radius: 8px !important;
+        display: block !important;
+        background: #000 !important;
+        margin-bottom: 1.5rem !important;
+    `;
+
+    return iframe;
+  }
+
+  insertMultipleVideos(container, videoUrls, title) {
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (!videoUrls || !videoUrls.length) {
+      container.innerHTML = '<div style="text-align: center; color: #666; padding: 2rem;">No hay videos disponibles</div>';
+      return;
+    }
+
+    console.log(`📹 Insertando ${videoUrls.length} videos para: ${title}`);
+
+    videoUrls.forEach((videoUrl, index) => {
+      if (!videoUrl || !videoUrl.trim()) return;
+
+      const iframe = this.createVideoIframe(videoUrl.trim(), title, index);
+      
+      if (iframe) {
+        const videoWrapper = document.createElement('div');
+        videoWrapper.style.cssText = `
+          position: relative;
+          width: 100%;
+          background: #f8f9fa;
+          border-radius: 8px;
+          overflow: hidden;
+          margin-bottom: 1.5rem;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        `;
+
+        if (videoUrls.length > 1) {
+          const videoTitle = document.createElement('div');
+          videoTitle.style.cssText = `
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+          `;
+          videoTitle.textContent = `Video ${index + 1}`;
+          videoWrapper.appendChild(videoTitle);
+        }
+
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.style.cssText = `
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: #666;
+          font-size: 14px;
+        `;
+        loadingIndicator.textContent = 'Cargando video...';
+
+        iframe.onload = () => {
+          loadingIndicator.style.display = 'none';
+        };
+
+        videoWrapper.appendChild(loadingIndicator);
+        videoWrapper.appendChild(iframe);
+        container.appendChild(videoWrapper);
+      }
+    });
+  }
+
+  insertGallery(container, gallery, title) {
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (!gallery || !gallery.length) {
+      container.innerHTML = '<div style="text-align: center; color: #666; padding: 1rem;">No hay imágenes disponibles</div>';
+      return;
+    }
+
+    gallery.forEach((imageUrl, index) => {
+      if (!imageUrl || !imageUrl.trim()) return;
+
+      const imageUrl_clean = imageUrl.trim();
+
+      const imageWrapper = document.createElement('div');
+      imageWrapper.style.cssText = `
+        width: 100%;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+      `;
+
+      const image = document.createElement('img');
+      image.src = imageUrl_clean;
+      image.alt = `${title} - Imagen ${index + 1}`;
+      image.loading = 'lazy';
+      
+      const isMobile = window.innerWidth <= 768;
+      const imageHeight = isMobile ? '250px' : '400px';
+      
+      image.style.cssText = `
+        width: 100%;
+        height: ${imageHeight};
+        display: block;
+        object-fit: cover;
+        border-radius: inherit;
+      `;
+
+      imageWrapper.onmouseenter = function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.15)';
+      };
+
+      imageWrapper.onmouseleave = function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+      };
+
+      imageWrapper.appendChild(image);
+      container.appendChild(imageWrapper);
+    });
+  }
+
+  // Modal
+  openCarouselModal(slideIndex) {
+    console.log(`🎪 Abriendo modal para slide ${slideIndex}`);
+    
+    const projectData = this.getProjectDataFromHTML(slideIndex);
+    
+    if (!projectData.title && projectData.videoUrls.length === 0) {
+      console.error(`❌ Datos insuficientes para slide ${slideIndex}`);
+      return;
+    }
+
+    try {
+      const modalBackdrop = document.getElementById('modal-backdrop-carousel');
+      const modalTitle = document.getElementById('modal-project-title');
+      const modalDate = document.getElementById('modal-project-date');
+      const modalResponsible = document.getElementById('modal-project-responsible');
+      const modalDescription = document.getElementById('modal-project-description');
+      const videosContainer = document.getElementById('modal-project-videos');
+      const galleryContainer = document.getElementById('modal-project-gallery-items');
+
+      if (!modalBackdrop || !videosContainer || !galleryContainer) {
+        console.error('❌ Elementos del modal no encontrados');
+        return;
+      }
+
+      if (modalTitle) modalTitle.innerHTML = projectData.title;
+      if (modalDate) modalDate.textContent = projectData.date;
+      if (modalResponsible) modalResponsible.textContent = projectData.responsible;
+      if (modalDescription) modalDescription.innerHTML = projectData.description;
+
+      modalBackdrop.classList.add('show');
+      modalBackdrop.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => {
+        if (projectData.videoUrls && projectData.videoUrls.length > 0) {
+          this.insertMultipleVideos(videosContainer, projectData.videoUrls, projectData.title);
+        }
+      }, 100);
+
+      setTimeout(() => {
+        if (projectData.gallery && projectData.gallery.length > 0) {
+          this.insertGallery(galleryContainer, projectData.gallery, projectData.title);
+        }
+      }, 200);
+
+    } catch (error) {
+      console.error('💥 Error abriendo modal:', error);
+    }
+  }
+
+  closeCarouselModal(event) {
+    if (event && event.target !== event.currentTarget && !event.target.classList.contains('modal-close')) {
+      return;
+    }
+
+    const modalBackdrop = document.getElementById('modal-backdrop-carousel');
+    if (!modalBackdrop) return;
+
+    modalBackdrop.classList.remove('show');
+    modalBackdrop.style.display = 'none';
+
+    const videosContainer = document.getElementById('modal-project-videos');
+    const galleryContainer = document.getElementById('modal-project-gallery-items');
+
+    if (videosContainer) videosContainer.innerHTML = '';
+    if (galleryContainer) galleryContainer.innerHTML = '';
+
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+  }
+
+  // Event listeners
+  setupSliderEventListeners() {
+    console.log('🎛️ Configurando event listeners...');
+
+    const prevBtn = document.getElementById('carousel-prev');
+    const nextBtn = document.getElementById('carousel-next');
+    
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.carouselPrevSlide();
+      });
+    }
+    
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.carouselNextSlide();
+      });
+    }
+
+    const indicators = document.querySelectorAll('#carousel-indicators .indicator');
     indicators.forEach((indicator, index) => {
-      indicator.addEventListener('click', () => setActiveSlide(index))
-    })
+      const indicatorIndex = parseInt(indicator.getAttribute('data-indicator-index')) || index;
+      
+      indicator.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.goToSlide(indicatorIndex);
+      });
+    });
 
-    // Eventos touch del carousel
-    const carouselContainer = document.getElementById('carousel-container')
-    if (carouselContainer) {
-      carouselContainer.addEventListener('touchstart', handleTouchStart, { passive: false })
-      carouselContainer.addEventListener('touchmove', handleTouchMove, { passive: false })
-      carouselContainer.addEventListener('touchend', handleTouchEnd, { passive: false })
-    }
-
-    // Evento de resize
-    window.addEventListener('resize', handleResize)
-  }
-
-  const init = () => {
-    if (state.isInitialized) return
-    
-    const checkDOM = () => {
-      if (document.getElementById('carousel-container')) {
-        state.isMobile = checkMobile()
-        bindEvents()
-        updateSlideClasses()
-        state.isInitialized = true
-      } else {
-        setTimeout(checkDOM, 100)
+    const slides = document.querySelectorAll('.carousel-slide');
+    slides.forEach((slide, index) => {
+      const slideIndex = parseInt(slide.getAttribute('data-slide-index')) || index;
+      
+      if (!slide.getAttribute('onclick')) {
+        slide.addEventListener('click', (e) => {
+          if (!this.isDragging) {
+            e.preventDefault();
+            this.openCarouselModal(slideIndex);
+          }
+        });
       }
+    });
+
+    const carousel = document.getElementById('carousel-container');
+    if (carousel) {
+      carousel.addEventListener('mousedown', this.onTouchStart, { passive: false });
+      carousel.addEventListener('mousemove', this.onTouchMove, { passive: false });
+      carousel.addEventListener('mouseup', this.onTouchEnd, { passive: false });
+      carousel.addEventListener('mouseleave', this.onTouchEnd, { passive: false });
+
+      carousel.addEventListener('touchstart', this.onTouchStart, { passive: true });
+      carousel.addEventListener('touchmove', this.onTouchMove, { passive: false });
+      carousel.addEventListener('touchend', this.onTouchEnd, { passive: true });
+      carousel.addEventListener('touchcancel', this.onTouchEnd, { passive: true });
     }
-    checkDOM()
+
+    document.addEventListener('keydown', (e) => {
+      const modalOpen = document.getElementById('modal-backdrop-carousel')?.classList.contains('show');
+      
+      if (!modalOpen) {
+        switch (e.key) {
+          case 'ArrowLeft':
+            e.preventDefault();
+            this.carouselPrevSlide();
+            break;
+          case 'ArrowRight':
+            e.preventDefault();
+            this.carouselNextSlide();
+            break;
+        }
+      }
+    });
+
+    console.log('✅ Event listeners configurados');
   }
 
-  const cleanup = () => {
-    window.removeEventListener('resize', handleResize)
+  setupModalEventListeners() {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modalBackdrop = document.getElementById('modal-backdrop-carousel');
+        if (modalBackdrop && modalBackdrop.classList.contains('show')) {
+          this.closeCarouselModal();
+        }
+      }
+    });
+
+    const closeBtn = document.querySelector('#modal-backdrop-carousel .modal-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', this.closeCarouselModal);
+    }
   }
 
-  // Auto-inicialización cuando el DOM esté listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init)
-  } else {
-    setTimeout(init, 0)
+  setupResponsiveEventListeners() {
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        console.log('📐 Redimensionando...');
+        this.updateSliderLayout();
+      }, 250);
+    });
+
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        console.log('🔄 Cambio de orientación');
+        this.updateSliderLayout();
+      }, 100);
+    });
   }
 
-  return {
-    get activeIndex() { return state.activeIndex },
-    get showModal() { return state.showModal },
-    get selectedSlideIndex() { return state.selectedSlideIndex },
-    get selectedSlide() { 
-      return state.selectedSlideIndex !== null ? slides[state.selectedSlideIndex] : null 
-    },
-    get isMobile() { return state.isMobile },
-    get slides() { return slides },
-    nextSlide,
-    prevSlide,
-    setActiveSlide,
-    openModal,
-    closeModal,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-    handleSwipeInModal,
-    cleanup,
-    init
+  // Inicialización
+  initializeSlider() {
+    console.log('🎠 Inicializando slider...');
+    
+    const carousel = document.getElementById('carousel-container');
+    const wrapper = document.getElementById('slides-wrapper');
+    
+    if (!carousel || !wrapper) {
+      console.error('❌ Elementos básicos no encontrados');
+      return false;
+    }
+
+    this.updateSliderDimensions();
+    this.createInfiniteCarousel();
+    this.updateSliderLayout();
+    this.setupSliderEventListeners();
+    this.setupResponsiveEventListeners();
+    
+    console.log('✅ Slider inicializado');
+    return true;
+  }
+
+  initializeModal() {
+    console.log('🎪 Inicializando modal...');
+    
+    const modalElements = [
+      'modal-backdrop-carousel',
+      'modal-project-title',
+      'modal-project-videos',
+      'modal-project-gallery-items'
+    ];
+
+    let allFound = true;
+    modalElements.forEach(id => {
+      if (!document.getElementById(id)) {
+        console.error(`❌ ${id} no encontrado`);
+        allFound = false;
+      }
+    });
+
+    if (!allFound) {
+      console.warn('⚠️ Algunos elementos del modal no encontrados');
+      return false;
+    }
+
+    this.setupModalEventListeners();
+    console.log('✅ Modal inicializado');
+    return true;
+  }
+
+  // Función de debug
+  debugCarousel() {
+    console.log('🔍 Estado del carousel:');
+    console.log(`  - Slide actual: ${this.currentSlideIndex}`);
+    console.log(`  - Total slides: ${this.totalSlides}`);
+    console.log(`  - Slides originales: ${this.originalSlides.length}`);
+    console.log(`  - Slides duplicadas: ${this.duplicatedSlides}`);
+    console.log(`  - Slides por vista: ${this.slidesPerView}`);
+    console.log(`  - Carrusel infinito: ${this.isInfiniteEnabled ? 'SÍ' : 'NO'}`);
+    console.log(`  - Viewport: ${window.innerWidth}x${window.innerHeight}`);
+    console.log(`  - Touch activo: ${this.isDragging}`);
+    
+    this.originalSlides.forEach((slide, index) => {
+      const slideIndex = parseInt(slide.getAttribute('data-slide-index')) || index;
+      const projectData = this.getProjectDataFromHTML(slideIndex);
+      console.log(`  - Slide ${slideIndex}: ${projectData.videoUrls.length} videos`);
+    });
+  }
+
+  // Inicialización principal
+  async initialize() {
+    console.log('🚀 Inicializando carousel completo...');
+
+    try {
+      await this.waitForReady();
+      
+      const sliderOK = this.initializeSlider();
+      const modalOK = this.initializeModal();
+      
+      if (sliderOK && modalOK) {
+        this.isInitialized = true;
+        console.log('🎉 Inicialización completada exitosamente');
+        return true;
+      } else {
+        console.error('❌ Error en inicialización');
+        return false;
+      }
+
+    } catch (error) {
+      console.error('💥 Error crítico:', error);
+      return false;
+    }
+  }
+
+  // Cleanup para componentes React
+  cleanup() {
+    console.log('🧹 Limpiando carousel...');
+    
+    // Limpiar event listeners globales
+    const carousel = document.getElementById('carousel-container');
+    if (carousel) {
+      carousel.removeEventListener('mousedown', this.onTouchStart);
+      carousel.removeEventListener('mousemove', this.onTouchMove);
+      carousel.removeEventListener('mouseup', this.onTouchEnd);
+      carousel.removeEventListener('mouseleave', this.onTouchEnd);
+      carousel.removeEventListener('touchstart', this.onTouchStart);
+      carousel.removeEventListener('touchmove', this.onTouchMove);
+      carousel.removeEventListener('touchend', this.onTouchEnd);
+      carousel.removeEventListener('touchcancel', this.onTouchEnd);
+    }
+
+    // Cerrar modal si está abierto
+    this.closeCarouselModal();
+    
+    this.isInitialized = false;
+    console.log('✅ Carousel limpiado');
   }
 }
 
-export default createCarouselManager
+// Hook personalizado para React
+export const useCarousel = () => {
+  const carouselRef = React.useRef(null);
+  const [isReady, setIsReady] = React.useState(false);
+
+  React.useEffect(() => {
+    const initCarousel = async () => {
+      if (!carouselRef.current) {
+        carouselRef.current = new CarouselManager();
+      }
+
+      const success = await carouselRef.current.initialize();
+      setIsReady(success);
+
+      // Exponer funciones al window para compatibilidad
+      if (success) {
+        window.openCarouselModal = carouselRef.current.openCarouselModal;
+        window.closeCarouselModal = carouselRef.current.closeCarouselModal;
+        window.carouselPrevSlide = carouselRef.current.carouselPrevSlide;
+        window.carouselNextSlide = carouselRef.current.carouselNextSlide;
+        window.goToSlide = carouselRef.current.goToSlide;
+        window.updateSliderLayout = carouselRef.current.updateSliderLayout;
+        window.debugCarousel = carouselRef.current.debugCarousel;
+      }
+    };
+
+    initCarousel();
+
+    return () => {
+      if (carouselRef.current) {
+        carouselRef.current.cleanup();
+      }
+    };
+  }, []);
+
+  return {
+    isReady,
+    carousel: carouselRef.current,
+    openModal: (slideIndex) => carouselRef.current?.openCarouselModal(slideIndex),
+    closeModal: () => carouselRef.current?.closeCarouselModal(),
+    prevSlide: () => carouselRef.current?.carouselPrevSlide(),
+    nextSlide: () => carouselRef.current?.carouselNextSlide(),
+    goToSlide: (index) => carouselRef.current?.goToSlide(index),
+    updateLayout: () => carouselRef.current?.updateSliderLayout(),
+    debug: () => carouselRef.current?.debugCarousel()
+  };
+};
+
+// Exports por defecto
+export default CarouselManager;
+
+// Exports individuales
+export {
+  CarouselManager
+};

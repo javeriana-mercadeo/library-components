@@ -1,7 +1,7 @@
 .expert-carousel_card-content::after {
   content: '';
   flex-grow: 1;
-  min-height: 0.625rem; /* Altura mínima para mantener espaciado */
+  min-height: 0.625rem; 
 }
 
 /* Si hay botón, no mostrar el espaciador */
