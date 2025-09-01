@@ -223,9 +223,12 @@ $content-width: 55%;
 
   @media (max-width: #{$breakpoint-md - 1}) {
     width: 100%;
-    height: auto; // Altura automática en lugar de fija
-    min-height: rem(200px); // Altura mínima para las imágenes
-    flex-shrink: 0;
+    height: rem(260px); // Altura específica
+    min-height: rem(260px); // Altura mínima para las imágenes  
+    flex: 0 0 rem(260px); // No crece, no se encoge, altura fija de 260px
+    border-radius: 0 0 $modal-border-radius $modal-border-radius; // Solo esquinas inferiores
+    position: relative; // Posicionamiento normal en el flujo
+    margin-top: rem(20px); // Separación adicional con el contenido
   }
 
   @include dark-theme {
@@ -305,8 +308,10 @@ $content-width: 55%;
 
   @media (max-width: #{$breakpoint-md - 1}) {
     width: 100%;
-    flex-grow: 1;
-    min-height: 0; // Asegurar que respete los límites del contenedor flex
+    flex: 0 0 auto; // No crece, no se encoge, tamaño automático
+    border-radius: $modal-border-radius $modal-border-radius 0 0; // Solo esquinas superiores
+    padding-bottom: rem(20px); // Separación con la galería
+    overflow: visible; // Sin scroll independiente
   }
 }
 

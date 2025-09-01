@@ -516,3 +516,297 @@ $nav-button-size-mobile: rem(40px);
     background: var(--neutral-700);
   }
 }
+
+// ==========================================
+// MODAL - SWIPER VERTICAL PARA DESKTOP
+// ==========================================
+
+.investigations-modal {
+  // ==========================================
+  // GALERÍA: RESPONSIVE CONTAINERS
+  // ==========================================
+  &__gallery {
+    position: relative;
+    // MOBILE: ancho completo
+    width: 100%;
+    height: 100%;
+    
+    // DESKTOP: mantener el ancho original de 45% (como estaba configurado)
+    @media (min-width: 1024px) {
+      width: 45%; // Mismo ancho que tenía originalmente
+    }
+  }
+
+  // DESKTOP: Mostrar solo Swiper vertical
+  &__images-swiper-desktop {
+    display: none;
+    
+    @media (min-width: 1024px) {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // MOBILE: Mostrar solo Swiper horizontal
+  &__images-swiper-mobile {
+    display: block;
+    
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  // ==========================================
+  // SWIPER VERTICAL - DESKTOP
+  // ==========================================
+  &__swiper-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    
+    // Paginación vertical en el lado derecho
+    .swiper-pagination {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      width: auto !important;
+      height: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 8px;
+      z-index: 10;
+      
+      .swiper-pagination-bullet {
+        width: 12px !important;
+        height: 12px !important;
+        margin: 0 !important;
+        background: rgba(255, 255, 255, 0.5) !important;
+        border: 2px solid rgba(255, 255, 255, 0.8) !important;
+        opacity: 1 !important;
+        cursor: pointer;
+        transition: all 0.3s ease !important;
+        
+        &.swiper-pagination-bullet-active {
+          background: var(--primary) !important;
+          border-color: var(--primary) !important;
+          transform: scale(1.2);
+        }
+        
+        &:hover:not(.swiper-pagination-bullet-active) {
+          background: rgba(255, 255, 255, 0.8) !important;
+          transform: scale(1.1);
+        }
+      }
+    }
+    
+    // Cursor de grab para indicar que se puede arrastrar
+    .swiper-wrapper {
+      cursor: grab;
+      
+      &:active {
+        cursor: grabbing;
+      }
+    }
+  }
+
+  // ==========================================
+  // NAVEGACIÓN VERTICAL - BOTONES (PATRÓN EXPERIENCIA)
+  // ==========================================
+  &__nav-prev,
+  &__nav-next {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 11;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 1;
+    visibility: visible;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--neutral-700);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+
+    i {
+      font-size: 24px;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateX(-50%) scale(1.05);
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary);
+
+      i {
+        color: var(--primary-600);
+      }
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    &.swiper-button-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+
+  // Ocultar botones nativos de Swiper (solo usar los personalizados de Phosphor)
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none !important;
+  }
+
+  &__nav-prev {
+    top: 8px;
+  }
+
+  &__nav-next {
+    bottom: 8px;
+  }
+
+  // ==========================================
+  // SWIPER HORIZONTAL - MOBILE  
+  // ==========================================
+  &__swiper-container-mobile {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding-bottom: 40px; // Espacio para paginación
+    
+    // Paginación horizontal en la parte inferior
+    .swiper-pagination {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto !important;
+      height: auto !important;
+      display: flex !important;
+      justify-content: center !important;
+      gap: 8px;
+      z-index: 10;
+      
+      .swiper-pagination-bullet {
+        width: 10px !important;
+        height: 10px !important;
+        margin: 0 !important;
+        background: rgba(var(--primary-rgb), 0.3) !important;
+        opacity: 1 !important;
+        cursor: pointer;
+        transition: all 0.3s ease !important;
+        
+        &.swiper-pagination-bullet-active {
+          background: var(--primary) !important;
+          transform: scale(1.2);
+        }
+        
+        &:hover:not(.swiper-pagination-bullet-active) {
+          background: rgba(var(--primary-rgb), 0.6) !important;
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // SLIDES DEL SWIPER MÓVIL
+  // ==========================================
+  &__slide-mobile {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  &__image-wrapper-mobile {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  &__image-mobile {
+    width: 100%;
+    height: 200px; // Altura fija para móviles
+    object-fit: cover;
+    border-radius: 8px;
+    
+    @media (max-width: 480px) {
+      height: 180px;
+    }
+  }
+
+  // ==========================================
+  // SLIDES DEL SWIPER DESKTOP
+  // ==========================================
+  &__slide {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  // ==========================================
+  // IMÁGENES (COMÚN PARA MOBILE Y DESKTOP)
+  // ==========================================
+  &__image-wrapper {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    
+    // En el contexto del swiper, no margin bottom
+    .swiper-slide & {
+      margin-bottom: 0;
+    }
+  }
+
+  &__image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    
+    // En mobile, mantener el comportamiento actual
+    @media (max-width: 1023px) {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    
+    // En desktop dentro del swiper, optimizar para viewport
+    @media (min-width: 1024px) {
+      .swiper-slide & {
+        max-height: calc(100vh - 120px); // Dejar espacio para padding
+        object-fit: contain;
+      }
+    }
+  }
+}

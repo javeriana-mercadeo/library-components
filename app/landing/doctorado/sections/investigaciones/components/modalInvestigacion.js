@@ -5,12 +5,21 @@
 const ModalInvestigacion = {
   isInitialized: false,
   modalHTML: null,
+  modalSwiper: null, // Instancia de Swiper para desktop
+  modalSwiperMobile: null, // Instancia de Swiper para mobile
 
   // Función helper para generar HTML del botón iconOnly siguiendo el patrón del sistema Btn
-  generateIconOnlyButton({ variant = 'light', color = 'secondary', size = 'md', icon = 'ph ph-x', ariaLabel = 'Cerrar modal', className = '' }) {
+  generateIconOnlyButton({
+    variant = 'light',
+    color = 'secondary',
+    size = 'md',
+    icon = 'ph ph-x',
+    ariaLabel = 'Cerrar modal',
+    className = ''
+  }) {
     const sizeClasses = {
       sm: 'w-8 h-8 text-sm',
-      md: 'w-10 h-10 text-base', 
+      md: 'w-10 h-10 text-base',
       lg: 'w-12 h-12 text-lg'
     }
 
@@ -48,11 +57,14 @@ const ModalInvestigacion = {
     const colorClasses = variantColorClasses[variant]?.[color] || variantColorClasses.light.secondary
 
     // Estilo hover personalizado para ghost con fondo translúcido
-    const hoverStyles = variant === 'ghost' ? `
+    const hoverStyles =
+      variant === 'ghost'
+        ? `
       style="transition: all 0.2s ease-in-out;"
       onmouseenter="this.style.background='rgba(var(--primary-rgb, 59, 130, 246), 0.18)'"
       onmouseleave="this.style.background='transparent'"
-    ` : ''
+    `
+        : ''
 
     return `
       <button class="${baseClasses} ${colorClasses} ${className} investigations-modal__close" 
@@ -75,8 +87,38 @@ const ModalInvestigacion = {
         <div class="investigations-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
           <!-- Galería de imágenes -->
           <div class="investigations-modal__gallery">
-            <div class="investigations-modal__images-container" id="modal-images-container">
-              <!-- Las imágenes se generarán dinámicamente aquí -->
+            <!-- DESKTOP: Swiper vertical -->
+            <div class="investigations-modal__images-swiper-desktop">
+              <div class="investigations-modal__swiper-container swiper">
+                <div class="swiper-wrapper" id="modal-swiper-wrapper">
+                  <!-- Las imágenes se generarán dinámicamente como slides -->
+                </div>
+                <div class="swiper-pagination"></div>
+                
+                <!-- Navegación vertical -->
+                <div class="investigations-modal__nav-prev" 
+                     role="button" 
+                     tabindex="0"
+                     aria-label="Ir a imagen anterior">
+                  <i class="ph ph-arrow-up" aria-hidden="true"></i>
+                </div>
+                <div class="investigations-modal__nav-next" 
+                     role="button" 
+                     tabindex="0"
+                     aria-label="Ir a siguiente imagen">
+                  <i class="ph ph-arrow-down" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+            
+            <!-- MOBILE: Swiper horizontal -->
+            <div class="investigations-modal__images-swiper-mobile">
+              <div class="investigations-modal__swiper-container-mobile swiper">
+                <div class="swiper-wrapper" id="modal-swiper-wrapper-mobile">
+                  <!-- Las imágenes se generarán dinámicamente como slides -->
+                </div>
+                <div class="swiper-pagination investigations-modal__pagination-mobile"></div>
+              </div>
             </div>
           </div>
 
@@ -86,7 +128,7 @@ const ModalInvestigacion = {
             <div class="investigations-modal__header">
               ${this.generateIconOnlyButton({
                 variant: 'ghost',
-                color: 'primary', 
+                color: 'primary',
                 size: 'md',
                 icon: 'ph ph-x',
                 ariaLabel: 'Cerrar modal'
@@ -151,10 +193,10 @@ const ModalInvestigacion = {
 
   setupEventListeners() {
     // Event delegation para cards (funciona incluso si las cards se crean después)
-    document.addEventListener('click', (event) => {
+    document.addEventListener('click', event => {
       // Buscar si el click fue en una card o dentro de una card
       const card = event.target.closest('.investigations_card')
-      
+
       if (card) {
         event.preventDefault()
         this.handleCardClick(card)
@@ -178,7 +220,7 @@ const ModalInvestigacion = {
     })
 
     // Cerrar con tecla Escape
-    document.addEventListener('keydown', (event) => {
+    document.addEventListener('keydown', event => {
       if (event.key === 'Escape' && this.isOpen()) {
         this.close()
       }
@@ -191,7 +233,7 @@ const ModalInvestigacion = {
     try {
       // Obtener el ID de la card desde el data-attribute
       const cardId = card.getAttribute('data-id')
-      
+
       if (!cardId) {
         console.warn('[MODAL-INVESTIGACION] Card sin data-id, usando fallback')
         return this.handleCardClickFallback(card)
@@ -199,19 +241,19 @@ const ModalInvestigacion = {
 
       // Buscar los datos completos desde window (React)
       const fullData = this.getInvestigacionData(parseInt(cardId))
-      
+
       if (!fullData) {
         console.warn('[MODAL-INVESTIGACION] No se encontraron datos para ID:', cardId)
         return this.handleCardClickFallback(card)
       }
 
-      console.log('[MODAL-INVESTIGACION] Card clickeada:', { 
-        id: fullData.id, 
-        title: fullData.title, 
+      console.log('[MODAL-INVESTIGACION] Card clickeada:', {
+        id: fullData.id,
+        title: fullData.title,
         year: fullData.year,
-        descriptionLength: fullData.description?.length 
+        descriptionLength: fullData.description?.length
       })
-      
+
       this.open(fullData)
     } catch (error) {
       console.error('[MODAL-INVESTIGACION] Error al manejar click de card:', error)
@@ -244,7 +286,7 @@ const ModalInvestigacion = {
       console.warn('[MODAL-INVESTIGACION] Datos no disponibles en window')
       return null
     }
-    
+
     return window.investigacionesData.find(item => item.id === id)
   },
 
@@ -253,7 +295,7 @@ const ModalInvestigacion = {
     try {
       const modalOverlay = document.querySelector('.investigations-modal-overlay')
       const modal = document.querySelector('.investigations-modal')
-      
+
       if (!modalOverlay || !modal) {
         console.warn('[MODAL-INVESTIGACION] Modal no encontrado, recreando...')
         this.createModal()
@@ -284,7 +326,7 @@ const ModalInvestigacion = {
     try {
       const modalOverlay = document.querySelector('.investigations-modal-overlay')
       const modal = document.querySelector('.investigations-modal')
-      
+
       if (modalOverlay && modal) {
         // PATRÓN EXACTO DEL HEADER: quitar 'active' inmediatamente para comenzar animación de salida
         modal.classList.remove('active')
@@ -313,7 +355,7 @@ const ModalInvestigacion = {
           // Forzar reflow para asegurar que los cambios se apliquen
           modalOverlay.offsetHeight
         }, 200)
-        
+
         console.log('[MODAL-INVESTIGACION] Modal cerrado')
       }
     } catch (error) {
@@ -332,7 +374,10 @@ const ModalInvestigacion = {
     const modalDate = document.getElementById('modal-date')
     const modalStudent = document.getElementById('modal-student')
     const modalDescription = document.getElementById('modal-description')
-    const imagesContainer = document.getElementById('modal-images-container')
+
+    // Containers para desktop y mobile
+    const swiperWrapper = document.getElementById('modal-swiper-wrapper')
+    const swiperWrapperMobile = document.getElementById('modal-swiper-wrapper-mobile')
 
     if (modalTitle && data.title) {
       modalTitle.textContent = data.title
@@ -344,13 +389,20 @@ const ModalInvestigacion = {
       modalStudent.textContent = this.generateStudentName(data.title)
     }
     if (modalDescription && data.description) {
-      // Crear párrafos dinámicamente basándose en la descripción
       modalDescription.innerHTML = this.formatDescription(data.description)
     }
 
-    // Generar galería de imágenes dinámicamente
-    if (imagesContainer) {
-      this.generateImageGallery(imagesContainer, data)
+    // Generar galería según el dispositivo
+    const isDesktop = window.innerWidth >= 1024
+
+    if (isDesktop && swiperWrapper) {
+      this.generateSwiperGallery(swiperWrapper, data)
+      this.initializeModalSwiper()
+    }
+
+    if (!isDesktop && swiperWrapperMobile) {
+      this.generateSwiperGalleryMobile(swiperWrapperMobile, data)
+      this.initializeModalSwiperMobile()
     }
   },
 
@@ -361,27 +413,27 @@ const ModalInvestigacion = {
     // Imagen principal
     const mainImageWrapper = document.createElement('div')
     mainImageWrapper.className = 'investigations-modal__image-wrapper'
-    
+
     const mainImage = document.createElement('img')
     mainImage.src = data.image || 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1'
     mainImage.alt = data.alt || data.title
     mainImage.className = 'investigations-modal__image'
-    
+
     mainImageWrapper.appendChild(mainImage)
     container.appendChild(mainImageWrapper)
 
     // Generar imágenes adicionales (simuladas basándose en la principal)
     const additionalImages = this.generateAdditionalImages(data.image, data.title)
-    
+
     additionalImages.forEach((imgSrc, index) => {
       const imageWrapper = document.createElement('div')
       imageWrapper.className = 'investigations-modal__image-wrapper'
-      
+
       const image = document.createElement('img')
       image.src = imgSrc
       image.alt = `${data.title} - Imagen ${index + 2}`
       image.className = 'investigations-modal__image'
-      
+
       imageWrapper.appendChild(image)
       container.appendChild(imageWrapper)
     })
@@ -392,11 +444,11 @@ const ModalInvestigacion = {
   generateAdditionalImages(baseImage, title) {
     // Generar 3 imágenes adicionales basándose en la imagen base
     const additionalImages = []
-    
+
     if (baseImage) {
       // Crear variaciones de la imagen base agregando sufijos
       additionalImages.push(`${baseImage}-2`)
-      additionalImages.push(`${baseImage}-3`) 
+      additionalImages.push(`${baseImage}-3`)
       additionalImages.push(`${baseImage}-4`)
     } else {
       // Imágenes por defecto si no hay imagen base
@@ -408,10 +460,330 @@ const ModalInvestigacion = {
     return additionalImages
   },
 
+  // ==========================================
+  // NUEVA FUNCIÓN: Generar galería para Swiper (Desktop)
+  // ==========================================
+  generateSwiperGallery(swiperWrapper, data) {
+    // Limpiar wrapper
+    swiperWrapper.innerHTML = ''
+
+    // Generar todas las imágenes como slides
+    const allImages = [
+      { src: data.image || 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1', alt: data.alt || data.title },
+      ...this.generateAdditionalImages(data.image, data.title).map((src, index) => ({
+        src,
+        alt: `${data.title} - Imagen ${index + 2}`
+      }))
+    ]
+
+    allImages.forEach((img, index) => {
+      const slide = document.createElement('div')
+      slide.className = 'swiper-slide investigations-modal__slide'
+
+      const imageWrapper = document.createElement('div')
+      imageWrapper.className = 'investigations-modal__image-wrapper'
+
+      const image = document.createElement('img')
+      image.src = img.src
+      image.alt = img.alt
+      image.className = 'investigations-modal__image'
+      image.loading = index === 0 ? 'eager' : 'lazy' // Optimización de carga
+
+      imageWrapper.appendChild(image)
+      slide.appendChild(imageWrapper)
+      swiperWrapper.appendChild(slide)
+    })
+
+    console.log('[MODAL-INVESTIGACION] Swiper gallery generada con', allImages.length, 'slides')
+  },
+
+  // ==========================================
+  // NUEVA FUNCIÓN: Inicializar Swiper del modal (Desktop)
+  // ==========================================
+  initializeModalSwiper() {
+    // Destruir instancia existente
+    if (this.modalSwiper) {
+      this.modalSwiper.destroy(true, true)
+      this.modalSwiper = null
+    }
+
+    // Verificar que Swiper esté disponible
+    if (!window.Swiper) {
+      console.warn('[MODAL-INVESTIGACION] Swiper no disponible, usando fallback')
+      return
+    }
+
+    // Solo inicializar en desktop
+    if (window.innerWidth < 1024) {
+      return
+    }
+
+    const swiperContainer = document.querySelector('.investigations-modal__swiper-container')
+    if (!swiperContainer) {
+      console.warn('[MODAL-INVESTIGACION] Container de Swiper no encontrado')
+      return
+    }
+
+    try {
+      this.modalSwiper = new window.Swiper('.investigations-modal__swiper-container', {
+        direction: 'vertical',
+        slidesPerView: 2,
+        spaceBetween: 30,
+        mousewheel: {
+          enabled: true,
+          forceToAxis: true,
+          sensitivity: 1,
+          releaseOnEdges: true
+        },
+        freeMode: {
+          enabled: true,
+          sticky: false,
+          momentumBounce: false,
+          momentumRatio: 0.5,
+          minimumVelocity: 0.1
+        },
+        navigation: {
+          nextEl: '.investigations-modal__nav-next',
+          prevEl: '.investigations-modal__nav-prev',
+          disabledClass: 'swiper-button-disabled',
+          hiddenClass: 'swiper-button-hidden'
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+          dynamicBullets: true,
+          dynamicMainBullets: 1,
+          renderBullet: function (index, className) {
+            return `<span class="${className}" aria-label="Ir a imagen ${index + 1}"></span>`
+          }
+        },
+        keyboard: {
+          enabled: true,
+          onlyInViewport: true
+        },
+        grabCursor: true,
+        watchOverflow: true,
+
+        on: {
+          init: function (swiper) {
+            console.log('[MODAL-INVESTIGACION] Swiper modal inicializado con', swiper.slides.length, 'slides')
+            // Configurar eventos para botones personalizados
+            ModalInvestigacion.setupCustomNavigation(swiper)
+          },
+          slideChange: function (swiper) {
+            console.log('[MODAL-INVESTIGACION] Slide cambiado a:', swiper.activeIndex + 1)
+          }
+        }
+      })
+
+      console.log('[MODAL-INVESTIGACION] Swiper vertical inicializado correctamente')
+    } catch (error) {
+      console.error('[MODAL-INVESTIGACION] Error inicializando Swiper:', error)
+    }
+  },
+
+  // ==========================================
+  // NUEVA FUNCIÓN: Generar galería para Swiper Mobile (Horizontal)
+  // ==========================================
+  generateSwiperGalleryMobile(swiperWrapper, data) {
+    // Limpiar wrapper
+    swiperWrapper.innerHTML = ''
+
+    // Generar todas las imágenes como slides
+    const allImages = [
+      { src: data.image || 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1', alt: data.alt || data.title },
+      ...this.generateAdditionalImages(data.image, data.title).map((src, index) => ({
+        src,
+        alt: `${data.title} - Imagen ${index + 2}`
+      }))
+    ]
+
+    allImages.forEach((img, index) => {
+      const slide = document.createElement('div')
+      slide.className = 'swiper-slide investigations-modal__slide-mobile'
+      
+      const imageWrapper = document.createElement('div')
+      imageWrapper.className = 'investigations-modal__image-wrapper-mobile'
+      
+      const image = document.createElement('img')
+      image.src = img.src
+      image.alt = img.alt
+      image.className = 'investigations-modal__image-mobile'
+      image.loading = index === 0 ? 'eager' : 'lazy'
+      
+      imageWrapper.appendChild(image)
+      slide.appendChild(imageWrapper)
+      swiperWrapper.appendChild(slide)
+    })
+
+    console.log('[MODAL-INVESTIGACION] Mobile Swiper gallery generada con', allImages.length, 'slides')
+  },
+
+  // ==========================================
+  // NUEVA FUNCIÓN: Inicializar Swiper móvil (Horizontal)
+  // ==========================================
+  initializeModalSwiperMobile() {
+    // Destruir instancia existente
+    if (this.modalSwiperMobile) {
+      this.modalSwiperMobile.destroy(true, true)
+      this.modalSwiperMobile = null
+    }
+
+    // Verificar que Swiper esté disponible
+    if (!window.Swiper) {
+      console.warn('[MODAL-INVESTIGACION] Swiper no disponible para móvil, usando fallback')
+      return
+    }
+
+    // Solo inicializar en móviles
+    if (window.innerWidth >= 1024) {
+      return
+    }
+
+    const swiperContainer = document.querySelector('.investigations-modal__swiper-container-mobile')
+    if (!swiperContainer) {
+      console.warn('[MODAL-INVESTIGACION] Container de Swiper móvil no encontrado')
+      return
+    }
+
+    try {
+      this.modalSwiperMobile = new window.Swiper('.investigations-modal__swiper-container-mobile', {
+        direction: 'horizontal',
+        slidesPerView: 1.2,
+        spaceBetween: 15,
+        centeredSlides: false,
+        grabCursor: true,
+        watchOverflow: true,
+        
+        pagination: {
+          el: '.investigations-modal__pagination-mobile',
+          clickable: true,
+          dynamicBullets: true,
+          dynamicMainBullets: 1,
+          renderBullet: function (index, className) {
+            return `<span class="${className}" aria-label="Ir a imagen ${index + 1}"></span>`
+          }
+        },
+
+        breakpoints: {
+          0: {
+            slidesPerView: 1.1,
+            spaceBetween: 12
+          },
+          480: {
+            slidesPerView: 1.2,
+            spaceBetween: 15
+          }
+        },
+        
+        on: {
+          init: function(swiper) {
+            console.log('[MODAL-INVESTIGACION] Mobile Swiper inicializado con', swiper.slides.length, 'slides')
+          },
+          slideChange: function(swiper) {
+            console.log('[MODAL-INVESTIGACION] Mobile slide cambiado a:', swiper.activeIndex + 1)
+          }
+        }
+      })
+
+      console.log('[MODAL-INVESTIGACION] Mobile Swiper horizontal inicializado correctamente')
+    } catch (error) {
+      console.error('[MODAL-INVESTIGACION] Error inicializando Mobile Swiper:', error)
+    }
+  },
+
+  // ==========================================
+  // CONFIGURAR NAVEGACIÓN PERSONALIZADA (PHOSPHOR)
+  // ==========================================
+  setupCustomNavigation(swiper) {
+    const prevButton = document.querySelector('.investigations-modal__nav-prev')
+    const nextButton = document.querySelector('.investigations-modal__nav-next')
+
+    if (prevButton && nextButton) {
+      // Event listeners para los botones
+      prevButton.addEventListener('click', () => {
+        swiper.slidePrev()
+      })
+
+      nextButton.addEventListener('click', () => {
+        swiper.slideNext()
+      })
+
+      // Soporte de teclado
+      prevButton.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          swiper.slidePrev()
+        }
+      })
+
+      nextButton.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          swiper.slideNext()
+        }
+      })
+
+      // Actualizar estados iniciales
+      this.updateCustomNavigation(swiper)
+      
+      // Escuchar cambios de slide para actualizar estados
+      swiper.on('slideChange', () => {
+        this.updateCustomNavigation(swiper)
+      })
+
+      console.log('[MODAL-INVESTIGACION] Navegación personalizada configurada')
+    }
+  },
+
+  // ==========================================
+  // ACTUALIZAR ESTADOS DE NAVEGACIÓN PERSONALIZADA
+  // ==========================================
+  updateCustomNavigation(swiper) {
+    const prevButton = document.querySelector('.investigations-modal__nav-prev')
+    const nextButton = document.querySelector('.investigations-modal__nav-next')
+
+    if (prevButton && nextButton) {
+      // Actualizar estado del botón anterior
+      if (swiper.isBeginning) {
+        prevButton.classList.add('swiper-button-disabled')
+        prevButton.style.opacity = '0.3'
+        prevButton.style.pointerEvents = 'none'
+      } else {
+        prevButton.classList.remove('swiper-button-disabled')
+        prevButton.style.opacity = '1'
+        prevButton.style.pointerEvents = 'auto'
+      }
+
+      // Actualizar estado del botón siguiente
+      if (swiper.isEnd) {
+        nextButton.classList.add('swiper-button-disabled')
+        nextButton.style.opacity = '0.3'
+        nextButton.style.pointerEvents = 'none'
+      } else {
+        nextButton.classList.remove('swiper-button-disabled')
+        nextButton.style.opacity = '1'
+        nextButton.style.pointerEvents = 'auto'
+      }
+    }
+  },
+
   // Helper para formatear fecha basándose en el año
   formatDate(year) {
-    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-                   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    const months = [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre'
+    ]
     const randomMonth = months[Math.floor(Math.random() * months.length)]
     return `${randomMonth} ${year}`
   },
@@ -428,15 +800,15 @@ const ModalInvestigacion = {
       'Gabriela Cristina López',
       'Juan Sebastian Herrera'
     ]
-    
+
     // Usar el hash del título para asegurar consistencia
     let hash = 0
     for (let i = 0; i < title.length; i++) {
       const char = title.charCodeAt(i)
-      hash = ((hash << 5) - hash) + char
+      hash = (hash << 5) - hash + char
       hash = hash & hash // Convertir a 32bit integer
     }
-    
+
     const index = Math.abs(hash) % studentNames.length
     return studentNames[index]
   },
@@ -444,16 +816,16 @@ const ModalInvestigacion = {
   // Helper para formatear la descripción en párrafos
   formatDescription(description) {
     if (!description) return '<p>Descripción no disponible.</p>'
-    
+
     // Dividir el texto en párrafos basándose en puntos seguidos y longitud
     const sentences = description.split('. ')
     const paragraphs = []
     let currentParagraph = ''
-    
+
     sentences.forEach((sentence, index) => {
       // Añadir el punto de vuelta excepto en la última oración
       const fullSentence = index < sentences.length - 1 ? sentence + '.' : sentence
-      
+
       // Si el párrafo actual + nueva oración es muy largo, crear nuevo párrafo
       if (currentParagraph.length + fullSentence.length > 400 && currentParagraph.length > 0) {
         paragraphs.push(currentParagraph.trim())
@@ -462,12 +834,12 @@ const ModalInvestigacion = {
         currentParagraph += (currentParagraph ? ' ' : '') + fullSentence
       }
     })
-    
+
     // Añadir el último párrafo si existe
     if (currentParagraph.trim()) {
       paragraphs.push(currentParagraph.trim())
     }
-    
+
     // Convertir párrafos en HTML
     return paragraphs.map(paragraph => `<p>${paragraph}</p>`).join('')
   },
