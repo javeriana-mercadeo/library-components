@@ -11,7 +11,7 @@ const ModalInvestigacion = {
   // ==========================================
   // SISTEMA DE LOGS CONTROLABLE
   // ==========================================
-  DEBUG: false, // Cambiar a true para habilitar logs detallados
+  DEBUG: true, // Cambiar a true para habilitar logs detallados - ACTIVADO PARA TESTING
   
   log(message, ...args) {
     if (this.DEBUG) {
@@ -366,6 +366,10 @@ const ModalInvestigacion = {
       const modal = document.querySelector('.investigations-modal')
 
       if (modalOverlay && modal) {
+        // PAUSAR TODOS LOS VIDEOS ANTES DE CERRAR EL MODAL
+        this.info('🚪 CERRANDO MODAL - pausando videos...')
+        this.pauseAllVideos()
+        
         // PATRÓN EXACTO DEL HEADER: quitar 'active' inmediatamente para comenzar animación de salida
         modal.classList.remove('active')
 
@@ -394,7 +398,7 @@ const ModalInvestigacion = {
           modalOverlay.offsetHeight
         }, 200)
 
-        this.log('Modal cerrado')
+        this.log('Modal cerrado y videos pausados')
       }
     } catch (error) {
       this.error('Error al cerrar modal:', error)
@@ -543,15 +547,33 @@ const ModalInvestigacion = {
     const containerClass = isDesktop ? 'investigations-modal__video-wrapper' : 'investigations-modal__video-wrapper-mobile'
     const videoClass = isDesktop ? 'investigations-modal__video' : 'investigations-modal__video-mobile'
     
-    // YouTube embed iframe
+    // YouTube embed iframe con parámetros correctos para API
     const iframe = document.createElement('iframe')
-    iframe.src = `https://www.youtube.com/embed/${videoItem.embedId}?rel=0&modestbranding=1`
+    const params = new URLSearchParams({
+      autoplay: '0',
+      mute: '1', // Iniciar silenciado para evitar auto-play issues
+      loop: '0',
+      controls: '1',
+      modestbranding: '1',
+      playsinline: '1',
+      enablejsapi: '1', // ¡CRÍTICO! Habilita YouTube API
+      rel: '0'
+    })
+    
+    iframe.src = `https://www.youtube.com/embed/${videoItem.embedId}?${params.toString()}`
     iframe.className = videoClass
     iframe.setAttribute('frameborder', '0')
     iframe.setAttribute('allowfullscreen', 'true')
     iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture')
     iframe.loading = index === 0 ? 'eager' : 'lazy'
     iframe.title = videoItem.alt
+    
+    // Log para debug
+    this.log(`🎬 Video iframe creado: ${videoItem.embedId}`, {
+      src: iframe.src,
+      class: videoClass,
+      container: containerClass
+    })
     
     const wrapper = document.createElement('div')
     wrapper.className = containerClass
@@ -669,12 +691,14 @@ const ModalInvestigacion = {
 
         on: {
           init: function (swiper) {
-            this.log('Swiper modal inicializado con', swiper.slides.length, 'slides')
+            ModalInvestigacion.log('Swiper modal inicializado con', swiper.slides.length, 'slides')
             // Configurar eventos para botones personalizados
             ModalInvestigacion.setupCustomNavigation(swiper)
           },
           slideChange: function (swiper) {
-            this.log('Slide cambiado a:', swiper.activeIndex + 1)
+            ModalInvestigacion.info('🖥️ DESKTOP slide cambiado a:', swiper.activeIndex + 1)
+            // PAUSAR TODOS LOS VIDEOS AL CAMBIAR DE SLIDE
+            ModalInvestigacion.pauseAllVideos()
           }
         }
       })
@@ -777,12 +801,14 @@ const ModalInvestigacion = {
         
         on: {
           init: function(swiper) {
-            this.log('Mobile Swiper inicializado con', swiper.slides.length, 'slides')
+            ModalInvestigacion.log('Mobile Swiper inicializado con', swiper.slides.length, 'slides')
             // Configurar eventos para botones personalizados móviles
             ModalInvestigacion.setupCustomNavigationMobile(swiper)
           },
           slideChange: function(swiper) {
-            this.log('Mobile slide cambiado a:', swiper.activeIndex + 1)
+            ModalInvestigacion.info('📱 MOBILE slide cambiado a:', swiper.activeIndex + 1)
+            // PAUSAR TODOS LOS VIDEOS AL CAMBIAR DE SLIDE EN MÓVIL
+            ModalInvestigacion.pauseAllVideos()
           }
         }
       })
@@ -1019,6 +1045,56 @@ const ModalInvestigacion = {
 
     // Convertir párrafos en HTML
     return paragraphs.map(paragraph => `<p>${paragraph}</p>`).join('')
+  },
+
+  // ==========================================
+  // SISTEMA DE CONTROL DE VIDEOS
+  // ==========================================
+  
+  // Función para pausar todos los videos del modal (adaptada de experiencia)
+  pauseAllVideos(exceptIframe = null) {
+    this.info('🎵 INICIANDO pauseAllVideos...')
+    
+    // Buscar todos los iframes de video en el modal
+    const videoSelectors = [
+      '.investigations-modal__video-wrapper iframe',
+      '.investigations-modal__video-wrapper-mobile iframe',
+      '.investigations-modal__video iframe',
+      '.investigations-modal__video-mobile iframe'
+    ]
+    
+    let totalVideosFound = 0
+    let totalVideosPaused = 0
+    
+    videoSelectors.forEach((selector, index) => {
+      const videos = document.querySelectorAll(selector)
+      this.log(`Selector ${index + 1}: "${selector}" - Encontrados: ${videos.length}`)
+      
+      videos.forEach((iframe, videoIndex) => {
+        totalVideosFound++
+        
+        // Saltar el iframe que se está reproduciendo (si se especifica)
+        if (exceptIframe && iframe === exceptIframe) {
+          this.log(`Video ${videoIndex + 1} omitido (es la excepción)`)
+          return
+        }
+        
+        try {
+          // Usar YouTube API para pausar el video
+          iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
+          totalVideosPaused++
+          this.log(`✅ Video ${videoIndex + 1} pausado:`, iframe.src.substring(0, 50) + '...')
+        } catch (error) {
+          this.error(`❌ Error pausando video ${videoIndex + 1}:`, error.message)
+        }
+      })
+    })
+    
+    this.info(`🎵 RESUMEN: ${totalVideosFound} videos encontrados, ${totalVideosPaused} pausados`)
+    
+    if (totalVideosFound === 0) {
+      this.warn('⚠️ NO se encontraron videos en el modal!')
+    }
   },
 
   cleanup() {

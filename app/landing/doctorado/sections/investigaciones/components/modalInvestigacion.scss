@@ -212,7 +212,132 @@ $content-width: 55%;
 }
 
 // ===========================================
-// GALERÍA DE IMÁGENES (COLUMNA IZQUIERDA)
+// SWIPER CONTAINERS - DESKTOP Y MOBILE
+// ===========================================
+
+// Desktop Swiper (Vertical)
+.investigations-modal__swiper-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  // Configuración específica para Swiper vertical
+  .swiper-wrapper {
+    flex-direction: column;
+  }
+
+  .swiper-slide {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// Mobile Swiper (Horizontal) - ESTILOS FALTANTES AGREGADOS
+.investigations-modal__swiper-container-mobile {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  // ✅ CRÍTICO: Habilitar touch events para Swiper
+  touch-action: pan-y pinch-zoom;
+  
+  // Configuración específica para Swiper horizontal
+  .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+    // ✅ CRÍTICO: Asegurar que el wrapper capture touch events
+    touch-action: pan-y pinch-zoom;
+  }
+
+  .swiper-slide {
+    width: auto;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    // ✅ CRÍTICO: Videos no deben interferir con touch del Swiper
+    iframe {
+      pointer-events: auto;
+      touch-action: manipulation;
+      
+      // En móviles, prevenir que videos capturen gestos de swipe
+      @media (max-width: #{$breakpoint-md - 1}) {
+        pointer-events: none;
+        
+        // Cuando está enfocado, restaurar interacción
+        &:focus {
+          pointer-events: auto;
+        }
+      }
+    }
+  }
+
+  // Navegación móvil
+  .investigations-modal__nav-prev-mobile,
+  .investigations-modal__nav-next-mobile {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: rem(40px);
+    height: rem(40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.7);
+      transform: translateY(-50%) scale(1.1);
+    }
+    
+    i {
+      font-size: rem(20px);
+    }
+  }
+
+  .investigations-modal__nav-prev-mobile {
+    left: rem(10px);
+  }
+
+  .investigations-modal__nav-next-mobile {
+    right: rem(10px);
+  }
+
+  // Paginación móvil
+  .investigations-modal__pagination-mobile {
+    position: absolute;
+    bottom: rem(15px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: rem(8px);
+    z-index: 10;
+
+    .swiper-pagination-bullet {
+      width: rem(8px);
+      height: rem(8px);
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      cursor: pointer;
+
+      &.swiper-pagination-bullet-active {
+        background: white;
+        transform: scale(1.2);
+      }
+    }
+  }
+}
+
+// ===========================================
+// GALERÍA DE IMÁGENES (COLUMNA IZQUIERDA)  
 // ===========================================
 .investigations-modal__gallery {
   width: $gallery-width;

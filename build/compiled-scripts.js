@@ -1,5 +1,5 @@
 // ===== LIBRERÍAS EXTERNAS =====
-// Compilado automáticamente el: 2025-08-31T22:55:16.402Z
+// Compilado automáticamente el: 2025-09-01T16:54:16.246Z
 
 
 // ===== CÓDIGO PERSONALIZADO =====
