@@ -31,24 +31,24 @@ const Experiencia = () => {
       type: 'video',
       orientation: 'vertical',
       videoId: 'coJHjliTbKM'
+    },
+    {
+      type: 'testimonial',
+      text: 'Actualmente me desempeño en la organización Terpel en el área de Inteligencia de Negocios. Mis funciones en la compañía son hacer estudios de mercado y encontrar oportunidades de mejora.',
+      user: {
+        name: 'Carlos Gómez',
+        job: 'Analista de Negocios en Terpel',
+        avatar:
+          'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773710/Preview-1000x0/CarlosAlbertoHerna%CC%81ndez.png?t=1719869232728',
+        linkedin: '#'
+      }
+    },
+    {
+      type: 'video',
+      orientation: 'vertical',
+      videoId: 'IWZvfiu3gX4',
+      link: '#'
     }
-    // {
-    //   type: 'testimonial',
-    //   text: 'Actualmente me desempeño en la organización Terpel en el área de Inteligencia de Negocios. Mis funciones en la compañía son hacer estudios de mercado y encontrar oportunidades de mejora.',
-    //   user: {
-    //     name: 'Carlos Gómez',
-    //     job: 'Analista de Negocios en Terpel',
-    //     avatar:
-    //       'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773710/Preview-1000x0/CarlosAlbertoHerna%CC%81ndez.png?t=1719869232728',
-    //     linkedin: '#'
-    //   }
-    // },
-    // {
-    //   type: 'video',
-    //   orientation: 'vertical',
-    //   videoId: 'IWZvfiu3gX4',
-    //   link: '#'
-    // },
     // {
     //   type: 'testimonial',
     //   text: 'La Javeriana me dio las herramientas para liderar proyectos empresariales. Hoy impulso estrategias de crecimiento en una multinacional.',

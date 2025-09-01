@@ -52,7 +52,6 @@ $nav-button-offset: rem(25px);
     position: relative;
     padding: var(--spacing-lg) var(--spacing-sm);
     margin: 0 0 var(--spacing-xl) 0;
-    margin-top: var(--spacing-2xl);
 
     @include responsive($breakpoint-sm) {
       margin: 0 0 var(--spacing-lg) 0;
@@ -101,7 +100,7 @@ $nav-button-offset: rem(25px);
       background: linear-gradient(
         to right,
         var(--background-100) 0%,
-        rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+        rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 10%,
         transparent 100%
       );
     }
@@ -111,9 +110,29 @@ $nav-button-offset: rem(25px);
       background: linear-gradient(
         to left,
         var(--background-100) 0%,
-        rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+        rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 10%,
         transparent 100%
       );
+    }
+
+    @include responsive {
+      &::before {
+        background: linear-gradient(
+          to right,
+          var(--background-100) 0%,
+          rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+          transparent 100%
+        );
+      }
+
+      &::after {
+        background: linear-gradient(
+          to left,
+          var(--background-100) 0%,
+          rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+          transparent 100%
+        );
+      }
     }
 
     @include dark-theme {
@@ -165,7 +184,6 @@ $nav-button-offset: rem(25px);
     display: flex !important;
     flex-direction: column !important;
     height: auto !important;
-    min-height: $plan-card-min-height;
     margin-top: rem(20px);
     align-items: stretch;
     justify-content: center;
@@ -444,7 +462,7 @@ $nav-button-offset: rem(25px);
   }
 
   &_prev {
-    left: rem(8px);
+    left: rem(1px);
 
     @include responsive($breakpoint-sm) {
       left: rem(8px);
@@ -460,7 +478,7 @@ $nav-button-offset: rem(25px);
   }
 
   &_next {
-    right: rem(8px);
+    right: rem(1px);
 
     @include responsive($breakpoint-sm) {
       right: rem(8px);

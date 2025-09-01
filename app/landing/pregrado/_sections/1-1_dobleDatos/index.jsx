@@ -44,13 +44,6 @@ const DatosProgramaVideo = () => {
       type: 'doble'
     },
     {
-      id: 'data-puj-modality',
-      icon: 'ph-sun',
-      label: 'Modalidad',
-      value: 'Cargando modalidad...',
-      type: 'normal'
-    },
-    {
       id: 'data-puj-price',
       icon: 'ph-piggy-bank',
       label: 'Inversión Semestre',
@@ -59,6 +52,13 @@ const DatosProgramaVideo = () => {
       prefix: 'Diurno',
       prefix2: 'Nocturno',
       type: 'doble'
+    },
+    {
+      id: 'data-puj-modality',
+      icon: 'ph-sun',
+      label: 'Modalidad',
+      value: 'Cargando modalidad...',
+      type: 'normal'
     },
     {
       id: 'data-puj-clock',

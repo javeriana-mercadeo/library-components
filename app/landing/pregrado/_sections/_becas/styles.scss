@@ -1,0 +1,468 @@
+@use '@styles/autoload' as *;
+
+.scholarships {
+  // Variables locales
+  --tab-border-color: var(--neutral-800);
+  --tab-active-color: var(--primary-500);
+  --content-spacing: var(--spacing-lg);
+  --tab-spacing: var(--spacing-md);
+
+  background-color: var(--background-100);
+
+  // Contenedor principal de la sección
+  &_container {
+    width: 100%;
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+
+    // Mobile - reducir padding vertical
+    @include responsive($breakpoint-md) {
+      padding-top: var(--spacing-lg);
+      padding-bottom: var(--spacing-lg);
+    }
+  }
+
+  // Título principal
+  &__main-title {
+    margin-bottom: var(--spacing-xl);
+    color: var(--neutral-200);
+  }
+
+  // Contenedor de tabs
+  &__tabs-container {
+    // El Container padre ya maneja el max-width y centrado
+  }
+
+  // Navegación de tabs
+  &__tabs-nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  &__tabs-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: rem(500px); // Ancho máximo para que no se vea demasiado ancho
+    margin: 0 auto; // Centrar el contenedor
+    padding: rem(6px);
+    background: var(--background-200);
+    border-radius: rem(16px);
+    border: rem(1px) solid var(--neutral-800);
+    box-shadow:
+      0 rem(4px) rem(12px) rgba(0, 0, 0, 0.05),
+      0 rem(2px) rem(4px) rgba(0, 0, 0, 0.02);
+    position: relative;
+    backdrop-filter: blur(rem(8px));
+    gap: rem(8px);
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(8px);
+      border-radius: rem(20px);
+      gap: rem(10px);
+      max-width: rem(600px);
+    }
+  }
+
+  &__tab-button {
+    display: flex;
+    align-items: center;
+    flex-direction: column; // Ícono arriba en móvil
+    flex-wrap: wrap; // Permitir que el contenido se ajuste
+    gap: rem(4px); // Gap más pequeño para layout vertical
+    padding: rem(10px) rem(12px);
+    border: none;
+    background: transparent;
+    color: var(--neutral-500);
+    font-size: var(--font-size-paragraph); // Aumentar tamaño de fuente
+    font-weight: var(--font-weight-medium);
+    border-radius: rem(12px);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: normal; // Permitir salto de línea en móvil
+    position: relative;
+    z-index: 1;
+    flex: 1; // Hacer que ambos botones ocupen el mismo espacio
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    line-height: 1.3; // Mejor espaciado entre líneas
+    min-height: rem(40px); // Altura mínima para consistencia
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(14px) rem(24px);
+      border-radius: rem(14px);
+      gap: rem(10px);
+      font-size: var(--font-size-paragraph); // Restablecer tamaño normal en tablet+
+      white-space: nowrap; // Restablecer a una línea en tablet+
+      min-height: rem(48px); // Altura mayor en tablet+
+      flex-wrap: nowrap; // Sin wrap en tablet+
+      flex-direction: row; // Volver a layout horizontal en tablet+
+    }
+
+    // Estados hover
+    &:hover:not(.active) {
+      color: var(--primary-600);
+      background: rgba(var(--primary-rgb), 0.08);
+      transform: translateY(rem(-1px));
+
+      .scholarships__tab-icon {
+        transform: scale(1.1);
+      }
+    }
+
+    // Estado activo
+    &.active {
+      background: var(--primary);
+      color: var(--neutral);
+      font-weight: var(--font-weight-semibold);
+      box-shadow:
+        0 rem(3px) rem(8px) rgba(var(--primary-rgb), 0.3),
+        0 rem(1px) rem(3px) rgba(var(--primary-rgb), 0.2);
+
+      span {
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .scholarships__tab-icon {
+        transform: scale(1.1);
+      }
+    }
+
+    // Focus visible solo para navegación con teclado
+    &:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    // Quitar outline cuando se hace clic
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
+  }
+
+  &__tab-icon {
+    font-size: rem(16px); // Ícono más pequeño en móvil
+    transition: transform 0.3s ease;
+    flex-shrink: 0; // Evitar que el ícono se comprima
+    color: inherit; // Heredar el color del texto del botón
+
+    @include responsive($breakpoint-sm) {
+      font-size: rem(20px); // Tamaño normal en tablet+
+    }
+  }
+
+  // Contenido de tabs
+  &__tabs-content {
+    min-height: 400px;
+  }
+
+  &__tab-panel {
+    animation: fadeIn 0.3s ease-in-out;
+
+    &.hidden {
+      display: none;
+    }
+
+    // Asegurar que el contenido sea accesible cuando está visible
+    &:not(.hidden) {
+      display: block;
+    }
+  }
+
+  &__content-wrapper {
+    display: grid;
+    gap: var(--content-spacing);
+    padding: var(--content-spacing);
+    
+    // Mobile por defecto - columna única
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto; // Contenido arriba, imagen abajo
+    gap: var(--spacing-lg);
+    text-align: center;
+    min-height: auto;
+    align-items: center;
+
+    // Tablet - mejor ratio para tablets (min-width: 768px)
+    @include responsive($breakpoint-md) {
+      grid-template-columns: 40% 60%;
+      grid-template-rows: none;
+      gap: var(--content-spacing);
+      text-align: left;
+      align-items: stretch;
+      min-height: 220px;
+    }
+
+    // Desktop - 2 columnas (min-width: 992px)
+    @include responsive($breakpoint-lg) {
+      grid-template-columns: 30% 70%;
+      min-height: 250px;
+    }
+  }
+
+  // Contenedor de media (imagen o ícono)
+  &__media-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: rem(12px);
+    
+    // Mobile por defecto - imagen grande y prominente, mostrar después del texto
+    width: 100%;
+    max-width: rem(300px);
+    height: rem(200px);
+    min-height: rem(200px);
+    margin: 0 auto;
+    order: 2; // Mostrar después del contenido en mobile
+
+    // Tablet - tamaño intermedio (min-width: 768px)
+    @include responsive($breakpoint-md) {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      min-height: 180px;
+      border-radius: rem(14px);
+      margin: 0;
+      order: 0; // Restablecer orden normal en tablet/desktop
+    }
+
+    // Desktop - tamaño completo (min-width: 992px)
+    @include responsive($breakpoint-lg) {
+      min-height: 200px;
+      border-radius: rem(16px);
+    }
+
+    // Cuando contiene ícono, aplicar estilos específicos para ícono
+    &:has(.scholarships__content-icon) {
+      background-color: var(--primary-100);
+      border-radius: 50%;
+      margin: 0 auto;
+      
+      // Mobile por defecto - íconos visibles
+      width: 120px;
+      height: 120px;
+      max-width: 120px;
+      
+      // Tablet - tamaño intermedio para íconos (min-width: 768px)
+      @include responsive($breakpoint-md) {
+        width: 120px;
+        height: 120px;
+        max-width: 120px;
+      }
+      
+      // Desktop - íconos grandes (min-width: 992px)
+      @include responsive($breakpoint-lg) {
+        width: 150px;
+        height: 150px;
+        max-width: 150px;
+      }
+    }
+  }
+
+  &__content-icon {
+    color: var(--primary-500);
+    
+    // Mobile por defecto - tamaño visible
+    font-size: 70px;
+
+    // Tablet - tamaño intermedio (min-width: 768px)
+    @include responsive($breakpoint-md) {
+      font-size: 80px;
+    }
+
+    // Desktop - tamaño grande (min-width: 992px)
+    @include responsive($breakpoint-lg) {
+      font-size: 100px;
+    }
+  }
+
+  &__content-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit; // Heredar el border-radius del contenedor
+    transition: transform 0.3s ease, filter 0.3s ease;
+
+    // Efecto hover solo en desktop (min-width: 993px)
+    @media (min-width: #{$breakpoint-lg + 1px}) {
+      &:hover {
+        transform: scale(1.02);
+        filter: brightness(1.05);
+      }
+    }
+  }
+
+  &__text-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    // Mobile por defecto - alinear al inicio sin padding, mostrar primero
+    justify-content: flex-start;
+    padding: 0;
+    text-align: left;
+    order: 1; // Mostrar antes que la imagen en mobile
+    
+    // Tablet - mantener centrado pero menos padding (min-width: 768px)
+    @include responsive($breakpoint-md) {
+      justify-content: center;
+      padding: var(--spacing-xs) 0;
+      text-align: left;
+      order: 0; // Restablecer orden normal en tablet/desktop
+    }
+    
+    // Desktop - centrado con más padding (min-width: 992px)
+    @include responsive($breakpoint-lg) {
+      justify-content: center;
+      padding: var(--spacing-sm) 0;
+    }
+  }
+
+  &__content-title {
+    margin-bottom: var(--spacing-md);
+    color: var(--neutral-200);
+  }
+
+  &__content-text {
+    margin-bottom: var(--spacing-lg);
+    color: var(--neutral-400);
+    line-height: 1.6;
+    font-size: var(--font-size-paragraph); // Aplicar tamaño de fuente paragraph
+
+    p {
+      margin-bottom: var(--spacing-sm);
+      font-size: var(--font-size-paragraph); // Asegurar que los párrafos usen el tamaño correcto
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul {
+      list-style: none !important;
+      margin: var(--spacing-sm) 0 !important;
+      padding-left: var(--spacing-xl) !important;
+      display: block !important;
+      
+      li {
+        position: relative !important;
+        display: list-item !important;
+        margin-bottom: var(--spacing-xs) !important;
+        padding-left: var(--spacing-sm) !important;
+        line-height: 1.6 !important;
+        color: var(--neutral-400);
+        font-size: var(--font-size-paragraph);
+        font-family: var(--font-family);
+        
+        &::before {
+          content: '•' !important;
+          color: var(--primary) !important;
+          font-weight: var(--font-weight-bold) !important;
+          position: absolute !important;
+          left: rem(-16px) !important;
+          top: 0 !important;
+          font-size: rem(18px) !important;
+          line-height: 1.2 !important;
+        }
+        
+        &:last-child {
+          margin-bottom: 0 !important;
+        }
+        
+        strong {
+          color: var(--neutral-300);
+        }
+      }
+    }
+
+    .terms-note {
+      font-size: var(--font-size-small); // Mantener tamaño small para nota de términos
+      font-style: italic;
+      color: var(--neutral-500);
+      margin-top: var(--spacing-md);
+    }
+  }
+
+  &__cta-button {
+    // El variant="solid" ya incluye todos los estilos y efectos necesarios
+    margin-top: var(--spacing-sm);
+    max-width: max-content; // Limitar ancho al contenido
+    width: auto; // Ancho automático basado en contenido
+    align-self: center; // Centrar en mobile
+    
+    // Tablet y Desktop - alinear al inicio (min-width: 768px)
+    @include responsive($breakpoint-md) {
+      align-self: flex-start;
+    }
+  }
+
+  // Estados y animaciones
+  transition: all 0.3s ease;
+
+  // Soporte para tema oscuro
+  @include dark-theme {
+    &__tabs-wrapper {
+      background: var(--background-300);
+      border-color: var(--neutral-700);
+      box-shadow:
+        0 rem(4px) rem(12px) rgba(0, 0, 0, 0.2),
+        0 rem(2px) rem(4px) rgba(0, 0, 0, 0.1);
+    }
+
+    &__tab-button {
+      &:hover:not(.active) {
+        color: var(--primary-400);
+        background: rgba(var(--primary-rgb), 0.12);
+      }
+
+      &.active {
+        background: var(--primary-600);
+        color: var(--neutral-100);
+
+        &:hover {
+          background: var(--primary-500);
+        }
+      }
+    }
+
+    // Solo aplicar fondo oscuro cuando hay ícono
+    &__media-container:has(.scholarships__content-icon) {
+      background-color: var(--primary-900);
+    }
+  }
+}
+
+// ==========================================
+// ANIMACIÓN FADEIN
+// ==========================================
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(rem(10px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ==========================================
+// ACCESIBILIDAD - Reducir movimiento
+// ==========================================
+@media (prefers-reduced-motion: reduce) {
+  .scholarships {
+    &__tab-panel {
+      animation: none;
+    }
+    
+    &__tab-button {
+      transition: none;
+      
+      &::after {
+        transition: none;
+      }
+    }
+  }
+}
