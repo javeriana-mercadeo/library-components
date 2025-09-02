@@ -30,7 +30,7 @@
     // Mobile por defecto - columna única, logo arriba
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
-    gap: var(--spacing-lg);
+    //gap: var(--spacing-lg);
     text-align: center;
     align-items: center;
 
@@ -206,6 +206,343 @@
     .icon {
       margin-left: var(--spacing-xs);
       font-size: rem(18px);
+    }
+  }
+
+  // ==========================================
+  // SISTEMA DE TEXTO ENRIQUECIDO - TÍTULOS
+  // ==========================================
+  &__subtitle,
+  &__benefits {
+    // Títulos jerárquicos
+    h3 {
+      font-family: var(--font-family);
+      font-size: var(--font-size-paragraph) !important;
+      font-weight: var(--font-weight-bold) !important;
+      color: var(--neutral-100) !important;
+      margin: var(--spacing-sm) 0 var(--spacing-xs) 0 !important;
+      line-height: var(--line-height-heading, 1.2) !important;
+      text-align: left !important;
+
+      // Mobile - centrar títulos
+      @media (max-width: 767px) {
+        text-align: center !important;
+      }
+    }
+
+    h4 {
+      font-family: var(--font-family);
+      font-size: var(--font-size-small) !important;
+      font-weight: var(--font-weight-medium) !important;
+      color: var(--neutral-300) !important;
+      margin: var(--spacing-xs) 0 var(--spacing-xs) 0 !important;
+      line-height: var(--line-height-heading, 1.2) !important;
+      text-align: left !important;
+
+      // Mobile - centrar títulos
+      @media (max-width: 767px) {
+        text-align: center !important;
+      }
+    }
+
+    // ==========================================
+    // TEXTO Y FORMATO ENRIQUECIDO
+    // ==========================================
+    p {
+      color: var(--neutral-400);
+      font-size: var(--font-size-paragraph);
+      line-height: 1.6;
+      margin-bottom: var(--spacing-sm) !important;
+
+      &:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    strong,
+    b {
+      font-weight: var(--font-weight-bold) !important;
+      color: var(--neutral-100) !important;
+    }
+
+    em,
+    i {
+      font-style: italic !important;
+      color: inherit !important;
+    }
+
+    cite {
+      font-style: italic !important;
+      color: var(--neutral-500) !important;
+      font-size: var(--font-size-small) !important;
+      opacity: 0.8 !important;
+      display: block;
+      margin-top: var(--spacing-sm);
+    }
+
+    // ==========================================
+    // LISTAS - MANTENER EL ESTILO EXISTENTE PERO MEJORAR
+    // ==========================================
+    ul {
+      list-style: none !important;
+      margin: var(--spacing-sm) 0 !important;
+      padding: 0 !important;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+
+      li {
+        position: relative !important;
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        padding-left: 0 !important;
+        line-height: 1.6 !important;
+        color: var(--neutral-300);
+        font-size: var(--font-size-paragraph);
+        font-family: var(--font-family);
+        margin-bottom: 0 !important;
+
+        &::before {
+          content: '✓' !important;
+          color: var(--primary) !important;
+          font-weight: var(--font-weight-bold) !important;
+          font-size: rem(16px) !important;
+          line-height: 1.6 !important;
+          flex-shrink: 0;
+          margin-top: rem(2px);
+        }
+
+        strong {
+          color: var(--neutral-200);
+          font-weight: var(--font-weight-semibold);
+        }
+      }
+    }
+
+    // Listas ordenadas (nuevas)
+    ol {
+      list-style: none !important;
+      margin: var(--spacing-sm) 0 !important;
+      padding-left: var(--spacing-xl) !important;
+      counter-reset: educacion-estrella-counter !important;
+      display: block !important;
+
+      li {
+        position: relative !important;
+        display: list-item !important;
+        margin-bottom: var(--spacing-xs) !important;
+        padding-left: var(--spacing-sm) !important;
+        line-height: 1.6 !important;
+        color: var(--neutral-400);
+        font-size: var(--font-size-paragraph);
+        font-family: var(--font-family);
+        counter-increment: educacion-estrella-counter !important;
+
+        &::before {
+          content: counter(educacion-estrella-counter) '.' !important;
+          color: var(--primary) !important;
+          font-weight: var(--font-weight-bold) !important;
+          position: absolute !important;
+          left: rem(-24px) !important;
+          top: 0 !important;
+          font-size: inherit !important;
+        }
+
+        &:last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+
+      // Mobile - ajustar padding
+      @media (max-width: 767px) {
+        padding-left: var(--spacing-lg) !important;
+        text-align: left;
+
+        li::before {
+          left: rem(-20px) !important;
+        }
+      }
+    }
+
+    // ==========================================
+    // MENSAJES ESPECIALES PARA EDUCACIÓN ESTRELLA
+    // ==========================================
+    .overflow-auto.portlet-msg-info {
+      background-color: rgba(var(--primary-rgb), 0.08) !important;
+      border: 1px solid rgba(var(--primary-rgb), 0.3) !important;
+      border-left: 3px solid var(--primary) !important;
+      border-radius: var(--border-radius-md) !important;
+      padding: var(--spacing-sm) var(--spacing-md) !important;
+      margin: var(--spacing-sm) 0 !important;
+      color: var(--primary) !important;
+      font-family: var(--font-family) !important;
+      font-size: var(--font-size-paragraph) !important;
+      line-height: 1.6 !important;
+      font-weight: var(--font-weight-medium) !important;
+      overflow: auto !important;
+      box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.15) !important;
+
+      &::before {
+        content: '💡 ' !important;
+        font-weight: var(--font-weight-bold) !important;
+        margin-right: var(--spacing-2xs) !important;
+      }
+    }
+
+    .overflow-auto.portlet-msg-alert {
+      background-color: rgba(var(--warning-rgb, 245, 158, 11), 0.08) !important;
+      border: 1px solid rgba(var(--warning-rgb, 245, 158, 11), 0.3) !important;
+      border-left: 3px solid var(--warning, #f59e0b) !important;
+      border-radius: var(--border-radius-md) !important;
+      padding: var(--spacing-sm) var(--spacing-md) !important;
+      margin: var(--spacing-sm) 0 !important;
+      color: var(--warning, #f59e0b) !important;
+      font-family: var(--font-family) !important;
+      font-size: var(--font-size-paragraph) !important;
+      line-height: 1.6 !important;
+      font-weight: var(--font-weight-medium) !important;
+      overflow: auto !important;
+      box-shadow: 0 2px 8px rgba(var(--warning-rgb, 245, 158, 11), 0.15) !important;
+
+      &::before {
+        content: '⚠️ ' !important;
+        font-weight: var(--font-weight-bold) !important;
+        margin-right: var(--spacing-2xs) !important;
+      }
+    }
+
+    // ==========================================
+    // TABLAS PARA INFORMACIÓN FINANCIERA
+    // ==========================================
+    table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+      margin: var(--spacing-md) 0 !important;
+      background-color: rgba(var(--primary-rgb), 0.02) !important;
+      border-radius: var(--border-radius-md) !important;
+      overflow: hidden !important;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+
+      caption {
+        caption-side: top !important;
+        padding: var(--spacing-sm) var(--spacing-md) !important;
+        font-weight: var(--font-weight-bold) !important;
+        font-size: var(--font-size-caption) !important;
+        color: var(--neutral-100) !important;
+        text-align: left !important;
+        background-color: rgba(var(--primary-rgb), 0.05) !important;
+        margin-bottom: 0 !important;
+
+        // Mobile - centrar caption
+        @media (max-width: 767px) {
+          text-align: center !important;
+          font-size: var(--font-size-paragraph) !important;
+        }
+      }
+
+      tbody {
+        background-color: rgba(var(--primary-rgb), 0.02) !important;
+      }
+
+      tr {
+        border-bottom: 1px solid rgba(var(--primary-rgb), 0.1) !important;
+        transition: background-color 0.2s ease !important;
+
+        &:first-child {
+          background-color: rgba(var(--primary-rgb), 0.05) !important;
+        }
+
+        &:hover {
+          background-color: rgba(var(--primary-rgb), 0.03) !important;
+        }
+
+        &:last-child {
+          border-bottom: none !important;
+        }
+      }
+
+      td {
+        padding: var(--spacing-sm) var(--spacing-md) !important;
+        color: var(--neutral-200) !important;
+        font-size: var(--font-size-paragraph) !important;
+        line-height: 1.6 !important;
+        font-family: var(--font-family) !important;
+        vertical-align: top !important;
+        border-right: 1px solid rgba(var(--primary-rgb), 0.1) !important;
+
+        &:last-child {
+          border-right: none !important;
+        }
+
+        &:empty::after {
+          content: '-' !important;
+          color: var(--neutral-500) !important;
+          font-style: italic !important;
+        }
+      }
+
+      // Mobile - ajustar tabla
+      @media (max-width: 767px) {
+        td {
+          padding: var(--spacing-xs) var(--spacing-sm) !important;
+          font-size: var(--font-size-small) !important;
+        }
+      }
+    }
+
+    // ==========================================
+    // CÓDIGO Y ELEMENTOS TÉCNICOS
+    // ==========================================
+    code {
+      background: var(--neutral-800) !important;
+      color: var(--neutral-200) !important;
+      padding: rem(2px) rem(4px) !important;
+      border-radius: rem(3px) !important;
+      font-family: 'Courier New', monospace !important;
+      font-size: 0.9em !important;
+      opacity: 1 !important;
+    }
+
+    // ==========================================
+    // ENLACES CON DETECCIÓN AUTOMÁTICA
+    // ==========================================
+    a {
+      color: var(--primary) !important;
+      text-decoration: underline !important;
+      text-underline-offset: rem(2px) !important;
+      font-weight: var(--font-weight-medium) !important;
+      transition: all 0.2s ease !important;
+      word-break: break-word !important;
+      opacity: 1 !important;
+
+      &:hover {
+        opacity: 0.8 !important;
+        text-decoration-thickness: rem(2px) !important;
+      }
+
+      &:visited {
+        color: var(--primary-700) !important;
+      }
+
+      &:focus {
+        outline: rem(2px) solid var(--primary) !important;
+        outline-offset: rem(2px) !important;
+        border-radius: rem(2px) !important;
+        opacity: 0.9 !important;
+      }
+
+      &:active {
+        transform: translateY(1px) !important;
+      }
+
+      // Enlaces externos automáticos
+      &[href*='http']:not([href*='localhost']):not([href*='127.0.0.1'])::after {
+        content: ' 🔗' !important;
+        font-size: 0.8em !important;
+        opacity: 0.7 !important;
+        margin-left: rem(2px) !important;
+      }
     }
   }
 

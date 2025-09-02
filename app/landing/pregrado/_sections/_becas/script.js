@@ -1,5 +1,61 @@
-// Funcionalidad de tabs para la sección de becas
+// Funcionalidad de tabs para la sección de becas + SISTEMA DE TEXTO ENRIQUECIDO
 // Compatible con Liferay DXP - JavaScript vanilla
+
+// ==========================================
+// SISTEMA DE TEXTO ENRIQUECIDO PARA BECAS
+// ==========================================
+const ScholarshipsRichTextSystem = {
+  config: {
+    richContentSelector: '.scholarships-rich-content',
+    contentTextSelector: '.scholarships__content-text'
+  },
+
+  // Procesar contenido enriquecido desde CMS o datos locales
+  processRichContent() {
+    const richContentElements = document.querySelectorAll(this.config.richContentSelector)
+    
+    if (richContentElements.length === 0) {
+      console.log('[ScholarshipsRichText] No se encontraron elementos de contenido enriquecido')
+      return
+    }
+
+    console.log(`[ScholarshipsRichText] Procesando ${richContentElements.length} elementos`)
+
+    richContentElements.forEach(element => {
+      let content = element.getAttribute('data-raw-content')
+      
+      if (content) {
+        content = this.decodeHtmlEntities(content)
+        
+        // Auto-detección de formato
+        if (!content.includes('<') && !content.includes('&lt;')) {
+          content = content.replace(/\n\n/g, '</p><p>')
+          content = content.replace(/\n/g, '<br>')
+          content = '<p>' + content + '</p>'
+        }
+        
+        element.innerHTML = content
+        console.log(`[ScholarshipsRichText] Elemento procesado: ${element.id || 'sin-id'}`)
+      }
+    })
+  },
+
+  // Decodificador HTML avanzado (basado en el sistema FAQ)
+  decodeHtmlEntities(text) {
+    const textarea = document.createElement('textarea')
+    let decoded = text
+    let previousDecoded = ''
+
+    // Hasta 3 intentos de decodificación recursiva
+    for (let i = 0; i < 3 && decoded !== previousDecoded; i++) {
+      previousDecoded = decoded
+      textarea.innerHTML = decoded
+      decoded = textarea.value
+    }
+
+    return decoded
+  }
+}
 
 // Función de inicialización con reintentos para asegurar que el componente esté montado
 const initScholarshipsTabs = () => {
@@ -11,6 +67,9 @@ const initScholarshipsTabs = () => {
       setTimeout(() => tryInitialize(attempts + 1), 100)
       return
     }
+
+    // ✅ PROCESAR TEXTO ENRIQUECIDO ANTES DE INICIALIZAR TABS
+    ScholarshipsRichTextSystem.processRichContent()
 
     tabsContainers.forEach(container => {
       const tabButtons = container.querySelectorAll('.scholarships__tab-button')
@@ -166,5 +225,41 @@ if (typeof MutationObserver !== 'undefined') {
   })
 }
 
+// ==========================================
+// SISTEMA PRINCIPAL DE BECAS
+// ==========================================
+const ScholarshipsSystem = {
+  init() {
+    const systems = {
+      richText: ScholarshipsRichTextSystem.processRichContent(),
+      tabs: initScholarshipsTabs()
+    }
+    
+    console.log('[ScholarshipsSystem] Sistemas inicializados:', systems)
+    return systems
+  }
+}
+
+// ==========================================
+// INICIALIZACIÓN Y EXPORTS
+// ==========================================
+
+// Inicializar sistema completo
+const initializeScholarships = () => {
+  // Exponer para debugging en desarrollo
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    window.ScholarshipsRichTextSystem = ScholarshipsRichTextSystem
+    window.ScholarshipsSystem = ScholarshipsSystem
+  }
+
+  // Inicializar sistemas
+  ScholarshipsSystem.init()
+}
+
 // Export por defecto para compatibilidad
-export default initScholarshipsTabs
+export default initializeScholarships
+
+// También ejecutar inmediatamente en caso de compilación IIFE
+if (typeof window !== 'undefined') {
+  initializeScholarships()
+}
