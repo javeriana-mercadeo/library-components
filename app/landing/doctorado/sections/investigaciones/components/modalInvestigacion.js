@@ -551,7 +551,7 @@ const ModalInvestigacion = {
     const iframe = document.createElement('iframe')
     const params = new URLSearchParams({
       autoplay: '0',
-      mute: '1', // Iniciar silenciado para evitar auto-play issues
+      mute: '0', // ✅ AUDIO ACTIVADO por defecto (copiado de pregrado)
       loop: '0',
       controls: '1',
       modestbranding: '1',

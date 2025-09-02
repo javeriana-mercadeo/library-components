@@ -269,11 +269,58 @@ $content-width: 55%;
       }
     }
     
-    // ✅ VIDEO-CLICK-DETECTOR: Ya no necesitamos overlay parcial
-    // El sistema de detector maneja toda la interacción
-    
-    // ✅ VIDEO-CLICK-DETECTOR: Los indicadores visuales se manejan por JS
-    // Ya no necesitamos ::after ni data-video-interactive
+    // ✅ SISTEMA DE PLACEHOLDER/LOADING SOLO PARA VIDEOS (CORREGIDO)
+    // Solo aplicar a wrappers de video, NO a imágenes
+    &.investigations-modal__video-wrapper,
+    &.investigations-modal__video-wrapper-mobile {
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 100%);
+        opacity: 0.3;
+        z-index: 1;
+      }
+
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+
+        &.loaded {
+          opacity: 1;
+        }
+      }
+
+      // Loading state - Icono de play animado
+      &:not(.video-loaded)::after {
+        content: '▶';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+        color: var(--primary);
+        z-index: 3;
+        animation: pulse 2s infinite;
+      }
+
+      // Ocultar placeholder cuando video carga
+      &.video-loaded::before {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+    }
   }
 
   // Navegación móvil
@@ -722,6 +769,21 @@ $content-width: 55%;
   border: 0;
   border-radius: var(--border-radius-lg);
   display: block;
+}
+
+// ==========================================
+// ANIMACIÓN PULSE PARA ICONO DE LOADING (COPIADO DE PREGRADO)
+// ==========================================
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
 }
 
 // ===========================================
