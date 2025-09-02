@@ -233,20 +233,18 @@ $content-width: 55%;
   }
 }
 
-// Mobile Swiper (Horizontal) - ESTILOS OPTIMIZADOS PARA TOUCH
+// Mobile Swiper (Horizontal) - CONFIGURACIÓN SIMPLIFICADA COMO PREGRADO
 .investigations-modal__swiper-container-mobile {
   height: 100%;
   width: 100%;
   position: relative;
-  // ✅ OPTIMIZADO: Permitir swipe horizontal Y vertical
-  touch-action: pan-x pan-y;
+  // ✅ SIN TOUCH-ACTION: Usar comportamiento nativo del navegador
   
   // Configuración específica para Swiper horizontal
   .swiper-wrapper {
     display: flex;
     flex-direction: row;
-    // ✅ OPTIMIZADO: Solo horizontal para mejor swipe
-    touch-action: pan-x;
+    // ✅ SIN TOUCH-ACTION: Navegador maneja touch naturalmente
   }
 
   .swiper-slide {
@@ -256,21 +254,87 @@ $content-width: 55%;
     align-items: center;
     justify-content: center;
     
-    // ✅ CRÍTICO: Videos completamente transparentes al touch en móviles
+    // ✅ TÉCNICA AVANZADA: Overlay transparente para captura de touch
     iframe {
-      pointer-events: auto;
-      touch-action: manipulation;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      z-index: 1; // Video debajo del overlay
+      opacity: 0;
+      transition: opacity 0.5s ease;
+
+      &.loaded {
+        opacity: 1;
+      }
+    }
+    
+    // ✅ OVERLAY PARCIAL - DEJA LIBRE ZONA DE CONTROLES DE YOUTUBE
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 50px; // ✅ CLAVE: Deja 50px libres para controles de YouTube
+      z-index: 2; // Encima del video
+      background: transparent;
       
-      // ENFOQUE AGRESIVO: Videos no interfieren con swipe en móviles/tablets
+      // Solo en móviles, capturar touch events para Swiper
       @media (max-width: 1024px) {
-        pointer-events: none !important;
-        touch-action: none !important;
+        pointer-events: var(--overlay-pointer-events, auto); // Variable CSS para control dinámico
+        cursor: grab;
         
-        // Solo permitir interacción con tap/click directo
         &:active {
-          pointer-events: auto !important;
-          touch-action: auto !important;
+          cursor: grabbing;
         }
+        
+        // Feedback visual sutil en touch (solo en la zona cubierta)
+        &:active {
+          background: rgba(255, 255, 255, 0.08);
+        }
+      }
+      
+      // En desktop, no interferir
+      @media (min-width: 1025px) {
+        pointer-events: none; // No interferir en desktop
+      }
+    }
+    
+    // ✅ INDICADOR VISUAL SUTIL DE ZONA DE SWIPE (opcional)
+    &::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      
+      // Solo en móviles
+      @media (max-width: 1024px) {
+        // Mostrar indicador brevemente en touch
+        .swiper-slide:active &,
+        .swiper-slide:hover & {
+          opacity: 1;
+        }
+      }
+      
+      @media (min-width: 1025px) {
+        display: none;
+      }
+    }
+    
+    // ✅ ESTADO PARA PERMITIR INTERACCIÓN TEMPORAL CON VIDEO
+    &[data-video-interactive="true"]::before {
+      @media (max-width: 1024px) {
+        pointer-events: none !important; // Forzar interacción con video
       }
     }
   }

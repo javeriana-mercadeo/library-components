@@ -568,6 +568,21 @@ const ModalInvestigacion = {
     iframe.loading = index === 0 ? 'eager' : 'lazy'
     iframe.title = videoItem.alt
     
+    // ✅ SISTEMA DE CARGA COMO PREGRADO
+    iframe.style.opacity = '0'
+    iframe.style.transition = 'opacity 0.5s ease'
+    
+    // Marcar como cargado cuando el iframe esté listo
+    iframe.addEventListener('load', () => {
+      iframe.style.opacity = '1'
+      iframe.classList.add('loaded')
+      wrapper.classList.add('video-loaded')
+    })
+    
+    iframe.addEventListener('error', () => {
+      this.warn('Error cargando video:', videoItem.embedId)
+    })
+    
     // Log para debug
     this.log(`🎬 Video iframe creado: ${videoItem.embedId}`, {
       src: iframe.src,
@@ -764,14 +779,15 @@ const ModalInvestigacion = {
     try {
       this.modalSwiperMobile = new window.Swiper('.investigations-modal__swiper-container-mobile', {
         // ==========================================
-        // CONFIGURACIÓN EXACTA DEL PATRÓN EXITOSO
+        // CONFIGURACIÓN COPIADA DE PREGRADO (FUNCIONA)
         // ==========================================
         loop: false,
-        spaceBetween: 25,
+        spaceBetween: 20,
         grabCursor: true,
         allowTouchMove: true,
-        slidesPerView: 'auto', // Patrón relacionados exitoso
+        slidesPerView: 1, // ✅ CLAVE: Iniciar con 1, NO 'auto'
         watchOverflow: true,
+        centeredSlides: false,
         
         pagination: {
           el: '.investigations-modal__pagination-mobile',
@@ -784,18 +800,23 @@ const ModalInvestigacion = {
         },
 
         // ==========================================
-        // BREAKPOINTS EXACTOS DEL PATRÓN EXITOSO
+        // BREAKPOINTS PROGRESIVOS COMO PREGRADO
         // ==========================================
         breakpoints: {
           0: {
+            slidesPerView: 1,
             spaceBetween: 20,
-            slidesPerView: Math.min(1, this.totalMobileSlides || 1),
-            centeredSlides: true // SOLO en móviles pequeños
+            centeredSlides: true // Solo móviles pequeños
           },
           576: {
+            slidesPerView: 1.2, // ✅ Progresivo como pregrado
+            spaceBetween: 20,
+            centeredSlides: false
+          },
+          768: {
+            slidesPerView: 'auto', // ✅ Auto solo en tablets+
             spaceBetween: 25,
-            slidesPerView: 'auto', // Auto en resoluciones mayores
-            centeredSlides: false // NO centrado en resoluciones mayores
+            centeredSlides: false
           }
         },
         
@@ -804,6 +825,8 @@ const ModalInvestigacion = {
             ModalInvestigacion.log('Mobile Swiper inicializado con', swiper.slides.length, 'slides')
             // Configurar eventos para botones personalizados móviles
             ModalInvestigacion.setupCustomNavigationMobile(swiper)
+            // ✅ CONFIGURAR SISTEMA DE OVERLAY PARA VIDEOS
+            ModalInvestigacion.setupVideoOverlayInteraction()
           },
           slideChange: function(swiper) {
             ModalInvestigacion.info('📱 MOBILE slide cambiado a:', swiper.activeIndex + 1)
@@ -1047,6 +1070,55 @@ const ModalInvestigacion = {
     return paragraphs.map(paragraph => `<p>${paragraph}</p>`).join('')
   },
 
+  // ==========================================
+  // SISTEMA DE OVERLAY PARA VIDEOS (OPCIÓN 4)
+  // ==========================================
+  
+  setupVideoOverlayInteraction() {
+    // Solo configurar en móviles
+    if (window.innerWidth >= 1024) return
+    
+    // Buscar todos los slides con videos
+    const videoSlides = document.querySelectorAll('.investigations-modal__slide-mobile')
+    
+    videoSlides.forEach(slide => {
+      const iframe = slide.querySelector('iframe')
+      if (!iframe) return
+      
+      // ✅ CON OVERLAY PARCIAL, SIMPLIFICAR INTERACCIÓN
+      // Ya no necesitamos doble tap porque los controles están libres
+      
+      // Agregar feedback visual cuando se toca la zona de swipe
+      slide.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0]
+        const rect = slide.getBoundingClientRect()
+        const touchY = touch.clientY - rect.top
+        const slideHeight = rect.height
+        
+        // Verificar si el touch es en la zona del overlay (no en los controles)
+        if (touchY < slideHeight - 50) { // 50px es lo que dejamos libre para controles
+          this.log('Touch en zona de swipe - overlay activo')
+          // El overlay maneja automáticamente el swipe
+        } else {
+          this.log('Touch en zona de controles - video interactivo')
+          // Los controles están libres, no hacemos nada especial
+        }
+      }, { passive: true })
+      
+      // Agregar indicador visual cuando el video está cargando
+      iframe.addEventListener('loadstart', () => {
+        slide.classList.add('video-loading')
+      })
+      
+      iframe.addEventListener('canplay', () => {
+        slide.classList.remove('video-loading')
+        slide.classList.add('video-ready')
+      })
+    })
+    
+    this.log('Sistema de overlay parcial para videos configurado')
+  },
+  
   // ==========================================
   // SISTEMA DE CONTROL DE VIDEOS
   // ==========================================
