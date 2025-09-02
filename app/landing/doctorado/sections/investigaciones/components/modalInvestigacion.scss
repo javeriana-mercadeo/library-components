@@ -269,74 +269,11 @@ $content-width: 55%;
       }
     }
     
-    // ✅ OVERLAY PARCIAL - DEJA LIBRE ZONA DE CONTROLES DE YOUTUBE
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 50px; // ✅ CLAVE: Deja 50px libres para controles de YouTube
-      z-index: 2; // Encima del video
-      background: transparent;
-      
-      // Solo en móviles, capturar touch events para Swiper
-      @media (max-width: 1024px) {
-        pointer-events: var(--overlay-pointer-events, auto); // Variable CSS para control dinámico
-        cursor: grab;
-        
-        &:active {
-          cursor: grabbing;
-        }
-        
-        // Feedback visual sutil en touch (solo en la zona cubierta)
-        &:active {
-          background: rgba(255, 255, 255, 0.08);
-        }
-      }
-      
-      // En desktop, no interferir
-      @media (min-width: 1025px) {
-        pointer-events: none; // No interferir en desktop
-      }
-    }
+    // ✅ VIDEO-CLICK-DETECTOR: Ya no necesitamos overlay parcial
+    // El sistema de detector maneja toda la interacción
     
-    // ✅ INDICADOR VISUAL SUTIL DE ZONA DE SWIPE (opcional)
-    &::after {
-      content: '';
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 2px;
-      z-index: 3;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      
-      // Solo en móviles
-      @media (max-width: 1024px) {
-        // Mostrar indicador brevemente en touch
-        .swiper-slide:active &,
-        .swiper-slide:hover & {
-          opacity: 1;
-        }
-      }
-      
-      @media (min-width: 1025px) {
-        display: none;
-      }
-    }
-    
-    // ✅ ESTADO PARA PERMITIR INTERACCIÓN TEMPORAL CON VIDEO
-    &[data-video-interactive="true"]::before {
-      @media (max-width: 1024px) {
-        pointer-events: none !important; // Forzar interacción con video
-      }
-    }
+    // ✅ VIDEO-CLICK-DETECTOR: Los indicadores visuales se manejan por JS
+    // Ya no necesitamos ::after ni data-video-interactive
   }
 
   // Navegación móvil

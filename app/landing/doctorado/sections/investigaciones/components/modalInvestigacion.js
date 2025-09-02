@@ -825,8 +825,8 @@ const ModalInvestigacion = {
             ModalInvestigacion.log('Mobile Swiper inicializado con', swiper.slides.length, 'slides')
             // Configurar eventos para botones personalizados móviles
             ModalInvestigacion.setupCustomNavigationMobile(swiper)
-            // ✅ CONFIGURAR SISTEMA DE OVERLAY PARA VIDEOS
-            ModalInvestigacion.setupVideoOverlayInteraction()
+            // ✅ CONFIGURAR SISTEMA VIDEO-CLICK-DETECTOR
+            ModalInvestigacion.setupVideoClickDetection()
           },
           slideChange: function(swiper) {
             ModalInvestigacion.info('📱 MOBILE slide cambiado a:', swiper.activeIndex + 1)
@@ -1071,52 +1071,62 @@ const ModalInvestigacion = {
   },
 
   // ==========================================
-  // SISTEMA DE OVERLAY PARA VIDEOS (OPCIÓN 4)
+  // SISTEMA VIDEO-CLICK-DETECTOR (COPIADO DE PREGRADO)
   // ==========================================
   
-  setupVideoOverlayInteraction() {
+  setupVideoClickDetection() {
     // Solo configurar en móviles
     if (window.innerWidth >= 1024) return
     
-    // Buscar todos los slides con videos
-    const videoSlides = document.querySelectorAll('.investigations-modal__slide-mobile')
+    const videoContainers = document.querySelectorAll('.investigations-modal__video-wrapper-mobile')
     
-    videoSlides.forEach(slide => {
-      const iframe = slide.querySelector('iframe')
-      if (!iframe) return
+    videoContainers.forEach((container, i) => {
+      const iframe = container.querySelector('iframe')
       
-      // ✅ CON OVERLAY PARCIAL, SIMPLIFICAR INTERACCIÓN
-      // Ya no necesitamos doble tap porque los controles están libres
+      if (!iframe || container.querySelector('.video-click-detector')) {
+        return // Saltar si no hay iframe o ya tiene detector
+      }
       
-      // Agregar feedback visual cuando se toca la zona de swipe
-      slide.addEventListener('touchstart', (e) => {
-        const touch = e.touches[0]
-        const rect = slide.getBoundingClientRect()
-        const touchY = touch.clientY - rect.top
-        const slideHeight = rect.height
+      // Crear overlay invisible para detectar clics (PATRÓN EXACTO DE PREGRADO)
+      const overlay = document.createElement('div')
+      overlay.className = 'video-click-detector'
+      overlay.style.position = 'absolute'
+      overlay.style.top = '0'
+      overlay.style.left = '0'
+      overlay.style.width = '100%'
+      overlay.style.height = '100%'
+      overlay.style.zIndex = '5'
+      overlay.style.cursor = 'pointer'
+      overlay.style.backgroundColor = 'transparent'
+      overlay.style.pointerEvents = 'auto'
+      
+      // Agregar data attribute para identificar el iframe
+      overlay.setAttribute('data-iframe-id', 'iframe-' + i)
+      iframe.setAttribute('data-iframe-id', 'iframe-' + i)
+      
+      overlay.addEventListener('click', function(e) {
+        const currentIframe = this.parentNode.querySelector('iframe')
         
-        // Verificar si el touch es en la zona del overlay (no en los controles)
-        if (touchY < slideHeight - 50) { // 50px es lo que dejamos libre para controles
-          this.log('Touch en zona de swipe - overlay activo')
-          // El overlay maneja automáticamente el swipe
-        } else {
-          this.log('Touch en zona de controles - video interactivo')
-          // Los controles están libres, no hacemos nada especial
-        }
-      }, { passive: true })
-      
-      // Agregar indicador visual cuando el video está cargando
-      iframe.addEventListener('loadstart', () => {
-        slide.classList.add('video-loading')
+        // Pausar todos los otros videos excepto este
+        ModalInvestigacion.pauseAllVideos(currentIframe)
+        
+        // Remover el overlay temporalmente para permitir interacción (CLAVE DE PREGRADO)
+        this.style.pointerEvents = 'none'
+        this.style.display = 'none'
+        
+        // Volver a activar el overlay después de un tiempo
+        const self = this
+        setTimeout(function() {
+          self.style.pointerEvents = 'auto'
+          self.style.display = 'block'
+        }, 2000) // 2 segundos para que el usuario pueda interactuar
       })
       
-      iframe.addEventListener('canplay', () => {
-        slide.classList.remove('video-loading')
-        slide.classList.add('video-ready')
-      })
+      container.style.position = 'relative'
+      container.appendChild(overlay)
     })
     
-    this.log('Sistema de overlay parcial para videos configurado')
+    this.log('Sistema video-click-detector configurado (patrón pregrado)')
   },
   
   // ==========================================
