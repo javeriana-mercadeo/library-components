@@ -1,56 +1,194 @@
+@use '@styles/autoload' as *;
+
 .socialMedia_inner {
+  // MÓVILES PRIMERO (base styles) - Apilado verticalmente
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+
+  // DESKTOP (min-width: 768px+) - Lado a lado
+  @include responsive {
+    flex-direction: row;
+    gap: var(--spacing-lg);
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+.socialMedia_container {
+  padding: var(--spacing-md) 0;
+}
+
+.socialMedia_title {
+  // MÓVILES PRIMERO (base styles)
+  line-height: 1.2;
+  margin: 0;
+  margin-bottom: var(--spacing-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--neutral-200);
+  text-align: center;
+  flex-shrink: 0;
+
+  @include dark-theme {
+    color: var(--neutral-800);
+  }
+
+  // DESKTOP (min-width: 768px+)
+  @include responsive {
+    white-space: nowrap; // No romper línea en desktop
+    text-align: left;
+    margin-bottom: 0;
+    flex: 0 0 auto;
+  }
+}
+
+.socialMedia_social-list {
+  // MÓVILES PRIMERO (base styles)
   display: flex;
   flex-direction: row;
-  gap: 15px;
-  margin: 0 auto;
+  gap: var(--spacing-xs);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  // DESKTOP (min-width: 768px+)
+  @include responsive {
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    flex: 0 0 auto;
+  }
+}
+
+.socialMedia_item {
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.socialMedia_container {
-  display: flex;
-  flex-direction: row;
-  margin: 0 auto;
+// Estilos base para todos los enlaces sociales
+.socialMedia_link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: rem(33px);
+  transition: all 0.3s ease;
+  border-radius: rem(8px);
+  padding: var(--spacing-xs);
+  text-decoration: none;
 
-  h3 {
-    line-height: 1.2;
-    margin: 0;
-    font-weight: var(--font-weight-bold) !important;
-    color: var(--neutral-200);
+  &:hover {
+    transform: translateY(-2px) scale(1.05);
+    opacity: 0.8;
   }
-}
-.socialMedia_social-list {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
 
-  li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  &:focus {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+  }
 
-    a {
-      font-size: 33px;
-      transition: all 0.3s ease;
-      border-radius: 8px;
-      padding: 6px;
+  // Responsive para móviles
+  @include responsive {
+    font-size: rem(28px);
+    padding: rem(4px);
+  }
 
-      &:hover {
-        transform: translateY(-2px) scale(1.05);
-        opacity: 0.8;
+  // Estilos para íconos SVG inline (fallback de Liferay)
+  &.social-icon-svg {
+    font-size: inherit; // Hereda el tamaño del contenedor
+    
+    svg {
+      width: rem(33px);
+      height: rem(33px);
+      vertical-align: middle;
+      
+      @include responsive {
+        width: rem(28px);
+        height: rem(28px);
       }
     }
   }
+}
 
-  li:nth-child(1) {
-    color: #0c7fd7;
+// Estilos específicos por red social con colores hardcodeados (más simples y directos)
+.socialMedia_link--facebook {
+  color: #1877f2; // Azul oficial de Facebook
+
+  &:hover {
+    color: #166fe5;
   }
+}
 
-  li:nth-child(2) {
-    color: #ff0000;
+.socialMedia_link--instagram {
+  color: #e4405f; // Rosa/rojo oficial de Instagram
+
+  &:hover {
+    color: #d73851;
   }
+}
 
-  li:nth-child(3) {
-    color: #ff17a2;
+.socialMedia_link--youtube {
+  color: #ff0000; // Rojo oficial de YouTube
+
+  &:hover {
+    color: #e60000;
+  }
+}
+
+.socialMedia_link--twitter {
+  color: #000000; // Negro para X/Twitter
+
+  &:hover {
+    color: #333333;
+  }
+}
+
+.socialMedia_link--linkedin {
+  color: #0a66c2; // Azul oficial de LinkedIn
+
+  &:hover {
+    color: #095cb0;
+  }
+}
+
+.socialMedia_link--tiktok {
+  color: #000000; // Negro oficial de TikTok
+
+  &:hover {
+    color: #333333;
+  }
+}
+
+.socialMedia_link--whatsapp {
+  color: #25d366; // Verde oficial de WhatsApp
+
+  &:hover {
+    color: #22c55e;
+  }
+}
+
+.socialMedia_link--telegram {
+  color: #0088cc; // Azul oficial de Telegram
+
+  &:hover {
+    color: #007bb5;
+  }
+}
+
+.socialMedia_link--generic {
+  color: #6b7280; // Gris neutro
+
+  &:hover {
+    color: #4b5563;
   }
 }
