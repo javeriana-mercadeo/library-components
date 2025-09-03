@@ -1,5 +1,5 @@
 'use client'
-import HelpHero from '@library/_institutional/helpHero'
+import HelpHero from '@/components/_institutional/helpHero'
 
 import ViewComponent from '@/components/viewComponent/viewComponent'
 
