@@ -310,21 +310,33 @@ if (typeof module === 'undefined' && typeof exports === 'undefined') {
 
       overlay.addEventListener('click', function(e) {
         var currentIframe = this.parentNode.querySelector('iframe');
-        console.log('[EXPERIENCE] Video clickeado, pausando otros videos');
+        console.log('[EXPERIENCE] Video clickeado, pausando otros videos y reproduciendo este');
 
         // Pausar todos los otros videos excepto este
         pauseAllVideos(currentIframe);
 
-        // Remover el overlay temporalmente para permitir interacción
-        this.style.pointerEvents = 'none';
-        this.style.display = 'none';
+        // Reproducir automáticamente este video
+        try {
+          currentIframe.contentWindow.postMessage(
+            '{"event":"command","func":"playVideo","args":""}', 
+            '*'
+          );
+          console.log('[EXPERIENCE] Comando de reproducción enviado');
+        } catch (error) {
+          console.warn('[EXPERIENCE] No se pudo iniciar reproducción automática:', error);
+        }
 
-        // Volver a activar el overlay después de un tiempo
+        // Hacer el overlay semi-transparente brevemente para feedback visual
+        this.style.opacity = '0.3';
+        this.style.pointerEvents = 'none';
+
+        // Reactivar overlay rápidamente para próximas interacciones
         var self = this;
         setTimeout(function() {
+          self.style.opacity = '1';
           self.style.pointerEvents = 'auto';
-          self.style.display = 'block';
-        }, 2000); // 2 segundos para que el usuario pueda interactuar
+          console.log('[EXPERIENCE] Overlay reactivado para video');
+        }, 500); // Solo 500ms para feedback visual
       });
 
       container.style.position = 'relative';
