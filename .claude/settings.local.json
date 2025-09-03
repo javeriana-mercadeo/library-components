@@ -67,6 +67,14 @@
       "Bash(timeout 15s npm run dev:memory-limit)",
       "Bash(npx next dev:*)",
       "WebFetch(domain:www.javeriana.edu.co)",
+      "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
+      "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
+      "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
+      "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
+      "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
+      "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
+      "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
+      "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
       "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)"
     ],
     "deny": []
