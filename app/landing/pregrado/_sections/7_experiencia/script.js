@@ -27,6 +27,51 @@ function initExperienceCarousel() {
       b.toString(16).padStart(2, '0');
   }
 
+  // Función helper para convertir cualquier color a rgba
+  function colorToRgba(color, alpha) {
+    // Debug: mostrar el color recibido
+    console.log('[VIDEO] Color recibido:', color);
+    
+    // Si ya es rgba, extraer los valores
+    if (color.startsWith('rgba(')) {
+      var values = color.match(/rgba\(([^)]+)\)/)[1].split(',');
+      return 'rgba(' + values[0].trim() + ', ' + values[1].trim() + ', ' + values[2].trim() + ', ' + alpha + ')';
+    }
+    
+    // Si es rgb, convertir a rgba
+    if (color.startsWith('rgb(')) {
+      var values = color.match(/rgb\(([^)]+)\)/)[1].split(',');
+      return 'rgba(' + values[0].trim() + ', ' + values[1].trim() + ', ' + values[2].trim() + ', ' + alpha + ')';
+    }
+    
+    // Si es hex
+    if (color.startsWith('#')) {
+      var hex = color.replace('#', '');
+      var r = parseInt(hex.substr(0, 2), 16);
+      var g = parseInt(hex.substr(2, 2), 16);
+      var b = parseInt(hex.substr(4, 2), 16);
+      return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+    }
+    
+    // Fallback: crear elemento temporal para obtener color computado
+    var tempEl = document.createElement('div');
+    tempEl.style.color = color;
+    document.body.appendChild(tempEl);
+    var computedColor = getComputedStyle(tempEl).color;
+    document.body.removeChild(tempEl);
+    
+    console.log('[VIDEO] Color computado:', computedColor);
+    
+    if (computedColor.startsWith('rgb(')) {
+      var values = computedColor.match(/rgb\(([^)]+)\)/)[1].split(',');
+      return 'rgba(' + values[0].trim() + ', ' + values[1].trim() + ', ' + values[2].trim() + ', ' + alpha + ')';
+    }
+    
+    // Si todo falla, usar color sólido sin transparencia
+    console.warn('[VIDEO] No se pudo convertir color, usando fallback:', color);
+    return color;
+  }
+
   // Función para calcular cuántos slides caben visualmente en el viewport
   function getSlidesVisibleInViewport(windowWidth, slideWidth, gap) {
     var containerPadding = windowWidth < 768 ? 30 : 60
@@ -446,8 +491,8 @@ function initExperienceCarousel() {
       playButton.style.top = '50%';
       playButton.style.left = '50%';
       playButton.style.transform = 'translate(-50%, -50%)';
-      playButton.style.width = '80px';
-      playButton.style.height = '80px';
+      playButton.style.width = '60px';   // ✅ Más discreto (-25%)
+      playButton.style.height = '60px';  // ✅ Mantiene proporción
       playButton.style.borderRadius = '50%';
       playButton.style.border = 'none';
       // Obtener colores del tema actual
@@ -458,16 +503,16 @@ function initExperienceCarousel() {
       if (!primaryColor) primaryColor = '#2c5697';
       if (!neutralColor) neutralColor = '#ffffff';
       
-      playButton.style.backgroundColor = primaryColor; // Color del tema
+      playButton.style.backgroundColor = colorToRgba(primaryColor, 0.85); // ✅ 85% opacidad para sutileza
       playButton.style.cursor = 'pointer';
       playButton.style.display = 'flex';
       playButton.style.alignItems = 'center';
       playButton.style.justifyContent = 'center';
-      playButton.style.fontSize = '28px';
+      playButton.style.fontSize = '20px';  // ✅ Proporcional al nuevo tamaño
       playButton.style.color = neutralColor; // Color contraste
       playButton.style.zIndex = '10';
       playButton.style.transition = 'all 0.3s ease';
-      playButton.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+      playButton.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';  // ✅ Sombra más suave
       playButton.style.lineHeight = '1';
       
       // Crear ícono de play con múltiples fallbacks
@@ -484,7 +529,7 @@ function initExperienceCarousel() {
       // Crear fallback Unicode siempre presente
       var unicodeIcon = document.createElement('span');
       unicodeIcon.innerHTML = '▶';
-      unicodeIcon.style.fontSize = '28px';
+      unicodeIcon.style.fontSize = '20px';  // ✅ Proporcional al botón
       unicodeIcon.style.marginLeft = '4px';
       unicodeIcon.style.color = 'inherit';
       unicodeIcon.style.display = 'inline-block';
@@ -492,7 +537,7 @@ function initExperienceCarousel() {
       // Intentar Phosphor como mejora (pero no depender de él)
       var phosphorIcon = document.createElement('i');
       phosphorIcon.className = 'ph ph-play-fill';
-      phosphorIcon.style.fontSize = '28px';
+      phosphorIcon.style.fontSize = '20px';  // ✅ Proporcional al botón
       phosphorIcon.style.marginLeft = '3px';
       phosphorIcon.style.position = 'absolute';
       phosphorIcon.style.display = 'inline-block';
@@ -568,7 +613,7 @@ function initExperienceCarousel() {
       // Hover effects para el botón de play - usar closure para capturar colores
       playButton.addEventListener('mouseenter', (function(originalColor) {
         return function() {
-          this.style.transform = 'translate(-50%, -50%) scale(1.1)';
+          this.style.transform = 'translate(-50%, -50%) scale(1.05)';  // ✅ Hover más sutil
           
           // Calcular color más oscuro para hover
           var hoverColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-700').trim();
@@ -578,15 +623,15 @@ function initExperienceCarousel() {
           }
           
           this.style.backgroundColor = hoverColor;
-          this.style.boxShadow = '0 6px 16px rgba(0,0,0,0.4)';
+          this.style.boxShadow = '0 3px 12px rgba(0,0,0,0.25)';  // ✅ Sombra hover más suave
         };
       })(primaryColor));
 
       playButton.addEventListener('mouseleave', (function(originalColor) {
         return function() {
           this.style.transform = 'translate(-50%, -50%) scale(1)';
-          this.style.backgroundColor = originalColor; // Color original
-          this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+          this.style.backgroundColor = colorToRgba(originalColor, 0.85); // ✅ Color original con transparencia
+          this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';  // ✅ Sombra normal más suave
         };
       })(primaryColor));
 
