@@ -1,19 +1,20 @@
 <style>
   /*Quitar controles a numeros Importante */
-  input[type="number"]::-webkit-inner-combobox,
-  input[type="number"]::-webkit-outer-combobox {
+  input[type='number']::-webkit-inner-combobox,
+  input[type='number']::-webkit-outer-combobox {
     -webkit-appearance: none;
     margin: 0;
   }
+
   /* Ocultar los controles de incremento y decremento cuando el campo está enfocado */
-  input[type="number"]:focus::-webkit-inner-spin-button,
-  input[type="number"]:focus::-webkit-outer-spin-button {
+  input[type='number']:focus::-webkit-inner-spin-button,
+  input[type='number']:focus::-webkit-outer-spin-button {
     display: none;
   }
 
   /* Ocultar los controles de incremento y decremento cuando el mouse está encima */
-  input[type="number"]:hover::-webkit-inner-spin-button,
-  input[type="number"]:hover::-webkit-outer-spin-button {
+  input[type='number']:hover::-webkit-inner-spin-button,
+  input[type='number']:hover::-webkit-outer-spin-button {
     display: none;
   }
 
@@ -88,12 +89,11 @@
       class="d-flex flex-column justify-content-around px-4 py-5 p-md-5"
       novalidate
       aria-label="Formulario de contacto"
-      class="needs-validation"
-    >
+      class="needs-validation">
       <input type="hidden" name="oid" value="00Df4000003l8Bf" />
       <input type="hidden" name="retURL" id="retURL" :value="data.urlPrograma + '?Subsource=' + data.programa" />
       <!-- <input type="hidden" name="debug" value="1">
-                    <input type="hidden" name="debugEmail" value="@javeriana.edu.co">     -->
+          <input type="hidden" name="debugEmail" value="@javeriana.edu.co">     -->
 
       <!--Nombres y apellidos-->
       <div class="form-row">
@@ -108,8 +108,7 @@
             name="first_name"
             type="text"
             :class="{ error: errors.first_name }"
-            required=""
-          />
+            required="" />
           <div class="error_text" v-show="errors.first_name">*Campo obligatorio</div>
         </div>
 
@@ -124,8 +123,7 @@
             name="last_name"
             type="text"
             required=""
-            :class="{ error: errors.last_name }"
-          />
+            :class="{ error: errors.last_name }" />
           <div class="error_text" v-show="errors.last_name">*Campo obligatorio</div>
         </div>
       </div>
@@ -140,8 +138,7 @@
             name="00N5G00000WmhsT"
             class="form-control border-top-0 border-left-0 border-right-0 rounded-1"
             required=""
-            :class="{ error: errors.tipo_doc }"
-          >
+            :class="{ error: errors.tipo_doc }">
             <option value="">*Tipo de documento</option>
             <option value="CC">Cédula Ciudadanía</option>
             <option value="CE">Cédula Extranjería</option>
@@ -163,11 +160,11 @@
             name="00N5G00000WmhsR"
             type="text"
             required
-            :class="{ error: errors.numero_doc }"
-          />
+            :class="{ error: errors.numero_doc }" />
           <div class="error_text" v-show="errors.numero_doc">*Campo obligatorio</div>
         </div>
       </div>
+
       <!--Email y celular-->
       <div class="form-row">
         <div class="form-group col-12">
@@ -180,8 +177,7 @@
             name="email"
             type="email"
             required
-            :class="{ error: errors.email }"
-          />
+            :class="{ error: errors.email }" />
           <div class="error_text" v-show="errors.email">Ingrese un correo válido</div>
         </div>
       </div>
@@ -197,14 +193,12 @@
               v-model="data.prefijoCel"
               v-on:change="deleteInvalid('prefijoCel')"
               required
-              style="font-size: medium; padding: 0px 25px 0px 5px"
-            >
+              style="font-size: medium; padding: 0px 25px 0px 5px">
               <option value="">(+) Indicativo</option>
               <option
                 v-for="pais in prefijoCel"
                 :value="pais.phoneCode"
-                v-bind:style="{ backgroundColor: pais.phoneName === 'Colombia' ? 'aliceBlue' : '', color: pais.phoneName === 'Colombia' ? '#000000' : '', fontWeight: pais.phoneName === 'Colombia' ? '900' : '' }"
-              >
+                v-bind:style="{ backgroundColor: pais.phoneName === 'Colombia' ? 'aliceBlue' : '', color: pais.phoneName === 'Colombia' ? '#000000' : '', fontWeight: pais.phoneName === 'Colombia' ? '900' : '' }">
                 (+{{ pais.phoneCode }}) {{ pais.phoneName }}
               </option>
             </select>
@@ -223,8 +217,7 @@
             minlength="8"
             maxlength="15"
             required
-            :class="{ error: errors.mobile }"
-          />
+            :class="{ error: errors.mobile }" />
           <div class="error_text" v-show="errors.mobile">*Campo obligatorio (entre 8 y 10 caracteres)</div>
         </div>
       </div>
@@ -240,14 +233,9 @@
             id="00N5G00000WmhvJ"
             name="00N5G00000WmhvJ"
             required
-            :class="{ error: errors.pais }"
-          >
+            :class="{ error: errors.pais }">
             <option value="">*País de residencia</option>
-            <option
-              v-for="(item, index) in ubicaciones"
-              v-bind:value="index"
-              v-bind:style="(index=='COL') ? 'font-weight: 700;' : '' "
-            >
+            <option v-for="(item, index) in ubicaciones" v-bind:value="index" v-bind:style="(index=='COL') ? 'font-weight: 700;' : '' ">
               {{ item.nombre }}
             </option>
           </select>
@@ -262,22 +250,15 @@
             class="form-control border-top-0 border-left-0 border-right-0 rounded-1"
             id="00N5G00000WmhvX"
             name="00N5G00000WmhvX"
-            :class="{ error: errors.departamento }"
-          >
+            :class="{ error: errors.departamento }">
             <option value="">*Selecciona el departamento</option>
-            <option v-for="(item, index) in ubicaciones[data.pais].departamentos" v-bind:value="item.codigo">
-              {{ item.nombre }}
-            </option>
+            <option v-for="(item, index) in ubicaciones[data.pais].departamentos" v-bind:value="item.codigo">{{ item.nombre }}</option>
           </select>
           <div class="error_text" v-show="errors.departamento">*Campo obligatorio</div>
         </div>
 
         <!-- Ciudad -->
-        <div
-          class="form-group col-md-6 col-sm-12"
-          id="ciudadContainer"
-          v-if="data.pais=='COL' && data.departamento!=''"
-        >
+        <div class="form-group col-md-6 col-sm-12" id="ciudadContainer" v-if="data.pais=='COL' && data.departamento!=''">
           <select
             v-model="data.ciudad"
             v-on:change="deleteInvalid('ciudad')"
@@ -285,12 +266,9 @@
             id="00N5G00000WmhvO"
             name="00N5G00000WmhvO"
             v-bind:required="data.pais=='COL'"
-            :class="{ error: errors.ciudad }"
-          >
+            :class="{ error: errors.ciudad }">
             <option value="">*Selecciona la Ciudad</option>
-            <option v-for="(item, index) in getCiudades(data.departamento)" v-bind:value="item.codigo">
-              {{ item.nombre }}
-            </option>
+            <option v-for="(item, index) in getCiudades(data.departamento)" v-bind:value="item.codigo">{{ item.nombre }}</option>
           </select>
           <div class="error_text" v-show="errors.ciudad">*Campo obligatorio</div>
         </div>
@@ -307,8 +285,7 @@
             :class="{ error: errors.periodo_esperado }"
             maxlength="20"
             name="00N5G00000WmhvI"
-            required=""
-          >
+            required="">
             <option value="">*Periodo de Ingreso</option>
             <option value="PREG2610">Primer semestre de 2026</option>
             <option value="PREG2630">Segundo semestre de 2026</option>
@@ -328,8 +305,7 @@
               v-model="data.programa"
               class="form-control validates-as-required rounded-1 text-dark mb-3"
               name="00N5G00000WmhvV"
-              :class="{ error: errors.programa }"
-            />
+              :class="{ error: errors.programa }" />
             <div class="error_text" v-show="errors.programa">Selecciona</div>
           </span>
         </div>
@@ -342,8 +318,7 @@
             id="00NJw000001J3Hl"
             name="00NJw000001J3Hl"
             v-model="data.origen_sol"
-            title="Origen de la Solicitud"
-          >
+            title="Origen de la Solicitud">
             <option selected value="Web to Lead">Web to Lead</option>
           </select>
 
@@ -351,8 +326,7 @@
             id="00N5G00000WmhvT"
             name="00N5G00000WmhvT"
             v-model="data.fuenteAutoriza"
-            title="Fuente autorización datos personales"
-          >
+            title="Fuente autorización datos personales">
             <option value="Landing Programas">Landing Programas</option>
           </select>
           <label for="lead_source">Origen del candidato</label>
@@ -365,23 +339,15 @@
 
         <!--UTMS-->
         <div class="form-row">
-          Fuente:<input id="00N5G00000WmhvW" v-model="data.fuente" name="00N5G00000WmhvW" title="Fuente" type="text" />
-          Subfuente:<input
+          Fuente:<input id="00N5G00000WmhvW" v-model="data.fuente" name="00N5G00000WmhvW" title="Fuente" type="text" /> Subfuente:<input
             id="00N5G00000WmhvZ"
             v-model="data.subfuente"
             name="00N5G00000WmhvZ"
             title="Subfuente"
-            type="text"
-          />
+            type="text" />
           Medio
           <input id="00NJw000001J3g8" v-model="data.medio" name="00NJw000001J3g8" title="Medio" type="text" />
-          Campaña:<input
-            id="00N5G00000Wmi8x"
-            v-model="data.campana"
-            maxlength="255"
-            name="00N5G00000Wmi8x"
-            type="text"
-          />
+          Campaña:<input id="00N5G00000Wmi8x" v-model="data.campana" maxlength="255" name="00N5G00000Wmi8x" type="text" />
         </div>
       </div>
 
@@ -405,8 +371,7 @@
               v-model="data.autoriza"
               id="00N5G00000WmhvF"
               name="00N5G00000WmhvF"
-              value="1"
-            />
+              value="1" />
             <label class="form-check-label text-azul" for="00N5G00000WmhvF">Sí</label><br />
           </div>
           <div class="form-check form-check-inline">
@@ -417,18 +382,18 @@
               v-model="data.autoriza"
               name="00N5G00000WmhvF"
               id="00N5G00000WmhvF"
-              value="0"
-            />
+              value="0" />
             <label class="form-check-label text-azul" for="autorizacion-2">No</label>
           </div>
         </div>
         <div class="col-md-12" id="autorizacionErrorMessage" v-show="errors.autoriza">
           <p style="color: brown; font-size: 0.8rem">
-            La Pontificia Universidad Javeriana requiere de su autorización para el tratamiento de sus datos personales
-            para continuar con el presente proceso, sin la autorización legalmente no podemos darle continuidad al mismo
+            La Pontificia Universidad Javeriana requiere de su autorización para el tratamiento de sus datos personales para continuar con
+            el presente proceso, sin la autorización legalmente no podemos darle continuidad al mismo
           </p>
         </div>
       </div>
+
       <!--Botón-->
       <div class="form-row col-12 mb-3">
         <div class="col-12">
@@ -436,16 +401,8 @@
             id="boton_enviar1"
             class="btn btn-warning w-50 py-2 text-azul fw-bold shadow my-2 border-0 mx-auto d-block"
             type="button"
-            style="
-              background-color: #f6bd30;
-              font-size: 1rem;
-              white-space: unset;
-              border-radius: 8rem;
-              color: #ffffff;
-              font-weight: 700;
-            "
-            disabled="disabled"
-          >
+            style="background-color: #f6bd30; font-size: 1rem; white-space: unset; border-radius: 8rem; color: #ffffff; font-weight: 700"
+            disabled="disabled">
             Cargando...
           </button>
           <button
@@ -462,8 +419,7 @@
               border-radius: 8rem;
               color: #ffffff;
               font-weight: 700;
-            "
-          >
+            ">
             Enviar
           </button>
         </div>
@@ -473,19 +429,19 @@
 </div>
 
 <script>
-  Liferay.on("allPortletsReady", function () {
-    let boton1 = document.getElementById("boton_enviar1");
-    let boton2 = document.getElementById("boton_enviar2");
-    boton1.classList.remove("d-block");
-    boton1.classList.add("d-none");
+  Liferay.on('allPortletsReady', function () {
+    let boton1 = document.getElementById('boton_enviar1')
+    let boton2 = document.getElementById('boton_enviar2')
+    boton1.classList.remove('d-block')
+    boton1.classList.add('d-none')
 
-    boton2.classList.remove("d-none");
-    boton2.classList.add("d-block");
-  });
+    boton2.classList.remove('d-none')
+    boton2.classList.add('d-block')
+  })
   //Captura del codigo SAE
   //let codPrograma = "DSIND";
 
-  const { createApp } = Vue;
+  const { createApp } = Vue
 
   const app = createApp({
     data() {
@@ -498,28 +454,28 @@
         formInValid: true,
         isSubmitting: false,
         data: {
-          urlPrograma: "",
-          first_name: "",
-          last_name: "",
-          tipo_doc: "",
-          numero_doc: "",
-          email: "",
-          prefijoCel: "",
-          mobile: "",
-          pais: "",
-          departamento: "",
-          ciudad: "",
+          urlPrograma: '',
+          first_name: '',
+          last_name: '',
+          tipo_doc: '',
+          numero_doc: '',
+          email: '',
+          prefijoCel: '',
+          mobile: '',
+          pais: '',
+          departamento: '',
+          ciudad: '',
           programa: codPrograma,
-          periodo_esperado: "",
-          origen_sol: "Web to Lead",
-          fuenteAutoriza: "Landing Programas",
-          lead: "Landing Pages",
-          company: "NA",
-          fuente: "Javeriana",
-          subfuente: "Organico",
-          medio: "Landing",
-          campana: "Mercadeo",
-          autoriza: "",
+          periodo_esperado: '',
+          origen_sol: 'Web to Lead',
+          fuenteAutoriza: 'Landing Programas',
+          lead: 'Landing Pages',
+          company: 'NA',
+          fuente: 'Javeriana',
+          subfuente: 'Organico',
+          medio: 'Landing',
+          campana: 'Mercadeo',
+          autoriza: ''
         },
         errors: {
           urlPrograma: false,
@@ -543,41 +499,41 @@
           subfuente: false,
           medio: false,
           campana: false,
-          autoriza: false,
-        },
-      };
+          autoriza: false
+        }
+      }
     },
     watch: {
-      "data.departamento": function (newVal, oldVal) {
-        this.data.ciudad = "";
-        this.errors.ciudad = false;
+      'data.departamento': function (newVal, oldVal) {
+        this.data.ciudad = ''
+        this.errors.ciudad = false
       },
-      "data.first_name": function (newText, oldText) {
-        this.data.first_name = this.limpiarTexto(newText);
+      'data.first_name': function (newText, oldText) {
+        this.data.first_name = this.limpiarTexto(newText)
       },
-      "data.last_name": function (newText, oldText) {
-        this.data.last_name = this.limpiarTexto(newText);
+      'data.last_name': function (newText, oldText) {
+        this.data.last_name = this.limpiarTexto(newText)
       },
-      "data.mobile": function (newMobile, oldMobile) {
-        this.data.mobile = this.limpiarNumeros(newMobile);
+      'data.mobile': function (newMobile, oldMobile) {
+        this.data.mobile = this.limpiarNumeros(newMobile)
       },
-      "data.email": function (newEmail, oldEmail) {
+      'data.email': function (newEmail, oldEmail) {
         const regex =
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         if (regex.test(newEmail) === false) {
-          this.errors.email = true;
+          this.errors.email = true
         } else {
-          this.errors.email = false;
+          this.errors.email = false
         }
-      },
+      }
     },
     mounted() {
       // Recien carga el sitio se cargan los datos
-      this.limpiarDatos();
-      this.getUbicaciones();
-      this.getProgramas(codPrograma);
-      this.getParametersGet();
-      this.getPrefijoCel();
+      this.limpiarDatos()
+      this.getUbicaciones()
+      this.getProgramas(codPrograma)
+      this.getParametersGet()
+      this.getPrefijoCel()
     },
     methods: {
       /**
@@ -585,39 +541,39 @@
        **/
       limpiarDatos() {
         this.data = {
-          urlPrograma: "",
-          first_name: "",
-          last_name: "",
-          tipo_doc: "",
-          numero_doc: "",
-          email: "",
-          mobile: "",
-          prefijoCel: "",
-          pais: "",
-          departamento: "",
-          ciudad: "",
+          urlPrograma: '',
+          first_name: '',
+          last_name: '',
+          tipo_doc: '',
+          numero_doc: '',
+          email: '',
+          mobile: '',
+          prefijoCel: '',
+          pais: '',
+          departamento: '',
+          ciudad: '',
           programa: codPrograma,
-          periodo_esperado: "",
-          origen_sol: "Web to Lead",
-          fuenteAutoriza: "Landing Programas",
-          lead: "Landing Pages",
-          company: "NA",
-          fuente: "Javeriana",
-          subfuente: "Organico",
-          medio: "Landing",
-          campana: "Mercadeo",
-          autoriza: "",
-        };
+          periodo_esperado: '',
+          origen_sol: 'Web to Lead',
+          fuenteAutoriza: 'Landing Programas',
+          lead: 'Landing Pages',
+          company: 'NA',
+          fuente: 'Javeriana',
+          subfuente: 'Organico',
+          medio: 'Landing',
+          campana: 'Mercadeo',
+          autoriza: ''
+        }
       },
       /**
        * Funcion para obtener los valores de los parametros que vienen por GET
        **/
       getParametersGet() {
-        let urlParams = new URLSearchParams(window.location.search);
-        this.data.fuente = urlParams.has("utm_source") ? urlParams.get("utm_source") : "Javeriana";
-        this.data.subfuente = urlParams.has("utm_subsource") ? urlParams.get("utm_subsource") : "Organico";
-        this.data.medio = urlParams.has("utm_medium") ? urlParams.get("utm_medium") : "Landing";
-        this.data.campana = urlParams.has("utm_campaign") ? urlParams.get("utm_campaign") : "Mercadeo";
+        let urlParams = new URLSearchParams(window.location.search)
+        this.data.fuente = urlParams.has('utm_source') ? urlParams.get('utm_source') : 'Javeriana'
+        this.data.subfuente = urlParams.has('utm_subsource') ? urlParams.get('utm_subsource') : 'Organico'
+        this.data.medio = urlParams.has('utm_medium') ? urlParams.get('utm_medium') : 'Landing'
+        this.data.campana = urlParams.has('utm_campaign') ? urlParams.get('utm_campaign') : 'Mercadeo'
       },
       /**
        * Funcion para cargar los programas
@@ -625,25 +581,25 @@
       getProgramas(codPrograma) {
         //return axios.get('https://raw.githubusercontent.com/gesalas/feria/main/programas.json')
         return axios
-          .get("https://www.javeriana.edu.co/recursosdb/1372208/10609114/programas.json")
-          .then((response) => {
-            const data = response.data;
+          .get('https://www.javeriana.edu.co/recursosdb/1372208/10609114/programas.json')
+          .then(response => {
+            const data = response.data
             for (let facultadKey in data) {
-              const facultad = data[facultadKey];
+              const facultad = data[facultadKey]
               for (let programaKey in facultad) {
-                const programas = facultad[programaKey].Programas;
+                const programas = facultad[programaKey].Programas
                 for (let i = 0; i < programas.length; i++) {
                   if (programas[i].Codigo === codPrograma) {
-                    this.data.urlPrograma = facultad[programaKey].url;
-                    return;
+                    this.data.urlPrograma = facultad[programaKey].url
+                    return
                   }
                 }
               }
             }
           })
-          .catch((error) => {
-            console.error("Error al obtener los programas:", error);
-          });
+          .catch(error => {
+            console.error('Error al obtener los programas:', error)
+          })
       },
       //
       /**
@@ -663,14 +619,14 @@
        **/
       getUbicaciones() {
         axios
-          .get("https://www.javeriana.edu.co/recursosdb/1372208/10609114/ubicaciones.json")
+          .get('https://www.javeriana.edu.co/recursosdb/1372208/10609114/ubicaciones.json')
           //axios.get('https://raw.githubusercontent.com/gesalas/feria/main/ubicaciones.json')
-          .then((response) => {
-            this.ubicaciones = response.data;
+          .then(response => {
+            this.ubicaciones = response.data
           })
           .catch(function (error) {
-            console.log(error);
-          });
+            console.log(error)
+          })
       },
 
       /**
@@ -678,209 +634,209 @@
        **/
       getPrefijoCel() {
         axios
-          .get("https://www.javeriana.edu.co/recursosdb/1372208/10609114/codigos_pais.json")
+          .get('https://www.javeriana.edu.co/recursosdb/1372208/10609114/codigos_pais.json')
           //axios.get('https://raw.githubusercontent.com/gesalas/Piloto_registro_de_llamadas/main/Json/codigos_pais.json')
-          .then((response) => {
+          .then(response => {
             // Filtrar los datos para obtener solo los códigos de país y sus prefijos
-            this.prefijoCel = response.data.map((pais) => {
+            this.prefijoCel = response.data.map(pais => {
               return {
                 iso2: pais.iso2,
                 phoneCode: pais.phoneCode,
-                phoneName: pais.nameES,
-              };
-            });
-          });
+                phoneName: pais.nameES
+              }
+            })
+          })
       },
 
       /**
        * Funcion para obtener las ciudades del departamento seleccionado
        **/
       getCiudades(departamento) {
-        let departamentoSel = this.ubicaciones["COL"].departamentos.filter((res) => {
-          return res.codigo == departamento;
-        });
-        return departamentoSel[0].ciudades;
+        let departamentoSel = this.ubicaciones['COL'].departamentos.filter(res => {
+          return res.codigo == departamento
+        })
+        return departamentoSel[0].ciudades
       },
       /**
        * Funcion para validar si esta el campo de aceptar terminos
        **/
       validateAutoriza() {
-        if (this.data.autoriza == "1") {
-          this.errors.autoriza = false;
-          this.formInValid = false;
-        } else if (this.data.autoriza == "0") {
-          this.errors.autoriza = true;
-          this.formInValid = true;
+        if (this.data.autoriza == '1') {
+          this.errors.autoriza = false
+          this.formInValid = false
+        } else if (this.data.autoriza == '0') {
+          this.errors.autoriza = true
+          this.formInValid = true
         }
       },
       /**
        * Funcion para limpiar textos
        **/
       limpiarTexto(texto) {
-        let textolimpio = texto.replace(/[^a-zA-Záéíóúñ ]/g, "");
-        return textolimpio;
+        let textolimpio = texto.replace(/[^a-zA-Záéíóúñ ]/g, '')
+        return textolimpio
       },
       /**
        * Funcion para limpiar numeros
        **/
       limpiarNumeros(numero) {
-        let textolimpio = numero.replace(/[^0-9 ]/g, "");
-        return textolimpio;
+        let textolimpio = numero.replace(/[^0-9 ]/g, '')
+        return textolimpio
       },
       /**
        * Funcion para limpiar json
        **/
       limpiarJson(texto) {
         return texto
-          .replaceAll("|", "")
-          .replace(/(\r\n|\n|\r)/gm, "")
+          .replaceAll('|', '')
+          .replace(/(\r\n|\n|\r)/gm, '')
           .replace(/['"]+/g, "'")
-          .trim();
+          .trim()
       },
       /**
        * Funcion para limpiar alfanumericos
        **/
       limpiarAlfanumerico(text) {
-        let textolimpio = text.replace(/[^a-zA-Z0-9- ]/g, "");
-        return textolimpio;
+        let textolimpio = text.replace(/[^a-zA-Z0-9- ]/g, '')
+        return textolimpio
       },
       /**
        * Funcion para validar que los campos tengan datos
        **/
       validateInputs() {
-        let valid = true;
-        let keys = Object.keys(this.data);
-        keys.forEach((element) => {
-          this.errors[element] = false;
+        let valid = true
+        let keys = Object.keys(this.data)
+        keys.forEach(element => {
+          this.errors[element] = false
           switch (element) {
-            case "first_name":
-            case "last_name":
-            case "tipo_doc":
-            case "numero_doc":
-            case "urlPrograma":
-            case "pais":
-            case "periodo_esperado":
-            case "prefijoCel":
-            case "programa":
-              if (this.data[element] == "" || this.data[element] == null) {
-                valid = false;
-                this.errors[element] = true;
+            case 'first_name':
+            case 'last_name':
+            case 'tipo_doc':
+            case 'numero_doc':
+            case 'urlPrograma':
+            case 'pais':
+            case 'periodo_esperado':
+            case 'prefijoCel':
+            case 'programa':
+              if (this.data[element] == '' || this.data[element] == null) {
+                valid = false
+                this.errors[element] = true
               }
-              break;
-            case "departamento":
-            case "ciudad":
-              if ((this.data[element] == "" || this.data[element] == null) && this.data.pais == "COL") {
-                valid = false;
-                this.errors[element] = true;
+              break
+            case 'departamento':
+            case 'ciudad':
+              if ((this.data[element] == '' || this.data[element] == null) && this.data.pais == 'COL') {
+                valid = false
+                this.errors[element] = true
               }
-              break;
-            case "email":
+              break
+            case 'email':
               const regex =
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-              if (this.data[element] == "" || this.data[element] == null) {
-                valid = false;
-                this.errors[element] = true;
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              if (this.data[element] == '' || this.data[element] == null) {
+                valid = false
+                this.errors[element] = true
               } else if (regex.test(this.data[element]) === false) {
-                valid = false;
-                this.errors[element] = true;
+                valid = false
+                this.errors[element] = true
               }
-              break;
-            case "mobile":
+              break
+            case 'mobile':
               if (
-                this.data[element] == "" ||
+                this.data[element] == '' ||
                 this.data[element] == null ||
                 this.data[element].length < 8 ||
                 this.data[element].length > 10
               ) {
-                valid = false;
-                this.errors[element] = true;
+                valid = false
+                this.errors[element] = true
               }
-              break;
+              break
             default:
-              break;
+              break
           }
-        });
-        return valid;
+        })
+        return valid
       },
       /**
        * Funcion para enviar el formulario
        **/
       validateForm: function (e) {
         if (!this.validateInputs()) {
-          e.preventDefault();
-          return false;
+          e.preventDefault()
+          return false
         } else {
-          this.isSubmitting = true;
-          this.$refs.form_SF.submit();
+          this.isSubmitting = true
+          this.$refs.form_SF.submit()
         }
       },
       /**
        * Funcion para limpiar en caso que sea invalido
        **/
       deleteInvalid(campo) {
-        this.errors[campo] = false;
-      },
-    },
-  });
+        this.errors[campo] = false
+      }
+    }
+  })
 
-  const vueApp = app.mount("#app");
+  const vueApp = app.mount('#app')
 
   // Configuración de periodos por tipo de programa
   const PERIODO_CONFIG = {
     PREGRADO: {
-      prefijo: "PREG",
+      prefijo: 'PREG',
       opciones: [
-        { codigo: "2610", texto: "Primer semestre de 2026" },
-        { codigo: "2630", texto: "Segundo semestre de 2026" },
-        { codigo: "2710", texto: "Primer semestre de 2027" },
-        { codigo: "2730", texto: "Segundo semestre de 2027" },
-      ],
+        { codigo: '2610', texto: 'Primer semestre de 2026' },
+        { codigo: '2630', texto: 'Segundo semestre de 2026' },
+        { codigo: '2710', texto: 'Primer semestre de 2027' },
+        { codigo: '2730', texto: 'Segundo semestre de 2027' }
+      ]
     },
     POSGRADO: {
-      prefijo: "GRAD",
+      prefijo: 'GRAD',
       opciones: [
-        { codigo: "2610", texto: "Primer semestre de 2026" },
-        { codigo: "2630", texto: "Segundo semestre de 2026" },
-        { codigo: "2710", texto: "Primer semestre de 2027" },
-        { codigo: "2730", texto: "Segundo semestre de 2027" },
-      ],
-    },
-  };
+        { codigo: '2610', texto: 'Primer semestre de 2026' },
+        { codigo: '2630', texto: 'Segundo semestre de 2026' },
+        { codigo: '2710', texto: 'Primer semestre de 2027' },
+        { codigo: '2730', texto: 'Segundo semestre de 2027' }
+      ]
+    }
+  }
 
   /**
    * Actualiza las opciones del select de periodo según el tipo de programa
    */
   function actualizarPeriodoIngreso(tipoPrograma) {
-    const selectPeriodo = document.getElementById("00N5G00000WmhvI");
+    const selectPeriodo = document.getElementById('00N5G00000WmhvI')
 
     if (!selectPeriodo) {
-      console.error("No se encontró el select de periodo de ingreso");
-      return;
+      console.error('No se encontró el select de periodo de ingreso')
+      return
     }
 
     // Determinar configuración según tipo de programa
-    const config = tipoPrograma === "Pregrado" ? PERIODO_CONFIG.PREGRADO : PERIODO_CONFIG.POSGRADO;
+    const config = tipoPrograma === 'Pregrado' ? PERIODO_CONFIG.PREGRADO : PERIODO_CONFIG.POSGRADO
 
     // Limpiar opciones existentes excepto el placeholder
-    const opciones = selectPeriodo.querySelectorAll("option");
+    const opciones = selectPeriodo.querySelectorAll('option')
     for (let i = opciones.length - 1; i > 0; i--) {
-      opciones[i].remove();
+      opciones[i].remove()
     }
 
     // Agregar nuevas opciones con el prefijo correcto
-    config.opciones.forEach(function(periodo) {
-      const option = document.createElement("option");
-      option.value = config.prefijo + periodo.codigo;
-      option.textContent = periodo.texto;
-      selectPeriodo.appendChild(option);
-    });
+    config.opciones.forEach(function (periodo) {
+      const option = document.createElement('option')
+      option.value = config.prefijo + periodo.codigo
+      option.textContent = periodo.texto
+      selectPeriodo.appendChild(option)
+    })
 
     // Resetear el valor seleccionado en Vue
     if (vueApp && vueApp.data && vueApp.data.periodo_esperado) {
-      vueApp.data.periodo_esperado = "";
+      vueApp.data.periodo_esperado = ''
     }
 
-    console.log("Opciones de periodo actualizadas para " + tipoPrograma + " con prefijo " + config.prefijo);
+    console.log('Opciones de periodo actualizadas para ' + tipoPrograma + ' con prefijo ' + config.prefijo)
   }
 
   /**
@@ -888,27 +844,25 @@
    */
   function manejarCargaDatos(event) {
     try {
-      const dataPrograma = event.detail;
+      const dataPrograma = event.detail
 
       if (!dataPrograma || !dataPrograma.grado) {
-        console.error("Datos del programa no válidos o sin información de grado");
-        return;
+        console.error('Datos del programa no válidos o sin información de grado')
+        return
       }
 
-      const tipoPrograma = dataPrograma.grado;
-      console.log("Tipo de programa detectado: " + tipoPrograma);
+      const tipoPrograma = dataPrograma.grado
+      console.log('Tipo de programa detectado: ' + tipoPrograma)
 
       // Actualizar periodo de ingreso según el tipo de programa
-      actualizarPeriodoIngreso(tipoPrograma);
-
+      actualizarPeriodoIngreso(tipoPrograma)
     } catch (error) {
-      console.error("Error al procesar datos del programa:", error);
+      console.error('Error al procesar datos del programa:', error)
     }
   }
 
   // Registrar listener para el evento dataLoad
-  document.addEventListener("dataLoad", manejarCargaDatos);
+  document.addEventListener('dataLoad', manejarCargaDatos)
 
-  console.log("Listener para actualización de periodos registrado correctamente");
+  console.log('Listener para actualización de periodos registrado correctamente')
 </script>
-

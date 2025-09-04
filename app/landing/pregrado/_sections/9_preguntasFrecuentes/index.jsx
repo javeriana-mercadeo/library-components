@@ -28,7 +28,7 @@ const PreguntasFrecuentes = () => {
           {/* Primera pregunta expandida por defecto */}
           <div className='faq__item active'>
             <Button variant='light' fullWidth isEditable={false} className='faq__question'>
-              ¿Cuál es el perfil de ingreso al programa?
+              <h3>¿Cuál es el perfil de ingreso al programa?</h3>
               <span className='faq__icon'>
                 <i className='ph ph-caret-down'></i>
               </span>
@@ -133,7 +133,7 @@ const PreguntasFrecuentes = () => {
           {/* Preguntas colapsadas */}
           <div className='faq__item'>
             <Button variant='light' fullWidth isEditable={false} className='faq__question'>
-              ¿Qué debo tener en cuenta al momento de realizar la inscripción?
+              <h3>¿Qué debo tener en cuenta al momento de realizar la inscripción?</h3>
               <span className='faq__icon'>
                 <i className='ph ph-caret-up'></i>
               </span>
@@ -169,7 +169,7 @@ const PreguntasFrecuentes = () => {
 
           <div className='faq__item'>
             <Button variant='light' fullWidth isEditable={false} className='faq__question'>
-              ¿Qué oportunidades tendré para desarrollarme profesionalmente?
+              <h3>¿Qué oportunidades tendré para desarrollarme profesionalmente?</h3>
               <span className='faq__icon'>
                 <i className='ph ph-caret-down'></i>
               </span>
@@ -234,7 +234,7 @@ const PreguntasFrecuentes = () => {
 
           <div className='faq__item'>
             <Button variant='light' fullWidth isEditable={false} className='faq__question'>
-              Estoy interesado en la investigación, ¿Qué oferta tiene el programa?
+              <h3>Estoy interesado en la investigación, ¿Qué oferta tiene el programa?</h3>
               <span className='faq__icon'>
                 <i className='ph ph-caret-down'></i>
               </span>

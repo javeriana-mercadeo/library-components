@@ -176,7 +176,7 @@ const DoblePlanEstudio = () => {
             <span className={`${baseClass}_badge ${baseClass}_badge`}>{year}</span>
           </div>
 
-          <Title hierarchy='h2' className={`${baseClass}_semester-title`} size='lg' weight='bold' isEditable={false}>
+          <Title hierarchy='span' className={`${baseClass}_semester-title`} size='lg' weight='bold' isEditable={false}>
             {semester}
           </Title>
 

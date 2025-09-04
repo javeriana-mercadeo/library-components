@@ -75,7 +75,9 @@
       "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
       "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
       "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
-      "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)"
+      "Read(c:\\Users\\Amaro\\Imágenes\\Screenshots/**)",
+      "Read(/C:\\Users\\gavilanm-j\\Documents\\Desarrollo\\library-components\\app\\_library\\components\\header/**)",
+      "Read(C:\\Users\\gavilanm-j\\Pictures\\Screenshots/**)"
     ],
     "deny": []
   }

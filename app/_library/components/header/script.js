@@ -4,7 +4,6 @@
 
 // Importar módulos separados
 import { HeaderManager } from './headerManager.js'
-import { ModalForm } from './components/modalFrom.js'
 
 // ███████████████████████████████████████████████████████████████████████████████
 // █                        UTILIDADES DE ESPERA                               █
@@ -159,9 +158,6 @@ const AppSystem = {
 
   initModalForm() {
     try {
-      // Exponer ModalForm globalmente
-      window.ModalForm = ModalForm
-      ModalForm.init()
       return true
     } catch (error) {
       if (typeof Logger !== 'undefined' && Logger.error) {
@@ -177,7 +173,6 @@ const AppSystem = {
     // Limpiar solo si existen
     try {
       if (window.HeaderManager) HeaderManager.cleanup()
-      if (window.ModalForm) ModalForm.cleanup()
     } catch (error) {
       if (typeof Logger !== 'undefined' && Logger.debug) {
         Logger.debug('Cleanup warning:', error)

@@ -155,7 +155,7 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   padding: var(--spacing-md);
 
   @include responsive {
-    padding: 0 var(--spacing-xs) var(--spacing-md) var(--spacing-2xl);
+    padding: 0 var(--spacing-md) var(--spacing-md) var(--spacing-2xl);
     border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
   }
 }
