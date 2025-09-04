@@ -83,10 +83,10 @@ function initExperienceCarousel() {
     if (prevButton) prevButton.style.display = 'none'
     if (nextButton) nextButton.style.display = 'none'
 
-    setTimeout(function() {
-      loadVideos();
+    // ✅ Usar callback para garantizar que todos los videos estén listos
+    loadVideos(function() {
       setupVideoClickDetection();
-    }, 100);
+    });
   }
 
   // Función para activar modo Swiper
@@ -173,10 +173,10 @@ function initExperienceCarousel() {
 
         on: {
           init: function(swiper) {
-            setTimeout(function() {
-              loadVideos();
+            // ✅ Usar callback para garantizar que todos los videos estén listos
+            loadVideos(function() {
               setupVideoClickDetection();
-            }, 100);
+            });
           },
           slideChange: function (swiper) {
             pauseAllVideos()
@@ -188,16 +188,43 @@ function initExperienceCarousel() {
     }
   }
 
-  // Sistema de carga de videos
-  function loadVideos() {
+  // Sistema de carga de videos con callback
+  function loadVideos(callback) {
     var videoContainers = document.querySelectorAll('.experience-carousel__video-container[data-video-id]')
+    var totalVideos = videoContainers.length
+    var loadedVideos = 0
+
+    // Si no hay videos, ejecutar callback inmediatamente
+    if (totalVideos === 0) {
+      if (typeof callback === 'function') {
+        setTimeout(callback, 0)
+      }
+      return
+    }
+
+    // Función para verificar si todos los videos están listos
+    function checkAllLoaded() {
+      loadedVideos++
+      console.log('[VIDEO] Cargado', loadedVideos, 'de', totalVideos)
+      
+      if (loadedVideos >= totalVideos) {
+        console.log('[VIDEO] Todos los videos cargados, ejecutando callback')
+        if (typeof callback === 'function') {
+          setTimeout(callback, 50) // Pequeño delay para asegurar DOM updates
+        }
+      }
+    }
 
     for (var i = 0; i < videoContainers.length; i++) {
       var container = videoContainers[i]
       var videoId = container.getAttribute('data-video-id')
       var orientation = container.getAttribute('data-video-orientation') || 'vertical'
 
-      if (!videoId) continue
+      if (!videoId) {
+        // Video sin ID, contar como "cargado" para no bloquear
+        checkAllLoaded()
+        continue
+      }
 
       var iframe = document.createElement('iframe')
       var params = new URLSearchParams({
@@ -225,9 +252,13 @@ function initExperienceCarousel() {
         this.style.opacity = '1'
         this.classList.add('loaded')
         this.parentNode.classList.add('video-loaded')
+        checkAllLoaded() // ✅ Verificar si todos están listos
       })
 
-      iframe.addEventListener('error', function () {})
+      iframe.addEventListener('error', function () {
+        console.warn('[VIDEO] Error cargando iframe:', this.src)
+        checkAllLoaded() // ✅ Contar errores como "cargados" para no bloquear
+      })
 
       container.innerHTML = ''
       container.appendChild(iframe)
@@ -449,32 +480,54 @@ function initExperienceCarousel() {
       playIcon.style.width = '100%';
       playIcon.style.height = '100%';
       
-      // Intentar usar Phosphor Icons primero
+      // ✅ SOLUCIÓN INMEDIATA: Usar siempre fallback Unicode + Phosphor como mejora
+      // Crear fallback Unicode siempre presente
+      var unicodeIcon = document.createElement('span');
+      unicodeIcon.innerHTML = '▶';
+      unicodeIcon.style.fontSize = '28px';
+      unicodeIcon.style.marginLeft = '4px';
+      unicodeIcon.style.color = 'inherit';
+      unicodeIcon.style.display = 'inline-block';
+      
+      // Intentar Phosphor como mejora (pero no depender de él)
       var phosphorIcon = document.createElement('i');
       phosphorIcon.className = 'ph ph-play-fill';
       phosphorIcon.style.fontSize = '28px';
-      phosphorIcon.style.marginLeft = '3px'; // Ajuste visual para centrado óptico
+      phosphorIcon.style.marginLeft = '3px';
+      phosphorIcon.style.position = 'absolute';
+      phosphorIcon.style.display = 'inline-block';
       
+      // Agregar ambos - Phosphor ocultará Unicode si carga
+      playIcon.appendChild(unicodeIcon);
       playIcon.appendChild(phosphorIcon);
       
       // Agregar ícono al botón
       playButton.appendChild(playIcon);
       
-      // Verificar si el ícono cargó, si no usar fallback
+      // Verificar si Phosphor cargó para optimizar visualización
       setTimeout(function() {
         try {
           var computedStyle = getComputedStyle(phosphorIcon, '::before');
-          if (!computedStyle.content || computedStyle.content === 'none' || computedStyle.content === '""') {
-            // Phosphor no cargó, usar fallback Unicode
-            playIcon.innerHTML = '<span style="font-size: 28px; margin-left: 4px;">▶</span>';
-            console.log('[VIDEO] Usando fallback Unicode para ícono play');
+          var content = computedStyle.content;
+          
+          console.log('[VIDEO] Verificando ícono Phosphor, content:', content);
+          
+          if (content && content !== 'none' && content !== '""' && content !== 'normal') {
+            // ✅ Phosphor cargado - ocultar Unicode
+            console.log('[VIDEO] Phosphor cargado, ocultando fallback');
+            unicodeIcon.style.display = 'none';
+            phosphorIcon.style.position = 'static';
+          } else {
+            // ✅ Phosphor no cargado - mostrar solo Unicode
+            console.log('[VIDEO] Phosphor no cargado, usando Unicode');
+            phosphorIcon.style.display = 'none';
           }
         } catch (e) {
-          // Error en detección, usar fallback
-          playIcon.innerHTML = '<span style="font-size: 28px; margin-left: 4px;">▶</span>';
-          console.log('[VIDEO] Error detectando ícono, usando fallback');
+          // Error - usar solo Unicode
+          console.log('[VIDEO] Error detectando ícono, usando Unicode:', e.message);
+          phosphorIcon.style.display = 'none';
         }
-      }, 200);
+      }, 300);
       playButton.setAttribute('aria-label', 'Reproducir video');
 
       // Agregar data attribute para identificar el iframe
