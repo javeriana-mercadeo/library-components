@@ -8,6 +8,36 @@ if (typeof module === 'undefined' && typeof exports === 'undefined') {
   var experienceSwiper = null
   var videoStates = new Map() // Rastrear estado de cada video
 
+  // Función helper para obtener colores del tema o fallback
+  function getThemeColors() {
+    var primaryColor, neutralColor, hoverColor;
+    
+    try {
+      // Intentar obtener del tema actual
+      primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-600').trim();
+      neutralColor = getComputedStyle(document.documentElement).getPropertyValue('--neutral').trim();
+      
+      // Si no se encuentran, usar fallback
+      if (!primaryColor) primaryColor = '#2c5697';
+      if (!neutralColor) neutralColor = '#ffffff';
+      
+      // Color hover más oscuro
+      hoverColor = '#1e3f6f';
+      
+    } catch (e) {
+      // Fallback completo si falla
+      primaryColor = '#2c5697';
+      neutralColor = '#ffffff';  
+      hoverColor = '#1e3f6f';
+    }
+    
+    return {
+      primary: primaryColor,
+      neutral: neutralColor,
+      hover: hoverColor
+    };
+  }
+
   // Función para calcular cuántos slides caben visualmente en el viewport
   function getSlidesVisibleInViewport(windowWidth, slideWidth, gap) {
     var containerPadding = windowWidth < 768 ? 30 : 60
@@ -300,14 +330,14 @@ if (typeof module === 'undefined' && typeof exports === 'undefined') {
       try {
         iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
         
-        // Mostrar overlay de este video (está pausado)
+        // Mostrar botón de play de este video (está pausado)
         var container = iframe.parentNode;
-        var overlay = container.querySelector('.video-click-detector');
-        if (overlay) {
-          overlay.style.display = 'flex';
-          overlay.style.opacity = '1';
-          overlay.style.pointerEvents = 'auto';
-          console.log('[EXPERIENCE] Overlay mostrado para video pausado');
+        var playButton = container.querySelector('.video-play-button');
+        if (playButton) {
+          playButton.style.opacity = '1';
+          playButton.style.pointerEvents = 'auto';
+          playButton.style.transform = 'translate(-50%, -50%) scale(1)';
+          console.log('[EXPERIENCE] Botón play mostrado para video pausado');
         }
       } catch (e) {
         // Silenciar errores cross-origin
@@ -349,15 +379,15 @@ if (typeof module === 'undefined' && typeof exports === 'undefined') {
       overlay.style.height = '100%';
       overlay.style.zIndex = '5';
       overlay.style.cursor = 'pointer';
-      overlay.style.backgroundColor = 'rgba(0,0,0,0.1)';
+      overlay.style.backgroundColor = 'rgba(0,0,0,0.05)'; // Más sutil
       overlay.style.pointerEvents = 'auto';
       overlay.style.display = 'flex';
       overlay.style.alignItems = 'center';
       overlay.style.justifyContent = 'center';
-      overlay.style.opacity = '0';
-      overlay.style.transition = 'opacity 0.3s ease';
+      overlay.style.opacity = '1'; // Visible por defecto
+      overlay.style.transition = 'background-color 0.3s ease';
 
-      // Crear botón de play invisible
+      // Crear botón de play visible
       var playButton = document.createElement('button');
       playButton.className = 'video-play-button';
       playButton.style.position = 'absolute';
@@ -366,89 +396,150 @@ if (typeof module === 'undefined' && typeof exports === 'undefined') {
       playButton.style.transform = 'translate(-50%, -50%)';
       playButton.style.width = '80px';
       playButton.style.height = '80px';
+      // Obtener colores del tema actual
+      var themeColors = getThemeColors();
+      console.log('[EXPERIENCE] Colores del tema:', themeColors);
+      
       playButton.style.borderRadius = '50%';
       playButton.style.border = 'none';
-      playButton.style.backgroundColor = 'rgba(255,255,255,0.9)';
+      playButton.style.backgroundColor = themeColors.primary; // Color primario del tema
       playButton.style.cursor = 'pointer';
       playButton.style.display = 'flex';
       playButton.style.alignItems = 'center';
       playButton.style.justifyContent = 'center';
-      playButton.style.fontSize = '32px';
-      playButton.style.color = '#2c5697'; // Primary color directo
+      playButton.style.fontSize = '28px';
+      playButton.style.color = themeColors.neutral; // Color contraste
       playButton.style.zIndex = '10';
       playButton.style.transition = 'all 0.3s ease';
       playButton.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
-      playButton.innerHTML = '<i class="ph ph-play-fill"></i>';
+      playButton.style.lineHeight = '1';
+      
+      // Crear ícono de play con múltiples fallbacks
+      var playIcon = document.createElement('span');
+      playIcon.style.fontSize = 'inherit';
+      playIcon.style.lineHeight = '1';
+      playIcon.style.display = 'flex';
+      playIcon.style.alignItems = 'center';
+      playIcon.style.justifyContent = 'center';
+      playIcon.style.width = '100%';
+      playIcon.style.height = '100%';
+      
+      // Intentar usar Phosphor Icons primero
+      var phosphorIcon = document.createElement('i');
+      phosphorIcon.className = 'ph ph-play-fill';
+      phosphorIcon.style.fontSize = '28px';
+      phosphorIcon.style.marginLeft = '3px'; // Ajuste visual para centrado óptico
+      
+      playIcon.appendChild(phosphorIcon);
+      
+      // Agregar ícono al botón
+      playButton.appendChild(playIcon);
+      
+      // Verificar si el ícono cargó, si no usar fallback
+      setTimeout(function() {
+        try {
+          var computedStyle = getComputedStyle(phosphorIcon, '::before');
+          if (!computedStyle.content || computedStyle.content === 'none' || computedStyle.content === '""') {
+            // Phosphor no cargó, usar fallback Unicode
+            playIcon.innerHTML = '<span style="font-size: 28px; margin-left: 4px;">▶</span>';
+            console.log('[EXPERIENCE] Usando fallback Unicode para ícono play');
+          } else {
+            console.log('[EXPERIENCE] Ícono Phosphor cargado correctamente');
+          }
+        } catch (e) {
+          // Error en detección, usar fallback
+          playIcon.innerHTML = '<span style="font-size: 28px; margin-left: 4px;">▶</span>';
+          console.log('[EXPERIENCE] Error detectando ícono, usando fallback');
+        }
+      }, 200);
       playButton.setAttribute('aria-label', 'Reproducir video');
 
       console.log('[EXPERIENCE] Botón de play creado para video');
-
-      // Estado inicial: mostrar botón de play
-      overlay.style.opacity = '1';
-      playButton.style.display = 'flex';
 
       // Agregar data attribute para identificar el iframe
       overlay.setAttribute('data-iframe-id', 'iframe-' + i);
       iframe.setAttribute('data-iframe-id', 'iframe-' + i);
 
-      // Event listener para el botón de play
-      playButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        var currentIframe = container.querySelector('iframe');
-        var overlay = container.querySelector('.video-click-detector');
-        var playButton = this;
+      // Event listener para el botón de play - usar closure correcta
+      playButton.addEventListener('click', (function(currentContainer, currentIframe) {
+        return function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          var playButton = this;
 
-        console.log('[EXPERIENCE] Botón play clickeado - reproduciendo video');
+          console.log('[EXPERIENCE] Botón play clickeado para iframe:', currentIframe.src);
 
-        // Pausar todos los otros videos
-        pauseAllVideos(currentIframe);
+          // Pausar todos los otros videos
+          pauseAllVideos(currentIframe);
 
-        // Reproducir este video
-        try {
-          currentIframe.contentWindow.postMessage(
-            '{"event":"command","func":"playVideo","args":""}', 
-            '*'
-          );
-          console.log('[EXPERIENCE] Comando de reproducción enviado desde botón');
-        } catch (error) {
-          console.warn('[EXPERIENCE] Error al reproducir desde botón:', error);
-        }
-
-        // Ocultar overlay y botón de play
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        
-        // Después de la transición, ocultar completamente
-        setTimeout(function() {
-          if (overlay.style.opacity === '0') {
-            overlay.style.display = 'none';
-            console.log('[EXPERIENCE] Overlay ocultado - video reproduciéndose');
+          // Reproducir este video específico
+          try {
+            currentIframe.contentWindow.postMessage(
+              '{"event":"command","func":"playVideo","args":""}', 
+              '*'
+            );
+            console.log('[EXPERIENCE] Comando enviado a iframe correcto');
+          } catch (error) {
+            console.warn('[EXPERIENCE] Error al reproducir desde botón:', error);
           }
-        }, 300);
-      });
 
-      // Hover effects para el botón de play
-      playButton.addEventListener('mouseenter', function() {
-        this.style.transform = 'translate(-50%, -50%) scale(1.1)';
-        this.style.backgroundColor = 'rgba(255,255,255,1)';
-      });
+          // Solo ocultar el botón de play (mantener overlay para swiper/touch)
+          playButton.style.opacity = '0';
+          playButton.style.pointerEvents = 'none';
+          playButton.style.transform = 'translate(-50%, -50%) scale(0.8)';
+          console.log('[EXPERIENCE] Botón play ocultado - video reproduciéndose');
+        };
+      })(container, iframe));
 
-      playButton.addEventListener('mouseleave', function() {
-        this.style.transform = 'translate(-50%, -50%) scale(1)';
-        this.style.backgroundColor = 'rgba(255,255,255,0.9)';
-      });
+      // Hover effects para el botón de play - usar closure para capturar colores
+      playButton.addEventListener('mouseenter', (function(colors) {
+        return function() {
+          this.style.transform = 'translate(-50%, -50%) scale(1.1)';
+          this.style.backgroundColor = colors.hover; // Más oscuro en hover
+          this.style.boxShadow = '0 6px 16px rgba(0,0,0,0.4)';
+        };
+      })(themeColors));
 
-      // Event listener para el overlay (cuando video se está reproduciendo)
-      overlay.addEventListener('click', function(e) {
-        // Solo actuar si el overlay está visible (video pausado)
-        if (this.style.opacity !== '0' && e.target === this) {
-          console.log('[EXPERIENCE] Overlay clickeado - activando botón');
-          // Activar el botón de play
-          playButton.click();
-        }
-      });
+      playButton.addEventListener('mouseleave', (function(colors) {
+        return function() {
+          this.style.transform = 'translate(-50%, -50%) scale(1)';
+          this.style.backgroundColor = colors.primary; // Color primario original
+          this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+        };
+      })(themeColors));
+
+      // Event listener para el overlay - usar closure correcta
+      overlay.addEventListener('click', (function(currentPlayButton, currentIframe) {
+        return function(e) {
+          // Verificar si el clic es en el área vacía del overlay (no en el botón)
+          if (e.target === this) {
+            var buttonVisible = currentPlayButton.style.opacity !== '0';
+            
+            if (buttonVisible) {
+              // Video pausado - activar reproducción
+              console.log('[EXPERIENCE] Overlay clickeado - reproducir video');
+              currentPlayButton.click();
+            } else {
+              // Video reproduciéndose - pausar video
+              console.log('[EXPERIENCE] Overlay clickeado - pausar video en reproducción');
+              try {
+                currentIframe.contentWindow.postMessage(
+                  '{"event":"command","func":"pauseVideo","args":""}', 
+                  '*'
+                );
+                // Mostrar botón de play nuevamente
+                currentPlayButton.style.opacity = '1';
+                currentPlayButton.style.pointerEvents = 'auto';
+                currentPlayButton.style.transform = 'translate(-50%, -50%) scale(1)';
+                console.log('[EXPERIENCE] Video pausado - botón play visible nuevamente');
+              } catch (error) {
+                console.warn('[EXPERIENCE] Error al pausar video:', error);
+              }
+            }
+          }
+        };
+      })(playButton, iframe));
 
       // Agregar botón al overlay
       overlay.appendChild(playButton);
