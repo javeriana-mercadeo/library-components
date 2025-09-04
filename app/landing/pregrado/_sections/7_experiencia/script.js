@@ -27,11 +27,8 @@ function initExperienceCarousel() {
       b.toString(16).padStart(2, '0');
   }
 
-  // Función helper para convertir cualquier color a rgba
+  // Función helper para convertir cualquier color a rgba (no utilizada actualmente)
   function colorToRgba(color, alpha) {
-    // Debug: mostrar el color recibido
-    console.log('[VIDEO] Color recibido:', color);
-    
     // Si ya es rgba, extraer los valores
     if (color.startsWith('rgba(')) {
       var values = color.match(/rgba\(([^)]+)\)/)[1].split(',');
@@ -60,15 +57,12 @@ function initExperienceCarousel() {
     var computedColor = getComputedStyle(tempEl).color;
     document.body.removeChild(tempEl);
     
-    console.log('[VIDEO] Color computado:', computedColor);
-    
     if (computedColor.startsWith('rgb(')) {
       var values = computedColor.match(/rgb\(([^)]+)\)/)[1].split(',');
       return 'rgba(' + values[0].trim() + ', ' + values[1].trim() + ', ' + values[2].trim() + ', ' + alpha + ')';
     }
     
-    // Si todo falla, usar color sólido sin transparencia
-    console.warn('[VIDEO] No se pudo convertir color, usando fallback:', color);
+    // Si todo falla, usar color sólido
     return color;
   }
 
@@ -402,14 +396,9 @@ function initExperienceCarousel() {
       try {
         iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
         
-        // Mostrar botón de play de este video (está pausado)
-        var container = iframe.parentNode;
-        var playButton = container.querySelector('.video-play-button');
-        if (playButton) {
-          playButton.style.opacity = '1';
-          playButton.style.pointerEvents = 'auto';
-          playButton.style.transform = 'translate(-50%, -50%) scale(1)';
-        }
+        // ✅ Ya no hay botón que mostrar - solo actualizar estados
+        var videoId = getVideoId(iframe);
+        videoStates.set(videoId, false); // Marcar como pausado
       } catch (e) {
         // Silenciar errores cross-origin
       }
@@ -484,190 +473,34 @@ function initExperienceCarousel() {
       overlay.style.opacity = '1'; // Visible por defecto
       overlay.style.transition = 'background-color 0.3s ease';
 
-      // Crear botón de play visible
-      var playButton = document.createElement('button');
-      playButton.className = 'video-play-button';
-      playButton.style.position = 'absolute';
-      playButton.style.top = '50%';
-      playButton.style.left = '50%';
-      playButton.style.transform = 'translate(-50%, -50%)';
-      playButton.style.width = '60px';   // ✅ Más discreto (-25%)
-      playButton.style.height = '60px';  // ✅ Mantiene proporción
-      playButton.style.borderRadius = '50%';
-      playButton.style.border = 'none';
-      // Obtener colores del tema actual
-      var primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-600').trim();
-      var neutralColor = getComputedStyle(document.documentElement).getPropertyValue('--neutral').trim();
-      
-      // Si no se encuentran las variables, usar fallback
-      if (!primaryColor) primaryColor = '#2c5697';
-      if (!neutralColor) neutralColor = '#ffffff';
-      
-      playButton.style.backgroundColor = colorToRgba(primaryColor, 0.85); // ✅ 85% opacidad para sutileza
-      playButton.style.cursor = 'pointer';
-      playButton.style.display = 'flex';
-      playButton.style.alignItems = 'center';
-      playButton.style.justifyContent = 'center';
-      playButton.style.fontSize = '20px';  // ✅ Proporcional al nuevo tamaño
-      playButton.style.color = neutralColor; // Color contraste
-      playButton.style.zIndex = '10';
-      playButton.style.transition = 'all 0.3s ease';
-      playButton.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';  // ✅ Sombra más suave
-      playButton.style.lineHeight = '1';
-      
-      // Crear ícono de play con múltiples fallbacks
-      var playIcon = document.createElement('span');
-      playIcon.style.fontSize = 'inherit';
-      playIcon.style.lineHeight = '1';
-      playIcon.style.display = 'flex';
-      playIcon.style.alignItems = 'center';
-      playIcon.style.justifyContent = 'center';
-      playIcon.style.width = '100%';
-      playIcon.style.height = '100%';
-      
-      // ✅ SOLUCIÓN INMEDIATA: Usar siempre fallback Unicode + Phosphor como mejora
-      // Crear fallback Unicode siempre presente
-      var unicodeIcon = document.createElement('span');
-      unicodeIcon.innerHTML = '▶';
-      unicodeIcon.style.fontSize = '20px';  // ✅ Proporcional al botón
-      unicodeIcon.style.marginLeft = '4px';
-      unicodeIcon.style.color = 'inherit';
-      unicodeIcon.style.display = 'inline-block';
-      
-      // Intentar Phosphor como mejora (pero no depender de él)
-      var phosphorIcon = document.createElement('i');
-      phosphorIcon.className = 'ph ph-play-fill';
-      phosphorIcon.style.fontSize = '20px';  // ✅ Proporcional al botón
-      phosphorIcon.style.marginLeft = '3px';
-      phosphorIcon.style.position = 'absolute';
-      phosphorIcon.style.display = 'inline-block';
-      
-      // Agregar ambos - Phosphor ocultará Unicode si carga
-      playIcon.appendChild(unicodeIcon);
-      playIcon.appendChild(phosphorIcon);
-      
-      // Agregar ícono al botón
-      playButton.appendChild(playIcon);
-      
-      // Verificar si Phosphor cargó para optimizar visualización
-      setTimeout(function() {
-        try {
-          var computedStyle = getComputedStyle(phosphorIcon, '::before');
-          var content = computedStyle.content;
-          
-          console.log('[VIDEO] Verificando ícono Phosphor, content:', content);
-          
-          if (content && content !== 'none' && content !== '""' && content !== 'normal') {
-            // ✅ Phosphor cargado - ocultar Unicode
-            console.log('[VIDEO] Phosphor cargado, ocultando fallback');
-            unicodeIcon.style.display = 'none';
-            phosphorIcon.style.position = 'static';
-          } else {
-            // ✅ Phosphor no cargado - mostrar solo Unicode
-            console.log('[VIDEO] Phosphor no cargado, usando Unicode');
-            phosphorIcon.style.display = 'none';
-          }
-        } catch (e) {
-          // Error - usar solo Unicode
-          console.log('[VIDEO] Error detectando ícono, usando Unicode:', e.message);
-          phosphorIcon.style.display = 'none';
-        }
-      }, 300);
-      playButton.setAttribute('aria-label', 'Reproducir video');
+      // ✅ Ya no creamos botón de play visual - solo overlay interactivo
 
       // Agregar data attribute para identificar el iframe
       overlay.setAttribute('data-iframe-id', 'iframe-' + i);
       iframe.setAttribute('data-iframe-id', 'iframe-' + i);
 
-      // Event listener para el botón de play - usar closure correcta
-      playButton.addEventListener('click', (function(currentContainer, currentIframe) {
+      // ✅ Ya no hay event listeners para botón - solo overlay
+
+      // Event listener para el overlay - toggle play/pause
+      overlay.addEventListener('click', (function(currentContainer, currentIframe) {
         return function(e) {
-          e.preventDefault();
-          e.stopPropagation();
+          console.log('[VIDEO] Overlay clickeado para iframe:', currentIframe.src);
           
-          var playButton = this;
-
-          console.log('[VIDEO] Botón play clickeado para iframe:', currentIframe.src);
-
-          // Pausar todos los otros videos
-          pauseAllVideos(currentIframe);
-
-          // Reproducir este video específico
-          try {
-            currentIframe.contentWindow.postMessage(
-              '{"event":"command","func":"playVideo","args":""}', 
-              '*'
-            );
-            console.log('[VIDEO] Comando enviado a iframe correcto');
-          } catch (error) {
-            console.warn('[VIDEO] Error al reproducir:', error);
+          // Alternar entre play y pause
+          toggleVideo(currentIframe);
+          
+          // Pausar todos los otros videos si este se está reproduciendo
+          var videoId = getVideoId(currentIframe);
+          var isPlaying = videoStates.get(videoId) || false;
+          
+          if (isPlaying) {
+            // Este video se está reproduciendo - pausar los otros
+            pauseAllVideos(currentIframe);
           }
-
-          // Solo ocultar el botón de play (mantener overlay para swiper/touch)
-          playButton.style.opacity = '0';
-          playButton.style.pointerEvents = 'none';
-          playButton.style.transform = 'translate(-50%, -50%) scale(0.8)';
         };
       })(container, iframe));
 
-      // Hover effects para el botón de play - usar closure para capturar colores
-      playButton.addEventListener('mouseenter', (function(originalColor) {
-        return function() {
-          this.style.transform = 'translate(-50%, -50%) scale(1.05)';  // ✅ Hover más sutil
-          
-          // Calcular color más oscuro para hover
-          var hoverColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-700').trim();
-          if (!hoverColor) {
-            // Crear versión más oscura del color primario
-            hoverColor = darkenColor(originalColor, 0.2);
-          }
-          
-          this.style.backgroundColor = hoverColor;
-          this.style.boxShadow = '0 3px 12px rgba(0,0,0,0.25)';  // ✅ Sombra hover más suave
-        };
-      })(primaryColor));
-
-      playButton.addEventListener('mouseleave', (function(originalColor) {
-        return function() {
-          this.style.transform = 'translate(-50%, -50%) scale(1)';
-          this.style.backgroundColor = colorToRgba(originalColor, 0.85); // ✅ Color original con transparencia
-          this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';  // ✅ Sombra normal más suave
-        };
-      })(primaryColor));
-
-      // Event listener para el overlay - usar closure correcta
-      overlay.addEventListener('click', (function(currentPlayButton, currentIframe) {
-        return function(e) {
-          // Verificar si el clic es en el área vacía del overlay (no en el botón)
-          if (e.target === this) {
-            var buttonVisible = currentPlayButton.style.opacity !== '0';
-            
-            if (buttonVisible) {
-              // Video pausado - activar reproducción
-              console.log('[VIDEO] Overlay clickeado - reproducir video');
-              currentPlayButton.click();
-            } else {
-              // Video reproduciéndose - pausar video
-              console.log('[VIDEO] Overlay clickeado - pausar video en reproducción');
-              try {
-                currentIframe.contentWindow.postMessage(
-                  '{"event":"command","func":"pauseVideo","args":""}', 
-                  '*'
-                );
-                // Mostrar botón de play nuevamente
-                currentPlayButton.style.opacity = '1';
-                currentPlayButton.style.pointerEvents = 'auto';
-                currentPlayButton.style.transform = 'translate(-50%, -50%) scale(1)';
-              } catch (error) {
-                console.warn('[VIDEO] Error al pausar video:', error);
-              }
-            }
-          }
-        };
-      })(playButton, iframe));
-
-      // Agregar botón al overlay
-      overlay.appendChild(playButton);
+      // ✅ Ya no agregamos botón - solo overlay limpio
 
       container.style.position = 'relative';
       container.appendChild(overlay);
