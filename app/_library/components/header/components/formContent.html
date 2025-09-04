@@ -74,10 +74,21 @@
 
   .fc-text-primary {
     color: var(--primary, #4a90e2);
+    text-decoration: none;
+    transition: color var(--transition, 0.3s) ease-in-out;
+  }
+
+  .fc-text-primary:hover {
+    color: var(--primary-dark, #3a7bc8);
+    text-decoration: underline;
   }
 
   .fc-text-danger {
     color: var(--error, #dc3545);
+  }
+
+  .fc-text-neutral {
+    color: var(--neutral-200, #374151);
   }
 
   .fc-small {
@@ -125,6 +136,20 @@
     height: 1rem;
     cursor: pointer;
     accent-color: var(--primary, #4a90e2);
+    background-color: var(--background-100, #ffffff);
+    border: 2px solid var(--neutral-700, #d1d5db);
+    transition: all var(--transition, 0.3s) ease-in-out;
+  }
+
+  .fc-form-check-input:checked {
+    background-color: var(--primary, #4a90e2);
+    border-color: var(--primary, #4a90e2);
+  }
+
+  .fc-form-check-input:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+    border-color: var(--primary, #4a90e2);
   }
 
   .fc-form-check-inline .fc-form-check-input {
@@ -137,27 +162,35 @@
     font-size: 0.9rem;
     line-height: 1.25rem;
     cursor: pointer;
+    color: var(--neutral-200, #374151);
+    user-select: none;
   }
 
   /* Spacing utilities */
   .fc-mt-2 {
     margin-top: var(--spacing-xs, 0.5rem);
   }
+
   .fc-mt-4 {
     margin-top: var(--spacing-lg, 1.5rem);
   }
+
   .fc-mb-0 {
     margin-bottom: 0;
   }
+
   .fc-mb-2 {
     margin-bottom: var(--spacing-xs, 0.5rem);
   }
+
   .fc-mb-3 {
     margin-bottom: var(--spacing-md, 1rem);
   }
+
   .fc-p-3 {
     padding: var(--spacing-md, 1rem);
   }
+
   .fc-p-4 {
     padding: var(--spacing-lg, 1.5rem);
   }
@@ -229,11 +262,7 @@
         aria-label="Formulario de contacto"
         class="fc-needs-validation">
         <input type="hidden" name="oid" value="00Df4000003l8Bf" />
-        <input
-          type="hidden"
-          name="retURL"
-          id="retURL"
-          value="https://www.javeriana.edu.co/expojaveriana/thankyoupage-expojaveriana-pregrados" />
+        <input type="hidden" name="retURL" id="retURL" value="https://www.javeriana.edu.co/info-prg/thank-you-pregrado" />
         <input type="hidden" name="debug" value="0" />
         <input type="hidden" name="debugEmail" value="" />
 
@@ -408,24 +437,8 @@
           <div class="fc-invalid-feedback" v-show="errors.ciudad">Selecciona</div>
         </div>
 
-        <div class="fc-mb-3">
-          <select
-            v-model="data.tipo_asistente"
-            v-on:change="deleteInvalid('tipo_asistente')"
-            name="00NJw000001J3g6"
-            id="00NJw000001J3g6"
-            required=""
-            class="fc-form-control"
-            :class="{ 'fc-is-invalid': errors.tipo_asistente }">
-            <option value="">*Tipo de asistente</option>
-            <option value="Aspirante">Aspirante</option>
-            <option value="Padre de familia y/o acudiente">Padre de familia y/o acudiente</option>
-            <option value="Docente y/o psicoorientador">Docente y/o psicoorientador</option>
-            <option value="Visitante PUJ">Visitante PUJ</option>
-            <!-- <option value="Administrativo PUJ">Administrativo PUJ</option> -->
-          </select>
-          <div class="fc-invalid-feedback" v-show="errors.tipo_asistente">Selecciona</div>
-        </div>
+        <!-- Campo oculto para tipo de asistente -->
+        <input type="hidden" name="00NJw000001J3g6" value="Aspirante" />
 
         <input
           type="hidden"
@@ -433,61 +446,11 @@
           value="NOAP"
           v-if="data.tipo_asistente=='Padre de familia y/o acudiente' || data.tipo_asistente=='Visitante PUJ' || data.tipo_asistente=='Administrativo PUJ' || data.tipo_asistente=='Docente y/o psicoorientador'" />
 
-        <!-- Nivel académico para aspirantes -->
-        <div class="fc-mb-3" v-if="data.tipo_asistente=='Aspirante'">
-          <select
-            v-model="data.nivelacademico"
-            v-on:change="deleteInvalid('nivelacademico')"
-            name="nivelacademico"
-            id="nivelacademico"
-            class="fc-form-control"
-            :class="{ 'fc-is-invalid': errors.nivelacademico }">
-            <option value="">*Nivel académico</option>
-            <option value="PREG">Pregrado</option>
-            <!--               <option value="GRAD">Posgrado</option> -->
-            <option value="ETDH">Técnico</option>
-            <!-- <option value="ECLE">Eclesiástico</option> -->
-          </select>
-          <div class="fc-invalid-feedback" v-show="errors.nivelacademico">Selecciona</div>
-        </div>
-
-        <!-- Facultad para aspirantes -->
-        <div class="fc-mb-3" v-if="data.nivelacademico!='' &amp;&amp; data.tipo_asistente=='Aspirante'">
-          <select
-            v-model="data.facultad"
-            v-on:change="deleteInvalid('facultad')"
-            name="Facultad"
-            id="Facultad"
-            class="fc-form-control"
-            :class="{ 'fc-is-invalid': errors.facultad }">
-            <option value="">*Selecciona la facultad</option>
-            <option v-for="item in programas[data.nivelacademico] || []" v-bind:value="item.FacultadCodigo">
-              {{ item.FacultadCodigo }}
-            </option>
-          </select>
-          <div class="fc-invalid-feedback" v-show="errors.facultad">Selecciona</div>
-        </div>
-
-        <!-- Programa para aspirantes -->
-        <div class="fc-mb-3" v-if="data.facultad!=''">
-          <select
-            v-model="data.programa"
-            v-on:change="deleteInvalid('programa')"
-            name="00N5G00000WmhvV"
-            id="00N5G00000WmhvV"
-            class="fc-form-control"
-            :class="{ 'fc-is-invalid': errors.programa }">
-            <option value="">*Selecciona el programa</option>
-            <option value="NOAP" style="display: none">NOAP</option>
-            <option v-for="prog in programas[data.nivelacademico][data.facultad]?.Programas || []" v-bind:value="prog.Codigo">
-              {{ prog.Nombre }}
-            </option>
-          </select>
-          <div class="fc-invalid-feedback" v-show="errors.programa">Selecciona</div>
-        </div>
+        <!-- Campo oculto para programa académico (código SAE) -->
+        <input type="hidden" name="00N5G00000WmhvV" :value="codeSAE" />
 
         <!-- Periodo esperado para aspirantes -->
-        <div class="fc-mb-3" v-if="data.facultad!='' &amp;&amp; data.tipo_asistente=='Aspirante'">
+        <div class="fc-mb-3">
           <select
             v-model="data.periodo_esperado"
             v-on:change="deleteInvalid('periodo_esperado')"
@@ -499,87 +462,6 @@
             <option v-for="(index, item) in periodoSel" v-bind:value="index" :key="index">{{ item }}</option>
           </select>
           <div class="fc-invalid-feedback" v-show="errors.periodo_esperado">Selecciona</div>
-        </div>
-
-        <!-- Sección de colegios/universidades -->
-        <div
-          class="fc-mb-3"
-          v-if="data.tipo_asistente!='' &amp;&amp; (data.tipo_asistente=='Aspirante' || data.tipo_asistente=='Docente y/o psicoorientador') &amp;&amp; (data.nivelacademico =='PREG' || data.nivelacademico =='GRAD' || data.nivelacademico =='ETDH')">
-          <h5
-            class="title title-sm title-primary"
-            v-if="(data.nivelacademico =='PREG' || data.nivelacademico == 'ETDH') &amp;&amp; data.nivelacademico !='ECLE' &amp;&amp; data.tipo_asistente == 'Aspirante'">
-            ¿En qué colegio estudias o de cuál colegio te graduaste?
-          </h5>
-          <h5
-            class="title title-sm title-primary"
-            v-if="(data.nivelacademico =='PREG' || data.nivelacademico == 'ETDH') &amp;&amp; data.nivelacademico !='ECLE' &amp;&amp; data.tipo_asistente == 'Docente y/o psicoorientador'">
-            ¿En qué institución educativa trabajas o has trabajado?
-          </h5>
-          <h5 class="title title-sm title-primary" v-if="(data.nivelacademico =='GRAD') &amp;&amp; data.nivelacademico !='ECLE'">
-            ¿En qué Universidad estudias o de cuál Universidad te graduaste?
-          </h5>
-          <p class="paragraph paragraph-neutral fc-small mb-3">Puedes filtrar por ciudad/departamento o escribir una palabra clave</p>
-
-          <div class="fc-row">
-            <div class="fc-col-6 fc-mb-3">
-              <select v-model="selectedDepartment" @change="filterCities" class="fc-form-control">
-                <option value="">Filtrar por Departamento</option>
-                <option v-for="dep in departments" :key="dep.codigo" :value="dep.codigo">{{ dep.nombre }}</option>
-              </select>
-            </div>
-
-            <div class="fc-col-6 fc-mb-3">
-              <select v-model="selectedCity" @change="filterColegios" class="fc-form-control">
-                <option value="">Filtrar por Ciudad</option>
-                <option v-for="city in cities" :key="city.codigo" :value="city.nombre">{{ city.nombre }}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="fc-mb-3">
-            <input
-              type="text"
-              v-model="searchTerm"
-              @input="filterColegios"
-              placeholder="Filtrar por nombre o palabra clave"
-              class="fc-form-control" />
-          </div>
-
-          <ul
-            v-show="(filteredColegios.length &gt; 0 &amp;&amp; (selectedCity || selectedDepartment || searchTerm)) &amp;&amp; !colegioSeleccionado"
-            class="fc-list-group"
-            style="max-height: 200px; overflow-y: auto; margin-bottom: 15px">
-            <li
-              v-for="(colegio, index) in filteredColegios.slice(0, 100)"
-              :key="colegio.ID"
-              @click.prevent="selectColegio(colegio.PUJ_EXTERNALORGID__C, colegio.NAME)"
-              class="fc-list-group-item fc-list-group-item-action"
-              style="cursor: pointer; background-color: #f8f9fa; user-select: none"
-              :title="'Click to select: ' + colegio.NAME">
-              {{ colegio.NAME }}
-            </li>
-          </ul>
-
-          <input v-if="data.nivelacademico =='PREG'" type="hidden" id="00NJw0000041omr" name="00NJw0000041omr" v-model="data.colegio" />
-          <input v-if="data.nivelacademico !='PREG'" type="hidden" id="00NJw000006f1BG" name="00NJw000006f1BG" v-model="data.colegio" />
-          <div class="fc-invalid-feedback" v-show="errors.colegio" style="display: block">Selecciona</div>
-        </div>
-
-        <!-- día de asistencia -->
-        <div class="fc-mb-3" v-if="data.tipo_asistente!=''">
-          <h5 class="title title-sm title-primary">¿Qué día Asistirás?</h5>
-          <select
-            v-model="data.dia"
-            v-on:change="deleteInvalid('dia')"
-            class="fc-form-control"
-            id="00NJw000004iuIj"
-            name="00NJw000004iuIj"
-            :class="{ 'fc-is-invalid': errors.dia }">
-            <option value="" selected>*Día de asistencia</option>
-            <option value="24 de septiembre">24 de septiembre</option>
-            <option value="25 de septiembre">25 de septiembre</option>
-          </select>
-          <div class="fc-invalid-feedback" v-show="errors.dia">Selecciona</div>
         </div>
 
         <!-- para ocultar-->
@@ -630,10 +512,10 @@
         </div>
 
         <div class="fc-mb-3">
-          <p class="fc-mb-2">
+          <p class="fc-mb-2 fc-text-neutral">
             ¿Autoriza el tratamiento de sus datos personales de acuerdo con la
             <a
-              href="https://www.javeriana.edu.co/informacion/politica-y-tratamiento-de-datos-personales"
+              href="https://www.javeriana.edu.co/recursosdb/20125/12161151/politica-de-proteccion-de-datos-personales-universidad-javeriana.pdf"
               target="_blank"
               class="fc-text-primary"
               >autorización de privacidad</a
@@ -674,12 +556,6 @@
           v-bind:disabled="formInValid || isSubmitting">
           <span class="btn-text">Inscríbete</span>
         </button>
-        <div
-          id="successMsg"
-          class="wpcf7-response-output"
-          style="border: 2px solid green; background-color: lightgrey; padding: 10px; border-radius: 5px; display: none">
-          Gracias por tu mensaje. Ha sido enviado.
-        </div>
       </form>
     </div>
   </div>
@@ -696,21 +572,12 @@
         periodos: [],
         ubicaciones: [],
         periodoSel: [],
-        universidads: [],
-        colegios: [],
-        filteredColegios: [],
-        colegioSeleccionado: false,
-        selectedDepartment: '',
-        departments: [],
-        searchTerm: '', // Para el término de búsqueda
-        selectedCity: '', // Para la ciudad seleccionada
-        filteredUniversidades: [], // Universidades filtrados
-        cities: [], // Lista de ciudades
+        codeSAE: '',
         formInValid: true,
         isSubmitting: false,
         data: {
-          nevento: 'Expojaveriana Pregrado',
-          fevento: '24/09/2025 12:00 PM',
+          nevento: '',
+          fevento: '',
           first_name: '',
           last_name: '',
           tipo_doc: '',
@@ -721,14 +588,8 @@
           pais: '',
           departamento: '',
           ciudad: '',
-          tipo_asistente: '',
-          nivelacademico: '',
-          facultad: '',
-          programa: 'NOAP',
-          universidad: '',
+          tipo_asistente: 'Aspirante',
           periodo_esperado: '',
-          colegio: '',
-          dia: '',
           origen_sol: 'Web to Lead',
           fuenteAutoriza: 'Landing Eventos',
           lead: 'Landing Pages',
@@ -737,7 +598,7 @@
           subfuente: 'Organico',
           medio: 'Landing',
           articulo: 'Articulo',
-          campana: 'MERCA_ExpoPreVirtual2025',
+          campana: '',
           autoriza: '',
           programNoap: ''
         },
@@ -755,13 +616,7 @@
           departamento: false,
           ciudad: false,
           tipo_asistente: false,
-          nivelacademico: false,
-          facultad: false,
-          programa: false,
-          universidad: false,
           periodo_esperado: false,
-          colegio: false,
-          dia: false,
           origen_sol: false,
           fuenteAutoriza: false,
           lead: false,
@@ -788,43 +643,6 @@
           this.errors.email = false
         }
       },
-      'data.nivelacademico': function (newPerido, oldPeriodo) {
-        this.periodoSel = this.periodos[newPerido]
-        if (newPerido != oldPeriodo) {
-          this.data.programa = ''
-          this.data.facultad = ''
-          this.data.periodo_esperado = ''
-          this.data.colegio = ''
-          this.loadColegios(newPerido)
-        }
-        this.updateFormValid()
-      },
-      'data.facultad': function (newFacultad, oldFacultad) {
-        if (newFacultad != oldFacultad) {
-          this.data.programa = ''
-        }
-      },
-      'data.tipo_asistente': function (newAsis, oldAsis) {
-        if (newAsis != oldAsis) {
-          this.data.nivelacademico = ''
-          this.data.facultad = ''
-          this.data.colegio = ''
-          this.searchTerm = ''
-          this.selectedDepartment = ''
-          this.selectedCity = ''
-          this.data.dia = ''
-        }
-        if (newAsis == 'Aspirante') {
-          this.data.nivelacademico = ''
-        } else if (newAsis == 'Docente y/o psicoorientador') {
-          this.data.nivelacademico = 'PREG' // Asignar PREG por defecto para mostrar colegios
-          this.data.programa = 'NOAP'
-        } else {
-          this.data.programa = 'NOAP'
-        }
-        // Actualizar validación cuando cambia el tipo de asistente
-        this.updateFormValid()
-      },
       // Watcher general para campos importantes
       'data.first_name': function () {
         this.updateFormValid()
@@ -850,12 +668,6 @@
       'data.prefijoCel': function () {
         this.updateFormValid()
       },
-      'data.facultad': function () {
-        this.updateFormValid()
-      },
-      'data.programa': function () {
-        this.updateFormValid()
-      },
       'data.departamento': function () {
         this.updateFormValid()
       },
@@ -865,20 +677,11 @@
       'data.periodo_esperado': function () {
         this.updateFormValid()
       },
-      'data.colegio': function () {
-        this.updateFormValid()
-      },
-      'data.dia': function () {
-        this.updateFormValid()
-      },
-      selectedDepartment: function (newDepartment) {
-        this.filterCities()
-      },
-      selectedCity: function (newCity) {
-        this.filterColegios()
-      },
-      searchTerm: function (newTerm) {
-        this.filterColegios()
+      // Watcher para cargar períodos cuando se obtienen los datos
+      periodos: function (newPeriodos) {
+        if (newPeriodos && newPeriodos['PREG']) {
+          this.periodoSel = newPeriodos['PREG']
+        }
       }
     },
     mounted() {
@@ -889,11 +692,23 @@
       this.getProgramas()
       this.getParametersGet()
       this.getPrefijoCel()
-      this.loadColegios()
 
       // Asegurar que el estado del formulario se actualice inicialmente
       this.$nextTick(() => {
         this.updateFormValid()
+      })
+
+      // Escuchar el evento data_load-program para obtener el código SAE
+      document.addEventListener('data_load-program', event => {
+        this.codeSAE = event.detail.dataProgram.codPrograma
+        this.data.campana = event.detail.dataProgram.codPrograma
+      })
+
+      // Cargar períodos de pregrado automáticamente
+      this.$nextTick(() => {
+        if (this.periodos && this.periodos['PREG']) {
+          this.periodoSel = this.periodos['PREG']
+        }
       })
     },
     methods: {
@@ -902,8 +717,8 @@
        **/
       limpiarDatos() {
         this.data = {
-          nevento: 'Expojaveriana Pregrado',
-          fevento: '24/09/2025 12:00 PM',
+          nevento: '',
+          fevento: '',
           first_name: '',
           last_name: '',
           tipo_doc: '',
@@ -914,14 +729,8 @@
           pais: '',
           departamento: '',
           ciudad: '',
-          tipo_asistente: '',
-          nivelacademico: '',
-          facultad: '',
-          programa: 'NOAP',
-          universidad: '',
+          tipo_asistente: 'Aspirante',
           periodo_esperado: '',
-          colegio: '',
-          dia: '',
           origen_sol: 'Web to Lead',
           fuenteAutoriza: 'Landing Eventos',
           lead: 'Landing Pages',
@@ -930,7 +739,7 @@
           subfuente: 'Organico',
           medio: 'Landing',
           articulo: '',
-          campana: 'MERCA_ExpoPreVirtual2025',
+          campana: '',
           autoriza: '',
           programNoap: ''
         }
@@ -1183,8 +992,7 @@
           'mobile',
           'prefijoCel',
           'pais',
-          'tipo_asistente',
-          'dia'
+          'periodo_esperado'
         ]
         for (let field of basicFields) {
           if (!this.data[field] || this.data[field] === '') {
@@ -1208,29 +1016,6 @@
         if (this.data.pais === 'COL') {
           if (!this.data.departamento || !this.data.ciudad) {
             return false
-          }
-        }
-
-        // Si es aspirante, verificar campos académicos
-        if (this.data.tipo_asistente === 'Aspirante') {
-          if (!this.data.nivelacademico || !this.data.facultad || !this.data.periodo_esperado) {
-            console.log('Missing academic fields:', {
-              nivelacademico: this.data.nivelacademico,
-              facultad: this.data.facultad,
-              periodo_esperado: this.data.periodo_esperado
-            })
-            return false
-          }
-          if (!this.data.programa || this.data.programa === 'NOAP') {
-            console.log('Program field invalid:', this.data.programa)
-            return false
-          }
-          // Verificar colegio si no es eclesiástico
-          if (this.data.nivelacademico !== 'ECLE') {
-            if (!this.data.colegio) {
-              console.log('Colegio field missing:', this.data.colegio)
-              return false
-            }
           }
         }
 
@@ -1283,18 +1068,7 @@
             case 'pais':
             case 'prefijoCel':
             case 'tipo_asistente':
-            case 'dia':
               if (this.data[element] == '' || this.data[element] == null) {
-                valid = false
-                this.errors[element] = true
-              }
-              break
-            case 'colegio':
-              if (
-                (this.data[element] == '' || this.data[element] == null) &&
-                this.data.nivelacademico != 'ECLE' &&
-                (this.data.tipo_asistente == 'Aspirante' || this.data.tipo_asistente == 'Docente y/o psicoorientador')
-              ) {
                 valid = false
                 this.errors[element] = true
               }
@@ -1323,19 +1097,8 @@
                 this.errors[element] = true
               }
               break
-            case 'nivelacademico':
-            case 'facultad':
             case 'periodo_esperado':
-              if ((this.data[element] == '' || this.data[element] == null) && this.data.tipo_asistente == 'Aspirante') {
-                valid = false
-                this.errors[element] = true
-              }
-              break
-            case 'programa':
-              if (
-                (this.data[element] == '' || this.data[element] == null || this.data[element] == 'NOAP') &&
-                this.data.tipo_asistente == 'Aspirante'
-              ) {
+              if (this.data[element] == '' || this.data[element] == null) {
                 valid = false
                 this.errors[element] = true
               }
