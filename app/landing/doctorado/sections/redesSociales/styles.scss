@@ -16,7 +16,7 @@
   @include responsive {
     flex-direction: row;
     gap: var(--spacing-lg);
-    justify-content: space-between;
+    justify-content: center;
     text-align: left;
   }
 }
@@ -81,7 +81,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: rem(33px);
+  font-size: rem(36px);
   transition: all 0.3s ease;
   border-radius: rem(8px);
   padding: var(--spacing-xs);
@@ -99,7 +99,7 @@
 
   // Responsive para móviles
   @include responsive {
-    font-size: rem(28px);
+    font-size: rem(32px);
     padding: rem(4px);
   }
 
@@ -108,13 +108,13 @@
     font-size: inherit; // Hereda el tamaño del contenedor
     
     svg {
-      width: rem(33px);
-      height: rem(33px);
+      width: rem(36px);
+      height: rem(36px);
       vertical-align: middle;
       
       @include responsive {
-        width: rem(28px);
-        height: rem(28px);
+        width: rem(32px);
+        height: rem(32px);
       }
     }
   }
