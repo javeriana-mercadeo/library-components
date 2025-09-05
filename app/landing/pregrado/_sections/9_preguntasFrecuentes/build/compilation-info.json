@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-09-03T11:45:01.862Z",
+  "cssSize": 19814,
+  "jsSize": 8877,
+  "version": "1.0.0",
+  "method": "esbuild",
+  "files": {
+    "css": true,
+    "js": true
+  }
+}
