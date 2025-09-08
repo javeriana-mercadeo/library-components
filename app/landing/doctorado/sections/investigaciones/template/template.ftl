@@ -1,8 +1,77 @@
 <!--$-->
+<#-- ======================================== -->
+<#-- GENERAR JSON DINÁMICO DESDE DATOS CMS -->
+<#-- ======================================== -->
+<#assign investigationsJSON = "[]">
+<#if grad_investigationGroup.getSiblings()?has_content>
+  <#assign investigationsJSON = "[">
+  <#list grad_investigationGroup.getSiblings() as investigation>
+    
+    <#-- Procesar fecha con validación robusta -->
+    <#assign dateData = getterUtil.getString(investigation.grad_investigationDate.getData())>
+    <#assign yearString = "2024">
+    <#if validator.isNotNull(dateData)>
+      <#attempt>
+        <#assign dateObj = dateUtil.parseDate("yyyy-MM-dd", dateData, locale)>
+        <#assign yearString = dateUtil.getDate(dateObj, "yyyy", locale)>
+      <#recover>
+        <#assign yearString = "2024">
+      </#attempt>
+    </#if>
+    
+    <#-- Procesar imagen con fallback -->
+    <#assign imageUrl = "https://via.placeholder.com/400x300">
+    <#assign imageAlt = "Imagen investigación">
+    <#if investigation.grad_investigationImg.getSiblings()?has_content>
+      <#assign firstImage = investigation.grad_investigationImg.getSiblings()?first>
+      <#if (firstImage.getData())?? && firstImage.getData() != "">
+        <#assign imageUrl = firstImage.getData()>
+        <#if firstImage.getAttribute("alt")??>
+          <#assign imageAlt = firstImage.getAttribute("alt")>
+        </#if>
+      </#if>
+    </#if>
+    
+    <#-- Procesar video YouTube (opcional) -->
+    <#assign videoEmbedId = "">
+    <#if investigation.grad_investigationYtId.getSiblings()?has_content>
+      <#list investigation.grad_investigationYtId.getSiblings() as ytId>
+        <#if ytId?index == 0 && (ytId.getData())??>
+          <#assign videoEmbedId = ytId.getData()>
+          <#break>
+        </#if>
+      </#list>
+    </#if>
+    
+    <#-- Construir objeto JSON de la investigación -->
+    <#assign investigationsJSON = investigationsJSON + '{'>
+    <#assign investigationsJSON = investigationsJSON + '"id": ' + investigation?index + ','>
+    <#assign investigationsJSON = investigationsJSON + '"year": "' + yearString + '",'>
+    <#assign investigationsJSON = investigationsJSON + '"title": "' + (investigation.grad_investigationTitle.getData()!"")?json_string + '",'>
+    <#assign investigationsJSON = investigationsJSON + '"description": "' + (investigation.grad_investigationDesc.getData()!"")?json_string + '",'>
+    <#assign investigationsJSON = investigationsJSON + '"image": "' + imageUrl + '",'>
+    <#assign investigationsJSON = investigationsJSON + '"alt": "' + imageAlt?json_string + '"'>
+    
+    <#-- Agregar videoEmbedId solo si existe -->
+    <#if videoEmbedId != "">
+      <#assign investigationsJSON = investigationsJSON + ',"videoEmbedId": "' + videoEmbedId + '"'>
+    </#if>
+    
+    <#assign investigationsJSON = investigationsJSON + '}'>
+    
+    <#-- Agregar coma si no es el último elemento -->
+    <#if investigation?has_next>
+      <#assign investigationsJSON = investigationsJSON + ','>
+    </#if>
+    
+  </#list>
+  <#assign investigationsJSON = investigationsJSON + "]">
+</#if>
+
 <section class="investigations_container" data-component-id="investigaciones">
   <div
     class="container investigations"
-    data-investigations-data='[{"id":1,"year":"2025","title":"Investigación principal","description":" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam luctus dolor eget urna ullamcorper posuere. Vivamus sem diam, consequat et lobortis at, aliquam vitae felis. Nulla at sodales ligula. Duis quis condimentum neque, id mattis lorem. Curabitur cursus nulla id ipsum varius, sit amet cursus augue gravida. Ut ut neque sit amet metus commodo cursus. Sed quis ante vel justo egestas suscipit in non turpis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras lobortis, nunc in ullamcorper pretium, nibh eros mollis eros, ut finibus dolor metus sit amet leo. Curabitur lorem augue, dapibus id ultrices nec, convallis quis dolor. Quisque consectetur ipsum sit amet elit tristique rhoncus. Quisque tortor elit, egestas non viverra a, scelerisque eu ex. Quisque eget elit in dui aliquet eleifend sed sit amet purus. Proin mollis orci orci, bibendum hendrerit lectus scelerisque sit amet. Vivamus aliquet, eros eget consectetur pulvinar, leo ipsum tempus justo, id volutpat magna magna eu metus. Aenean fringilla semper erat, at blandit sapien sollicitudin eget. Fusce pulvinar ante eget semper convallis. Quisque convallis dui a laoreet molestie. Maecenas eleifend massa hendrerit nisi euismod scelerisque. Aenean pharetra dictum massa et tincidunt. Maecenas mi tellus, pulvinar eu velit eget, tristique eleifend turpis. Suspendisse potenti.","image":"https://sobrehistoria.com/wp-content/uploads/2010/08/era-victoriana.jpg","alt":"Desafíos sociales en América Latina"},{"id":2,"year":"2024","title":"Desafíos sociales en América Latina","description":"Investigación interdisciplinaria que analizó la desigualdad y las políticas públicas en América Latina, proponiendo soluciones basadas en enfoques participativos y equitativos.","image":"https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1","alt":"Desafíos sociales en América Latina"},{"id":3,"year":"2023","title":"Métodos Cualitativos Avanzados en Investigación Social","description":"Desarrollo de herramientas para el análisis cualitativo aplicadas a conflictos sociales y dinámicas comunitarias.","image":"https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-2","alt":"Métodos Cualitativos Avanzados"},{"id":4,"year":"2022","title":"Perspectivas Críticas en Derechos Humanos","description":"Análisis comparativo de las políticas de derechos humanos en América Latina, con recomendaciones para organismos internacionales.","image":"https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-3","alt":"Perspectivas Críticas en Derechos Humanos"},{"id":5,"year":"2021","title":"Innovación Educativa en Contextos Vulnerables","description":"Estrategias pedagógicas innovadoras para comunidades en situación de vulnerabilidad social y económica. Hola mundo, lo he logrado","image":"https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-4","alt":"Innovación Educativa"},{"id":6,"year":"2020","title":"Tecnología y Desarrollo Sostenible","description":"Esta investigación interdisciplinaria aborda la implementación estratégica de tecnologías emergentes para el desarrollo sostenible en América Latina, centrándose en soluciones innovadoras que integren el crecimiento económico con la preservación ambiental y la equidad social. El estudio analiza casos específicos en Colombia, México, Brasil y Chile, donde se han implementado sistemas de energía renovable, tecnologías de agricultura de precisión y plataformas digitales para la gestión sostenible de recursos naturales. La metodología empleada combina análisis cuantitativo de indicadores de sostenibilidad con estudios cualitativos de impacto comunitario, incluyendo entrevistas en profundidad con más de 200 beneficiarios directos y 50 líderes comunitarios. Los resultados demuestran que la adopción de tecnologías verdes en comunidades rurales puede incrementar la productividad agrícola hasta en un 35% mientras reduce el consumo de agua en un 28% y las emisiones de carbono en un 42%. Además, se identificaron factores críticos de éxito como la participación comunitaria activa, la capacitación técnica continua y el acceso a financiamiento flexible. El proyecto también reveló desafíos significativos, incluyendo resistencia al cambio tecnológico en comunidades tradicionales, limitaciones en infraestructura de conectividad rural y necesidad de marcos regulatorios más adaptativos. Las recomendaciones incluyen el desarrollo de programas de alfabetización digital específicos para adultos mayores, la creación de cooperativas tecnológicas locales y la implementación de políticas públicas que incentiven la adopción gradual de tecnologías sostenibles. Este trabajo contribuye significativamente al entendimiento de cómo las tecnologías emergentes pueden ser herramientas efectivas para el desarrollo sostenible cuando se implementan con enfoques participativos y culturalmente sensibles.","image":"https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-5","alt":"Tecnología y Desarrollo Sostenible"}]'
+    data-investigations-data='${investigationsJSON}'
     id="investigaciones">
     <h2
       class="title title-2xl title-center title-semibold investigations_main-title"

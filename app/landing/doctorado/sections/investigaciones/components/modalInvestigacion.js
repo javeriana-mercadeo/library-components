@@ -559,30 +559,42 @@ const ModalInvestigacion = {
     }
     
     // ==========================================
-    // SLIDES DE IMÁGENES (SIEMPRE PRESENTES)
+    // USAR SOLO IMÁGENES REALES DEL CMS
     // ==========================================
     
-    // SIEMPRE agregar imagen principal como primer slide
-    mediaItems.unshift({
-      type: 'image', 
-      src: baseImage || 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1', 
-      alt: title
-    })
-    
-    // Imágenes adicionales
+    // Agregar imagen principal (siempre debe existir)
     if (baseImage) {
-      // Crear variaciones de la imagen base agregando sufijos
-      mediaItems.push({ type: 'image', src: `${baseImage}-2`, alt: `${title} - Imagen 2` })
-      mediaItems.push({ type: 'image', src: `${baseImage}-3`, alt: `${title} - Imagen 3` })
-      mediaItems.push({ type: 'image', src: `${baseImage}-4`, alt: `${title} - Imagen 4` })
+      mediaItems.push({
+        type: 'image', 
+        src: baseImage, 
+        alt: title
+      })
     } else {
-      // Imágenes por defecto si no hay imagen base
-      mediaItems.push({ type: 'image', src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-2', alt: `${title} - Imagen 2` })
-      mediaItems.push({ type: 'image', src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-3', alt: `${title} - Imagen 3` })
-      mediaItems.push({ type: 'image', src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-4', alt: `${title} - Imagen 4` })
+      // Fallback solo si no hay imagen principal
+      mediaItems.push({
+        type: 'image', 
+        src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1', 
+        alt: title
+      })
     }
     
-    this.log('Media generada:', { 
+    // ==========================================
+    // IMÁGENES ADICIONALES DEL CMS (FUTURO)
+    // ==========================================
+    // Nota: Aquí se pueden agregar imágenes adicionales reales cuando el CMS
+    // tenga múltiples imágenes por investigación en grad_investigationImg
+    // Ejemplo:
+    // if (investigationData?.additionalImages?.length > 0) {
+    //   investigationData.additionalImages.forEach((imgData, index) => {
+    //     mediaItems.push({
+    //       type: 'image',
+    //       src: imgData.url,
+    //       alt: imgData.alt || `${title} - Imagen ${index + 2}`
+    //     })
+    //   })
+    // }
+    
+    this.log('Media generada (solo imágenes reales):', { 
       hasVideo: !!hasVideo, 
       totalItems: mediaItems.length, 
       videoPosition: hasVideo ? videoConfig.position : 'none',
