@@ -226,8 +226,8 @@ const Becas = () => {
                     <Button
                       id={`button-${elementName}-${tab.id}`}
                       className={`${baseClass}__cta-button`}
-                      variant='solid'
-                      color='primary'
+                      variant='bordered'
+                      color='secondary'
                       size='md'
                       href={tab.buttonLink}
                     >
