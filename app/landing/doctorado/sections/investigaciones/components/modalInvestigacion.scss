@@ -560,15 +560,15 @@ $content-width: 55%;
   align-items: flex-start;
   gap: var(--spacing-sm);
   
-  // MÓVILES: Layout vertical solo para descripción, horizontal para otros
+  // Layout vertical para descripción en todas las pantallas
+  &:has(.investigations-modal__description) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+  
+  // MÓVILES: Fecha y estudiante mantienen layout horizontal
   @media (max-width: #{$breakpoint-md - 1}) {
-    // Solo la descripción tendrá layout vertical
-    &:has(.investigations-modal__description) {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--spacing-xs);
-    }
-    
     // Fecha y estudiante mantienen layout horizontal
     &:not(:has(.investigations-modal__description)) {
       flex-direction: row;

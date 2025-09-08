@@ -19,14 +19,12 @@
               <h3 class="title title-lg title-semibold investigations_title">
                 Investigación principal
               </h3>
-              <lfr-editable
-                type="rich-text"
-                class="paragraph paragraph-neutral paragraph-md investigations_description">
+              <p class="paragraph paragraph-neutral paragraph-md investigations_description">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam luctus dolor eget
                 urna ullamcorper posuere. Vivamus sem diam, consequat et lobortis at, aliquam vitae
                 felis. Nulla at sodales ligula. Duis quis condimentum neque, id...
                 <span><i class="ph ph-arrow-square-in"></i></span>
-              </lfr-editable>
+              </p>
             </div>
           </div>
         </div>
@@ -56,14 +54,12 @@
                     <h3 class="title title-md title-semibold investigations_title">
                       Desafíos sociales en América Latina
                     </h3>
-                    <lfr-editable
-                      type="rich-text"
-                      class="paragraph paragraph-neutral paragraph-md investigations_description">
+                    <p class="paragraph paragraph-neutral paragraph-md investigations_description">
                       Investigación interdisciplinaria que analizó la desigualdad y las políticas
                       públicas en América Latina, proponiendo soluciones basadas en enfoques
                       participativos y...
                       <span><i class="ph ph-arrow-square-in"></i></span>
-                    </lfr-editable>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -88,13 +84,11 @@
                     <h3 class="title title-md title-semibold investigations_title">
                       Métodos Cualitativos Avanzados en Investigación Social
                     </h3>
-                    <lfr-editable
-                      type="rich-text"
-                      class="paragraph paragraph-neutral paragraph-md investigations_description">
+                    <p class="paragraph paragraph-neutral paragraph-md investigations_description">
                       Desarrollo de herramientas para el análisis cualitativo aplicadas a conflictos
                       sociales y dinámicas comunitarias.
                       <span><i class="ph ph-arrow-square-in"></i></span>
-                    </lfr-editable>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -119,13 +113,11 @@
                     <h3 class="title title-md title-semibold investigations_title">
                       Perspectivas Críticas en Derechos Humanos
                     </h3>
-                    <lfr-editable
-                      type="rich-text"
-                      class="paragraph paragraph-neutral paragraph-md investigations_description">
+                    <p class="paragraph paragraph-neutral paragraph-md investigations_description">
                       Análisis comparativo de las políticas de derechos humanos en América Latina,
                       con recomendaciones para organismos internacionales.
                       <span><i class="ph ph-arrow-square-in"></i></span>
-                    </lfr-editable>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -150,13 +142,11 @@
                     <h3 class="title title-md title-semibold investigations_title">
                       Innovación Educativa en Contextos Vulnerables
                     </h3>
-                    <lfr-editable
-                      type="rich-text"
-                      class="paragraph paragraph-neutral paragraph-md investigations_description">
+                    <p class="paragraph paragraph-neutral paragraph-md investigations_description">
                       Estrategias pedagógicas innovadoras para comunidades en situación de
                       vulnerabilidad social y económica. Hola mundo, lo he logrado
                       <span><i class="ph ph-arrow-square-in"></i></span>
-                    </lfr-editable>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -181,14 +171,12 @@
                     <h3 class="title title-md title-semibold investigations_title">
                       Tecnología y Desarrollo Sostenible
                     </h3>
-                    <lfr-editable
-                      type="rich-text"
-                      class="paragraph paragraph-neutral paragraph-md investigations_description">
+                    <p class="paragraph paragraph-neutral paragraph-md investigations_description">
                       Esta investigación interdisciplinaria aborda la implementación estratégica de
                       tecnologías emergentes para el desarrollo sostenible en América Latina,
                       centrándose en soluciones...
                       <span><i class="ph ph-arrow-square-in"></i></span>
-                    </lfr-editable>
+                    </p>
                   </div>
                 </div>
               </div>

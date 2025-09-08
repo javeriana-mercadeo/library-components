@@ -500,14 +500,12 @@ const ModalInvestigacion = {
     // SLIDES DE IMÁGENES (SIEMPRE PRESENTES)
     // ==========================================
     
-    // Imagen principal primero (si no hay video en primera posición)
-    if (!hasVideo || investigationData.video.position !== 'first') {
-      mediaItems.unshift({
-        type: 'image', 
-        src: baseImage || 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1', 
-        alt: title
-      })
-    }
+    // SIEMPRE agregar imagen principal como primer slide
+    mediaItems.unshift({
+      type: 'image', 
+      src: baseImage || 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1', 
+      alt: title
+    })
     
     // Imágenes adicionales
     if (baseImage) {

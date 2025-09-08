@@ -5,10 +5,11 @@ import '@/styles/global.scss'
 
 import { Metadata, Viewport } from 'next'
 
-import { Providers } from './providers'
 import ThemeSwitch from '../components/themeSwitch/theme-switch'
 import BtnReturn from '../components/btnReturn/btnReturn'
 import { ClientSideUtils } from '../components/clientSideUtils/ClientSideUtils'
+
+import { Providers } from './providers'
 
 import { siteConfig } from '@/config/site'
 

@@ -119,7 +119,7 @@ const Investigaciones = () => {
             Investigaciones
           </Title>
           <div className={`${baseClass}_empty-state`}>
-            <Paragraph align='center'>No hay investigaciones disponibles en este momento.</Paragraph>
+            <Paragraph isEditable={false} align='center'>No hay investigaciones disponibles en este momento.</Paragraph>
           </div>
         </Container>
       </section>
@@ -186,7 +186,7 @@ const Investigaciones = () => {
               {title}
             </Title>
 
-            <Paragraph className={`${baseClass}_description`}>
+            <Paragraph isEditable={false} className={`${baseClass}_description`}>
               {truncateText(description, 20, true)}
               <span>
                 <i className='ph ph-arrow-square-in'></i>
@@ -229,7 +229,7 @@ const Investigaciones = () => {
               {title}
             </Title>
 
-            <Paragraph className={`${baseClass}_description`}>
+            <Paragraph isEditable={false} className={`${baseClass}_description`}>
               {truncateText(description, 20)}
               <span>
                 <i className='ph ph-arrow-square-in'></i>

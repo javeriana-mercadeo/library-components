@@ -1,18 +1,16 @@
 'use client'
-import ViewComponent from '@/components/viewComponent/viewComponent'
 
 // import Proyectos from './sections/proyectos'
-import Laboratorios from './sections/laboratorios'
-import Estudiantes from './sections/estudiantes'
 import Multimedia from './sections/multimedia'
 // import MultimediaRedes from './sections/multimediaRedes'
 // import DobleTitulacionUno from './sections/dobleTitulacionUno'
-import DobleTitulacionDos from './sections/dobleTitulacionDos'
-import Herramientas from './sections/herramientas'
 import AccesosDirectos from './sections/accesosDirectos'
+
+import ViewComponent from '@/components/viewComponent/viewComponent'
 
 export default function SeccionesOpcionales() {
   const basePath = '/institutional/secciones-opcionales'
+
   return (
     <>
       {/* <Proyectos />*/}
@@ -55,10 +53,10 @@ export default function SeccionesOpcionales() {
         <Herramientas />
       </ViewComponent> */}
 
-      <AccesosDirectos/>
+      <AccesosDirectos />
       <ViewComponent path={`${basePath}/sections/accesosDirectos`}>
         <AccesosDirectos />
-      </ViewComponent> 
+      </ViewComponent>
     </>
   )
 }
