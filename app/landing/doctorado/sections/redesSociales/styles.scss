@@ -120,75 +120,38 @@
   }
 }
 
-// Estilos específicos por red social con colores hardcodeados (más simples y directos)
-.socialMedia_link--facebook {
-  color: #1877f2; // Azul oficial de Facebook
-
-  &:hover {
-    color: #166fe5;
-  }
-}
-
-.socialMedia_link--instagram {
-  color: #e4405f; // Rosa/rojo oficial de Instagram
-
-  &:hover {
-    color: #d73851;
-  }
-}
-
-.socialMedia_link--youtube {
-  color: #ff0000; // Rojo oficial de YouTube
-
-  &:hover {
-    color: #e60000;
-  }
-}
-
-.socialMedia_link--twitter {
-  color: #000000; // Negro para X/Twitter
-
-  &:hover {
-    color: #333333;
-  }
-}
-
-.socialMedia_link--linkedin {
-  color: #0a66c2; // Azul oficial de LinkedIn
-
-  &:hover {
-    color: #095cb0;
-  }
-}
-
-.socialMedia_link--tiktok {
-  color: #000000; // Negro oficial de TikTok
-
-  &:hover {
-    color: #333333;
-  }
-}
-
-.socialMedia_link--whatsapp {
-  color: #25d366; // Verde oficial de WhatsApp
-
-  &:hover {
-    color: #22c55e;
-  }
-}
-
-.socialMedia_link--telegram {
-  color: #0088cc; // Azul oficial de Telegram
-
-  &:hover {
-    color: #007bb5;
-  }
-}
-
+// Estilos usando el sistema de variables CSS del tema activo
+.socialMedia_link--facebook,
+.socialMedia_link--instagram,
+.socialMedia_link--youtube,
+.socialMedia_link--twitter,
+.socialMedia_link--linkedin,
+.socialMedia_link--tiktok,
+.socialMedia_link--whatsapp,
+.socialMedia_link--telegram,
 .socialMedia_link--generic {
-  color: #6b7280; // Gris neutro
+  // Color principal del tema activo
+  color: var(--primary-600);
 
   &:hover {
-    color: #4b5563;
+    color: var(--primary-700);
+    transform: translateY(-2px) scale(1.05);
+  }
+
+  &:focus {
+    color: var(--primary-500);
+  }
+
+  // Soporte para tema oscuro
+  @include dark-theme {
+    color: var(--primary-300);
+
+    &:hover {
+      color: var(--primary-200);
+    }
+
+    &:focus {
+      color: var(--primary-400);
+    }
   }
 }
