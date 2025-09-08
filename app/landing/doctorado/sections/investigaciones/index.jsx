@@ -168,6 +168,7 @@ const Investigaciones = () => {
           role='button'
           tabIndex={0}
           data-id={id}
+          data-video-embed-id="Y2KdypoCAYg"
           onClick={() => handleCardClick(id)}
           onKeyDown={e => handleCardKeyDown(e, id)}
           aria-label={`Ver detalles de la investigación: ${title}`}>
@@ -204,6 +205,17 @@ const Investigaciones = () => {
   const renderSecondaryCard = (investigacion, index) => {
     const { id, year, title, description, image, alt } = investigacion
 
+    // Configurar video embed ID específico para cada investigación
+    const getVideoEmbedId = (investigacionId) => {
+      const videoEmbedIds = {
+        1: 'Y2KdypoCAYg', // Investigación principal
+        3: 'pBbK6Tf5reE'  // Métodos Cualitativos Avanzados
+      }
+      return videoEmbedIds[investigacionId] || null
+    }
+
+    const videoEmbedId = getVideoEmbedId(id)
+
     return (
       <div key={id} className={`${baseClass}_slide ${baseClass}_slide--secondary swiper-slide`} role='listitem'>
         <div
@@ -211,6 +223,7 @@ const Investigaciones = () => {
           role='button'
           tabIndex={0}
           data-id={id}
+          {...(videoEmbedId && { 'data-video-embed-id': videoEmbedId })}
           onClick={() => handleCardClick(id)}
           onKeyDown={e => handleCardKeyDown(e, id)}
           aria-label={`Ver detalles de la investigación: ${title}`}>
@@ -241,12 +254,17 @@ const Investigaciones = () => {
     )
   }
 
+  // Crear versión limpia sin configuración de video para serialización
+  const investigacionesWithoutVideo = sortedInvestigaciones.map(investigacion => {
+    const { video, ...investigacionSinVideo } = investigacion
+    return investigacionSinVideo
+  })
+
   return (
     <section
       className={`${baseClass}_container`}
-      data-component-id={elementName}
-      data-investigations-data={JSON.stringify(sortedInvestigaciones)}>
-      <Container id={elementName} className={baseClass}>
+      data-component-id={elementName}>
+      <Container id={elementName} className={baseClass} data-investigations-data={JSON.stringify(investigacionesWithoutVideo)}>
         <Title weight='semibold' size='2xl' align='center' id={`${elementName}-title`} className={`${baseClass}_main-title`}>
           Investigaciones
         </Title>

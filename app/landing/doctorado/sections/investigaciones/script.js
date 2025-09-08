@@ -240,18 +240,62 @@ export default () => {
   // OBTENER DATOS DESDE DOM
   // ==========================================
   const getInvestigacionesData = () => {
-    const container = document.querySelector('[data-component-id="investigaciones"]')
+    console.log('[INVESTIGATIONS] 🔍 Buscando contenedor #investigaciones...')
+    const container = document.querySelector('#investigaciones')
+    console.log('[INVESTIGATIONS] 🔍 Contenedor encontrado:', !!container)
+    
     if (container) {
+      console.log('[INVESTIGATIONS] 🔍 Buscando atributo data-investigations-data...')
+      console.log('[INVESTIGATIONS] 🔍 Todos los atributos del contenedor:', Array.from(container.attributes).map(attr => attr.name))
+      console.log('[INVESTIGATIONS] 🔍 HTML del contenedor:', container.outerHTML.substring(0, 200) + '...')
       try {
         const dataAttr = container.getAttribute('data-investigations-data')
+        console.log('[INVESTIGATIONS] 🔍 Atributo encontrado:', !!dataAttr, 'longitud:', dataAttr?.length)
         if (dataAttr) {
           const data = JSON.parse(dataAttr)
           window.investigacionesData = data
+          console.log('[INVESTIGATIONS] ✅ Datos cargados:', data.length, 'investigaciones')
+          
+          // AGREGAR DATOS COMPLETOS CON CONFIGURACIÓN DE VIDEO PARA EL MODAL
+          // Los datos en el atributo están filtrados, pero el modal necesita la config completa
+          window.investigacionesDataComplete = data.map(investigacion => {
+            // Restaurar configuración de video para investigaciones específicas
+            if (investigacion.id === 1) {
+              return {
+                ...investigacion,
+                video: {
+                  enabled: true,
+                  url: 'https://youtu.be/Y2KdypoCAYg',
+                  embedId: 'Y2KdypoCAYg',
+                  position: 'first'
+                }
+              }
+            } else if (investigacion.id === 3) {
+              return {
+                ...investigacion,
+                video: {
+                  enabled: true,
+                  url: 'https://youtu.be/pBbK6Tf5reE',
+                  embedId: 'pBbK6Tf5reE',
+                  position: 'first'
+                }
+              }
+            }
+            return investigacion
+          })
+          
+          console.log('[INVESTIGATIONS] ✅ Datos completos generados:', window.investigacionesDataComplete.length)
+          console.log('[INVESTIGATIONS] ✅ Datos ID 1:', window.investigacionesDataComplete.find(i => i.id === 1))
+          console.log('[INVESTIGATIONS] ✅ Datos ID 3:', window.investigacionesDataComplete.find(i => i.id === 3))
+          
           return data
         }
       } catch (error) {
         console.error('[INVESTIGATIONS] Error al parsear datos:', error)
       }
+    } else {
+      console.error('[INVESTIGATIONS] ❌ NO se encontró contenedor #investigaciones')
+      console.log('[INVESTIGATIONS] 🔍 Elementos disponibles con id:', Array.from(document.querySelectorAll('[id]')).map(el => el.id))
     }
     return []
   }
@@ -261,8 +305,10 @@ export default () => {
   // ==========================================
   const initModal = () => {
     try {
+      console.log('[INVESTIGATIONS] 🔧 Iniciando modal - obteniendo datos...')
       // Obtener datos para el modal
-      getInvestigacionesData()
+      const datosObtenidos = getInvestigacionesData()
+      console.log('[INVESTIGATIONS] 🔧 Datos obtenidos:', datosObtenidos.length, 'investigaciones')
       
       // Exponer ModalInvestigacion globalmente
       window.ModalInvestigacion = ModalInvestigacion

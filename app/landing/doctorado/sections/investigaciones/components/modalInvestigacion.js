@@ -271,17 +271,23 @@ const ModalInvestigacion = {
     try {
       // Obtener el ID de la card desde el data-attribute
       const cardId = card.getAttribute('data-id')
+      console.log('[MODAL-INVESTIGACION] 🔍 Card clickeada, data-id encontrado:', cardId)
 
       if (!cardId) {
-        console.warn('[MODAL-INVESTIGACION] Card sin data-id, usando fallback')
+        console.warn('[MODAL-INVESTIGACION] ❌ Card sin data-id, usando fallback')
         return this.handleCardClickFallback(card)
       }
+
+      // Debug de datos disponibles
+      console.log('[MODAL-INVESTIGACION] 🔍 window.investigacionesData:', window.investigacionesData ? window.investigacionesData.length : 'NO EXISTE')
+      console.log('[MODAL-INVESTIGACION] 🔍 window.investigacionesDataComplete:', window.investigacionesDataComplete ? window.investigacionesDataComplete.length : 'NO EXISTE')
 
       // Buscar los datos completos desde window (React)
       const fullData = this.getInvestigacionData(parseInt(cardId))
 
       if (!fullData) {
-        this.warn('No se encontraron datos para ID:', cardId)
+        this.warn('❌ No se encontraron datos para ID:', cardId)
+        console.log('[MODAL-INVESTIGACION] 🔍 IDs disponibles en datos completos:', window.investigacionesDataComplete ? window.investigacionesDataComplete.map(i => i.id) : 'NINGUNO')
         return this.handleCardClickFallback(card)
       }
 
@@ -320,11 +326,22 @@ const ModalInvestigacion = {
 
   // Función para obtener los datos originales completos desde window
   getInvestigacionData(id) {
+    // INTENTAR PRIMERO LOS DATOS COMPLETOS (CON VIDEO)
+    if (window.investigacionesDataComplete) {
+      const completeData = window.investigacionesDataComplete.find(item => item.id === id)
+      if (completeData) {
+        this.log('Usando datos completos con video para ID:', id)
+        return completeData
+      }
+    }
+    
+    // FALLBACK A DATOS FILTRADOS
     if (!window.investigacionesData) {
       this.warn('Datos no disponibles en window')
       return null
     }
 
+    this.log('Usando datos filtrados (sin video) para ID:', id)
     return window.investigacionesData.find(item => item.id === id)
   },
 
@@ -466,20 +483,65 @@ const ModalInvestigacion = {
     this.log('Galería generada con', allMediaItems.length, 'elementos multimedia')
   },
 
+  // ==========================================
+  // CONFIGURACIONES DE VIDEO HARDCODEADAS (CONTROLADAS POR DESARROLLADOR)
+  // ==========================================
+  getVideoConfigs() {
+    return {
+      1: { 
+        enabled: true,
+        position: 'first'
+        // embedId se obtiene del template
+      },
+      3: {
+        enabled: true,
+        position: 'first'
+        // embedId se obtiene del template (pBbK6Tf5reE)
+      }
+      // Agregar más configuraciones aquí según sea necesario
+    }
+  },
+
+  // ==========================================
+  // OBTENER CONFIGURACIÓN DE VIDEO PARA UNA INVESTIGACIÓN
+  // ==========================================
+  getVideoConfig(investigacionId) {
+    const videoConfigs = this.getVideoConfigs()
+    const baseConfig = videoConfigs[investigacionId]
+    
+    if (!baseConfig) {
+      return null
+    }
+    
+    // Obtener embedId desde atributo del elemento
+    const card = document.querySelector(`[data-id="${investigacionId}"]`)
+    const embedId = card?.getAttribute('data-video-embed-id')
+    
+    if (!embedId) {
+      this.log(`No embedId encontrado para investigación ${investigacionId}`)
+      return null
+    }
+    
+    return {
+      ...baseConfig,
+      embedId,
+      url: `https://youtu.be/${embedId}`
+    }
+  },
+
   generateAdditionalMedia(baseImage, title, investigationData = null) {
     const mediaItems = []
     
     // ==========================================
-    // CONFIGURACIÓN FLEXIBLE DE VIDEO POR INVESTIGACIÓN
+    // CONFIGURACIÓN HÍBRIDA DE VIDEO
     // ==========================================
     
-    // Verificar si esta investigación específica tiene video configurado
-    const hasVideo = investigationData && 
-                    investigationData.video && 
-                    investigationData.video.enabled === true
+    // Obtener configuración de video usando el nuevo sistema híbrido
+    const investigacionId = investigationData?.id
+    const videoConfig = investigacionId ? this.getVideoConfig(investigacionId) : null
+    const hasVideo = videoConfig !== null
     
     if (hasVideo) {
-      const videoConfig = investigationData.video
       const videoItem = {
         type: 'video',
         src: videoConfig.url,
@@ -523,7 +585,7 @@ const ModalInvestigacion = {
     this.log('Media generada:', { 
       hasVideo: !!hasVideo, 
       totalItems: mediaItems.length, 
-      videoPosition: hasVideo ? investigationData.video.position : 'none',
+      videoPosition: hasVideo ? videoConfig.position : 'none',
       investigationId: investigationData ? investigationData.id : 'unknown'
     })
 
