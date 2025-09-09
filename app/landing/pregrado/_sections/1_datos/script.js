@@ -1006,14 +1006,15 @@ const editableFieldsSystem = {
     this.loadUserEditedValues()
   },
   
-  // Configurar campos editables
+  // Configurar campos editables de Liferay
   setupEditableFields() {
-    const editableElements = document.querySelectorAll('[data-editable="true"]')
+    // Buscar elementos lfr-editable específicamente
+    const editableElements = document.querySelectorAll('lfr-editable[data-editable="true"]')
     
     editableElements.forEach(element => {
       const fieldId = element.getAttribute('data-field-id')
       
-      // Detectar edición manual
+      // Detectar edición manual en lfr-editable
       element.addEventListener('input', (e) => {
         this.handleUserEdit(e.target)
       })
@@ -1023,12 +1024,28 @@ const editableFieldsSystem = {
         this.saveUserEdit(e.target)
       })
       
-      // Prevenir enter para mantener formato
+      // Prevenir enter para mantener formato en campos de texto simple
       element.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault()
-          e.target.blur()
+        if (e.key === 'Enter' && element.getAttribute('type') === 'rich-text') {
+          // Para rich-text, permitir enter pero limitar a texto simple
+          const selection = window.getSelection()
+          if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0)
+            range.deleteContents()
+            range.insertNode(document.createTextNode('\n'))
+            range.collapse(false)
+            selection.removeAllRanges()
+            selection.addRange(range)
+            e.preventDefault()
+          }
         }
+      })
+      
+      // Limpiar formato HTML innecesario en lfr-editable
+      element.addEventListener('paste', (e) => {
+        e.preventDefault()
+        const text = (e.clipboardData || window.clipboardData).getData('text/plain')
+        document.execCommand('insertText', false, text)
       })
     })
   },
@@ -1076,9 +1093,9 @@ const editableFieldsSystem = {
     console.log(`[EditableFields] Campo ${fieldId} guardado:`, newValue)
   },
   
-  // Cargar valores editados guardados
+  // Cargar valores editados guardados para lfr-editable
   loadUserEditedValues() {
-    const editableElements = document.querySelectorAll('[data-editable="true"]')
+    const editableElements = document.querySelectorAll('lfr-editable[data-editable="true"]')
     
     editableElements.forEach(element => {
       const fieldId = element.getAttribute('data-field-id')
@@ -1090,8 +1107,8 @@ const editableFieldsSystem = {
         try {
           const editData = JSON.parse(savedEdit)
           
-          // Aplicar valor guardado
-          element.textContent = editData.value
+          // Aplicar valor guardado a lfr-editable
+          element.innerHTML = editData.value
           element.setAttribute('data-user-edited', 'true')
           
           // Añadir indicador visual

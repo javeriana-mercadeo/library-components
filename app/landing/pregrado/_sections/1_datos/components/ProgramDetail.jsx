@@ -70,28 +70,22 @@ const ProgramDetail = ({ id, icon, label, value, editableValue, isUserEdited = f
             </Paragraph>
           )}
 
-          {/* Tipo editable - Prioritario sobre API */}
+          {/* Tipo editable - Compatible con Liferay */}
           {type === 'editable' && (
-            <div 
-              className='program-detail_content--editable'
-              data-lfr-editable-id={liferayContainerId}
-              data-lfr-editable-type='text'>
-              <Paragraph 
-                className='program-detail_value program-detail_value--editable'
-                color='neutral'
-                size='md'
-                bold={true}
-                contentEditable={true}
-                suppressContentEditableWarning={true}
+            <div className='program-detail_content--editable'>
+              <lfr-editable
+                id={`datos-${id.replace('data-puj-', '')}`}
+                type='rich-text'
+                contentEditable=''
                 data-editable='true'
                 data-field-id={id}
-                data-user-edited={isUserEdited}
                 data-allow-override={allowOverride}
                 data-lfr-editable-id={liferayEditableId}
                 data-lfr-editable-type='text'
+                className='paragraph paragraph-neutral paragraph-md paragraph-bold program-detail_value program-detail_value--editable'
                 {...dynamicAttributes}>
                 {editableValue || value}
-              </Paragraph>
+              </lfr-editable>
               
               {isUserEdited && (
                 <div className='edit-indicator'>
