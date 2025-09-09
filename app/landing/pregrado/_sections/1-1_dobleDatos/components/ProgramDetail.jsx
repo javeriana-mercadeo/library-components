@@ -38,10 +38,15 @@ const ProgramDetail = ({ id, icon, label, value, value2, prefix, prefix2, editab
 
   const modalId = useMemo(() => `modal-${id}`, [id])
   
-  // Generar ID único estable para Liferay
+  // Generar IDs únicos estables para Liferay
   const liferayEditableId = useMemo(() => {
     const pageId = typeof window !== 'undefined' ? window.location.pathname.replace(/\//g, '-') : 'default'
     return `editable-${pageId}-${id}-field`
+  }, [id])
+  
+  const liferayContainerId = useMemo(() => {
+    const pageId = typeof window !== 'undefined' ? window.location.pathname.replace(/\//g, '-') : 'default'
+    return `editable-container-${pageId}-${id}`
   }, [id])
 
   const dynamicAttributes = useMemo(() => generateDynamicAttributes(id), [id])
@@ -97,7 +102,10 @@ const ProgramDetail = ({ id, icon, label, value, value2, prefix, prefix2, editab
 
           {/* Tipo editable - Prioritario sobre API */}
           {type === 'editable' && (
-            <div className='program-detail_content--editable'>
+            <div 
+              className='program-detail_content--editable'
+              data-lfr-editable-id={liferayContainerId}
+              data-lfr-editable-type='text'>
               <Paragraph 
                 className='program-detail_value program-detail_value--editable'
                 color='neutral'
