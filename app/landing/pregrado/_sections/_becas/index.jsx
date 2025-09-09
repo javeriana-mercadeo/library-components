@@ -1,4 +1,4 @@
-import { Container, Title, Caption, Button, Icon, Image } from '@library/components'
+import { Container, Title, Caption, Button, Image } from '@library/components'
 
 import info from './info.json'
 import './styles.scss'
@@ -15,7 +15,6 @@ const Becas = () => {
     {
       id: 'becas',
       label: 'Nuestras Becas',
-      icon: 'ph-graduation-cap',
       image:
         'https://www.javeriana.edu.co/recursosdb/20125/12256677/apoyo-financiero-y-descuentos.JPG/25b2a8f4-71f3-da2e-2728-b8af1111a992',
       imageAlt: 'Apoyo financiero y descuentos - Becas Universidad Javeriana',
@@ -79,7 +78,6 @@ const Becas = () => {
     {
       id: 'financiacion',
       label: 'Programa de Financiación',
-      icon: 'ph-credit-card',
       image:
         'https://www.javerianacali.edu.co/sites/default/files/styles/image_1100x700/public/2020-02/programas-academicos-1100x700.jpg.webp?itok=MglNGFBd',
       imageAlt: 'Programas académicos - Opciones de financiación Universidad Javeriana',
@@ -165,23 +163,23 @@ const Becas = () => {
         <div className={`${baseClass}__tabs-container`}>
           {/* Navegación de tabs */}
           <div className={`${baseClass}__tabs-nav`} role='tablist' aria-label='Opciones de becas y financiación'>
-            <div className={`${baseClass}__tabs-wrapper`}>
+            <ul className={`${baseClass}__tabs-list`}>
               {scholarshipTabs.map((tab, index) => (
-                <button
-                  key={tab.id}
-                  className={`${baseClass}__tab-button ${index === 0 ? 'active' : ''}`}
-                  id={`${tab.id}-tab`}
-                  data-tabs-target={`#${tab.id}-panel`}
-                  type='button'
-                  role='tab'
-                  aria-controls={`${tab.id}-panel`}
-                  aria-selected={index === 0 ? 'true' : 'false'}
-                  tabIndex={index === 0 ? 0 : -1}>
-                  <Icon icon={tab.icon} size='sm' className={`${baseClass}__tab-icon`} />
-                  <span id={`span-${elementName}-tab-${tab.id}`}>{tab.label}</span>
-                </button>
+                <li key={tab.id} role='presentation'>
+                  <button
+                    className={`${baseClass}__tab-button ${index === 0 ? 'active' : ''}`}
+                    id={`${tab.id}-tab`}
+                    data-tabs-target={`#${tab.id}-panel`}
+                    type='button'
+                    role='tab'
+                    aria-controls={`${tab.id}-panel`}
+                    aria-selected={index === 0 ? 'true' : 'false'}
+                    tabIndex={index === 0 ? 0 : -1}>
+                    <span id={`span-${elementName}-tab-${tab.id}`}>{tab.label}</span>
+                  </button>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           {/* Contenido de las tabs */}

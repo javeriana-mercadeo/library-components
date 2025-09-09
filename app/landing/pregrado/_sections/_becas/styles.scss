@@ -46,120 +46,99 @@ $scholarships-tab-hover: rgba(255, 255, 255, 0.8);
 
   // Navegación de tabs
   &__tabs-nav {
-    display: flex;
-    justify-content: center;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
   }
 
-  &__tabs-wrapper {
+  &__tabs-list {
     display: flex;
-    width: 100%;
-    max-width: rem(500px); // Ancho máximo para que no se vea demasiado ancho
-    margin: 0 auto; // Centrar el contenedor
-    padding: rem(6px);
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: rem(16px);
-    border: rem(1px) solid rgba(255, 255, 255, 0.2);
-    box-shadow:
-      0 rem(4px) rem(12px) rgba(0, 0, 0, 0.1),
-      0 rem(2px) rem(4px) rgba(0, 0, 0, 0.05);
-    position: relative;
-    backdrop-filter: blur(rem(8px));
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
     gap: rem(8px);
+    justify-content: center;
+    border-bottom: rem(1px) solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0;
 
-    @include responsive($breakpoint-sm) {
-      padding: rem(8px);
-      border-radius: rem(20px);
-      gap: rem(10px);
-      max-width: rem(600px);
+    @include responsive($breakpoint-md) {
+      flex-direction: row;
+    }
+
+    li {
+      width: 100%;
     }
   }
 
   &__tab-button {
-    display: flex;
-    align-items: center;
-    flex-direction: column; // Ícono arriba en móvil
-    flex-wrap: wrap; // Permitir que el contenido se ajuste
-    gap: rem(4px); // Gap más pequeño para layout vertical
-    padding: rem(10px) rem(12px);
+    width: 100%;
+    background: none;
     border: none;
-    background: transparent;
-    color: $scholarships-tab-inactive;
-    font-size: var(--font-size-paragraph); // Aumentar tamaño de fuente
-    font-weight: var(--font-weight-medium);
-    border-radius: rem(12px);
+    color: var(--neutral-800);
+    font-size: rem(18px);
+    font-weight: 400;
+    padding: rem(12px) rem(32px) rem(16px);
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    white-space: normal; // Permitir salto de línea en móvil
+    transition: $scholarships-transition;
     position: relative;
-    z-index: 1;
-    flex: 1; // Hacer que ambos botones ocupen el mismo espacio
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-    line-height: 1.3; // Mejor espaciado entre líneas
-    min-height: rem(40px); // Altura mínima para consistencia
+    white-space: nowrap;
+    border-radius: 0;
 
-    @include responsive($breakpoint-sm) {
-      padding: rem(14px) rem(24px);
-      border-radius: rem(14px);
-      gap: rem(10px);
-      font-size: var(--font-size-paragraph); // Restablecer tamaño normal en tablet+
-      white-space: nowrap; // Restablecer a una línea en tablet+
-      min-height: rem(48px); // Altura mayor en tablet+
-      flex-wrap: nowrap; // Sin wrap en tablet+
-      flex-direction: row; // Volver a layout horizontal en tablet+
+    @include dark-theme {
+      color: var(--neutral-300);
     }
 
-    // Estados hover
+    // Línea inferior para tab activa
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: rem(-1px);
+      left: 0;
+      right: 0;
+      height: rem(3px);
+      background-color: $scholarships-text-color;
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    // Hover state
     &:hover:not(.active) {
       color: $scholarships-tab-hover;
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateY(rem(-1px));
-
-      .scholarships__tab-icon {
-        transform: scale(1.1);
-      }
     }
 
-    // Estado activo
+    // Active state
     &.active {
-      background: $scholarships-tab-active-bg;
       color: $scholarships-text-color;
-      font-weight: var(--font-weight-semibold);
-      box-shadow: 0 rem(2px) rem(8px) rgba(0, 0, 0, 0.1);
+      font-weight: 500;
 
-      span {
-        font-weight: var(--font-weight-semibold);
-      }
-
-      .scholarships__tab-icon {
-        transform: scale(1.1);
+      &::after {
+        transform: scaleX(1);
       }
     }
 
-    // Focus visible solo para navegación con teclado
+    // Focus para accesibilidad
     &:focus-visible {
-      outline: 2px solid $scholarships-text-color;
-      outline-offset: 2px;
+      outline: rem(2px) solid $scholarships-text-color;
+      outline-offset: rem(2px);
+      border-radius: rem(4px);
     }
 
-    // Quitar outline cuando se hace clic
-    &:focus:not(:focus-visible) {
-      outline: none;
+    // Estados deshabilitados
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
-  }
 
-  &__tab-icon {
-    font-size: rem(16px); // Ícono más pequeño en móvil
-    transition: transform 0.3s ease;
-    flex-shrink: 0; // Evitar que el ícono se comprima
-    color: inherit; // Heredar el color del texto del botón
+    @include responsive($breakpoint-md) {
+      font-size: rem(16px);
+      padding: rem(12px) rem(24px) rem(16px);
+    }
 
     @include responsive($breakpoint-sm) {
-      font-size: rem(20px); // Tamaño normal en tablet+
+      font-size: rem(14px);
+      padding: rem(10px) rem(16px) rem(14px);
     }
   }
+
 
   // Contenido de tabs
   &__tabs-content {
@@ -753,22 +732,8 @@ $scholarships-tab-hover: rgba(255, 255, 255, 0.8);
   @include dark-theme {
     // El fondo principal ya usa var(--primary) que automáticamente cambia a primary-dark
     
-    &__tabs-wrapper {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.15);
-      box-shadow:
-        0 rem(4px) rem(12px) rgba(0, 0, 0, 0.2),
-        0 rem(2px) rem(4px) rgba(0, 0, 0, 0.1);
-    }
-
     &__tab-button {
-      &:hover:not(.active) {
-        color: $scholarships-tab-hover;
-        background: rgba(255, 255, 255, 0.08);
-      }
-
       &.active {
-        background: $scholarships-tab-active-bg;
         color: $scholarships-text-color;
       }
     }
