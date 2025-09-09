@@ -37,6 +37,12 @@ const ProgramDetail = ({ id, icon, label, value, editableValue, isUserEdited = f
   )
 
   const modalId = useMemo(() => `modal-${id}`, [id])
+  
+  // Generar ID único estable para Liferay
+  const liferayEditableId = useMemo(() => {
+    const pageId = typeof window !== 'undefined' ? window.location.pathname.replace(/\//g, '-') : 'default'
+    return `editable-${pageId}-${id}-field`
+  }, [id])
 
   const dynamicAttributes = useMemo(() => generateDynamicAttributes(id), [id])
 
@@ -73,6 +79,8 @@ const ProgramDetail = ({ id, icon, label, value, editableValue, isUserEdited = f
                 data-field-id={id}
                 data-user-edited={isUserEdited}
                 data-allow-override={allowOverride}
+                data-lfr-editable-id={liferayEditableId}
+                data-lfr-editable-type='text'
                 {...dynamicAttributes}>
                 {editableValue || value}
               </Paragraph>
