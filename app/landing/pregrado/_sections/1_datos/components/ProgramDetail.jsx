@@ -29,7 +29,7 @@ const generateDynamicAttributes = id => {
   return result
 }
 
-const ProgramDetail = ({ id, icon, label, value, type = 'normal', modalContent = null, className = '' }) => {
+const ProgramDetail = ({ id, icon, label, value, editableValue, isUserEdited = false, allowOverride = false, type = 'normal', modalContent = null, className = '' }) => {
   // Memoizar cálculos costosos
   const itemClass = useMemo(
     () => ['program-detail', type !== 'normal' ? `program-detail--${type}` : '', className].filter(Boolean).join(' '),
@@ -57,6 +57,32 @@ const ProgramDetail = ({ id, icon, label, value, type = 'normal', modalContent =
             <Paragraph className='program-detail_value' color='neutral' size='md' bold={true} isEditable={false} {...dynamicAttributes}>
               {value}
             </Paragraph>
+          )}
+
+          {/* Tipo editable - Prioritario sobre API */}
+          {type === 'editable' && (
+            <div className='program-detail_content--editable'>
+              <Paragraph 
+                className='program-detail_value program-detail_value--editable'
+                color='neutral'
+                size='md'
+                bold={true}
+                contentEditable={true}
+                suppressContentEditableWarning={true}
+                data-editable='true'
+                data-field-id={id}
+                data-user-edited={isUserEdited}
+                data-allow-override={allowOverride}
+                {...dynamicAttributes}>
+                {editableValue || value}
+              </Paragraph>
+              
+              {isUserEdited && (
+                <div className='edit-indicator'>
+                  <i className='ph ph-pencil-simple' title='Campo editado manualmente'></i>
+                </div>
+              )}
+            </div>
           )}
 
           {/* Tipo modal - Clickeable */}
@@ -104,7 +130,10 @@ ProgramDetail.propTypes = {
   icon: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string,
-  type: PropTypes.oneOf(['normal', 'modal']),
+  editableValue: PropTypes.string,
+  isUserEdited: PropTypes.bool,
+  allowOverride: PropTypes.bool,
+  type: PropTypes.oneOf(['normal', 'modal', 'editable']),
   modalContent: PropTypes.node,
   className: PropTypes.string
 }

@@ -306,4 +306,118 @@
       background-position: -200% 0;
     }
   }
+
+  // ===========================================
+  // ESTILOS PARA CAMPOS EDITABLES
+  // ===========================================
+  
+  // Contenedor editable
+  .program-detail_content--editable {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: rem(8px);
+  }
+  
+  // Campo editable
+  .program-detail_value--editable {
+    position: relative;
+    border: rem(1px) dashed transparent;
+    border-radius: var(--border-radius-sm);
+    padding: rem(4px) rem(8px);
+    transition: all 0.2s ease;
+    cursor: text;
+    min-height: rem(24px);
+    
+    // Estados hover e interacción
+    &:hover {
+      border-color: var(--primary-400);
+      background-color: var(--background-200);
+      
+      @include dark-theme {
+        background-color: var(--background-300);
+      }
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: var(--primary-500);
+      background-color: var(--background-200);
+      box-shadow: 0 0 0 rem(2px) rgba(var(--primary-500-rgb), 0.2);
+      
+      @include dark-theme {
+        background-color: var(--background-300);
+      }
+    }
+    
+    // Estado editado
+    &[data-user-edited="true"] {
+      border-color: var(--success-400);
+      background-color: rgba(var(--success-500-rgb), 0.05);
+      
+      @include dark-theme {
+        background-color: rgba(var(--success-500-rgb), 0.1);
+      }
+    }
+  }
+  
+  // Indicador visual de edición
+  .edit-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(20px);
+    height: rem(20px);
+    
+    i {
+      font-size: rem(12px);
+      color: var(--success-500);
+      opacity: 0.8;
+      transition: opacity 0.2s ease;
+      
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  
+  // Animación para nuevos campos editados
+  .program-detail_value--editable.newly-edited {
+    animation: highlightEdit 0.6s ease-out;
+  }
+  
+  @keyframes highlightEdit {
+    0% {
+      background-color: var(--success-200);
+      transform: scale(1.02);
+    }
+    50% {
+      background-color: var(--success-300);
+    }
+    100% {
+      background-color: rgba(var(--success-500-rgb), 0.05);
+      transform: scale(1);
+    }
+  }
+  
+  // Responsive para campos editables
+  @media (max-width: $breakpoint-sm) {
+    .program-detail_content--editable {
+      gap: rem(4px);
+    }
+    
+    .edit-indicator {
+      width: rem(16px);
+      height: rem(16px);
+      
+      i {
+        font-size: rem(10px);
+      }
+    }
+    
+    .program-detail_value--editable {
+      padding: rem(2px) rem(6px);
+      font-size: rem(13px);
+    }
+  }
 }

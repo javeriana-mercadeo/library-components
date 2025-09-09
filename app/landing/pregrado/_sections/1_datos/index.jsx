@@ -59,7 +59,10 @@ const DatosProgramaVideo = () => {
       icon: 'ph-clock',
       label: 'Horario',
       value: 'Cargando horario...',
-      type: 'normal'
+      editableValue: '',
+      isUserEdited: false,
+      allowOverride: true,
+      type: 'editable'
     },
     {
       id: 'horarios-programa',

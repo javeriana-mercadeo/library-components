@@ -935,10 +935,198 @@ const initSystem = () => {
   }
 }
 
+// ===========================================
+// SISTEMA DE CAMPOS EDITABLES CON PRIORIZACIÓN
+// ===========================================
+
+const editableFieldsSystem = {
+  // Storage para valores editados
+  userEditedValues: new Map(),
+  
+  // Inicializar sistema de campos editables
+  init() {
+    this.setupEditableFields()
+    this.loadUserEditedValues()
+  },
+  
+  // Configurar campos editables
+  setupEditableFields() {
+    const editableElements = document.querySelectorAll('[data-editable="true"]')
+    
+    editableElements.forEach(element => {
+      const fieldId = element.getAttribute('data-field-id')
+      
+      // Detectar edición manual
+      element.addEventListener('input', (e) => {
+        this.handleUserEdit(e.target)
+      })
+      
+      // Detectar pérdida de foco (guardado)
+      element.addEventListener('blur', (e) => {
+        this.saveUserEdit(e.target)
+      })
+      
+      // Prevenir enter para mantener formato
+      element.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault()
+          e.target.blur()
+        }
+      })
+    })
+  },
+  
+  // Manejar edición del usuario
+  handleUserEdit(element) {
+    const fieldId = element.getAttribute('data-field-id')
+    const newValue = element.textContent.trim()
+    
+    // Marcar como editado por usuario
+    element.setAttribute('data-user-edited', 'true')
+    
+    // Desactivar actualizaciones automáticas de API
+    this.disableAPIUpdates(fieldId)
+    
+    // Guardar en memoria temporal
+    this.userEditedValues.set(fieldId, {
+      value: newValue,
+      timestamp: Date.now(),
+      isUserEdited: true
+    })
+  },
+  
+  // Guardar edición del usuario
+  saveUserEdit(element) {
+    const fieldId = element.getAttribute('data-field-id')
+    const newValue = element.textContent.trim()
+    
+    // Guardar en localStorage como backup inmediato
+    localStorage.setItem(`user_edit_${fieldId}`, JSON.stringify({
+      value: newValue,
+      timestamp: Date.now(),
+      isUserEdited: true
+    }))
+    
+    // Enviar a Liferay para persistencia
+    if (window.Liferay && window.Liferay.fire) {
+      window.Liferay.fire('field:changed', {
+        fieldId: fieldId,
+        value: newValue,
+        priority: 'user'
+      })
+    }
+    
+    console.log(`[EditableFields] Campo ${fieldId} guardado:`, newValue)
+  },
+  
+  // Cargar valores editados guardados
+  loadUserEditedValues() {
+    const editableElements = document.querySelectorAll('[data-editable="true"]')
+    
+    editableElements.forEach(element => {
+      const fieldId = element.getAttribute('data-field-id')
+      
+      // Buscar valor editado guardado
+      const savedEdit = localStorage.getItem(`user_edit_${fieldId}`)
+      
+      if (savedEdit) {
+        try {
+          const editData = JSON.parse(savedEdit)
+          
+          // Aplicar valor guardado
+          element.textContent = editData.value
+          element.setAttribute('data-user-edited', 'true')
+          
+          // Añadir indicador visual
+          this.addEditIndicator(element)
+          
+          // Guardar en memoria
+          this.userEditedValues.set(fieldId, editData)
+          
+          console.log(`[EditableFields] Cargado valor editado para ${fieldId}:`, editData.value)
+        } catch (error) {
+          console.warn(`[EditableFields] Error al cargar ${fieldId}:`, error)
+        }
+      }
+    })
+  },
+  
+  // Añadir indicador visual de campo editado
+  addEditIndicator(element) {
+    const container = element.closest('.program-detail_content--editable')
+    if (container && !container.querySelector('.edit-indicator')) {
+      const indicator = document.createElement('div')
+      indicator.className = 'edit-indicator'
+      indicator.innerHTML = '<i class="ph ph-pencil-simple" title="Campo editado manualmente"></i>'
+      container.appendChild(indicator)
+    }
+  },
+  
+  // Desactivar actualizaciones automáticas de API
+  disableAPIUpdates(fieldId) {
+    const element = document.querySelector(`[data-field-id="${fieldId}"]`)
+    if (element) {
+      element.setAttribute('data-api-disabled', 'true')
+    }
+  },
+  
+  // Verificar si un campo está editado por el usuario
+  isUserEdited(fieldId) {
+    return this.userEditedValues.has(fieldId) || 
+           localStorage.getItem(`user_edit_${fieldId}`) !== null
+  },
+  
+  // Obtener valor prioritario (usuario > API > default)
+  resolveFieldValue(fieldId, apiValue, defaultValue) {
+    // 1. Prioridad: Valor editado manualmente
+    if (this.isUserEdited(fieldId)) {
+      const userEdit = this.userEditedValues.get(fieldId) || 
+                      JSON.parse(localStorage.getItem(`user_edit_${fieldId}`) || '{}')
+      return {
+        value: userEdit.value,
+        source: 'user',
+        isEditable: true
+      }
+    }
+    
+    // 2. Fallback: Valor desde API
+    if (apiValue && apiValue !== defaultValue) {
+      return {
+        value: apiValue,
+        source: 'api',
+        isEditable: true
+      }
+    }
+    
+    // 3. Default: Placeholder
+    return {
+      value: defaultValue,
+      source: 'placeholder',
+      isEditable: false
+    }
+  }
+}
+
+// Función de inicialización actualizada
+const initSystemWithEditables = () => {
+  if (typeof document !== 'undefined') {
+    // Inicializar sistema original
+    initSystem()
+    
+    // Inicializar sistema de campos editables
+    setTimeout(() => {
+      editableFieldsSystem.init()
+    }, 500) // Delay para asegurar que el DOM esté listo
+    
+  } else {
+    initSystem()
+  }
+}
+
 // Exportar función e inicializar inmediatamente
-export default initSystem
+export default initSystemWithEditables
 
 // Ejecutar inmediatamente
 if (typeof window !== 'undefined') {
-  initSystem()
+  initSystemWithEditables()
 }
