@@ -1,6 +1,5 @@
 'use client'
 import HelpHero from '@/components/_institutional/helpHero'
-
 import ViewComponent from '@/components/viewComponent/viewComponent'
 
 export default function page() {

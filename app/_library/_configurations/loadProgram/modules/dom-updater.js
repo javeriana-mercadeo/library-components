@@ -23,8 +23,6 @@ export const DOMUpdater = {
           elementAutomatic.forEach(textLead => {
             textLead.textContent = value
           })
-        } else {
-          element.innerHTML = value
         }
       }
     } catch (error) {
