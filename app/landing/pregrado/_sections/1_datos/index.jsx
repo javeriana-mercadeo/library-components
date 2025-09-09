@@ -29,7 +29,7 @@ const DatosProgramaVideo = () => {
     {
       id: 'data-puj-academic-level',
       icon: 'ph-student',
-      label: 'Nivel Académico',
+      label: 'Nivel académico',
       value: 'Cargando nivel académico...',
       type: 'normal'
     },
@@ -50,7 +50,7 @@ const DatosProgramaVideo = () => {
     {
       id: 'data-puj-price',
       icon: 'ph-piggy-bank',
-      label: 'Inversión Semestre',
+      label: 'Inversión <span data-puj-periodicity="true">cargando periodo...</span>',
       value: 'Cargando inversión...',
       type: 'normal'
     },
@@ -59,8 +59,8 @@ const DatosProgramaVideo = () => {
       icon: 'ph-clock',
       label: 'Horario',
       value: 'Cargando horario...',
-      type: 'normal'
-    },
+      type: 'editable'
+    } /* ,
     {
       id: 'horarios-programa',
       icon: 'ph-clock',
@@ -86,7 +86,7 @@ const DatosProgramaVideo = () => {
           </p>
         </Paragraph>
       )
-    }
+    } */
   ]
 
   return (

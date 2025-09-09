@@ -49,7 +49,7 @@ const ProgramDetail = ({ id, icon, label, value, type = 'normal', modalContent =
 
         <div className='program-detail_content'>
           <Caption className='program-detail_label' color='neutral' size='md' isEditable={false}>
-            {label}
+            <span dangerouslySetInnerHTML={{ __html: label }} />
           </Caption>
 
           {/* Tipo normal */}
@@ -78,6 +78,19 @@ const ProgramDetail = ({ id, icon, label, value, type = 'normal', modalContent =
               </Btn>
             </div>
           )}
+
+          {/* Tipo editable */}
+          {type === 'editable' && (
+            <Paragraph
+              className={`program-detail_value`}
+              color='neutral'
+              size='md'
+              bold={true}
+              id={`editable-${id}`}
+              {...dynamicAttributes}>
+              <span className='lead'>{value}</span>
+            </Paragraph>
+          )}
         </div>
       </div>
 
@@ -104,7 +117,7 @@ ProgramDetail.propTypes = {
   icon: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string,
-  type: PropTypes.oneOf(['normal', 'modal']),
+  type: PropTypes.oneOf(['normal', 'modal', 'editable']),
   modalContent: PropTypes.node,
   className: PropTypes.string
 }
