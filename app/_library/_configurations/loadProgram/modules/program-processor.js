@@ -27,7 +27,8 @@ export const ProgramDataProcessor = {
       modalidad,
       datosFechaCierreInscripcion,
       ciudad,
-      tipo
+      tipo,
+      periodicidad
     } = dataProgram
 
     let automationUpdates = {}
@@ -77,7 +78,7 @@ export const ProgramDataProcessor = {
     }
 
     if (jornada) {
-      DOMUpdater.updateElementsText('data-puj-clock', DataFormatter.formatProgramName(jornada))
+      DOMUpdater.updateElementsTextEditable('data-puj-clock', DataFormatter.formatProgramName(jornada))
       automationUpdates.schedule = true
     }
 
@@ -100,6 +101,12 @@ export const ProgramDataProcessor = {
     if (tipo) {
       DOMUpdater.updateElementsText('data-puj-type', tipo)
       automationUpdates.type = true
+    }
+
+    if (periodicidad) {
+      const periodicidadFormatted = DataFormatter.capitalizeFirst(periodicidad)
+      DOMUpdater.updateElementsText('data-puj-periodicity', periodicidadFormatted)
+      automationUpdates.periodicity = true
     }
 
     // Actualizar statusPage usando DataUtils global para merge profundo

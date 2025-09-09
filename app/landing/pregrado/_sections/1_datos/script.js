@@ -850,6 +850,9 @@ const programDataSystem = {
     
     // Inicializar sistema de modales
     this.initModals()
+    
+    // Inicializar observador para el elemento de horario
+    this.initClockObserver()
   },
 
   updateProgramName() {
@@ -863,6 +866,56 @@ const programDataSystem = {
         }
       }
     }
+  },
+
+  initClockObserver() {
+    // Función para convertir la primera letra a minúscula
+    const ensureLowercase = (element) => {
+      if (element && element.textContent) {
+        const currentText = element.textContent
+        if (currentText.length > 0) {
+          const firstChar = currentText.charAt(0)
+          if (firstChar !== firstChar.toLowerCase()) {
+            element.textContent = firstChar.toLowerCase() + currentText.slice(1)
+          }
+        }
+      }
+    }
+
+    // Buscar el elemento inicialmente
+    const clockElement = document.querySelector('[data-puj-clock="true"]')
+    if (clockElement) {
+      // Aplicar minúscula inicial inmediatamente
+      ensureLowercase(clockElement)
+    }
+
+    // Crear MutationObserver para monitorear cambios
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+          // Buscar elementos con data-puj-clock="true" que fueron modificados
+          const clockElements = document.querySelectorAll('[data-puj-clock="true"]')
+          clockElements.forEach(ensureLowercase)
+        }
+      })
+    })
+
+    // Observar el documento completo para cambios en texto y elementos hijos
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      characterDataOldValue: true
+    })
+
+    // También verificar periódicamente por si se pierde algún cambio
+    const intervalCheck = () => {
+      const clockElements = document.querySelectorAll('[data-puj-clock="true"]')
+      clockElements.forEach(ensureLowercase)
+    }
+
+    // Verificación cada 2 segundos
+    setInterval(intervalCheck, 2000)
   },
 
   initModals() {
