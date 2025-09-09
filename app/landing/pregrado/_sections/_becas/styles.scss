@@ -1,31 +1,33 @@
 @use '@styles/autoload' as *;
 
+// ==========================================
+// COMPONENTE BECAS - SOLO VARIABLES DEL SISTEMA
+// ==========================================
+
 .scholarships {
   // Variables locales
-  --tab-border-color: var(--neutral-800);
-  --tab-active-color: var(--primary-500);
   --content-spacing: var(--spacing-lg);
-  --tab-spacing: var(--spacing-md);
 
-  background-color: var(--background-100);
+  background-color: var(--primary);
 
   // Contenedor principal de la sección
   &_container {
     width: 100%;
-    padding-top: var(--spacing-xl);
-    padding-bottom: var(--spacing-xl);
+    background-color: var(--primary);
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
 
-    // Mobile - reducir padding vertical
+    // Mobile - reducir padding vertical aún más
     @include responsive($breakpoint-md) {
-      padding-top: var(--spacing-lg);
-      padding-bottom: var(--spacing-lg);
+      padding-top: var(--spacing-md);
+      padding-bottom: var(--spacing-sm);
     }
   }
 
   // Título principal
   &__main-title {
     margin-bottom: var(--spacing-xl);
-    color: var(--neutral-200);
+    color: var(--neutral);
   }
 
   // Contenedor de tabs
@@ -46,12 +48,12 @@
     max-width: rem(500px); // Ancho máximo para que no se vea demasiado ancho
     margin: 0 auto; // Centrar el contenedor
     padding: rem(6px);
-    background: var(--background-200);
+    background: var(--color-neutral-50);
     border-radius: rem(16px);
-    border: rem(1px) solid var(--neutral-800);
+    border: rem(1px) solid rgba(255, 255, 255, 0.2);
     box-shadow:
-      0 rem(4px) rem(12px) rgba(0, 0, 0, 0.05),
-      0 rem(2px) rem(4px) rgba(0, 0, 0, 0.02);
+      0 rem(4px) rem(12px) rgba(0, 0, 0, 0.1),
+      0 rem(2px) rem(4px) rgba(0, 0, 0, 0.05);
     position: relative;
     backdrop-filter: blur(rem(8px));
     gap: rem(8px);
@@ -73,7 +75,7 @@
     padding: rem(10px) rem(12px);
     border: none;
     background: transparent;
-    color: var(--neutral-500);
+    color: var(--color-neutral-600);
     font-size: var(--font-size-paragraph); // Aumentar tamaño de fuente
     font-weight: var(--font-weight-medium);
     border-radius: rem(12px);
@@ -102,8 +104,8 @@
 
     // Estados hover
     &:hover:not(.active) {
-      color: var(--primary-600);
-      background: rgba(var(--primary-rgb), 0.08);
+      color: var(--color-neutral-800);
+      background: var(--color-neutral-100);
       transform: translateY(rem(-1px));
 
       .scholarships__tab-icon {
@@ -116,9 +118,7 @@
       background: var(--primary);
       color: var(--neutral);
       font-weight: var(--font-weight-semibold);
-      box-shadow:
-        0 rem(3px) rem(8px) rgba(var(--primary-rgb), 0.3),
-        0 rem(1px) rem(3px) rgba(var(--primary-rgb), 0.2);
+      box-shadow: 0 rem(2px) rem(8px) rgba(0, 0, 0, 0.1);
 
       span {
         font-weight: var(--font-weight-semibold);
@@ -174,7 +174,7 @@
     display: grid;
     gap: var(--content-spacing);
     padding: var(--content-spacing);
-    
+
     // Mobile por defecto - columna única
     grid-template-columns: 1fr;
     grid-template-rows: 1fr auto; // Contenido arriba, imagen abajo
@@ -195,7 +195,7 @@
 
     // Desktop - 2 columnas (min-width: 992px)
     @include responsive($breakpoint-lg) {
-      grid-template-columns: 30% 70%;
+      grid-template-columns: 40% 60%;
       min-height: 250px;
     }
   }
@@ -208,7 +208,7 @@
     flex-shrink: 0;
     overflow: hidden;
     border-radius: rem(12px);
-    
+
     // Mobile por defecto - imagen grande y prominente, mostrar después del texto
     width: 100%;
     max-width: rem(300px);
@@ -239,19 +239,19 @@
       background-color: var(--primary-100);
       border-radius: 50%;
       margin: 0 auto;
-      
+
       // Mobile por defecto - íconos visibles
       width: 120px;
       height: 120px;
       max-width: 120px;
-      
+
       // Tablet - tamaño intermedio para íconos (min-width: 768px)
       @include responsive($breakpoint-md) {
         width: 120px;
         height: 120px;
         max-width: 120px;
       }
-      
+
       // Desktop - íconos grandes (min-width: 992px)
       @include responsive($breakpoint-lg) {
         width: 150px;
@@ -263,7 +263,7 @@
 
   &__content-icon {
     color: var(--primary-500);
-    
+
     // Mobile por defecto - tamaño visible
     font-size: 70px;
 
@@ -283,7 +283,9 @@
     height: 100%;
     object-fit: cover;
     border-radius: inherit; // Heredar el border-radius del contenedor
-    transition: transform 0.3s ease, filter 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      filter 0.3s ease;
 
     // Efecto hover solo en desktop (min-width: 993px)
     @media (min-width: #{$breakpoint-lg + 1px}) {
@@ -298,13 +300,13 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    
+
     // Mobile por defecto - alinear al inicio sin padding, mostrar primero
     justify-content: flex-start;
     padding: 0;
     text-align: left;
     order: 1; // Mostrar antes que la imagen en mobile
-    
+
     // Tablet - mantener centrado pero menos padding (min-width: 768px)
     @include responsive($breakpoint-md) {
       justify-content: center;
@@ -312,7 +314,7 @@
       text-align: left;
       order: 0; // Restablecer orden normal en tablet/desktop
     }
-    
+
     // Desktop - centrado con más padding (min-width: 992px)
     @include responsive($breakpoint-lg) {
       justify-content: center;
@@ -322,19 +324,20 @@
 
   &__content-title {
     margin-bottom: var(--spacing-md);
-    color: var(--neutral-200);
+    color: #ffffff !important;  // Blanco puro en ambos temas
   }
 
   &__content-text {
     margin-bottom: var(--spacing-lg);
-    color: var(--neutral-400);
+    color: var(--neutral);
     line-height: 1.6;
     font-size: var(--font-size-paragraph); // Aplicar tamaño de fuente paragraph
 
     p {
       margin-bottom: var(--spacing-sm);
       font-size: var(--font-size-paragraph); // Asegurar que los párrafos usen el tamaño correcto
-      
+      color: var(--color-neutral-100);
+
       &:last-child {
         margin-bottom: 0;
       }
@@ -345,20 +348,20 @@
       margin: var(--spacing-sm) 0 !important;
       padding-left: var(--spacing-xl) !important;
       display: block !important;
-      
+
       li {
         position: relative !important;
         display: list-item !important;
         margin-bottom: var(--spacing-xs) !important;
         padding-left: var(--spacing-sm) !important;
         line-height: 1.6 !important;
-        color: var(--neutral-400);
+        color: var(--color-neutral-100);
         font-size: var(--font-size-paragraph);
         font-family: var(--font-family);
-        
+
         &::before {
           content: '•' !important;
-          color: var(--primary) !important;
+          color: var(--neutral) !important;
           font-weight: var(--font-weight-bold) !important;
           position: absolute !important;
           left: rem(-16px) !important;
@@ -366,13 +369,13 @@
           font-size: rem(18px) !important;
           line-height: 1.2 !important;
         }
-        
+
         &:last-child {
           margin-bottom: 0 !important;
         }
-        
+
         strong {
-          color: var(--neutral-300);
+          color: var(--neutral);
         }
       }
     }
@@ -391,7 +394,7 @@
       font-family: var(--font-family);
       font-size: var(--font-size-paragraph) !important;
       font-weight: var(--font-weight-bold) !important;
-      color: var(--neutral-100) !important;
+      color: var(--neutral) !important;
       margin: var(--spacing-sm) 0 var(--spacing-xs) 0 !important;
       line-height: var(--line-height-heading, 1.2) !important;
       text-align: left !important;
@@ -401,7 +404,7 @@
       font-family: var(--font-family);
       font-size: var(--font-size-small) !important;
       font-weight: var(--font-weight-medium) !important;
-      color: var(--neutral-300) !important;
+      color: var(--color-neutral-200) !important;
       margin: var(--spacing-xs) 0 var(--spacing-xs) 0 !important;
       line-height: var(--line-height-heading, 1.2) !important;
       text-align: left !important;
@@ -413,7 +416,7 @@
     strong,
     b {
       font-weight: var(--font-weight-bold) !important;
-      color: var(--neutral-100) !important;
+      color: var(--neutral) !important;
     }
 
     em,
@@ -424,13 +427,13 @@
 
     u {
       text-decoration: underline !important;
-      color: var(--neutral-100) !important;
+      color: var(--neutral) !important;
       text-underline-offset: rem(2px) !important;
     }
 
     cite {
       font-style: italic !important;
-      color: var(--neutral-500) !important;
+      color: var(--color-neutral-400) !important;
       font-size: var(--font-size-small) !important;
       opacity: 0.8 !important;
     }
@@ -451,14 +454,14 @@
         margin-bottom: var(--spacing-xs) !important;
         padding-left: var(--spacing-sm) !important;
         line-height: 1.6 !important;
-        color: var(--neutral-400);
+        color: var(--color-neutral-100);
         font-size: var(--font-size-paragraph);
         font-family: var(--font-family);
         counter-increment: scholarships-counter !important;
 
         &::before {
           content: counter(scholarships-counter) '.' !important;
-          color: var(--primary) !important;
+          color: var(--neutral) !important;
           font-weight: var(--font-weight-bold) !important;
           position: absolute !important;
           left: rem(-24px) !important;
@@ -476,19 +479,19 @@
     // MENSAJES ESPECIALES PARA BECAS
     // ==========================================
     .overflow-auto.portlet-msg-info {
-      background-color: rgba(var(--primary-rgb), 0.08) !important;
-      border: 1px solid rgba(var(--primary-rgb), 0.3) !important;
-      border-left: 3px solid var(--primary) !important;
+      background-color: rgba(255, 255, 255, 0.15) !important;
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      border-left: 3px solid var(--neutral) !important;
       border-radius: var(--border-radius-md) !important;
       padding: var(--spacing-sm) var(--spacing-md) !important;
       margin: var(--spacing-sm) 0 !important;
-      color: var(--primary) !important;
+      color: var(--neutral) !important;
       font-family: var(--font-family) !important;
       font-size: var(--font-size-paragraph) !important;
       line-height: 1.6 !important;
       font-weight: var(--font-weight-medium) !important;
       overflow: auto !important;
-      box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.15) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 
       &::before {
         content: '💡 ' !important;
@@ -498,19 +501,19 @@
     }
 
     .overflow-auto.portlet-msg-alert {
-      background-color: rgba(var(--warning-rgb, 245, 158, 11), 0.08) !important;
-      border: 1px solid rgba(var(--warning-rgb, 245, 158, 11), 0.3) !important;
-      border-left: 3px solid var(--warning, #f59e0b) !important;
+      background-color: rgba(245, 158, 11, 0.2) !important;
+      border: 1px solid rgba(245, 158, 11, 0.4) !important;
+      border-left: 3px solid #f59e0b !important;
       border-radius: var(--border-radius-md) !important;
       padding: var(--spacing-sm) var(--spacing-md) !important;
       margin: var(--spacing-sm) 0 !important;
-      color: var(--warning, #f59e0b) !important;
+      color: #fbbf24 !important;
       font-family: var(--font-family) !important;
       font-size: var(--font-size-paragraph) !important;
       line-height: 1.6 !important;
       font-weight: var(--font-weight-medium) !important;
       overflow: auto !important;
-      box-shadow: 0 2px 8px rgba(var(--warning-rgb, 245, 158, 11), 0.15) !important;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2) !important;
 
       &::before {
         content: '⚠️ ' !important;
@@ -548,7 +551,7 @@
       width: 100% !important;
       border-collapse: collapse !important;
       margin: var(--spacing-md) 0 !important;
-      background-color: rgba(var(--primary-rgb), 0.02) !important;
+      background-color: rgba(255, 255, 255, 0.08) !important;
       border-radius: var(--border-radius-md) !important;
       overflow: hidden !important;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
@@ -558,26 +561,26 @@
         padding: var(--spacing-sm) var(--spacing-md) !important;
         font-weight: var(--font-weight-bold) !important;
         font-size: var(--font-size-caption) !important;
-        color: var(--neutral-100) !important;
+        color: var(--neutral) !important;
         text-align: left !important;
-        background-color: rgba(var(--primary-rgb), 0.05) !important;
+        background-color: rgba(255, 255, 255, 0.12) !important;
         margin-bottom: 0 !important;
       }
 
       tbody {
-        background-color: rgba(var(--primary-rgb), 0.02) !important;
+        background-color: rgba(255, 255, 255, 0.08) !important;
       }
 
       tr {
-        border-bottom: 1px solid rgba(var(--primary-rgb), 0.1) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
         transition: background-color 0.2s ease !important;
 
         &:first-child {
-          background-color: rgba(var(--primary-rgb), 0.05) !important;
+          background-color: rgba(255, 255, 255, 0.12) !important;
         }
 
         &:hover {
-          background-color: rgba(var(--primary-rgb), 0.03) !important;
+          background-color: rgba(255, 255, 255, 0.1) !important;
         }
 
         &:last-child {
@@ -587,12 +590,12 @@
 
       td {
         padding: var(--spacing-sm) var(--spacing-md) !important;
-        color: var(--neutral-200) !important;
+        color: var(--color-neutral-100) !important;
         font-size: var(--font-size-paragraph) !important;
         line-height: 1.6 !important;
         font-family: var(--font-family) !important;
         vertical-align: top !important;
-        border-right: 1px solid rgba(var(--primary-rgb), 0.1) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
 
         &:last-child {
           border-right: none !important;
@@ -621,8 +624,8 @@
     // CÓDIGO Y ELEMENTOS TÉCNICOS
     // ==========================================
     code {
-      background: var(--neutral-800) !important;
-      color: var(--neutral-200) !important;
+      background: rgba(0, 0, 0, 0.3) !important;
+      color: var(--neutral) !important;
       padding: rem(2px) rem(4px) !important;
       border-radius: rem(3px) !important;
       font-family: 'Courier New', monospace !important;
@@ -631,13 +634,13 @@
     }
 
     pre {
-      background: var(--neutral-900) !important;
-      border: rem(1px) solid var(--neutral-700) !important;
+      background: rgba(0, 0, 0, 0.4) !important;
+      border: rem(1px) solid rgba(255, 255, 255, 0.2) !important;
       border-radius: rem(4px) !important;
       padding: var(--spacing-sm) !important;
       overflow-x: auto !important;
       margin: var(--spacing-sm) 0 !important;
-      color: var(--neutral-200) !important;
+      color: var(--neutral) !important;
       font-family: 'Courier New', monospace !important;
       font-size: 0.9em !important;
       line-height: 1.5 !important;
@@ -650,7 +653,7 @@
         left: 0;
         width: 2px;
         height: 100%;
-        background: rgba(var(--primary-rgb), 0.4);
+        background: rgba(255, 255, 255, 0.4);
         border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
       }
 
@@ -666,28 +669,30 @@
     // ENLACES CON DETECCIÓN AUTOMÁTICA
     // ==========================================
     a {
-      color: var(--primary) !important;
+      color: var(--color-neutral-100) !important;
       text-decoration: underline !important;
       text-underline-offset: rem(2px) !important;
       font-weight: var(--font-weight-medium) !important;
       transition: all 0.2s ease !important;
       word-break: break-word !important;
       opacity: 1 !important;
+      text-decoration-color: rgba(255, 255, 255, 0.5) !important;
 
       &:hover {
-        opacity: 0.8 !important;
+        color: var(--neutral) !important;
+        text-decoration-color: var(--neutral) !important;
         text-decoration-thickness: rem(2px) !important;
       }
 
       &:visited {
-        color: var(--primary-700) !important;
+        color: var(--color-neutral-300) !important;
       }
 
       &:focus {
-        outline: rem(2px) solid var(--primary) !important;
+        outline: rem(2px) solid var(--neutral) !important;
         outline-offset: rem(2px) !important;
         border-radius: rem(2px) !important;
-        opacity: 0.9 !important;
+        color: var(--neutral) !important;
       }
 
       &:active {
@@ -705,12 +710,29 @@
   }
 
   &__cta-button {
-    // El variant="solid" ya incluye todos los estilos y efectos necesarios
+    // Override para forzar colores neutros sobre fondo primary
+    border-color: var(--neutral) !important;
+    color: var(--neutral) !important;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      border-color: var(--neutral) !important;
+      color: var(--neutral) !important;
+      transform: translateY(-2px);
+    }
+
+    &:focus {
+      background-color: rgba(255, 255, 255, 0.15) !important;
+      border-color: var(--neutral) !important;
+      color: var(--neutral) !important;
+    }
+
+    // Layout y spacing
     margin-top: var(--spacing-sm);
     max-width: max-content; // Limitar ancho al contenido
     width: auto; // Ancho automático basado en contenido
     align-self: center; // Centrar en mobile
-    
+
     // Tablet y Desktop - alinear al inicio (min-width: 768px)
     @include responsive($breakpoint-md) {
       align-self: flex-start;
@@ -722,33 +744,55 @@
 
   // Soporte para tema oscuro
   @include dark-theme {
+    // El fondo principal ya usa var(--primary) que automáticamente cambia a primary-dark
+
     &__tabs-wrapper {
-      background: var(--background-300);
-      border-color: var(--neutral-700);
+      background: var(--background-100);
+      border-color: var(--neutral-300);
       box-shadow:
         0 rem(4px) rem(12px) rgba(0, 0, 0, 0.2),
         0 rem(2px) rem(4px) rgba(0, 0, 0, 0.1);
     }
 
     &__tab-button {
+      color: var(--neutral);  // Botones inactivos blancos para mejor contraste
+      
       &:hover:not(.active) {
-        color: var(--primary-400);
-        background: rgba(var(--primary-rgb), 0.12);
+        color: var(--neutral);
+        background: var(--color-neutral-600);
       }
 
       &.active {
-        background: var(--primary-600);
-        color: var(--neutral-100);
-
-        &:hover {
-          background: var(--primary-500);
-        }
+        background: var(--primary);
+        color: var(--neutral);
       }
     }
 
     // Solo aplicar fondo oscuro cuando hay ícono
     &__media-container:has(.scholarships__content-icon) {
-      background-color: var(--primary-900);
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+
+    // Ajustes específicos para elementos de texto enriquecido en modo oscuro
+    &__content-text {
+      .overflow-auto.portlet-msg-alert {
+        background-color: rgba(245, 158, 11, 0.15) !important;
+        border: 1px solid rgba(245, 158, 11, 0.3) !important;
+        color: #fde047 !important;
+      }
+
+      table {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+
+        caption {
+          background-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
+        tr:first-child {
+          background-color: rgba(255, 255, 255, 0.08) !important;
+        }
+      }
     }
   }
 }
@@ -775,10 +819,10 @@
     &__tab-panel {
       animation: none;
     }
-    
+
     &__tab-button {
       transition: none;
-      
+
       &::after {
         transition: none;
       }

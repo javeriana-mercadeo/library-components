@@ -159,6 +159,7 @@
       color: var(--neutral-300);
       font-size: var(--font-size-paragraph);
       font-family: var(--font-family);
+      text-align: left;
       margin-bottom: 0 !important;
 
       &::before {
@@ -300,6 +301,7 @@
         line-height: 1.6 !important;
         color: var(--neutral-300);
         font-size: var(--font-size-paragraph);
+        text-align: left;
         font-family: var(--font-family);
         margin-bottom: 0 !important;
 
