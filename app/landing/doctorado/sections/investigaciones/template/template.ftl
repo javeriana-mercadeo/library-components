@@ -1,23 +1,41 @@
 <!--$-->
 <#-- ======================================== -->
-<#-- GENERAR JSON DINÁMICO DESDE DATOS CMS -->
+<#-- GENERAR ARRAY ORDENADO POR AÑO -->
 <#-- ======================================== -->
-<#assign investigationsJSON = "[]">
+<#assign sortedInvestigations = []>
 <#if grad_investigationGroup.getSiblings()?has_content>
-  <#assign investigationsJSON = "[">
+  <#-- PASO 1: CREAR ARRAY CON DATOS Y AÑOS NUMÉRICOS -->
   <#list grad_investigationGroup.getSiblings() as investigation>
-    
     <#-- Procesar fecha con validación robusta -->
     <#assign dateData = getterUtil.getString(investigation.grad_investigationDate.getData())>
-    <#assign yearString = "2024">
+    <#assign yearNum = 2024>
     <#if validator.isNotNull(dateData)>
       <#attempt>
         <#assign dateObj = dateUtil.parseDate("yyyy-MM-dd", dateData, locale)>
-        <#assign yearString = dateUtil.getDate(dateObj, "yyyy", locale)>
+        <#assign yearNum = dateUtil.getDate(dateObj, "yyyy", locale)?number>
       <#recover>
-        <#assign yearString = "2024">
+        <#assign yearNum = 2024>
       </#attempt>
     </#if>
+    
+    <#-- Agregar al array con año numérico para ordenamiento -->
+    <#assign sortedInvestigations = sortedInvestigations + [{"data": investigation, "year": yearNum, "originalIndex": investigation?index}]>
+  </#list>
+  
+  <#-- PASO 2: ORDENAR POR AÑO DESCENDENTE (más reciente primero) -->
+  <#assign sortedInvestigations = sortedInvestigations?sort_by("year")?reverse>
+
+<#-- ======================================== -->
+<#-- GENERAR JSON DINÁMICO DESDE DATOS ORDENADOS -->
+<#-- ======================================== -->
+<#assign investigationsJSON = "[]">
+  <#assign investigationsJSON = "[">
+  <#list sortedInvestigations as sortedItem>
+    <#assign investigation = sortedItem.data>
+    <#assign investigationYear = sortedItem.year>
+    
+    <#-- Usar año ya procesado y validado del ordenamiento -->
+    <#assign yearString = investigationYear?string>
     
     <#-- Procesar imagen con fallback -->
     <#assign imageUrl = "https://via.placeholder.com/400x300">
@@ -43,14 +61,21 @@
       </#list>
     </#if>
     
-    <#-- Construir objeto JSON de la investigación -->
+    <#-- Procesar estudiante/autor con fallback -->
+    <#assign authorName = "Estudiante Doctorado">
+    <#if (investigation.grad_investigationStudent.getData())??> 
+      <#assign authorName = investigation.grad_investigationStudent.getData()>
+    </#if>
+    
+    <#-- Construir objeto JSON de la investigación con ID secuencial -->
     <#assign investigationsJSON = investigationsJSON + '{'>
-    <#assign investigationsJSON = investigationsJSON + '"id": ' + investigation?index + ','>
+    <#assign investigationsJSON = investigationsJSON + '"id": ' + sortedItem?index + ','>
     <#assign investigationsJSON = investigationsJSON + '"year": "' + yearString + '",'>
     <#assign investigationsJSON = investigationsJSON + '"title": "' + (investigation.grad_investigationTitle.getData()!"")?json_string + '",'>
     <#assign investigationsJSON = investigationsJSON + '"description": "' + (investigation.grad_investigationDesc.getData()!"")?json_string + '",'>
     <#assign investigationsJSON = investigationsJSON + '"image": "' + imageUrl + '",'>
-    <#assign investigationsJSON = investigationsJSON + '"alt": "' + imageAlt?json_string + '"'>
+    <#assign investigationsJSON = investigationsJSON + '"alt": "' + imageAlt?json_string + '",'>
+    <#assign investigationsJSON = investigationsJSON + '"author": "' + authorName?json_string + '"'>
     
     <#-- Agregar videoEmbedId solo si existe -->
     <#if videoEmbedId != "">
@@ -60,7 +85,7 @@
     <#assign investigationsJSON = investigationsJSON + '}'>
     
     <#-- Agregar coma si no es el último elemento -->
-    <#if investigation?has_next>
+    <#if sortedItem?has_next>
       <#assign investigationsJSON = investigationsJSON + ','>
     </#if>
     
@@ -81,8 +106,9 @@
     </h2>
     <#if grad_investigationGroup.getSiblings()?has_content>
       <div class="investigations_layout">
-        <#list grad_investigationGroup.getSiblings() as cur_grad_investigationGroup>
-          <#if cur_grad_investigationGroup?index == 0>
+        <#list sortedInvestigations as cur_sortedItem>
+          <#assign cur_grad_investigationGroup = cur_sortedItem.data>
+          <#if cur_sortedItem?index == 0>
             <!-- CARD PRINCIPAL -->
             <div class="investigations_fixed-column">
               <div class="investigations_main-card">
@@ -90,7 +116,7 @@
                   class="investigations_card investigations_card--main investigations_card"
                   role="button"
                   tabindex="0"
-                  data-id="${cur_grad_investigationGroup?index}"
+                  data-id="${cur_sortedItem?index}"
                   <#if cur_grad_investigationGroup.grad_investigationYtId.getSiblings()?has_content>
                     <#list cur_grad_investigationGroup.grad_investigationYtId.getSiblings() as cur_grad_investigationGroup_grad_investigationYtId>
                       <#if cur_grad_investigationGroup_grad_investigationYtId?index == 0 && (cur_grad_investigationGroup_grad_investigationYtId.getData())??>
@@ -109,18 +135,14 @@
                         alt="${firstImage.getAttribute("alt")}"
                         class="image image--no-zoom investigations_image investigations_image--main"
                         data-fileentryid="${firstImage.getAttribute("fileEntryId")}"
-                        data-lfr-editable-id="image-image-investigaciones-${cur_grad_investigationGroup?index}"
+                        data-lfr-editable-id="image-image-investigaciones-${cur_sortedItem?index}"
                         data-lfr-editable-type="image" />
                     </#if>
                   </#if>
                   
                   <div class="investigations_content">
                     <span class="investigations_badge">
-                      <#assign grad_investigationGroup_grad_investigationDate_Data = getterUtil.getString(cur_grad_investigationGroup.grad_investigationDate.getData())>
-                      <#if validator.isNotNull(grad_investigationGroup_grad_investigationDate_Data)>
-                        <#assign grad_invigationGroup_grad_investigationDate_DateObj = dateUtil.parseDate("yyyy-MM-dd", grad_investigationGroup_grad_investigationDate_Data, locale)>
-                        ${dateUtil.getDate(grad_invigationGroup_grad_investigationDate_DateObj, "yyyy", locale)}
-                      </#if>
+                      ${cur_sortedItem.year}
                     </span>
                     <h3 class="title title-lg title-semibold investigations_title">
                       <#if (cur_grad_investigationGroup.grad_investigationTitle.getData())??>${cur_grad_investigationGroup.grad_investigationTitle.getData()}</#if>
@@ -148,7 +170,7 @@
                 class="investigations_card investigations_card--secondary investigations_card"
                 role="button"
                 tabindex="0"
-                data-id="${cur_grad_investigationGroup?index}"
+                data-id="${cur_sortedItem?index}"
                 <#if cur_grad_investigationGroup.grad_investigationYtId.getSiblings()?has_content>
                   <#list cur_grad_investigationGroup.grad_investigationYtId.getSiblings() as cur_grad_investigationGroup_grad_investigationYtId>
                     <#if cur_grad_investigationGroup_grad_investigationYtId?index == 0 && (cur_grad_investigationGroup_grad_investigationYtId.getData())??>
@@ -167,18 +189,14 @@
                       alt="${firstImage.getAttribute("alt")}"
                       class="image image--no-zoom investigations_image investigations_image--secondary"
                       data-fileentryid="${firstImage.getAttribute("fileEntryId")}"
-                      data-lfr-editable-id="image-image-investigaciones-${cur_grad_investigationGroup?index}"
+                      data-lfr-editable-id="image-image-investigaciones-${cur_sortedItem?index}"
                       data-lfr-editable-type="image" />
                   </#if>
                 </#if>
                 
                 <div class="investigations_content">
                   <span class="investigations_badge">
-                    <#assign grad_investigationGroup_grad_investigationDate_Data = getterUtil.getString(cur_grad_investigationGroup.grad_investigationDate.getData())>
-                    <#if validator.isNotNull(grad_investigationGroup_grad_investigationDate_Data)>
-                      <#assign grad_invigationGroup_grad_investigationDate_DateObj = dateUtil.parseDate("yyyy-MM-dd", grad_investigationGroup_grad_investigationDate_Data, locale)>
-                      ${dateUtil.getDate(grad_invigationGroup_grad_investigationDate_DateObj, "yyyy", locale)}
-                    </#if>
+                    ${cur_sortedItem.year}
                   </span>
                   <h3 class="title title-md title-semibold investigations_title">
                     <#if (cur_grad_investigationGroup.grad_investigationTitle.getData())??>${cur_grad_investigationGroup.grad_investigationTitle.getData()}</#if>
