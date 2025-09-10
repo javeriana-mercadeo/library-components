@@ -151,14 +151,13 @@ const Becas = () => {
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
         {/* Título principal de la sección */}
-        <Title 
+        <Title
           id={`title-${elementName}-main-title`}
-          className={`${baseClass}__main-title`} 
-          hierarchy='h2' 
-          weight='semibold' 
-          size='2xl' 
-          align='center'
-        >
+          className={`${baseClass}__main-title`}
+          hierarchy='h2'
+          weight='semibold'
+          size='2xl'
+          align='center'>
           Becas y Financiación
         </Title>
 
@@ -197,10 +196,10 @@ const Becas = () => {
                 <div className={`${baseClass}__content-wrapper`}>
                   <div className={`${baseClass}__media-container`}>
                     {tab.image ? (
-                      <Image 
+                      <Image
                         id={`image-${elementName}-${tab.id}`}
-                        src={tab.image} 
-                        alt={tab.imageAlt} 
+                        src={tab.image}
+                        alt={tab.imageAlt}
                         className={`${baseClass}__content-image`}
                       />
                     ) : (
@@ -208,29 +207,26 @@ const Becas = () => {
                     )}
                   </div>
                   <div className={`${baseClass}__text-container`}>
-                    <Caption 
+                    <Caption
                       id={`caption-${elementName}-${tab.id}-title`}
-                      className={`${baseClass}__content-title`} 
-                      size='xl' 
-                      weight='semibold' 
-                      color='neutral'
-                    >
+                      className={`${baseClass}__content-title`}
+                      size='xl'
+                      weight='semibold'
+                      color='neutral'>
                       {tab.title}
                     </Caption>
-                    <div 
+                    <div
                       id={`div-${elementName}-${tab.id}-content`}
                       className={`${baseClass}__content-text ${baseClass}-rich-content`}
                       data-raw-content={tab.content}
-                      dangerouslySetInnerHTML={{__html: tab.content}}
-                    ></div>
+                      dangerouslySetInnerHTML={{ __html: tab.content }}></div>
                     <Button
                       id={`button-${elementName}-${tab.id}`}
                       className={`${baseClass}__cta-button`}
                       variant='bordered'
                       color='secondary'
                       size='md'
-                      href={tab.buttonLink}
-                    >
+                      href={tab.buttonLink}>
                       {tab.buttonText}
                     </Button>
                   </div>

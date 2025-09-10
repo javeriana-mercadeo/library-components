@@ -10,60 +10,57 @@ function initExperienceCarousel() {
   // Función helper para oscurecer colores
   function darkenColor(color, factor) {
     // Convertir hex a RGB
-    var hex = color.replace('#', '');
-    var r = parseInt(hex.substr(0, 2), 16);
-    var g = parseInt(hex.substr(2, 2), 16);
-    var b = parseInt(hex.substr(4, 2), 16);
-    
+    var hex = color.replace('#', '')
+    var r = parseInt(hex.substr(0, 2), 16)
+    var g = parseInt(hex.substr(2, 2), 16)
+    var b = parseInt(hex.substr(4, 2), 16)
+
     // Aplicar factor de oscurecimiento
-    r = Math.round(r * (1 - factor));
-    g = Math.round(g * (1 - factor));
-    b = Math.round(b * (1 - factor));
-    
+    r = Math.round(r * (1 - factor))
+    g = Math.round(g * (1 - factor))
+    b = Math.round(b * (1 - factor))
+
     // Convertir de vuelta a hex
-    return '#' + 
-      r.toString(16).padStart(2, '0') + 
-      g.toString(16).padStart(2, '0') + 
-      b.toString(16).padStart(2, '0');
+    return '#' + r.toString(16).padStart(2, '0') + g.toString(16).padStart(2, '0') + b.toString(16).padStart(2, '0')
   }
 
   // Función helper para convertir cualquier color a rgba (no utilizada actualmente)
   function colorToRgba(color, alpha) {
     // Si ya es rgba, extraer los valores
     if (color.startsWith('rgba(')) {
-      var values = color.match(/rgba\(([^)]+)\)/)[1].split(',');
-      return 'rgba(' + values[0].trim() + ', ' + values[1].trim() + ', ' + values[2].trim() + ', ' + alpha + ')';
+      var values = color.match(/rgba\(([^)]+)\)/)[1].split(',')
+      return 'rgba(' + values[0].trim() + ', ' + values[1].trim() + ', ' + values[2].trim() + ', ' + alpha + ')'
     }
-    
+
     // Si es rgb, convertir a rgba
     if (color.startsWith('rgb(')) {
-      var values = color.match(/rgb\(([^)]+)\)/)[1].split(',');
-      return 'rgba(' + values[0].trim() + ', ' + values[1].trim() + ', ' + values[2].trim() + ', ' + alpha + ')';
+      var values = color.match(/rgb\(([^)]+)\)/)[1].split(',')
+      return 'rgba(' + values[0].trim() + ', ' + values[1].trim() + ', ' + values[2].trim() + ', ' + alpha + ')'
     }
-    
+
     // Si es hex
     if (color.startsWith('#')) {
-      var hex = color.replace('#', '');
-      var r = parseInt(hex.substr(0, 2), 16);
-      var g = parseInt(hex.substr(2, 2), 16);
-      var b = parseInt(hex.substr(4, 2), 16);
-      return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+      var hex = color.replace('#', '')
+      var r = parseInt(hex.substr(0, 2), 16)
+      var g = parseInt(hex.substr(2, 2), 16)
+      var b = parseInt(hex.substr(4, 2), 16)
+      return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')'
     }
-    
+
     // Fallback: crear elemento temporal para obtener color computado
-    var tempEl = document.createElement('div');
-    tempEl.style.color = color;
-    document.body.appendChild(tempEl);
-    var computedColor = getComputedStyle(tempEl).color;
-    document.body.removeChild(tempEl);
-    
+    var tempEl = document.createElement('div')
+    tempEl.style.color = color
+    document.body.appendChild(tempEl)
+    var computedColor = getComputedStyle(tempEl).color
+    document.body.removeChild(tempEl)
+
     if (computedColor.startsWith('rgb(')) {
-      var values = computedColor.match(/rgb\(([^)]+)\)/)[1].split(',');
-      return 'rgba(' + values[0].trim() + ', ' + values[1].trim() + ', ' + values[2].trim() + ', ' + alpha + ')';
+      var values = computedColor.match(/rgb\(([^)]+)\)/)[1].split(',')
+      return 'rgba(' + values[0].trim() + ', ' + values[1].trim() + ', ' + values[2].trim() + ', ' + alpha + ')'
     }
-    
+
     // Si todo falla, usar color sólido
-    return color;
+    return color
   }
 
   // Función para calcular cuántos slides caben visualmente en el viewport
@@ -123,9 +120,9 @@ function initExperienceCarousel() {
     if (nextButton) nextButton.style.display = 'none'
 
     // ✅ Usar callback para garantizar que todos los videos estén listos
-    loadVideos(function() {
-      setupVideoClickDetection();
-    });
+    loadVideos(function () {
+      setupVideoClickDetection()
+    })
   }
 
   // Función para activar modo Swiper
@@ -211,11 +208,11 @@ function initExperienceCarousel() {
         },
 
         on: {
-          init: function(swiper) {
+          init: function (swiper) {
             // ✅ Usar callback para garantizar que todos los videos estén listos
-            loadVideos(function() {
-              setupVideoClickDetection();
-            });
+            loadVideos(function () {
+              setupVideoClickDetection()
+            })
           },
           slideChange: function (swiper) {
             pauseAllVideos()
@@ -245,7 +242,7 @@ function initExperienceCarousel() {
     function checkAllLoaded() {
       loadedVideos++
       console.log('[VIDEO] Cargado', loadedVideos, 'de', totalVideos)
-      
+
       if (loadedVideos >= totalVideos) {
         console.log('[VIDEO] Todos los videos cargados, ejecutando callback')
         if (typeof callback === 'function') {
@@ -315,8 +312,8 @@ function initExperienceCarousel() {
     muteButton.setAttribute('aria-label', 'Silenciar/Activar audio del video')
     muteButton.setAttribute('data-video-id', videoId)
 
-    var isMuted = false;
-    updateMuteButtonIcon(muteButton, isMuted);
+    var isMuted = false
+    updateMuteButtonIcon(muteButton, isMuted)
 
     muteButton.addEventListener('click', function (e) {
       e.preventDefault()
@@ -350,55 +347,55 @@ function initExperienceCarousel() {
 
   // Función para obtener ID único del video
   function getVideoId(iframe) {
-    var videoId = iframe.getAttribute('data-iframe-id');
+    var videoId = iframe.getAttribute('data-iframe-id')
     if (!videoId) {
       // Extraer del src si no hay data-iframe-id
-      var match = iframe.src.match(/embed\/([^?]+)/);
-      videoId = match ? match[1] : 'video-' + Math.random().toString(36).substr(2, 9);
-      iframe.setAttribute('data-iframe-id', videoId);
+      var match = iframe.src.match(/embed\/([^?]+)/)
+      videoId = match ? match[1] : 'video-' + Math.random().toString(36).substr(2, 9)
+      iframe.setAttribute('data-iframe-id', videoId)
     }
-    return videoId;
+    return videoId
   }
 
   // Función para alternar estado de un video específico
   function toggleVideo(iframe) {
-    var videoId = getVideoId(iframe);
-    var isPlaying = videoStates.get(videoId) || false;
-    
+    var videoId = getVideoId(iframe)
+    var isPlaying = videoStates.get(videoId) || false
+
     try {
       if (isPlaying) {
         // Video se está reproduciendo -> Pausar
-        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-        videoStates.set(videoId, false);
-        console.log('[VIDEO] Pausado:', videoId);
+        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
+        videoStates.set(videoId, false)
+        console.log('[VIDEO] Pausado:', videoId)
       } else {
         // Video está pausado -> Reproducir
-        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        videoStates.set(videoId, true);
-        console.log('[VIDEO] Reproduciendo:', videoId);
+        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*')
+        videoStates.set(videoId, true)
+        console.log('[VIDEO] Reproduciendo:', videoId)
       }
     } catch (error) {
-      console.warn('[VIDEO] Error controlando video:', videoId, error);
+      console.warn('[VIDEO] Error controlando video:', videoId, error)
     }
   }
 
   // Función para pausar videos (con excepción opcional)
   function pauseAllVideos(exceptIframe) {
-    var videos = document.querySelectorAll('.experience-carousel__video-container iframe');
+    var videos = document.querySelectorAll('.experience-carousel__video-container iframe')
     for (var i = 0; i < videos.length; i++) {
-      var iframe = videos[i];
+      var iframe = videos[i]
 
       // Saltar el iframe que se está reproduciendo
       if (exceptIframe && iframe === exceptIframe) {
-        continue;
+        continue
       }
 
       try {
-        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-        
+        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
+
         // ✅ Ya no hay botón que mostrar - solo actualizar estados
-        var videoId = getVideoId(iframe);
-        videoStates.set(videoId, false); // Marcar como pausado
+        var videoId = getVideoId(iframe)
+        videoStates.set(videoId, false) // Marcar como pausado
       } catch (e) {
         // Silenciar errores cross-origin
       }
@@ -445,65 +442,68 @@ function initExperienceCarousel() {
 
   // Función para detectar clics en videos y pausar otros
   function setupVideoClickDetection() {
-    var videoContainers = document.querySelectorAll('.experience-carousel__video-container');
+    var videoContainers = document.querySelectorAll('.experience-carousel__video-container')
 
     for (var i = 0; i < videoContainers.length; i++) {
-      var container = videoContainers[i];
-      var iframe = container.querySelector('iframe');
+      var container = videoContainers[i]
+      var iframe = container.querySelector('iframe')
 
       if (!iframe || container.querySelector('.video-click-detector')) {
-        continue; // Saltar si no hay iframe o ya tiene detector
+        continue // Saltar si no hay iframe o ya tiene detector
       }
 
       // Crear overlay para detectar clics
-      var overlay = document.createElement('div');
-      overlay.className = 'video-click-detector';
-      overlay.style.position = 'absolute';
-      overlay.style.top = '0';
-      overlay.style.left = '0';
-      overlay.style.width = '100%';
-      overlay.style.height = '100%';
-      overlay.style.zIndex = '5';
-      overlay.style.cursor = 'pointer';
-      overlay.style.backgroundColor = 'rgba(0,0,0,0.05)'; // Más sutil
-      overlay.style.pointerEvents = 'auto';
-      overlay.style.display = 'flex';
-      overlay.style.alignItems = 'center';
-      overlay.style.justifyContent = 'center';
-      overlay.style.opacity = '1'; // Visible por defecto
-      overlay.style.transition = 'background-color 0.3s ease';
+      var overlay = document.createElement('div')
+      overlay.className = 'video-click-detector'
+      overlay.style.position = 'absolute'
+      overlay.style.top = '0'
+      overlay.style.left = '0'
+      overlay.style.width = '100%'
+      overlay.style.height = '100%'
+      overlay.style.zIndex = '5'
+      overlay.style.cursor = 'pointer'
+      overlay.style.backgroundColor = 'rgba(0,0,0,0.05)' // Más sutil
+      overlay.style.pointerEvents = 'auto'
+      overlay.style.display = 'flex'
+      overlay.style.alignItems = 'center'
+      overlay.style.justifyContent = 'center'
+      overlay.style.opacity = '1' // Visible por defecto
+      overlay.style.transition = 'background-color 0.3s ease'
 
       // ✅ Ya no creamos botón de play visual - solo overlay interactivo
 
       // Agregar data attribute para identificar el iframe
-      overlay.setAttribute('data-iframe-id', 'iframe-' + i);
-      iframe.setAttribute('data-iframe-id', 'iframe-' + i);
+      overlay.setAttribute('data-iframe-id', 'iframe-' + i)
+      iframe.setAttribute('data-iframe-id', 'iframe-' + i)
 
       // ✅ Ya no hay event listeners para botón - solo overlay
 
       // Event listener para el overlay - toggle play/pause
-      overlay.addEventListener('click', (function(currentContainer, currentIframe) {
-        return function(e) {
-          console.log('[VIDEO] Overlay clickeado para iframe:', currentIframe.src);
-          
-          // Alternar entre play y pause
-          toggleVideo(currentIframe);
-          
-          // Pausar todos los otros videos si este se está reproduciendo
-          var videoId = getVideoId(currentIframe);
-          var isPlaying = videoStates.get(videoId) || false;
-          
-          if (isPlaying) {
-            // Este video se está reproduciendo - pausar los otros
-            pauseAllVideos(currentIframe);
+      overlay.addEventListener(
+        'click',
+        (function (currentContainer, currentIframe) {
+          return function (e) {
+            console.log('[VIDEO] Overlay clickeado para iframe:', currentIframe.src)
+
+            // Alternar entre play y pause
+            toggleVideo(currentIframe)
+
+            // Pausar todos los otros videos si este se está reproduciendo
+            var videoId = getVideoId(currentIframe)
+            var isPlaying = videoStates.get(videoId) || false
+
+            if (isPlaying) {
+              // Este video se está reproduciendo - pausar los otros
+              pauseAllVideos(currentIframe)
+            }
           }
-        };
-      })(container, iframe));
+        })(container, iframe)
+      )
 
       // ✅ Ya no agregamos botón - solo overlay limpio
 
-      container.style.position = 'relative';
-      container.appendChild(overlay);
+      container.style.position = 'relative'
+      container.appendChild(overlay)
     }
   }
 

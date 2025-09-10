@@ -7,11 +7,7 @@
  * Sin fallbacks - asume que las utilidades globales están siempre disponibles
  */
 
-// Usar utilidades globales directamente
-const Logger = window.Logger
-const globalEventManager = window.EventManager
-const TimingUtils = window.TimingUtils
-const DOMUtils = window.DOMUtils
+// Las utilidades globales están disponibles directamente como window.Logger, etc.
 
 // TimerManager simplificado usando scheduler global
 class TimerManager {
@@ -51,17 +47,17 @@ class ModuleEventManager {
   }
 
   addEventListener(element, event, handler, options = {}) {
-    const key = globalEventManager.add(element, event, handler, options)
+    const key = EventManager.add(element, event, handler, options)
     this.listeners.add(key)
     return key
   }
 
   removeEventListener(element, event, handler) {
-    globalEventManager.removeByElement(element)
+    EventManager.removeByElement(element)
   }
 
   destroy() {
-    this.listeners.forEach(key => globalEventManager.remove(key))
+    this.listeners.forEach(key => EventManager.remove(key))
     this.listeners.clear()
   }
 }
@@ -87,7 +83,24 @@ function hashString(str) {
 /**
  * Verificar si elemento está visible en viewport
  */
-const isElementVisible = DOMUtils.isElementVisible
+function isElementVisible(element, threshold = 0.1) {
+  // Usar utilidad global si está disponible
+  if (DOMUtils && DOMUtils.isElementVisible) {
+    return DOMUtils.isElementVisible(element, threshold)
+  }
+
+  // Fallback simple
+  if (!element) return false
+
+  const rect = element.getBoundingClientRect()
+  const windowHeight = window.innerHeight || document.documentElement.clientHeight
+  const windowWidth = window.innerWidth || document.documentElement.clientWidth
+
+  const verticalVisible = rect.top + rect.height * threshold < windowHeight && rect.bottom - rect.height * threshold > 0
+  const horizontalVisible = rect.left + rect.width * threshold < windowWidth && rect.right - rect.width * threshold > 0
+
+  return verticalVisible && horizontalVisible
+}
 
 /**
  * Esperar al siguiente frame de animación
@@ -125,13 +138,13 @@ function runWhenIdle(callback, timeout = 2000) {
  */
 function createStyleSheet(id, css) {
   let style = document.getElementById(id)
-  
+
   if (!style) {
     style = document.createElement('style')
     style.id = id
     document.head.appendChild(style)
   }
-  
+
   style.textContent = css
   return style
 }
@@ -142,16 +155,12 @@ function createStyleSheet(id, css) {
 function getVideoUrl(container, type) {
   // Intentar desde configuración global
   if (typeof configuration !== 'undefined') {
-    const configUrl = type === 'mobile' 
-      ? configuration.urlVideoMobile 
-      : configuration.urlVideoDesktop
+    const configUrl = type === 'mobile' ? configuration.urlVideoMobile : configuration.urlVideoDesktop
     if (configUrl?.trim()) return configUrl
   }
 
   // Obtener desde data attributes
-  const dataAttr = type === 'mobile' 
-    ? 'data-video-mobile-url' 
-    : 'data-video-desktop-url'
+  const dataAttr = type === 'mobile' ? 'data-video-mobile-url' : 'data-video-desktop-url'
   const url = container.getAttribute(dataAttr)
   return url?.trim() || null
 }
@@ -162,7 +171,7 @@ function getVideoUrl(container, type) {
 function createLoadingSpinner(size = '40px', color = '#fff') {
   const spinner = document.createElement('div')
   spinner.className = 'loading-spinner'
-  
+
   Object.assign(spinner.style, {
     width: size,
     height: size,
@@ -173,29 +182,29 @@ function createLoadingSpinner(size = '40px', color = '#fff') {
   })
 
   // Asegurar que la animación CSS esté disponible
-  createStyleSheet('loading-spinner-animation', `
+  createStyleSheet(
+    'loading-spinner-animation',
+    `
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-  `)
+  `
+  )
 
   return spinner
 }
 
 export {
-  debounce,
-  throttle,
+  // Solo utilidades locales específicas del módulo
+  TimerManager,
+  ModuleEventManager as EventManager,
   hashString,
   isElementVisible,
   waitForNextFrame,
-  wait,
   onDOMReady,
   runWhenIdle,
-  Logger,
-  TimerManager,
-  ModuleEventManager as EventManager,
-  createStyleSheet,
   getVideoUrl,
+  createStyleSheet,
   createLoadingSpinner
 }

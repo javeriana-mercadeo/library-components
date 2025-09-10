@@ -19,7 +19,7 @@ const nextConfig = {
     // Solo aplicar externals en el servidor para evitar conflictos de configuración
     if (isServer) {
       config.externals = config.externals || []
-      
+
       if (Array.isArray(config.externals)) {
         config.externals.push('esbuild')
       } else if (typeof config.externals === 'object') {

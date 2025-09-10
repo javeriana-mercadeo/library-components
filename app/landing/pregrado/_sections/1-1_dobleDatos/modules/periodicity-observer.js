@@ -7,7 +7,7 @@
  * Usa MutationObserver y verificación periódica para asegurar que el primer carácter sea minúscula
  */
 
-import { Logger, TimerManager, debounce } from './utils.js'
+import { TimerManager } from './utils.js'
 
 class PeriodicityObserver {
   constructor() {
@@ -17,7 +17,7 @@ class PeriodicityObserver {
     }
 
     this.timers = new TimerManager()
-    this.logger = Logger
+    this.logger = Logger // Global Logger
 
     // Selector para elementos que deben mantener la primera letra en minúscula
     this.targetSelector = '[data-puj-periodicity="true"]'
@@ -27,7 +27,6 @@ class PeriodicityObserver {
    * Inicializar el observador de periodicidad
    */
   init() {
-
     // Limpiar observador previo si existe
     this.cleanup()
 
@@ -55,7 +54,7 @@ class PeriodicityObserver {
    */
   setupMutationObserver() {
     // Usar debounce para evitar procesamiento excesivo
-    const debouncedHandler = debounce(mutations => {
+    const debouncedHandler = TimingUtils.debounce(mutations => {
       this.handleMutations(mutations)
     }, 100)
 
@@ -67,7 +66,6 @@ class PeriodicityObserver {
       subtree: true, // Observar todo el subárbol
       characterData: true // Observar cambios en el contenido de texto
     })
-
   }
 
   /**
@@ -95,7 +93,6 @@ class PeriodicityObserver {
     this.state.intervalId = this.timers.setInterval(() => {
       this.applyLowercaseToAll()
     }, 5000)
-
   }
 
   /**
@@ -114,7 +111,6 @@ class PeriodicityObserver {
     if (firstChar !== firstCharLower) {
       const newText = firstCharLower + currentText.slice(1)
       element.textContent = newText
-
     }
   }
 
@@ -179,7 +175,6 @@ class PeriodicityObserver {
 
     // Aplicar lowercase inmediatamente al reanudar
     this.applyLowercaseToAll()
-
   }
 
   /**
@@ -222,7 +217,6 @@ class PeriodicityObserver {
    * Destruir completamente el observador
    */
   destroy() {
-
     this.cleanup()
     this.timers.destroy()
   }

@@ -1,31 +1,30 @@
 // ===========================================
-// SCRIPT PRINCIPAL - DOBLE DATOS PROGRAMA
+// SCRIPT PRINCIPAL - DATOS PROGRAMA
 // ===========================================
 
 /**
  * Script principal que orquesta todos los módulos del sistema
- * Versión específica para doble datos con ID "doble-datos"
+ * Sistema modular optimizado para producción
  */
 
 import { detectPlatform } from './modules/platform-detection.js'
-import { Logger, onDOMReady, runWhenIdle } from './modules/utils.js'
+import { onDOMReady, runWhenIdle, isElementVisible } from './modules/utils.js'
 import { VideoSystem } from './modules/video-system.js'
 import { ModalSystem } from './modules/modal-system.js'
 import { PeriodicityObserver } from './modules/periodicity-observer.js'
+import { programFormatter } from './modules/program-formatter.js'
 
-class DoubleProgramDataSystem {
+class ProgramDataSystem {
   constructor() {
     this.platform = null
-    
+
     // Instanciar subsistemas
     this.videoSystem = new VideoSystem()
     this.modalSystem = new ModalSystem()
     this.periodicityObserver = new PeriodicityObserver()
-    
+    this.programFormatter = programFormatter
+
     this.initialized = false
-    
-    // ID específico para doble datos
-    this.contextId = 'doble-datos'
   }
 
   /**
@@ -37,24 +36,46 @@ class DoubleProgramDataSystem {
     }
 
     try {
+      Logger.info('[ProgramDataSystem] Iniciando inicialización del sistema')
+
       // Detectar plataforma
       this.platform = detectPlatform()
-      
+
       // Configurar event listeners para datos del programa
       this.setupDataEventListeners()
-      
-      // Actualizar nombre del programa
-      this.updateProgramName()
-      
-      // Inicializar subsistemas
-      this.modalSystem.init()
-      this.periodicityObserver.init()
-      this.videoSystem.init()
-      
+
+      // Inicializar subsistemas uno por uno
+      try {
+        this.modalSystem.init()
+        Logger.info('[ProgramDataSystem] ModalSystem inicializado')
+      } catch (error) {
+        Logger.error('[ProgramDataSystem] Error inicializando ModalSystem:', error)
+      }
+
+      try {
+        this.periodicityObserver.init()
+        Logger.info('[ProgramDataSystem] PeriodicityObserver inicializado')
+      } catch (error) {
+        Logger.error('[ProgramDataSystem] Error inicializando PeriodicityObserver:', error)
+      }
+
+      try {
+        this.videoSystem.init()
+        Logger.info('[ProgramDataSystem] VideoSystem inicializado')
+      } catch (error) {
+        Logger.error('[ProgramDataSystem] Error inicializando VideoSystem:', error)
+        // VideoSystem es crítico, pero no debe romper todo el sistema
+      }
+
+      // ProgramFormatter no necesita inicialización explícita ya que se auto-inicializa
+      Logger.info('[ProgramDataSystem] ProgramFormatter inicializado')
+
       this.initialized = true
-      
+      Logger.info('[ProgramDataSystem] Sistema inicializado exitosamente')
     } catch (error) {
-      Logger.error('[DoubleProgramDataSystem] Error durante inicialización:', error)
+      Logger.error('[ProgramDataSystem] Error crítico durante inicialización:', error)
+      // NO marcar como initialized si hay error crítico
+      this.initialized = false
     }
   }
 
@@ -69,37 +90,9 @@ class DoubleProgramDataSystem {
    * Manejar carga de datos del programa
    */
   handleDataLoad() {
-    this.updateProgramName()
-    
     // Reconfigurar contenedores de video si el sistema ya está inicializado
     if (this.videoSystem.state.initialized) {
-      this.videoSystem.setupVideoContainers()
-    }
-  }
-
-  /**
-   * Actualizar nombre del programa en la interfaz
-   * Versión específica para doble datos
-   */
-  updateProgramName() {
-    const context = document.getElementById(this.contextId)
-    if (!context) return
-
-    const dataPujName = context.querySelector('[data-puj-name]')
-    if (dataPujName) {
-      const programName = dataPujName.textContent.trim()
-      if (programName) {
-        // Dispatch evento personalizado para otros componentes
-        const event = new CustomEvent('program:nameUpdated', {
-          detail: { 
-            programName, 
-            element: dataPujName, 
-            contextId: this.contextId,
-            isDoubleData: true 
-          }
-        })
-        document.dispatchEvent(event)
-      }
+      this.videoSystem.setupLazyVideoContainers()
     }
   }
 
@@ -111,15 +104,19 @@ class DoubleProgramDataSystem {
     if (this.videoSystem) {
       this.videoSystem.destroy()
     }
-    
+
     if (this.modalSystem) {
       this.modalSystem.destroy()
     }
-    
+
     if (this.periodicityObserver) {
       this.periodicityObserver.destroy()
     }
-    
+
+    if (this.programFormatter) {
+      this.programFormatter.destroy()
+    }
+
     this.initialized = false
   }
 
@@ -129,8 +126,6 @@ class DoubleProgramDataSystem {
   getStatus() {
     return {
       initialized: this.initialized,
-      contextId: this.contextId,
-      isDoubleData: true,
       platform: this.platform?.name || 'unknown',
       videoSystem: {
         initialized: this.videoSystem?.state.initialized || false,
@@ -149,7 +144,7 @@ class DoubleProgramDataSystem {
 }
 
 // Sistema global para compatibilidad
-let globalDoubleProgramDataSystem = null
+let globalProgramDataSystem = null
 
 /**
  * Configurar manejador de interacción del usuario para videos
@@ -166,13 +161,11 @@ function setupUserInteractionHandler() {
     // Intentar reproducir videos visibles
     const containers = document.querySelectorAll('[data-component="video-player"].video-loaded')
     containers.forEach(container => {
-      if (globalDoubleProgramDataSystem.videoSystem.isElementVisible && 
-          globalDoubleProgramDataSystem.videoSystem.isElementVisible(container)) {
-        
+      if (isElementVisible(container)) {
         const videos = container.querySelectorAll('video')
         videos.forEach(video => {
           if (video.paused) {
-            globalDoubleProgramDataSystem.videoSystem.playVideoSafely(video, 1, true)
+            globalProgramDataSystem.videoSystem.playVideoSafely(video, 1, true)
           }
         })
       }
@@ -204,16 +197,20 @@ function setupUserInteractionHandler() {
 /**
  * Función principal de inicialización
  */
-function initDoubleProgramDataVideo() {
+function initProgramDataVideo() {
   try {
+    if (!globalProgramDataSystem) {
+      Logger.error('[ProgramDataSystem] Sistema no inicializado')
+      return
+    }
+
     // Inicializar sistema principal
-    globalDoubleProgramDataSystem.init()
-    
+    globalProgramDataSystem.init()
+
     // Configurar manejo de interacciones de usuario
     setupUserInteractionHandler()
-    
   } catch (error) {
-    Logger.error('[DoubleProgramDataSystem] Error durante inicialización:', error)
+    Logger.error('[ProgramDataSystem] Error durante inicialización:', error)
   }
 }
 
@@ -221,21 +218,21 @@ function initDoubleProgramDataVideo() {
  * Función de inicialización del sistema completo
  */
 function initSystem() {
-  if (typeof window !== 'undefined' && window.doubleProgramDataVideoInitialized) {
+  if (typeof window !== 'undefined' && window.programDataVideoInitialized) {
     return
   }
 
   // Crear instancia del sistema principal
-  globalDoubleProgramDataSystem = new DoubleProgramDataSystem()
+  globalProgramDataSystem = new ProgramDataSystem()
 
   // Marcar como inicializado globalmente
   if (typeof window !== 'undefined') {
-    window.doubleProgramDataVideoInitialized = true
-    
+    window.programDataVideoInitialized = true
+
     // Configurar cleanup automático antes de cerrar la página
     window.addEventListener('beforeunload', () => {
-      if (globalDoubleProgramDataSystem) {
-        globalDoubleProgramDataSystem.destroy()
+      if (globalProgramDataSystem) {
+        globalProgramDataSystem.destroy()
       }
     })
   }
@@ -243,19 +240,19 @@ function initSystem() {
   // Inicializar cuando el DOM esté listo
   onDOMReady(() => {
     // Usar requestIdleCallback si está disponible para no bloquear recursos críticos
-    runWhenIdle(initDoubleProgramDataVideo, 2000)
+    runWhenIdle(initProgramDataVideo, 2000)
   })
 }
 
 // Exponer funciones para compatibilidad con código existente
 if (typeof window !== 'undefined') {
-  window.DoubleProgramDataSystem = DoubleProgramDataSystem
-  window.getDoubleProgramDataSystemStatus = () => {
-    return globalDoubleProgramDataSystem?.getStatus() || { initialized: false, isDoubleData: true }
+  window.ProgramDataSystem = ProgramDataSystem
+  window.getProgramDataSystemStatus = () => {
+    return globalProgramDataSystem?.getStatus() || { initialized: false }
   }
 }
 
 // Auto-inicialización
 initSystem()
 
-export { DoubleProgramDataSystem, initSystem as default }
+export { ProgramDataSystem, initSystem as default }

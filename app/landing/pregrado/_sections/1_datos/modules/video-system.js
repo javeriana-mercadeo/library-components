@@ -7,22 +7,8 @@
  * Maneja detección de plataforma, carga progresiva y fallbacks
  */
 
-import { detectPlatform, hasPerformanceLimitations } from './platform-detection.js'
-import {
-  Logger,
-  TimerManager,
-  EventManager,
-  waitForNextFrame,
-  wait,
-  debounce,
-  throttle,
-  isElementVisible,
-  onDOMReady,
-  runWhenIdle,
-  getVideoUrl,
-  createLoadingSpinner,
-  createStyleSheet
-} from './utils.js'
+import { detectPlatform } from './platform-detection.js'
+import { TimerManager, EventManager, isElementVisible, getVideoUrl } from './utils.js'
 
 class VideoSystem {
   constructor() {
@@ -32,7 +18,9 @@ class VideoSystem {
       retryAttempts: new Map(),
       intersectionObserver: null,
       resourceQueue: [],
-      loadingPaused: false
+      loadingPaused: false,
+      maxRetryAttempts: 3,
+      currentRetryCount: 0
     }
 
     this.platform = null
@@ -68,7 +56,7 @@ class VideoSystem {
    * Estrategia específica para iOS
    */
   initIOSStrategy() {
-    this.setupVideoContainers()
+    this.setupLazyVideoContainers()
     this.setupIntersectionObserver()
     this.setupIOSTouchHandlers()
   }
@@ -77,7 +65,7 @@ class VideoSystem {
    * Estrategia específica para Android
    */
   initAndroidStrategy() {
-    this.setupProgressiveLoading()
+    this.setupLazyVideoContainers()
 
     if (this.platform.config.useIntersectionObserver) {
       this.setupIntersectionObserver()
@@ -90,14 +78,14 @@ class VideoSystem {
    * Estrategia para Desktop
    */
   initDesktopStrategy() {
-    this.setupVideoContainers()
+    this.setupLazyVideoContainers()
     this.setupIntersectionObserver()
   }
 
   /**
-   * Configurar contenedores con fallback prioritario (iOS)
+   * Configurar contenedores con lazy loading completo
    */
-  setupContainersWithFallbackFirst() {
+  setupLazyVideoContainers() {
     const containers = document.querySelectorAll('[data-component="video-player"]')
 
     if (containers.length === 0) {
@@ -107,234 +95,153 @@ class VideoSystem {
 
     containers.forEach(container => {
       if (!container.classList.contains('video-initialized')) {
-        this.initializeFallbackFirst(container)
+        this.initializeLazyContainer(container)
       }
     })
   }
 
   /**
-   * Inicializar con imagen de fallback primero
+   * Inicializar contenedor lazy (solo overlay, sin cargar video aún)
    */
-  initializeFallbackFirst(container) {
-    const fallbackImage = container.getAttribute('data-image-fallback')
-    const hasVideo = getVideoUrl(container, 'mobile') || getVideoUrl(container, 'desktop')
+  initializeLazyContainer(container) {
+    try {
+      if (!container) {
+        this.logger.error('[VideoSystem] Container es null o undefined')
+        return
+      }
 
-    if (fallbackImage && hasVideo) {
-      // Mostrar fallback mientras se carga el video
-      this.showFallbackContent(container)
-      
-      // Cargar video en segundo plano para iOS
-      this.preloadVideoInBackground(container)
-      
-      // Botón para mostrar video manualmente
-      this.addLoadVideoButton(container)
-    } else {
-      // Si no hay fallback, cargar video directamente
-      this.showMinimalLoading(container)
-      this.initializeVideoContainer(container)
+      const fallbackImage = container.getAttribute('data-image-fallback')
+      let hasVideo = false
+
+      try {
+        hasVideo = getVideoUrl(container, 'mobile') || getVideoUrl(container, 'desktop')
+      } catch (error) {
+        this.logger.error('[VideoSystem] Error obteniendo URLs de video:', error)
+        hasVideo = false
+      }
+
+      if (fallbackImage && hasVideo) {
+        // Caso ideal: hay imagen de fallback y video - mostrar overlay
+        this.showVideoOverlay(container)
+      } else if (hasVideo && !fallbackImage) {
+        // Hay video pero sin fallback - mostrar placeholder genérico
+        this.showVideoPlaceholder(container, 'Video disponible')
+      } else if (!hasVideo) {
+        // Sin video configurado - mostrar error placeholder
+        this.showVideoPlaceholder(container, 'No hay contenido disponible')
+      }
+
+      // Marcar como inicializado pero NO como cargado
+      container.classList.add('video-initialized')
+      container.setAttribute('data-lazy', 'true')
+    } catch (error) {
+      this.logger.error('[VideoSystem] Error inicializando contenedor lazy:', error)
+      // Marcar como fallido para evitar reintentos infinitos
+      container.classList.add('video-failed')
     }
-
-    container.classList.add('video-initialized')
   }
 
   /**
-   * Mostrar contenido de fallback
+   * Mostrar placeholder cuando no hay video ni fallback
    */
-  showFallbackContent(container) {
-    const fallbackImage = container.getAttribute('data-image-fallback')
-    if (!fallbackImage) return
+  showVideoPlaceholder(container, message = 'Cargando contenido...') {
+    const placeholder = document.createElement('div')
+    placeholder.className = 'program-data__video-placeholder'
+    placeholder.innerHTML = `
+      <div class="placeholder-content">
+        <i class="ph ph-video" style="font-size: 2rem; opacity: 0.3;"></i>
+        <span style="font-size: 0.9rem; opacity: 0.5;">${message}</span>
+      </div>
+    `
 
-    const fallbackDiv = document.createElement('div')
-    fallbackDiv.className = 'video-fallback-image'
-
-    Object.assign(fallbackDiv.style, {
+    Object.assign(placeholder.style, {
       position: 'absolute',
       top: '0',
       left: '0',
       width: '100%',
       height: '100%',
-      background: `url(${fallbackImage}) center/cover no-repeat`,
-      zIndex: '1'
-    })
-
-    container.style.position = 'relative'
-    container.appendChild(fallbackDiv)
-  }
-
-  /**
-   * Agregar botón para cargar video bajo demanda
-   */
-  addLoadVideoButton(container) {
-    const button = document.createElement('button')
-    button.className = 'load-video-btn'
-    button.innerHTML = `
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-        <polygon points="8,6 8,18 18,12"/>
-      </svg>
-      <span>Cargar video</span>
-    `
-
-    Object.assign(button.style, {
-      position: 'absolute',
-      bottom: '12px',
-      right: '12px',
-      background: 'rgba(0,0,0,0.8)',
-      color: 'white',
-      border: 'none',
-      borderRadius: '6px',
-      padding: '8px 12px',
-      fontSize: '14px',
-      cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
-      gap: '6px',
-      zIndex: '10',
-      transition: 'all 0.2s ease'
+      justifyContent: 'center',
+      backgroundColor: 'var(--color-neutral-100)',
+      borderRadius: 'inherit'
     })
 
-    this.events.addEventListener(button, 'click', e => {
-      e.preventDefault()
-      button.remove()
-      this.loadVideoOnDemand(container)
-    })
-
-    container.style.position = 'relative'
-    container.appendChild(button)
+    container.appendChild(placeholder)
   }
 
   /**
-   * Precargar video en segundo plano para iOS
+   * Mostrar overlay con imagen de fallback
    */
-  preloadVideoInBackground(container) {
-    // Crear video oculto para precargar
-    const mobileUrl = getVideoUrl(container, 'mobile')
-    const desktopUrl = getVideoUrl(container, 'desktop')
-    const videoUrl = this.platform.isMobile ? (mobileUrl || desktopUrl) : (desktopUrl || mobileUrl)
-    
-    if (!videoUrl) return
-    
-    const preloadVideo = document.createElement('video')
-    Object.assign(preloadVideo, {
-      src: videoUrl,
-      muted: true,
-      preload: 'metadata',
-      playsInline: true
-    })
-    
-    preloadVideo.style.cssText = 'position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;'
-    
-    // Almacenar referencia para uso posterior
-    container._preloadedVideo = preloadVideo
-    document.body.appendChild(preloadVideo)
-    
-    // Remover después de 30 segundos si no se usa
-    this.timers.setTimeout(() => {
-      if (preloadVideo.parentNode) {
-        preloadVideo.remove()
-      }
-    }, 30000)
+  showVideoOverlay(container) {
+    const fallbackImage = container.getAttribute('data-image-fallback')
+    if (!fallbackImage) return
+
+    const overlay = document.createElement('div')
+    overlay.className = 'program-data__video-overlay'
+    overlay.style.backgroundImage = `url(${fallbackImage})`
+
+    container.appendChild(overlay)
+    return overlay
   }
 
   /**
-   * Cargar video bajo demanda
+   * Cargar video con overlay y transición suave
    */
-  async loadVideoOnDemand(container) {
-    const loading = this.showMinimalLoading(container)
+  async loadVideoWithOverlay(container, overlay, loader) {
+    try {
+      const video = await this.createVideoElementAsync(container)
 
-    const loadVideo = () => {
-      const fallback = container.querySelector('.video-fallback-image')
-      if (fallback) fallback.remove()
-      if (loading) loading.remove()
+      // Cuando el video está listo para reproducir
+      const handleCanPlay = () => {
+        // Ocultar loader
+        this.hideVideoLoader(loader)
 
-      // Si hay video precargado, usarlo
-      if (container._preloadedVideo) {
-        container._preloadedVideo.remove()
-        delete container._preloadedVideo
-      }
-
-      this.initializeVideoContainer(container)
-    }
-
-    runWhenIdle(loadVideo, 1000)
-  }
-
-  /**
-   * Loading minimal para no bloquear
-   */
-  showMinimalLoading(container) {
-    const existing = container.querySelector('.video-loading')
-    if (existing) existing.remove()
-
-    const loading = createLoadingSpinner('20px', '#fff')
-    loading.className = 'video-loading minimal'
-
-    Object.assign(loading.style, {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      zIndex: '5'
-    })
-
-    container.appendChild(loading)
-    return loading
-  }
-
-  /**
-   * Configuración progresiva para Android
-   */
-  setupProgressiveLoading() {
-    const containers = document.querySelectorAll('[data-component="video-player"]')
-
-    if (containers.length === 0) {
-      this.scheduleRetryInit()
-      return
-    }
-
-    // Ordenar por visibilidad
-    const sortedContainers = Array.from(containers).sort((a, b) => {
-      const rectA = a.getBoundingClientRect()
-      const rectB = b.getBoundingClientRect()
-
-      const isVisibleA = rectA.top < window.innerHeight && rectA.bottom > 0
-      const isVisibleB = rectB.top < window.innerHeight && rectB.bottom > 0
-
-      if (isVisibleA && !isVisibleB) return -1
-      if (!isVisibleA && isVisibleB) return 1
-
-      return rectA.top - rectB.top
-    })
-
-    this.loadContainersProgressively(sortedContainers)
-  }
-
-  /**
-   * Cargar contenedores de forma progresiva
-   */
-  async loadContainersProgressively(containers) {
-    for (let i = 0; i < containers.length; i++) {
-      const container = containers[i]
-
-      if (!container.classList.contains('video-initialized')) {
-        await this.initializeVideoContainerAsync(container)
-
-        if (i < containers.length - 1) {
-          await waitForNextFrame()
+        // Fade out overlay
+        if (overlay) {
+          overlay.classList.add('program-data__video-overlay--fade-out')
+          setTimeout(() => overlay.remove(), 400)
         }
+
+        // Intentar reproducir si está visible
+        if (isElementVisible(container, this.platform.config.intersectionThreshold)) {
+          this.playVideoSafely(video)
+        }
+
+        video.removeEventListener('canplay', handleCanPlay)
       }
+
+      video.addEventListener('canplay', handleCanPlay)
+      container.classList.add('video-loaded')
+    } catch (error) {
+      this.logger.error('[VideoSystem] Error cargando video con overlay:', error)
+      this.hideVideoLoader(loader)
+      // Mantener overlay como fallback en caso de error
     }
   }
 
   /**
-   * Inicializar contenedor de forma asíncrona
+   * Mostrar loader CSS simple
    */
-  async initializeVideoContainerAsync(container) {
-    return new Promise(resolve => {
-      requestAnimationFrame(() => {
-        this.initializeVideoContainer(container)
-        resolve()
-      })
-    })
+  showVideoLoader(container) {
+    const existing = container.querySelector('.program-data__video-loader')
+    if (existing) return existing
+
+    const loader = document.createElement('div')
+    loader.className = 'program-data__video-loader'
+
+    container.appendChild(loader)
+    return loader
+  }
+
+  /**
+   * Ocultar loader
+   */
+  hideVideoLoader(loader) {
+    if (loader) {
+      loader.classList.add('program-data__video-loader--hidden')
+      setTimeout(() => loader.remove(), 300)
+    }
   }
 
   /**
@@ -348,8 +255,8 @@ class VideoSystem {
 
     const options = {
       root: null,
-      rootMargin: this.platform.config.lazyLoadMargin,
-      threshold: this.platform.config.intersectionThreshold
+      rootMargin: this.platform.config.lazyLoadMargin || '100px',
+      threshold: this.platform.config.intersectionThreshold || 0.3
     }
 
     this.state.intersectionObserver = new IntersectionObserver(entries => {
@@ -362,7 +269,18 @@ class VideoSystem {
       })
     }, options)
 
-    const containers = document.querySelectorAll('[data-component="video-player"].video-loaded')
+    // Observar containers existentes
+    this.observeExistingContainers()
+  }
+
+  /**
+   * Observar containers de video existentes
+   */
+  observeExistingContainers() {
+    if (!this.state.intersectionObserver) return
+
+    // Observar TODOS los contenedores, no solo los .video-loaded
+    const containers = document.querySelectorAll('[data-component="video-player"]')
     containers.forEach(container => {
       this.state.intersectionObserver.observe(container)
     })
@@ -372,7 +290,7 @@ class VideoSystem {
    * Manejo manual de visibilidad (fallback)
    */
   setupManualVisibilityCheck() {
-    const checkVisibility = throttle(() => {
+    const checkVisibility = TimingUtils.throttle(() => {
       this.handleVisibilityCheck()
     }, 100)
 
@@ -386,35 +304,173 @@ class VideoSystem {
    * Verificar visibilidad manualmente
    */
   handleVisibilityCheck() {
-    const containers = document.querySelectorAll('[data-component="video-player"].video-loaded')
+    const containers = document.querySelectorAll('[data-component="video-player"]')
 
     containers.forEach(container => {
-      const videos = container.querySelectorAll('video')
       const visible = isElementVisible(container, this.platform.config.intersectionThreshold)
 
-      videos.forEach(video => {
-        if (visible && video.paused) {
-          this.playVideoSafely(video, 1, true)
-        } else if (!visible && !video.paused) {
-          video.pause()
-        }
-      })
+      if (visible && container.hasAttribute('data-lazy') && !container.classList.contains('video-loaded')) {
+        // Si es visible y lazy, cargar video
+        this.handleVideoIntersection(container, true)
+      } else {
+        // Si ya tiene videos, manejar reproducción
+        const videos = container.querySelectorAll('video')
+        videos.forEach(video => {
+          if (visible && video.paused) {
+            this.playVideoSafely(video, 1, true)
+          } else if (!visible && !video.paused) {
+            video.pause()
+          }
+        })
+      }
     })
   }
 
   /**
-   * Manejo de intersección de video
+   * Manejo de intersección de video (con lazy loading)
    */
-  handleVideoIntersection(container, isVisible) {
-    const videos = container.querySelectorAll('video')
+  async handleVideoIntersection(container, isVisible) {
+    try {
+      if (!container) {
+        this.logger.warning('[VideoSystem] Container nulo en intersección')
+        return
+      }
 
-    videos.forEach(video => {
-      if (isVisible && video.paused) {
-        this.playVideoSafely(video)
-      } else if (!isVisible && !video.paused) {
-        video.pause()
+      // Skip containers que han fallado
+      if (container.classList.contains('video-failed')) {
+        return
+      }
+
+      if (isVisible) {
+        // Si es lazy y aún no se ha cargado, cargarlo ahora de forma asíncrona
+        if (container.hasAttribute('data-lazy') && !container.classList.contains('video-loaded')) {
+          try {
+            await this.loadVideoLazily(container)
+          } catch (error) {
+            this.logger.error('[VideoSystem] Error cargando video lazy:', error)
+            container.classList.add('video-failed')
+            // Mostrar fallback visual al usuario
+            this.showVideoPlaceholder(container, 'Error cargando video')
+          }
+        } else {
+          // Si ya está cargado, solo reproducir
+          const videos = container.querySelectorAll('video')
+          videos.forEach(video => {
+            try {
+              if (video.paused) {
+                this.playVideoSafely(video).catch(error => {
+                  this.logger.warning('[VideoSystem] Error reproduciendo video:', error.message)
+                })
+              }
+            } catch (error) {
+              this.logger.error('[VideoSystem] Error en reproducción de video:', error)
+            }
+          })
+        }
+      } else {
+        // Pausar videos cuando no son visibles
+        const videos = container.querySelectorAll('video')
+        videos.forEach(video => {
+          try {
+            if (!video.paused) {
+              video.pause()
+            }
+          } catch (error) {
+            this.logger.warning('[VideoSystem] Error pausando video:', error.message)
+          }
+        })
+      }
+    } catch (error) {
+      this.logger.error('[VideoSystem] Error crítico en handleVideoIntersection:', error)
+    }
+  }
+
+  /**
+   * Cargar video de forma lazy y no-bloqueante
+   */
+  async loadVideoLazily(container) {
+    // Remover atributo lazy para evitar cargas múltiples
+    container.removeAttribute('data-lazy')
+
+    try {
+      // Usar requestIdleCallback para no bloquear
+      await this.runInBackground(() => {
+        return this.loadVideoInBackground(container)
+      })
+    } catch (error) {
+      this.logger.error('[VideoSystem] Error en carga lazy:', error)
+      // Restaurar lazy state en caso de error para retry
+      container.setAttribute('data-lazy', 'true')
+    }
+  }
+
+  /**
+   * Ejecutar función en background sin bloquear UI
+   */
+  async runInBackground(taskFn) {
+    return new Promise((resolve, reject) => {
+      // Usar requestIdleCallback si está disponible
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(async deadline => {
+          try {
+            // Solo ejecutar si tenemos tiempo disponible
+            if (deadline.timeRemaining() > 5) {
+              const result = await taskFn()
+              resolve(result)
+            } else {
+              // Si no hay tiempo, programar para el siguiente idle
+              const result = await this.runInBackground(taskFn)
+              resolve(result)
+            }
+          } catch (error) {
+            reject(error)
+          }
+        })
+      } else {
+        // Fallback: usar setTimeout para ceder control
+        setTimeout(async () => {
+          try {
+            const result = await taskFn()
+            resolve(result)
+          } catch (error) {
+            reject(error)
+          }
+        }, 16) // ~60fps
       }
     })
+  }
+
+  /**
+   * Cargar video en background de forma no-bloqueante
+   */
+  async loadVideoInBackground(container) {
+    const fallbackImage = container.getAttribute('data-image-fallback')
+    const hasVideo = getVideoUrl(container, 'mobile') || getVideoUrl(container, 'desktop')
+
+    if (!hasVideo) {
+      throw new Error('No hay URLs de video configuradas')
+    }
+
+    // Mostrar loader de forma no-bloqueante
+    await new Promise(resolve => {
+      requestAnimationFrame(() => {
+        const loader = this.showVideoLoader(container)
+        resolve(loader)
+      })
+    })
+
+    // Si hay overlay e imagen de fallback, usar el flujo con overlay
+    const existingOverlay = container.querySelector('.program-data__video-overlay')
+    if (existingOverlay) {
+      const loader = container.querySelector('.program-data__video-loader')
+      await this.loadVideoWithOverlay(container, existingOverlay, loader)
+    } else {
+      // Carga directa con loader
+      const loader = container.querySelector('.program-data__video-loader')
+      await this.initializeVideoContainer(container, loader)
+    }
+
+    return container
   }
 
   /**
@@ -440,53 +496,66 @@ class VideoSystem {
   }
 
   /**
-   * Configurar contenedores de video estándar
+   * Inicializar contenedor de video (versión simplificada)
    */
-  setupVideoContainers() {
-    const containers = document.querySelectorAll('[data-component="video-player"]')
-
-    if (containers.length === 0) {
-      this.scheduleRetryInit()
-      return
-    }
-
-    containers.forEach(container => {
-      if (!container.classList.contains('video-initialized')) {
-        this.initializeVideoContainer(container)
-      }
-    })
-  }
-
-  /**
-   * Inicializar contenedor de video
-   */
-  initializeVideoContainer(container) {
+  async initializeVideoContainer(container, loader = null) {
     try {
-      const mobileUrl = getVideoUrl(container, 'mobile')
-      const desktopUrl = getVideoUrl(container, 'desktop')
-      const fallbackImage = container.getAttribute('data-image-fallback')
+      const video = await this.createVideoElementAsync(container)
 
-      if (!mobileUrl && !desktopUrl) {
-        this.logger.warning('[VideoSystem] Sin URLs de video configuradas', container)
-        if (fallbackImage) {
-          this.showFallbackContent(container)
+      const handleCanPlay = () => {
+        if (loader) this.hideVideoLoader(loader)
+        if (isElementVisible(container, this.platform.config.intersectionThreshold)) {
+          this.playVideoSafely(video)
         }
-        return
+        video.removeEventListener('canplay', handleCanPlay)
       }
 
-      const videoUrl = this.platform.isMobile ? mobileUrl || desktopUrl : desktopUrl || mobileUrl
-      this.createVideoElement(container, videoUrl, fallbackImage)
+      video.addEventListener('canplay', handleCanPlay)
       container.classList.add('video-initialized', 'video-loaded')
     } catch (error) {
-      this.logger.error('[VideoSystem] Error inicializando contenedor de video:', error)
+      this.logger.error('[VideoSystem] Error inicializando contenedor:', error)
+      if (loader) this.hideVideoLoader(loader)
       this.handleVideoError(container, error)
     }
   }
 
   /**
-   * Crear elemento de video
+   * Crear elemento de video de forma asíncrona
    */
-  createVideoElement(container, videoUrl, fallbackImage) {
+  async createVideoElementAsync(container) {
+    return new Promise((resolve, reject) => {
+      const mobileUrl = getVideoUrl(container, 'mobile')
+      const desktopUrl = getVideoUrl(container, 'desktop')
+
+      if (!mobileUrl && !desktopUrl) {
+        reject(new Error('Sin URLs de video configuradas'))
+        return
+      }
+
+      const videoUrl = this.platform.isMobile ? mobileUrl || desktopUrl : desktopUrl || mobileUrl
+      const video = this.createVideoElement(container, videoUrl)
+
+      const handleLoadedMetadata = () => {
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+        video.removeEventListener('error', handleError)
+        resolve(video)
+      }
+
+      const handleError = error => {
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+        video.removeEventListener('error', handleError)
+        reject(error)
+      }
+
+      video.addEventListener('loadedmetadata', handleLoadedMetadata)
+      video.addEventListener('error', handleError)
+    })
+  }
+
+  /**
+   * Crear elemento de video (versión simplificada)
+   */
+  createVideoElement(container, videoUrl) {
     const video = document.createElement('video')
 
     // Configuración optimizada
@@ -506,34 +575,8 @@ class VideoSystem {
       video.setAttribute('x-webkit-airplay', 'allow')
     }
 
-    Object.assign(video.style, {
-      position: 'absolute',
-      top: '0',
-      left: '0',
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover',
-      zIndex: '2'
-    })
-
-    // Event listeners para el video
-    this.events.addEventListener(video, 'loadedmetadata', () => {
-      // Intentar reproducir cuando el metadata esté listo
-      this.playVideoSafely(video)
-    })
-
-    this.events.addEventListener(video, 'canplay', () => {
-      // Video listo - añadir a la lista y reproducir si es visible
-      this.state.loadedVideos.add(video)
-      if (isElementVisible(container, this.platform.config.intersectionThreshold)) {
-        this.playVideoSafely(video)
-      }
-    })
-
-    this.events.addEventListener(video, 'error', e => {
-      this.logger.error('[VideoSystem] Error de video:', e)
-      this.handleVideoError(container, e, fallbackImage)
-    })
+    // Aplicar clase CSS en lugar de estilos inline
+    video.className = 'program-data__video'
 
     container.style.position = 'relative'
     container.appendChild(video)
@@ -543,37 +586,45 @@ class VideoSystem {
       this.state.intersectionObserver.observe(container)
     }
 
-    // Intentar reproducir inmediatamente si está visible
-    if (isElementVisible(container, this.platform.config.intersectionThreshold)) {
-      // Dar tiempo al video para cargar y luego intentar reproducir
-      this.timers.setTimeout(() => {
-        this.playVideoSafely(video)
-      }, 100)
-    }
+    return video
   }
 
   /**
    * Reproducir video de forma segura
    */
-  async playVideoSafely(video, maxAttempts = this.platform.config.playbackAttempts, isManual = false) {
-    if (!video || this.state.loadedVideos.has(video)) return
+  async playVideoSafely(video, maxAttempts = null, isManual = false) {
+    if (!video || video.tagName !== 'VIDEO') {
+      this.logger.warning('[VideoSystem] Video inválido o nulo')
+      return
+    }
+
+    // Si ya se está reproduciendo, no hacer nada
+    if (!video.paused) return
+
+    // Validar configuración de plataforma
+    const finalMaxAttempts = maxAttempts || this.platform?.config?.playbackAttempts || 3 // Fallback por defecto
 
     let attempts = 0
-    while (attempts < maxAttempts) {
+    while (attempts < finalMaxAttempts) {
       try {
         await video.play()
         this.state.loadedVideos.add(video)
+        this.logger.info('[VideoSystem] Video reproduciéndose exitosamente')
         break
       } catch (error) {
         attempts++
+        this.logger.warning(`[VideoSystem] Intento ${attempts}/${finalMaxAttempts} falló:`, error.message)
 
-        if (attempts >= maxAttempts) {
+        if (attempts >= finalMaxAttempts) {
           if (isManual) {
+            this.logger.error('[VideoSystem] Reproducción manual falló después de todos los intentos')
           } else {
             this.handlePlaybackError(video, error)
           }
         } else {
-          await wait(this.platform.config.aggressivePlaybackDelay || 300)
+          // Usar delay con fallback seguro
+          const delay = this.platform?.config?.aggressivePlaybackDelay || 300
+          await TimingUtils.sleep(delay)
         }
       }
     }
@@ -582,16 +633,20 @@ class VideoSystem {
   /**
    * Manejar error de video
    */
-  handleVideoError(container, error, fallbackImage = null) {
+  handleVideoError(container, error) {
     this.logger.error('[VideoSystem] Error de video, mostrando fallback:', error)
 
     // Remover video fallido
     const videos = container.querySelectorAll('video')
     videos.forEach(video => video.remove())
 
-    // Mostrar imagen de fallback si está disponible
-    if (fallbackImage || container.getAttribute('data-image-fallback')) {
-      this.showFallbackContent(container)
+    // Si no hay overlay, crear uno como fallback
+    const existingOverlay = container.querySelector('.program-data__video-overlay')
+    if (!existingOverlay) {
+      const fallbackImage = container.getAttribute('data-image-fallback')
+      if (fallbackImage) {
+        this.showVideoOverlay(container)
+      }
     }
   }
 
@@ -604,40 +659,106 @@ class VideoSystem {
   }
 
   /**
-   * Programar reintento de inicialización
+   * Programar reintento de inicialización con límite
    */
   scheduleRetryInit() {
+    if (this.state.currentRetryCount >= this.state.maxRetryAttempts) {
+      this.logger.error('[VideoSystem] Máximo número de reintentos alcanzado. Deshabilitando sistema de video.')
+      return
+    }
+
+    this.state.currentRetryCount++
+    this.logger.info(`[VideoSystem] Programando reintento ${this.state.currentRetryCount}/${this.state.maxRetryAttempts}`)
+
     this.timers.setTimeout(() => {
-      this.init()
-    }, 2000)
+      this.setupLazyVideoContainers()
+    }, 2000 * this.state.currentRetryCount) // Backoff exponencial
+  }
+
+  /**
+   * Re-observar containers después de cambios dinámicos
+   */
+  refreshObservers() {
+    if (this.state.intersectionObserver) {
+      this.observeExistingContainers()
+    }
   }
 
   /**
    * Limpiar recursos y event listeners
    */
   destroy() {
-    // Limpiar observadores
-    if (this.state.intersectionObserver) {
-      this.state.intersectionObserver.disconnect()
-      this.state.intersectionObserver = null
+    try {
+      this.logger.info('[VideoSystem] Iniciando limpieza de recursos')
+
+      // Limpiar observadores
+      if (this.state.intersectionObserver) {
+        this.state.intersectionObserver.disconnect()
+        this.state.intersectionObserver = null
+      }
+
+      // Limpiar completamente todos los videos
+      const videos = document.querySelectorAll('[data-component="video-player"] video')
+      videos.forEach(video => {
+        try {
+          // Pausar y limpiar video
+          video.pause()
+          video.currentTime = 0
+          video.src = ''
+          video.load()
+
+          // Limpiar event listeners (los nativos)
+          video.onloadedmetadata = null
+          video.oncanplay = null
+          video.onerror = null
+          video.onplay = null
+          video.onpause = null
+
+          // Remover del DOM
+          if (video.parentNode) {
+            video.parentNode.removeChild(video)
+          }
+        } catch (error) {
+          this.logger.warning('[VideoSystem] Error limpiando video individual:', error.message)
+        }
+      })
+
+      // Limpiar containers lazy
+      const containers = document.querySelectorAll('[data-component="video-player"][data-lazy]')
+      containers.forEach(container => {
+        try {
+          container.removeAttribute('data-lazy')
+          container.classList.remove('video-initialized', 'video-loaded', 'video-failed')
+
+          // Limpiar referencias almacenadas
+          if (container._preloadedVideo) {
+            container._preloadedVideo.remove()
+            delete container._preloadedVideo
+          }
+        } catch (error) {
+          this.logger.warning('[VideoSystem] Error limpiando container:', error.message)
+        }
+      })
+
+      // Limpiar timers y eventos
+      if (this.timers) {
+        this.timers.destroy()
+      }
+      if (this.events) {
+        this.events.destroy()
+      }
+
+      // Reset estado completo
+      this.state.initialized = false
+      this.state.loadedVideos.clear()
+      this.state.retryAttempts.clear()
+      this.state.currentRetryCount = 0
+      this.platform = null
+
+      this.logger.info('[VideoSystem] Limpieza de recursos completada')
+    } catch (error) {
+      this.logger.error('[VideoSystem] Error durante cleanup:', error)
     }
-
-    // Pausar todos los videos
-    const videos = document.querySelectorAll('[data-component="video-player"] video')
-    videos.forEach(video => {
-      video.pause()
-      video.src = ''
-      video.load()
-    })
-
-    // Limpiar timers y eventos
-    this.timers.destroy()
-    this.events.destroy()
-
-    // Reset estado
-    this.state.initialized = false
-    this.state.loadedVideos.clear()
-    this.state.retryAttempts.clear()
   }
 }
 

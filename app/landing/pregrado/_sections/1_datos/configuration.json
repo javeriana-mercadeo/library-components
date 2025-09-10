@@ -15,7 +15,7 @@
         },
         {
           "name": "urlVideoMobile",
-          "label": "URL del video móvil (opcional)",
+          "label": "URL del video móvil",
           "description": "URL completa del video móvil que se mostrará en dispositivos móviles (opcional - si no se proporciona, se usará el de escritorio).",
           "type": "text",
           "typeOptions": {

@@ -324,7 +324,7 @@
 
   &__content-title {
     margin-bottom: var(--spacing-md);
-    color: #ffffff !important;  // Blanco puro en ambos temas
+    color: #ffffff !important; // Blanco puro en ambos temas
   }
 
   &__content-text {
@@ -755,8 +755,8 @@
     }
 
     &__tab-button {
-      color: var(--neutral);  // Botones inactivos blancos para mejor contraste
-      
+      color: var(--neutral); // Botones inactivos blancos para mejor contraste
+
       &:hover:not(.active) {
         color: var(--neutral);
         background: var(--color-neutral-600);
@@ -772,7 +772,6 @@
     &__media-container:has(.scholarships__content-icon) {
       background-color: rgba(255, 255, 255, 0.1);
     }
-
 
     // Ajustes específicos para elementos de texto enriquecido en modo oscuro
     &__content-text {

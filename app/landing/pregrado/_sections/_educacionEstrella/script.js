@@ -13,7 +13,7 @@ const EducacionEstrellaRichTextSystem = {
   // Procesar contenido enriquecido desde CMS o datos locales
   processRichContent() {
     const richContentElements = document.querySelectorAll(this.config.richContentSelector)
-    
+
     if (richContentElements.length === 0) {
       console.log('[EducacionEstrellaRichText] No se encontraron elementos de contenido enriquecido')
       return
@@ -23,17 +23,17 @@ const EducacionEstrellaRichTextSystem = {
 
     richContentElements.forEach(element => {
       let content = element.getAttribute('data-raw-content')
-      
+
       if (content) {
         content = this.decodeHtmlEntities(content)
-        
+
         // Auto-detección de formato
         if (!content.includes('<') && !content.includes('&lt;')) {
           content = content.replace(/\n\n/g, '</p><p>')
           content = content.replace(/\n/g, '<br>')
           content = '<p>' + content + '</p>'
         }
-        
+
         element.innerHTML = content
         console.log(`[EducacionEstrellaRichText] Elemento procesado: ${element.className}`)
       }
@@ -65,7 +65,7 @@ const EducacionEstrellaSystem = {
     const systems = {
       richText: EducacionEstrellaRichTextSystem.processRichContent()
     }
-    
+
     console.log('[EducacionEstrellaSystem] Sistemas inicializados:', systems)
     return systems
   }
@@ -77,7 +77,7 @@ const EducacionEstrellaSystem = {
 const initEducacionEstrella = () => {
   const tryInitialize = (attempts = 0) => {
     const sections = document.querySelectorAll('.educacion-estrella')
-    
+
     if (sections.length === 0 && attempts < 20) {
       // Si no encuentra los elementos, reintentar en 100ms
       setTimeout(() => tryInitialize(attempts + 1), 100)
@@ -86,10 +86,10 @@ const initEducacionEstrella = () => {
 
     // Procesar texto enriquecido
     EducacionEstrellaRichTextSystem.processRichContent()
-    
+
     console.log('[EducacionEstrella] Sección inicializada correctamente')
   }
-  
+
   tryInitialize()
 }
 

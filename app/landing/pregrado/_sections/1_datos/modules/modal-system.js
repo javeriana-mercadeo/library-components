@@ -7,12 +7,12 @@
  * Gestiona la apertura, cierre y navegación por modales
  */
 
-import { Logger, EventManager } from './utils.js'
+import { EventManager } from './utils.js'
 
 class ModalSystem {
   constructor() {
     this.events = new EventManager()
-    this.logger = Logger
+    this.logger = Logger // Global Logger
     this.activeModal = null
   }
 
@@ -20,7 +20,6 @@ class ModalSystem {
    * Inicializar sistema de modales
    */
   init() {
-
     this.events.addEventListener(document, 'click', this.handleModalClick.bind(this))
     this.events.addEventListener(document, 'keydown', this.handleModalKeydown.bind(this))
   }
@@ -111,7 +110,6 @@ class ModalSystem {
       return
     }
 
-
     // Cerrar modal previo si existe
     if (this.activeModal) {
       this.closeModal(this.activeModal.id)
@@ -141,7 +139,6 @@ class ModalSystem {
       this.logger.warning(`[ModalSystem] Modal no encontrado: ${modalId}`)
       return
     }
-
 
     modal.classList.remove('program-detail-modal--active')
     document.body.style.overflow = ''
@@ -268,7 +265,6 @@ class ModalSystem {
    * Limpiar sistema de modales
    */
   destroy() {
-
     // Cerrar todos los modales
     this.closeAllModals()
 

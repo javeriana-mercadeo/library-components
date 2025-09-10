@@ -1,9 +1,8 @@
 import '@/styles/vendors/_tailwind.css'
 import '@/styles/global.scss'
-
 //import '@/styles/liferayStyles.css'
-
 import { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 
 import ThemeSwitch from '../components/themeSwitch/theme-switch'
 import BtnReturn from '../components/btnReturn/btnReturn'
@@ -38,12 +37,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* <!-- Flowbite CSS --> */}
         <link href='https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css' rel='stylesheet' />
         <link href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' rel='stylesheet' />
-        <link href='http://127.0.0.1:5500/build/form-modules-style.css' rel='stylesheet' />
 
         <link href='https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css' rel='stylesheet' type='text/css' />
         <link href='https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css' rel='stylesheet' type='text/css' />
-
-        {/* <link rel="stylesheet" href="https://www.javeriana.edu.co/recursosdb/d/info-prg/form-modules-style" /> */}
         {/* Utilidades globales - DEBE CARGARSE PRIMERO */}
         <title>Librería de componentes</title>
       </head>
@@ -67,22 +63,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               .forEach((link) => link.remove());
           }
         </script> */}
-
         {/* <!-- Swiper JS --> */}
-        <script src='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js' />
+        <Script src='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js' strategy='afterInteractive' />
 
         {/* <!-- Tailwind css --> */}
-        {/* <script src="https://www.javeriana.edu.co/planestudio/pages/libraries/tailwindcss/tailwindcss.js"></script> */}
+        {/* <Script src="https://www.javeriana.edu.co/planestudio/pages/libraries/tailwindcss/tailwindcss.js" strategy="afterInteractive" /> */}
 
         {/* <!-- Flowbite --> */}
-        <script src='https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js' />
+        <Script src='https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js' strategy='afterInteractive' />
 
         {/* <!-- DataTables --> */}
-        <script src='https://www.javeriana.edu.co/planestudio/pages/libraries/simple_datatables/simple-datatables.js' />
-
-        {/* Form-modules */}
-        {/* <script src="https://www.javeriana.edu.co/recursosdb/d/info-prg/form-modules-script"></script> */}
-        <script src='http://127.0.0.1:5500/build/form-modules-script.js' />
+        {/* <Script
+          src='https://www.javeriana.edu.co/planestudio/pages/libraries/simple_datatables/simple-datatables.js'
+          strategy='afterInteractive'
+        /> */}
       </body>
     </html>
   )

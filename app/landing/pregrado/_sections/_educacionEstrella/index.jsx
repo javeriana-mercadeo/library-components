@@ -9,7 +9,7 @@ const EducacionEstrella = () => {
 
   // CONTENIDO ENRIQUECIDO PARA EDUCACIÓN ESTRELLA
   const richContent = {
-    title: "Financia tu matrícula desde tasa 0 y a largo plazo",
+    title: 'Financia tu matrícula desde tasa 0 y a largo plazo',
     subtitle: `
       <p>Con <strong>Educación Estrella®</strong> y la Javeriana, accede a <em>'Línea Estrella Cero'</em> o <em>'Línea Estrella Plus'</em> para financiar tu pregrado.</p>
     `,
@@ -64,72 +64,62 @@ const EducacionEstrella = () => {
       
       <cite>*Educación Estrella® es una marca registrada. Consulta términos y condiciones específicos.</cite>
     `,
-    buttonText: "Solicitar financiamiento",
-    buttonLink: "https://www.educacionestrella.com/javeriana"
+    buttonText: 'Solicitar financiamiento',
+    buttonLink: 'https://www.educacionestrella.com/javeriana'
   }
 
   return (
-    <section className="educacion-estrella" data-section={elementName}>
-      <Container className="educacion-estrella__container">
+    <section className='educacion-estrella' data-section={elementName}>
+      <Container className='educacion-estrella__container'>
         {/* Título principal centrado */}
-        <Title 
-          level="h2"
-          size="2xl"
-          weight="semibold"
-          align="center"
-          className="educacion-estrella__main-title"
-        >
+        <Title level='h2' size='2xl' weight='semibold' align='center' className='educacion-estrella__main-title'>
           {richContent.title}
         </Title>
 
-        <div className="educacion-estrella__content-wrapper">
-          
+        <div className='educacion-estrella__content-wrapper'>
           {/* Text Container con contenido enriquecido */}
-          <div className="educacion-estrella__text-container">
-            
+          <div className='educacion-estrella__text-container'>
             {/* Subtítulo con texto enriquecido */}
-            <div 
-              className="educacion-estrella__subtitle educacion-estrella-rich-content"
+            <div
+              className='educacion-estrella__subtitle educacion-estrella-rich-content'
               data-raw-content={richContent.subtitle}
-              dangerouslySetInnerHTML={{__html: richContent.subtitle}}
+              dangerouslySetInnerHTML={{ __html: richContent.subtitle }}
             />
 
             {/* Beneficios y contenido enriquecido principal */}
-            <div 
-              className="educacion-estrella__benefits educacion-estrella-rich-content"
+            <div
+              className='educacion-estrella__benefits educacion-estrella-rich-content'
               data-raw-content={richContent.benefits}
-              dangerouslySetInnerHTML={{__html: richContent.benefits}}
+              dangerouslySetInnerHTML={{ __html: richContent.benefits }}
             />
 
             {/* CTA Button */}
-            <div className="educacion-estrella__cta">
-              <Button 
-                variant="solid" 
-                className="educacion-estrella__cta-button"
+            <div className='educacion-estrella__cta'>
+              <Button
+                variant='solid'
+                className='educacion-estrella__cta-button'
                 href={richContent.buttonLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+                target='_blank'
+                rel='noopener noreferrer'>
                 {richContent.buttonText}
               </Button>
             </div>
           </div>
 
           {/* Media Container - Logo */}
-          <div className="educacion-estrella__media-container">
-            <div className="educacion-estrella__logo-container">
-              <Image 
-                src="https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-ee-r"
-                alt="Educación Estrella - Financiamiento estudiantil"
-                className="educacion-estrella__logo"
+          <div className='educacion-estrella__media-container'>
+            <div className='educacion-estrella__logo-container'>
+              <Image
+                src='https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-ee-r'
+                alt='Educación Estrella - Financiamiento estudiantil'
+                className='educacion-estrella__logo'
               />
             </div>
           </div>
-
         </div>
       </Container>
     </section>
-  );
+  )
 }
 
 export default EducacionEstrella
