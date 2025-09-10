@@ -1336,7 +1336,7 @@ const initializeSwiper = () => {
       // CONFIGURACION BASICA - PATRÓN RELACIONADOS
       // ==========================================
       loop: false,
-      spaceBetween: 25,
+      spaceBetween: 25, // Base para móviles, breakpoints específicos tienen prioridad
       grabCursor: true,
       allowTouchMove: true,
       slidesPerView: 'auto',
@@ -1367,12 +1367,12 @@ const initializeSwiper = () => {
           slidesPerView: Math.min(1, totalSlides)
         },
         768: {
-          spaceBetween: 25,
+          spaceBetween: 0, // CSS ya maneja el espaciado con margin-right para evitar overflow
           centeredSlides: false,
           slidesPerView: Math.min(2, totalSlides)
         },
         1024: {
-          spaceBetween: 25,
+          spaceBetween: 0, // CSS maneja el espaciado en desktop también
           centeredSlides: false,
           slidesPerView: Math.min(2, totalSlides)
         }

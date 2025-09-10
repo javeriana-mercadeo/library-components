@@ -184,7 +184,7 @@ $nav-button-size-mobile: rem(40px);
     }
 
     @include responsive($breakpoint-md) {
-      padding: rem(20px) rem(30px);
+      padding: rem(20px) rem(25px); // Consistente con el wrapper
     }
 
     @include responsive($breakpoint-sm) {
@@ -222,11 +222,11 @@ $nav-button-size-mobile: rem(40px);
     overflow: hidden;
     position: relative;
     
-    // PATRÓN EXPERIENCIA: Padding responsivo simple
+    // PATRÓN EXPERIENCIA: Padding responsivo optimizado para evitar overflow
     padding: rem(20px) rem(40px);
 
     @include responsive($breakpoint-md) {
-      padding: rem(20px) rem(30px);
+      padding: rem(20px) rem(25px); // Reducido de 30px a 25px para dar más espacio a los slides
     }
 
     @include responsive($breakpoint-sm) {
@@ -267,10 +267,10 @@ $nav-button-size-mobile: rem(40px);
         margin-right: 0;
       }
 
-      // TABLET: 2 slides visibles con ancho fijo
+      // TABLET: 2 slides visibles con ancho optimizado para evitar overflow
       @include responsive($breakpoint-md) {
-        width: rem(320px) !important;
-        margin-right: rem(25px);
+        width: rem(300px) !important;
+        margin-right: rem(20px);
       }
 
       // DESKTOP: 2 slides exactos con swiper nativo
