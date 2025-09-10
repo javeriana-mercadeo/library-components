@@ -1,5 +1,31 @@
 <!--$-->
 <#-- ======================================== -->
+<#-- FUNCIÓN PARA TRUNCAR PALABRAS -->
+<#-- ======================================== -->
+<#function truncateWords text maxWords>
+  <#if !text?has_content>
+    <#return "">
+  </#if>
+  <#-- Remover HTML tags para contar palabras correctamente -->
+  <#assign cleanText = text?replace("<[^>]+>", "", "r")?replace("&nbsp;", " ", "r")?trim>
+  <#if !cleanText?has_content>
+    <#return text>
+  </#if>
+  <#assign words = cleanText?split(" ")>
+  <#if words?size <= maxWords>
+    <#return text>
+  </#if>
+  <#-- Truncar y agregar puntos suspensivos -->
+  <#assign truncated = "">
+  <#list 0..maxWords-1 as i>
+    <#if i < words?size>
+      <#assign truncated = truncated + words[i] + " ">
+    </#if>
+  </#list>
+  <#return truncated?trim + "...">
+</#function>
+
+<#-- ======================================== -->
 <#-- GENERAR ARRAY ORDENADO POR AÑO -->
 <#-- ======================================== -->
 <#assign sortedInvestigations = []>
@@ -148,7 +174,7 @@
                       <#if (cur_grad_investigationGroup.grad_investigationTitle.getData())??>${cur_grad_investigationGroup.grad_investigationTitle.getData()}</#if>
                     </h3>
                     <div class="paragraph paragraph-neutral paragraph-md investigations_description">
-                      <#if (cur_grad_investigationGroup.grad_investigationDesc.getData())??>${cur_grad_investigationGroup.grad_investigationDesc.getData()}</#if>
+                      <#if (cur_grad_investigationGroup.grad_investigationDesc.getData())??>${truncateWords(cur_grad_investigationGroup.grad_investigationDesc.getData(), 22)}</#if>
                       <span><i class="ph ph-arrow-square-in"></i></span>
                     </div>
                   </div>
@@ -202,7 +228,7 @@
                     <#if (cur_grad_investigationGroup.grad_investigationTitle.getData())??>${cur_grad_investigationGroup.grad_investigationTitle.getData()}</#if>
                   </h3>
                   <div class="paragraph paragraph-neutral paragraph-md investigations_description">
-                    <#if (cur_grad_investigationGroup.grad_investigationDesc.getData())??>${cur_grad_investigationGroup.grad_investigationDesc.getData()}</#if>
+                    <#if (cur_grad_investigationGroup.grad_investigationDesc.getData())??>${truncateWords(cur_grad_investigationGroup.grad_investigationDesc.getData(), 18)}</#if>
                     <span><i class="ph ph-arrow-square-in"></i></span>
                   </div>
                 </div>

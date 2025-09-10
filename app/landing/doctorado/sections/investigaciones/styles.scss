@@ -47,6 +47,33 @@ $investigations-transition: all 0.3s ease;
 $investigations-badge-border-radius: rem(24px);
 $investigations-badge-padding: var(--spacing-xs) var(--spacing-md);
 
+// ==========================================
+// TRUNCAMIENTO DE TEXTO EN DESCRIPCIONES
+// ==========================================
+.investigations_description {
+  // Altura mínima para mantener consistencia visual
+  min-height: rem(60px); // Aproximadamente 3 líneas
+  line-height: 1.5;
+  
+  // Fallback CSS para navegadores que no soporten truncamiento FTL
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  // Card principal - más espacio para descripción
+  .investigations_card--main & {
+    min-height: rem(72px); // Aproximadamente 3-4 líneas
+    -webkit-line-clamp: 4;
+  }
+  
+  // Cards secundarias - menos espacio
+  .investigations_card--secondary & {
+    min-height: rem(54px); // Aproximadamente 2-3 líneas  
+    -webkit-line-clamp: 3;
+  }
+}
+
 // Navegación
 $nav-button-size: rem(50px);
 $nav-button-size-mobile: rem(40px);

@@ -551,7 +551,17 @@ const ModalInvestigacion = {
 
     // Obtener configuración de video usando el nuevo sistema híbrido
     const investigacionId = investigationData?.id
-    const videoConfig = investigacionId ? this.getVideoConfig(investigacionId) : null
+    let videoConfig = investigacionId ? this.getVideoConfig(investigacionId) : null
+    
+    // FALLBACK: Si no hay video desde HTML, buscar en JSON data
+    if (!videoConfig && investigationData?.videoEmbedId) {
+      videoConfig = {
+        embedId: investigationData.videoEmbedId,
+        url: `https://youtu.be/${investigationData.videoEmbedId}`
+      }
+      this.log(`🎥 Video encontrado en JSON data: ${investigationData.videoEmbedId}`)
+    }
+    
     const hasVideo = videoConfig !== null
 
     if (hasVideo) {
