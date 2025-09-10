@@ -147,10 +147,10 @@
                     <h3 class="title title-lg title-semibold investigations_title">
                       <#if (cur_grad_investigationGroup.grad_investigationTitle.getData())??>${cur_grad_investigationGroup.grad_investigationTitle.getData()}</#if>
                     </h3>
-                    <p class="paragraph paragraph-neutral paragraph-md investigations_description">
+                    <div class="paragraph paragraph-neutral paragraph-md investigations_description">
                       <#if (cur_grad_investigationGroup.grad_investigationDesc.getData())??>${cur_grad_investigationGroup.grad_investigationDesc.getData()}</#if>
                       <span><i class="ph ph-arrow-square-in"></i></span>
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -201,10 +201,10 @@
                   <h3 class="title title-md title-semibold investigations_title">
                     <#if (cur_grad_investigationGroup.grad_investigationTitle.getData())??>${cur_grad_investigationGroup.grad_investigationTitle.getData()}</#if>
                   </h3>
-                  <p class="paragraph paragraph-neutral paragraph-md investigations_description">
+                  <div class="paragraph paragraph-neutral paragraph-md investigations_description">
                     <#if (cur_grad_investigationGroup.grad_investigationDesc.getData())??>${cur_grad_investigationGroup.grad_investigationDesc.getData()}</#if>
                     <span><i class="ph ph-arrow-square-in"></i></span>
-                  </p>
+                  </div>
                 </div>
               </div>
             </div>
