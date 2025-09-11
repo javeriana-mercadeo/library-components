@@ -1,3 +1,6 @@
+// ==================================================================================
+// INICIO DE: landing\doctorado\sections\investigaciones\components\modalInvestigacion.js
+// ==================================================================================
 // ===========================================
 // MODAL INVESTIGACIONES - SISTEMA COMPLETAMENTE NUEVO
 // ===========================================
@@ -7,29 +10,35 @@ const ModalInvestigacion = {
   modalHTML: null,
   modalSwiper: null, // Instancia de Swiper para desktop
   modalSwiperMobile: null, // Instancia de Swiper para mobile
-  
+
   // ==========================================
   // SISTEMA DE LOGS CONTROLABLE
   // ==========================================
-  DEBUG: true, // Cambiar a true para habilitar logs detallados - ACTIVADO PARA TESTING
-  
+  DEBUG: false, // Logs de desarrollo
+  SILENT: false, // true = NO logs en absoluto (ni siquiera errores críticos)
+
   log(message, ...args) {
-    if (this.DEBUG) {
+    if (this.DEBUG && !this.SILENT) {
       console.log(`[MODAL-INVESTIGACION] ${message}`, ...args)
     }
   },
-  
+
   warn(message, ...args) {
-    console.warn(`[MODAL-INVESTIGACION] ${message}`, ...args)
+    if (!this.SILENT) {
+      console.warn(`[MODAL-INVESTIGACION] ${message}`, ...args)
+    }
   },
-  
+
   error(message, ...args) {
-    console.error(`[MODAL-INVESTIGACION] ${message}`, ...args)
+    if (!this.SILENT) {
+      console.error(`[MODAL-INVESTIGACION] ❌ ${message}`, ...args)
+    }
   },
-  
+
   info(message, ...args) {
-    // Logs importantes siempre se muestran
-    console.log(`[MODAL-INVESTIGACION] ✓ ${message}`, ...args)
+    if (!this.SILENT) {
+      console.log(`[MODAL-INVESTIGACION] ✓ ${message}`, ...args)
+    }
   },
 
   // Función helper para generar HTML del botón iconOnly siguiendo el patrón del sistema Btn
@@ -271,7 +280,7 @@ const ModalInvestigacion = {
     try {
       // Obtener el ID de la card desde el data-attribute
       const cardId = card.getAttribute('data-id')
-      console.log('[MODAL-INVESTIGACION] 🔍 Card clickeada, data-id encontrado:', cardId)
+      // console.log('[MODAL-INVESTIGACION] 🔍 Card clickeada, data-id encontrado:', cardId)
 
       if (!cardId) {
         console.warn('[MODAL-INVESTIGACION] ❌ Card sin data-id, usando fallback')
@@ -279,15 +288,15 @@ const ModalInvestigacion = {
       }
 
       // Debug de datos disponibles
-      console.log('[MODAL-INVESTIGACION] 🔍 window.investigacionesData:', window.investigacionesData ? window.investigacionesData.length : 'NO EXISTE')
-      console.log('[MODAL-INVESTIGACION] 🔍 window.investigacionesDataComplete:', window.investigacionesDataComplete ? window.investigacionesDataComplete.length : 'NO EXISTE')
+      // console.log('[MODAL-INVESTIGACION] 🔍 window.investigacionesData:', window.investigacionesData ? window.investigacionesData.length : 'NO EXISTE')
+      // console.log('[MODAL-INVESTIGACION] 🔍 window.investigacionesDataComplete:', window.investigacionesDataComplete ? window.investigacionesDataComplete.length : 'NO EXISTE')
 
       // Buscar los datos completos desde window (React)
       const fullData = this.getInvestigacionData(parseInt(cardId))
 
       if (!fullData) {
         this.warn('❌ No se encontraron datos para ID:', cardId)
-        console.log('[MODAL-INVESTIGACION] 🔍 IDs disponibles en datos completos:', window.investigacionesDataComplete ? window.investigacionesDataComplete.map(i => i.id) : 'NINGUNO')
+        // console.log('[MODAL-INVESTIGACION] 🔍 IDs disponibles en datos completos:', window.investigacionesDataComplete ? window.investigacionesDataComplete.map(i => i.id) : 'NINGUNO')
         return this.handleCardClickFallback(card)
       }
 
@@ -334,7 +343,7 @@ const ModalInvestigacion = {
         return completeData
       }
     }
-    
+
     // FALLBACK A DATOS FILTRADOS
     if (!window.investigacionesData) {
       this.warn('Datos no disponibles en window')
@@ -386,7 +395,7 @@ const ModalInvestigacion = {
         // PAUSAR TODOS LOS VIDEOS ANTES DE CERRAR EL MODAL
         this.info('🚪 CERRANDO MODAL - pausando videos...')
         this.pauseAllVideos()
-        
+
         // PATRÓN EXACTO DEL HEADER: quitar 'active' inmediatamente para comenzar animación de salida
         modal.classList.remove('active')
 
@@ -474,7 +483,7 @@ const ModalInvestigacion = {
 
     // Generar todos los elementos multimedia
     const allMediaItems = this.generateAdditionalMedia(data.image, data.title, data)
-    
+
     allMediaItems.forEach((mediaItem, index) => {
       const mediaElement = this.generateMediaElement(mediaItem, index, true) // true = desktop por defecto
       container.appendChild(mediaElement)
@@ -488,7 +497,7 @@ const ModalInvestigacion = {
   // ==========================================
   getVideoConfigs() {
     return {
-      1: { 
+      1: {
         enabled: true,
         position: 'first'
         // embedId se obtiene del template
@@ -506,24 +515,24 @@ const ModalInvestigacion = {
   // OBTENER CONFIGURACIÓN DE VIDEO PARA UNA INVESTIGACIÓN
   // ==========================================
   getVideoConfig(investigacionId) {
-    const videoConfigs = this.getVideoConfigs()
-    const baseConfig = videoConfigs[investigacionId]
-    
-    if (!baseConfig) {
-      return null
-    }
-    
-    // Obtener embedId desde atributo del elemento
+    // Primero intentar obtener embedId desde atributo del elemento
     const card = document.querySelector(`[data-id="${investigacionId}"]`)
     const embedId = card?.getAttribute('data-video-embed-id')
-    
+
     if (!embedId) {
       this.log(`No embedId encontrado para investigación ${investigacionId}`)
       return null
     }
-    
+
+    // Obtener configuración hardcodeada (si existe)
+    const videoConfigs = this.getVideoConfigs()
+    const baseConfig = videoConfigs[investigacionId]
+
+    // Si hay embedId, siempre habilitar video (con config por defecto si no hay hardcodeada)
     return {
-      ...baseConfig,
+      enabled: true,
+      position: 'first',
+      ...(baseConfig || {}), // Aplicar config hardcodeada si existe
       embedId,
       url: `https://youtu.be/${embedId}`
     }
@@ -531,16 +540,16 @@ const ModalInvestigacion = {
 
   generateAdditionalMedia(baseImage, title, investigationData = null) {
     const mediaItems = []
-    
+
     // ==========================================
     // CONFIGURACIÓN HÍBRIDA DE VIDEO
     // ==========================================
-    
+
     // Obtener configuración de video usando el nuevo sistema híbrido
     const investigacionId = investigationData?.id
     const videoConfig = investigacionId ? this.getVideoConfig(investigacionId) : null
     const hasVideo = videoConfig !== null
-    
+
     if (hasVideo) {
       const videoItem = {
         type: 'video',
@@ -549,7 +558,7 @@ const ModalInvestigacion = {
         alt: `${title} - Video presentación`,
         thumbnail: baseImage || `https://img.youtube.com/vi/${videoConfig.embedId}/maxresdefault.jpg`
       }
-      
+
       // Insertar video según la posición configurada
       if (videoConfig.position === 'first' || !videoConfig.position) {
         // Video como primer slide (por defecto)
@@ -557,27 +566,27 @@ const ModalInvestigacion = {
       }
       // Nota: 'last' y posiciones numéricas se pueden agregar después si se necesitan
     }
-    
+
     // ==========================================
     // USAR SOLO IMÁGENES REALES DEL CMS
     // ==========================================
-    
+
     // Agregar imagen principal (siempre debe existir)
     if (baseImage) {
       mediaItems.push({
-        type: 'image', 
-        src: baseImage, 
+        type: 'image',
+        src: baseImage,
         alt: title
       })
     } else {
       // Fallback solo si no hay imagen principal
       mediaItems.push({
-        type: 'image', 
-        src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1', 
+        type: 'image',
+        src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1',
         alt: title
       })
     }
-    
+
     // ==========================================
     // IMÁGENES ADICIONALES DEL CMS (FUTURO)
     // ==========================================
@@ -593,10 +602,10 @@ const ModalInvestigacion = {
     //     })
     //   })
     // }
-    
-    this.log('Media generada (solo imágenes reales):', { 
-      hasVideo: !!hasVideo, 
-      totalItems: mediaItems.length, 
+
+    this.log('Media generada (solo imágenes reales):', {
+      hasVideo: !!hasVideo,
+      totalItems: mediaItems.length,
       videoPosition: hasVideo ? videoConfig.position : 'none',
       investigationId: investigationData ? investigationData.id : 'unknown'
     })
@@ -618,7 +627,7 @@ const ModalInvestigacion = {
   generateVideoElement(videoItem, index, isDesktop) {
     const containerClass = isDesktop ? 'investigations-modal__video-wrapper' : 'investigations-modal__video-wrapper-mobile'
     const videoClass = isDesktop ? 'investigations-modal__video' : 'investigations-modal__video-mobile'
-    
+
     // YouTube embed iframe con parámetros correctos para API
     const iframe = document.createElement('iframe')
     const params = new URLSearchParams({
@@ -631,7 +640,7 @@ const ModalInvestigacion = {
       enablejsapi: '1', // ¡CRÍTICO! Habilita YouTube API
       rel: '0'
     })
-    
+
     iframe.src = `https://www.youtube.com/embed/${videoItem.embedId}?${params.toString()}`
     iframe.className = videoClass
     iframe.setAttribute('frameborder', '0')
@@ -639,50 +648,50 @@ const ModalInvestigacion = {
     iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture')
     iframe.loading = index === 0 ? 'eager' : 'lazy'
     iframe.title = videoItem.alt
-    
+
     // ✅ SISTEMA DE CARGA COMO PREGRADO
     iframe.style.opacity = '0'
     iframe.style.transition = 'opacity 0.5s ease'
-    
+
     // Marcar como cargado cuando el iframe esté listo
     iframe.addEventListener('load', () => {
       iframe.style.opacity = '1'
       iframe.classList.add('loaded')
       wrapper.classList.add('video-loaded')
     })
-    
+
     iframe.addEventListener('error', () => {
       this.warn('Error cargando video:', videoItem.embedId)
     })
-    
+
     // Log para debug
     this.log(`🎬 Video iframe creado: ${videoItem.embedId}`, {
       src: iframe.src,
       class: videoClass,
       container: containerClass
     })
-    
+
     const wrapper = document.createElement('div')
     wrapper.className = containerClass
     wrapper.appendChild(iframe)
-    
+
     return wrapper
   },
 
   generateImageElement(imageItem, index, isDesktop) {
     const containerClass = isDesktop ? 'investigations-modal__image-wrapper' : 'investigations-modal__image-wrapper-mobile'
     const imageClass = isDesktop ? 'investigations-modal__image' : 'investigations-modal__image-mobile'
-    
+
     const image = document.createElement('img')
     image.src = imageItem.src
     image.alt = imageItem.alt
     image.className = imageClass
     image.loading = index === 0 ? 'eager' : 'lazy'
-    
+
     const wrapper = document.createElement('div')
     wrapper.className = containerClass
     wrapper.appendChild(image)
-    
+
     return wrapper
   },
 
@@ -809,7 +818,7 @@ const ModalInvestigacion = {
     allMediaItems.forEach((mediaItem, index) => {
       const slide = document.createElement('div')
       slide.className = 'swiper-slide investigations-modal__slide-mobile'
-      
+
       // Generar elemento multimedia (imagen o video)
       const mediaElement = this.generateMediaElement(mediaItem, index, false) // false = mobile
       slide.appendChild(mediaElement)
@@ -860,7 +869,7 @@ const ModalInvestigacion = {
         slidesPerView: 1, // ✅ CLAVE: Iniciar con 1, NO 'auto'
         watchOverflow: true,
         centeredSlides: false,
-        
+
         pagination: {
           el: '.investigations-modal__pagination-mobile',
           clickable: true,
@@ -891,16 +900,16 @@ const ModalInvestigacion = {
             centeredSlides: false
           }
         },
-        
+
         on: {
-          init: function(swiper) {
+          init: function (swiper) {
             ModalInvestigacion.log('Mobile Swiper inicializado con', swiper.slides.length, 'slides')
             // Configurar eventos para botones personalizados móviles
             ModalInvestigacion.setupCustomNavigationMobile(swiper)
             // ✅ CONFIGURAR SISTEMA VIDEO-CLICK-DETECTOR
             ModalInvestigacion.setupVideoClickDetection()
           },
-          slideChange: function(swiper) {
+          slideChange: function (swiper) {
             ModalInvestigacion.info('📱 MOBILE slide cambiado a:', swiper.activeIndex + 1)
             // PAUSAR TODOS LOS VIDEOS AL CAMBIAR DE SLIDE EN MÓVIL
             ModalInvestigacion.pauseAllVideos()
@@ -932,14 +941,14 @@ const ModalInvestigacion = {
       })
 
       // Soporte de teclado
-      prevButton.addEventListener('keydown', (e) => {
+      prevButton.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           swiper.slidePrev()
         }
       })
 
-      nextButton.addEventListener('keydown', (e) => {
+      nextButton.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           swiper.slideNext()
@@ -948,7 +957,7 @@ const ModalInvestigacion = {
 
       // Actualizar estados iniciales
       this.updateCustomNavigationMobile(swiper)
-      
+
       // Escuchar cambios de slide para actualizar estados
       swiper.on('slideChange', () => {
         this.updateCustomNavigationMobile(swiper)
@@ -1008,14 +1017,14 @@ const ModalInvestigacion = {
       })
 
       // Soporte de teclado
-      prevButton.addEventListener('keydown', (e) => {
+      prevButton.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           swiper.slidePrev()
         }
       })
 
-      nextButton.addEventListener('keydown', (e) => {
+      nextButton.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           swiper.slideNext()
@@ -1024,7 +1033,7 @@ const ModalInvestigacion = {
 
       // Actualizar estados iniciales
       this.updateCustomNavigation(swiper)
-      
+
       // Escuchar cambios de slide para actualizar estados
       swiper.on('slideChange', () => {
         this.updateCustomNavigation(swiper)
@@ -1145,20 +1154,20 @@ const ModalInvestigacion = {
   // ==========================================
   // SISTEMA VIDEO-CLICK-DETECTOR (COPIADO DE PREGRADO)
   // ==========================================
-  
+
   setupVideoClickDetection() {
     // Solo configurar en móviles
     if (window.innerWidth >= 1024) return
-    
+
     const videoContainers = document.querySelectorAll('.investigations-modal__video-wrapper-mobile')
-    
+
     videoContainers.forEach((container, i) => {
       const iframe = container.querySelector('iframe')
-      
+
       if (!iframe || container.querySelector('.video-click-detector')) {
         return // Saltar si no hay iframe o ya tiene detector
       }
-      
+
       // Crear overlay invisible para detectar clics (PATRÓN EXACTO DE PREGRADO)
       const overlay = document.createElement('div')
       overlay.className = 'video-click-detector'
@@ -1171,44 +1180,44 @@ const ModalInvestigacion = {
       overlay.style.cursor = 'pointer'
       overlay.style.backgroundColor = 'transparent'
       overlay.style.pointerEvents = 'auto'
-      
+
       // Agregar data attribute para identificar el iframe
       overlay.setAttribute('data-iframe-id', 'iframe-' + i)
       iframe.setAttribute('data-iframe-id', 'iframe-' + i)
-      
-      overlay.addEventListener('click', function(e) {
+
+      overlay.addEventListener('click', function (e) {
         const currentIframe = this.parentNode.querySelector('iframe')
-        
+
         // Pausar todos los otros videos excepto este
         ModalInvestigacion.pauseAllVideos(currentIframe)
-        
+
         // Remover el overlay temporalmente para permitir interacción (CLAVE DE PREGRADO)
         this.style.pointerEvents = 'none'
         this.style.display = 'none'
-        
+
         // Volver a activar el overlay después de un tiempo
         const self = this
-        setTimeout(function() {
+        setTimeout(function () {
           self.style.pointerEvents = 'auto'
           self.style.display = 'block'
         }, 2000) // 2 segundos para que el usuario pueda interactuar
       })
-      
+
       container.style.position = 'relative'
       container.appendChild(overlay)
     })
-    
+
     this.log('Sistema video-click-detector configurado (patrón pregrado)')
   },
-  
+
   // ==========================================
   // SISTEMA DE CONTROL DE VIDEOS
   // ==========================================
-  
+
   // Función para pausar todos los videos del modal (adaptada de experiencia)
   pauseAllVideos(exceptIframe = null) {
     this.info('🎵 INICIANDO pauseAllVideos...')
-    
+
     // Buscar todos los iframes de video en el modal
     const videoSelectors = [
       '.investigations-modal__video-wrapper iframe',
@@ -1216,23 +1225,23 @@ const ModalInvestigacion = {
       '.investigations-modal__video iframe',
       '.investigations-modal__video-mobile iframe'
     ]
-    
+
     let totalVideosFound = 0
     let totalVideosPaused = 0
-    
+
     videoSelectors.forEach((selector, index) => {
       const videos = document.querySelectorAll(selector)
       this.log(`Selector ${index + 1}: "${selector}" - Encontrados: ${videos.length}`)
-      
+
       videos.forEach((iframe, videoIndex) => {
         totalVideosFound++
-        
+
         // Saltar el iframe que se está reproduciendo (si se especifica)
         if (exceptIframe && iframe === exceptIframe) {
           this.log(`Video ${videoIndex + 1} omitido (es la excepción)`)
           return
         }
-        
+
         try {
           // Usar YouTube API para pausar el video
           iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
@@ -1243,9 +1252,9 @@ const ModalInvestigacion = {
         }
       })
     })
-    
+
     this.info(`🎵 RESUMEN: ${totalVideosFound} videos encontrados, ${totalVideosPaused} pausados`)
-    
+
     if (totalVideosFound === 0) {
       this.warn('⚠️ NO se encontraron videos en el modal!')
     }
@@ -1259,11 +1268,396 @@ const ModalInvestigacion = {
         modal.remove()
       }
       this.isInitialized = false
-      console.log('[MODAL-INVESTIGACION] Cleanup completado')
+      // console.log('[MODAL-INVESTIGACION] Cleanup completado')
     } catch (error) {
       this.error('Error en cleanup:', error)
     }
   }
 }
-
+//
+//
 export { ModalInvestigacion }
+// ==================================================================================
+// FINAL DE: landing\doctorado\sections\investigaciones\components\modalInvestigacion.js
+// ==================================================================================
+
+// Importar módulos separados
+export default () => {
+  // ==========================================
+  // INICIALIZAR SWIPER
+  // ==========================================
+  const initializeSwiper = () => {
+    // Destruir instancia existente si existe
+    if (window.investigationsSwiper) {
+      window.investigationsSwiper.destroy(true, true)
+      window.investigationsSwiper = null
+    }
+
+    // Buscar el elemento con selector primario y fallback
+    const element = document.querySelector('.investigations_wrapper.investigations-swiper')
+    if (!element) {
+      console.warn('Elemento .investigations_wrapper.investigations-swiper no encontrado')
+      const fallbackElement = document.querySelector('.investigations-swiper')
+      if (!fallbackElement) {
+        console.error('Ningún elemento swiper encontrado')
+        return
+      }
+    }
+
+    // Contar slides
+    const slides = document.querySelectorAll('.investigations_slide')
+    const totalSlides = slides.length
+
+    if (!window.Swiper) {
+      console.error('Swiper no está disponible')
+      return
+    }
+
+    // Usar el selector correcto
+    const swiperSelector = element ? '.investigations_wrapper.investigations-swiper' : '.investigations-swiper'
+
+    try {
+      window.investigationsSwiper = new window.Swiper(swiperSelector, {
+        // ==========================================
+        // CONFIGURACION BASICA - PATRÓN RELACIONADOS
+        // ==========================================
+        loop: false,
+        spaceBetween: 25, // Base para móviles, breakpoints específicos tienen prioridad
+        grabCursor: true,
+        allowTouchMove: true,
+        slidesPerView: 'auto',
+        watchOverflow: true,
+
+        // ==========================================
+        // NAVEGACION
+        // ==========================================
+        navigation: {
+          nextEl: '.investigations_next',
+          prevEl: '.investigations_prev',
+          disabledClass: 'swiper-button-disabled',
+          hiddenClass: 'swiper-button-hidden'
+        },
+
+        // ==========================================
+        // BREAKPOINTS RESPONSIVOS - PATRÓN RELACIONADOS NATIVO
+        // ==========================================
+        breakpoints: {
+          0: {
+            spaceBetween: 20,
+            slidesPerView: Math.min(1, totalSlides),
+            centeredSlides: true
+          },
+          576: {
+            spaceBetween: 20,
+            centeredSlides: false,
+            slidesPerView: Math.min(1, totalSlides)
+          },
+          768: {
+            spaceBetween: 0, // CSS ya maneja el espaciado con margin-right para evitar overflow
+            centeredSlides: false,
+            slidesPerView: Math.min(2, totalSlides)
+          },
+          1024: {
+            spaceBetween: 0, // CSS maneja el espaciado en desktop también
+            centeredSlides: false,
+            slidesPerView: Math.min(2, totalSlides)
+          }
+        },
+
+        // ==========================================
+        // EVENTOS
+        // ==========================================
+        on: {
+          init: function (swiper) {
+            log('Swiper inicializado con', totalSlides, 'slides')
+            updateNavigationVisibility(swiper, totalSlides)
+            updateButtonStates(swiper)
+
+            // Sincronizar alturas después de inicialización
+            setTimeout(() => {
+              syncCardHeights()
+            }, 100)
+          },
+
+          update: function (swiper) {
+            updateNavigationVisibility(swiper, totalSlides)
+            updateButtonStates(swiper)
+          },
+
+          resize: function (swiper) {
+            setTimeout(() => {
+              updateNavigationVisibility(swiper, totalSlides)
+              updateButtonStates(swiper)
+              syncCardHeights()
+            }, 100)
+          },
+
+          slideChange: function (swiper) {
+            updateButtonStates(swiper)
+          }
+        }
+      })
+
+      // Configurar resize handler
+      window.addEventListener('resize', handleResize)
+    } catch (error) {
+      error('Error inicializando Swiper:', error)
+    }
+  }
+
+  // ==========================================
+  // FUNCIONES DE CONTROL DE NAVEGACION
+  // ==========================================
+  const updateNavigationVisibility = (swiper, totalSlides) => {
+    const nextBtn = document.querySelector('.investigations_next')
+    const prevBtn = document.querySelector('.investigations_prev')
+
+    if (!nextBtn || !prevBtn) {
+      warn('Botones de navegacion no encontrados')
+      return
+    }
+
+    // Mostrar navegacion si hay mas de 1 slide
+    const needsNavigation = totalSlides > 1
+
+    if (needsNavigation) {
+      nextBtn.style.display = 'flex'
+      nextBtn.classList.remove('swiper-button-hidden')
+      nextBtn.setAttribute('aria-hidden', 'false')
+
+      prevBtn.style.display = 'flex'
+      prevBtn.classList.remove('swiper-button-hidden')
+      prevBtn.setAttribute('aria-hidden', 'false')
+
+      updateButtonStates(swiper)
+    } else {
+      nextBtn.style.display = 'none'
+      nextBtn.classList.add('swiper-button-hidden')
+      nextBtn.setAttribute('aria-hidden', 'true')
+
+      prevBtn.style.display = 'none'
+      prevBtn.classList.add('swiper-button-hidden')
+      prevBtn.setAttribute('aria-hidden', 'true')
+    }
+  }
+
+  const updateButtonStates = swiper => {
+    const nextBtn = document.querySelector('.investigations_next')
+    const prevBtn = document.querySelector('.investigations_prev')
+
+    if (!nextBtn || !prevBtn) return
+
+    // Estados del swiper
+    const isBeginning = swiper.isBeginning
+    const isEnd = swiper.isEnd
+
+    // Boton anterior
+    if (isBeginning) {
+      prevBtn.classList.add('swiper-button-disabled')
+      prevBtn.style.opacity = '0.3'
+      prevBtn.style.pointerEvents = 'none'
+      prevBtn.setAttribute('aria-disabled', 'true')
+    } else {
+      prevBtn.classList.remove('swiper-button-disabled')
+      prevBtn.style.opacity = '1'
+      prevBtn.style.pointerEvents = 'auto'
+      prevBtn.setAttribute('aria-disabled', 'false')
+    }
+
+    // Boton siguiente
+    if (isEnd) {
+      nextBtn.classList.add('swiper-button-disabled')
+      nextBtn.style.opacity = '0.3'
+      nextBtn.style.pointerEvents = 'none'
+      nextBtn.setAttribute('aria-disabled', 'true')
+    } else {
+      nextBtn.classList.remove('swiper-button-disabled')
+      nextBtn.style.opacity = '1'
+      nextBtn.style.pointerEvents = 'auto'
+      nextBtn.setAttribute('aria-disabled', 'false')
+    }
+  }
+
+  // ==========================================
+  // SINCRONIZAR ALTURAS DE CARDS
+  // ==========================================
+  const syncCardHeights = () => {
+    const mainCard = document.querySelector('.investigations_card--main')
+    const secondaryCards = document.querySelectorAll('.investigations_card--secondary')
+
+    if (mainCard && secondaryCards.length > 0) {
+      // Resetear alturas para obtener altura natural
+      mainCard.style.height = 'auto'
+      secondaryCards.forEach(card => (card.style.height = 'auto'))
+
+      // Obtener todas las alturas
+      const allCards = [mainCard, ...Array.from(secondaryCards)]
+      const heights = allCards.map(card => card.offsetHeight)
+      const maxHeight = Math.max(...heights)
+
+      // Aplicar la altura máxima a todas las cards
+      allCards.forEach(card => {
+        card.style.height = `${maxHeight}px`
+      })
+
+      log('Alturas sincronizadas:', maxHeight + 'px')
+    }
+  }
+
+  // ==========================================
+  // MANEJO DE RESIZE
+  // ==========================================
+  const handleResize = () => {
+    setTimeout(() => {
+      syncCardHeights()
+      if (window.investigationsSwiper && typeof window.investigationsSwiper.update === 'function') {
+        window.investigationsSwiper.update()
+      }
+    }, 250)
+  }
+
+  // ==========================================
+  // OBTENER DATOS DESDE DOM
+  // ==========================================
+  const getInvestigacionesData = () => {
+    console.log('[INVESTIGATIONS] 🔍 Buscando contenedor #investigaciones...')
+    const container = document.querySelector('#investigaciones')
+    console.log('[INVESTIGATIONS] 🔍 Contenedor encontrado:', !!container)
+
+    if (container) {
+      console.log('[INVESTIGATIONS] 🔍 Buscando atributo data-investigations-data...')
+      console.log(
+        '[INVESTIGATIONS] 🔍 Todos los atributos del contenedor:',
+        Array.from(container.attributes).map(attr => attr.name)
+      )
+      console.log('[INVESTIGATIONS] 🔍 HTML del contenedor:', container.outerHTML.substring(0, 200) + '...')
+      try {
+        const dataAttr = container.getAttribute('data-investigations-data')
+        console.log('[INVESTIGATIONS] 🔍 Atributo encontrado:', !!dataAttr, 'longitud:', dataAttr?.length)
+        if (dataAttr) {
+          const data = JSON.parse(dataAttr)
+          window.investigacionesData = data
+          console.log('[INVESTIGATIONS] ✅ Datos cargados:', data.length, 'investigaciones')
+
+          // AGREGAR DATOS COMPLETOS CON CONFIGURACIÓN DE VIDEO PARA EL MODAL
+          // Los datos en el atributo están filtrados, pero el modal necesita la config completa
+          window.investigacionesDataComplete = data.map(investigacion => {
+            // Restaurar configuración de video para investigaciones específicas
+            if (investigacion.id === 1) {
+              return {
+                ...investigacion,
+                video: {
+                  enabled: true,
+                  url: 'https://youtu.be/Y2KdypoCAYg',
+                  embedId: 'Y2KdypoCAYg',
+                  position: 'first'
+                }
+              }
+            } else if (investigacion.id === 3) {
+              return {
+                ...investigacion,
+                video: {
+                  enabled: true,
+                  url: 'https://youtu.be/pBbK6Tf5reE',
+                  embedId: 'pBbK6Tf5reE',
+                  position: 'first'
+                }
+              }
+            }
+            return investigacion
+          })
+
+          console.log('[INVESTIGATIONS] ✅ Datos completos generados:', window.investigacionesDataComplete.length)
+          console.log(
+            '[INVESTIGATIONS] ✅ Datos ID 1:',
+            window.investigacionesDataComplete.find(i => i.id === 1)
+          )
+          console.log(
+            '[INVESTIGATIONS] ✅ Datos ID 3:',
+            window.investigacionesDataComplete.find(i => i.id === 3)
+          )
+
+          return data
+        }
+      } catch (error) {
+        console.error('[INVESTIGATIONS] Error al parsear datos:', error)
+      }
+    } else {
+      console.error('[INVESTIGATIONS] ❌ NO se encontró contenedor #investigaciones')
+      console.log(
+        '[INVESTIGATIONS] 🔍 Elementos disponibles con id:',
+        Array.from(document.querySelectorAll('[id]')).map(el => el.id)
+      )
+    }
+    return []
+  }
+
+  // ==========================================
+  // INICIALIZAR MODAL
+  // ==========================================
+  const initModal = () => {
+    try {
+      console.log('[INVESTIGATIONS] 🔧 Iniciando modal - obteniendo datos...')
+      // Obtener datos para el modal
+      const datosObtenidos = getInvestigacionesData()
+      console.log('[INVESTIGATIONS] 🔧 Datos obtenidos:', datosObtenidos.length, 'investigaciones')
+
+      // Exponer ModalInvestigacion globalmente
+      window.ModalInvestigacion = ModalInvestigacion
+
+      // Inicializar el modal
+      setTimeout(() => {
+        const success = ModalInvestigacion.init()
+        if (success) {
+          info('Modal system inicializado correctamente')
+        }
+      }, 300)
+    } catch (error) {
+      error('Error al inicializar modal:', error)
+    }
+  }
+
+  // ==========================================
+  // SISTEMA DE LOGS CONTROLABLE
+  // ==========================================
+  const DEBUG = false // Logs de desarrollo
+  const SILENT = false // true = NO logs en absoluto (ni siquiera errores críticos)
+
+  const log = (message, ...args) => {
+    if (DEBUG && !SILENT) {
+      console.log(`[INVESTIGATIONS] ${message}`, ...args)
+    }
+  }
+
+  const warn = (message, ...args) => {
+    if (!SILENT) {
+      console.warn(`[INVESTIGATIONS] ${message}`, ...args)
+    }
+  }
+
+  const error = (message, ...args) => {
+    if (!SILENT) {
+      console.error(`[INVESTIGATIONS] ${message}`, ...args)
+    }
+  }
+
+  const info = (message, ...args) => {
+    if (!SILENT) {
+      console.log(`[INVESTIGATIONS] ✓ ${message}`, ...args)
+    }
+  }
+
+  // ==========================================
+  // PATRÓN EXACTO DE EXPERIENCIA
+  // ==========================================
+  const checkAndInit = () => {
+    if (typeof window !== 'undefined' && window.Swiper) {
+      initializeSwiper()
+      initModal()
+    } else {
+      setTimeout(checkAndInit, 300)
+    }
+  }
+
+  checkAndInit()
+}

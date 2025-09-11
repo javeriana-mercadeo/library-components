@@ -328,24 +328,31 @@ export default () => {
   // ==========================================
   // SISTEMA DE LOGS CONTROLABLE
   // ==========================================
-  const DEBUG = false // Cambiar a true para habilitar logs detallados
+  const DEBUG = false // Logs de desarrollo
+  const SILENT = false // true = NO logs en absoluto (ni siquiera errores críticos)
   
   const log = (message, ...args) => {
-    if (DEBUG) {
+    if (DEBUG && !SILENT) {
       console.log(`[INVESTIGATIONS] ${message}`, ...args)
     }
   }
   
   const warn = (message, ...args) => {
-    console.warn(`[INVESTIGATIONS] ${message}`, ...args)
+    if (!SILENT) {
+      console.warn(`[INVESTIGATIONS] ${message}`, ...args)
+    }
   }
   
   const error = (message, ...args) => {
-    console.error(`[INVESTIGATIONS] ${message}`, ...args)
+    if (!SILENT) {
+      console.error(`[INVESTIGATIONS] ${message}`, ...args)
+    }
   }
   
   const info = (message, ...args) => {
-    console.log(`[INVESTIGATIONS] ✓ ${message}`, ...args)
+    if (!SILENT) {
+      console.log(`[INVESTIGATIONS] ✓ ${message}`, ...args)
+    }
   }
 
   // ==========================================

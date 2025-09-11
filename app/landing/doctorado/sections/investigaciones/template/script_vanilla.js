@@ -14,25 +14,31 @@ const ModalInvestigacion = {
   // ==========================================
   // SISTEMA DE LOGS CONTROLABLE
   // ==========================================
-  DEBUG: true, // Cambiar a true para habilitar logs detallados - ACTIVADO PARA TESTING
+  DEBUG: false, // Logs de desarrollo
+  SILENT: false, // true = NO logs en absoluto (ni siquiera errores críticos)
 
   log(message, ...args) {
-    if (this.DEBUG) {
+    if (this.DEBUG && !this.SILENT) {
       console.log(`[MODAL-INVESTIGACION] ${message}`, ...args)
     }
   },
 
   warn(message, ...args) {
-    console.warn(`[MODAL-INVESTIGACION] ${message}`, ...args)
+    if (!this.SILENT) {
+      console.warn(`[MODAL-INVESTIGACION] ${message}`, ...args)
+    }
   },
 
   error(message, ...args) {
-    console.error(`[MODAL-INVESTIGACION] ${message}`, ...args)
+    if (!this.SILENT) {
+      console.error(`[MODAL-INVESTIGACION] ${message}`, ...args)
+    }
   },
 
   info(message, ...args) {
-    // Logs importantes siempre se muestran
-    console.log(`[MODAL-INVESTIGACION] ✓ ${message}`, ...args)
+    if (!this.SILENT) {
+      console.log(`[MODAL-INVESTIGACION] ✓ ${message}`, ...args)
+    }
   },
 
   // Función helper para generar HTML del botón iconOnly siguiendo el patrón del sistema Btn
@@ -519,14 +525,7 @@ const ModalInvestigacion = {
   // OBTENER CONFIGURACIÓN DE VIDEO PARA UNA INVESTIGACIÓN
   // ==========================================
   getVideoConfig(investigacionId) {
-    const videoConfigs = this.getVideoConfigs()
-    const baseConfig = videoConfigs[investigacionId]
-
-    if (!baseConfig) {
-      return null
-    }
-
-    // Obtener embedId desde atributo del elemento
+    // Primero intentar obtener embedId desde atributo del elemento
     const card = document.querySelector(`[data-id="${investigacionId}"]`)
     const embedId = card?.getAttribute('data-video-embed-id')
 
@@ -535,8 +534,15 @@ const ModalInvestigacion = {
       return null
     }
 
+    // Obtener configuración hardcodeada (si existe)
+    const videoConfigs = this.getVideoConfigs()
+    const baseConfig = videoConfigs[investigacionId]
+
+    // Si hay embedId, siempre habilitar video (con config por defecto si no hay hardcodeada)
     return {
-      ...baseConfig,
+      enabled: true,
+      position: 'first',
+      ...(baseConfig || {}), // Aplicar config hardcodeada si existe
       embedId,
       url: `https://youtu.be/${embedId}`
     }
@@ -1634,24 +1640,31 @@ const initModal = () => {
 // ==========================================
 // SISTEMA DE LOGS CONTROLABLE
 // ==========================================
-const DEBUG = false // Cambiar a true para habilitar logs detallados
+const DEBUG = false // Logs de desarrollo
+const SILENT = false // true = NO logs en absoluto (ni siquiera errores críticos)
 
 const log = (message, ...args) => {
-  if (DEBUG) {
+  if (DEBUG && !SILENT) {
     console.log(`[INVESTIGATIONS] ${message}`, ...args)
   }
 }
 
 const warn = (message, ...args) => {
-  console.warn(`[INVESTIGATIONS] ${message}`, ...args)
+  if (!SILENT) {
+    console.warn(`[INVESTIGATIONS] ${message}`, ...args)
+  }
 }
 
 const error = (message, ...args) => {
-  console.error(`[INVESTIGATIONS] ${message}`, ...args)
+  if (!SILENT) {
+    console.error(`[INVESTIGATIONS] ${message}`, ...args)
+  }
 }
 
 const info = (message, ...args) => {
-  console.log(`[INVESTIGATIONS] ✓ ${message}`, ...args)
+  if (!SILENT) {
+    console.log(`[INVESTIGATIONS] ✓ ${message}`, ...args)
+  }
 }
 
 // ==========================================
