@@ -63,9 +63,10 @@
     <#-- Usar año ya procesado y validado del ordenamiento -->
     <#assign yearString = investigationYear?string>
     
-    <#-- Procesar imagen con fallback -->
+    <#-- Procesar imagen principal con fallback -->
     <#assign imageUrl = "https://via.placeholder.com/400x300">
     <#assign imageAlt = "Imagen investigación">
+    <#assign additionalImages = "[]">
     <#if investigation.grad_investigationImg.getSiblings()?has_content>
       <#assign firstImage = investigation.grad_investigationImg.getSiblings()?first>
       <#if (firstImage.getData())?? && firstImage.getData() != "">
@@ -73,6 +74,19 @@
         <#if firstImage.getAttribute("alt")??>
           <#assign imageAlt = firstImage.getAttribute("alt")>
         </#if>
+      </#if>
+      
+      <#-- Procesar imágenes adicionales (desde la segunda en adelante) -->
+      <#if investigation.grad_investigationImg.getSiblings()?size gt 1>
+        <#assign additionalImages = "[">
+        <#assign additionalImageItems = []>
+        <#list investigation.grad_investigationImg.getSiblings() as imgSibling>
+          <#if imgSibling?index gt 0 && (imgSibling.getData())?? && imgSibling.getData() != "">
+            <#assign imgItem = '{"src": "' + imgSibling.getData() + '", "alt": "' + (imgSibling.getAttribute("alt")!"")?json_string + '"}'>
+            <#assign additionalImageItems = additionalImageItems + [imgItem]>
+          </#if>
+        </#list>
+        <#assign additionalImages = "[" + additionalImageItems?join(",") + "]">
       </#if>
     </#if>
     
@@ -101,7 +115,8 @@
     <#assign investigationsJSON = investigationsJSON + '"description": "' + (investigation.grad_investigationDesc.getData()!"")?json_string + '",'>
     <#assign investigationsJSON = investigationsJSON + '"image": "' + imageUrl + '",'>
     <#assign investigationsJSON = investigationsJSON + '"alt": "' + imageAlt?json_string + '",'>
-    <#assign investigationsJSON = investigationsJSON + '"author": "' + authorName?json_string + '"'>
+    <#assign investigationsJSON = investigationsJSON + '"author": "' + authorName?json_string + '",'>
+    <#assign investigationsJSON = investigationsJSON + '"additionalImages": ' + additionalImages + ''>
     
     <#-- Agregar videoEmbedId solo si existe -->
     <#if videoEmbedId != "">

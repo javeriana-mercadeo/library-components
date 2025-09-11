@@ -570,28 +570,11 @@ const ModalInvestigacion = {
     
     const hasVideo = videoConfig !== null
 
-    if (hasVideo) {
-      const videoItem = {
-        type: 'video',
-        src: videoConfig.url,
-        embedId: videoConfig.embedId,
-        alt: `${title} - Video presentación`,
-        thumbnail: baseImage || `https://img.youtube.com/vi/${videoConfig.embedId}/maxresdefault.jpg`
-      }
-
-      // Insertar video según la posición configurada
-      if (videoConfig.position === 'first' || !videoConfig.position) {
-        // Video como primer slide (por defecto)
-        mediaItems.push(videoItem)
-      }
-      // Nota: 'last' y posiciones numéricas se pueden agregar después si se necesitan
-    }
-
     // ==========================================
-    // USAR SOLO IMÁGENES REALES DEL CMS
+    // IMAGEN PRINCIPAL SIEMPRE DE PRIMERO
     // ==========================================
 
-    // Agregar imagen principal (siempre debe existir)
+    // Agregar imagen principal (siempre debe existir y ser la primera)
     if (baseImage) {
       mediaItems.push({
         type: 'image',
@@ -608,20 +591,33 @@ const ModalInvestigacion = {
     }
 
     // ==========================================
-    // IMÁGENES ADICIONALES DEL CMS (FUTURO)
+    // AGREGAR VIDEO DESPUÉS DE LA IMAGEN PRINCIPAL
     // ==========================================
-    // Nota: Aquí se pueden agregar imágenes adicionales reales cuando el CMS
-    // tenga múltiples imágenes por investigación en grad_investigationImg
-    // Ejemplo:
-    // if (investigationData?.additionalImages?.length > 0) {
-    //   investigationData.additionalImages.forEach((imgData, index) => {
-    //     mediaItems.push({
-    //       type: 'image',
-    //       src: imgData.url,
-    //       alt: imgData.alt || `${title} - Imagen ${index + 2}`
-    //     })
-    //   })
-    // }
+    if (hasVideo) {
+      const videoItem = {
+        type: 'video',
+        src: videoConfig.url,
+        embedId: videoConfig.embedId,
+        alt: `${title} - Video presentación`,
+        thumbnail: baseImage || `https://img.youtube.com/vi/${videoConfig.embedId}/maxresdefault.jpg`
+      }
+
+      // Video siempre después de la imagen principal
+      mediaItems.push(videoItem)
+    }
+
+    // ==========================================
+    // IMÁGENES ADICIONALES DEL CMS
+    // ==========================================
+    if (investigationData?.additionalImages?.length > 0) {
+      investigationData.additionalImages.forEach((imgData, index) => {
+        mediaItems.push({
+          type: 'image',
+          src: imgData.src,
+          alt: imgData.alt || `${title} - Imagen ${index + 2}`
+        })
+      })
+    }
 
     this.log('Media generada (solo imágenes reales):', {
       hasVideo: !!hasVideo,
