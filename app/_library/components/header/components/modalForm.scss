@@ -155,7 +155,7 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   padding: var(--spacing-md);
 
   @include responsive {
-    padding: 0 var(--spacing-md) var(--spacing-md) var(--spacing-2xl);
+    padding: 0 var(--spacing-md) var(--spacing-md) var(--spacing-lg);
     border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
   }
 }
@@ -193,20 +193,24 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
 .modal-content {
   height: 100%;
   padding: var(--spacing-lg);
+  padding-top: 0;
   overflow-y: auto;
   flex: 1;
   min-height: 0;
 
   @include responsive {
     padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
+    padding-top: 0;
   }
 
   @include responsive($breakpoint-sm) {
     padding: rem(16px);
+    padding-top: 0;
   }
 
   @include responsive(375px) {
     padding: rem(12px);
+    padding-top: 0;
   }
 
   // Scrollbar personalizado

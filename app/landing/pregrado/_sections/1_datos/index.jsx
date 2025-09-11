@@ -185,7 +185,8 @@ const DatosProgramaVideo = () => {
           </Btn>
 
           <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
-            *Aspirantes 2025: el valor de matrícula corresponde al costo fijado para el año 2025.
+            *Aspirantes a ingresar a la Universidad en 2026: Aprovecha este valor hasta el 03 de octubre de 2025. Después, habrá incrementos
+            graduales. ¡Infórmate sobre nuestras opciones de financiación y becas para aprovechar este beneficio!
           </Paragraph>
         </div>
 

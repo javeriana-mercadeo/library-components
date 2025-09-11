@@ -40,9 +40,9 @@ const ModalForm = () => {
 
           {/* Contenido del Modal */}
           <div className='modal-content'>
-            <div id='formProgram' className='form-modules'>
+            <div id='formProgram'>
               {/* HEADER: Solo título fijo */}
-              <div className='form-header'>
+              <div>
                 <Paragraph id='title-form' isEditable={false}>
                   Déjanos tus datos y te contactaremos para brindarte toda la información.
                 </Paragraph>

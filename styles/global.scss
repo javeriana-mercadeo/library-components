@@ -19,6 +19,7 @@
 @use '@library/components/contain/icon/styles.scss' as *;
 @use '@library/components/logo_institucional/styles.scss' as *;
 @use '@library/components/liferay_dev_banner/styles.scss' as *;
+@use '@library/components/cache-banner/styles.scss' as *;
 
 @include container;
 @include logo;
@@ -29,6 +30,7 @@
 @include icon;
 @include general-btn;
 @include liferay-dev-banner;
+@include cache-banner;
 
 // ==========================================
 // ELEMENTOS BASE
