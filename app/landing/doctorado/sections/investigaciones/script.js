@@ -72,12 +72,12 @@ export default () => {
             slidesPerView: Math.min(1, totalSlides)
           },
           768: {
-            spaceBetween: 0, // CSS ya maneja el espaciado con margin-right para evitar overflow
+            spaceBetween: 20,
             centeredSlides: false,
             slidesPerView: Math.min(2, totalSlides)
           },
           1024: {
-            spaceBetween: 0, // CSS maneja el espaciado en desktop también
+            spaceBetween: 25,
             centeredSlides: false,
             slidesPerView: Math.min(2, totalSlides)
           }
@@ -91,7 +91,7 @@ export default () => {
             log('Swiper inicializado con', totalSlides, 'slides')
             updateNavigationVisibility(swiper, totalSlides)
             updateButtonStates(swiper)
-            
+
             // Sincronizar alturas después de inicialización
             setTimeout(() => {
               syncCardHeights()
@@ -119,7 +119,6 @@ export default () => {
 
       // Configurar resize handler
       window.addEventListener('resize', handleResize)
-      
     } catch (error) {
       error('Error inicializando Swiper:', error)
     }
@@ -243,10 +242,13 @@ export default () => {
     console.log('[INVESTIGATIONS] 🔍 Buscando contenedor #investigaciones...')
     const container = document.querySelector('#investigaciones')
     console.log('[INVESTIGATIONS] 🔍 Contenedor encontrado:', !!container)
-    
+
     if (container) {
       console.log('[INVESTIGATIONS] 🔍 Buscando atributo data-investigations-data...')
-      console.log('[INVESTIGATIONS] 🔍 Todos los atributos del contenedor:', Array.from(container.attributes).map(attr => attr.name))
+      console.log(
+        '[INVESTIGATIONS] 🔍 Todos los atributos del contenedor:',
+        Array.from(container.attributes).map(attr => attr.name)
+      )
       console.log('[INVESTIGATIONS] 🔍 HTML del contenedor:', container.outerHTML.substring(0, 200) + '...')
       try {
         const dataAttr = container.getAttribute('data-investigations-data')
@@ -255,7 +257,7 @@ export default () => {
           const data = JSON.parse(dataAttr)
           window.investigacionesData = data
           console.log('[INVESTIGATIONS] ✅ Datos cargados:', data.length, 'investigaciones')
-          
+
           // AGREGAR DATOS COMPLETOS CON CONFIGURACIÓN DE VIDEO PARA EL MODAL
           // Los datos en el atributo están filtrados, pero el modal necesita la config completa
           window.investigacionesDataComplete = data.map(investigacion => {
@@ -283,11 +285,17 @@ export default () => {
             }
             return investigacion
           })
-          
+
           console.log('[INVESTIGATIONS] ✅ Datos completos generados:', window.investigacionesDataComplete.length)
-          console.log('[INVESTIGATIONS] ✅ Datos ID 1:', window.investigacionesDataComplete.find(i => i.id === 1))
-          console.log('[INVESTIGATIONS] ✅ Datos ID 3:', window.investigacionesDataComplete.find(i => i.id === 3))
-          
+          console.log(
+            '[INVESTIGATIONS] ✅ Datos ID 1:',
+            window.investigacionesDataComplete.find(i => i.id === 1)
+          )
+          console.log(
+            '[INVESTIGATIONS] ✅ Datos ID 3:',
+            window.investigacionesDataComplete.find(i => i.id === 3)
+          )
+
           return data
         }
       } catch (error) {
@@ -295,7 +303,10 @@ export default () => {
       }
     } else {
       console.error('[INVESTIGATIONS] ❌ NO se encontró contenedor #investigaciones')
-      console.log('[INVESTIGATIONS] 🔍 Elementos disponibles con id:', Array.from(document.querySelectorAll('[id]')).map(el => el.id))
+      console.log(
+        '[INVESTIGATIONS] 🔍 Elementos disponibles con id:',
+        Array.from(document.querySelectorAll('[id]')).map(el => el.id)
+      )
     }
     return []
   }
@@ -309,10 +320,10 @@ export default () => {
       // Obtener datos para el modal
       const datosObtenidos = getInvestigacionesData()
       console.log('[INVESTIGATIONS] 🔧 Datos obtenidos:', datosObtenidos.length, 'investigaciones')
-      
+
       // Exponer ModalInvestigacion globalmente
       window.ModalInvestigacion = ModalInvestigacion
-      
+
       // Inicializar el modal
       setTimeout(() => {
         const success = ModalInvestigacion.init()
@@ -330,25 +341,25 @@ export default () => {
   // ==========================================
   const DEBUG = false // Logs de desarrollo
   const SILENT = false // true = NO logs en absoluto (ni siquiera errores críticos)
-  
+
   const log = (message, ...args) => {
     if (DEBUG && !SILENT) {
       console.log(`[INVESTIGATIONS] ${message}`, ...args)
     }
   }
-  
+
   const warn = (message, ...args) => {
     if (!SILENT) {
       console.warn(`[INVESTIGATIONS] ${message}`, ...args)
     }
   }
-  
+
   const error = (message, ...args) => {
     if (!SILENT) {
       console.error(`[INVESTIGATIONS] ${message}`, ...args)
     }
   }
-  
+
   const info = (message, ...args) => {
     if (!SILENT) {
       console.log(`[INVESTIGATIONS] ✓ ${message}`, ...args)

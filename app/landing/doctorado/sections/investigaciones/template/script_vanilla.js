@@ -1,6 +1,3 @@
-// ==================================================================================
-// INICIO DE: landing\doctorado\sections\investigaciones\components\modalInvestigacion.js
-// ==================================================================================
 // ===========================================
 // MODAL INVESTIGACIONES - SISTEMA COMPLETAMENTE NUEVO
 // ===========================================
@@ -31,7 +28,7 @@ const ModalInvestigacion = {
 
   error(message, ...args) {
     if (!this.SILENT) {
-      console.error(`[MODAL-INVESTIGACION] ${message}`, ...args)
+      console.error(`[MODAL-INVESTIGACION] ❌ ${message}`, ...args)
     }
   },
 
@@ -280,7 +277,7 @@ const ModalInvestigacion = {
     try {
       // Obtener el ID de la card desde el data-attribute
       const cardId = card.getAttribute('data-id')
-      console.log('[MODAL-INVESTIGACION] 🔍 Card clickeada, data-id encontrado:', cardId)
+      // console.log('[MODAL-INVESTIGACION] 🔍 Card clickeada, data-id encontrado:', cardId)
 
       if (!cardId) {
         console.warn('[MODAL-INVESTIGACION] ❌ Card sin data-id, usando fallback')
@@ -288,24 +285,15 @@ const ModalInvestigacion = {
       }
 
       // Debug de datos disponibles
-      console.log(
-        '[MODAL-INVESTIGACION] 🔍 window.investigacionesData:',
-        window.investigacionesData ? window.investigacionesData.length : 'NO EXISTE'
-      )
-      console.log(
-        '[MODAL-INVESTIGACION] 🔍 window.investigacionesDataComplete:',
-        window.investigacionesDataComplete ? window.investigacionesDataComplete.length : 'NO EXISTE'
-      )
+      // console.log('[MODAL-INVESTIGACION] 🔍 window.investigacionesData:', window.investigacionesData ? window.investigacionesData.length : 'NO EXISTE')
+      // console.log('[MODAL-INVESTIGACION] 🔍 window.investigacionesDataComplete:', window.investigacionesDataComplete ? window.investigacionesDataComplete.length : 'NO EXISTE')
 
       // Buscar los datos completos desde window (React)
       const fullData = this.getInvestigacionData(parseInt(cardId))
 
       if (!fullData) {
         this.warn('❌ No se encontraron datos para ID:', cardId)
-        console.log(
-          '[MODAL-INVESTIGACION] 🔍 IDs disponibles en datos completos:',
-          window.investigacionesDataComplete ? window.investigacionesDataComplete.map(i => i.id) : 'NINGUNO'
-        )
+        // console.log('[MODAL-INVESTIGACION] 🔍 IDs disponibles en datos completos:', window.investigacionesDataComplete ? window.investigacionesDataComplete.map(i => i.id) : 'NINGUNO')
         return this.handleCardClickFallback(card)
       }
 
@@ -463,8 +451,7 @@ const ModalInvestigacion = {
       modalDate.textContent = this.formatDate(data.year)
     }
     if (modalStudent) {
-      // Usar autor del CMS si existe, sino fallback al generador
-      modalStudent.textContent = data.author || this.generateStudentName(data.title)
+      modalStudent.textContent = this.generateStudentName(data.title)
     }
     if (modalDescription && data.description) {
       modalDescription.innerHTML = this.formatDescription(data.description)
@@ -525,11 +512,28 @@ const ModalInvestigacion = {
   // OBTENER CONFIGURACIÓN DE VIDEO PARA UNA INVESTIGACIÓN
   // ==========================================
   getVideoConfig(investigacionId) {
+    console.log('[VIDEO DEBUG] Buscando video para ID:', investigacionId)
     // Primero intentar obtener embedId desde atributo del elemento
     const card = document.querySelector(`[data-id="${investigacionId}"]`)
+    console.log('[VIDEO DEBUG] Card encontrada:', !!card)
     const embedId = card?.getAttribute('data-video-embed-id')
+    console.log('[VIDEO DEBUG] EmbedId desde card:', embedId)
 
     if (!embedId) {
+      console.log('[VIDEO DEBUG] No embedId desde card, intentando desde datos...')
+      // FALLBACK: Intentar obtener desde los datos directamente si la card no tiene el atributo
+      if (window.investigacionesDataComplete) {
+        const dataItem = window.investigacionesDataComplete.find(item => item.id === investigacionId)
+        if (dataItem && dataItem.videoEmbedId) {
+          console.log('[VIDEO DEBUG] EmbedId encontrado en datos:', dataItem.videoEmbedId)
+          return {
+            enabled: true,
+            position: 'first',
+            embedId: dataItem.videoEmbedId,
+            url: `https://youtu.be/${dataItem.videoEmbedId}`
+          }
+        }
+      }
       this.log(`No embedId encontrado para investigación ${investigacionId}`)
       return null
     }
@@ -549,26 +553,12 @@ const ModalInvestigacion = {
   },
 
   generateAdditionalMedia(baseImage, title, investigationData = null) {
+    console.log('[MEDIA DEBUG] =================================')
+    console.log('[MEDIA DEBUG] Generando media para:', title)
+    console.log('[MEDIA DEBUG] investigationData completo:', investigationData)
+    console.log('[MEDIA DEBUG] investigationData.id:', investigationData?.id)
+    
     const mediaItems = []
-
-    // ==========================================
-    // CONFIGURACIÓN HÍBRIDA DE VIDEO
-    // ==========================================
-
-    // Obtener configuración de video usando el nuevo sistema híbrido
-    const investigacionId = investigationData?.id
-    let videoConfig = investigacionId ? this.getVideoConfig(investigacionId) : null
-    
-    // FALLBACK: Si no hay video desde HTML, buscar en JSON data
-    if (!videoConfig && investigationData?.videoEmbedId) {
-      videoConfig = {
-        embedId: investigationData.videoEmbedId,
-        url: `https://youtu.be/${investigationData.videoEmbedId}`
-      }
-      this.log(`🎥 Video encontrado en JSON data: ${investigationData.videoEmbedId}`)
-    }
-    
-    const hasVideo = videoConfig !== null
 
     // ==========================================
     // IMAGEN PRINCIPAL SIEMPRE DE PRIMERO
@@ -581,6 +571,7 @@ const ModalInvestigacion = {
         src: baseImage,
         alt: title
       })
+      console.log('[MEDIA DEBUG] ✅ Imagen principal agregada')
     } else {
       // Fallback solo si no hay imagen principal
       mediaItems.push({
@@ -588,12 +579,22 @@ const ModalInvestigacion = {
         src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/innvestigaciones-1',
         alt: title
       })
+      console.log('[MEDIA DEBUG] ✅ Imagen principal fallback agregada')
     }
 
     // ==========================================
     // AGREGAR VIDEO DESPUÉS DE LA IMAGEN PRINCIPAL
     // ==========================================
+
+    // Obtener configuración de video usando el nuevo sistema híbrido
+    const investigacionId = investigationData?.id
+    console.log('[MEDIA DEBUG] Buscando video para ID:', investigacionId)
+    const videoConfig = investigacionId ? this.getVideoConfig(investigacionId) : null
+    console.log('[MEDIA DEBUG] VideoConfig resultado:', videoConfig)
+    const hasVideo = videoConfig !== null
+
     if (hasVideo) {
+      console.log('[MEDIA DEBUG] ✅ Agregando video:', videoConfig.embedId)
       const videoItem = {
         type: 'video',
         src: videoConfig.url,
@@ -604,19 +605,28 @@ const ModalInvestigacion = {
 
       // Video siempre después de la imagen principal
       mediaItems.push(videoItem)
+    } else {
+      console.log('[MEDIA DEBUG] ❌ No se agregó video')
     }
 
     // ==========================================
     // IMÁGENES ADICIONALES DEL CMS
     // ==========================================
+    console.log('[MODAL DEBUG] investigationData:', investigationData)
+    console.log('[MODAL DEBUG] additionalImages:', investigationData?.additionalImages)
+
     if (investigationData?.additionalImages?.length > 0) {
+      console.log('[MODAL DEBUG] Procesando', investigationData.additionalImages.length, 'imágenes adicionales')
       investigationData.additionalImages.forEach((imgData, index) => {
+        console.log('[MODAL DEBUG] Agregando imagen adicional:', imgData)
         mediaItems.push({
           type: 'image',
           src: imgData.src,
           alt: imgData.alt || `${title} - Imagen ${index + 2}`
         })
       })
+    } else {
+      console.log('[MODAL DEBUG] No hay imágenes adicionales o array vacío')
     }
 
     this.log('Media generada (solo imágenes reales):', {
@@ -641,6 +651,8 @@ const ModalInvestigacion = {
   },
 
   generateVideoElement(videoItem, index, isDesktop) {
+    console.log('[VIDEO DEBUG] Creando video elemento:', videoItem.embedId, 'isDesktop:', isDesktop)
+    
     const containerClass = isDesktop ? 'investigations-modal__video-wrapper' : 'investigations-modal__video-wrapper-mobile'
     const videoClass = isDesktop ? 'investigations-modal__video' : 'investigations-modal__video-mobile'
 
@@ -825,21 +837,34 @@ const ModalInvestigacion = {
   // NUEVA FUNCIÓN: Generar galería para Swiper Mobile (Horizontal)
   // ==========================================
   generateSwiperGalleryMobile(swiperWrapper, data) {
+    console.log('[SWIPER DEBUG] =================================')
+    console.log('[SWIPER DEBUG] Generando galería móvil para:', data.title)
+    
     // Limpiar wrapper
     swiperWrapper.innerHTML = ''
 
     // Generar todos los elementos multimedia como slides
     const allMediaItems = this.generateAdditionalMedia(data.image, data.title, data)
+    console.log('[SWIPER DEBUG] Total media items generados:', allMediaItems.length)
 
     allMediaItems.forEach((mediaItem, index) => {
+      console.log('[SWIPER DEBUG] Procesando item', index + ':', mediaItem.type, mediaItem.embedId || mediaItem.src)
+      
       const slide = document.createElement('div')
       slide.className = 'swiper-slide investigations-modal__slide-mobile'
 
       // Generar elemento multimedia (imagen o video)
       const mediaElement = this.generateMediaElement(mediaItem, index, false) // false = mobile
+      console.log('[SWIPER DEBUG] Elemento generado para item', index + ':', mediaElement.className)
+      
       slide.appendChild(mediaElement)
       swiperWrapper.appendChild(slide)
+      
+      console.log('[SWIPER DEBUG] ✅ Slide', index + 1, 'agregado al wrapper')
     })
+
+    console.log('[SWIPER DEBUG] ✅ Wrapper final tiene', swiperWrapper.children.length, 'slides')
+    console.log('[SWIPER DEBUG] ✅ Wrapper HTML:', swiperWrapper.innerHTML.substring(0, 200) + '...')
 
     // Guardar total de slides para configuración
     this.totalMobileSlides = allMediaItems.length
@@ -1284,7 +1309,7 @@ const ModalInvestigacion = {
         modal.remove()
       }
       this.isInitialized = false
-      console.log('[MODAL-INVESTIGACION] Cleanup completado')
+      // console.log('[MODAL-INVESTIGACION] Cleanup completado')
     } catch (error) {
       this.error('Error en cleanup:', error)
     }
@@ -1292,7 +1317,11 @@ const ModalInvestigacion = {
 }
 //
 //
-export { ModalInvestigacion }
+//
+// export { ModalInvestigacion }
+// ==================================================================================
+// FINAL DE: landing\doctorado\sections\investigaciones\components\modalInvestigacion.js
+// ==================================================================================
 // ==================================================================================
 // FINAL DE: landing\doctorado\sections\investigaciones\components\modalInvestigacion.js
 // ==================================================================================
@@ -1369,12 +1398,12 @@ const initializeSwiper = () => {
           slidesPerView: Math.min(1, totalSlides)
         },
         768: {
-          spaceBetween: 0, // CSS ya maneja el espaciado con margin-right para evitar overflow
+          spaceBetween: 20,
           centeredSlides: false,
           slidesPerView: Math.min(2, totalSlides)
         },
         1024: {
-          spaceBetween: 0, // CSS maneja el espaciado en desktop también
+          spaceBetween: 25,
           centeredSlides: false,
           slidesPerView: Math.min(2, totalSlides)
         }
