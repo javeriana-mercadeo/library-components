@@ -189,7 +189,7 @@
                       <#if (cur_grad_investigationGroup.grad_investigationTitle.getData())??>${cur_grad_investigationGroup.grad_investigationTitle.getData()}</#if>
                     </h3>
                     <div class="paragraph paragraph-neutral paragraph-md investigations_description">
-                      <#if (cur_grad_investigationGroup.grad_investigationDesc.getData())??>${truncateWords(cur_grad_investigationGroup.grad_investigationDesc.getData(), 22)}</#if>
+                      <#if (cur_grad_investigationGroup.grad_investigationDesc.getData())??>${truncateWords(cur_grad_investigationGroup.grad_investigationDesc.getData(), 16)}</#if>
                       <span><i class="ph ph-arrow-square-in"></i></span>
                     </div>
                   </div>
@@ -243,7 +243,7 @@
                     <#if (cur_grad_investigationGroup.grad_investigationTitle.getData())??>${cur_grad_investigationGroup.grad_investigationTitle.getData()}</#if>
                   </h3>
                   <div class="paragraph paragraph-neutral paragraph-md investigations_description">
-                    <#if (cur_grad_investigationGroup.grad_investigationDesc.getData())??>${truncateWords(cur_grad_investigationGroup.grad_investigationDesc.getData(), 18)}</#if>
+                    <#if (cur_grad_investigationGroup.grad_investigationDesc.getData())??>${truncateWords(cur_grad_investigationGroup.grad_investigationDesc.getData(), 16)}</#if>
                     <span><i class="ph ph-arrow-square-in"></i></span>
                   </div>
                 </div>

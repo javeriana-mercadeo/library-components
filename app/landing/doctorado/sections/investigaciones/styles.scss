@@ -21,19 +21,50 @@
   }
 }
 
-// Mobile Swiper horizontal - Videos  
+// Mobile Swiper horizontal - Videos y estructura  
 .investigations-modal__swiper-container-mobile {
   .swiper-slide {
+    // Estilos base para slides móviles
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-height: rem(200px);
+    
     // Video slides en Swiper horizontal móvil
     .investigations-modal__video-wrapper-mobile {
       height: rem(200px);
       width: 100%;
       min-width: rem(280px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      overflow: hidden;
     }
 
     .investigations-modal__video-mobile {
       height: rem(200px);
       width: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      border: none;
+      
+      @media (max-width: 480px) {
+        height: rem(180px);
+      }
+    }
+    
+    // Iframe específico dentro del wrapper móvil
+    iframe.investigations-modal__video-mobile {
+      height: rem(200px) !important;
+      width: 100% !important;
+      border: none !important;
+      border-radius: 8px;
+      display: block !important;
+      
+      @media (max-width: 480px) {
+        height: rem(180px) !important;
+      }
     }
   }
 }
