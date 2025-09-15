@@ -5,6 +5,7 @@ import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 import Load from '@/app/_components/load/load'
 import Logo from '@/app/_components/Logo/Logo.jsx'
 import Content from '@/app/_components/Logo/components/Content'
+import Popup from '@/app/_components/popup/Popup'
 
 // Lazy load heavy sections with client-side loading
 const Encabezado = dynamic(() => import('./_sections/0_encabezado'), { ssr: false, loading: () => <Load /> })
@@ -87,6 +88,11 @@ export default function Profesional() {
       {/* <Footer /> */}
       <ViewComponent path={`${basePath}/_sections/11_footer`}>
         <Footer />
+      </ViewComponent>
+
+      {/* Popup Component */}
+      <ViewComponent path="/app/_components/popup">
+        <Popup />
       </ViewComponent>
     </>
   )

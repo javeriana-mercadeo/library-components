@@ -73,6 +73,12 @@ export default function ComponentCatalog({ selectedTab }) {
       description: 'Página de demostración del componente botón'
     },
     {
+      name: 'Modales',
+      path: '/fragments/components/modals',
+      icon: 'ph-browser',
+      description: 'Biblioteca completa de modales y popups'
+    },
+    {
       name: 'Título',
       path: '/fragments/components/titles',
       icon: 'ph-text-h-one',
