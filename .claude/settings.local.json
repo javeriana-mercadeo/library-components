@@ -79,7 +79,8 @@
       "Read(/C:\\Users\\gavilanm-j\\Documents\\Desarrollo\\library-components\\app\\_library\\components\\header/**)",
       "Read(C:\\Users\\gavilanm-j\\Pictures\\Screenshots/**)",
       "Bash(npx eslint:*)",
-      "Bash(timeout 30s npm run build)"
+      "Bash(timeout 30s npm run build)",
+      "Read(//c/Users/Amaro/Downloads/**)"
     ],
     "deny": []
   }

@@ -15,6 +15,7 @@
   }
 
   &_container {
+    position: relative;
     display: grid;
     padding-top: var(--spacing-2xl);
     padding-bottom: var(--spacing-md);
