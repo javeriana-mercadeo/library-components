@@ -1,0 +1,71 @@
+<link rel="preload" as="image" href="https://cdn.forbes.co/2020/09/Javeriana-1280x720-1.jpg" />
+
+<button
+  type="button"
+  data-popup="#popup"
+  class="popup-open__btn"
+  aria-label="Open"
+  data-lfr-editable-id="popup-open-btn"
+  data-lfr-editable-type="text">
+  Conocer Becas
+</button>
+
+<div id="popup" class="popup-overlay">
+  <div class="popup-content">
+    <button
+      aria-label="Close Popup"
+      data-dmpa-element-id="btn"
+      class="btn btn-primary btn-light btn-icon-only popup-close close"
+      aria-disabled="false"
+      type="button">
+      <span class="btn-icon btn-icon-only"><i class="ph ph-x"></i></span>
+    </button>
+    
+    <div class="modal-container">
+      <!-- Image Section -->
+      <div class="image-section">
+        <lfr-editable id="image-modal" class="content__image" type="image">
+          <img
+            src="https://cdn.forbes.co/2020/09/Javeriana-1280x720-1.jpg"
+            alt="Campus Universidad Javeriana"
+            class="modal-image" />
+        </lfr-editable>
+      </div>
+
+      <!-- Content Section -->
+      <div class="content-section">
+        <!-- Title -->
+        <lfr-editable 
+          id="modal-title" 
+          type="rich-text"
+          class="modal-title">
+          <h2 class="title title-xl content__title">¡Construye tu futuro en la Javeriana!</h2>
+        </lfr-editable>
+
+        <!-- Text Content -->
+        <div class="content-data">
+          <lfr-editable 
+            id="modal-text" 
+            type="rich-text"
+            class="content__text">
+            <div>
+              <p class="content__text">
+                Sabemos que el talento y el esfuerzo merecen reconocimiento. Conoce nuestras becas y da el primer paso hacia una formación de excelencia:
+              </p>
+            </div>
+          </lfr-editable>
+
+          <button
+            data-dmpa-element-id="btn"
+            class="btn btn-primary btn-solid btn-lg content-btn modal-cta"
+            aria-disabled="false"
+            type="submit"
+            data-lfr-editable-id="btn"
+            data-lfr-editable-type="text">
+            <span class="btn-text">Conocer mis opciones</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

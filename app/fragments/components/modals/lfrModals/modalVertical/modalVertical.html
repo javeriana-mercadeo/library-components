@@ -1,0 +1,80 @@
+<link rel="preload" as="image" href="https://cdn.forbes.co/2020/09/Javeriana-1280x720-1.jpg" />
+
+<button
+  type="button"
+  data-popup="#modalVertical-popup"
+  class="modalVertical-open-btn"
+  aria-label="Open"
+  data-lfr-editable-id="modalVertical-open-btn"
+  data-lfr-editable-type="text">
+  Mostrar
+</button>
+
+<div id="modalVertical-popup" class="modalVertical-overlay">
+  <div class="modalVertical-content">
+    <button
+      aria-label="Close Popup"
+      data-dmpa-element-id="btn"
+      class="btn btn-primary btn-light btn-icon-only modalVertical-close modalVertical-close-btn"
+      aria-disabled="false"
+      type="button">
+      <span class="btn-icon btn-icon-only"><i class="ph ph-x"></i></span>
+    </button>
+    
+    <div class="modalVertical-container">
+      <!-- Image Section -->
+      <div class="modalVertical-image-section">
+        <lfr-editable id="modalVertical-image" class="modalVertical-img-wrapper" type="image">
+          <img
+            src="https://cdn.forbes.co/2020/09/Javeriana-1280x720-1.jpg"
+            alt="Medicina Universidad Javeriana"
+            class="modalVertical-img" />
+        </lfr-editable>
+      </div>
+
+      <!-- Content Section -->
+      <div class="modalVertical-content-section">
+        <!-- Title -->
+        <lfr-editable 
+          id="modalVertical-title" 
+          type="rich-text"
+          data-lfr-editable-id="modalVertical-title"
+          data-lfr-editable-type="rich-text"
+          class="modalVertical-title-wrapper">
+          <h2 class="title title-xl modalVertical-title-text">¿Te interesa estudiar Medicina en la Javeriana?</h2>
+        </lfr-editable>
+
+        <!-- Text Content -->
+        <div class="modalVertical-data">
+          <lfr-editable 
+            id="modalVertical-text" 
+            type="rich-text"
+            data-lfr-editable-id="modalVertical-text"
+            data-lfr-editable-type="rich-text"
+            class="modalVertical-text-wrapper">
+            <div>
+              <p class="modalVertical-paragraph">
+                Déjanos tu correo y sé el primero en recibir:
+              </p>
+              <ul class="modalVertical-list">
+                <li class="modalVertical-list-item">Información detallada del programa</li>
+                <li class="modalVertical-list-item">Beneficios y becas disponibles</li>
+                <li class="modalVertical-list-item">Fechas clave y pasos de inscripción</li>
+              </ul>
+            </div>
+          </lfr-editable>
+
+          <button
+            data-dmpa-element-id="btn"
+            class="btn btn-primary btn-solid btn-lg modalVertical-btn modalVertical-cta-btn"
+            aria-disabled="false"
+            type="submit"
+            data-lfr-editable-id="modalVertical-cta"
+            data-lfr-editable-type="text">
+            <span class="btn-text">Quiero más información</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
