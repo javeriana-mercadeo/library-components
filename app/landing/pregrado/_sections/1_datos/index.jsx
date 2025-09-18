@@ -114,13 +114,7 @@ const DatosProgramaVideo = () => {
         </Title>
 
         {/* === SNIES === */}
-        <Caption
-          data-puj-snies='true'
-          className={`${baseClass}_snies`}
-          id={`${elementName}-snies`}
-          color='neutral'
-          size='md'
-          isEditable={false}>
+        <Caption data-puj-snies className={`${baseClass}_snies`} id={`${elementName}-snies`} color='neutral' size='md' isEditable={false}>
           Cargando SNIES...
         </Caption>
 
@@ -162,7 +156,7 @@ const DatosProgramaVideo = () => {
                 Fechas de cierre de inscripciones
               </Caption>
 
-              <div data-puj-registration-dates='true' className='program-dates_dates'>
+              <div data-puj-registration-dates className='program-dates_dates'>
                 {/* Las fechas se cargarán dinámicamente via JavaScript */}
                 <div className='program-dates_date-item'>
                   <Paragraph className='program-dates_date-period' color='neutral' size='md' bold={true} isEditable={false}>
@@ -193,7 +187,7 @@ const DatosProgramaVideo = () => {
         {/* === INFORMACIÓN LEGAL === */}
         <div className={`${baseClass}_enrollment`}>
           <div className={`${baseClass}_enrollment-note-container`}>
-            <Paragraph data-puj-snies='true' className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
+            <Paragraph data-puj-snies className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
               Cargando SNIES...
             </Paragraph>
 
