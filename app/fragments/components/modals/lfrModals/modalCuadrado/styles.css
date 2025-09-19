@@ -8,6 +8,15 @@
   backdrop-filter: blur(10px);
   z-index: 10001;
   display: none;
+
+  /* Animación de entrada - estado inicial */
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* Estado activo - usando clase */
+.modalGradient-overlay.active {
+  opacity: 1;
 }
 
 .modalGradient-content {
@@ -20,9 +29,20 @@
   border-radius: 2rem;
   overflow: hidden;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-  
+
   /* Gradiente radial de fondo */
   background: radial-gradient(circle at center, #9FADBC 0%, #1D2125 100%);
+
+  /* Animación de entrada del modal */
+  transform: translateY(-16px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* Estado activo del contenido del modal */
+.modalGradient-overlay.active .modalGradient-content {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .modalGradient-close-btn {
@@ -262,23 +282,4 @@
     padding: 0.875rem 1.5rem;
     font-size: 0.95rem;
   }
-}
-
-/* Animación de entrada */
-.modalGradient-overlay {
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.modalGradient-overlay[style*="flex"] {
-  opacity: 1;
-}
-
-.modalGradient-content {
-  transform: scale(0.9);
-  transition: transform 0.4s ease;
-}
-
-.modalGradient-overlay[style*="flex"] .modalGradient-content {
-  transform: scale(1);
 }

@@ -9,6 +9,15 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   z-index: 10001;
   display: none;
+
+  /* Animación de entrada - estado inicial */
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* Estado activo - usando clase */
+.modalVertical-overlay.active {
+  opacity: 1;
 }
 
 .modalVertical-content {
@@ -21,6 +30,17 @@
   border-radius: 2rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+
+  /* Animación de entrada del modal */
+  transform: translateY(-16px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* Estado activo del contenido del modal */
+.modalVertical-overlay.active .modalVertical-content {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .modalVertical-close-btn {
