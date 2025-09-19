@@ -28,9 +28,38 @@ const PreguntasFrecuentes = () => {
           {/* Primera pregunta expandida por defecto */}
           <div className='faq__item active'>
             <Button variant='light' fullWidth isEditable={false} className='faq__question'>
-              <h3>¿Cuál es el perfil de ingreso al programa?</h3>
+              <h3>¿Cuáles son los criterios de evaluación específicos para el ingreso al programa?</h3>
               <span className='faq__icon'>
                 <i className='ph ph-caret-down'></i>
+              </span>
+            </Button>
+            <div className='faq__answer'>
+              <div className='faq__sub-questions'>
+                <h2>Criterios de Evaluación para Admisión</h2>
+
+                <p>
+                  El proceso de admisión evalúa diferentes aspectos del aspirante a través de una <strong>prueba específica</strong> que
+                  mide las competencias necesarias para el programa académico.
+                </p>
+
+                <h3>Criterios por Categoría</h3>
+
+                <div className='overflow-auto portlet-msg-info'>
+                  La evaluación se realiza mediante prueba específica con los siguientes pesos y criterios:
+                </div>
+
+                {/* Contenido dinámico cargado desde la API */}
+                <div puj-data-requirements></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Segunda pregunta colapsada */}
+          <div className='faq__item'>
+            <Button variant='light' fullWidth isEditable={false} className='faq__question'>
+              <h3>¿Cuál es el perfil de ingreso al programa?</h3>
+              <span className='faq__icon'>
+                <i className='ph ph-caret-up'></i>
               </span>
             </Button>
             <div className='faq__answer'>

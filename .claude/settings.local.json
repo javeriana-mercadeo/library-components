@@ -80,7 +80,8 @@
       "Read(C:\\Users\\gavilanm-j\\Pictures\\Screenshots/**)",
       "Bash(npx eslint:*)",
       "Bash(timeout 30s npm run build)",
-      "Read(//c/Users/Amaro/Downloads/**)"
+      "Read(//c/Users/Amaro/Downloads/**)",
+      "Read(//c/Users/Amaro/Imágenes/Screenshots/**)"
     ],
     "deny": []
   }

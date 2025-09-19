@@ -11,11 +11,7 @@
 }
 
 body:has(.header) {
-  padding-top: rem(70px);
-
-  @include responsive {
-    padding-top: rem(100px);
-  }
+  padding-top: rem(74.25px);
 
   @include only-dev-mode {
     padding-top: rem(0px);

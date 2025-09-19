@@ -19,7 +19,6 @@ const FAQAccordionSystem = {
     const faqItems = document.querySelectorAll(this.config.itemSelector)
 
     if (faqItems.length === 0) {
-      console.warn('[FAQ] No se encontraron elementos del acordeón')
       return false
     }
 
@@ -237,7 +236,6 @@ const FAQAccordionSystem = {
       const question = item.querySelector(this.config.questionSelector)
 
       if (!question) {
-        console.warn(`[FAQ] Botón no encontrado en item ${index + 1}`)
         return
       }
 
@@ -275,12 +273,210 @@ const FAQAccordionSystem = {
 }
 
 // ===========================================
+// SISTEMA DE REQUISITOS API
+// ===========================================
+const RequirementsSystem = {
+  config: {
+    apiBaseUrl: 'https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals/getrequisitos',
+    containerSelector: '[puj-data-requirements]'
+  },
+
+  async fetchRequirements(programCode) {
+    if (!programCode) {
+      throw new Error('Program code is required')
+    }
+
+    const url = `${this.config.apiBaseUrl}?codprograma=${programCode}`
+
+    try {
+      const response = await fetch(url)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      throw error
+    }
+  },
+
+  processRequirementsData(data) {
+    if (!Array.isArray(data) || data.length === 0) {
+      return { categories: [], programInfo: null }
+    }
+
+    const programInfo = {
+      code: data[0].acadProg,
+      name: data[0].ujDescProg,
+      admissionType: data[0].admitType,
+      activityDescription: data[0].activityDescr
+    }
+
+    // Agrupar por categoría
+    const categoriesMap = new Map()
+
+    data.forEach(item => {
+      const category = item.ujDescr100
+      if (!categoriesMap.has(category)) {
+        categoriesMap.set(category, {
+          name: category,
+          weight: item.descr,
+          criteria: []
+        })
+      }
+
+      categoriesMap.get(category).criteria.push({
+        name: item.ujGrupoCriterios,
+        weight: item.descr,
+        maxScore: item.descr1
+      })
+    })
+
+    const categories = Array.from(categoriesMap.values())
+
+    return { categories, programInfo }
+  },
+
+  generateRequirementsHTML(processedData) {
+    const { categories, programInfo } = processedData
+
+    if (!programInfo) {
+      return '<p>No se pudieron cargar los requisitos del programa.</p>'
+    }
+
+    let html = `
+        <table border='1' cellPadding='1' cellSpacing='1' style='width: 100%'>
+          <caption>Criterios de Evaluación - ${programInfo.name}</caption>
+          <tbody>
+            <tr>
+              <td><strong>Categoría</strong></td>
+              <td><strong>Criterio</strong></td>
+              <td><strong>Peso (%)</strong></td>
+              <td><strong>Puntaje Max</strong></td>
+            </tr>`
+
+    categories.forEach(category => {
+      const criteriaCount = category.criteria.length
+
+      category.criteria.forEach((criterion, index) => {
+        html += `
+            <tr>
+              ${index === 0 ? `<td rowSpan="${criteriaCount}"><strong>${category.name} (${category.weight}%)</strong></td>` : ''}
+              <td>${criterion.name}</td>
+              <td>${criterion.weight}</td>
+              <td>${criterion.maxScore}</td>
+            </tr>`
+      })
+    })
+
+    html += `
+          </tbody>
+        </table>
+
+        <div class='overflow-auto portlet-msg-info'>
+          <strong>Tipo de admisión:</strong> ${programInfo.admissionType} | <strong>Modalidad:</strong> ${programInfo.activityDescription}
+        </div>`
+
+    return html
+  },
+
+  async renderRequirements(programCode) {
+    const container = document.querySelector(this.config.containerSelector)
+
+    if (!container) {
+      return false
+    }
+
+    if (!programCode) {
+      return false
+    }
+
+    // Mostrar loading
+    container.innerHTML = '<p>Cargando criterios de evaluación...</p>'
+
+    try {
+      // Obtener datos
+      const data = await this.fetchRequirements(programCode)
+
+      // Procesar datos
+      const processedData = this.processRequirementsData(data)
+
+      // Generar HTML
+      const html = this.generateRequirementsHTML(processedData)
+
+      // Renderizar
+      container.innerHTML = html
+
+      return true
+    } catch (error) {
+      container.innerHTML =
+        '<div class="overflow-auto portlet-msg-error">No se pudieron cargar los criterios de evaluación para este programa. Verifique su conexión e intente nuevamente.</div>'
+      return false
+    }
+  },
+
+  setupEventListeners() {
+    // Escuchar el evento personalizado data_load-program
+    document.addEventListener('data_load-program', event => {
+      const programData = event.detail?.dataProgram
+      const programCode = programData?.codPrograma || programData?.codigo
+
+      if (programCode) {
+        this.renderRequirements(programCode)
+      }
+    })
+
+    // También escuchar cambios dinámicos en el DOM por si el contenedor se agrega después
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const container =
+              node.querySelector?.(this.config.containerSelector) || (node.matches?.(this.config.containerSelector) ? node : null)
+
+            if (container && !container.hasAttribute('data-requirements-initialized')) {
+              container.setAttribute('data-requirements-initialized', 'true')
+            }
+          }
+        })
+      })
+    })
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    })
+
+    this.mutationObserver = observer
+  },
+
+  init() {
+    // Configurar listeners de eventos
+    this.setupEventListeners()
+
+    return true
+  },
+
+  // Método para limpiar recursos cuando sea necesario
+  destroy() {
+    if (this.mutationObserver) {
+      this.mutationObserver.disconnect()
+    }
+
+    document.removeEventListener('data_load-program', this.handleProgramEvent)
+  }
+}
+
+// ===========================================
 // SISTEMA PRINCIPAL FAQ
 // ===========================================
 const FAQSystem = {
   init() {
     const systems = {
-      accordion: FAQAccordionSystem.init()
+      accordion: FAQAccordionSystem.init(),
+      requirements: RequirementsSystem.init()
     }
 
     return systems
