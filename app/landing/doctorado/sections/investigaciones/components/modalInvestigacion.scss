@@ -248,7 +248,7 @@ $content-width: 55%;
   }
 
   .swiper-slide {
-    width: auto;
+    // ✅ CORREGIDO: Remover width: auto que causaba conflictos con slides personalizados
     flex-shrink: 0;
     display: flex;
     align-items: center;

@@ -890,22 +890,22 @@ $nav-button-size-mobile: rem(40px);
     display: flex !important;
     align-items: center;
     justify-content: center;
-    width: 100% !important; // Patrón experiencia: ancho completo simple
     height: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-right: 0 !important; // Sin márgenes complejos
+    // ✅ CORREGIDO: Remover width y margin forzados para permitir que Swiper controle el posicionamiento
+    // ✅ CORREGIDO: Mover padding al wrapper interno para no afectar cálculos de Swiper
   }
 
   &__image-wrapper-mobile {
-    width: 100% !important; // Patrón experiencia: ancho simple
+    width: 100%; // ✅ CORREGIDO: Sin !important para permitir flexibilidad
     max-width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
     overflow: hidden;
-    margin-right: 0; // Sin márgenes que interfieran
+    padding: 10px; // ✅ CORREGIDO: Padding movido aquí desde el slide
+    box-sizing: border-box;
+    // ✅ CORREGIDO: Sin margin-right para permitir espaciado nativo de Swiper
   }
 
   &__image-mobile {

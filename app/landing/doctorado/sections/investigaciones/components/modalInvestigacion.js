@@ -884,21 +884,21 @@ const ModalInvestigacion = {
         },
 
         // ==========================================
-        // BREAKPOINTS PROGRESIVOS COMO PREGRADO
+        // BREAKPOINTS CORREGIDOS PARA EVITAR DESFASE
         // ==========================================
         breakpoints: {
           0: {
             slidesPerView: 1,
-            spaceBetween: 20,
+            spaceBetween: 0, // ✅ CORREGIDO: Sin espaciado en móviles pequeños para evitar desfase
             centeredSlides: true // Solo móviles pequeños
           },
           576: {
-            slidesPerView: 1.2, // ✅ Progresivo como pregrado
+            slidesPerView: 1, // ✅ CORREGIDO: Cambiar de 1.2 a 1 exacto para consistencia
             spaceBetween: 20,
             centeredSlides: false
           },
           768: {
-            slidesPerView: 'auto', // ✅ Auto solo en tablets+
+            slidesPerView: 1, // ✅ CORREGIDO: Cambiar de 'auto' a 1 exacto para evitar cálculos conflictivos
             spaceBetween: 25,
             centeredSlides: false
           }
