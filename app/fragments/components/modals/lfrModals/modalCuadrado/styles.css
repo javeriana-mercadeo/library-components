@@ -96,6 +96,7 @@
 }
 
 .has-edit-mode-menu .modalGradient-content {
+  opacity: 1 !important;
   transform: none !important;
   position: relative !important;
 }

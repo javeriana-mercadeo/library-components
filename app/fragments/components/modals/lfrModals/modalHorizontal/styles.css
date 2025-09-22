@@ -92,6 +92,7 @@
 }
 
 .has-edit-mode-menu .modalWide-content {
+  opacity: 1 !important;
   transform: none !important;
   position: relative !important;
 }

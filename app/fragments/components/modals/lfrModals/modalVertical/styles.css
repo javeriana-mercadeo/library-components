@@ -82,8 +82,15 @@
 }
 
 .has-edit-mode-menu .modalVertical-overlay {
-  position: initial;
+  position: initial !important;
   display: flex !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.has-edit-mode-menu .modalVertical-content {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 .page-editor__editable {

@@ -35,9 +35,9 @@
       <!-- Content Section -->
       <div class="content-section">
         <!-- Title -->
-        <lfr-editable 
-          id="modal-title" 
-          type="rich-text"
+        <lfr-editable
+          id="modal-title"
+          type="text"
           class="modal-title">
           <h2 class="title title-xl content__title">¡Construye tu futuro en la Javeriana!</h2>
         </lfr-editable>
@@ -62,8 +62,18 @@
                 <i class="ph ph-student"></i>
               </div>
               <div class="benefit-content">
-                <h3 class="benefit-title">Beca Ingresa</h3>
-                <p class="benefit-text">Hasta el 50% para aspirantes con alto potencial académico.</p>
+                <lfr-editable
+                  id="benefit-1-title"
+                  type="rich-text"
+                  class="benefit-title-wrapper">
+                  <h3 class="benefit-title">Beca Ingresa</h3>
+                </lfr-editable>
+                <lfr-editable
+                  id="benefit-1-text"
+                  type="rich-text"
+                  class="benefit-text-wrapper">
+                  <p class="benefit-text">Hasta el 50% para aspirantes con alto potencial académico.</p>
+                </lfr-editable>
               </div>
             </div>
 
@@ -72,14 +82,29 @@
                 <i class="ph ph-star"></i>
               </div>
               <div class="benefit-content">
-                <h3 class="benefit-title">Beca Bachiller Destacado</h3>
-                <p class="benefit-text">80% de descuento para los mejores estudiantes.</p>
+                <lfr-editable
+                  id="benefit-2-title"
+                  type="rich-text"
+                  class="benefit-title-wrapper">
+                  <h3 class="benefit-title">Beca Bachiller Destacado</h3>
+                </lfr-editable>
+                <lfr-editable
+                  id="benefit-2-text"
+                  type="rich-text"
+                  class="benefit-text-wrapper">
+                  <p class="benefit-text">80% de descuento para los mejores estudiantes.</p>
+                </lfr-editable>
               </div>
             </div>
           </div>
 
           <!-- Motivational Text -->
-          <p class="motivational-text">Haz realidad tus metas. Tu futuro empieza hoy.</p>
+          <lfr-editable
+            id="motivational-text"
+            type="rich-text"
+            class="motivational-text-wrapper">
+            <p class="motivational-text">Haz realidad tus metas. Tu futuro empieza hoy.</p>
+          </lfr-editable>
 
           <button
             data-dmpa-element-id="btn"
