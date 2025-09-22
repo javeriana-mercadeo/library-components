@@ -20,6 +20,7 @@ const PreguntasFrecuentes = dynamic(() => import('./_sections/9_preguntasFrecuen
 const Relacionados = dynamic(() => import('./_sections/10_relacionados'), { ssr: false, loading: () => <Load /> })
 const EducacionEstrella = dynamic(() => import('./_sections/_educacionEstrella'), { ssr: false, loading: () => <Load /> })
 const Becas = dynamic(() => import('./_sections/_becas'), { ssr: false, loading: () => <Load /> })
+const Requisitos = dynamic(() => import('./_sections/_requisitos'), { ssr: false, loading: () => <Load /> })
 const Footer = dynamic(() => import('@library/components/footer'), { ssr: false, loading: () => <Load /> })
 
 export default function Profesional() {
@@ -91,6 +92,11 @@ export default function Profesional() {
       {/* <Becas /> */}
       <ViewComponent path={`${basePath}/_sections/_becas`}>
         <Becas />
+      </ViewComponent>
+
+      {/* <Requisitos /> */}
+      <ViewComponent path={`${basePath}/_sections/_requisitos`}>
+        <Requisitos />
       </ViewComponent>
 
       {/*  <PreguntasFrecuentes /> */}
