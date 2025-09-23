@@ -21,7 +21,7 @@ const RequisitosPregrado = () => {
     {
       id: 'actitud',
       title: 'ACTITUD',
-      percentage: 60,
+      percentage: 50,
       icon: 'ph-heart',
       color: 'primary',
       items: ['Entrevista personal', 'Manejo de situaciones', 'Relaciones interpersonales', 'Sensibilidad social', 'Motivación']
@@ -29,10 +29,12 @@ const RequisitosPregrado = () => {
     {
       id: 'conocimiento',
       title: 'CONOCIMIENTO',
-      percentage: 20,
+      percentage: 30,
       icon: 'ph-book-open',
       color: 'primary',
-      items: ['Ensayo sobre conocimientos en derecho y economía']
+      items: [
+        'Ensayo sobre conocimientos en derecho y economía'
+      ]
     },
     {
       id: 'habilidad',
@@ -40,7 +42,9 @@ const RequisitosPregrado = () => {
       percentage: 20,
       icon: 'ph-lightning-slash',
       color: 'primary',
-      items: ['Ensayo sobre conocimientos en derecho y economía']
+      items: [
+        'Ensayo sobre conocimientos en derecho y economía'
+      ]
     }
   ]
 
@@ -50,7 +54,7 @@ const RequisitosPregrado = () => {
         {/* === HEADER === */}
         <div className={`${baseClass}_header`}>
           <div className={`${baseClass}_header-icon`}>
-            <i className='ph ph-chart-pie'></i>
+            <i className="ph ph-chart-pie"></i>
           </div>
           <div className={`${baseClass}_header-content`}>
             <Title hierarchy='h2' className={`${baseClass}_title`}>
@@ -69,26 +73,39 @@ const RequisitosPregrado = () => {
               key={requirement.id}
               className={`${baseClass}_section ${baseClass}_section--${requirement.color}`}
               data-requirement={requirement.id}
-              data-percentage={requirement.percentage}>
+              data-percentage={requirement.percentage}
+            >
               {/* Progress Bar */}
               <div className={`${baseClass}_progress-wrapper`}>
                 <div className={`${baseClass}_progress-bar`}>
-                  <div className={`${baseClass}_progress-fill`} data-progress={requirement.percentage}></div>
+                  <div
+                    className={`${baseClass}_progress-fill`}
+                    data-progress={requirement.percentage}
+                  ></div>
                 </div>
                 <div className={`${baseClass}_progress-label`}>
-                  <span className={`${baseClass}_percentage`}>{requirement.percentage}%</span>
+                  <span className={`${baseClass}_percentage`}>
+                    {requirement.percentage}%
+                  </span>
                 </div>
               </div>
 
-              {/* Section Header */}
-              <div className={`${baseClass}_section-header`}>
-                <div className={`${baseClass}_section-icon`}>
-                  <i className={requirement.icon}></i>
+          {/* Accordion Lists */}
+          <div className={`${baseClass}_accordion-container`}>
+            {requirements.map(requirement => (
+              <div key={requirement.id} className={`${baseClass}_accordion-item`} data-requirement={requirement.id}>
+                <div className={`${baseClass}_accordion-header`}>
+                  <div className={`${baseClass}_accordion-icon`}>
+                    <i className={requirement.icon}></i>
+                  </div>
+                  <Title hierarchy='h3' className={`${baseClass}_accordion-title`}>
+                    {requirement.title}
+                  </Title>
+                  <div className={`${baseClass}_accordion-percentage`}>{requirement.percentage}%</div>
+                  <div className={`${baseClass}_accordion-toggle`}>
+                    <i className='ph ph-caret-down'></i>
+                  </div>
                 </div>
-                <Title hierarchy='h3' className={`${baseClass}_section-title`}>
-                  {requirement.title}
-                </Title>
-              </div>
 
               {/* Section Content */}
               <div className={`${baseClass}_section-content`}>
@@ -96,9 +113,13 @@ const RequisitosPregrado = () => {
                   {requirement.items.map((item, itemIndex) => (
                     <div key={itemIndex} className={`${baseClass}_item`}>
                       <div className={`${baseClass}_item-check`}>
-                        <i className='ph ph-check'></i>
+                        <i className="ph ph-check"></i>
                       </div>
-                      <Paragraph className={`${baseClass}_item-text`} size='sm' isEditable={false}>
+                      <Paragraph
+                        className={`${baseClass}_item-text`}
+                        size='sm'
+                        isEditable={false}
+                      >
                         {item}
                       </Paragraph>
                     </div>
@@ -113,7 +134,7 @@ const RequisitosPregrado = () => {
         <div className={`${baseClass}_footer`}>
           <div className={`${baseClass}_info-card`}>
             <div className={`${baseClass}_info-icon`}>
-              <i className='ph ph-info'></i>
+              <i className="ph ph-info"></i>
             </div>
             <div className={`${baseClass}_info-content`}>
               <Caption className={`${baseClass}_info-title`} size='md' bold={true}>

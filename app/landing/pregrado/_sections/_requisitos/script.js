@@ -1,15 +1,13 @@
 /**
- * Script vanilla JS para el componente de Requisitos de Admisión
+ * Script vanilla JS para el componente de Requisitos de Admisión - Gráfico Circular
  * Compatible con Liferay DXP - Sin dependencias de React
  */
-
-// Eliminamos la ejecución automática para usar solo la manual desde React
 
 /**
  * Inicializa todos los componentes de requisitos de admisión
  */
 function initAdmissionRequirements() {
-  const components = document.querySelectorAll('[data-component-id="requisitos"]')
+  const components = document.querySelectorAll('[data-component-id="requisitos-pregrado"]')
 
   if (components.length === 0) {
     console.log('AdmissionRequirements: No se encontraron componentes')
@@ -17,80 +15,219 @@ function initAdmissionRequirements() {
   }
 
   components.forEach(component => {
-    initProgressAnimations(component)
-    initCardInteractions(component)
+    initChartInteractions(component)
+    initAccordionInteractions(component)
     initAccessibilityEnhancements(component)
-
-    // Ejecutar animaciones inmediatamente con un pequeño delay
-    setTimeout(() => {
-      triggerProgressAnimations(component)
-    }, 500)
   })
 
   console.log(`AdmissionRequirements: ${components.length} componente(s) inicializado(s)`)
 }
 
 /**
- * Inicializa las animaciones de barras de progreso
+ * Inicializa las interacciones del gráfico circular
  * @param {HTMLElement} component - Elemento del componente
  */
-function initProgressAnimations(component) {
-  const sections = component.querySelectorAll('[data-requirement]')
+function initChartInteractions(component) {
+  const chartSegments = component.querySelectorAll('.admission-requirements_chart-segment')
+  const chartLabelTexts = component.querySelectorAll('.admission-requirements_chart-label-percentage, .admission-requirements_chart-label-title')
 
-  sections.forEach(section => {
-    const percentage = parseInt(section.dataset.percentage) || 0
-    const progressFill = section.querySelector('.admission-requirements_progress-fill')
+  // Hover effects para segmentos del gráfico
+  chartSegments.forEach(segment => {
+    const requirementId = segment.dataset.requirement
+    const percentage = segment.dataset.percentage
 
-    if (progressFill) {
-      // Establecer el valor inicial (sin animación)
-      progressFill.style.transform = 'scaleX(0)'
-      progressFill.style.transition = 'none' // Sin transición inicial
+    segment.addEventListener('mouseenter', () => {
+      // Destacar segmento
+      segment.style.transform = 'scale(1.02)'
+      segment.style.transformOrigin = 'center'
 
-      // Guardar el porcentaje para animación posterior
-      progressFill.dataset.targetWidth = percentage / 100
-    }
+      // Anunciar para lectores de pantalla
+      announceToScreenReader(component, `${requirementId}: ${percentage}%`)
+    })
+
+    segment.addEventListener('mouseleave', () => {
+      // Restaurar segmento
+      segment.style.transform = 'scale(1)'
+    })
+
+    // Click para activar acordeón
+    segment.addEventListener('click', () => {
+      toggleAccordion(component, requirementId)
+    })
+  })
+
+  // Hover effects para labels del gráfico (texto SVG)
+  chartLabelTexts.forEach(labelText => {
+    const requirementId = labelText.dataset.requirement
+
+    labelText.addEventListener('mouseenter', () => {
+      // Destacar segmento correspondiente
+      const correspondingSegment = component.querySelector(`[data-requirement="${requirementId}"].admission-requirements_chart-segment`)
+      if (correspondingSegment) {
+        correspondingSegment.style.transform = 'scale(1.02)'
+        correspondingSegment.style.transformOrigin = 'center'
+      }
+    })
+
+    labelText.addEventListener('mouseleave', () => {
+      // Restaurar segmento correspondiente
+      const correspondingSegment = component.querySelector(`[data-requirement="${requirementId}"].admission-requirements_chart-segment`)
+      if (correspondingSegment) {
+        correspondingSegment.style.transform = 'scale(1)'
+      }
+    })
+
+    // Click para activar acordeón
+    labelText.addEventListener('click', () => {
+      toggleAccordion(component, requirementId)
+    })
   })
 }
 
 /**
- * Inicializa las interacciones de las secciones
+ * Inicializa las interacciones del acordeón
  * @param {HTMLElement} component - Elemento del componente
  */
-function initCardInteractions(component) {
-  const sections = component.querySelectorAll('.admission-requirements_section')
+function initAccordionInteractions(component) {
+  const accordionHeaders = component.querySelectorAll('.admission-requirements_accordion-header')
 
-  sections.forEach(section => {
-    // Solo mantenemos click y keyboard para accesibilidad básica si es necesario
-    // Pero sin comportamiento interactivo ya que son solo informativos
+  accordionHeaders.forEach(header => {
+    const accordionItem = header.closest('.admission-requirements_accordion-item')
+    const requirementId = accordionItem.dataset.requirement
 
-    // Agregar aria-label descriptivo para lectores de pantalla
-    const requirement = section.dataset.requirement
-    const percentage = section.dataset.percentage
-    const title = section.querySelector('.admission-requirements_section-title')?.textContent || requirement
+    header.addEventListener('click', () => {
+      toggleAccordion(component, requirementId)
+    })
 
-    section.setAttribute('aria-label', `${title}: ${percentage}% del proceso de evaluación`)
+    // Soporte para teclado
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        toggleAccordion(component, requirementId)
+      }
+    })
+
+    // Hacer focusable para accesibilidad
+    header.setAttribute('tabindex', '0')
+    header.setAttribute('role', 'button')
+    header.setAttribute('aria-expanded', 'false')
   })
 }
 
-// Funciones de interacción eliminadas - las secciones son solo informativas
+/**
+ * Alterna el estado del acordeón para un requisito específico
+ * @param {HTMLElement} component - Elemento del componente
+ * @param {string} requirementId - ID del requisito
+ */
+function toggleAccordion(component, requirementId) {
+  const accordionItem = component.querySelector(`[data-requirement="${requirementId}"].admission-requirements_accordion-item`)
+  const accordionContent = accordionItem.querySelector('.admission-requirements_accordion-content')
+  const accordionHeader = accordionItem.querySelector('.admission-requirements_accordion-header')
+
+  if (!accordionItem || !accordionContent) return
+
+  const isActive = accordionItem.classList.contains('is-active')
+
+  if (isActive) {
+    // Cerrar acordeón
+    accordionItem.classList.remove('is-active')
+    accordionContent.style.maxHeight = '0'
+    accordionHeader.setAttribute('aria-expanded', 'false')
+
+    // Anunciar para lectores de pantalla
+    announceToScreenReader(component, `${requirementId} colapsado`)
+  } else {
+    // Cerrar otros acordeones primero (comportamiento opcional)
+    const activeAccordions = component.querySelectorAll('.admission-requirements_accordion-item.is-active')
+    activeAccordions.forEach(activeItem => {
+      if (activeItem !== accordionItem) {
+        activeItem.classList.remove('is-active')
+        const activeContent = activeItem.querySelector('.admission-requirements_accordion-content')
+        const activeHeader = activeItem.querySelector('.admission-requirements_accordion-header')
+        if (activeContent) activeContent.style.maxHeight = '0'
+        if (activeHeader) activeHeader.setAttribute('aria-expanded', 'false')
+      }
+    })
+
+    // Abrir acordeón
+    accordionItem.classList.add('is-active')
+    accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px'
+    accordionHeader.setAttribute('aria-expanded', 'true')
+
+    // Anunciar para lectores de pantalla
+    announceToScreenReader(component, `${requirementId} expandido`)
+  }
+}
+
+/**
+ * Anuncia información para lectores de pantalla
+ * @param {HTMLElement} component - Elemento del componente
+ * @param {string} message - Mensaje a anunciar
+ */
+function announceToScreenReader(component, message) {
+  const liveRegion = component.querySelector('#admission-requirements-live-region')
+  if (liveRegion) {
+    liveRegion.textContent = message
+
+    // Limpiar después de un momento
+    setTimeout(() => {
+      liveRegion.textContent = ''
+    }, 1000)
+  }
+}
 
 /**
  * Mejoras de accesibilidad
  * @param {HTMLElement} component - Elemento del componente
  */
 function initAccessibilityEnhancements(component) {
-  // Agregar landmarks ARIA
-  const dashboard = component.querySelector('.admission-requirements_dashboard')
-  if (dashboard) {
-    dashboard.setAttribute('role', 'region')
-    dashboard.setAttribute('aria-label', 'Requisitos de admisión al programa')
+  // Agregar landmarks ARIA para el gráfico
+  const chartContainer = component.querySelector('.admission-requirements_chart-container')
+  if (chartContainer) {
+    chartContainer.setAttribute('role', 'region')
+    chartContainer.setAttribute('aria-label', 'Gráfico circular de requisitos de admisión')
   }
 
-  // Mejorar la descripción de los porcentajes
-  const percentages = component.querySelectorAll('.admission-requirements_percentage-number')
-  percentages.forEach(percentage => {
-    const value = percentage.textContent
-    percentage.setAttribute('aria-label', `${value} por ciento`)
+  // Mejorar la descripción del gráfico SVG
+  const chart = component.querySelector('.admission-requirements_chart')
+  if (chart) {
+    chart.setAttribute('role', 'img')
+    chart.setAttribute('aria-label', 'Gráfico circular mostrando: 60% actitud, 20% conocimiento, 20% habilidad')
+  }
+
+  // Mejorar segmentos del gráfico
+  const chartSegments = component.querySelectorAll('.admission-requirements_chart-segment')
+  chartSegments.forEach(segment => {
+    const requirementId = segment.dataset.requirement
+    const percentage = segment.dataset.percentage
+    segment.setAttribute('role', 'button')
+    segment.setAttribute('tabindex', '0')
+    segment.setAttribute('aria-label', `${requirementId}: ${percentage}%. Presiona para expandir detalles`)
+
+    // Soporte para teclado en segmentos
+    segment.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        toggleAccordion(component, requirementId)
+      }
+    })
+  })
+
+  // Mejorar labels del gráfico (texto SVG)
+  const chartLabelTexts = component.querySelectorAll('.admission-requirements_chart-label-percentage, .admission-requirements_chart-label-title')
+  chartLabelTexts.forEach(labelText => {
+    const requirementId = labelText.dataset.requirement
+    labelText.setAttribute('role', 'button')
+    labelText.setAttribute('tabindex', '0')
+    labelText.setAttribute('aria-label', `${requirementId}. Presiona para expandir detalles`)
+
+    // Soporte para teclado en labels
+    labelText.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        toggleAccordion(component, requirementId)
+      }
+    })
   })
 
   // Agregar live region para anuncios dinámicos
@@ -108,7 +245,7 @@ function initAccessibilityEnhancements(component) {
 }
 
 /**
- * Inicializa el observer de intersección para animaciones on-scroll
+ * Actualiza las interacciones cuando el contenido cambia dinámicamente
  * @param {HTMLElement} component - Elemento del componente
  */
 function initIntersectionObserver(component) {
@@ -119,21 +256,18 @@ function initIntersectionObserver(component) {
     return
   }
 
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          console.log('AdmissionRequirements: Componente visible, activando animaciones')
-          triggerProgressAnimations(entry.target)
-          observer.unobserve(entry.target)
-        }
-      })
-    },
-    {
-      threshold: 0.1, // Reducir threshold para activar más fácilmente
-      rootMargin: '0px 0px -100px 0px' // Activar un poco antes
-    }
-  )
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        console.log('AdmissionRequirements: Componente visible, activando animaciones')
+        triggerProgressAnimations(entry.target)
+        observer.unobserve(entry.target)
+      }
+    })
+  }, {
+    threshold: 0.1, // Reducir threshold para activar más fácilmente
+    rootMargin: '0px 0px -100px 0px' // Activar un poco antes
+  })
 
   observer.observe(component)
 }
@@ -162,6 +296,7 @@ function triggerProgressAnimations(component) {
 
       // Agregar clase para animaciones adicionales
       section.classList.add('is-animated')
+
     }, index * 300) // Stagger animation con más delay
   })
 }
@@ -175,7 +310,7 @@ window.AdmissionRequirements = {
    * @param {string} requirementId - ID del requisito
    * @param {number} newPercentage - Nuevo porcentaje
    */
-  updatePercentage: function (requirementId, newPercentage) {
+  updatePercentage: function(requirementId, newPercentage) {
     const card = document.querySelector(`[data-requirement="${requirementId}"]`)
     if (card) {
       card.dataset.percentage = newPercentage
@@ -201,7 +336,7 @@ window.AdmissionRequirements = {
    * Obtiene el estado actual de todos los requisitos
    * @returns {Array} Array con los datos de todos los requisitos
    */
-  getRequirementsData: function () {
+  getRequirementsData: function() {
     const cards = document.querySelectorAll('[data-requirement]')
     return Array.from(cards).map(card => ({
       id: card.dataset.requirement,
@@ -212,9 +347,20 @@ window.AdmissionRequirements = {
   },
 
   /**
-   * Reinicia todas las animaciones
+   * Abre un acordeón específico
+   * @param {string} requirementId - ID del requisito
    */
-  resetAnimations: function () {
+  openAccordion: function(requirementId) {
+    const component = document.querySelector('[data-component-id="requisitos-pregrado"]')
+    if (component) {
+      toggleAccordion(component, requirementId)
+    }
+  },
+
+  /**
+   * Cierra todos los acordeones
+   */
+  resetAnimations: function() {
     const components = document.querySelectorAll('[data-component-id="requisitos"]')
     components.forEach(component => {
       initProgressAnimations(component)
