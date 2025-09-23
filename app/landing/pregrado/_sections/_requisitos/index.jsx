@@ -21,38 +21,26 @@ const RequisitosPregrado = () => {
     {
       id: 'actitud',
       title: 'ACTITUD',
-      percentage: 60,
+      percentage: 50,
       icon: 'ph-heart',
       color: 'primary',
-      items: [
-        'Entrevista personal',
-        'Manejo de situaciones',
-        'Relaciones interpersonales',
-        'Sensibilidad social',
-        'Motivación'
-      ]
+      items: ['Entrevista personal', 'Manejo de situaciones', 'Relaciones interpersonales', 'Sensibilidad social', 'Motivación']
     },
     {
       id: 'conocimiento',
       title: 'CONOCIMIENTO',
-      percentage: 20,
+      percentage: 30,
       icon: 'ph-book-open',
       color: 'secondary',
-      items: [
-        'Ensayo sobre conocimientos en derecho y economía'
-      ]
+      items: ['Ensayo sobre conocimientos en derecho y economía']
     },
     {
       id: 'habilidad',
       title: 'HABILIDAD',
       percentage: 20,
       icon: 'ph-lightning',
-      color: 'tertiary',
-      items: [
-        'Pensamiento lógico-matemático',
-        'Composición escrita',
-        'Comprensión de lectura'
-      ]
+      color: 'success',
+      items: ['Pensamiento lógico-matemático', 'Composición escrita', 'Comprensión de lectura']
     }
   ]
 
@@ -68,18 +56,16 @@ const RequisitosPregrado = () => {
 
         {/* === CIRCULAR CHART SECTION === */}
         <div className={`${baseClass}_chart-container`}>
-
           {/* SVG Circular Chart */}
           <div className={`${baseClass}_chart-wrapper`}>
-            <svg className={`${baseClass}_chart`} viewBox="0 0 800 800" width="800" height="800">
-
+            <svg className={`${baseClass}_chart`} viewBox='0 0 800 800' width='800' height='800'>
               {/* Chart segments */}
               {requirements.map((requirement, index) => {
                 let startAngle = 0
                 for (let i = 0; i < index; i++) {
                   startAngle += requirements[i].percentage * 3.6 // Convert percentage to degrees
                 }
-                const endAngle = startAngle + (requirement.percentage * 3.6)
+                const endAngle = startAngle + requirement.percentage * 3.6
 
                 // Calculate path for each segment
                 const radius = 240
@@ -116,28 +102,13 @@ const RequisitosPregrado = () => {
               })}
 
               {/* Center circle */}
-              <circle
-                cx="400"
-                cy="400"
-                r="120"
-                className={`${baseClass}_chart-center`}
-              />
+              <circle cx='400' cy='400' r='120' className={`${baseClass}_chart-center`} />
 
               {/* Center text */}
-              <text
-                x="400"
-                y="395"
-                textAnchor="middle"
-                className={`${baseClass}_chart-total-label`}
-              >
+              <text x='400' y='395' textAnchor='middle' className={`${baseClass}_chart-total-label`}>
                 Total
               </text>
-              <text
-                x="400"
-                y="415"
-                textAnchor="middle"
-                className={`${baseClass}_chart-total-value`}
-              >
+              <text x='400' y='415' textAnchor='middle' className={`${baseClass}_chart-total-value`}>
                 100%
               </text>
 
@@ -149,7 +120,7 @@ const RequisitosPregrado = () => {
                   startAngle += requirements[i].percentage * 3.6
                 }
                 const segmentAngle = requirement.percentage * 3.6
-                const midAngle = startAngle + (segmentAngle / 2) - 90 // -90 para empezar desde arriba
+                const midAngle = startAngle + segmentAngle / 2 - 90 // -90 para empezar desde arriba
 
                 // Convertir a radianes
                 const midAngleRad = midAngle * (Math.PI / 180)
@@ -169,11 +140,10 @@ const RequisitosPregrado = () => {
                     <text
                       x={labelX}
                       y={labelY - 5}
-                      textAnchor="middle"
+                      textAnchor='middle'
                       className={`${baseClass}_chart-label-percentage`}
                       data-requirement={requirement.id}
-                      style={{ cursor: 'pointer' }}
-                    >
+                      style={{ cursor: 'pointer' }}>
                       {requirement.percentage}%
                     </text>
 
@@ -181,28 +151,22 @@ const RequisitosPregrado = () => {
                     <text
                       x={labelX}
                       y={labelY + 10}
-                      textAnchor="middle"
+                      textAnchor='middle'
                       className={`${baseClass}_chart-label-title`}
                       data-requirement={requirement.id}
-                      style={{ cursor: 'pointer' }}
-                    >
+                      style={{ cursor: 'pointer' }}>
                       {requirement.title}
                     </text>
                   </g>
                 )
               })}
-
             </svg>
           </div>
 
           {/* Accordion Lists */}
           <div className={`${baseClass}_accordion-container`}>
-            {requirements.map((requirement) => (
-              <div
-                key={requirement.id}
-                className={`${baseClass}_accordion-item`}
-                data-requirement={requirement.id}
-              >
+            {requirements.map(requirement => (
+              <div key={requirement.id} className={`${baseClass}_accordion-item`} data-requirement={requirement.id}>
                 <div className={`${baseClass}_accordion-header`}>
                   <div className={`${baseClass}_accordion-icon`}>
                     <i className={requirement.icon}></i>
@@ -210,11 +174,9 @@ const RequisitosPregrado = () => {
                   <Title hierarchy='h3' className={`${baseClass}_accordion-title`}>
                     {requirement.title}
                   </Title>
-                  <div className={`${baseClass}_accordion-percentage`}>
-                    {requirement.percentage}%
-                  </div>
+                  <div className={`${baseClass}_accordion-percentage`}>{requirement.percentage}%</div>
                   <div className={`${baseClass}_accordion-toggle`}>
-                    <i className="ph ph-caret-down"></i>
+                    <i className='ph ph-caret-down'></i>
                   </div>
                 </div>
 
@@ -223,13 +185,9 @@ const RequisitosPregrado = () => {
                     {requirement.items.map((item, itemIndex) => (
                       <div key={itemIndex} className={`${baseClass}_accordion-list-item`}>
                         <div className={`${baseClass}_item-check`}>
-                          <i className="ph ph-check"></i>
+                          <i className='ph ph-check'></i>
                         </div>
-                        <Paragraph
-                          className={`${baseClass}_item-text`}
-                          size='md'
-                          isEditable={false}
-                        >
+                        <Paragraph className={`${baseClass}_item-text`} size='md' isEditable={false}>
                           {item}
                         </Paragraph>
                       </div>
@@ -239,7 +197,6 @@ const RequisitosPregrado = () => {
               </div>
             ))}
           </div>
-
         </div>
       </Container>
     </div>

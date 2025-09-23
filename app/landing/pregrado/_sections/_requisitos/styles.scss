@@ -17,7 +17,7 @@ $req-chart-size-mobile: rem(550px);
   background-color: var(--background-100);
 
   @include dark-theme {
-    background-color: var(--background-900);
+    background-color: var(--background-200);
   }
 
   &_container {
@@ -57,19 +57,31 @@ $req-chart-size-mobile: rem(550px);
   }
 
   // ==========================================
-  // CIRCULAR CHART CONTAINER
+  // CIRCULAR CHART CONTAINER - TWO COLUMN LAYOUT
   // ==========================================
   &_chart-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "chart"
+      "accordion";
     gap: var(--spacing-xl);
+    align-items: start;
+
+    @include responsive($breakpoint-lg) {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: "chart accordion";
+      gap: var(--spacing-2xl);
+      align-items: center;
+    }
   }
 
   &_chart-wrapper {
+    grid-area: chart;
     position: relative;
     width: $req-chart-size;
     height: $req-chart-size;
+    justify-self: center;
 
     @include responsive($breakpoint-md) {
       width: $req-chart-size-mobile;
@@ -89,12 +101,8 @@ $req-chart-size-mobile: rem(550px);
   &_chart-segment {
     cursor: pointer;
     transition: $req-transition;
-    stroke: var(--neutral-100);
-    stroke-width: 2;
-
-    @include dark-theme {
-      stroke: var(--neutral-900);
-    }
+    stroke: none;
+    stroke-width: 0;
 
     // Primary color
     &--primary {
@@ -118,12 +126,12 @@ $req-chart-size-mobile: rem(550px);
       }
     }
 
-    // Tertiary color
-    &--tertiary {
-      fill: var(--tertiary-600);
+    // Success color
+    &--success {
+      fill: var(--success-600);
 
       &:hover {
-        fill: var(--tertiary-700);
+        fill: var(--success-700);
         transform: scale(1.02);
         transform-origin: center;
       }
@@ -131,33 +139,32 @@ $req-chart-size-mobile: rem(550px);
   }
 
   &_chart-center {
-    fill: var(--neutral-100);
-    stroke: var(--neutral-300);
-    stroke-width: 2;
+    fill: var(--background-100);
+    stroke: none;
+    stroke-width: 0;
 
     @include dark-theme {
-      fill: var(--neutral-900);
-      stroke: var(--neutral-700);
+      fill: var(--background-200);
     }
   }
 
   &_chart-total-label {
-    font-size: var(--font-size-small);
+    font-size: var(--font-size-paragraph);
     font-weight: 500;
-    fill: var(--neutral-600);
+    fill: var(--neutral-400);
 
     @include dark-theme {
-      fill: var(--neutral-400);
+      fill: var(--neutral-600);
     }
   }
 
   &_chart-total-value {
-    font-size: var(--font-size-caption);
+    font-size: var(--font-size-subtitle);
     font-weight: 700;
-    fill: var(--neutral-800);
+    fill: var(--neutral-200);
 
     @include dark-theme {
-      fill: var(--neutral-200);
+      fill: var(--neutral-800);
     }
   }
 
@@ -206,6 +213,7 @@ $req-chart-size-mobile: rem(550px);
   // ACCORDION CONTAINER
   // ==========================================
   &_accordion-container {
+    grid-area: accordion;
     width: 100%;
     max-width: rem(800px);
     display: flex;
@@ -275,8 +283,8 @@ $req-chart-size-mobile: rem(550px);
     }
 
     .admission-requirements_accordion-item[data-requirement="habilidad"] & {
-      background: rgba(var(--tertiary-600-rgb), 0.1);
-      color: var(--tertiary-600);
+      background: rgba(var(--success-600-rgb), 0.1);
+      color: var(--success-600);
     }
   }
 
