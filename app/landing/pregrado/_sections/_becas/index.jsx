@@ -22,20 +22,20 @@ const Becas = () => {
       title: 'Becas disponibles',
       content: `
         <p>Contamos con un <strong>área de apoyo financiero</strong> que ofrece diferentes becas para que inicies tus estudios de pregrado.</p>
-        
+
         <h3>Tipos de Becas Disponibles</h3>
         <p>La Universidad ofrece opciones de becas* para aspirantes admitidos a pregrado con <em>excelente desempeño académico</em> y/o con dificultades económicas. Explora los requisitos para aplicar a:</p>
-        
+
         <ul>
           <li><strong>Beca Ingresa a la Javeriana</strong> - Hasta 50% de descuento en matrícula</li>
           <li><strong>Beca Bachiller Destacado</strong> - Para estudiantes con promedio superior a 4.5</li>
           <li><strong>Beca Bachiller Destacado ACODESI</strong> - Convenio especial con colegios ACODESI</li>
         </ul>
-        
+
         <div class="overflow-auto portlet-msg-info">
           Es importante presentar todos los documentos en las fechas establecidas para garantizar tu participación en el proceso.
         </div>
-        
+
         <h4>Proceso de Aplicación</h4>
         <ol>
           <li>Completar formulario de solicitud en línea</li>
@@ -43,7 +43,7 @@ const Becas = () => {
           <li>Entrevista personal (si aplica)</li>
           <li>Notificación de resultados por correo electrónico</li>
         </ol>
-        
+
         <table border="1" style="width: 100%">
           <caption>Cronograma de Becas 2024</caption>
           <tbody>
@@ -64,13 +64,13 @@ const Becas = () => {
             </tr>
           </tbody>
         </table>
-        
+
         <div class="overflow-auto portlet-msg-alert">
           Los cupos son limitados. Se recomienda aplicar en la primera convocatoria para tener mayores oportunidades.
         </div>
-        
+
         <p>Para más información consulta nuestro <a href="https://www.javeriana.edu.co/becas">portal oficial de becas</a> o contáctanos al correo <code>becas@javeriana.edu.co</code></p>
-        
+
         <cite>*Aplican términos y condiciones. Consulta el reglamento completo en el portal web.</cite>
       `,
       buttonText: 'Más información',
@@ -86,7 +86,7 @@ const Becas = () => {
       title: 'Opciones de financiación',
       content: `
         <p>También contamos con <strong>diversas opciones de financiación</strong> para facilitar el acceso a la educación superior de calidad.</p>
-        
+
         <h3>Modalidades de Financiamiento</h3>
         <ul>
           <li><strong>A corto plazo</strong> - Directamente con la Universidad, tasa de interés preferencial del <u>8% anual</u></li>
@@ -94,11 +94,11 @@ const Becas = () => {
           <li><strong>A largo plazo</strong> - Con entidades aliadas que ofrecen bajas tasas de interés, hasta 60 meses</li>
           <li>Conoce también nuestros <strong>descuentos y convenios</strong> con entidades públicas y privadas</li>
         </ul>
-        
+
         <div class="overflow-auto portlet-msg-info">
           Puedes combinar becas y financiamiento para maximizar los beneficios económicos disponibles.
         </div>
-        
+
         <h4>Entidades Financieras Aliadas</h4>
         <table border="1" style="width: 100%">
           <caption>Opciones de Financiamiento Externo</caption>
@@ -125,7 +125,7 @@ const Becas = () => {
             </tr>
           </tbody>
         </table>
-        
+
         <h4>Descuentos Especiales</h4>
         <ol>
           <li><em>Convenio con empresas</em> - Hasta 15% de descuento para hijos de empleados</li>
@@ -133,13 +133,13 @@ const Becas = () => {
           <li><em>Hermanos</em> - 5% de descuento adicional por cada hermano matriculado</li>
           <li><em>Pronto pago</em> - 3% de descuento pagando matrícula antes del 15 de enero</li>
         </ol>
-        
+
         <div class="overflow-auto portlet-msg-alert">
           Las tasas de interés pueden variar según las condiciones del mercado y están sujetas a aprobación crediticia.
         </div>
-        
+
         <p>Agenda tu cita con nuestros asesores financieros llamando al <code>(+57) 1 320 8320 ext. 4040</code> o visítanos en el <a href="https://www.javeriana.edu.co/financiacion">portal de financiación</a></p>
-        
+
         <cite>Los descuentos no son acumulables salvo indicación contraria. Consulta términos y condiciones específicos.</cite>
       `,
       buttonText: 'Más información',
@@ -151,14 +151,8 @@ const Becas = () => {
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
         {/* Título principal de la sección */}
-        <Title
-          id={`title-${elementName}-main-title`}
-          className={`${baseClass}__main-title`}
-          hierarchy='h2'
-          weight='semibold'
-          size='2xl'
-          align='center'>
-          Becas y Financiación
+        <Title className={`${baseClass}__main-title`} hierarchy='h2' weight='semibold' size='2xl' align='center' isEditable={false}>
+          Financiación y becas para estudiar la carrera de <span data-puj-name></span>
         </Title>
 
         <div className={`${baseClass}__tabs-container`}>

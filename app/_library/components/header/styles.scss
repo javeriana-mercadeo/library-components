@@ -29,7 +29,7 @@ body:has(.header) {
   left: 0;
   width: 100%;
   background-color: var(--neutral-variant-blue-200);
-  z-index: 9998;
+  z-index: 9997;
   box-shadow: rem(0px) rem(4px) rem(6px) rgba(0, 0, 0, 0.1);
   min-height: 70px;
   transition: transform 0.3s ease;
@@ -345,7 +345,7 @@ body:has(.header) {
     width: 100%;
     height: calc(100vh - 120px); // Dejar espacio para los botones fijos
     background: rgba(0, 0, 0, 0.5);
-    z-index: 9998;
+    z-index: 9997;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
@@ -366,7 +366,7 @@ body:has(.header) {
   bottom: 0;
   left: 0;
   width: 100%;
-  z-index: 9998;
+  z-index: 9997;
   display: block;
 
   // Ocultar en desktop

@@ -288,8 +288,7 @@ export async function GET(req: NextRequest) {
   const componentPath = specificPath ? path.join(process.cwd(), 'app', cleanPath(specificPath)) : path.join(process.cwd(), COMPONENT_PATH)
 
   try {
-    // 📌 TEMPORAL: Deshabilitar cache para debuggear problema de archivos obsoletos
-    // TODO: Volver a habilitar cuando se confirme que funciona correctamente
+    // Cache temporarily disabled for debugging
     const DISABLE_CACHE = true
 
     // 📌 Verificar si necesita recompilación (a menos que se fuerce o esté deshabilitado el cache)

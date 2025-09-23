@@ -59,7 +59,6 @@ const FAQAccordionSystem = {
     let decoded = text
     let previousDecoded = ''
 
-    // Hasta 3 intentos de decodificación
     for (let i = 0; i < 3 && decoded !== previousDecoded; i++) {
       previousDecoded = decoded
       textarea.innerHTML = decoded
@@ -88,7 +87,6 @@ const FAQAccordionSystem = {
 
   // Abrir item del acordeón con animación
   openAccordionItem(item, answer, icon) {
-    // Preparar elementos para animación
     answer.style.display = 'block'
     answer.style.height = 'auto'
     answer.style.maxHeight = 'none'
@@ -96,7 +94,6 @@ const FAQAccordionSystem = {
     answer.style.overflow = 'hidden'
     const targetHeight = answer.scrollHeight
 
-    // Estado inicial de animación
     answer.style.height = '0px'
     answer.style.maxHeight = '0px'
     answer.style.transform = 'translateY(-10px)'
@@ -104,14 +101,11 @@ const FAQAccordionSystem = {
     answer.style.paddingBottom = '0px'
     answer.classList.remove(this.config.hiddenClass)
 
-    // Actualizar estado visual
     item.classList.add(this.config.activeClass)
     icon.innerHTML = '<i class="ph ph-caret-up"></i>'
 
-    // Forzar reflow
     answer.offsetHeight
 
-    // Aplicar transición suave
     answer.style.transition = `
       height ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
       opacity ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -119,7 +113,6 @@ const FAQAccordionSystem = {
       padding ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)
     `
 
-    // Animar hacia estado final
     requestAnimationFrame(() => {
       answer.style.height = `${targetHeight}px`
       answer.style.maxHeight = `${targetHeight + 20}px`
@@ -129,7 +122,6 @@ const FAQAccordionSystem = {
       answer.style.paddingBottom = ''
     })
 
-    // Limpiar estilos después de la animación
     setTimeout(() => {
       answer.style.transition = ''
       answer.style.height = 'auto'
@@ -144,11 +136,9 @@ const FAQAccordionSystem = {
 
   // Cerrar item del acordeón con animación
   closeAccordionItem(item, answer, icon) {
-    // Actualizar estado visual
     item.classList.remove(this.config.activeClass)
     icon.innerHTML = '<i class="ph ph-caret-down"></i>'
 
-    // Preparar animación de cierre
     const currentHeight = answer.scrollHeight
     answer.style.height = `${currentHeight}px`
     answer.style.maxHeight = `${currentHeight}px`
@@ -156,10 +146,8 @@ const FAQAccordionSystem = {
     answer.style.opacity = '1'
     answer.style.transform = 'translateY(0)'
 
-    // Forzar reflow
     answer.offsetHeight
 
-    // Aplicar transición suave
     answer.style.transition = `
       height ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
       opacity ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -167,7 +155,6 @@ const FAQAccordionSystem = {
       padding ${this.config.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)
     `
 
-    // Animar hacia estado cerrado
     requestAnimationFrame(() => {
       answer.style.height = '0px'
       answer.style.maxHeight = '0px'
@@ -177,12 +164,10 @@ const FAQAccordionSystem = {
       answer.style.paddingBottom = '0px'
     })
 
-    // Ocultar completamente después de la animación
     setTimeout(() => {
       answer.style.display = 'none'
       answer.classList.add(this.config.hiddenClass)
 
-      // Limpiar estilos
       answer.style.transition = ''
       answer.style.height = ''
       answer.style.maxHeight = ''
@@ -200,7 +185,6 @@ const FAQAccordionSystem = {
     const isCurrentlyActive = clickedItem.classList.contains(this.config.activeClass)
     const activeItems = []
 
-    // Identificar items activos que se van a cerrar
     faqItems.forEach(item => {
       if (item.classList.contains(this.config.activeClass)) {
         const answer = item.querySelector(this.config.answerSelector)
@@ -209,12 +193,10 @@ const FAQAccordionSystem = {
       }
     })
 
-    // Cerrar todos los items activos
     activeItems.forEach(({ item, answer, icon }) => {
       this.closeAccordionItem(item, answer, icon)
     })
 
-    // Si el item clickeado no estaba activo, abrirlo después del cierre
     if (!isCurrentlyActive) {
       const answer = clickedItem.querySelector(this.config.answerSelector)
       const icon = clickedItem.querySelector(this.config.iconSelector)
@@ -239,17 +221,14 @@ const FAQAccordionSystem = {
         return
       }
 
-      // Limpiar eventos previos
       const newQuestion = question.cloneNode(true)
       question.parentNode.replaceChild(newQuestion, question)
 
-      // Evento de click
       newQuestion.addEventListener('click', e => {
         e.preventDefault()
         this.toggleAccordion(item)
       })
 
-      // Soporte de teclado para accesibilidad
       newQuestion.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
@@ -265,8 +244,7 @@ const FAQAccordionSystem = {
 
     subQuestions.forEach(subQuestion => {
       subQuestion.addEventListener('click', function (e) {
-        e.stopPropagation() // Evitar que se active el acordeón padre
-        // Aquí se puede agregar funcionalidad adicional
+        e.stopPropagation()
       })
     })
   }
@@ -314,7 +292,7 @@ const RequirementsSystem = {
       activityDescription: data[0].activityDescr
     }
 
-    // Agrupar por categoría
+    // Agrupar datos por categoría
     const categoriesMap = new Map()
 
     data.forEach(item => {
@@ -347,36 +325,45 @@ const RequirementsSystem = {
     }
 
     let html = `
-        <table border='1' cellPadding='1' cellSpacing='1' style='width: 100%'>
-          <caption>Criterios de Evaluación - ${programInfo.name}</caption>
-          <tbody>
-            <tr>
-              <td><strong>Categoría</strong></td>
-              <td><strong>Criterio</strong></td>
-              <td><strong>Peso (%)</strong></td>
-              <td><strong>Puntaje Max</strong></td>
-            </tr>`
+        <div class="requirements-table-wrapper">
+          <table>
+            <caption>Criterios de Evaluación - ${programInfo.name}</caption>
+            <thead>
+              <tr>
+                <th>Criterio general</th>
+                <th>Criterio interno</th>
+                <th>Puntaje</th>
+                <!-- <th>Puntaje total</th> -->
+                <th>Porcentaje (%)</th>
+              </tr>
+            </thead>
+            <tbody>`
 
     categories.forEach(category => {
       const criteriaCount = category.criteria.length
+      const categoryWeight = category.criteria[0].weight
+      const totalMaxScore = category.criteria.reduce((sum, criterion) => sum + criterion.maxScore, 0)
 
       category.criteria.forEach((criterion, index) => {
         html += `
             <tr>
-              ${index === 0 ? `<td rowSpan="${criteriaCount}"><strong>${category.name} (${category.weight}%)</strong></td>` : ''}
-              <td>${criterion.name}</td>
-              <td>${criterion.weight}</td>
-              <td>${criterion.maxScore}</td>
+              ${index === 0 ? `<td rowSpan="${criteriaCount}"><strong>${category.name}</strong></td>` : ''}
+              <td>
+                <div class="requirements-table__criterio-interno">
+                  <strong>${criterion.name}</strong>
+                  <small>${programInfo.activityDescription}</small>
+                </div>
+              </td>
+              <td class="requirements-table__cell-center">${criterion.maxScore}</td>
+              <!-- ${index === 0 ? `<td rowSpan="${criteriaCount}" class="requirements-table__cell-center">${totalMaxScore}</td>` : ''} -->
+              ${index === 0 ? `<td rowSpan="${criteriaCount}" class="requirements-table__cell-center">${categoryWeight}%</td>` : ''}
             </tr>`
       })
     })
 
     html += `
-          </tbody>
-        </table>
-
-        <div class='overflow-auto portlet-msg-info'>
-          <strong>Tipo de admisión:</strong> ${programInfo.admissionType} | <strong>Modalidad:</strong> ${programInfo.activityDescription}
+            </tbody>
+          </table>
         </div>`
 
     return html
@@ -393,20 +380,15 @@ const RequirementsSystem = {
       return false
     }
 
-    // Mostrar loading
     container.innerHTML = '<p>Cargando criterios de evaluación...</p>'
 
     try {
-      // Obtener datos
       const data = await this.fetchRequirements(programCode)
 
-      // Procesar datos
       const processedData = this.processRequirementsData(data)
 
-      // Generar HTML
       const html = this.generateRequirementsHTML(processedData)
 
-      // Renderizar
       container.innerHTML = html
 
       return true
@@ -418,7 +400,7 @@ const RequirementsSystem = {
   },
 
   setupEventListeners() {
-    // Escuchar el evento personalizado data_load-program
+    // Escuchar evento de carga de programa
     document.addEventListener('data_load-program', event => {
       const programData = event.detail?.dataProgram
       const programCode = programData?.codPrograma || programData?.codigo
@@ -428,7 +410,7 @@ const RequirementsSystem = {
       }
     })
 
-    // También escuchar cambios dinámicos en el DOM por si el contenedor se agrega después
+    // Observar cambios dinámicos en el DOM
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         mutation.addedNodes.forEach(node => {
@@ -459,8 +441,8 @@ const RequirementsSystem = {
     return true
   },
 
-  // Método para limpiar recursos cuando sea necesario
   destroy() {
+    // Limpiar recursos
     if (this.mutationObserver) {
       this.mutationObserver.disconnect()
     }
@@ -487,19 +469,11 @@ const FAQSystem = {
 // INICIALIZACIÓN
 // ===========================================
 const initializeFAQ = () => {
-  // Exponer para debugging en desarrollo
-  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-    window.FAQAccordionSystem = FAQAccordionSystem
-    window.FAQSystem = FAQSystem
-  }
-
-  // Inicializar FAQ
   FAQSystem.init()
 }
 
 export default initializeFAQ
 
-// También ejecutar inmediatamente en caso de compilación IIFE
 if (typeof window !== 'undefined') {
   initializeFAQ()
 }

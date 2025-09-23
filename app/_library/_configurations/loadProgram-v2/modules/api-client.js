@@ -8,11 +8,15 @@ import { CONFIG } from './utils.js'
 // Cliente HTTP - se inicializará después de cargar las utilidades
 let apiClient
 
+
 export const initializeApiClient = () => {
   apiClient = new HTTPClient('', {
     timeout: CONFIG.TIMEOUT,
     retries: CONFIG.RETRY_ATTEMPTS,
-    retryDelay: 1000
+    retryDelay: 1000,
+    headers: {
+      Accept: 'application/json'
+    }
   })
   return apiClient
 }
@@ -65,17 +69,14 @@ export const fetchWhatsApps = async () => {
 
 export const processData = (programData, allPrograms, codPrg) => {
   // Buscar datos complementarios usando DataUtils global
+  // Validar que allPrograms no sea null antes de usar filterBy
   const complementaryProgramData =
-    DataUtils.filterBy(allPrograms, {
-      codigo: codPrg
-    })[0] || null
+    allPrograms && Array.isArray(allPrograms) ? DataUtils.filterBy(allPrograms, { codigo: codPrg })[0] || null : null
 
   const consolidatedData = {
     mainProgram: DataUtils.deepMerge(
       programData,
-      complementaryProgramData
-        ? DataUtils.pick(complementaryProgramData, ['modalidad', 'duracion', 'unidadDuracion', 'tituloOtorgado'])
-        : {}
+      complementaryProgramData ? DataUtils.pick(complementaryProgramData, ['metodologia', 'duracion', 'titulo']) : {}
     ),
     complementaryProgram: complementaryProgramData,
     allPrograms,
@@ -83,7 +84,7 @@ export const processData = (programData, allPrograms, codPrg) => {
       timestamp: new Date().toISOString(),
       programCode: codPrg,
       foundInComplementaryAPI: !!complementaryProgramData,
-      totalPrograms: allPrograms.length,
+      totalPrograms: allPrograms ? allPrograms.length : 0,
       processingTime: performance.now()
     }
   }

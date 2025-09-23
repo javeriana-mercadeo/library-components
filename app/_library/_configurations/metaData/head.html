@@ -1,3 +1,12 @@
+<!--
+===========================================
+    META DATA - HEAD OPTIMIZADO
+    Tracking organizado sin redundancias
+    Version: 2.1.0 - Optimizado 2025-09-23
+===========================================
+-->
+
+<!-- CSS EXTERNOS -->
 <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
@@ -7,15 +16,58 @@
 <!-- Form Modules CSS -->
 <link rel="stylesheet" href="https://www.javeriana.edu.co/recursosdb/d/info-prg/form-modules-style" />
 
-<!-- Ajuste de MetaTitle -->
+<!-- VERIFICACIÓN DE GOOGLE -->
+<meta name="google-site-verification" content="JHV6TL0irU6ND-d9N5NydsmFnB64PkR3_QOCcIT4Fcw" />
+
+<!-- UTILIDAD: AJUSTE DE META TITLE -->
 <script>
   function createTitleFromH2() {
-    const h2Element = document.querySelector('h2.sr-only[role="heading"][aria-level="1"]')
+    // Múltiples selectores para mayor flexibilidad
+    const selectors = [
+      'h2.sr-only[role="heading"][aria-level="1"]',
+      'h2.sr-only[role="heading"]',
+      'h2.sr-only',
+      'h1[role="heading"]',
+      'h1',
+      '[data-title]',
+      '.page-title h1',
+      '.page-title h2'
+    ]
 
-    if (h2Element) {
-      let titleText = h2Element.textContent || h2Element.innerText
+    let h2Element = null
+    let titleText = ''
+
+    // Buscar con diferentes selectores
+    for (const selector of selectors) {
+      h2Element = document.querySelector(selector)
+      if (h2Element) {
+        titleText = h2Element.textContent || h2Element.innerText || h2Element.getAttribute('data-title') || ''
+        if (titleText.trim()) break
+      }
+    }
+
+    // Fallback: buscar en meta title existente o URL
+    if (!titleText.trim()) {
+      const existingTitle = document.head.querySelector('title')
+      if (existingTitle && existingTitle.textContent.trim()) {
+        titleText = existingTitle.textContent
+      } else {
+        // Crear título desde URL como último recurso
+        const path = window.location.pathname
+        const segments = path.split('/').filter(s => s)
+        titleText = segments.length > 0 ? segments[segments.length - 1].replace(/-/g, ' ') : 'Página'
+      }
+    }
+
+    if (titleText.trim()) {
+      // Limpiar y formatear título
       titleText = titleText.replace(/\s*-\s*Información Programas Académicos\s*$/i, '')
-      titleText = titleText.trim()
+      titleText = titleText.replace(/\s+/g, ' ').trim()
+
+      // Capitalizar primera letra si es necesario
+      if (titleText && titleText[0] === titleText[0].toLowerCase()) {
+        titleText = titleText.charAt(0).toUpperCase() + titleText.slice(1)
+      }
 
       let titleElement = document.head.querySelector('title')
 
@@ -24,16 +76,24 @@
         document.head.appendChild(titleElement)
       }
 
-      titleElement.textContent = titleText
-      h2Element.remove()
+      // Solo actualizar si es diferente
+      if (titleElement.textContent !== titleText) {
+        titleElement.textContent = titleText
+        titleElement.setAttribute('data-auto-generated', 'true')
+      }
+
+      // Remover elemento original solo si es específico
+      if (h2Element && h2Element.matches('h2.sr-only[role="heading"]')) {
+        h2Element.remove()
+      }
 
       return titleText
-    } else {
-      return null
     }
+
+    return null
   }
 
-  function tryCreateTitle(maxAttempts = 10, delay = 100) {
+  function tryCreateTitle(maxAttempts = 5, delay = 200) {
     let attempts = 0
 
     function attempt() {
@@ -41,90 +101,127 @@
       const result = createTitleFromH2()
 
       if (result) {
+        console.log(`✅ Título generado: "${result}"`)
         return true
       } else if (attempts < maxAttempts) {
-        setTimeout(attempt, delay)
+        setTimeout(attempt, delay * attempts) // Delay incremental
       } else {
-        console.error(`❌ No se pudo encontrar el elemento H2 después de ${maxAttempts} intentos`)
+        console.warn(`⚠️ No se pudo generar título automático después de ${maxAttempts} intentos`)
+        // Crear título básico como fallback
+        const fallbackTitle = 'Universidad Javeriana'
+        let titleElement = document.head.querySelector('title')
+        if (!titleElement) {
+          titleElement = document.createElement('title')
+          document.head.appendChild(titleElement)
+        }
+        if (!titleElement.textContent.trim()) {
+          titleElement.textContent = fallbackTitle
+        }
       }
     }
 
     attempt()
   }
 
-  tryCreateTitle(3, 50)
-
+  // Ejecución escalonada
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      tryCreateTitle(5, 100)
-    })
+    document.addEventListener('DOMContentLoaded', () => tryCreateTitle(3, 150))
   } else {
-    tryCreateTitle(5, 100)
+    tryCreateTitle(3, 150)
   }
 
-  window.addEventListener('load', function () {
-    tryCreateTitle(3, 200)
-  })
+  window.addEventListener('load', () => tryCreateTitle(2, 300))
 
+  // Observer más eficiente
   if (typeof MutationObserver !== 'undefined') {
+    let observerTimeout
     const observer = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
-        if (mutation.type === 'childList') {
-          const h2Found = document.querySelector('h2.sr-only[role="heading"][aria-level="1"]')
-          if (h2Found && !document.head.querySelector('title[data-from-h2="true"]')) {
-            const result = createTitleFromH2()
-            if (result) {
-              document.head.querySelector('title').setAttribute('data-from-h2', 'true')
-              observer.disconnect()
-            }
-          }
+      // Debounce para evitar múltiples ejecuciones
+      clearTimeout(observerTimeout)
+      observerTimeout = setTimeout(() => {
+        const currentTitle = document.head.querySelector('title')
+        if (!currentTitle || !currentTitle.hasAttribute('data-auto-generated')) {
+          createTitleFromH2()
         }
-      })
+      }, 500)
     })
 
-    observer.observe(document.body || document.documentElement, {
-      childList: true,
-      subtree: true
-    })
+    // Observar solo cuando sea necesario
+    setTimeout(() => {
+      if (document.body && !document.head.querySelector('title[data-auto-generated]')) {
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        })
+      }
+    }, 1000)
 
-    setTimeout(() => observer.disconnect(), 10000)
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createTitleFromH2)
-  } else {
-    createTitleFromH2()
+    // Desconectar después de 15 segundos
+    setTimeout(() => observer.disconnect(), 15000)
   }
 </script>
 
-<!-- Meta Pixel Code -->
+<!-- GOOGLE ANALYTICS - CONSOLIDADO (1 INSTANCIA) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HL9W1CVTVT"></script>
 <script>
-  !(function (f, b, e, v, n, t, s) {
-    if (f.fbq) return
-    n = f.fbq = function () {
-      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-    }
-    if (!f._fbq) f._fbq = n
-    n.push = n
-    n.loaded = !0
-    n.version = '2.0'
-    n.queue = []
-    t = b.createElement(e)
-    t.async = !0
-    t.src = v
-    s = b.getElementsByTagName(e)[0]
-    s.parentNode.insertBefore(t, s)
-  })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js')
-  fbq('init', '1362204107698382')
-  fbq('track', 'PageView')
+  window.dataLayer = window.dataLayer || []
+  function gtag() {
+    dataLayer.push(arguments)
+  }
+  gtag('js', new Date())
+
+  // Analytics principal  | General de la universidad
+  gtag('config', 'G-HL9W1CVTVT')
+
+  // Google Ads
+  gtag('config', 'AW-452583272')
+
+  // Analytics secundario | Dirección de programas académicos
+  gtag('config', 'G-0EEELZ2RW2')
 </script>
 
-<noscript
-  ><img height="1" width="1" style="display: none" src="https://www.facebook.com/tr?id=1362204107698382&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+<!-- META PIXEL (FACEBOOK) -->
+<script>
+  // Verificar si fbq ya existe para evitar duplicación
+  if (!window.fbq) {
+    !(function (f, b, e, v, n, t, s) {
+      if (f.fbq) return
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      }
+      if (!f._fbq) f._fbq = n
+      n.push = n
+      n.loaded = !0
+      n.version = '2.0'
+      n.queue = []
+      t = b.createElement(e)
+      t.async = !0
+      t.src = v
+      s = b.getElementsByTagName(e)[0]
+      s.parentNode.insertBefore(t, s)
+    })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js')
 
-<!-- TikTok Pixel Code Start -->
+    // Marcar pixel como inicializado por nosotros
+    window._fbPixelInitialized = '1362204107698382'
+  }
+
+  // Solo inicializar si no ha sido inicializado por otro script (GTM)
+  if (window.fbq && !window._fbPixelInitialized) {
+    window._fbPixelInitialized = '1362204107698382'
+  }
+
+  // Inicializar pixel solo si es nuestro ID
+  if (window.fbq && window._fbPixelInitialized === '1362204107698382') {
+    fbq('init', '1362204107698382')
+    fbq('track', 'PageView')
+  }
+</script>
+
+<noscript>
+  <img height="1" width="1" style="display: none" src="https://www.facebook.com/tr?id=1362204107698382&ev=PageView&noscript=1" />
+</noscript>
+
+<!-- TIKTOK PIXEL -->
 <script>
   !(function (w, d, t) {
     w.TiktokAnalyticsObject = t
@@ -176,42 +273,3 @@
     ttq.page()
   })(window, document, 'ttq')
 </script>
-<!-- TikTok Pixel Code End -->
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-452583272"></script>
-<script>
-  window.dataLayer = window.dataLayer || []
-  function gtag() {
-    dataLayer.push(arguments)
-  }
-  gtag('js', new Date())
-  gtag('config', 'AW-452583272')
-</script>
-<!-- Google Tag End -->
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HL9W1CVTVT"></script>
-<script>
-  window.dataLayer = window.dataLayer || []
-  function gtag() {
-    dataLayer.push(arguments)
-  }
-  gtag('js', new Date())
-  gtag('config', 'G-HL9W1CVTVT')
-</script>
-<!-- Google Tag End -->
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0EEELZ2RW2"></script>
-<script>
-  window.dataLayer = window.dataLayer || []
-  function gtag() {
-    dataLayer.push(arguments)
-  }
-  gtag('js', new Date())
-  gtag('config', 'G-0EEELZ2RW2')
-</script>
-<!-- Google Tag End -->
-
-<meta name="google-site-verification" content="JHV6TL0irU6ND-d9N5NydsmFnB64PkR3_QOCcIT4Fcw" />

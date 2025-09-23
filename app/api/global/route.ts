@@ -29,7 +29,6 @@ async function fetchExternalLibrary(url: string): Promise<string> {
   const timeoutId = setTimeout(() => controller.abort(), 5000)
 
   try {
-    console.log(`📥 Descargando: ${url}`)
     const response = await fetch(url, {
       signal: controller.signal,
       headers: {
@@ -46,8 +45,6 @@ async function fetchExternalLibrary(url: string): Promise<string> {
     }
 
     const content = await response.text()
-
-    console.log(`✅ Descargado (${content.length} chars): ${url}`)
 
     return content
   } catch (error) {
@@ -117,14 +114,10 @@ function extractExports(content: string): string[] {
 // 📌 FUNCIÓN PARA RESOLVER IMPORTS DE JAVASCRIPT CON DEDUPLICACIÓN
 async function resolveJavaScriptImports(jsContent: string, basePath: string, visited = new Set<string>()): Promise<string> {
   if (!jsContent) {
-    console.log('⚠️ No hay contenido JS para resolver')
-
     return ''
   }
 
-  console.log(`🔍 Resolviendo imports en: ${basePath}`)
-  console.log(`📄 Contenido a procesar (${jsContent.length} chars):`)
-  console.log(jsContent.substring(0, 200) + '...')
+  // Resolving imports
 
   // Buscar todas las líneas de import con regex más específico
   const importLines = jsContent.split('\n').filter(line => {
@@ -133,12 +126,9 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
     return trimmed.startsWith('import ') && trimmed.includes('from ')
   })
 
-  console.log(`📦 Líneas de import encontradas: ${importLines.length}`)
-  importLines.forEach((line, i) => console.log(`  ${i + 1}. ${line.trim()}`))
+  // Found import lines
 
   if (importLines.length === 0) {
-    console.log(`✅ No hay imports que resolver, devolviendo contenido original`)
-
     return jsContent
   }
 
@@ -147,13 +137,13 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
   for (const importLine of importLines) {
     try {
-      console.log(`🔗 Procesando línea: ${importLine.trim()}`)
+      // Processing import line
 
       // Extraer la ruta del import usando regex más robusto
       const importMatch = importLine.match(/from\s+['"`]([^'"`]+)['"`]/)
 
       if (!importMatch) {
-        console.warn(`⚠️ No se pudo extraer ruta de: ${importLine}`)
+        console.warn(`Could not extract path from: ${importLine}`)
         continue
       }
 
@@ -798,11 +788,11 @@ export async function GET(req: Request) {
 
           console.log(`✅ SCSS compilado: ${compiledCSS.length} caracteres`)
         } catch (sassError) {
-          console.error('❌ Error compilando SCSS:', sassError)
-          compiledCSS = `/* Error compilando SCSS: ${sassError} */\n\n/* Contenido original SCSS: */\n/*\n${scssContent}\n*/`
+          console.error('Error compiling SCSS:', sassError)
+          compiledCSS = `/* Error compiling SCSS: ${sassError} */\n\n/* Original SCSS content: */\n/*\n${scssContent}\n*/`
         }
       } else {
-        console.log('⚠️ No se encontró archivo SCSS')
+        // SCSS file not found
         compiledCSS = '/* No se encontró archivo SCSS */'
       }
 

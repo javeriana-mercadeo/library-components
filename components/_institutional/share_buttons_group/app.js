@@ -160,10 +160,10 @@ class Item {
     navigator.clipboard
       .writeText(window.location.href)
       .then(() => {
-        alert('Enlace copiado al portapapeles.')
+        console.log('Link copied to clipboard')
       })
       .catch(error => {
-        console.error('Error al copiar el enlace:', error)
+        console.error('Error copying link:', error)
       })
   }
 
@@ -177,10 +177,10 @@ class Item {
         })
         console.log('Contenido compartido con éxito')
       } catch (error) {
-        console.error('Error al compartir:', error)
+        console.error('Error sharing:', error)
       }
     } else {
-      alert('La funcionalidad de compartir no es compatible con tu dispositivo.')
+      console.warn('Share functionality not supported on this device')
     }
   }
 }

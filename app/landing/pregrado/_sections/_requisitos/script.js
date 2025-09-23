@@ -235,11 +235,65 @@ function initAccessibilityEnhancements(component) {
  * Actualiza las interacciones cuando el contenido cambia dinámicamente
  * @param {HTMLElement} component - Elemento del componente
  */
+<<<<<<< HEAD
 function updateInteractions(component) {
   // Reinicializar todas las interacciones
   initChartInteractions(component)
   initTabsInteractions(component)
   initAccessibilityEnhancements(component)
+=======
+function initIntersectionObserver(component) {
+  // Verificar soporte del browser
+  if (!('IntersectionObserver' in window)) {
+    // Fallback: ejecutar animaciones inmediatamente
+    triggerProgressAnimations(component)
+    return
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        console.log('AdmissionRequirements: Componente visible, activando animaciones')
+        triggerProgressAnimations(entry.target)
+        observer.unobserve(entry.target)
+      }
+    })
+  }, {
+    threshold: 0.1, // Reducir threshold para activar más fácilmente
+    rootMargin: '0px 0px -100px 0px' // Activar un poco antes
+  })
+
+  observer.observe(component)
+}
+
+/**
+ * Activa las animaciones de progreso cuando el componente es visible
+ * @param {HTMLElement} component - Elemento del componente
+ */
+function triggerProgressAnimations(component) {
+  const sections = component.querySelectorAll('[data-requirement]')
+
+  sections.forEach((section, index) => {
+    setTimeout(() => {
+      const percentage = parseInt(section.dataset.percentage) || 0
+      const progressFill = section.querySelector('.admission-requirements_progress-fill')
+
+      if (progressFill) {
+        // Usar el porcentaje directo del data attribute
+        const targetWidth = percentage / 100
+        progressFill.style.transition = 'transform 2s ease-out'
+        progressFill.style.transform = `scaleX(${targetWidth})`
+
+        // Actualizar el dataset también
+        progressFill.dataset.targetWidth = targetWidth
+      }
+
+      // Agregar clase para animaciones adicionales
+      section.classList.add('is-animated')
+
+    }, index * 300) // Stagger animation con más delay
+  })
+>>>>>>> df363ea95e373ffdcbc310eb25fcc2ba70877f45
 }
 
 /**
@@ -252,29 +306,25 @@ window.AdmissionRequirements = {
    * @param {number} newPercentage - Nuevo porcentaje
    */
   updatePercentage: function(requirementId, newPercentage) {
-    const component = document.querySelector('[data-component-id="requisitos-pregrado"]')
-    if (!component) return
+    const card = document.querySelector(`[data-requirement="${requirementId}"]`)
+    if (card) {
+      card.dataset.percentage = newPercentage
+      const percentageElement = card.querySelector('.admission-requirements_percentage-number')
+      if (percentageElement) {
+        percentageElement.textContent = newPercentage
+      }
 
-    // Actualizar segmento del gráfico
-    const segment = component.querySelector(`[data-requirement="${requirementId}"].admission-requirements_chart-segment`)
-    if (segment) {
-      segment.dataset.percentage = newPercentage
+      // Recalcular animación de progreso
+      const radius = 50
+      const circumference = 2 * Math.PI * radius
+      card.dataset.targetOffset = circumference * (1 - newPercentage / 100)
+
+      // Anunciar el cambio para lectores de pantalla
+      const liveRegion = document.getElementById('admission-requirements-live-region')
+      if (liveRegion) {
+        liveRegion.textContent = `${requirementId} actualizado a ${newPercentage} por ciento`
+      }
     }
-
-    // Actualizar label del gráfico
-    const labelPercentage = component.querySelector(`[data-requirement="${requirementId}"] .admission-requirements_label-percentage`)
-    if (labelPercentage) {
-      labelPercentage.textContent = `${newPercentage}%`
-    }
-
-    // Actualizar acordeón
-    const accordionPercentage = component.querySelector(`[data-requirement="${requirementId}"] .admission-requirements_accordion-percentage`)
-    if (accordionPercentage) {
-      accordionPercentage.textContent = `${newPercentage}%`
-    }
-
-    // Anunciar el cambio para lectores de pantalla
-    announceToScreenReader(component, `${requirementId} actualizado a ${newPercentage} por ciento`)
   },
 
   /**
@@ -282,6 +332,7 @@ window.AdmissionRequirements = {
    * @returns {Array} Array con los datos de todos los requisitos
    */
   getRequirementsData: function() {
+<<<<<<< HEAD
     const component = document.querySelector('[data-component-id="requisitos-pregrado"]')
     if (!component) return []
 
@@ -291,6 +342,14 @@ window.AdmissionRequirements = {
       percentage: parseInt(component.querySelector('.admission-requirements_chart-segment')?.dataset.percentage || 0),
       title: button.querySelector('.admission-requirements_tab-title')?.textContent,
       isActive: button.classList.contains('is-active')
+=======
+    const cards = document.querySelectorAll('[data-requirement]')
+    return Array.from(cards).map(card => ({
+      id: card.dataset.requirement,
+      percentage: parseInt(card.dataset.percentage),
+      title: card.querySelector('.admission-requirements_card-title-text')?.textContent,
+      isActive: card.classList.contains('is-active')
+>>>>>>> df363ea95e373ffdcbc310eb25fcc2ba70877f45
     }))
   },
 
@@ -309,6 +368,7 @@ window.AdmissionRequirements = {
    * Obtiene el tab activo actual
    * @returns {string|null} ID del requisito activo
    */
+<<<<<<< HEAD
   getActiveTab: function() {
     const component = document.querySelector('[data-component-id="requisitos-pregrado"]')
     if (!component) return null
@@ -325,6 +385,14 @@ window.AdmissionRequirements = {
     if (component) {
       updateInteractions(component)
     }
+=======
+  resetAnimations: function() {
+    const components = document.querySelectorAll('[data-component-id="requisitos"]')
+    components.forEach(component => {
+      initProgressAnimations(component)
+      setTimeout(() => triggerProgressAnimations(component), 100)
+    })
+>>>>>>> df363ea95e373ffdcbc310eb25fcc2ba70877f45
   }
 }
 

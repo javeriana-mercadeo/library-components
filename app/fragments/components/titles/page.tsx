@@ -107,7 +107,7 @@ const VariantTitle = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' |
           <ViewComponent>
             <p className='text-sm text-[var(--neutral-500)] mb-2'>Títulos interactivos</p>
             <div className='space-y-2'>
-              <Title color={color} size='lg' onClick={() => alert(`Clickeaste el título ${color}!`)}>
+              <Title color={color} size='lg' onClick={() => console.log(`Clicked ${color} title!`)}>
                 Título clickeable (hover para ver efecto)
               </Title>
               <Title color={color} size='xl' weight='bold' onClick={() => console.log('Título clickeado')}>

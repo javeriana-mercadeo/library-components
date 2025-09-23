@@ -17,25 +17,23 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
     const hasJS = js && js.trim().length > 0
 
     if (!hasCSS && !hasJS) {
-      console.log(`⚠️ [FILE-ROUTE] No hay contenido para guardar, saltando creación de archivos`)
-
       return
     }
 
     const buildPath = path.join(componentPath, 'build')
 
-    console.log(`🔨 [FILE-ROUTE] Intentando crear carpeta: ${buildPath}`)
+    // Creating build folder
 
     // Crear carpeta build si no existe
     await fs.mkdir(buildPath, { recursive: true })
 
-    console.log(`📁 [FILE-ROUTE] Carpeta build creada exitosamente`)
+    // Build folder created
 
     const cssPath = path.join(buildPath, COMPILED_CSS_FILE)
     const jsPath = path.join(buildPath, COMPILED_JS_FILE)
     const infoPath = path.join(buildPath, COMPILATION_INFO_FILE)
 
-    console.log(`📝 [FILE-ROUTE] Escribiendo archivos:`)
+    // Writing files
 
     // Información de compilación
     const compilationInfo = {
@@ -55,28 +53,24 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
 
     if (hasCSS) {
       writePromises.push(fs.writeFile(cssPath, css, 'utf8'))
-      console.log(`  ✅ CSS: ${cssPath}`)
-    } else {
-      console.log(`  ⚠️ Saltando CSS vacío`)
+      // CSS file
     }
 
     if (hasJS) {
       writePromises.push(fs.writeFile(jsPath, js, 'utf8'))
-      console.log(`  ✅ JS: ${jsPath}`)
-    } else {
-      console.log(`  ⚠️ Saltando JS vacío`)
+      // JS file
     }
 
     // Siempre guardar info si hay al menos un archivo
     writePromises.push(fs.writeFile(infoPath, JSON.stringify(compilationInfo, null, 2), 'utf8'))
-    console.log(`  ✅ Info: ${infoPath}`)
+    // Info file
 
     // Guardar archivos en paralelo
     await Promise.all(writePromises)
 
-    console.log(`✅ [FILE-ROUTE] Archivos compilados guardados exitosamente en: ${buildPath}`)
+    // Files saved successfully
   } catch (error) {
-    console.error(`❌ [FILE-ROUTE] Error guardando archivos compilados:`, error)
+    console.error('Error saving compiled files:', error)
     // No lanzar error, continuar con la respuesta
   }
 }
@@ -187,7 +181,7 @@ export async function GET(req: Request) {
   const basePath = path.join(process.cwd(), 'app')
   const componentPath = path.join(basePath, safePath)
 
-  console.log(componentPath)
+  // Component path determined
 
   if (!componentPath.startsWith(basePath)) {
     return new NextResponse('Acceso denegado', { status: 403 })
@@ -258,7 +252,7 @@ export async function GET(req: Request) {
           ]
         }).css
       } catch (sassError) {
-        console.error('Error compilando SCSS:', sassError)
+        console.error('Error compiling SCSS:', sassError)
         compiledCSS = ''
       }
     }
@@ -266,8 +260,7 @@ export async function GET(req: Request) {
     // Verificar si el JS tiene imports
     const hasImports = jsContent.includes('// IMPORTED FROM:')
 
-    console.log(`🚀 [FILE-ROUTE] Iniciando guardado de archivos compilados para: ${componentPath}`)
-    console.log(`🚀 [FILE-ROUTE] CSS length: ${compiledCSS.length}, JS length: ${(jsContent || '').length}`)
+    // Starting file save process
 
     // 📌 Guardar archivos compilados en carpeta build
     await saveCompiledFiles(componentPath, compiledCSS, jsContent || '')
