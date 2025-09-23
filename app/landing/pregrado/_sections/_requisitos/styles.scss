@@ -3,12 +3,9 @@
 // ==========================================
 // VARIABLES DEL COMPONENTE
 // ==========================================
-$req-border-radius: rem(12px);
-$req-section-gap: rem(32px);
-$req-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-$req-shadow-soft: 0 rem(4px) rem(20px) rgba(0, 0, 0, 0.08);
-$req-progress-height: rem(8px);
-$req-progress-animation-duration: 2s;
+$req-transition: all 0.3s ease-out;
+$req-chart-size: rem(800px);
+$req-chart-size-mobile: rem(550px);
 
 // ==========================================
 // COMPONENTE PRINCIPAL
@@ -20,77 +17,27 @@ $req-progress-animation-duration: 2s;
   background-color: var(--background-100);
 
   @include dark-theme {
-    background-color: var(--background-200);
+    background-color: var(--background-900);
   }
 
-  // Container principal
   &_container {
     max-width: rem(1200px);
-    margin: 0 auto;
-    padding: 0 var(--spacing-md);
-
-    // TABLET: padding mayor
-    @include responsive($breakpoint-md) {
-      padding: 0 var(--spacing-lg);
-    }
-
-    // DESKTOP: max-width mayor
-    @include responsive($breakpoint-xl) {
-      max-width: rem(1400px);
-    }
   }
 
   // ==========================================
   // HEADER
   // ==========================================
   &_header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-xl);
     text-align: center;
-    flex-direction: column;
-
-    // DESKTOP: layout horizontal
-    @include responsive($breakpoint-md) {
-      flex-direction: row;
-      gap: var(--spacing-md);
-    }
-  }
-
-  &_header-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: rem(64px);
-    height: rem(64px);
-    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-700) 100%);
-    border-radius: 50%;
-    color: var(--neutral-1000);
-    font-size: rem(32px);
-    box-shadow: $req-shadow-soft;
-
-    @include dark-theme {
-      background: linear-gradient(135deg, var(--primary-400) 0%, var(--primary-600) 100%);
-      color: var(--neutral-100);
-    }
+    margin-bottom: var(--spacing-xl);
 
     @include responsive($breakpoint-md) {
-      width: rem(56px);
-      height: rem(56px);
-      font-size: rem(28px);
+      margin-bottom: var(--spacing-lg);
     }
-  }
-
-  &_header-content {
-    display: flex;
-    flex-direction: column;
-    gap: rem(4px);
   }
 
   &_title {
-    font-size: rem(36px);
+    font-size: var(--font-size-principal-title);
     font-weight: 700;
     line-height: 1.2;
     color: var(--neutral-100);
@@ -101,427 +48,343 @@ $req-progress-animation-duration: 2s;
     }
 
     @include responsive($breakpoint-lg) {
-      font-size: rem(32px);
+      font-size: var(--font-size-title);
     }
 
     @include responsive($breakpoint-md) {
-      font-size: rem(28px);
-    }
-  }
-
-  &_subtitle {
-    font-size: rem(18px);
-    font-weight: 500;
-    color: var(--neutral-500);
-    margin: 0;
-
-    @include dark-theme {
-      color: var(--neutral-700);
-    }
-
-    @include responsive($breakpoint-md) {
-      font-size: rem(16px);
+      font-size: var(--font-size-subtitle);
     }
   }
 
   // ==========================================
-  // SECTIONS CONTAINER
+  // CIRCULAR CHART CONTAINER
   // ==========================================
-  &_sections {
-    display: grid;
-    // MOBILE FIRST: 1 columna (filas)
-    grid-template-columns: 1fr;
-    gap: rem(20px);
-    margin-bottom: var(--spacing-xl);
-
-    // TABLET: 2 columnas
-    @include responsive($breakpoint-md) {
-      grid-template-columns: repeat(2, 1fr);
-      gap: rem(24px);
-    }
-
-    // DESKTOP: 3 columnas verticales lado a lado
-    @include responsive($breakpoint-lg) {
-      grid-template-columns: repeat(3, 1fr);
-      gap: $req-section-gap;
-    }
-  }
-
-  // ==========================================
-  // INDIVIDUAL SECTION
-  // ==========================================
-  &_section {
-    position: relative;
+  &_chart-container {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
-    padding: var(--spacing-lg);
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: $req-border-radius;
-    box-shadow: $req-shadow-soft;
-    transition: $req-transition;
-    overflow: hidden;
-    height: fit-content;
+    align-items: center;
+    gap: var(--spacing-xl);
+  }
 
-    @include dark-theme {
-      background: rgba(var(--neutral-300-rgb), 0.9);
-    }
-
-    // Hover effects removidos - secciones son solo informativas
-    // Bordes eliminados - diseño más limpio
+  &_chart-wrapper {
+    position: relative;
+    width: $req-chart-size;
+    height: $req-chart-size;
 
     @include responsive($breakpoint-md) {
-      padding: var(--spacing-xl);
-      gap: var(--spacing-lg);
-    }
-
-    // En columnas, centrar contenido
-    @include responsive($breakpoint-lg) {
-      text-align: center;
-      min-height: rem(400px);
+      width: $req-chart-size-mobile;
+      height: $req-chart-size-mobile;
     }
   }
 
   // ==========================================
-  // PROGRESS BAR
+  // SVG CHART
   // ==========================================
-  &_progress-wrapper {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
-
-    // En columnas, cambiar orientación y centrar
-    @include responsive($breakpoint-lg) {
-      flex-direction: column;
-      align-items: center;
-      gap: var(--spacing-xs);
-      width: 100%;
-    }
-  }
-
-  &_progress-bar {
-    flex: 1;
-    height: $req-progress-height;
-    background: rgba(var(--neutral-500-rgb), 0.2);
-    border-radius: rem(4px);
-    overflow: hidden;
-    position: relative;
-
-    @include dark-theme {
-      background: rgba(var(--neutral-700-rgb), 0.3);
-    }
-
-    // En columnas, hacer las barras más gruesas y darles ancho completo
-    @include responsive($breakpoint-lg) {
-      height: rem(12px);
-      width: 100%;
-      flex: none;
-    }
-  }
-
-  &_progress-fill {
+  &_chart {
+    width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, var(--primary-500) 0%, var(--primary-600) 100%);
-    border-radius: rem(4px);
-    transition: transform $req-progress-animation-duration ease-out;
-    transform: scaleX(0);
-    transform-origin: left;
-    position: relative;
-    overflow: hidden;
-
-    // Animated shine effect
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.4),
-        transparent
-      );
-      animation: shine 3s infinite;
-    }
-
-    // Color primary para todas las progress bars
-    background: linear-gradient(90deg, var(--primary-500) 0%, var(--primary-600) 100%);
+    display: block;
   }
 
-  &_progress-label {
-    flex-shrink: 0;
-    min-width: rem(50px);
-    text-align: center;
-
-    @include responsive($breakpoint-lg) {
-      min-width: auto;
-      text-align: center;
-      order: -1; // Poner el porcentaje arriba de la barra
-    }
-  }
-
-  &_percentage {
-    font-size: rem(32px);
-    font-weight: 700;
-    color: var(--primary-700);
-
-    @include dark-theme {
-      color: var(--primary-300);
-    }
-
-    @include responsive($breakpoint-lg) {
-      font-size: rem(40px);
-    }
-
-    @include responsive($breakpoint-md) {
-      font-size: rem(28px);
-    }
-  }
-
-  // ==========================================
-  // SECTION HEADER
-  // ==========================================
-  &_section-header {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-sm);
-  }
-
-  &_section-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: rem(48px);
-    height: rem(48px);
-    background: rgba(var(--primary-600-rgb), 0.1);
-    border-radius: rem(12px);
-    color: var(--primary-600);
-    font-size: rem(24px);
+  &_chart-segment {
+    cursor: pointer;
     transition: $req-transition;
-
-    @include responsive($breakpoint-md) {
-      width: rem(40px);
-      height: rem(40px);
-      font-size: rem(20px);
-    }
-  }
-
-  &_section-title {
-    font-size: rem(24px);
-    font-weight: 600;
-    color: var(--neutral-100);
-    margin: 0;
-    letter-spacing: rem(0.5px);
+    stroke: var(--neutral-100);
+    stroke-width: 2;
 
     @include dark-theme {
-      color: var(--neutral-1000);
+      stroke: var(--neutral-900);
     }
 
-    @include responsive($breakpoint-md) {
-      font-size: rem(20px);
+    // Primary color
+    &--primary {
+      fill: var(--primary-600);
+
+      &:hover {
+        fill: var(--primary-700);
+        transform: scale(1.02);
+        transform-origin: center;
+      }
     }
-  }
 
-  // ==========================================
-  // SECTION CONTENT
-  // ==========================================
-  &_section-content {
-    flex-grow: 1;
-  }
+    // Secondary color
+    &--secondary {
+      fill: var(--secondary-600);
 
-  &_items-grid {
-    display: flex;
-    flex-direction: column;
-    gap: rem(12px);
+      &:hover {
+        fill: var(--secondary-700);
+        transform: scale(1.02);
+        transform-origin: center;
+      }
+    }
 
-    // DESKTOP: layout en grid para actitud (que tiene más items)
-    @include responsive($breakpoint-lg) {
-      .admission-requirements_section--primary & {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: rem(16px);
+    // Tertiary color
+    &--tertiary {
+      fill: var(--tertiary-600);
+
+      &:hover {
+        fill: var(--tertiary-700);
+        transform: scale(1.02);
+        transform-origin: center;
       }
     }
   }
 
-  &_item {
-    display: flex;
-    align-items: flex-start;
-    gap: rem(12px);
-    padding: rem(8px) 0;
+  &_chart-center {
+    fill: var(--neutral-100);
+    stroke: var(--neutral-300);
+    stroke-width: 2;
+
+    @include dark-theme {
+      fill: var(--neutral-900);
+      stroke: var(--neutral-700);
+    }
+  }
+
+  &_chart-total-label {
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    fill: var(--neutral-600);
+
+    @include dark-theme {
+      fill: var(--neutral-400);
+    }
+  }
+
+  &_chart-total-value {
+    font-size: var(--font-size-caption);
+    font-weight: 700;
+    fill: var(--neutral-800);
+
+    @include dark-theme {
+      fill: var(--neutral-200);
+    }
+  }
+
+  // ==========================================
+  // CHART LABELS DENTRO DEL SVG
+  // ==========================================
+  &_chart-label-percentage {
+    font-size: var(--font-size-heading);
+    font-weight: 700;
+    fill: var(--neutral-100);
     transition: $req-transition;
 
-    // Hover effects en items eliminados
+    @include dark-theme {
+      fill: var(--neutral-1000);
+    }
+
+    &:hover {
+      fill: var(--neutral-50);
+
+      @include dark-theme {
+        fill: var(--neutral-200);
+      }
+    }
+  }
+
+  &_chart-label-title {
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    fill: var(--neutral-100);
+    transition: $req-transition;
+
+    @include dark-theme {
+      fill: var(--neutral-1000);
+    }
+
+    &:hover {
+      fill: var(--neutral-50);
+
+      @include dark-theme {
+        fill: var(--neutral-200);
+      }
+    }
+  }
+
+  // ==========================================
+  // ACCORDION CONTAINER
+  // ==========================================
+  &_accordion-container {
+    width: 100%;
+    max-width: rem(800px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  &_accordion-item {
+    border: 1px solid var(--neutral-300);
+    border-radius: rem(8px);
+    overflow: hidden;
+    transition: $req-transition;
+
+    @include dark-theme {
+      border-color: var(--neutral-700);
+    }
+
+    &.is-active {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      @include dark-theme {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+
+  &_accordion-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--neutral-100);
+    cursor: pointer;
+    transition: $req-transition;
+
+    @include dark-theme {
+      background: var(--neutral-900);
+    }
+
+    &:hover {
+      background: var(--neutral-200);
+
+      @include dark-theme {
+        background: var(--neutral-800);
+      }
+    }
+  }
+
+  &_accordion-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(40px);
+    height: rem(40px);
+    border-radius: rem(6px);
+    font-size: var(--font-size-caption);
+    flex-shrink: 0;
+
+    .admission-requirements_accordion-item[data-requirement="actitud"] & {
+      background: rgba(var(--primary-600-rgb), 0.1);
+      color: var(--primary-600);
+    }
+
+    .admission-requirements_accordion-item[data-requirement="conocimiento"] & {
+      background: rgba(var(--secondary-600-rgb), 0.1);
+      color: var(--secondary-600);
+    }
+
+    .admission-requirements_accordion-item[data-requirement="habilidad"] & {
+      background: rgba(var(--tertiary-600-rgb), 0.1);
+      color: var(--tertiary-600);
+    }
+  }
+
+  &_accordion-title {
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    color: var(--neutral-800);
+    margin: 0;
+    flex-grow: 1;
+
+    @include dark-theme {
+      color: var(--neutral-200);
+    }
+  }
+
+  &_accordion-percentage {
+    font-size: var(--font-size-heading);
+    font-weight: 700;
+    color: var(--neutral-600);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--neutral-200);
+    border-radius: rem(4px);
+
+    @include dark-theme {
+      color: var(--neutral-300);
+      background: var(--neutral-800);
+    }
+  }
+
+  &_accordion-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(24px);
+    height: rem(24px);
+    color: var(--neutral-600);
+    font-size: var(--font-size-heading);
+    transition: $req-transition;
+
+    @include dark-theme {
+      color: var(--neutral-400);
+    }
+
+    .admission-requirements_accordion-item.is-active & {
+      transform: rotate(180deg);
+    }
+  }
+
+  &_accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+
+    .admission-requirements_accordion-item.is-active & {
+      max-height: rem(500px);
+    }
+  }
+
+  &_accordion-items {
+    padding: var(--spacing-lg);
+    background: var(--neutral-50);
+    border-top: 1px solid var(--neutral-300);
+
+    @include dark-theme {
+      background: var(--neutral-950);
+      border-color: var(--neutral-700);
+    }
+  }
+
+  &_accordion-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) 0;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--neutral-200);
+
+      @include dark-theme {
+        border-color: var(--neutral-800);
+      }
+    }
   }
 
   &_item-check {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: rem(24px);
-    height: rem(24px);
-    background: var(--primary-600);
-    border-radius: 50%;
-    color: var(--neutral-1000);
-    font-size: rem(12px);
+    width: rem(20px);
+    height: rem(20px);
+    color: var(--primary-600);
+    font-size: var(--font-size-xs);
     flex-shrink: 0;
-    transition: $req-transition;
+    margin-top: rem(2px);
 
     @include dark-theme {
-      color: var(--neutral-100);
+      color: var(--primary-400);
     }
   }
 
   &_item-text {
     flex-grow: 1;
     margin: 0;
-    color: var(--neutral-400);
+    color: var(--neutral-700);
     line-height: 1.5;
 
     @include dark-theme {
-      color: var(--neutral-800);
-    }
-  }
-
-  // ==========================================
-  // FOOTER
-  // ==========================================
-  &_footer {
-    display: flex;
-    justify-content: center;
-    margin-top: var(--spacing-xl);
-  }
-
-  &_info-card {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md) var(--spacing-lg);
-    background: rgba(var(--primary-600-rgb), 0.05);
-    border: rem(1px) solid rgba(var(--primary-600-rgb), 0.1);
-    border-radius: rem(12px);
-    max-width: rem(600px);
-
-    @include dark-theme {
-      background: rgba(var(--primary-400-rgb), 0.1);
-      border-color: rgba(var(--primary-400-rgb), 0.2);
-    }
-
-    @include responsive($breakpoint-md) {
-      flex-direction: column;
-      text-align: center;
-      gap: var(--spacing-sm);
-      padding: var(--spacing-md);
-    }
-  }
-
-  &_info-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: rem(40px);
-    height: rem(40px);
-    background: var(--primary-600);
-    border-radius: rem(10px);
-    color: var(--neutral-1000);
-    font-size: rem(20px);
-    flex-shrink: 0;
-
-    @include dark-theme {
-      background: var(--primary-400);
-      color: var(--neutral-100);
-    }
-
-    @include responsive($breakpoint-md) {
-      width: rem(36px);
-      height: rem(36px);
-      font-size: rem(18px);
-    }
-  }
-
-  &_info-content {
-    display: flex;
-    flex-direction: column;
-    gap: rem(4px);
-  }
-
-  &_info-title {
-    margin: 0;
-    color: var(--primary-700);
-
-    @include dark-theme {
-      color: var(--primary-300);
-    }
-  }
-
-  &_info-text {
-    margin: 0;
-    color: var(--neutral-500);
-
-    @include dark-theme {
-      color: var(--neutral-700);
-    }
-  }
-
-  // ==========================================
-  // ANIMACIONES
-  // ==========================================
-  @keyframes shine {
-    0% {
-      left: -100%;
-    }
-    50% {
-      left: 100%;
-    }
-    100% {
-      left: 100%;
-    }
-  }
-
-  @keyframes fadeInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(rem(-30px));
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  // Aplicar animación al cargar
-  &_section {
-    animation: fadeInLeft 0.6s ease-out forwards;
-
-    &:nth-child(1) {
-      animation-delay: 0.1s;
-    }
-
-    &:nth-child(2) {
-      animation-delay: 0.3s;
-    }
-
-    &:nth-child(3) {
-      animation-delay: 0.5s;
-    }
-  }
-
-  // ==========================================
-  // RESPONSIVE ADJUSTMENTS
-  // ==========================================
-  @include responsive($breakpoint-xs) {
-    padding: var(--spacing-lg) 0;
-
-    &_section {
-      padding: var(--spacing-md);
-    }
-
-    &_title {
-      font-size: rem(24px);
+      color: var(--neutral-300);
     }
   }
 }
