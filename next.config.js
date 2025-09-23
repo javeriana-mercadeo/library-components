@@ -1,58 +1,40 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {
-      rules: {
-        '*.svg': ['@svgr/webpack']
-      }
+  // Configuración para Turbopack
+  turbopack: {
+    resolveAlias: {
+      '@library': './app/_library',
+      '@styles': './styles'
     }
   },
 
-  images: {
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920]
-  },
+  // Configuración para Webpack (fallback)
+  webpack: (config, { isServer }) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@library': './app/_library',
+      '@styles': './styles'
+    }
 
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production'
-  },
+    // Solo aplicar externals en el servidor para evitar conflictos de configuración
+    if (isServer) {
+      config.externals = config.externals || []
 
-  webpack: config => {
-    // Optimize SVG handling for smaller files only
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: [
-        {
-          loader: '@svgr/webpack',
-          options: {
-            svgoConfig: {
-              plugins: [
-                {
-                  name: 'preset-default',
-                  params: {
-                    overrides: {
-                      removeViewBox: false,
-                    },
-                  },
-                },
-              ],
-            },
-          },
-        },
-      ],
-    })
+      if (Array.isArray(config.externals)) {
+        config.externals.push('esbuild')
+      } else if (typeof config.externals === 'object') {
+        config.externals = {
+          ...config.externals,
+          esbuild: 'esbuild'
+        }
+      }
+    }
 
     return config
   },
 
-  // Disable source maps in development to improve performance
-  productionBrowserSourceMaps: false,
-
-  logging: {
-    fetches: {
-      fullUrl: false
-    }
-  }
+  // Configuración para evitar problemas con esbuild
+  serverExternalPackages: ['esbuild']
 }
 
 export default nextConfig

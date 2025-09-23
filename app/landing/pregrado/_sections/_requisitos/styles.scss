@@ -1,0 +1,390 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$req-transition: all 0.3s ease-out;
+$req-chart-size: rem(800px);
+$req-chart-size-mobile: rem(550px);
+
+// ==========================================
+// COMPONENTE PRINCIPAL
+// ==========================================
+.admission-requirements {
+  position: relative;
+  width: 100%;
+  padding: var(--spacing-xl) 0;
+  background-color: var(--background-100);
+
+  @include dark-theme {
+    background-color: var(--background-900);
+  }
+
+  &_container {
+    max-width: rem(1200px);
+  }
+
+  // ==========================================
+  // HEADER
+  // ==========================================
+  &_header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+
+    @include responsive($breakpoint-md) {
+      margin-bottom: var(--spacing-lg);
+    }
+  }
+
+  &_title {
+    font-size: var(--font-size-principal-title);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--neutral-100);
+    margin: 0;
+
+    @include dark-theme {
+      color: var(--neutral-1000);
+    }
+
+    @include responsive($breakpoint-lg) {
+      font-size: var(--font-size-title);
+    }
+
+    @include responsive($breakpoint-md) {
+      font-size: var(--font-size-subtitle);
+    }
+  }
+
+  // ==========================================
+  // CIRCULAR CHART CONTAINER
+  // ==========================================
+  &_chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xl);
+  }
+
+  &_chart-wrapper {
+    position: relative;
+    width: $req-chart-size;
+    height: $req-chart-size;
+
+    @include responsive($breakpoint-md) {
+      width: $req-chart-size-mobile;
+      height: $req-chart-size-mobile;
+    }
+  }
+
+  // ==========================================
+  // SVG CHART
+  // ==========================================
+  &_chart {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  &_chart-segment {
+    cursor: pointer;
+    transition: $req-transition;
+    stroke: var(--neutral-100);
+    stroke-width: 2;
+
+    @include dark-theme {
+      stroke: var(--neutral-900);
+    }
+
+    // Primary color
+    &--primary {
+      fill: var(--primary-600);
+
+      &:hover {
+        fill: var(--primary-700);
+        transform: scale(1.02);
+        transform-origin: center;
+      }
+    }
+
+    // Secondary color
+    &--secondary {
+      fill: var(--secondary-600);
+
+      &:hover {
+        fill: var(--secondary-700);
+        transform: scale(1.02);
+        transform-origin: center;
+      }
+    }
+
+    // Tertiary color
+    &--tertiary {
+      fill: var(--tertiary-600);
+
+      &:hover {
+        fill: var(--tertiary-700);
+        transform: scale(1.02);
+        transform-origin: center;
+      }
+    }
+  }
+
+  &_chart-center {
+    fill: var(--neutral-100);
+    stroke: var(--neutral-300);
+    stroke-width: 2;
+
+    @include dark-theme {
+      fill: var(--neutral-900);
+      stroke: var(--neutral-700);
+    }
+  }
+
+  &_chart-total-label {
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    fill: var(--neutral-600);
+
+    @include dark-theme {
+      fill: var(--neutral-400);
+    }
+  }
+
+  &_chart-total-value {
+    font-size: var(--font-size-caption);
+    font-weight: 700;
+    fill: var(--neutral-800);
+
+    @include dark-theme {
+      fill: var(--neutral-200);
+    }
+  }
+
+  // ==========================================
+  // CHART LABELS DENTRO DEL SVG
+  // ==========================================
+  &_chart-label-percentage {
+    font-size: var(--font-size-heading);
+    font-weight: 700;
+    fill: var(--neutral-100);
+    transition: $req-transition;
+
+    @include dark-theme {
+      fill: var(--neutral-1000);
+    }
+
+    &:hover {
+      fill: var(--neutral-50);
+
+      @include dark-theme {
+        fill: var(--neutral-200);
+      }
+    }
+  }
+
+  &_chart-label-title {
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    fill: var(--neutral-100);
+    transition: $req-transition;
+
+    @include dark-theme {
+      fill: var(--neutral-1000);
+    }
+
+    &:hover {
+      fill: var(--neutral-50);
+
+      @include dark-theme {
+        fill: var(--neutral-200);
+      }
+    }
+  }
+
+  // ==========================================
+  // ACCORDION CONTAINER
+  // ==========================================
+  &_accordion-container {
+    width: 100%;
+    max-width: rem(800px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  &_accordion-item {
+    border: 1px solid var(--neutral-300);
+    border-radius: rem(8px);
+    overflow: hidden;
+    transition: $req-transition;
+
+    @include dark-theme {
+      border-color: var(--neutral-700);
+    }
+
+    &.is-active {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      @include dark-theme {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+
+  &_accordion-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--neutral-100);
+    cursor: pointer;
+    transition: $req-transition;
+
+    @include dark-theme {
+      background: var(--neutral-900);
+    }
+
+    &:hover {
+      background: var(--neutral-200);
+
+      @include dark-theme {
+        background: var(--neutral-800);
+      }
+    }
+  }
+
+  &_accordion-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(40px);
+    height: rem(40px);
+    border-radius: rem(6px);
+    font-size: var(--font-size-caption);
+    flex-shrink: 0;
+
+    .admission-requirements_accordion-item[data-requirement="actitud"] & {
+      background: rgba(var(--primary-600-rgb), 0.1);
+      color: var(--primary-600);
+    }
+
+    .admission-requirements_accordion-item[data-requirement="conocimiento"] & {
+      background: rgba(var(--secondary-600-rgb), 0.1);
+      color: var(--secondary-600);
+    }
+
+    .admission-requirements_accordion-item[data-requirement="habilidad"] & {
+      background: rgba(var(--tertiary-600-rgb), 0.1);
+      color: var(--tertiary-600);
+    }
+  }
+
+  &_accordion-title {
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    color: var(--neutral-800);
+    margin: 0;
+    flex-grow: 1;
+
+    @include dark-theme {
+      color: var(--neutral-200);
+    }
+  }
+
+  &_accordion-percentage {
+    font-size: var(--font-size-heading);
+    font-weight: 700;
+    color: var(--neutral-600);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--neutral-200);
+    border-radius: rem(4px);
+
+    @include dark-theme {
+      color: var(--neutral-300);
+      background: var(--neutral-800);
+    }
+  }
+
+  &_accordion-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(24px);
+    height: rem(24px);
+    color: var(--neutral-600);
+    font-size: var(--font-size-heading);
+    transition: $req-transition;
+
+    @include dark-theme {
+      color: var(--neutral-400);
+    }
+
+    .admission-requirements_accordion-item.is-active & {
+      transform: rotate(180deg);
+    }
+  }
+
+  &_accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+
+    .admission-requirements_accordion-item.is-active & {
+      max-height: rem(500px);
+    }
+  }
+
+  &_accordion-items {
+    padding: var(--spacing-lg);
+    background: var(--neutral-50);
+    border-top: 1px solid var(--neutral-300);
+
+    @include dark-theme {
+      background: var(--neutral-950);
+      border-color: var(--neutral-700);
+    }
+  }
+
+  &_accordion-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) 0;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--neutral-200);
+
+      @include dark-theme {
+        border-color: var(--neutral-800);
+      }
+    }
+  }
+
+  &_item-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(20px);
+    height: rem(20px);
+    color: var(--primary-600);
+    font-size: var(--font-size-xs);
+    flex-shrink: 0;
+    margin-top: rem(2px);
+
+    @include dark-theme {
+      color: var(--primary-400);
+    }
+  }
+
+  &_item-text {
+    flex-grow: 1;
+    margin: 0;
+    color: var(--neutral-700);
+    line-height: 1.5;
+
+    @include dark-theme {
+      color: var(--neutral-300);
+    }
+  }
+}

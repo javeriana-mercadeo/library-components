@@ -1,12 +1,77 @@
 // Script para Liferay - Sistema de Temas con Evento Personalizado
 const selectedTheme = configuration
 
+// ===========================================
+// ACCESO A UTILIDADES GLOBALES
+// ===========================================
+// Función para obtener utilidades globales del window con fallback
+const getGlobalUtils = () => {
+  if (typeof window === 'undefined') {
+    console.warn('Window no disponible, usando fallbacks básicos')
+    return {
+      StringUtils: {
+        removeAccents: str => str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '',
+        slugify: str =>
+          str
+            ?.toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s-]/g, '')
+            .trim()
+            .replace(/[\s-]+/g, '-') || ''
+      }
+    }
+  }
+
+  // Intentar obtener las utilidades del window
+  return {
+    StringUtils: window.StringUtils || {
+      removeAccents: str => str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '',
+      slugify: str =>
+        str
+          ?.toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9\s-]/g, '')
+          .trim()
+          .replace(/[\s-]+/g, '-') || ''
+    }
+  }
+}
+
+// Obtener utilidades con fallback seguro
+const { StringUtils } = getGlobalUtils()
+
 try {
   const rowBaseTheme = selectedTheme['themeBase']
   const baseTheme = rowBaseTheme.startsWith('{') ? JSON.parse(rowBaseTheme).dataTheme : rowBaseTheme
 
   const rowFacultyTheme = selectedTheme['themeFaculty']
   const facultyTheme = rowFacultyTheme.startsWith('{') ? JSON.parse(rowFacultyTheme).dataTheme : rowFacultyTheme
+
+  // Función para normalizar nombres de facultades
+  function normalizeFacultyName(facultyName) {
+    if (!facultyName || typeof facultyName !== 'string') return ''
+
+    // Limpiar espacios y quitar "Facultad de" al inicio
+    let clean = facultyName.replace(/^Facultad de /i, '').trim()
+
+    // Mapeo de abreviaciones conocidas a nombres completos
+    const facultyMappings = {
+      'Cs.Económicas y Administrativ.': 'Ciencias Económicas y Administrativas',
+      'Cs.Económicas y Administrativas': 'Ciencias Económicas y Administrativas',
+      'Cs.Políticas y Relaciones Int.': 'Ciencias Políticas y Relaciones Internacionales',
+      'Arquitectura y Diseño': 'Arquitectura y Diseño'
+      // Agregar más mapeos según sea necesario
+    }
+
+    // Aplicar mapeo si existe
+    if (facultyMappings[clean]) {
+      return facultyMappings[clean]
+    }
+
+    return clean
+  }
 
   // Variables para manejar el estado del tema
   let currentBase = baseTheme || 'light'
@@ -29,6 +94,10 @@ try {
       html.setAttribute('data-theme-faculty', faculty)
     }
 
+    window.currentBase = currentBase
+    window.currentFaculty = currentFaculty
+    window.applyTheme = applyTheme
+
     // Construir tema combinado para compatibilidad
     let combinedTheme
     if (faculty === 'default' || !faculty) {
@@ -50,58 +119,11 @@ try {
     const { facultad } = event.detail.dataProgram
 
     if (facultad && currentFaculty === 'default') {
-      // Lista de conectores y palabras a eliminar
-      const conectores = [
-        'y',
-        'e',
-        'o',
-        'u',
-        'de',
-        'del',
-        'la',
-        'las',
-        'el',
-        'los',
-        'en',
-        'con',
-        'para',
-        'por',
-        'sin',
-        'sobre',
-        'bajo',
-        'entre',
-        'hacia',
-        'hasta',
-        'desde',
-        'durante',
-        'mediante',
-        'según',
-        'ante',
-        'tras',
-        'a',
-        'al'
-      ]
+      // Aplicar normalización de facultad antes del procesamiento
+      const normalizedFaculty = normalizeFacultyName(facultad)
 
-      // Convertir nombre de facultad a slug
-      const facultySlug = facultad
-        .toLowerCase()
-        // Primero reemplazar acentos
-        .replace(/[áàäâ]/g, 'a')
-        .replace(/[éèëê]/g, 'e')
-        .replace(/[íìïî]/g, 'i')
-        .replace(/[óòöô]/g, 'o')
-        .replace(/[úùüû]/g, 'u')
-        .replace(/ñ/g, 'n')
-        // Dividir en palabras, filtrar conectores y unir con guiones
-        .split(/\s+/)
-        .filter(palabra => palabra.length > 0 && !conectores.includes(palabra))
-        .join('-')
-        // Limpiar caracteres especiales
-        .replace(/[^a-z0-9-]/g, '')
-        // Eliminar guiones múltiples
-        .replace(/-+/g, '-')
-        // Eliminar guiones al inicio y final
-        .replace(/^-|-$/g, '')
+      // Usar StringUtils para crear slug de forma más eficiente
+      const facultySlug = StringUtils.slugify(normalizedFaculty)
 
       currentFaculty = facultySlug
 

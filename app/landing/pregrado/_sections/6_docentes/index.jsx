@@ -63,7 +63,7 @@ const Docentes = () => {
   // Función para renderizar una tarjeta de docente
   const renderDocenteCard = (docente, index) => {
     return (
-      <div key={index} className={`${baseClass}_slide swiper-slide`} role="listitem">
+      <div key={index} className={`${baseClass}_slide swiper-slide`} role='listitem'>
         <div className={`${baseClass}_card`}>
           <div className={`${baseClass}_card-header`}>
             <Image
@@ -77,33 +77,33 @@ const Docentes = () => {
 
           <div className={`${baseClass}_card-content`}>
             <Title
-              hierarchy="h3"
-              size="md"
-              weight="bold"
+              hierarchy='h2'
+              size='md'
+              weight='bold'
               className={`${baseClass}_card-name`}
               id={`${elementName}-name-${index + 1}`}
-              color="neutral"
+              color='neutral'
               isEditable={false}>
               {docente.name}
             </Title>
 
             <Paragraph
-              size="sm"
+              size='sm'
               className={`${baseClass}_card-title`}
               id={`${elementName}-title-${index + 1}`}
-              color="neutral"
+              color='neutral'
               isEditable={false}>
               {docente.title}
             </Paragraph>
 
             <Btn
               href={docente.profileUrl}
-              target="_blank"
-              variant="link"
-              size="md"
+              target='_blank'
+              variant='link'
+              size='md'
               className={`${baseClass}_card-link`}
               id={`${elementName}-link-${index + 1}`}
-              color="neutral"
+              color='neutral'
               isEditable={false}>
               Ver Perfil
             </Btn>
@@ -114,37 +114,37 @@ const Docentes = () => {
   }
 
   return (
-    <section id="section-six">
-      <div className="color-container">
+    <section id='section-six'>
+      <div className='color-container'>
         <Container id={elementName} className={baseClass}>
           <Title
-            hierarchy="h2"
-            size="2xl"
-            weight="bold"
-            align="center"
+            hierarchy='h2'
+            size='2xl'
+            weight='bold'
+            align='center'
             className={`${baseClass}__title`}
             id={`${elementName}-title`}
-            color="neutral">
+            color='neutral'>
             Docentes Expertos
           </Title>
 
-          <Paragraph align="center" className={`${baseClass}__description`} id={`${elementName}-description`} color="neutral">
+          <Paragraph align='center' className={`${baseClass}__description`} id={`${elementName}-description`} color='neutral'>
             Docentes expertos con experiencia práctica y académica, comprometidos con la excelencia e innovación en Ingeniería Civil.
           </Paragraph>
 
           <div className={`${baseClass}_carousel swiper`}>
             <div className={`${baseClass}_wrapper expert-swiper`}>
-              <div className={`${baseClass}_slides swiper-wrapper`} role="list">
+              <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
                 {/* Generar cards dinámicamente */}
                 {docentes.map((docente, index) => renderDocenteCard(docente, index))}
               </div>
 
               {/* Botones de navegación */}
-              <button className={`swiper-slide-button ${baseClass}_prev`} aria-label="Ir al slide anterior" type="button">
-                <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
+              <button className={`swiper-slide-button ${baseClass}_prev`} aria-label='Ir al slide anterior' type='button'>
+                <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
               </button>
-              <button className={`swiper-slide-button ${baseClass}_next`} aria-label="Ir al siguiente slide" type="button">
-                <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+              <button className={`swiper-slide-button ${baseClass}_next`} aria-label='Ir al siguiente slide' type='button'>
+                <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
               </button>
             </div>
           </div>

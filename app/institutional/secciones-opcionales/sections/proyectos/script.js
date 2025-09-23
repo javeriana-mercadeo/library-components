@@ -1,6 +1,4 @@
-
 const script = () => {
-  
   console.log('Script de Proyectos inicializado')
 }
 

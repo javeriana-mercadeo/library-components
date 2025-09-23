@@ -1,87 +1,110 @@
 import { Caption, Paragraph, Button as Btn } from '@library/components'
 import PropTypes from 'prop-types'
+import { useMemo } from 'react'
 
-/**
- * Función para generar atributos dinámicos basados en el ID
- */
+// Cache para atributos generados
+const attributeCache = new Map()
+
 const generateDynamicAttributes = id => {
   if (!id) return {}
 
-  if (id.startsWith('data-puj-') || id.startsWith('puj-')) {
-    return { [id]: 'true' }
+  // Usar cache para evitar recalcular
+  if (attributeCache.has(id)) {
+    return attributeCache.get(id)
   }
 
-  let attributeName = id
-    .replace(/^(data-puj-|puj-data-|puj-)/i, '')
-    .replace(/([A-Z])/g, '-$1')
-    .toLowerCase()
-    .replace(/^-/, '')
+  let result
+  if (id.startsWith('data-puj-') || id.startsWith('puj-')) {
+    result = { [id]: 'true' }
+  } else {
+    const attributeName = id
+      .replace(/^(data-puj-|puj-data-|puj-)/i, '')
+      .replace(/([A-Z])/g, '-$1')
+      .toLowerCase()
+      .replace(/^-/, '')
+    result = { [`data-puj-${attributeName}`]: 'true' }
+  }
 
-  return { [`data-puj-${attributeName}`]: 'true' }
+  attributeCache.set(id, result)
+  return result
 }
 
-/**
- * Componente genérico para mostrar detalles del programa
- * Soporta diferentes tipos: normal, modal
- */
 const ProgramDetail = ({ id, icon, label, value, type = 'normal', modalContent = null, className = '' }) => {
-  const itemClass = ['program-detail', type !== 'normal' ? `program-detail--${type}` : '', className].filter(Boolean).join(' ')
+  // Memoizar cálculos costosos
+  const itemClass = useMemo(
+    () => ['program-detail', type !== 'normal' ? `program-detail--${type}` : '', className].filter(Boolean).join(' '),
+    [type, className]
+  )
 
-  const modalId = `modal-${id}-${Math.random().toString(36).substr(2, 9)}`
-  const dynamicAttributes = generateDynamicAttributes(id)
+  const modalId = useMemo(() => `modal-${id}`, [id])
+
+  const dynamicAttributes = useMemo(() => generateDynamicAttributes(id), [id])
 
   return (
     <>
       <div className={itemClass}>
-        <div className="program-detail_icon">
+        <div className='program-detail_icon'>
           <i className={`ph ${icon}`}></i>
         </div>
 
-        <div className="program-detail_content">
-          <Caption className="program-detail_label" color="neutral" size="md" isEditable={false}>
-            {label}
+        <div className='program-detail_content'>
+          <Caption className='program-detail_label' color='neutral' size='md' isEditable={false}>
+            <span dangerouslySetInnerHTML={{ __html: label }} />
           </Caption>
 
           {/* Tipo normal */}
           {type === 'normal' && (
-            <Paragraph className="program-detail_value" color="neutral" size="md" bold={true} isEditable={false} {...dynamicAttributes}>
+            <Paragraph className='program-detail_value' color='neutral' size='md' bold={true} isEditable={false} {...dynamicAttributes}>
               {value}
             </Paragraph>
           )}
 
           {/* Tipo modal - Clickeable */}
           {type === 'modal' && (
-            <div className="program-detail_content--clickable">
-              <Paragraph className="program-detail_value" color="neutral" size="md" bold={true} isEditable={false} {...dynamicAttributes}>
+            <div className='program-detail_content--clickable'>
+              <Paragraph className='program-detail_value' color='neutral' size='md' bold={true} isEditable={false} {...dynamicAttributes}>
                 {value}
               </Paragraph>
 
               <Btn
-                variant="faded"
-                size="sm"
-                className="program-detail_value--clickable"
+                variant='faded'
+                size='sm'
+                className='program-detail_value--clickable'
                 data-modal-target={modalId}
                 aria-label={`Ver más detalles sobre ${label}`}
                 isEditable={false}
-                endIcon={<i className="ph ph-info"></i>}>
+                endIcon={<i className='ph ph-info'></i>}>
                 Ver detalles
               </Btn>
             </div>
+          )}
+
+          {/* Tipo editable */}
+          {type === 'editable' && (
+            <Paragraph
+              className={`program-detail_value`}
+              color='neutral'
+              size='md'
+              bold={true}
+              id={`editable-${id}`}
+              {...dynamicAttributes}>
+              <span className='lead'>{value}</span>
+            </Paragraph>
           )}
         </div>
       </div>
 
       {/* Modal pequeño */}
       {type === 'modal' && (
-        <div id={modalId} className="program-detail-modal">
-          <div className="program-detail-modal__content">
-            <div className="program-detail-modal__header">
-              <h3 className="program-detail-modal__title">{label}</h3>
-              <button className="program-detail-modal__close" aria-label="Cerrar modal">
-                <i className="ph ph-x"></i>
+        <div id={modalId} className='program-detail-modal'>
+          <div className='program-detail-modal__content'>
+            <div className='program-detail-modal__header'>
+              <h3 className='program-detail-modal__title'>{label}</h3>
+              <button className='program-detail-modal__close' aria-label='Cerrar modal'>
+                <i className='ph ph-x'></i>
               </button>
             </div>
-            <div className="program-detail-modal__body">{modalContent}</div>
+            <div className='program-detail-modal__body'>{modalContent}</div>
           </div>
         </div>
       )}
@@ -89,13 +112,12 @@ const ProgramDetail = ({ id, icon, label, value, type = 'normal', modalContent =
   )
 }
 
-// PropTypes
 ProgramDetail.propTypes = {
   id: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string,
-  type: PropTypes.oneOf(['normal', 'modal']),
+  type: PropTypes.oneOf(['normal', 'modal', 'editable']),
   modalContent: PropTypes.node,
   className: PropTypes.string
 }

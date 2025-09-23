@@ -138,17 +138,17 @@ export default function Btn({
       const iconToShow = startIcon || endIcon
       if (!iconToShow) {
         console.warn('Btn: iconOnly está habilitado pero no se proporcionó startIcon ni endIcon')
-        return <span className="btn-text">{children}</span>
+        return <span className='btn-text'>{children}</span>
       }
-      return <span className="btn-icon btn-icon-only">{iconToShow}</span>
+      return <span className='btn-icon btn-icon-only'>{iconToShow}</span>
     }
 
     // Renderizado normal con iconos y texto
     return (
       <>
-        {startIcon && <span className="btn-icon btn-icon-start">{startIcon}</span>}
-        <span className="btn-text">{children}</span>
-        {endIcon && <span className="btn-icon btn-icon-end">{endIcon}</span>}
+        {startIcon && <span className='btn-icon btn-icon-start'>{startIcon}</span>}
+        <span className='btn-text'>{children}</span>
+        {endIcon && <span className='btn-icon btn-icon-end'>{endIcon}</span>}
       </>
     )
   }

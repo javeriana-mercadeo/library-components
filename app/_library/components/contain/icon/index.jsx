@@ -100,7 +100,7 @@ const Icon = ({
 
   return (
     <span {...containerProps}>
-      <i className={`${iconClasses} ${icon}`} aria-hidden="true"></i>
+      <i className={`${iconClasses} ${icon}`} aria-hidden='true'></i>
     </span>
   )
 }

@@ -1,8 +1,6 @@
 'use client'
 import { Title, Paragraph, Container, Image, Icon } from '@library/components'
 
-import { useEffect } from 'react'
-
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'
@@ -11,9 +9,15 @@ const Experiencia = () => {
   const elementName = info.id || 'experiencia'
   const baseClass = 'experience-carousel'
 
-  useEffect(() => {
-    script()
-  }, [])
+  // Inicializar script manualmente cuando el componente se monta
+  if (typeof window !== 'undefined') {
+    // Usar setTimeout para asegurar que el DOM esté completamente renderizado
+    setTimeout(() => {
+      if (typeof script === 'function') {
+        script()
+      }
+    }, 100)
+  }
 
   // Datos del carrusel - estos vendrán de Liferay
   const carouselData = [
@@ -41,31 +45,31 @@ const Experiencia = () => {
     },
     {
       type: 'video',
-      orientation: 'horizontal',
+      orientation: 'vertical',
       videoId: 'IWZvfiu3gX4',
       link: '#'
-    },
-    {
-      type: 'testimonial',
-      text: 'La Javeriana me dio las herramientas para liderar proyectos empresariales. Hoy impulso estrategias de crecimiento en una multinacional.',
-      user: {
-        name: 'Anamaría López',
-        job: 'Gerente de Estrategia en GlobalCorp',
-        avatar:
-          'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461',
-        linkedin: '#'
-      }
-    },
-    {
-      type: 'video',
-      orientation: 'vertical',
-      videoId: 'wUmYyNrVjfg'
     }
+    // {
+    //   type: 'testimonial',
+    //   text: 'La Javeriana me dio las herramientas para liderar proyectos empresariales. Hoy impulso estrategias de crecimiento en una multinacional.',
+    //   user: {
+    //     name: 'Anamaría López',
+    //     job: 'Gerente de Estrategia en GlobalCorp',
+    //     avatar:
+    //       'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461',
+    //     linkedin: '#'
+    //   }
+    // },
+    // {
+    //   type: 'video',
+    //   orientation: 'vertical',
+    //   videoId: 'wUmYyNrVjfg'
+    // }
   ]
 
   // Componente para renderizar imagen
   const ImageCard = ({ src, alt, link }) => (
-    <a href={link} target="" className={`${baseClass}__card-link`}>
+    <a href={link} target='' className={`${baseClass}__card-link`}>
       <div className={`${baseClass}__image-card`}>
         <Image src={src} alt={alt} className={`${baseClass}__image`} isEditable={false} />
       </div>
@@ -80,18 +84,18 @@ const Experiencia = () => {
       </Paragraph>
       <div className={`${baseClass}__testimonial-user`}>
         <div className={`${baseClass}__testimonial-avatar`}>
-          <Image src={user.avatar} alt={user.name} data-lfr-editable-id={`experience-avatar-${index}`} data-lfr-editable-type="image" />
+          <Image src={user.avatar} alt={user.name} data-lfr-editable-id={`experience-avatar-${index}`} data-lfr-editable-type='image' />
         </div>
         <div className={`${baseClass}__testimonial-info`}>
-          <h4 className={`${baseClass}__testimonial-name`} data-lfr-editable-id={`experience-name-${index}`} data-lfr-editable-type="text">
+          <h4 className={`${baseClass}__testimonial-name`} data-lfr-editable-id={`experience-name-${index}`} data-lfr-editable-type='text'>
             {user.name}
           </h4>
           <Paragraph className={`${baseClass}__testimonial-job`} id={`${elementName}-testimonial-job-${index}`} isEditable={false}>
             {user.job}
           </Paragraph>
         </div>
-        <a href={user.linkedin} className={`${baseClass}__testimonial-linkedin`} target="_blank" rel="noopener noreferrer">
-          <Icon icon="ph-linkedin-logo" isEditable={false} size="xs" />
+        <a href={user.linkedin} className={`${baseClass}__testimonial-linkedin`} target='_blank' rel='noopener noreferrer'>
+          <Icon icon='ph-linkedin-logo' isEditable={false} size='xs' />
         </a>
       </div>
     </div>
@@ -137,35 +141,35 @@ const Experiencia = () => {
   return (
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
-        <Title hierarchy="h2" className={`${baseClass}__title`} id={`${elementName}-title`} size="2xl" weight="semibold" align="center">
+        <Title hierarchy='h2' className={`${baseClass}__title`} id={`${elementName}-title`} size='2xl' weight='semibold' align='center'>
           Vive la Experiencia Javeriana
         </Title>
 
-        <Paragraph className={`${baseClass}__description`} id={`${elementName}-description`} align="center">
+        <Paragraph className={`${baseClass}__description`} id={`${elementName}-description`} align='center'>
           Descubre historias inspiradoras, momentos únicos y experiencias de nuestros estudiantes a través de sus palabras, imágenes y
           videos.
         </Paragraph>
 
         <div className={`${baseClass}__carousel swiper`}>
           <div className={`${baseClass}__wrapper experience-swiper`}>
-            <div className={`${baseClass}__slides swiper-wrapper`} role="list">
+            <div className={`${baseClass}__slides swiper-wrapper`} role='list'>
               {carouselData.map((item, index) => (
-                <div key={index} className={`${baseClass}__slide swiper-slide`} role="listitem">
+                <div key={index} className={`${baseClass}__slide swiper-slide`} role='listitem'>
                   {renderCard(item, index)}
                 </div>
               ))}
             </div>
 
-            {/* Paginación */}
-            <div className={`swiper-pagination ${baseClass}__pagination`} role="tablist" aria-label="Control de páginas del carrusel"></div>
-
             {/* Botones de navegación */}
-            <button className={`swiper-slide-button ${baseClass}__prev`} aria-label="Ir al slide anterior" type="button">
-              <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
+            <button className={`swiper-slide-button ${baseClass}__prev`} aria-label='Ir al slide anterior' type='button'>
+              <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
             </button>
-            <button className={`swiper-slide-button ${baseClass}__next`} aria-label="Ir al siguiente slide" type="button">
-              <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+            <button className={`swiper-slide-button ${baseClass}__next`} aria-label='Ir al siguiente slide' type='button'>
+              <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
             </button>
+
+            {/* Paginación - AL FINAL como en 10_relacionados */}
+            <div className={`swiper-pagination ${baseClass}__pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
           </div>
         </div>
       </Container>

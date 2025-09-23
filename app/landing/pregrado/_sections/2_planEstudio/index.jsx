@@ -153,20 +153,20 @@ const PlanEstudio = () => {
     const { year, semester, credits, subjects } = semesterData
 
     return (
-      <div key={index} className={`${baseClass}_slide swiper-slide`} role="listitem">
+      <div key={index} className={`${baseClass}_slide swiper-slide`} role='listitem'>
         <div className={`${baseClass}_card`}>
           <div className={`${baseClass}_card-header`}>
             <span className={`${baseClass}_badge ${baseClass}_badge`}>{year}</span>
           </div>
 
-          <Title hierarchy="h2" className={`${baseClass}_semester-title`} size="lg" weight="bold" isEditable={false}>
+          <Title hierarchy='span' className={`${baseClass}_semester-title`} size='lg' weight='bold' isEditable={false}>
             {semester}
           </Title>
 
           <ul className={`${baseClass}_subjects`}>
             {subjects.map((subject, subjectIndex) => (
               <li key={`${index}-subject-${subjectIndex}`}>
-                <i className="ph ph-check" aria-hidden="true"></i>
+                <i className='ph ph-check' aria-hidden='true'></i>
                 {subject}
               </li>
             ))}
@@ -183,39 +183,39 @@ const PlanEstudio = () => {
   return (
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
-        <Title weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
+        <Title weight='semibold' size='2xl' align='center' id={`${elementName}-title`}>
           Materias por Semestre
         </Title>
 
-        <Paragraph id={`${elementName}-description`} align="center">
+        <Paragraph id={`${elementName}-description`} align='center'>
           El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
         </Paragraph>
 
         <Btn
           id={`${elementName}-btn`}
-          href="#"
-          target="_blank"
-          variant="bordered"
-          endIcon={<i className="ph ph-download" aria-hidden="true"></i>}>
+          href='#'
+          target='_blank'
+          variant='bordered'
+          endIcon={<i className='ph ph-download' aria-hidden='true'></i>}>
           Descargar Plan de estudios
         </Btn>
 
         <div className={`${baseClass}_carousel swiper`}>
           <div className={`${baseClass}_wrapper subjects-swiper`}>
-            <div className={`${baseClass}_slides swiper-wrapper`} role="list">
+            <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
               {/* ✅ GENERAR CARDS DINÁMICAMENTE */}
               {semesters.map((semesterData, index) => renderSemesterCard(semesterData, index))}
             </div>
 
             {/* Paginación */}
-            <div className={`swiper-pagination ${baseClass}_pagination`} role="tablist" aria-label="Control de páginas del carrusel"></div>
+            <div className={`swiper-pagination ${baseClass}_pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
 
             {/* Botones de navegación */}
-            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label="Ir al slide anterior" type="button">
-              <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
+            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label='Ir al slide anterior' type='button'>
+              <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
             </button>
-            <button className={`swiper-slide-button ${baseClass}_next`} aria-label="Ir al siguiente slide" type="button">
-              <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+            <button className={`swiper-slide-button ${baseClass}_next`} aria-label='Ir al siguiente slide' type='button'>
+              <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
             </button>
           </div>
         </div>
