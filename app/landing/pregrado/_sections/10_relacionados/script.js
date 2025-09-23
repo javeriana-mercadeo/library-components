@@ -120,14 +120,25 @@ const RelatedProgramsScript = () => {
     },
 
     setupDataListener() {
+      let currentProgramData = null
+      let allProgramsData = null
+
+      // Escuchar datos del programa principal
       document.addEventListener('data_load-program', event => {
-        this.processData(event.detail.dataProgram, event.detail.allPrograms)
+        currentProgramData = event.detail.dataProgram
+        this.tryGenerateCarousel(currentProgramData, allProgramsData)
+      })
+
+      // Escuchar datos de todos los programas (nuevo evento independiente)
+      document.addEventListener('data_load-program-all', event => {
+        allProgramsData = event.detail.allPrograms
+        this.tryGenerateCarousel(currentProgramData, allProgramsData)
       })
     },
 
-    processData(dataProgram, allPrograms) {
-      if (allPrograms && Array.isArray(allPrograms) && allPrograms.length > 0) {
-        this.generateRelatedCarousel(dataProgram, allPrograms)
+    tryGenerateCarousel(currentProgram, allPrograms) {
+      if (currentProgram && allPrograms && Array.isArray(allPrograms) && allPrograms.length > 0) {
+        this.generateRelatedCarousel(currentProgram, allPrograms)
       }
     },
 

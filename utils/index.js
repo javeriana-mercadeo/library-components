@@ -51,17 +51,21 @@ function initGlobalUtils(options = {}) {
       Object.assign(window, utils)
     }
 
+    // Ejecutar limpieza automática de cookies para prevenir error 431
+    try {
+      if (StorageUtils && StorageUtils.cleanLargeCookies) {
+        StorageUtils.cleanLargeCookies()
+      }
+    } catch (error) {
+      // Silenciar errores de limpieza de cookies en inicialización
+      if (Logger && Logger.debug) {
+        Logger.debug('Error en limpieza automática de cookies:', error)
+      }
+    }
+
     // Marcar como cargadas
     window.__GLOBAL_UTILS_LOADED__ = true
     window.__GLOBAL_UTILS_VERSION__ = '3.0.0'
-
-    if (Logger && Logger.success) {
-      Logger.success('✨ Utilidades globales v3.0 inicializadas')
-      Logger.info(`📦 Módulos cargados: ${Object.keys(utils).length}`)
-    } else {
-      console.log('✨ Utilidades globales v3.0 inicializadas')
-      console.log(`📦 Módulos cargados: ${Object.keys(utils).length}`)
-    }
 
     return utils
   }

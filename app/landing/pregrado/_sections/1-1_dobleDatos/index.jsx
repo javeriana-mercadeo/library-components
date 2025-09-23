@@ -201,41 +201,11 @@ const DatosProgramaVideo = () => {
         {/* === INFORMACIÓN LEGAL === */}
         <div className={`${baseClass}_enrollment`}>
           <div className={`${baseClass}_enrollment-note-container`}>
-            <Paragraph data-puj-snies='true' className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
-              Cargando SNIES...
-            </Paragraph>
-
-            <Paragraph id={`${elementName}-enrollment-legal`} className={`${baseClass}_enrollment-note`} size='sm'>
-              {' '}
-              | Resolución de Registro Calificado: 9406 del 27 de mayo de 2022, vigente hasta el 27 de mayo de 2030. | Resolución de
-              Acreditación de Alta Calidad: 9406 del 27 de mayo del 2022, vigente por 8 años, hasta el 27 de mayo de 2030.
-            </Paragraph>
-
-            <Paragraph id={`${elementName}-enrollment-duration`} className={`${baseClass}_enrollment-note`} size='sm'>
-              {' '}
-              | Duración estimada diurno:{' '}
-            </Paragraph>
-
-            <Paragraph data-puj-duration='true' className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
-              Cargando duración...
-            </Paragraph>
-
-            <Paragraph id={`${elementName}-enrollment-duration-1`} className={`${baseClass}_enrollment-note`} size='sm'>
-              {' '}
-              | Duración estimada nocturno:{' '}
-            </Paragraph>
-
-            <Paragraph id={`${elementName}-enrollment-duration-2`} className={`${baseClass}_enrollment-note`} size='sm'>
-              0 semestres
-            </Paragraph>
-
             <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
-              {' '}
-              / Lugar donde se oferta:{' '}
-            </Paragraph>
-
-            <Paragraph data-puj-full-location className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
-              Cargando lugar...
+              <span data-puj-snies>Cargando SNIES...</span> | <span data-puj-registry>Cargando registro...</span>{' '}
+              <span data-puj-accreditation>Cargando acreditación...</span> Duración estimada:{' '}
+              <span data-puj-duration>Cargando duración...</span> | Lugar donde se oferta:{' '}
+              <span data-puj-full-location>Cargando lugar...</span>
             </Paragraph>
           </div>
         </div>

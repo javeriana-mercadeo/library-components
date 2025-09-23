@@ -241,10 +241,10 @@ function initExperienceCarousel() {
     // Función para verificar si todos los videos están listos
     function checkAllLoaded() {
       loadedVideos++
-      console.log('[VIDEO] Cargado', loadedVideos, 'de', totalVideos)
+      // Video loaded
 
       if (loadedVideos >= totalVideos) {
-        console.log('[VIDEO] Todos los videos cargados, ejecutando callback')
+        // All videos loaded
         if (typeof callback === 'function') {
           setTimeout(callback, 50) // Pequeño delay para asegurar DOM updates
         }
@@ -367,12 +367,12 @@ function initExperienceCarousel() {
         // Video se está reproduciendo -> Pausar
         iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
         videoStates.set(videoId, false)
-        console.log('[VIDEO] Pausado:', videoId)
+        // Video paused
       } else {
         // Video está pausado -> Reproducir
         iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*')
         videoStates.set(videoId, true)
-        console.log('[VIDEO] Reproduciendo:', videoId)
+        // Video playing
       }
     } catch (error) {
       console.warn('[VIDEO] Error controlando video:', videoId, error)
@@ -420,22 +420,13 @@ function initExperienceCarousel() {
 
     var config = getDisplayConfig(windowWidth, totalSlides)
 
-    console.log(
-      '[INIT] Ventana: ' +
-        windowWidth +
-        'px, Slides: ' +
-        totalSlides +
-        ', Visibles: ' +
-        config.slidesPerView +
-        ', Usar Grid: ' +
-        config.useGrid
-    )
+    // Display configuration determined
 
     if (config.useGrid) {
-      console.log('[INIT] Activando modo Grid')
+      // Activating Grid mode
       activateGridMode()
     } else {
-      console.log('[INIT] Activando modo Swiper')
+      // Activating Swiper mode
       activateSwiperMode()
     }
   }
@@ -483,7 +474,7 @@ function initExperienceCarousel() {
         'click',
         (function (currentContainer, currentIframe) {
           return function (e) {
-            console.log('[VIDEO] Overlay clickeado para iframe:', currentIframe.src)
+            // Video overlay clicked
 
             // Alternar entre play y pause
             toggleVideo(currentIframe)
@@ -516,26 +507,17 @@ function initExperienceCarousel() {
     var config = getDisplayConfig(windowWidth, totalSlides)
     var currentlyUsingGrid = document.querySelector('.experience-carousel__slides.use-grid')
 
-    console.log(
-      '[RESIZE] Ventana: ' +
-        windowWidth +
-        'px, Slides: ' +
-        totalSlides +
-        ', Visibles: ' +
-        config.slidesPerView +
-        ', Usar Grid: ' +
-        config.useGrid
-    )
+    // Resize configuration determined
 
     if (config.useGrid && !currentlyUsingGrid) {
-      console.log('[RESIZE] Cambiando a modo Grid')
+      // Changing to Grid mode
       if (experienceSwiper) {
         experienceSwiper.destroy(true, true)
         experienceSwiper = null
       }
       activateGridMode()
     } else if (!config.useGrid && currentlyUsingGrid) {
-      console.log('[RESIZE] Cambiando a modo Swiper')
+      // Changing to Swiper mode
       activateSwiperMode()
     }
 

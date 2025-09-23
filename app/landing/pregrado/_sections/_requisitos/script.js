@@ -119,18 +119,21 @@ function initIntersectionObserver(component) {
     return
   }
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        console.log('AdmissionRequirements: Componente visible, activando animaciones')
-        triggerProgressAnimations(entry.target)
-        observer.unobserve(entry.target)
-      }
-    })
-  }, {
-    threshold: 0.1, // Reducir threshold para activar más fácilmente
-    rootMargin: '0px 0px -100px 0px' // Activar un poco antes
-  })
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          console.log('AdmissionRequirements: Componente visible, activando animaciones')
+          triggerProgressAnimations(entry.target)
+          observer.unobserve(entry.target)
+        }
+      })
+    },
+    {
+      threshold: 0.1, // Reducir threshold para activar más fácilmente
+      rootMargin: '0px 0px -100px 0px' // Activar un poco antes
+    }
+  )
 
   observer.observe(component)
 }
@@ -159,7 +162,6 @@ function triggerProgressAnimations(component) {
 
       // Agregar clase para animaciones adicionales
       section.classList.add('is-animated')
-
     }, index * 300) // Stagger animation con más delay
   })
 }
@@ -173,7 +175,7 @@ window.AdmissionRequirements = {
    * @param {string} requirementId - ID del requisito
    * @param {number} newPercentage - Nuevo porcentaje
    */
-  updatePercentage: function(requirementId, newPercentage) {
+  updatePercentage: function (requirementId, newPercentage) {
     const card = document.querySelector(`[data-requirement="${requirementId}"]`)
     if (card) {
       card.dataset.percentage = newPercentage
@@ -199,7 +201,7 @@ window.AdmissionRequirements = {
    * Obtiene el estado actual de todos los requisitos
    * @returns {Array} Array con los datos de todos los requisitos
    */
-  getRequirementsData: function() {
+  getRequirementsData: function () {
     const cards = document.querySelectorAll('[data-requirement]')
     return Array.from(cards).map(card => ({
       id: card.dataset.requirement,
@@ -212,7 +214,7 @@ window.AdmissionRequirements = {
   /**
    * Reinicia todas las animaciones
    */
-  resetAnimations: function() {
+  resetAnimations: function () {
     const components = document.querySelectorAll('[data-component-id="requisitos"]')
     components.forEach(component => {
       initProgressAnimations(component)

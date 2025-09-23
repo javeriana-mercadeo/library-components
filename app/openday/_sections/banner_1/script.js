@@ -1,4 +1,2 @@
 // Script para Open Day Banner
-export default () => {
-
-}
+export default () => {}

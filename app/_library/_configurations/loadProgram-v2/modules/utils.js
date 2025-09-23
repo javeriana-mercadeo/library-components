@@ -4,7 +4,11 @@
 
 // Configuración global
 export const CONFIG = {
-  EVENT_NAME: 'data_load-program',
+  EVENT_NAMES: {
+    PROGRAM_DATA: 'data_load-program',
+    ALL_PROGRAMS: 'data_load-program-all',
+    WHATSAPP: 'data_load-program-whatsapp'
+  },
   API_ENDPOINTS: {
     JAVERIANA: 'https://dti-pru.javeriana.edu.co/val-matricula/api/psujsfvaportals',
     SEARCH: 'https://www.javeriana.edu.co/prg-api/searchpuj/general-search-program',

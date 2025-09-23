@@ -528,8 +528,72 @@
       }
 
       // ==========================================
-      // TABLAS
+      // TABLAS - REQUIREMENTS SYSTEM (personalizaciones específicas)
       // ==========================================
+
+      // Wrapper con scroll horizontal para mobile
+      .requirements-table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: var(--spacing-md) 0;
+
+        table {
+          min-width: 600px;
+
+          // Asegurar que los encabezados tengan el styling correcto
+          thead tr {
+            background-color: rgba(var(--neutral-100-rgb, 255, 255, 255), 0.05) !important;
+
+            th {
+              padding: var(--spacing-sm) var(--spacing-md) !important;
+              font-weight: var(--font-weight-bold) !important;
+              color: var(--neutral-100) !important;
+              border: 1px solid rgba(var(--neutral-600-rgb), 0.2) !important;
+            }
+          }
+        }
+
+        @media (max-width: $breakpoint-md) {
+          table {
+            min-width: 500px;
+
+            thead th {
+              padding: var(--spacing-xs) var(--spacing-sm) !important;
+            }
+          }
+        }
+      }
+
+      // Clases específicas para personalizaciones de la tabla de requisitos
+      .requirements-table__cell-center {
+        text-align: center !important;
+        vertical-align: middle !important;
+      }
+
+      .requirements-table__cell-grouped {
+        background-color: rgba(var(--neutral-100-rgb, 255, 255, 255), 0.05) !important;
+        font-weight: var(--font-weight-bold) !important;
+      }
+
+      // Asegurar que todas las celdas tengan el mismo fondo
+      .requirements-table-wrapper {
+        table td {
+          background-color: transparent !important;
+        }
+      }
+
+      .requirements-table__criterio-interno {
+        strong {
+          display: block;
+          color: var(--neutral-100);
+        }
+
+        small {
+          color: var(--neutral-400);
+          font-size: 0.85em;
+        }
+      }
+
       table {
         width: 100% !important;
         border-collapse: collapse !important;
@@ -557,10 +621,6 @@
         tr {
           border-bottom: 1px solid rgba(var(--neutral-600-rgb), 0.15) !important;
           transition: background-color 0.2s ease !important;
-
-          &:first-child {
-            background-color: rgba(var(--neutral-100-rgb, 255, 255, 255), 0.05) !important;
-          }
 
           &:hover {
             background-color: rgba(var(--neutral-100-rgb, 255, 255, 255), 0.02) !important;

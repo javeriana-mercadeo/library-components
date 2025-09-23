@@ -1,28 +1,183 @@
 // ===========================================
-// PROCESADOR PRINCIPAL DE DATOS DEL PROGRAMA
+// PROCESADOR PRINCIPAL DE DATOS DEL PROGRAMA V2
 // ===========================================
-// Usa las utilidades globales disponibles en window
+// 🔄 MIGRACIÓN DE API V1 → V2
 //
-// 🔄 ACTUALIZADO PARA NUEVA ESTRUCTURA DE API
-// ===========================================
-// CAMPOS CAMBIADOS:
-// - tituloOtorgado → titulo
-// - modalidad → metodologia
-// - duracion + unidadDuracion → duracion (string completo)
+// CAMPOS MODIFICADOS DESDE V1:
+// • tituloOtorgado → titulo
+// • modalidad → metodologia
+// • duracion + unidadDuracion → duracion (string completo)
 //
-// NUEVOS CAMPOS DISPONIBLES:
-// - codPrograma, area, ano, eclesiastico, creditos
-// - acredit, url, urlImagen, descripcion
+// CAMPOS NUEVOS EN V2:
+// • codPrograma, area, creditos (información adicional del programa)
+// • acredit, estadoAcredit, numResolAcredit, fechaIniAcredit, fechaFinAcredit, vigenciaAcredit, obserAcredit (acreditación de alta calidad)
+// • estadoRegisCali, numResolRegisCali, fechaIniRegisCali, fechaFinRegisCali, vigenciaRegisCali, obserRegisCali (registro calificado)
+// • url, urlImagen, descripcion (contenido multimedia)
+//
+// CAMPOS QUE SE MANTIENEN IGUALES:
+// • facultad, programa, costo, jornada, snies, grado, ciudad, tipo, periodicidad, datosFechaCierreInscripcion
 // ===========================================
 
 import { FacultyNormalizer, LocationNormalizer, DataFormatter } from './data-formatter.js'
 import { DOMUpdater } from './dom-updater.js'
-import { fetchProgramData, fetchAllPrograms, fetchWhatsApps, processData } from './api-client.js'
+import { fetchProgramData, fetchAllPrograms, fetchWhatsApps, processData, initializeApiClient } from './api-client.js'
 import { CONFIG, updateStatus, dispatchEvent } from './utils.js'
 
-// ===========================================
-// SISTEMA DE PROCESAMIENTO DE DATOS DEL PROGRAMA
-// ===========================================
+const FIELD_CONFIGS = {
+  basic: [
+    // CAMPOS QUE SE MANTIENEN DESDE V1
+    {
+      dataKey: 'facultad',
+      selector: 'data-puj-faculty',
+      updateKey: 'faculty',
+      formatter: val => DataFormatter.formatProgramName(FacultyNormalizer.normalize(val))
+    },
+    {
+      dataKey: 'programa',
+      selector: 'data-puj-name',
+      updateKey: 'program',
+      formatter: val => DataFormatter.formatProgramName(val)
+    },
+    {
+      dataKey: 'snies',
+      selector: 'data-puj-snies',
+      updateKey: 'snies',
+      formatter: val => `SNIES ${val}`
+    },
+    {
+      dataKey: 'grado',
+      selector: 'data-puj-academic-level',
+      updateKey: 'level',
+      formatter: val => DataFormatter.formatProgramName(val)
+    },
+    {
+      dataKey: 'costo',
+      selector: 'data-puj-price',
+      updateKey: 'price',
+      formatter: val => `*${DataFormatter.formatCurrencyCOP(val)}`
+    },
+    {
+      dataKey: 'tipo',
+      selector: 'data-puj-type',
+      updateKey: 'type'
+    },
+    {
+      dataKey: 'periodicidad',
+      selector: 'data-puj-periodicity',
+      updateKey: 'periodicity',
+      formatter: val => DataFormatter.capitalizeFirst(val)
+    },
+
+    // CAMPOS MODIFICADOS EN V2
+    // V1: tituloOtorgado
+    {
+      dataKey: 'titulo',
+      selector: 'data-puj-title-graduation',
+      updateKey: 'degree',
+      formatter: val => DataFormatter.formatProgramName(val)
+    },
+    // V1: duracion + unidadDuracion
+    {
+      dataKey: 'duracion',
+      selector: 'data-puj-duration',
+      updateKey: 'duration'
+    },
+    // V1: modalidad
+    {
+      dataKey: 'metodologia',
+      selector: 'data-puj-modality',
+      updateKey: 'modality',
+      formatter: val => DataFormatter.formatProgramName(val)
+    },
+
+    // CAMPOS NUEVOS EN V2
+    {
+      dataKey: 'codPrograma',
+      selector: 'data-puj-code',
+      updateKey: 'programCode'
+    },
+    {
+      dataKey: 'area',
+      selector: 'data-puj-area',
+      updateKey: 'area'
+    },
+    {
+      dataKey: 'creditos',
+      selector: 'data-puj-credits',
+      updateKey: 'credits',
+      formatter: val => `${val} créditos`
+    },
+    {
+      dataKey: 'url',
+      selector: 'data-puj-program-url',
+      updateKey: 'programUrl',
+      method: 'updateElementsAttribute',
+      attribute: 'href'
+    },
+    {
+      dataKey: 'urlImagen',
+      selector: 'data-puj-program-image',
+      updateKey: 'programImage',
+      method: 'updateElementsAttribute',
+      attribute: 'src'
+    },
+    {
+      dataKey: 'descripcion',
+      selector: 'data-puj-description',
+      updateKey: 'description'
+    },
+
+    // CAMPOS CON LÓGICA ESPECIAL (solo para referencia de selectores)
+    {
+      dataKey: 'jornada',
+      selector: 'data-puj-clock',
+      updateKey: 'schedule',
+      special: true // Marcador para indicar que requiere lógica especial
+    },
+    {
+      dataKey: 'ciudad_full',
+      selector: 'data-puj-full-location',
+      updateKey: 'city',
+      special: true
+    },
+    {
+      dataKey: 'ciudad_simple',
+      selector: 'data-puj-simple-location',
+      updateKey: 'city',
+      special: true
+    }
+  ],
+
+  // NUEVA FUNCIONALIDAD V2: Acreditación de alta calidad - Usando un solo selector
+  accreditation: [
+    {
+      dataKey: 'accreditationData',
+      selector: 'data-puj-accreditation',
+      updateKey: 'accreditation',
+      special: true // Marcador para indicar que requiere lógica especial
+    }
+  ],
+
+  // NUEVA FUNCIONALIDAD V2: Registro calificado
+  registration: [
+    {
+      dataKey: 'registryData',
+      selector: 'data-puj-registry',
+      updateKey: 'registry',
+      special: true // Marcador para indicar que requiere lógica especial
+    }
+  ]
+}
+
+// Función auxiliar para extraer selectores de las configuraciones
+const getSelectorsFromConfig = configKey => {
+  return FIELD_CONFIGS[configKey]?.map(config => config.selector) || []
+}
+
+const getSelector = (configKey, dataKey) => {
+  const config = FIELD_CONFIGS[configKey]?.find(item => item.dataKey === dataKey)
+  return config?.selector
+}
 
 export const ProgramDataProcessor = {
   // Función auxiliar para manejar grupos de elementos relacionados
@@ -45,258 +200,137 @@ export const ProgramDataProcessor = {
     }
   },
 
-  // Función auxiliar para actualizaciones simples de campos
-  _updateField(value, elementId, updateKey, automationUpdates, formatter = null, method = 'updateElementsText', attribute = null) {
+  // Función auxiliar mejorada para actualizaciones simples de campos
+  _updateField(value, selector, updateKey, automationUpdates, formatter = null, method = 'updateElementsText', attribute = null) {
     if (!value) return false
-    
+
     const formattedValue = formatter ? formatter(value) : value
-    
+
     if (method === 'updateElementsAttribute' && attribute) {
-      DOMUpdater[method](elementId, attribute, formattedValue)
+      DOMUpdater[method](selector, attribute, formattedValue)
     } else {
-      DOMUpdater[method](elementId, formattedValue)
+      DOMUpdater[method](selector, formattedValue)
     }
-    
+
     automationUpdates[updateKey] = true
     return true
   },
 
+  // Función especializada para procesar campos configurados desde FIELD_CONFIGS
+  _processConfiguredFields(configKey, dataProgram, automationUpdates) {
+    const configs = FIELD_CONFIGS[configKey]
+    if (!configs) return
+
+    configs.forEach(config => {
+      const { dataKey, selector, updateKey, formatter, method, attribute, value, special } = config
+      // Saltar campos marcados como especiales (se procesan manualmente)
+      if (special) return
+
+      const fieldValue = value !== undefined ? value : dataProgram[dataKey]
+      this._updateField(fieldValue, selector, updateKey, automationUpdates, formatter, method, attribute)
+    })
+  },
+
+  // Función especializada para manejo de acreditación
+  _processAccreditation(dataProgram, automationUpdates) {
+    const { acredit, estadoAcredit, numResolAcredit, fechaIniAcredit, fechaFinAcredit, vigenciaAcredit, recuReposAcredit, obserAcredit } =
+      dataProgram
+
+    const isAccreditationActive = acredit === 'Activo' && estadoAcredit === 'Activo'
+    const accreditationSelector = 'data-puj-accreditation'
+
+    if (isAccreditationActive && numResolAcredit && fechaIniAcredit && fechaFinAcredit && vigenciaAcredit) {
+      // Construir el texto completo de la acreditación
+      let accreditationText = `Resolución de Acreditación de Alta Calidad: ${numResolAcredit} del ${fechaIniAcredit}, vigente por ${vigenciaAcredit} años, hasta el ${fechaFinAcredit}`
+
+      // Si recuReposAcredit es true y hay observaciones, agregarlas
+      if (recuReposAcredit === true && obserAcredit && obserAcredit.trim()) {
+        accreditationText += `. ${obserAcredit.trim()}`
+      }
+
+      // Terminar con "|" en lugar de "."
+      accreditationText += ` |`
+
+      DOMUpdater.updateElementsText(accreditationSelector, accreditationText)
+      automationUpdates.accreditation = true
+    } else {
+      // Si no hay acreditación válida, ocultar elemento y agregar comentario
+      const elements = DOMUtils.findElements(`[${accreditationSelector}]`)
+      elements.forEach(element => {
+        // Crear comentario HTML
+        const comment = document.createComment('Acreditación de Alta Calidad no disponible - Estado Inactivo')
+        element.parentNode.insertBefore(comment, element)
+        element.style.display = 'none'
+        element.textContent = ''
+      })
+      automationUpdates.accreditation = false
+    }
+  },
+
+  // Función especializada para manejo de registro calificado
+  _processRegistration(dataProgram, automationUpdates) {
+    const { estadoRegisCali, numResolRegisCali, fechaIniRegisCali, fechaFinRegisCali, modRegisCali, obserRegisCali } = dataProgram
+
+    const hasRegistration = estadoRegisCali && estadoRegisCali.toLowerCase() === 'activo'
+    const registrySelector = 'data-puj-registry'
+
+    if (hasRegistration && numResolRegisCali && fechaIniRegisCali && fechaFinRegisCali) {
+      // Construir el texto completo del registro calificado
+      let registryText = `Resolución de Registro Calificado: ${numResolRegisCali} del ${fechaIniRegisCali}, vigente hasta el ${fechaFinRegisCali}`
+
+      // Si modRegisCali es true y hay observaciones, agregarlas
+      if (modRegisCali === true && obserRegisCali && obserRegisCali.trim()) {
+        registryText += `. ${obserRegisCali.trim()}`
+      }
+
+      // Terminar con "|" en lugar de "."
+      registryText += ` |`
+
+      DOMUpdater.updateElementsText(registrySelector, registryText)
+      automationUpdates.registry = true
+    } else {
+      // Si no hay registro calificado válido, ocultar elemento y agregar comentario
+      const elements = DOMUtils.findElements(`[${registrySelector}]`)
+      elements.forEach(element => {
+        // Crear comentario HTML
+        const comment = document.createComment('Registro calificado no disponible - Estado Inactivo')
+        element.parentNode.insertBefore(comment, element)
+        element.style.display = 'none'
+        element.textContent = ''
+      })
+      automationUpdates.registry = false
+    }
+  },
+
   processAndUpdateDOM(dataProgram) {
-    // ===========================================
-    // NUEVOS CAMPOS DE LA API (Nueva estructura)
-    // ===========================================
-    const {
-      facultad, // ✅ Mismo nombre
-      programa, // ✅ Mismo nombre
-      costo, // ✅ Mismo nombre
-      jornada, // ✅ Mismo nombre
-      snies, // ✅ Mismo nombre
-      titulo, // 🔄 NUEVO: reemplaza 'tituloOtorgado'
-      grado, // ✅ Mismo nombre
-      duracion, // ✅ Mismo nombre (ahora es string, ej: "8 Semestres")
-      metodologia, // 🔄 NUEVO: reemplaza 'modalidad'
-      datosFechaCierreInscripcion, // ✅ Mismo nombre
-      ciudad, // ✅ Mismo nombre
-      tipo, // ✅ Mismo nombre
-      periodicidad, // ✅ Mismo nombre
-
-      // ===========================================
-      // CAMPOS ADICIONALES DISPONIBLES EN LA NUEVA API
-      // ===========================================
-
-      creditos, // 🆕 NUEVO: número de créditos
-      // Acreditación de alta calidad
-      acredit, // 🆕 NUEVO: estado de acreditación
-      estadoAcredit,
-      numResolAcredit,
-      fechaIniAcredit,
-      fechaFinAcredit,
-      vigenciaAcredit,
-
-      recuReposAcredit,
-      obserAcredit,
-
-      // Registro calificado
-      estadoRegisCali,
-      numResolRegisCali,
-      fechaIniRegisCali,
-      fechaFinRegisCali,
-      vigenciaRegisCali,
-
-      url, // 🆕 NUEVO: URL del programa
-      urlImagen, // 🆕 NUEVO: URL de la imagen
-      descripcion // 🆕 NUEVO: descripción del programa
-    } = dataProgram
-
-    // ===========================================
-    // CAMPOS ELIMINADOS DE LA ESTRUCTURA ANTERIOR
-    // ===========================================
-    // - tituloOtorgado -> ahora es 'titulo'
-    // - unidadDuracion -> ya no existe (incluido en 'duracion')
-    // - modalidad -> ahora es 'metodologia'
-
+    const { jornada, datosFechaCierreInscripcion, ciudad, acredit, estadoAcredit, estadoRegisCali } = dataProgram
     let automationUpdates = {}
 
-    // ===========================================
-    // 📋 CAMPOS BÁSICOS DEL PROGRAMA
-    // ===========================================
-    
-    // Facultad (con normalización)
-    this._updateField(
-      facultad, 
-      'data-puj-faculty', 
-      'faculty', 
-      automationUpdates, 
-      val => DataFormatter.formatProgramName(FacultyNormalizer.normalize(val))
-    )
+    // Procesar campos básicos
+    this._processConfiguredFields('basic', dataProgram, automationUpdates)
 
-    // Nombre del programa
-    this._updateField(programa, 'data-puj-name', 'program', automationUpdates, DataFormatter.formatProgramName)
-
-    // SNIES
-    this._updateField(snies, 'data-puj-snies', 'snies', automationUpdates, val => `SNIES ${val}`)
-
-    // 🔄 Título (antes 'tituloOtorgado')
-    this._updateField(titulo, 'data-puj-title-graduation', 'degree', automationUpdates, DataFormatter.formatProgramName)
-
-    // Nivel académico
-    this._updateField(grado, 'data-puj-academic-level', 'level', automationUpdates, DataFormatter.formatProgramName)
-
-    // 🔄 Duración (ahora string completo)
-    this._updateField(duracion, 'data-puj-duration', 'duration', automationUpdates)
-
-    // 🔄 Metodología (antes 'modalidad')
-    this._updateField(metodologia, 'data-puj-modality', 'modality', automationUpdates, DataFormatter.formatProgramName)
-
-    // Costo
-    this._updateField(costo, 'data-puj-price', 'price', automationUpdates, val => `*${DataFormatter.formatCurrencyCOP(val)}`)
-
-    // Jornada (método especial)
+    // Campos con lógica especial (se mantienen desde V1)
     if (jornada) {
-      DOMUpdater.updateElementsTextEditable('data-puj-clock', DataFormatter.formatProgramName(jornada))
+      DOMUpdater.updateElementsTextEditable(getSelector('basic', 'jornada'), DataFormatter.formatProgramName(jornada))
       automationUpdates.schedule = true
     }
 
-    // Fechas de inscripción (método especial)
     if (Array.isArray(datosFechaCierreInscripcion)) {
       DOMUpdater.updateRegistrationDates(datosFechaCierreInscripcion)
       automationUpdates.deadline = true
     }
 
-    // Ciudad (lógica especial para ubicaciones)
     if (ciudad) {
       const normalizedLocation = LocationNormalizer.normalize(ciudad)
-      DOMUpdater.updateElementsText('data-puj-full-location', normalizedLocation)
-      
-      // Para data-puj-simple-location: si es Bogotá D.C., mostrar solo "Bogotá"
+      DOMUpdater.updateElementsText(getSelector('basic', 'ciudad_full'), normalizedLocation)
       const simpleLocation = normalizedLocation === 'Bogotá D.C.' ? 'Bogotá' : normalizedLocation
-      DOMUpdater.updateElementsText('data-puj-simple-location', simpleLocation)
-      
+      DOMUpdater.updateElementsText(getSelector('basic', 'ciudad_simple'), simpleLocation)
       automationUpdates.city = true
     }
 
-    // Tipo
-    this._updateField(tipo, 'data-puj-type', 'type', automationUpdates)
-
-    // Periodicidad
-    this._updateField(periodicidad, 'data-puj-periodicity', 'periodicity', automationUpdates, DataFormatter.capitalizeFirst)
-
-    // ===========================================
-    // 🆕 NUEVOS CAMPOS DISPONIBLES
-    // ===========================================
-
-    this._updateField(codPrograma, 'data-puj-code', 'programCode', automationUpdates)
-    this._updateField(area, 'data-puj-area', 'area', automationUpdates)
-    this._updateField(creditos, 'data-puj-credits', 'credits', automationUpdates, val => `${val} créditos`)
-
-    // ===========================================
-    // 🔐 LÓGICA DE ACREDITACIÓN DE ALTA CALIDAD
-    // ===========================================
-    // Solo mostrar información cuando AMBOS campos sean "Activo"
-    const isAccreditationActive = acredit === 'Activo' && estadoAcredit === 'Activo'
-
-    if (isAccreditationActive) {
-      // Estado de acreditación
-      DOMUpdater.updateElementsText('data-puj-accreditation-status', 'Activo')
-      automationUpdates.accreditation = true
-
-      // Información adicional de acreditación (solo si está activa)
-      if (numResolAcredit && numResolAcredit.trim()) {
-        DOMUpdater.updateElementsText('data-puj-accreditation-resolution', numResolAcredit.trim())
-        automationUpdates.accreditationResolution = true
-      }
-
-      if (fechaIniAcredit) {
-        DOMUpdater.updateElementsText('data-puj-accreditation-start-date', fechaIniAcredit)
-        automationUpdates.accreditationStartDate = true
-      }
-
-      if (fechaFinAcredit) {
-        DOMUpdater.updateElementsText('data-puj-accreditation-end-date', fechaFinAcredit)
-        automationUpdates.accreditationEndDate = true
-      }
-
-      if (vigenciaAcredit) {
-        DOMUpdater.updateElementsText('data-puj-accreditation-validity', `${vigenciaAcredit} años`)
-        automationUpdates.accreditationValidity = true
-      }
-
-      if (obserAcredit) {
-        DOMUpdater.updateElementsText('data-puj-accreditation-observations', obserAcredit)
-        automationUpdates.accreditationObservations = true
-      }
-    }
-
-    // Manejar elementos de acreditación (mostrar o eliminar)
-    this._handleElementGroup(
-      'accreditation',
-      isAccreditationActive,
-      [
-        'data-puj-accreditation-status',
-        'data-puj-accreditation-resolution',
-        'data-puj-accreditation-start-date',
-        'data-puj-accreditation-end-date',
-        'data-puj-accreditation-validity',
-        'data-puj-accreditation-observations'
-      ],
-      automationUpdates
-    )
-
-    // ===========================================
-    // 📋 LÓGICA DE REGISTRO CALIFICADO
-    // ===========================================
-    const hasRegistration = !!estadoRegisCali
-
-    if (hasRegistration) {
-      DOMUpdater.updateElementsText('data-puj-registration-status', estadoRegisCali)
-      automationUpdates.registrationStatus = true
-
-      // Información adicional del registro calificado
-      if (numResolRegisCali) {
-        DOMUpdater.updateElementsText('data-puj-registration-resolution', numResolRegisCali)
-        automationUpdates.registrationResolution = true
-      }
-
-      if (fechaIniRegisCali) {
-        DOMUpdater.updateElementsText('data-puj-registration-start-date', fechaIniRegisCali)
-        automationUpdates.registrationStartDate = true
-      }
-
-      if (fechaFinRegisCali) {
-        DOMUpdater.updateElementsText('data-puj-registration-end-date', fechaFinRegisCali)
-        automationUpdates.registrationEndDate = true
-      }
-
-      if (vigenciaRegisCali) {
-        DOMUpdater.updateElementsText('data-puj-registration-validity', `${vigenciaRegisCali} años`)
-        automationUpdates.registrationValidity = true
-      }
-
-      if (obserRegisCali) {
-        DOMUpdater.updateElementsText('data-puj-registration-observations', obserRegisCali)
-        automationUpdates.registrationObservations = true
-      }
-    }
-
-    // Manejar elementos de registro calificado (mostrar o eliminar)
-    this._handleElementGroup(
-      'registration',
-      hasRegistration,
-      [
-        'data-puj-registration-status',
-        'data-puj-registration-resolution',
-        'data-puj-registration-start-date',
-        'data-puj-registration-end-date',
-        'data-puj-registration-validity',
-        'data-puj-registration-observations'
-      ],
-      automationUpdates
-    )
-
-    // URLs y descripción
-    this._updateField(url, 'data-puj-program-url', 'programUrl', automationUpdates, null, 'updateElementsAttribute', 'href')
-    this._updateField(urlImagen, 'data-puj-program-image', 'programImage', automationUpdates, null, 'updateElementsAttribute', 'src')
-    this._updateField(descripcion, 'data-puj-description', 'description', automationUpdates)
+    // Nuevas funcionalidades V2
+    this._processAccreditation(dataProgram, automationUpdates)
+    this._processRegistration(dataProgram, automationUpdates)
 
     // Actualizar statusPage usando DataUtils global para merge profundo
     if (Object.keys(automationUpdates).length && typeof window !== 'undefined' && window.statusPage) {
@@ -314,7 +348,17 @@ export const ProgramDataProcessor = {
 // ===========================================
 
 export const loadDataProgram = async codPrg => {
+  // Verificar dependencias globales
+
+  if (!window.HTTPClient) throw new Error('HTTPClient no está disponible. Asegúrate de que las utilidades estén cargadas.')
+  if (!window.Logger) throw new Error('Logger no está disponible. Asegúrate de que las utilidades estén cargadas.')
+  if (!window.DataUtils) throw new Error('DataUtils no está disponible. Asegúrate de que las utilidades estén cargadas.')
+
+  initializeApiClient()
+
   const startTime = performance.now()
+  let consolidatedData = { mainProgram: null, complementaryProgram: null }
+  let allPrograms = null
 
   try {
     updateStatus({
@@ -323,34 +367,106 @@ export const loadDataProgram = async codPrg => {
       startTime: new Date().toISOString()
     })
 
-    // Realizar todas las llamadas en paralelo con manejo de errores robusto
-    const [programData, allPrograms, whatsApps] = await Promise.all([fetchProgramData(codPrg), fetchAllPrograms(), fetchWhatsApps()])
+    // Función auxiliar para manejar datos del programa principal
+    const handleProgramData = async () => {
+      try {
+        const data = await fetchProgramData(codPrg)
+        const apiTime = performance.now() - startTime
 
-    const consolidatedData = processData(programData, allPrograms, codPrg)
-    const loadTime = performance.now() - startTime
+        consolidatedData = processData(data, allPrograms, codPrg)
+
+        const domUpdates = ProgramDataProcessor.processAndUpdateDOM(consolidatedData.mainProgram)
+
+        updateStatus({
+          programData: '🟢 Datos principales cargados',
+          programa: data.programa,
+          loadTime: `${apiTime.toFixed(2)}ms`
+        })
+
+        dispatchEvent(CONFIG.EVENT_NAMES.PROGRAM_DATA, {
+          dataProgram: consolidatedData.mainProgram,
+          domUpdates,
+          performance: {
+            loadTime: apiTime,
+            timestamp: new Date().toISOString()
+          }
+        })
+
+        return data
+      } catch (error) {
+        Logger.error(`❌ Error cargando datos del programa:`, error)
+        throw error
+      }
+    }
+
+    // Función auxiliar para manejar lista de programas
+    const handleAllPrograms = async () => {
+      try {
+        const data = await fetchAllPrograms()
+        const apiTime = performance.now() - startTime
+        allPrograms = data
+
+        updateStatus({
+          allPrograms: '🟢 Lista completa de programas cargada',
+          programCount: data?.length || 0,
+          loadTime: `${apiTime.toFixed(2)}ms`
+        })
+
+        dispatchEvent(CONFIG.EVENT_NAMES.ALL_PROGRAMS, {
+          allPrograms: data,
+          performance: {
+            loadTime: apiTime,
+            timestamp: new Date().toISOString()
+          }
+        })
+
+        return data
+      } catch (error) {
+        Logger.error(`❌ Error cargando lista de programas:`, error)
+        return null
+      }
+    }
+
+    // Función auxiliar para manejar WhatsApp
+    const handleWhatsApp = async () => {
+      try {
+        const data = await fetchWhatsApps()
+        const apiTime = performance.now() - startTime
+
+        updateStatus({
+          whatsApps: '🟢 Datos de WhatsApp cargados',
+          whatsAppCount: data?.length || 0,
+          loadTime: `${apiTime.toFixed(2)}ms`
+        })
+
+        dispatchEvent(CONFIG.EVENT_NAMES.WHATSAPP, {
+          whatsApps: data,
+          performance: {
+            loadTime: apiTime,
+            timestamp: new Date().toISOString()
+          }
+        })
+
+        return data
+      } catch (error) {
+        Logger.error(`❌ Error cargando datos de WhatsApp:`, error)
+        return null
+      }
+    }
+
+    // Ejecutar datos principales primero (crítico)
+    await handleProgramData()
+
+    // Ejecutar APIs secundarias en paralelo sin bloquear
+    handleAllPrograms()
+    handleWhatsApp()
+
+    const totalTime = performance.now() - startTime
 
     updateStatus({
       loadDataProgram: '🟢 Datos del programa cargados correctamente',
-      programa: programData.programa,
-      hasComplementaryData: !!consolidatedData.complementaryProgram,
-      loadTime: `${loadTime.toFixed(2)}ms`,
+      totalTime: `${totalTime.toFixed(2)}ms`,
       endTime: new Date().toISOString()
-    })
-
-    // Procesar y actualizar DOM automáticamente
-    const domUpdates = ProgramDataProcessor.processAndUpdateDOM(consolidatedData.mainProgram)
-
-    // Disparar evento con datos consolidados
-    dispatchEvent(CONFIG.EVENT_NAME, {
-      dataProgram: consolidatedData.mainProgram,
-      consolidatedData,
-      allPrograms,
-      whatsApps,
-      domUpdates,
-      performance: {
-        loadTime,
-        timestamp: new Date().toISOString()
-      }
     })
 
     return consolidatedData
