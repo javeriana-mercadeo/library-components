@@ -16,7 +16,7 @@ function initAdmissionRequirements() {
 
   components.forEach(component => {
     initChartInteractions(component)
-    initAccordionInteractions(component)
+    initTabsInteractions(component)
     initAccessibilityEnhancements(component)
   })
 
@@ -50,9 +50,9 @@ function initChartInteractions(component) {
       segment.style.transform = 'scale(1)'
     })
 
-    // Click para activar acordeón
+    // Click para activar tab
     segment.addEventListener('click', () => {
-      toggleAccordion(component, requirementId)
+      switchTab(component, requirementId)
     })
   })
 
@@ -77,85 +77,72 @@ function initChartInteractions(component) {
       }
     })
 
-    // Click para activar acordeón
+    // Click para activar tab
     labelText.addEventListener('click', () => {
-      toggleAccordion(component, requirementId)
+      switchTab(component, requirementId)
     })
   })
 }
 
 /**
- * Inicializa las interacciones del acordeón
+ * Inicializa las interacciones de los tabs
  * @param {HTMLElement} component - Elemento del componente
  */
-function initAccordionInteractions(component) {
-  const accordionHeaders = component.querySelectorAll('.admission-requirements_accordion-header')
+function initTabsInteractions(component) {
+  const tabButtons = component.querySelectorAll('.admission-requirements_tab-button')
 
-  accordionHeaders.forEach(header => {
-    const accordionItem = header.closest('.admission-requirements_accordion-item')
-    const requirementId = accordionItem.dataset.requirement
+  tabButtons.forEach(button => {
+    const requirementId = button.dataset.requirement
 
-    header.addEventListener('click', () => {
-      toggleAccordion(component, requirementId)
+    button.addEventListener('click', () => {
+      switchTab(component, requirementId)
     })
 
     // Soporte para teclado
-    header.addEventListener('keydown', (e) => {
+    button.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault()
-        toggleAccordion(component, requirementId)
+        switchTab(component, requirementId)
       }
     })
 
     // Hacer focusable para accesibilidad
-    header.setAttribute('tabindex', '0')
-    header.setAttribute('role', 'button')
-    header.setAttribute('aria-expanded', 'false')
+    button.setAttribute('tabindex', '0')
+    button.setAttribute('role', 'tab')
+    button.setAttribute('aria-selected', button.classList.contains('is-active') ? 'true' : 'false')
   })
 }
 
 /**
- * Alterna el estado del acordeón para un requisito específico
+ * Cambia al tab especificado
  * @param {HTMLElement} component - Elemento del componente
  * @param {string} requirementId - ID del requisito
  */
-function toggleAccordion(component, requirementId) {
-  const accordionItem = component.querySelector(`[data-requirement="${requirementId}"].admission-requirements_accordion-item`)
-  const accordionContent = accordionItem.querySelector('.admission-requirements_accordion-content')
-  const accordionHeader = accordionItem.querySelector('.admission-requirements_accordion-header')
+function switchTab(component, requirementId) {
+  // Desactivar todos los tabs
+  const allTabButtons = component.querySelectorAll('.admission-requirements_tab-button')
+  const allTabPanels = component.querySelectorAll('.admission-requirements_tab-panel')
 
-  if (!accordionItem || !accordionContent) return
+  allTabButtons.forEach(button => {
+    button.classList.remove('is-active')
+    button.setAttribute('aria-selected', 'false')
+  })
 
-  const isActive = accordionItem.classList.contains('is-active')
+  allTabPanels.forEach(panel => {
+    panel.classList.remove('is-active')
+  })
 
-  if (isActive) {
-    // Cerrar acordeón
-    accordionItem.classList.remove('is-active')
-    accordionContent.style.maxHeight = '0'
-    accordionHeader.setAttribute('aria-expanded', 'false')
+  // Activar el tab seleccionado
+  const targetTabButton = component.querySelector(`[data-tab-button="${requirementId}"]`)
+  const targetTabPanel = component.querySelector(`[data-tab-panel="${requirementId}"]`)
 
-    // Anunciar para lectores de pantalla
-    announceToScreenReader(component, `${requirementId} colapsado`)
-  } else {
-    // Cerrar otros acordeones primero (comportamiento opcional)
-    const activeAccordions = component.querySelectorAll('.admission-requirements_accordion-item.is-active')
-    activeAccordions.forEach(activeItem => {
-      if (activeItem !== accordionItem) {
-        activeItem.classList.remove('is-active')
-        const activeContent = activeItem.querySelector('.admission-requirements_accordion-content')
-        const activeHeader = activeItem.querySelector('.admission-requirements_accordion-header')
-        if (activeContent) activeContent.style.maxHeight = '0'
-        if (activeHeader) activeHeader.setAttribute('aria-expanded', 'false')
-      }
-    })
-
-    // Abrir acordeón
-    accordionItem.classList.add('is-active')
-    accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px'
-    accordionHeader.setAttribute('aria-expanded', 'true')
+  if (targetTabButton && targetTabPanel) {
+    targetTabButton.classList.add('is-active')
+    targetTabButton.setAttribute('aria-selected', 'true')
+    targetTabPanel.classList.add('is-active')
 
     // Anunciar para lectores de pantalla
-    announceToScreenReader(component, `${requirementId} expandido`)
+    announceToScreenReader(component, `${requirementId} seleccionado`)
   }
 }
 
@@ -202,13 +189,13 @@ function initAccessibilityEnhancements(component) {
     const percentage = segment.dataset.percentage
     segment.setAttribute('role', 'button')
     segment.setAttribute('tabindex', '0')
-    segment.setAttribute('aria-label', `${requirementId}: ${percentage}%. Presiona para expandir detalles`)
+    segment.setAttribute('aria-label', `${requirementId}: ${percentage}%. Presiona para seleccionar`)
 
     // Soporte para teclado en segmentos
     segment.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault()
-        toggleAccordion(component, requirementId)
+        switchTab(component, requirementId)
       }
     })
   })
@@ -219,13 +206,13 @@ function initAccessibilityEnhancements(component) {
     const requirementId = labelText.dataset.requirement
     labelText.setAttribute('role', 'button')
     labelText.setAttribute('tabindex', '0')
-    labelText.setAttribute('aria-label', `${requirementId}. Presiona para expandir detalles`)
+    labelText.setAttribute('aria-label', `${requirementId}. Presiona para seleccionar`)
 
     // Soporte para teclado en labels
     labelText.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault()
-        toggleAccordion(component, requirementId)
+        switchTab(component, requirementId)
       }
     })
   })
@@ -251,7 +238,7 @@ function initAccessibilityEnhancements(component) {
 function updateInteractions(component) {
   // Reinicializar todas las interacciones
   initChartInteractions(component)
-  initAccordionInteractions(component)
+  initTabsInteractions(component)
   initAccessibilityEnhancements(component)
 }
 
@@ -298,38 +285,36 @@ window.AdmissionRequirements = {
     const component = document.querySelector('[data-component-id="requisitos-pregrado"]')
     if (!component) return []
 
-    const accordionItems = component.querySelectorAll('.admission-requirements_accordion-item')
-    return Array.from(accordionItems).map(item => ({
-      id: item.dataset.requirement,
-      percentage: parseInt(item.querySelector('.admission-requirements_chart-segment')?.dataset.percentage || 0),
-      title: item.querySelector('.admission-requirements_accordion-title')?.textContent,
-      isActive: item.classList.contains('is-active')
+    const tabButtons = component.querySelectorAll('.admission-requirements_tab-button')
+    return Array.from(tabButtons).map(button => ({
+      id: button.dataset.requirement,
+      percentage: parseInt(component.querySelector('.admission-requirements_chart-segment')?.dataset.percentage || 0),
+      title: button.querySelector('.admission-requirements_tab-title')?.textContent,
+      isActive: button.classList.contains('is-active')
     }))
   },
 
   /**
-   * Abre un acordeón específico
+   * Selecciona un tab específico
    * @param {string} requirementId - ID del requisito
    */
-  openAccordion: function(requirementId) {
+  selectTab: function(requirementId) {
     const component = document.querySelector('[data-component-id="requisitos-pregrado"]')
     if (component) {
-      toggleAccordion(component, requirementId)
+      switchTab(component, requirementId)
     }
   },
 
   /**
-   * Cierra todos los acordeones
+   * Obtiene el tab activo actual
+   * @returns {string|null} ID del requisito activo
    */
-  closeAllAccordions: function() {
+  getActiveTab: function() {
     const component = document.querySelector('[data-component-id="requisitos-pregrado"]')
-    if (!component) return
+    if (!component) return null
 
-    const activeAccordions = component.querySelectorAll('.admission-requirements_accordion-item.is-active')
-    activeAccordions.forEach(item => {
-      const requirementId = item.dataset.requirement
-      toggleAccordion(component, requirementId)
-    })
+    const activeTab = component.querySelector('.admission-requirements_tab-button.is-active')
+    return activeTab ? activeTab.dataset.requirement : null
   },
 
   /**

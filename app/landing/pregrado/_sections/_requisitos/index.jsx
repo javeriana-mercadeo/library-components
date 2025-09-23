@@ -163,27 +163,36 @@ const RequisitosPregrado = () => {
             </svg>
           </div>
 
-          {/* Accordion Lists */}
-          <div className={`${baseClass}_accordion-container`}>
-            {requirements.map(requirement => (
-              <div key={requirement.id} className={`${baseClass}_accordion-item`} data-requirement={requirement.id}>
-                <div className={`${baseClass}_accordion-header`}>
-                  <div className={`${baseClass}_accordion-icon`}>
+          {/* Tabs System */}
+          <div className={`${baseClass}_tabs-container`}>
+            {/* Tab Headers */}
+            <div className={`${baseClass}_tabs-header`}>
+              {requirements.map(requirement => (
+                <button
+                  key={requirement.id}
+                  className={`${baseClass}_tab-button ${requirement.id === 'actitud' ? 'is-active' : ''}`}
+                  data-requirement={requirement.id}
+                  data-tab-button={requirement.id}>
+                  <div className={`${baseClass}_tab-icon`}>
                     <i className={requirement.icon}></i>
                   </div>
-                  <Title hierarchy='h3' className={`${baseClass}_accordion-title`}>
-                    {requirement.title}
-                  </Title>
-                  <div className={`${baseClass}_accordion-percentage`}>{requirement.percentage}%</div>
-                  <div className={`${baseClass}_accordion-toggle`}>
-                    <i className='ph ph-caret-down'></i>
-                  </div>
-                </div>
+                  <span className={`${baseClass}_tab-title`}>{requirement.title}</span>
+                  <span className={`${baseClass}_tab-percentage`}>{requirement.percentage}%</span>
+                </button>
+              ))}
+            </div>
 
-                <div className={`${baseClass}_accordion-content`}>
-                  <div className={`${baseClass}_accordion-items`}>
+            {/* Tab Content */}
+            <div className={`${baseClass}_tabs-content`}>
+              {requirements.map(requirement => (
+                <div
+                  key={requirement.id}
+                  className={`${baseClass}_tab-panel ${requirement.id === 'actitud' ? 'is-active' : ''}`}
+                  data-requirement={requirement.id}
+                  data-tab-panel={requirement.id}>
+                  <div className={`${baseClass}_tab-items`}>
                     {requirement.items.map((item, itemIndex) => (
-                      <div key={itemIndex} className={`${baseClass}_accordion-list-item`}>
+                      <div key={itemIndex} className={`${baseClass}_tab-list-item`}>
                         <div className={`${baseClass}_item-check`}>
                           <i className='ph ph-check'></i>
                         </div>
@@ -194,8 +203,8 @@ const RequisitosPregrado = () => {
                     ))}
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </Container>
