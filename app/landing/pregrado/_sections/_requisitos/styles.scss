@@ -138,13 +138,14 @@ $req-chart-size-mobile: rem(550px);
     cursor: pointer;
     transition: $req-transition;
 
-    &:hover {
+    &:hover:not(.is-active) {
       transform: scale(1.02);
       transform-origin: center;
     }
 
     &.is-active {
       transform: scale(1.03);
+      transform-origin: center;
       filter: brightness(1.1);
     }
 
@@ -196,7 +197,8 @@ $req-chart-size-mobile: rem(550px);
 
   &_chart-total-value {
     font-size: var(--font-size-subtitle);
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
+    font-family: var(--font-family);
     fill: var(--neutral-200);
 
     @include dark-theme {
@@ -208,8 +210,9 @@ $req-chart-size-mobile: rem(550px);
   // CHART LABELS DENTRO DEL SVG
   // ==========================================
   &_chart-label-percentage {
-    font-size: var(--font-size-heading);
-    font-weight: 700;
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-bold);
+    font-family: var(--font-family);
     fill: var(--neutral-100);
     transition: $req-transition;
 
@@ -228,7 +231,8 @@ $req-chart-size-mobile: rem(550px);
 
   &_chart-label-title {
     font-size: var(--font-size-caption);
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-family);
     fill: var(--neutral-100);
     transition: $req-transition;
 
@@ -409,7 +413,8 @@ $req-chart-size-mobile: rem(550px);
     border-radius: rem(6px);
     background: var(--success-500);
     color: var(--neutral-100);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-small);
+    font-family: var(--font-family);
     flex-shrink: 0;
     margin-top: rem(2px);
   }
@@ -418,7 +423,8 @@ $req-chart-size-mobile: rem(550px);
     flex: 1;
     margin: 0;
     color: var(--neutral-700);
-    line-height: 1.5;
+    line-height: 1.6;
+    font-family: var(--font-family);
 
     @include dark-theme {
       color: var(--neutral-300);
@@ -464,6 +470,7 @@ $req-chart-size-mobile: rem(550px);
     color: var(--neutral-100);
     border-radius: rem(8px);
     font-size: var(--font-size-caption);
+    font-family: var(--font-family);
     flex-shrink: 0;
   }
 
