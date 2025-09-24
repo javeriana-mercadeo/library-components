@@ -68,28 +68,6 @@ const RequisitosPregrado = () => {
 
         {/* === REQUIREMENTS SECTIONS === */}
         <div className={`${baseClass}_sections`}>
-          {requirements.map((requirement, index) => (
-            <div
-              key={requirement.id}
-              className={`${baseClass}_section ${baseClass}_section--${requirement.color}`}
-              data-requirement={requirement.id}
-              data-percentage={requirement.percentage}
-            >
-              {/* Progress Bar */}
-              <div className={`${baseClass}_progress-wrapper`}>
-                <div className={`${baseClass}_progress-bar`}>
-                  <div
-                    className={`${baseClass}_progress-fill`}
-                    data-progress={requirement.percentage}
-                  ></div>
-                </div>
-                <div className={`${baseClass}_progress-label`}>
-                  <span className={`${baseClass}_percentage`}>
-                    {requirement.percentage}%
-                  </span>
-                </div>
-              </div>
-
           {/* Accordion Lists */}
           <div className={`${baseClass}_accordion-container`}>
             {requirements.map(requirement => (
@@ -107,27 +85,28 @@ const RequisitosPregrado = () => {
                   </div>
                 </div>
 
-              {/* Section Content */}
-              <div className={`${baseClass}_section-content`}>
-                <div className={`${baseClass}_items-grid`}>
-                  {requirement.items.map((item, itemIndex) => (
-                    <div key={itemIndex} className={`${baseClass}_item`}>
-                      <div className={`${baseClass}_item-check`}>
-                        <i className="ph ph-check"></i>
+                {/* Section Content */}
+                <div className={`${baseClass}_section-content`}>
+                  <div className={`${baseClass}_items-grid`}>
+                    {requirement.items.map((item, itemIndex) => (
+                      <div key={itemIndex} className={`${baseClass}_item`}>
+                        <div className={`${baseClass}_item-check`}>
+                          <i className="ph ph-check"></i>
+                        </div>
+                        <Paragraph
+                          className={`${baseClass}_item-text`}
+                          size='sm'
+                          isEditable={false}
+                        >
+                          {item}
+                        </Paragraph>
                       </div>
-                      <Paragraph
-                        className={`${baseClass}_item-text`}
-                        size='sm'
-                        isEditable={false}
-                      >
-                        {item}
-                      </Paragraph>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* === FOOTER INFO === */}

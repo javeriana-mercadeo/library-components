@@ -265,11 +265,10 @@
     }
   }
 
-  .has-edit-mode-menu body:has(.cookies-banner:not(.cookies-banner--hidden)),
-  .signed-in body:has(.cookies-banner:not(.cookies-banner--hidden)) {
-    padding-bottom: 0;
+  // Cuando el banner está oculto, remover el padding
+  body.cookies-banner-hidden {
+    padding-bottom: 0 !important;
   }
-
 
   // ==========================================
   // ANIMACIONES

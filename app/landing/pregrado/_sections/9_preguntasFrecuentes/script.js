@@ -332,7 +332,7 @@ const RequirementsSystem = {
               <tr>
                 <th>Criterio general</th>
                 <th>Criterio interno</th>
-                <th>Puntaje</th>
+                <th style="display: none;">Puntaje</th>
                 <!-- <th>Puntaje total</th> -->
                 <th>Porcentaje (%)</th>
               </tr>
@@ -354,7 +354,7 @@ const RequirementsSystem = {
                   <small>${programInfo.activityDescription}</small>
                 </div>
               </td>
-              <td class="requirements-table__cell-center">${criterion.maxScore}</td>
+              <td class="requirements-table__cell-center" style="display: none;">${criterion.maxScore}</td>
               <!-- ${index === 0 ? `<td rowSpan="${criteriaCount}" class="requirements-table__cell-center">${totalMaxScore}</td>` : ''} -->
               ${index === 0 ? `<td rowSpan="${criteriaCount}" class="requirements-table__cell-center">${categoryWeight}%</td>` : ''}
             </tr>`
