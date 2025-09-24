@@ -361,46 +361,25 @@ $req-chart-size-mobile: rem(550px);
   &_items-list {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
   }
 
   &_list-item {
     display: flex;
     align-items: flex-start;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md) var(--spacing-lg);
-    background: var(--neutral-50);
-    border-radius: rem(12px);
-    transition: $req-transition;
-
-    @include dark-theme {
-      background: var(--neutral-950);
-    }
-
-    &:hover {
-      background: var(--neutral-100);
-      transform: translateX(rem(4px));
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-      @include dark-theme {
-        background: var(--neutral-900);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      }
-    }
-
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) 0;
   }
 
   &_item-check {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: rem(24px);
-    height: rem(24px);
-    border-radius: rem(6px);
-    background: var(--success-500);
-    color: var(--neutral-100);
-    font-size: var(--font-size-small);
-    font-family: var(--font-family);
+    width: rem(16px);
+    height: rem(16px);
+    color: var(--success-600);
+    font-size: var(--font-size-xs);
     flex-shrink: 0;
     margin-top: rem(2px);
   }
@@ -409,76 +388,12 @@ $req-chart-size-mobile: rem(550px);
     flex: 1;
     margin: 0;
     color: var(--neutral-700);
-    line-height: 1.6;
-    font-family: var(--font-family);
 
     @include dark-theme {
       color: var(--neutral-300);
     }
   }
 
-  // ==========================================
-  // FOOTER
-  // ==========================================
-  &_footer {
-    margin-top: var(--spacing-2xl);
-    text-align: center;
-  }
-
-  &_info-card {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-lg);
-    background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
-    border-radius: rem(12px);
-    max-width: rem(500px);
-
-    @include dark-theme {
-      background: linear-gradient(135deg, var(--primary-950), var(--primary-900));
-    }
-
-    @include responsive($breakpoint-md) {
-      flex-direction: column;
-      text-align: center;
-    }
-  }
-
-  &_info-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: rem(40px);
-    height: rem(40px);
-    background: var(--primary-600);
-    color: var(--neutral-100);
-    border-radius: rem(8px);
-    font-size: var(--font-size-caption);
-    font-family: var(--font-family);
-    flex-shrink: 0;
-  }
-
-  &_info-content {
-    flex: 1;
-    text-align: left;
-
-    @include responsive($breakpoint-md) {
-      text-align: center;
-    }
-  }
-
-  &_info-title {
-    margin: 0 0 var(--spacing-xs) 0;
-    color: var(--primary-700);
-
-    @include dark-theme {
-      color: var(--primary-300);
-    }
-  }
-
-  &_info-text {
-    margin: 0;
-  }
 }
 
 // ==========================================

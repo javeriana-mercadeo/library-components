@@ -251,23 +251,6 @@ const RequisitosPregrado = () => {
 
         </div>
 
-        {/* === FOOTER INFO === */}
-        <div className={`${baseClass}_footer`}>
-          <div className={`${baseClass}_info-card`}>
-            <div className={`${baseClass}_info-icon`}>
-              <i className="ph ph-info"></i>
-            </div>
-            <div className={`${baseClass}_info-content`}>
-              <Caption className={`${baseClass}_info-title`} size='md' bold={true}>
-                Paso 3 del proceso de admisión
-              </Caption>
-              <Paragraph className={`${baseClass}_info-text`} size='sm' color='neutral'>
-                Ingresa nuevamente a tu cuenta, agenda y completa las actividades del proceso de admisión.
-              </Paragraph>
-            </div>
-          </div>
-        </div>
-
       </Container>
     </div>
   )
