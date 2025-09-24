@@ -1,10 +1,12 @@
 @use '@styles/autoload' as *;
 .logo-wrapper {
+  right: 10%;
+  top: 7%;
   box-sizing: border-box;
-  width: 14%;
+  width: 10%;
   height: 12%;
-  margin-right: 1.5rem;
-  margin-top: -4.5rem;
+  margin-right: 3.5rem;
+  margin-top: -1.5rem;
   float: right;
   object-fit: contain;
 }
@@ -14,19 +16,21 @@
   height: auto;
 }
 
-.program-data_title-program,
-.program-data_title-program span {
-  float: left;
+@media (min-width: 768px) {
+  .logo-wrapper {
+    right: 40%;
+    top: 5%;
+  }
 }
 
-#faculty-logo,
-.logo-wrapper,
-.page-editor__editable {
-  @include only-dev-mode {
-    float: none;
-    display: inline-block;
-    margin: 1rem 3rem;
-  }
+.has-edit-mode-menu .logo-wrapper,
+html:not(#__):not(#___) .page-editor__editable--active,
+[data-env='development'] .logo-wrapper .page-editor__editable {
+  float: left;
+  display: block;
+  margin: 0 3rem;
+  position: sticky;
+  z-index: 2;
 }
 
 // ================================ //
