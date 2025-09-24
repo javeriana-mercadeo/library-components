@@ -92,7 +92,8 @@
       "Bash(done)",
       "Bash(if grep -q \"^<<<<<<< HEAD$\\|^>>>>>>> pregrado$\" \"$file\")",
       "Bash(then echo \"  CONFLICT FOUND\")",
-      "Bash(else echo \"  NO ACTUAL CONFLICTS - Only comment separators\")"
+      "Bash(else echo \"  NO ACTUAL CONFLICTS - Only comment separators\")",
+      "Bash(git rm:*)"
     ],
     "deny": []
   }
