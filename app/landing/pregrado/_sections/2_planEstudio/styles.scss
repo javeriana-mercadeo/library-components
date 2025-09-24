@@ -52,7 +52,10 @@ $nav-button-offset: rem(25px);
     position: relative;
     padding: var(--spacing-lg) var(--spacing-sm);
     margin: 0 0 var(--spacing-xl) 0;
+<<<<<<< HEAD
     margin-top: var(--spacing-2xl);
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
     @include responsive($breakpoint-sm) {
       margin: 0 0 var(--spacing-lg) 0;
@@ -101,7 +104,11 @@ $nav-button-offset: rem(25px);
       background: linear-gradient(
         to right,
         var(--background-100) 0%,
+<<<<<<< HEAD
         rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+=======
+        rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 10%,
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         transparent 100%
       );
     }
@@ -111,11 +118,38 @@ $nav-button-offset: rem(25px);
       background: linear-gradient(
         to left,
         var(--background-100) 0%,
+<<<<<<< HEAD
         rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+=======
+        rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 10%,
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         transparent 100%
       );
     }
 
+<<<<<<< HEAD
+=======
+    @include responsive {
+      &::before {
+        background: linear-gradient(
+          to right,
+          var(--background-100) 0%,
+          rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+          transparent 100%
+        );
+      }
+
+      &::after {
+        background: linear-gradient(
+          to left,
+          var(--background-100) 0%,
+          rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+          transparent 100%
+        );
+      }
+    }
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     @include dark-theme {
       &::before {
         background: linear-gradient(
@@ -165,7 +199,10 @@ $nav-button-offset: rem(25px);
     display: flex !important;
     flex-direction: column !important;
     height: auto !important;
+<<<<<<< HEAD
     min-height: $plan-card-min-height;
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     margin-top: rem(20px);
     align-items: stretch;
     justify-content: center;
@@ -444,7 +481,11 @@ $nav-button-offset: rem(25px);
   }
 
   &_prev {
+<<<<<<< HEAD
     left: rem(8px);
+=======
+    left: rem(1px);
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
     @include responsive($breakpoint-sm) {
       left: rem(8px);
@@ -460,7 +501,11 @@ $nav-button-offset: rem(25px);
   }
 
   &_next {
+<<<<<<< HEAD
     right: rem(8px);
+=======
+    right: rem(1px);
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
     @include responsive($breakpoint-sm) {
       right: rem(8px);

@@ -66,7 +66,11 @@
   background-color: white;
 
   h3 {
+<<<<<<< HEAD
     font-size: var(--font-size-subtitle); 
+=======
+    font-size: var(--font-size-subtitle);
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     font-weight: var(--font-weight-bold);
     margin: 0 0 rem(5px);
   }
@@ -156,7 +160,13 @@
   .student-card {
     transform: translateX(-50%) scale(0.8);
     opacity: 0.6;
+<<<<<<< HEAD
     transition: transform 0.5s ease, opacity 0.5s ease;
+=======
+    transition:
+      transform 0.5s ease,
+      opacity 0.5s ease;
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
     &.active {
       transform: translateX(-50%) scale(1);
@@ -243,4 +253,8 @@
       z-index: 0;
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3

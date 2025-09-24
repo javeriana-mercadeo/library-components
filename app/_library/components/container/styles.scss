@@ -10,7 +10,11 @@
     // Responsive adjustments
     @include responsive {
       padding: var(--spacing-lg) var(--spacing-xl);
+<<<<<<< HEAD
       padding-left: var(--spacing-3xl);
+=======
+      padding-left: var(--spacing-4xl);
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     }
 
     // Variantes de ancho máximo

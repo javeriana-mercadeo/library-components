@@ -7,6 +7,11 @@ import script from './script.js'
 import './styles.scss'
 
 const Insignias = () => {
+<<<<<<< HEAD
+=======
+  const elementName = 'insignias'
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   useEffect(() => {
     script()
   }, [])
@@ -45,6 +50,7 @@ const Insignias = () => {
   ]
 
   return (
+<<<<<<< HEAD
     <section id="section-five">
       <Container className="container academic-carousel">
         <Title className="academic-carousel__title" size="lg" weight="bold">
@@ -56,6 +62,20 @@ const Insignias = () => {
             <div className="slider-items slider-items--original">
               {reconocimientos.map((reconocimiento, index) => (
                 <div key={index} className="img-logos">
+=======
+    <section id='section-five'>
+      <Container className='container academic-carousel'>
+        <Title id={`title-${elementName}`} hierarchy='h2' className='academic-carousel__title' size='lg' weight='bold'>
+          Reconocimientos Académicos
+        </Title>
+
+        <div className='slider'>
+          <div className='slider-track'>
+            {/* Solo el grupo original - JS creará los duplicados */}
+            <div className='slider-items slider-items--original'>
+              {reconocimientos.map((reconocimiento, index) => (
+                <div key={index} className='img-logos'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
                   <img src={reconocimiento.src} alt={reconocimiento.alt} />
                   <p>{reconocimiento.description}</p>
                 </div>

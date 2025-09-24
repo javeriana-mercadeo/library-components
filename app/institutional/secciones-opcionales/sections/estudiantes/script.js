@@ -62,4 +62,8 @@ export const getSlideClass = (index, currentSlide, totalSlides) => {
   if (index === prevPrevIndex) return 'prev-prev'
 
   return ''
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3

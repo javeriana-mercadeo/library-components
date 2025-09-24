@@ -32,7 +32,11 @@
       h2 {
         font-size: var(--font-size-title);
         margin-bottom: 1rem;
+<<<<<<< HEAD
         font-weight: var( --font-weight-bold);
+=======
+        font-weight: var(--font-weight-bold);
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       }
 
       .info-row {
@@ -65,8 +69,8 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      
-      img{
+
+      img {
         border-radius: 20px;
       }
 

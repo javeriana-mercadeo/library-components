@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 import { NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
+=======
+import { promises as fs } from 'fs'
+import path from 'path'
+
+import { NextResponse } from 'next/server'
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 import * as sass from 'sass'
 
 // 📌 CONFIGURACIÓN
@@ -17,7 +24,12 @@ const TIMEOUT_MS = 25000
 
 // URLs de las librerías externas
 const EXTERNAL_LIBRARIES = [
+<<<<<<< HEAD
   'https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js'
+=======
+  ''
+  //'https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js'
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   //'https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js',
   //'https://www.javeriana.edu.co/planestudio/pages/libraries/simple_datatables/simple-datatables.js'
 ]
@@ -39,23 +51,101 @@ async function fetchExternalLibrary(url: string): Promise<string> {
 
     if (!response.ok) {
       console.warn(`⚠️ No se pudo cargar la librería (${response.status}): ${url}`)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return ''
     }
 
     const content = await response.text()
+<<<<<<< HEAD
     console.log(`✅ Descargado (${content.length} chars): ${url}`)
+=======
+
+    console.log(`✅ Descargado (${content.length} chars): ${url}`)
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     return content
   } catch (error) {
     clearTimeout(timeoutId)
     console.warn(`❌ Error al cargar la librería ${url}:`, error)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     return ''
   }
 }
 
+<<<<<<< HEAD
 // 📌 FUNCIÓN PARA RESOLVER IMPORTS DE JAVASCRIPT
 async function resolveJavaScriptImports(jsContent: string, basePath: string, visited = new Set<string>()): Promise<string> {
   if (!jsContent) {
     console.log('⚠️ No hay contenido JS para resolver')
+=======
+// 📌 ALMACÉN GLOBAL PARA EVITAR DUPLICADOS
+interface ImportedModule {
+  content: string
+  exports: string[]
+  path: string
+}
+
+const globalModuleCache = new Map<string, ImportedModule>()
+const globalExports = new Set<string>()
+
+// 📌 FUNCIÓN PARA EXTRAER EXPORTS DE UN ARCHIVO
+function extractExports(content: string): string[] {
+  const exports: string[] = []
+  const lines = content.split('\n')
+
+  for (const line of lines) {
+    const trimmed = line.trim()
+
+    // export const/let/var NAME
+    const constMatch = trimmed.match(/^export\s+(const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/)
+
+    if (constMatch) {
+      exports.push(constMatch[2])
+      continue
+    }
+
+    // export function NAME
+    const funcMatch = trimmed.match(/^export\s+function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/)
+
+    if (funcMatch) {
+      exports.push(funcMatch[1])
+      continue
+    }
+
+    // export class NAME
+    const classMatch = trimmed.match(/^export\s+class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/)
+
+    if (classMatch) {
+      exports.push(classMatch[1])
+      continue
+    }
+
+    // export { name1, name2 }
+    const namedMatch = trimmed.match(/^export\s*\{\s*([^}]+)\s*\}/)
+
+    if (namedMatch) {
+      const names = namedMatch[1].split(',').map(n => n.trim().split(' as ')[0].trim())
+
+      exports.push(...names)
+      continue
+    }
+  }
+
+  return exports
+}
+
+// 📌 FUNCIÓN PARA RESOLVER IMPORTS DE JAVASCRIPT CON DEDUPLICACIÓN
+async function resolveJavaScriptImports(jsContent: string, basePath: string, visited = new Set<string>()): Promise<string> {
+  if (!jsContent) {
+    console.log('⚠️ No hay contenido JS para resolver')
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     return ''
   }
 
@@ -66,6 +156,10 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
   // Buscar todas las líneas de import con regex más específico
   const importLines = jsContent.split('\n').filter(line => {
     const trimmed = line.trim()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     return trimmed.startsWith('import ') && trimmed.includes('from ')
   })
 
@@ -74,11 +168,18 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
   if (importLines.length === 0) {
     console.log(`✅ No hay imports que resolver, devolviendo contenido original`)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     return jsContent
   }
 
   // Resolver cada import
+<<<<<<< HEAD
   let resolvedContent = jsContent
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   const importedContents: string[] = []
 
   for (const importLine of importLines) {
@@ -87,16 +188,28 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
       // Extraer la ruta del import usando regex más robusto
       const importMatch = importLine.match(/from\s+['"`]([^'"`]+)['"`]/)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       if (!importMatch) {
         console.warn(`⚠️ No se pudo extraer ruta de: ${importLine}`)
         continue
       }
 
       const importPath = importMatch[1]
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       console.log(`📁 Ruta extraída: ${importPath}`)
 
       // Construir la ruta absoluta
       let fullPath: string
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       if (importPath.startsWith('./') || importPath.startsWith('../')) {
         // Ruta relativa
         fullPath = path.resolve(path.dirname(basePath), importPath)
@@ -113,6 +226,10 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
       for (const ext of extensions) {
         const testPath = fullPath.endsWith('.js') || fullPath.endsWith('.ts') ? fullPath : fullPath + ext
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         try {
           await fs.access(testPath)
           resolvedPath = testPath
@@ -132,15 +249,34 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
 
       // Evitar imports circulares
       const normalizedPath = path.normalize(resolvedPath)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       if (visited.has(normalizedPath)) {
         console.log(`🔄 Import circular detectado, saltando: ${normalizedPath}`)
         continue
       }
 
+<<<<<<< HEAD
+=======
+      // Verificar si ya hemos procesado este módulo
+      if (globalModuleCache.has(normalizedPath)) {
+        console.log(`♻️ Módulo ya procesado, reutilizando: ${normalizedPath}`)
+        const cached = globalModuleCache.get(normalizedPath)!
+
+        // Solo agregar referencia, no duplicar contenido
+        importedContents.push(`\n// ===== REFERENCIA A: ${importPath} =====`)
+        importedContents.push(`// Ya procesado: ${cached.exports.join(', ')}`)
+        continue
+      }
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       visited.add(normalizedPath)
 
       // Leer el archivo importado
       const importedContent = await fs.readFile(resolvedPath, 'utf8')
+<<<<<<< HEAD
       console.log(`📖 Archivo leído: ${resolvedPath} (${importedContent.length} chars)`)
 
       // Recursivamente resolver imports del archivo importado
@@ -154,6 +290,62 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
       importedContents.push(cleanedContent)
 
       visited.delete(normalizedPath)
+=======
+
+      console.log(`📖 Archivo leído: ${resolvedPath} (${importedContent.length} chars)`)
+
+      // Recursivamente resolver imports del archivo importado
+      const resolvedImported = await resolveJavaScriptImports(importedContent, resolvedPath, visited)
+
+      // Extraer exports antes de limpiar
+      const moduleExports = extractExports(resolvedImported)
+
+      console.log(`📤 Exports encontrados en ${importPath}: ${moduleExports.join(', ')}`)
+
+      // Verificar conflictos de nombres
+      const conflicts = moduleExports.filter(exp => globalExports.has(exp))
+      let processedContent = resolvedImported
+
+      if (conflicts.length > 0) {
+        console.warn(`⚠️ Conflictos de nombres detectados: ${conflicts.join(', ')} en ${importPath}`)
+        // Renombrar conflictos agregando sufijo
+        processedContent = conflicts.reduce((content, conflict) => {
+          const newName = `${conflict}_${path.basename(importPath, path.extname(importPath))}`
+
+          console.log(`🔄 Renombrando ${conflict} -> ${newName}`)
+
+          return content.replace(new RegExp(`\\b${conflict}\\b`, 'g'), newName)
+        }, processedContent)
+
+        // Actualizar exports
+        const updatedExports = moduleExports.map(exp =>
+          conflicts.includes(exp) ? `${exp}_${path.basename(importPath, path.extname(importPath))}` : exp
+        )
+
+        moduleExports.splice(0, moduleExports.length, ...updatedExports)
+      }
+
+      // Limpiar exports del contenido importado
+      const cleanedContent = cleanJavaScriptExports(processedContent)
+
+      // Guardar en cache
+      globalModuleCache.set(normalizedPath, {
+        content: cleanedContent,
+        exports: moduleExports,
+        path: resolvedPath
+      })
+
+      // Agregar exports al conjunto global
+      moduleExports.forEach(exp => globalExports.add(exp))
+
+      importedContents.push(`\n// ===== IMPORTADO DE: ${importPath} =====`)
+      importedContents.push(`// Archivo: ${resolvedPath}`)
+      importedContents.push(`// Exports: ${moduleExports.join(', ')}`)
+      importedContents.push(cleanedContent)
+
+      // NO eliminar de visited para mantener la deduplicación global
+      // visited.delete(normalizedPath)
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     } catch (error) {
       console.error(`❌ Error procesando import "${importLine}":`, error)
       importedContents.push(`// ❌ Error importando: ${importLine} - ${error}`)
@@ -161,6 +353,7 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
   }
 
   // Limpiar imports del contenido principal
+<<<<<<< HEAD
   const mainContent = cleanJavaScriptImports(resolvedContent)
 
   // Combinar todo
@@ -169,6 +362,16 @@ async function resolveJavaScriptImports(jsContent: string, basePath: string, vis
   console.log(`✅ JavaScript resuelto: ${combined.length} caracteres`)
   console.log(`📄 Resultado (primeras líneas):`)
   console.log(combined.split('\n').slice(0, 10).join('\n'))
+=======
+  const mainContent = cleanJavaScriptImports(jsContent)
+
+  // Combinar todo SIN el helper duplicado
+  const combined = [...importedContents, '\n// ===== CÓDIGO PRINCIPAL =====', mainContent].join('\n')
+
+  console.log(`✅ JavaScript resuelto con deduplicación: ${combined.length} caracteres`)
+  console.log(`📊 Módulos únicos procesados: ${globalModuleCache.size}`)
+  console.log(`📤 Exports globales: ${Array.from(globalExports).join(', ')}`)
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
   return combined
 }
@@ -190,6 +393,10 @@ function cleanJavaScriptImports(content: string): string {
   })
 
   const result = cleanedLines.join('\n')
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   console.log(`✅ Imports limpiados: ${lines.length} → ${cleanedLines.length} líneas`)
 
   return result
@@ -199,6 +406,7 @@ function cleanJavaScriptImports(content: string): string {
 function cleanJavaScriptExports(content: string): string {
   console.log(`🧹 Limpiando exports de contenido (${content.length} chars)`)
 
+<<<<<<< HEAD
   const lines = content.split('\n')
   const cleanedLines = lines.map(line => {
     const trimmed = line.trim()
@@ -207,33 +415,85 @@ function cleanJavaScriptExports(content: string): string {
     if (trimmed.startsWith('export function ')) {
       const cleaned = line.replace('export function ', 'function ')
       console.log(`🔄 Export function: ${trimmed} → ${cleaned.trim()}`)
+=======
+  // Primero manejar exports multi-línea con llaves
+  let cleanedContent = content.replace(/export\s*\{[\s\S]*?\}/g, match => {
+    console.log(`🗑️ Removiendo export multi-línea: ${match.replace(/\n/g, '\\n')}`)
+
+    return '// ' + match.replace(/\n/g, '\n// ')
+  })
+
+  const lines = cleanedContent.split('\n')
+  const cleanedLines = lines.map(line => {
+    const trimmed = line.trim()
+
+    // Si ya está comentado, dejarlo como está
+    if (trimmed.startsWith('//')) {
+      return line
+    }
+
+    // Convertir export function a function normal
+    if (trimmed.startsWith('export function ')) {
+      const cleaned = line.replace('export function ', 'function ')
+
+      console.log(`🔄 Export function: ${trimmed} → ${cleaned.trim()}`)
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return cleaned
     }
 
     // Convertir export const a const normal
     if (trimmed.startsWith('export const ')) {
       const cleaned = line.replace('export const ', 'const ')
+<<<<<<< HEAD
       console.log(`🔄 Export const: ${trimmed} → ${cleaned.trim()}`)
+=======
+
+      console.log(`🔄 Export const: ${trimmed} → ${cleaned.trim()}`)
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return cleaned
     }
 
     // Convertir export let a let normal
     if (trimmed.startsWith('export let ')) {
       const cleaned = line.replace('export let ', 'let ')
+<<<<<<< HEAD
       console.log(`🔄 Export let: ${trimmed} → ${cleaned.trim()}`)
+=======
+
+      console.log(`🔄 Export let: ${trimmed} → ${cleaned.trim()}`)
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return cleaned
     }
 
     // Convertir export var a var normal
     if (trimmed.startsWith('export var ')) {
       const cleaned = line.replace('export var ', 'var ')
+<<<<<<< HEAD
       console.log(`🔄 Export var: ${trimmed} → ${cleaned.trim()}`)
+=======
+
+      console.log(`🔄 Export var: ${trimmed} → ${cleaned.trim()}`)
+
+      return cleaned
+    }
+
+    // Convertir export class a class normal
+    if (trimmed.startsWith('export class ')) {
+      const cleaned = line.replace('export class ', 'class ')
+
+      console.log(`🔄 Export class: ${trimmed} → ${cleaned.trim()}`)
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return cleaned
     }
 
     // Eliminar export default (mantener solo la declaración)
     if (trimmed.startsWith('export default ')) {
       const cleaned = line.replace('export default ', '')
+<<<<<<< HEAD
       console.log(`🔄 Export default: ${trimmed} → ${cleaned.trim()}`)
       return cleaned
     }
@@ -249,23 +509,63 @@ function cleanJavaScriptExports(content: string): string {
     ) {
       console.log(`🗑️ Removiendo export: ${trimmed}`)
       return '// ' + line // Comentar la línea en lugar de eliminarla
+=======
+
+      console.log(`🔄 Export default: ${trimmed} → ${cleaned.trim()}`)
+
+      return cleaned
+    }
+
+    // Eliminar líneas de export restantes (que no tengan function, const, let, var, class)
+    if (
+      trimmed.startsWith('export ') &&
+      !trimmed.includes('function') &&
+      !trimmed.includes('const') &&
+      !trimmed.includes('let') &&
+      !trimmed.includes('var') &&
+      !trimmed.includes('class')
+    ) {
+      console.log(`🗑️ Removiendo export simple: ${trimmed}`)
+
+      return '// ' + line
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     }
 
     return line
   })
 
   const result = cleanedLines.join('\n')
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   console.log(`✅ Exports limpiados`)
 
   return result
 }
 
+<<<<<<< HEAD
+=======
+// 📌 FUNCIÓN PARA LIMPIAR CACHE GLOBAL
+function clearGlobalCache() {
+  globalModuleCache.clear()
+  globalExports.clear()
+  console.log('🧹 Cache global limpiado')
+}
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 async function compileJavaScript(jsContent: string, jsPath: string): Promise<string> {
   try {
     console.log('🔄 === INICIANDO PROCESAMIENTO DE JAVASCRIPT ===')
     console.log(`📁 Archivo base: ${jsPath}`)
     console.log(`📄 Contenido inicial: ${jsContent ? jsContent.length : 0} caracteres`)
 
+<<<<<<< HEAD
+=======
+    // Limpiar cache al inicio de cada compilación
+    clearGlobalCache()
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     // Obtener librerías externas
     console.log('📥 Descargando librerías externas...')
     const externalLibraries = await Promise.all(EXTERNAL_LIBRARIES.map(url => fetchExternalLibrary(url)))
@@ -277,6 +577,75 @@ async function compileJavaScript(jsContent: string, jsPath: string): Promise<str
     console.log(`📊 Resultado de resolución:`)
     console.log(`  - Código original: ${jsContent?.length || 0} caracteres`)
     console.log(`  - Código resuelto: ${resolvedCustomCode.length} caracteres`)
+<<<<<<< HEAD
+=======
+    console.log(`  - Módulos únicos: ${globalModuleCache.size}`)
+    console.log(`  - Exports únicos: ${globalExports.size}`)
+
+    // Crear globals helper una sola vez
+    const globalsHelper = `
+// ===== SISTEMA DE UTILIDADES GLOBALES =====
+// Auto-generado para evitar conflictos y mejorar compatibilidad
+
+function getGlobalUtils() {
+  // Asegurar que las utilidades estén disponibles globalmente
+  if (typeof window !== 'undefined') {
+    // Configurar alias para compatibilidad
+    if (typeof DOMUtils !== 'undefined' && !window.DOMHelpers) {
+      window.DOMHelpers = DOMUtils;
+    }
+    
+    // HTTPClient como constructor disponible globalmente
+    if (typeof HTTPClient !== 'undefined') {
+      window.HTTPClient = HTTPClient;
+    }
+    
+    // LogLevel global
+    if (typeof LogLevel !== 'undefined') {
+      window.LogLevel = LogLevel;
+    }
+    
+    // Logger global
+    if (typeof Logger !== 'undefined') {
+      window.Logger = Logger;
+    }
+    
+    // Retornar objeto con todas las utilidades
+    return {
+      LogLevel: window.LogLevel || {},
+      Logger: window.Logger || console,
+      DOMHelpers: window.DOMHelpers || window.DOMUtils || {},
+      DOMUtils: window.DOMUtils || window.DOMHelpers || {},
+      HTTPClient: window.HTTPClient || function() { console.warn('HTTPClient no disponible'); },
+      TimingUtils: window.TimingUtils || {},
+      EventManager: window.EventManager || {},
+      ValidatorUtils: window.ValidatorUtils || {},
+      FormManager: window.FormManager || {},
+      DataUtils: window.DataUtils || {},
+      StringUtils: window.StringUtils || {},
+      StorageUtils: window.StorageUtils || {}
+    };
+  }
+  
+  return {};
+}
+
+// Ejecutar inicialización de utilidades globales
+if (typeof window !== 'undefined') {
+  window.getGlobalUtils = getGlobalUtils;
+  
+  // Auto-ejecutar después de que se carguen todos los módulos
+  setTimeout(() => {
+    const utils = getGlobalUtils();
+    
+    // Hacer disponibles globalmente
+    Object.assign(window, utils);
+    
+    console.log('✨ Utilidades globales inicializadas:', Object.keys(utils));
+  }, 100);
+}
+`
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
     const combinedJS = [
       '// ===== LIBRERÍAS EXTERNAS =====',
@@ -285,13 +654,25 @@ async function compileJavaScript(jsContent: string, jsPath: string): Promise<str
       ...externalLibraries.filter(lib => lib.length > 0),
       '',
       '// ===== CÓDIGO PERSONALIZADO =====',
+<<<<<<< HEAD
+=======
+      globalsHelper,
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       resolvedCustomCode || '// No hay código JavaScript personalizado'
     ].join('\n')
 
     console.log(`✅ JavaScript procesado correctamente: ${combinedJS.length} caracteres`)
+<<<<<<< HEAD
     return combinedJS
   } catch (error) {
     console.error('❌ Error procesando JavaScript:', error)
+=======
+
+    return combinedJS
+  } catch (error) {
+    console.error('❌ Error procesando JavaScript:', error)
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     return jsContent || '// Error procesando JavaScript'
   }
 }
@@ -311,6 +692,10 @@ async function needsRecompilation(componentPath: string): Promise<boolean> {
 
     if (!compilationInfo) {
       console.log('📝 No hay información de compilación previa - necesita compilar')
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return true
     }
 
@@ -323,13 +708,25 @@ async function needsRecompilation(componentPath: string): Promise<boolean> {
 
     if (scssModified || jsModified) {
       console.log('🔄 Archivos fuente modificados - necesita recompilar')
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return true
     }
 
     console.log('✅ Archivos compilados están actualizados')
+<<<<<<< HEAD
     return false
   } catch (error) {
     console.log('⚠️ Error verificando recompilación:', error)
+=======
+
+    return false
+  } catch (error) {
+    console.log('⚠️ Error verificando recompilación:', error)
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     return true // Si hay error, mejor recompilar
   }
 }
@@ -344,12 +741,20 @@ async function loadCompiledFiles(componentPath: string): Promise<{ css: string; 
 
     if (css || js) {
       console.log(`📁 Cargados archivos compilados existentes: CSS(${css.length}), JS(${js.length})`)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return { css, js }
     }
 
     return null
   } catch (error) {
     console.log('⚠️ No se pudieron cargar archivos compilados existentes')
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     return null
   }
 }
@@ -387,12 +792,26 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
 }
 
 // Función auxiliar para optimizar CSS
+<<<<<<< HEAD
 function optimizeCSSThemes(css) {
   const themes = new Map()
 
   // Encontrar y agrupar bloques :root
   const rootBlockRegex = /:root(\[data-theme='([^']+)'\])?\s*\{([^}]+)\}/g
   let match
+=======
+interface ThemeBlock {
+  selector: string
+  variables: string[]
+}
+
+function optimizeCSSThemes(css: string): string {
+  const themes = new Map<string, ThemeBlock>()
+
+  // Encontrar y agrupar bloques :root
+  const rootBlockRegex = /:root(\[data-theme='([^']+)'\])?\s*\{([^}]+)\}/g
+  let match: RegExpExecArray | null
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
   while ((match = rootBlockRegex.exec(css)) !== null) {
     const [fullMatch, themeSelector, themeName, content] = match
@@ -407,20 +826,40 @@ function optimizeCSSThemes(css) {
 
     // Extraer variables
     const variableRegex = /--([^:]+):\s*([^;]+);/g
+<<<<<<< HEAD
     let varMatch
     while ((varMatch = variableRegex.exec(content)) !== null) {
       const [, name, value] = varMatch
       themes.get(themeKey).variables.push(`  --${name.trim()}: ${value.trim()};`)
+=======
+    let varMatch: RegExpExecArray | null
+
+    while ((varMatch = variableRegex.exec(content)) !== null) {
+      const [, name, value] = varMatch
+
+      themes.get(themeKey)!.variables.push(`  --${name.trim()}: ${value.trim()};`)
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     }
   }
 
   // Remover bloques originales y regenerar optimizados
+<<<<<<< HEAD
   let optimizedCSS = css.replace(rootBlockRegex, '')
 
   const optimizedBlocks: string[] = []
   themes.forEach(theme => {
     // Eliminar duplicados y ordenar
     const uniqueVars = [...new Set(theme.variables)].sort()
+=======
+  let optimizedCSS: string = css.replace(rootBlockRegex, '')
+
+  const optimizedBlocks: string[] = []
+
+  themes.forEach((theme: ThemeBlock) => {
+    // Eliminar duplicados y ordenar
+    const uniqueVars = [...new Set(theme.variables)].sort()
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     optimizedBlocks.push(`${theme.selector} {\n${uniqueVars.join('\n')}\n}`)
   })
 
@@ -429,6 +868,10 @@ function optimizeCSSThemes(css) {
 
 export async function GET(req: Request) {
   const startTime = Date.now()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   console.log('🚀 === INICIANDO COMPILACIÓN DE ASSETS ===')
 
   // Verificar si forzar recompilación
@@ -436,14 +879,25 @@ export async function GET(req: Request) {
   const forceRecompile = url.searchParams.get('force') === 'true'
 
   const componentPath = path.join(process.cwd(), COMPONENT_PATH)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   console.log('📁 Directorio de trabajo:', componentPath)
 
   try {
     // 📌 Verificar si necesita recompilación (a menos que se fuerce)
     if (!forceRecompile && !(await needsRecompilation(componentPath))) {
       const existingFiles = await loadCompiledFiles(componentPath)
+<<<<<<< HEAD
       if (existingFiles) {
         console.log(`⚡ Usando archivos compilados existentes (${Date.now() - startTime}ms)`)
+=======
+
+      if (existingFiles) {
+        console.log(`⚡ Usando archivos compilados existentes (${Date.now() - startTime}ms)`)
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         return NextResponse.json({
           ...existingFiles,
           cached: true,
@@ -498,6 +952,10 @@ export async function GET(req: Request) {
 
       // 📌 Compilar SCSS
       let compiledCSS = ''
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       if (scssContent) {
         console.log('🎨 Compilando SCSS...')
         try {
@@ -512,6 +970,10 @@ export async function GET(req: Request) {
                   if (url.startsWith('@styles/')) {
                     const fileName = url.substring(8)
                     const fullPath = path.join(process.cwd(), 'styles', fileName)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
                     return resolveScssFile(fullPath)
                   }
 
@@ -519,6 +981,10 @@ export async function GET(req: Request) {
                   if (url.startsWith('@library/')) {
                     const fileName = url.substring(9)
                     const fullPath = path.join(process.cwd(), 'app/_library', fileName)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
                     return resolveScssFile(fullPath)
                   }
 
@@ -565,6 +1031,10 @@ export async function GET(req: Request) {
     const result = await Promise.race([compilationPromise(), timeoutPromise])
 
     const endTime = Date.now()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     console.log(`🎉 Compilación completada en ${endTime - startTime}ms`)
 
     return NextResponse.json({
@@ -579,6 +1049,10 @@ export async function GET(req: Request) {
     })
   } catch (error) {
     const endTime = Date.now()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     console.error(`❌ Error después de ${endTime - startTime}ms:`, error)
 
     return NextResponse.json(
@@ -600,9 +1074,17 @@ function resolveScssFile(basePath: string): URL | null {
 
   for (const ext of extensions) {
     const fullPath = basePath + ext
+<<<<<<< HEAD
     try {
       require('fs').accessSync(fullPath)
       console.log(`✅ Archivo encontrado: ${fullPath}`)
+=======
+
+    try {
+      require('fs').accessSync(fullPath)
+      console.log(`✅ Archivo encontrado: ${fullPath}`)
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return new URL(`file://${fullPath.replace(/\\/g, '/')}`)
     } catch {
       continue
@@ -610,5 +1092,9 @@ function resolveScssFile(basePath: string): URL | null {
   }
 
   console.warn(`⚠️ No se encontró: ${basePath}`)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   return null
 }

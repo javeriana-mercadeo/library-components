@@ -84,6 +84,16 @@
   }
 }
 
+<<<<<<< HEAD
+=======
+@mixin liferay-edit-mode-body {
+  .has-edit-mode-menu,
+  .signed-in {
+    @content;
+  }
+}
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 @mixin only-dev-mode {
   [data-env='development'] & {
     @content;

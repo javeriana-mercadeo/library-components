@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function initGlobalUtils() {
   // ===========================================
   // UTILIDADES GLOBALES
@@ -535,6 +536,24 @@ function initGlobalUtils() {
 }
 
 // Auto-ejecutar si estamos en el navegador
+=======
+/**
+ * Punto de entrada principal para utilidades globales
+ * @module GlobalUtilsMain
+ */
+
+import { initGlobalUtils as initModularUtils } from './index.js'
+
+function initGlobalUtils(options = {}) {
+  return initModularUtils({
+    exposeToWindow: true,
+    logLevel: 'INFO',
+    ...options
+  })
+}
+
+// Auto-ejecutar si estamos en el navegador y no se han cargado ya
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 if (typeof window !== 'undefined' && !window.__GLOBAL_UTILS_LOADED__) {
   initGlobalUtils()
 }

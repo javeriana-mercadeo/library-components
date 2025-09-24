@@ -1,0 +1,48 @@
+.blog_acordion.accordion {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  padding-left: 3rem;
+
+  .accordion-item {
+    border: none;
+    border-bottom: 1px solid #4d4d4d;
+
+    &:not(.collapsed) {
+      background-color: #fff;
+    }
+
+    .accordion-header {
+      button {
+        gap: 2rem;
+        font-family: 'Gotham-Book';
+        font-size: 1.6rem;
+        border-radius: 2rem;
+        padding: 2rem;
+
+        &:focus {
+          border: none;
+          box-shadow: none;
+        }
+
+        &::after {
+          display: none;
+        }
+
+        img {
+          width: 2.4rem;
+        }
+      }
+    }
+
+    .accordion-body {
+      font-family: 'Gotham-Book';
+      font-size: 1.6rem;
+
+      span {
+        font-family: 'Gotham-Bold';
+        color: #db801f;
+      }
+    }
+  }
+}

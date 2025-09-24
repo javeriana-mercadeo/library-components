@@ -1,7 +1,11 @@
 export class ImageSliderLogic {
   constructor(component) {
     this.component = component
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     // Datos para las slides
     this.slides = [
       {
@@ -153,4 +157,8 @@ export class ImageSliderLogic {
       })
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3

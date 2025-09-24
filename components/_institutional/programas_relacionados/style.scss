@@ -1,0 +1,232 @@
+@charset "UTF-8";
+#relatedPrograms {
+  display: flex;
+  align-items: stretch;
+}
+#relatedPrograms .swiper-slide {
+  height: auto;
+}
+
+.mySwiper-programs-related {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  padding: 20px 50px;
+  margin: 0 auto;
+}
+.mySwiper-programs-related .swiper-button-next,
+.mySwiper-programs-related .swiper-button-prev {
+  background-image: none;
+}
+.mySwiper-programs-related .swiper-button-next::after,
+.mySwiper-programs-related .swiper-button-prev::after {
+  font-size: 24px;
+  color: #2a9fff;
+}
+.mySwiper-programs-related .swiper-pagination-programsRelated.swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 20px 0;
+}
+.mySwiper-programs-related .program-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-size: 70% 100%; /* 70% de ancho y 100% de alto */
+  background-position: left center; /* Alinea la imagen al lado izquierdo */
+  height: 100%;
+  width: 100%;
+  max-width: 340px;
+  border-radius: 8px;
+  box-shadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+}
+.mySwiper-programs-related .program-card h1,
+.mySwiper-programs-related .program-card h2,
+.mySwiper-programs-related .program-card h3 {
+  font-family: 'Montserrat', helvetica, arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1;
+  font-weight: 400;
+}
+.mySwiper-programs-related .program-card__container-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.mySwiper-programs-related .program-card__container-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.mySwiper-programs-related .program-card__overlay {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(to bottom, rgb(7 27 43 / 72%) 0%, rgb(33, 33, 32) 70%, rgb(33, 33, 32) 100%);
+  background-blend-mode: multiply;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+.mySwiper-programs-related .program-card__share {
+  padding: 1em;
+  display: block;
+  width: 100%;
+  max-width: 130px;
+}
+.mySwiper-programs-related .program-card__icon {
+  color: #ffffff;
+  mix-blend-mode: lighten;
+  opacity: 0.4;
+  background: none;
+  padding: 0;
+}
+.mySwiper-programs-related .program-card__icon:hover {
+  opacity: 1;
+  mix-blend-mode: lighten;
+}
+.mySwiper-programs-related .program-card__icon:not(:first-of-type) {
+  margin-left: 5px;
+}
+.mySwiper-programs-related .program-card__icon i {
+  font-size: 1.2em;
+}
+.mySwiper-programs-related .program-card__content {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  z-index: 1;
+  margin-top: 60px;
+  width: 100%;
+  float: inherit;
+  max-width: 100%;
+  padding: 0 1em 1em;
+}
+.mySwiper-programs-related .program-card__header {
+  margin-bottom: 20px;
+}
+.mySwiper-programs-related .program-card__title {
+  font-size: 20px;
+  color: #ffffff;
+  margin-bottom: 15px;
+  opacity: 1;
+}
+.mySwiper-programs-related .program-card__info {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 12px;
+  color: #fff;
+  line-height: 1;
+  margin: 0;
+  font-weight: 700;
+  opacity: 1;
+}
+.mySwiper-programs-related .program-card__info.modality {
+  color: #ffffff;
+  padding-top: 20px;
+}
+.mySwiper-programs-related .program-card .btn-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #ffffff;
+  background-color: transparent;
+  border-radius: 50px;
+  border: 2px solid #ffffff;
+  padding: 4px 15px;
+  margin-bottom: 20px;
+}
+.mySwiper-programs-related .program-card__desc {
+  font-size: 14px;
+  font-weight: 300;
+  margin-bottom: 2em;
+  transition: 0.2s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(33, 33, 32, 0.9); /* Fondo oscuro semi-transparente */
+  color: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  opacity: 0; /* Oculto inicialmente */
+  visibility: hidden;
+  overflow-y: auto; /* Scroll si el contenido es largo */
+  /* Personalización del scroll */
+  /* Hover en el scroll */
+}
+.mySwiper-programs-related .program-card__desc.show {
+  opacity: 1;
+  visibility: visible;
+}
+.mySwiper-programs-related .program-card__desc::-webkit-scrollbar {
+  width: 10px; /* Ancho del scroll */
+}
+.mySwiper-programs-related .program-card__desc::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color del fondo de la barra de scroll */
+  border-radius: 10px; /* Bordes redondeados */
+}
+.mySwiper-programs-related .program-card__desc::-webkit-scrollbar-thumb {
+  background: #888; /* Color del "pulgar" del scroll */
+  border-radius: 10px;
+}
+.mySwiper-programs-related .program-card__desc::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color del "pulgar" cuando pasas el mouse */
+}
+.mySwiper-programs-related .program-card__desc.hidden {
+  height: 0;
+  opacity: 0;
+  transition: 0.2s;
+  margin-bottom: 0;
+}
+.mySwiper-programs-related .program-card__desc .close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #000;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+.mySwiper-programs-related .program-card__desc > p {
+  padding: 20px 0;
+  margin: 0;
+}
+.mySwiper-programs-related .program-card__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  padding: 4px 15px;
+  color: #ffffff;
+  background-color: #4a7ed8;
+  font-size: 14px;
+  white-space: unset;
+}
+
+/*# sourceMappingURL=style.css.map */
+https:; //intranet.javeriana.edu.co/group/info-prg/~/control_panel/manage/-/fragments/fragment_collection/14083316/fragment_entry/14322307/edit?p_p_auth=iyOF6QsK#panel-manage-site_administration_categorization

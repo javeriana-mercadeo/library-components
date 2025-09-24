@@ -1,6 +1,10 @@
 import React from 'react'
+<<<<<<< HEAD
 import './styles.scss';
 
+=======
+import './styles.scss'
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
 const organizarLogos = logos => {
   if (!logos || logos.length === 0) return []
@@ -34,10 +38,10 @@ const Herramientas = ({ logos = [] }) => {
   const logosOrganizados = organizarLogos(logos)
 
   return (
-    <section className="tools-container">
-      <h1 className="tools-titulo">Herramientas</h1>
-      <div className="tools-content">
-        <div className="tools-texto">
+    <section className='tools-container'>
+      <h1 className='tools-titulo'>Herramientas</h1>
+      <div className='tools-content'>
+        <div className='tools-texto'>
           <h2>Lorem ipsum dolor sit amet</h2>
           <p>
             Lorem ipsum dolor sit amet consectetur. Eget id cursus eget at congue turpis. Volutpat odio nisi dictum in congue. Suspendisse
@@ -45,11 +49,11 @@ const Herramientas = ({ logos = [] }) => {
           </p>
         </div>
 
-        <div className="tools-logos-grid">
+        <div className='tools-logos-grid'>
           {logosOrganizados.map((columna, columnaIndex) => (
             <div key={`columna-${columnaIndex}`} className={`columna-logos ${columnaIndex % 2 === 1 ? 'offset' : ''}`}>
               {columna.map((logo, logoIndex) => (
-                <div key={`logo-${columnaIndex}-${logoIndex}`} className="logo-item">
+                <div key={`logo-${columnaIndex}-${logoIndex}`} className='logo-item'>
                   <img src={logo.imagen} alt={logo.nombre} />
                 </div>
               ))}
@@ -75,7 +79,7 @@ const App = () => {
   ]
 
   return (
-    <div className="app">
+    <div className='app'>
       <Herramientas logos={logosHerramientas} />
     </div>
   )

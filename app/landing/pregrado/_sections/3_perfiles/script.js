@@ -4,7 +4,10 @@ export default () => {
     const profileComponents = document.querySelectorAll('.program-profile')
 
     if (!profileComponents.length) {
+<<<<<<< HEAD
       console.warn('No se encontraron componentes .program-profile')
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return
     }
 
@@ -13,7 +16,10 @@ export default () => {
       const tabPanels = component.querySelectorAll('.program-profile__tab-panel')
 
       if (!tabButtons.length || !tabPanels.length) {
+<<<<<<< HEAD
         console.warn(`Componente ${index + 1}: No se encontraron tabs o paneles`)
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         return
       }
 
@@ -159,13 +165,19 @@ export default () => {
       switchTo: function (componentSelector, tabId) {
         const component = document.querySelector(componentSelector)
         if (!component) {
+<<<<<<< HEAD
           console.warn(`Componente no encontrado: ${componentSelector}`)
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
           return false
         }
 
         const targetButton = component.querySelector(`button[data-tabs-target="#${tabId}-panel"]`)
         if (!targetButton) {
+<<<<<<< HEAD
           console.warn(`Tab no encontrada: ${tabId}`)
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
           return false
         }
 
@@ -183,7 +195,10 @@ export default () => {
       getCurrentTab: function (componentSelector) {
         const component = document.querySelector(componentSelector)
         if (!component) {
+<<<<<<< HEAD
           console.warn(`Componente no encontrado: ${componentSelector}`)
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
           return null
         }
 

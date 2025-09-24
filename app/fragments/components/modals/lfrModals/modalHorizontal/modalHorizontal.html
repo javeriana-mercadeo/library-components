@@ -1,0 +1,88 @@
+<button
+  type="button"
+  data-popup="#modalWide-popup"
+  class="modalWide-open-btn"
+  aria-label="Open"
+  data-lfr-editable-id="modalWide-open-btn"
+  data-lfr-editable-type="text">
+  Explorar Universidad
+</button>
+
+<div id="modalWide-popup" class="modalWide-overlay">
+  <div class="modalWide-content">
+    <button
+      aria-label="Close Popup"
+      data-dmpa-element-id="btn"
+      class="btn btn-primary btn-light btn-icon-only modalWide-close modalWide-close-btn"
+      aria-disabled="false"
+      type="button">
+      <span class="btn-icon btn-icon-only"><i class="ph ph-x"></i></span>
+    </button>
+    
+    <div class="modalWide-container">
+      <!-- Main Content Section (60%) -->
+      <div class="modalWide-main-section">
+        <!-- Main Title -->
+        <lfr-editable
+          id="modalWide-main-title"
+          type="text"
+          class="modalWide-main-title-wrapper">
+          <h2 class="title title-xl modalWide-main-title-text">Explora todo lo que te ofrece nuestra universidad</h2>
+        </lfr-editable>
+
+        <!-- Subtitle -->
+        <lfr-editable
+          id="modalWide-subtitle"
+          type="text"
+          class="modalWide-subtitle-wrapper">
+          <h3 class="modalWide-subtitle-text">¿Por qué estudiar con nosotros?</h3>
+        </lfr-editable>
+
+        <!-- Benefits List in Two Columns -->
+        <lfr-editable 
+          id="modalWide-benefits" 
+          type="rich-text"
+          class="modalWide-benefits-wrapper">
+          <div class="modalWide-benefits-grid">
+            <div class="modalWide-benefits-column">
+              <ul class="modalWide-benefits-list">
+                <li class="modalWide-benefit-item">Programas con alta calidad académica</li>
+                <li class="modalWide-benefit-item">Modalidades flexibles: presencial y virtual</li>
+                <li class="modalWide-benefit-item">Acompañamiento durante todo el proceso</li>
+              </ul>
+            </div>
+            <div class="modalWide-benefits-column">
+              <ul class="modalWide-benefits-list">
+                <li class="modalWide-benefit-item">Acceso a becas y beneficios financieros</li>
+                <li class="modalWide-benefit-item">Formación integral y enfoque interdisciplinar</li>
+                <li class="modalWide-benefit-item">Reconocimiento nacional e internacional</li>
+              </ul>
+            </div>
+          </div>
+        </lfr-editable>
+      </div>
+
+      <!-- Side Section (40%) -->
+      <div class="modalWide-side-section">
+        <!-- Side Title -->
+        <lfr-editable
+          id="modalWide-side-title"
+          type="text"
+          class="modalWide-side-title-wrapper">
+          <h3 class="modalWide-side-title-text">Recibe más información personalizada</h3>
+        </lfr-editable>
+
+        <!-- CTA Button -->
+        <button
+          data-dmpa-element-id="btn"
+          class="btn btn-primary btn-solid btn-lg modalWide-btn modalWide-cta-btn"
+          aria-disabled="false"
+          type="submit"
+          data-lfr-editable-id="modalWide-cta"
+          data-lfr-editable-type="text">
+          <span class="btn-text">Continuar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

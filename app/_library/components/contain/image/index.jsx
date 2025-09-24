@@ -11,15 +11,35 @@ import PropTypes from 'prop-types'
  * @param {string} props.src - URL de la imagen (requerido)
  * @param {string} props.alt - Texto alternativo para accesibilidad (requerido)
  * @param {boolean} [props.isEditable=true] - Si el elemento es editable en Liferay
+<<<<<<< HEAD
  * @param {Function} [props.onClick] - Función a ejecutar al hacer clic (opcional)
  * @returns {JSX.Element} Imagen renderizada con configuración de Liferay
  */
 const Image = ({ id, elementId, className = '', src, alt, isEditable = true, onClick, ...otherProps }) => {
+=======
+ * @param {boolean} [props.enableZoom=false] - Si se habilita el efecto zoom en hover
+ * @param {string} [props.loading='lazy'] - Estrategia de carga de la imagen (lazy, eager, auto)
+ * @param {Function} [props.onClick] - Función a ejecutar al hacer clic (opcional)
+ * @returns {JSX.Element} Imagen renderizada con configuración de Liferay
+ */
+const Image = ({ id, elementId, className = '', src, alt, isEditable = true, enableZoom = false, onClick, ...otherProps }) => {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   // Constante para el nombre base del elemento
   const ELEMENT_NAME = 'image'
 
   // Construcción de clases CSS
+<<<<<<< HEAD
   const classNames = [ELEMENT_NAME, onClick ? `${ELEMENT_NAME}-clickable` : null, className].filter(Boolean).join(' ')
+=======
+  const classNames = [
+    ELEMENT_NAME,
+    onClick ? `${ELEMENT_NAME}-clickable` : null,
+    !enableZoom ? `${ELEMENT_NAME}--no-zoom` : null,
+    className
+  ]
+    .filter(Boolean)
+    .join(' ')
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
   // Manejar el evento onClick
   const handleClick = event => {
@@ -34,6 +54,12 @@ const Image = ({ id, elementId, className = '', src, alt, isEditable = true, onC
     src,
     alt,
     className: classNames,
+<<<<<<< HEAD
+=======
+    // Evitar optimizaciones automáticas de Next.js que pueden agregar rel="preload"
+    loading: otherProps.loading || 'lazy',
+    decoding: 'async',
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     ...(onClick && {
       onClick: handleClick,
       role: 'button',
@@ -66,6 +92,11 @@ Image.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
   isEditable: PropTypes.bool,
+<<<<<<< HEAD
+=======
+  enableZoom: PropTypes.bool,
+  loading: PropTypes.oneOf(['lazy', 'eager', 'auto']),
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   onClick: PropTypes.func
 }
 

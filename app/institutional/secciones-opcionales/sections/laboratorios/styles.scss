@@ -2,7 +2,11 @@
 
 .lab-slider-container {
   .lab-slider-title {
+<<<<<<< HEAD
     color: var( --neutral-300);
+=======
+    color: var(--neutral-300);
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     font-weight: var(--font-weight-bold);
     padding: rem(50px);
     text-align: center;
@@ -35,7 +39,11 @@
       font-size: var(--font-size-principal-title);
       font-weight: var(--font-weight-bold);
       margin-bottom: rem(16px);
+<<<<<<< HEAD
       color: var( --neutral-300);
+=======
+      color: var(--neutral-300);
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
       @media (max-width: rem(768px)) {
         text-align: center;

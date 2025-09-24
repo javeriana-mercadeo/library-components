@@ -79,20 +79,34 @@ const Diferenciales = () => {
     const contentId = `${elementName}-content-${itemNumber}`
 
     return (
+<<<<<<< HEAD
       <div className={`${baseClass}__accordion-item`} data-accordion="open" data-column={isFirstColumn ? 'first' : 'second'}>
+=======
+      <div className={`${baseClass}__accordion-item`} data-accordion='open' data-column={isFirstColumn ? 'first' : 'second'}>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         {/* Header del acordeón */}
         <div className={`${baseClass}__accordion-header`}>
           <div className={`${baseClass}__title-wrapper`}>
             <div className={`${baseClass}__icon-container`}>
+<<<<<<< HEAD
               <Icon id={`${baseClass}-icons-${globalIndex}`} icon={item.icon} size="sm" color="primary" className={`${baseClass}__icon`} />
+=======
+              <Icon id={`${baseClass}-icons-${globalIndex}`} icon={item.icon} size='sm' color='primary' className={`${baseClass}__icon`} />
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
             </div>
 
             <Caption
               id={`caption-${elementName}-item-${itemNumber}-title`}
               className={`${baseClass}__accordion-title`}
+<<<<<<< HEAD
               size="lg"
               weight="semibold"
               color="neutral">
+=======
+              size='lg'
+              weight='semibold'
+              color='neutral'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
               {item.title}
             </Caption>
           </div>
@@ -100,6 +114,7 @@ const Diferenciales = () => {
           {/* Botón toggle - solo visible en móvil */}
           <Btn
             className={`${baseClass}__accordion-toggle`}
+<<<<<<< HEAD
             variant="light"
             size="sm"
             data-accordion-target={`#${contentId}`}
@@ -108,12 +123,26 @@ const Diferenciales = () => {
             isEditable={false}
             endIcon={<i className="ph ph-plus toggle-icon" aria-hidden="true"></i>}>
             <span className="toggle-text">Leer Más</span>
+=======
+            variant='light'
+            size='sm'
+            data-accordion-target={`#${contentId}`}
+            aria-expanded='false'
+            aria-controls={contentId}
+            isEditable={false}
+            endIcon={<i className='ph ph-plus toggle-icon' aria-hidden='true'></i>}>
+            <span className='toggle-text'>Leer Más</span>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
           </Btn>
         </div>
 
         {/* Contenido del acordeón */}
         <div id={contentId} className={`${baseClass}__accordion-content`} aria-labelledby={itemId}>
+<<<<<<< HEAD
           <Paragraph id={`${itemId}-content`} className={`${baseClass}__accordion-text`} size="md" color="neutral">
+=======
+          <Paragraph id={`${itemId}-content`} className={`${baseClass}__accordion-text`} size='md' color='neutral'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
             {item.content}
           </Paragraph>
         </div>
@@ -122,6 +151,7 @@ const Diferenciales = () => {
   }
 
   return (
+<<<<<<< HEAD
     <section id="section-four" className={baseClass}>
       <Container id={elementName} className={`${baseClass}__container`}>
         {/* Header de la sección */}
@@ -130,6 +160,26 @@ const Diferenciales = () => {
             ¿Por qué elegir la Javeriana?
           </Title>
         </header>
+=======
+    <section id='section-four' className={baseClass}>
+      <Container id={elementName} className={`${baseClass}__container`}>
+        {/* Header de la sección */}
+        <Title className={`${baseClass}__header`} hierarchy='h2' weight='semibold' size='2xl' align='center' isEditable={false}>
+          <Caption id={`title-${elementName}-title`} className={`${baseClass}__title`}>
+            ¿Por qué estudiar{' '}
+          </Caption>
+          <Caption className={`${baseClass}__title`} data-puj-name isEditable={false}>
+            cargando programa...
+          </Caption>
+          <Caption id={`title-${elementName}-title-2`} className={`${baseClass}__title`}>
+            {' '}
+            en la Javeriana{' '}
+          </Caption>
+          <Caption className={`${baseClass}__title`} data-puj-simple-location isEditable={false}>
+            cargando ubicación...?
+          </Caption>
+        </Title>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
         {/* Contenido principal */}
         <div className={`${baseClass}__content`}>
@@ -145,8 +195,13 @@ const Diferenciales = () => {
             <div className={`${baseClass}__image-container`}>
               <Image
                 id={`image-${elementName}-image`}
+<<<<<<< HEAD
                 src="https://www.javeriana.edu.co/recursosdb/d/info-prg/banner-web-maestria-en-innovacion-en-la-construccion-1-"
                 alt="Estudiantes de la Universidad Javeriana"
+=======
+                src='https://www.javeriana.edu.co/recursosdb/d/info-prg/banner-web-maestria-en-innovacion-en-la-construccion-1-'
+                alt='Estudiantes de la Universidad Javeriana'
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
                 className={`${baseClass}__image`}
               />
             </div>

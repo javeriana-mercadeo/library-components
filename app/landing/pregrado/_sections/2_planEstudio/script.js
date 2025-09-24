@@ -1,17 +1,26 @@
 export default () => {
   const initializeSwiper = () => {
     // Destruir instancia existente si existe
+<<<<<<< HEAD
     if (window.planEstudioSwiper) {
+=======
+    if (window.planEstudioSwiper && typeof window.planEstudioSwiper.destroy === 'function') {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       window.planEstudioSwiper.destroy(true, true)
     }
 
     // Buscar el elemento con la nueva clase
     const element = document.querySelector('.plan-estudio_wrapper')
     if (!element) {
+<<<<<<< HEAD
       console.warn('Elemento .plan-estudio_wrapper no encontrado')
       const fallbackElement = document.querySelector('.subjects-swiper')
       if (!fallbackElement) {
         console.error('Ningún elemento swiper encontrado')
+=======
+      const fallbackElement = document.querySelector('.subjects-swiper')
+      if (!fallbackElement) {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         return
       }
     }
@@ -21,7 +30,10 @@ export default () => {
     const totalSlides = slides.length
 
     if (!window.Swiper) {
+<<<<<<< HEAD
       console.error('Swiper no está disponible')
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return
     }
 
@@ -121,7 +133,10 @@ export default () => {
     const prevBtn = document.querySelector('.plan-estudio_prev') || document.querySelector('.subjects-prev')
 
     if (!nextBtn || !prevBtn) {
+<<<<<<< HEAD
       console.warn('Botones de navegación no encontrados')
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return
     }
 
@@ -205,7 +220,10 @@ export default () => {
     const pagination = document.querySelector('.plan-estudio_pagination') || document.querySelector('.subjects-pagination')
 
     if (!pagination) {
+<<<<<<< HEAD
       console.warn('Paginación no encontrada')
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return
     }
 
@@ -222,7 +240,10 @@ export default () => {
         bullet.setAttribute('aria-label', `Ir a slide ${index + 1}`)
         bullet.style.display = 'block'
       })
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     } else {
       pagination.style.display = 'none'
       pagination.classList.add('swiper-pagination-hidden')
@@ -231,14 +252,36 @@ export default () => {
   }
 
   const checkAndInit = () => {
+<<<<<<< HEAD
     if (typeof window !== 'undefined' && window.Swiper) {
       initializeSwiper()
+=======
+    // Verificar que Swiper esté disponible Y que el DOM esté listo
+    if (typeof window !== 'undefined' && window.Swiper && document.readyState === 'complete') {
+      // Verificar que el elemento exista antes de inicializar
+      const element = document.querySelector('.plan-estudio_wrapper') || document.querySelector('.subjects-swiper')
+      if (element) {
+        initializeSwiper()
+      } else {
+        // Si no existe el elemento, intentar de nuevo en 500ms
+        setTimeout(checkAndInit, 500)
+      }
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     } else {
       setTimeout(checkAndInit, 300)
     }
   }
 
+<<<<<<< HEAD
   checkAndInit()
+=======
+  // Esperar a que el DOM esté completamente cargado
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkAndInit)
+  } else {
+    checkAndInit()
+  }
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
   let resizeTimeout
   window.addEventListener('resize', () => {
@@ -247,7 +290,11 @@ export default () => {
     }
 
     resizeTimeout = setTimeout(() => {
+<<<<<<< HEAD
       if (window.planEstudioSwiper) {
+=======
+      if (window.planEstudioSwiper && typeof window.planEstudioSwiper.update === 'function') {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         window.planEstudioSwiper.update()
       }
     }, 250)

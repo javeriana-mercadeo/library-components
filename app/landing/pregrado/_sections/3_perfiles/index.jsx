@@ -97,16 +97,28 @@ const Perfiles = () => {
       <Container id={elementName} className={baseClass}>
         <div className={`${baseClass}__tabs-container`}>
           {/* Navegación de tabs */}
+<<<<<<< HEAD
           <div className={`${baseClass}__tabs-nav`} role="tablist" aria-label="Perfiles del programa">
             <ul className={`${baseClass}__tabs-list`}>
               {profileTabs.map((tab, index) => (
                 <li key={tab.id} role="presentation">
+=======
+          <div className={`${baseClass}__tabs-nav`} role='tablist' aria-label='Perfiles del programa'>
+            <ul className={`${baseClass}__tabs-list`}>
+              {profileTabs.map((tab, index) => (
+                <li key={tab.id} role='presentation'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
                   <button
                     className={`${baseClass}__tab-button`}
                     id={`${tab.id}-tab`}
                     data-tabs-target={`#${tab.id}-panel`}
+<<<<<<< HEAD
                     type="button"
                     role="tab"
+=======
+                    type='button'
+                    role='tab'
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
                     aria-controls={`${tab.id}-panel`}
                     aria-selected={index === 0 ? 'true' : 'false'}
                     tabIndex={index === 0 ? 0 : -1}>
@@ -124,7 +136,11 @@ const Perfiles = () => {
                 key={tab.id}
                 className={`${baseClass}__tab-panel ${index !== 0 ? 'hidden' : ''}`}
                 id={`${tab.id}-panel`}
+<<<<<<< HEAD
                 role="tabpanel"
+=======
+                role='tabpanel'
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
                 aria-labelledby={`${tab.id}-tab`}
                 aria-hidden={index !== 0 ? 'true' : 'false'}>
                 <div className={`${baseClass}__content-wrapper`}>
@@ -132,9 +148,13 @@ const Perfiles = () => {
                     <Image src={tab.image} alt={tab.alt} className={`${baseClass}__image`} isEditable={false} />
                   </div>
                   <div className={`${baseClass}__text-container`}>
+<<<<<<< HEAD
                     <div className={`${baseClass}__paragraph`}>
                       {tab.content}
                     </div>
+=======
+                    <div className={`${baseClass}__paragraph`}>{tab.content}</div>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
                   </div>
                 </div>
               </div>

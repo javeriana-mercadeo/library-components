@@ -56,7 +56,11 @@ export const useTheme = () => {
       html.setAttribute('data-theme-faculty', faculty)
     }
 
+<<<<<<< HEAD
     console.log('🎨 Tema aplicado:', { base, faculty })
+=======
+    // Tema aplicado silenciosamente
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   }, [])
 
   // Cambiar tema base

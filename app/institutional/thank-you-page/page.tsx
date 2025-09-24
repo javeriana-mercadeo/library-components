@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
 import Image from '@library/components/contain/image'
@@ -99,5 +100,32 @@ export default function ThankYouPage() {
         </div>
       </div>
     </Container>
+=======
+import Header from '@library/components/header_partial'
+import Footer from '@library/components/footer'
+
+import Contenido from './contenido'
+
+import ViewComponent from '@/components/viewComponent/viewComponent'
+
+export default function ThankYouPage() {
+  const basePath = '/institutional/thank-you-page'
+  const libraryPath = '/_library/components/'
+
+  return (
+    <>
+      <ViewComponent path={`${libraryPath}/header`}>
+        <Header />
+      </ViewComponent>
+
+      <ViewComponent path={`${basePath}/contenido`}>
+        <Contenido />
+      </ViewComponent>
+
+      <ViewComponent path={`${libraryPath}/footer`}>
+        <Footer />
+      </ViewComponent>
+    </>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   )
 }

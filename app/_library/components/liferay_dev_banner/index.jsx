@@ -39,7 +39,11 @@ const LiferayDevBanner = ({ children, icon, className = '', variant = 'info', id
       <Container className={`${ELEMENT_NAME}__container`}>
         {icon && (
           <div className={`${ELEMENT_NAME}__icon`}>
+<<<<<<< HEAD
             <i className={icon} aria-hidden="true"></i>
+=======
+            <i className={icon} aria-hidden='true'></i>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
           </div>
         )}
 

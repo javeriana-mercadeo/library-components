@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "LLAMADO A API DE PROGRAMAS",
+=======
+  "name": "CARGAR INFORMACIÓN DEL PROGRAMA",
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   "id": "load-program",
   "type": "section"
 }

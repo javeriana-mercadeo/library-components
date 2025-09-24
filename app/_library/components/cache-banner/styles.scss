@@ -1,0 +1,310 @@
+@use '@styles/autoload' as *;
+
+@mixin cache-banner {
+  // ==========================================
+  // COOKIES BANNER - SIGUIENDO PATRÓN DEL HEADER
+  // ==========================================
+
+  .cookies-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(135deg, var(--background-100) 0%, var(--background-200) 100%);
+    border-top: rem(1px) solid var(--neutral-800);
+    box-shadow:
+      rem(0px) rem(-4px) rem(20px) rgba(0, 0, 0, 0.1),
+      rem(0px) rem(-2px) rem(10px) rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    z-index: 9997; // Un nivel menos que el header
+    transition: transform 0.3s ease-in-out;
+
+    @include dark-theme {
+      background: linear-gradient(135deg, var(--background-200) 0%, var(--background-300) 100%);
+      box-shadow:
+        rem(0px) rem(-4px) rem(20px) rgba(0, 0, 0, 0.2),
+        rem(0px) rem(-2px) rem(10px) rgba(0, 0, 0, 0.1);
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: rgba(var(--primary-100-rgb), 0.1);
+        pointer-events: none;
+      }
+    }
+
+    // Estados del banner
+    &--hidden {
+      transform: translateY(100%);
+    }
+
+    @include liferay-edit-mode {
+      position: relative;
+      z-index: 1;
+    }
+
+    // Contenedor principal
+    .container-fluid {
+      padding: var(--spacing-md);
+
+      @include responsive {
+        padding: var(--spacing-md) var(--spacing-lg);
+      }
+
+      @include responsive($breakpoint-sm) {
+        padding: rem(12px);
+      }
+    }
+
+    // Fila principal con flexbox mejorado
+    .row {
+      margin: 0;
+
+      .autofit-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+
+        @include responsive {
+          flex-wrap: nowrap;
+          gap: var(--spacing-md);
+        }
+
+        // Contenido principal
+        .autofit-col-expand {
+          flex: 1;
+          min-width: 0;
+
+          span {
+            color: var(--neutral-300);
+            font-size: var(--font-size-small);
+            line-height: 1.4;
+
+            @include responsive {
+              font-size: var(--font-size-paragraph);
+            }
+
+            // Enlace del lineamiento
+            a {
+              color: var(--primary-600);
+              text-decoration: underline;
+              transition: color 0.2s ease;
+              font-weight: var(--font-weight-medium);
+
+              &:hover {
+                color: var(--primary-500);
+                text-decoration: none;
+              }
+
+              &:focus {
+                outline: rem(2px) solid var(--primary-500);
+                outline-offset: rem(2px);
+                border-radius: var(--border-radius-xs);
+              }
+            }
+          }
+        }
+
+        // Contenedores de botones
+        .autofit-col {
+          display: flex;
+          align-items: center;
+
+          // Botones del banner
+          .btn {
+            font-size: var(--font-size-small);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-weight: var(--font-weight-medium);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            cursor: pointer;
+            border: rem(1px) solid transparent;
+
+            @include responsive {
+              font-size: var(--font-size-paragraph);
+              padding: var(--spacing-sm) var(--spacing-md);
+            }
+
+            // Botón de configuración
+            &.btn-link {
+              color: var(--neutral-400);
+              background: transparent;
+
+              &:hover {
+                color: var(--primary-600);
+                background: rgba(var(--primary-rgb), 0.05);
+              }
+
+              &:focus {
+                outline: rem(2px) solid var(--primary-500);
+                outline-offset: rem(2px);
+              }
+
+              &:active {
+                transform: scale(0.98);
+              }
+            }
+
+            // Botones principales
+            &.btn-secondary {
+              background: var(--primary-600);
+              color: var(--neutral-100);
+              border-color: var(--primary-600);
+
+              &:hover {
+                background: var(--primary-500);
+                border-color: var(--primary-500);
+                transform: translateY(rem(-1px));
+                box-shadow: rem(0px) rem(4px) rem(12px) rgba(var(--primary-rgb), 0.3);
+              }
+
+              &:focus {
+                outline: rem(2px) solid var(--primary-400);
+                outline-offset: rem(2px);
+              }
+
+              &:active {
+                transform: translateY(0) scale(0.98);
+                box-shadow: rem(0px) rem(2px) rem(6px) rgba(var(--primary-rgb), 0.2);
+              }
+
+              // Botón de rechazar con estilo diferenciado
+              &#_com_liferay_cookies_banner_web_portlet_CookiesBannerPortlet_declineAllButton {
+                background: var(--neutral-600);
+                border-color: var(--neutral-600);
+
+                &:hover {
+                  background: var(--neutral-500);
+                  border-color: var(--neutral-500);
+                  box-shadow: rem(0px) rem(4px) rem(12px) rgba(var(--neutral-rgb), 0.3);
+                }
+
+                &:active {
+                  box-shadow: rem(0px) rem(2px) rem(6px) rgba(var(--neutral-rgb), 0.2);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // ==========================================
+    // RESPONSIVE MOBILE OPTIMIZATIONS
+    // ==========================================
+    @include responsive($breakpoint-sm) {
+      .autofit-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-sm);
+
+        .autofit-col-expand {
+          order: 1;
+          text-align: center;
+
+          span {
+            font-size: var(--font-size-small);
+          }
+        }
+
+        .autofit-col {
+          order: 2;
+          justify-content: center;
+
+          &:last-child {
+            order: 3;
+          }
+
+          .btn {
+            min-width: rem(120px);
+            justify-content: center;
+          }
+        }
+      }
+    }
+
+    // ==========================================
+    // ANIMACIONES Y TRANSICIONES
+    // ==========================================
+    &.cookies-banner-entering {
+      transform: translateY(100%);
+      animation: slideUpBanner 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    &.cookies-banner-leaving {
+      animation: slideDownBanner 0.3s ease-in forwards;
+    }
+  }
+
+  // ==========================================
+  // AJUSTES DEL BODY CUANDO EL BANNER ESTÁ VISIBLE
+  // ==========================================
+  body:has(.cookies-banner:not(.cookies-banner--hidden)) {
+    padding-bottom: rem(100px); // Espacio para el banner
+
+    @include responsive {
+      padding-bottom: rem(80px);
+    }
+
+    @include only-dev-mode {
+      padding-bottom: 0;
+    }
+
+    @include liferay-edit-mode {
+      padding-bottom: 0;
+    }
+  }
+
+  // ==========================================
+  // ANIMACIONES
+  // ==========================================
+  @keyframes slideUpBanner {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideDownBanner {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+
+  // ==========================================
+  // ACCESIBILIDAD Y ESTADOS DE ENFOQUE
+  // ==========================================
+  @media (prefers-reduced-motion: reduce) {
+    .cookies-banner {
+      transition: none;
+      animation: none;
+
+      &.cookies-banner-entering,
+      &.cookies-banner-leaving {
+        animation: none;
+      }
+    }
+  }
+
+  // ==========================================
+  // PRINT STYLES
+  // ==========================================
+  @media print {
+    .cookies-banner {
+      display: none !important;
+    }
+  }
+}

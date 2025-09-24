@@ -63,7 +63,11 @@ const Docentes = () => {
   // Función para renderizar una tarjeta de docente
   const renderDocenteCard = (docente, index) => {
     return (
+<<<<<<< HEAD
       <div key={index} className={`${baseClass}_slide swiper-slide`} role="listitem">
+=======
+      <div key={index} className={`${baseClass}_slide swiper-slide`} role='listitem'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         <div className={`${baseClass}_card`}>
           <div className={`${baseClass}_card-header`}>
             <Image
@@ -77,33 +81,58 @@ const Docentes = () => {
 
           <div className={`${baseClass}_card-content`}>
             <Title
+<<<<<<< HEAD
               hierarchy="h3"
               size="md"
               weight="bold"
               className={`${baseClass}_card-name`}
               id={`${elementName}-name-${index + 1}`}
               color="neutral"
+=======
+              hierarchy='h2'
+              size='md'
+              weight='bold'
+              className={`${baseClass}_card-name`}
+              id={`${elementName}-name-${index + 1}`}
+              color='neutral'
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
               isEditable={false}>
               {docente.name}
             </Title>
 
             <Paragraph
+<<<<<<< HEAD
               size="sm"
               className={`${baseClass}_card-title`}
               id={`${elementName}-title-${index + 1}`}
               color="neutral"
+=======
+              size='sm'
+              className={`${baseClass}_card-title`}
+              id={`${elementName}-title-${index + 1}`}
+              color='neutral'
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
               isEditable={false}>
               {docente.title}
             </Paragraph>
 
             <Btn
               href={docente.profileUrl}
+<<<<<<< HEAD
               target="_blank"
               variant="link"
               size="md"
               className={`${baseClass}_card-link`}
               id={`${elementName}-link-${index + 1}`}
               color="neutral"
+=======
+              target='_blank'
+              variant='link'
+              size='md'
+              className={`${baseClass}_card-link`}
+              id={`${elementName}-link-${index + 1}`}
+              color='neutral'
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
               isEditable={false}>
               Ver Perfil
             </Btn>
@@ -114,6 +143,7 @@ const Docentes = () => {
   }
 
   return (
+<<<<<<< HEAD
     <section id="section-six">
       <div className="color-container">
         <Container id={elementName} className={baseClass}>
@@ -129,22 +159,51 @@ const Docentes = () => {
           </Title>
 
           <Paragraph align="center" className={`${baseClass}__description`} id={`${elementName}-description`} color="neutral">
+=======
+    <section id='section-six'>
+      <div className='color-container'>
+        <Container id={elementName} className={baseClass}>
+          <Title
+            hierarchy='h2'
+            size='2xl'
+            weight='bold'
+            align='center'
+            className={`${baseClass}__title`}
+            id={`${elementName}-title`}
+            color='neutral'>
+            Docentes Expertos
+          </Title>
+
+          <Paragraph align='center' className={`${baseClass}__description`} id={`${elementName}-description`} color='neutral'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
             Docentes expertos con experiencia práctica y académica, comprometidos con la excelencia e innovación en Ingeniería Civil.
           </Paragraph>
 
           <div className={`${baseClass}_carousel swiper`}>
             <div className={`${baseClass}_wrapper expert-swiper`}>
+<<<<<<< HEAD
               <div className={`${baseClass}_slides swiper-wrapper`} role="list">
+=======
+              <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
                 {/* Generar cards dinámicamente */}
                 {docentes.map((docente, index) => renderDocenteCard(docente, index))}
               </div>
 
               {/* Botones de navegación */}
+<<<<<<< HEAD
               <button className={`swiper-slide-button ${baseClass}_prev`} aria-label="Ir al slide anterior" type="button">
                 <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
               </button>
               <button className={`swiper-slide-button ${baseClass}_next`} aria-label="Ir al siguiente slide" type="button">
                 <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+=======
+              <button className={`swiper-slide-button ${baseClass}_prev`} aria-label='Ir al slide anterior' type='button'>
+                <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
+              </button>
+              <button className={`swiper-slide-button ${baseClass}_next`} aria-label='Ir al siguiente slide' type='button'>
+                <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
               </button>
             </div>
           </div>

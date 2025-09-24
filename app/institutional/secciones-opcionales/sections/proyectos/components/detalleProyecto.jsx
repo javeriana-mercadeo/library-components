@@ -195,12 +195,17 @@ class DetalleProyecto extends Component {
 
     return (
       <div
+<<<<<<< HEAD
         className="project-details"
+=======
+        className='project-details'
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         ref={this.projectDetailsRef}
         style={{
           touchAction: 'pan-y',
           userSelect: 'none'
         }}>
+<<<<<<< HEAD
         <div className="project-layout">
           <div className="project-info">
             <Title>
@@ -215,6 +220,22 @@ class DetalleProyecto extends Component {
               <span>{projectData.estudiante}</span>
             </div>
             <div className="info-row">
+=======
+        <div className='project-layout'>
+          <div className='project-info'>
+            <Title>
+              <h2>{projectData.titulo}</h2>
+            </Title>
+            <div className='info-row'>
+              <strong>Fecha</strong>
+              <span>{projectData.fecha}</span>
+            </div>
+            <div className='info-row'>
+              <strong>Responsable</strong>
+              <span>{projectData.estudiante}</span>
+            </div>
+            <div className='info-row'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
               <strong>Descripción</strong>
               <Paragraph>
                 {' '}
@@ -223,7 +244,11 @@ class DetalleProyecto extends Component {
             </div>
           </div>
 
+<<<<<<< HEAD
           <div className="project-gallery">
+=======
+          <div className='project-gallery'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
             {projectData.imagenes.map((src, index) => (
               <img
                 key={index}

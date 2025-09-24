@@ -1,0 +1,476 @@
+@use '@styles/autoload' as *;
+
+// Estilos específicos para los modales del showcase
+.popup-overlay {
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  inset: 0;
+
+  // Estados exactos del header
+  background: transparent;
+  backdrop-filter: blur(0px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  will-change: opacity, visibility, backdrop-filter;
+  pointer-events: auto;
+  transition: opacity calc(var(--transition, 0.3s) * 0.67) cubic-bezier(0.2, 0, 0.2, 1),
+              visibility calc(var(--transition, 0.3s) * 0.67) cubic-bezier(0.2, 0, 0.2, 1),
+              backdrop-filter calc(var(--transition, 0.3s) * 0.67) cubic-bezier(0.2, 0, 0.2, 1);
+
+  z-index: 10001;
+  display: flex;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.65);
+    pointer-events: auto;
+  }
+}
+
+.popup-content {
+  box-sizing: border-box;
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90%;
+  overflow-y: auto;
+  color: var(--neutral-100);
+  background-color: var(--neutral-1000);
+  border-radius: 1rem;
+  box-shadow: 0 var(--spacing-lg, 1.5rem) var(--spacing-4xl, 4rem) rgba(0, 0, 0, 0.25);
+  scroll-behavior: smooth;
+
+  // Estados exactos del header - patrón show + active
+  transform: translateY(calc(var(--spacing-md, 1rem) * -1));
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity, visibility;
+  transition: transform calc(var(--transition, 0.3s) * 0.67) cubic-bezier(0.2, 0, 0.2, 1),
+              opacity calc(var(--transition, 0.3s) * 0.67) cubic-bezier(0.2, 0, 0.2, 1),
+              visibility calc(var(--transition, 0.3s) * 0.67) cubic-bezier(0.2, 0, 0.2, 1);
+
+  // Clase 'show' - solo hace visible (como header)
+  .popup-overlay.show & {
+    visibility: visible;
+  }
+
+  // Clase 'show.active' - aplica animación (como header)
+  .popup-overlay.show.active & {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Content específico para diferentes tipos de modales
+.content {
+  padding: 2rem;
+
+  &__image {
+    margin-bottom: 1.5rem;
+
+    .image {
+      width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+    }
+  }
+
+  &__header {
+    margin-bottom: 1.5rem;
+  }
+
+  &__title {
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-bold);
+    color: var(--neutral-200);
+    margin-bottom: 0.5rem;
+
+    .highlight {
+      color: var(--primary-500);
+      font-weight: var(--font-weight-bold);
+    }
+  }
+
+  &__subtitle {
+    font-size: var(--font-size-paragraph);
+    color: var(--neutral-500);
+    margin-bottom: 1rem;
+  }
+
+  &__divider {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-500), transparent);
+    margin: 1rem 0;
+  }
+
+  &__body {
+    margin-bottom: 2rem;
+
+    p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      color: var(--neutral-300);
+    }
+  }
+
+  &__info {
+    background-color: var(--background-200);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--primary-500);
+
+    .info__title {
+      font-size: var(--font-size-subtitle);
+      font-weight: var(--font-weight-semibold);
+      color: var(--neutral-200);
+      margin-bottom: 1rem;
+    }
+
+    .info__list {
+      list-style: none;
+      padding: 0;
+
+      li {
+        margin-bottom: 0.75rem;
+        color: var(--neutral-300);
+
+        strong {
+          color: var(--neutral-200);
+        }
+      }
+    }
+
+    .info__terms {
+      font-size: var(--font-size-small);
+      color: var(--neutral-500);
+      margin-top: 1rem;
+      font-style: italic;
+    }
+  }
+
+  &__benefits {
+    .benefits__title {
+      font-size: var(--font-size-subtitle);
+      color: var(--neutral-200);
+      margin-bottom: 1rem;
+    }
+
+    .benefits__list {
+      list-style: none;
+      padding: 0;
+
+      li {
+        margin-bottom: 0.5rem;
+        padding-left: 1.5rem;
+        position: relative;
+        color: var(--neutral-300);
+
+        &::before {
+          content: '✓';
+          position: absolute;
+          left: 0;
+          color: var(--success-500);
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+
+      @include responsive {
+        flex-direction: column;
+      }
+    }
+  }
+
+  &__icon {
+    text-align: center;
+    margin-bottom: 1.5rem;
+
+    .warning-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      background-color: var(--warning-100);
+      color: var(--warning-600);
+      border-radius: 50%;
+      font-size: 2rem;
+
+      @include dark-theme {
+        background-color: var(--warning-900);
+        color: var(--warning-400);
+      }
+    }
+  }
+}
+
+// Close button con animación suave del header
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+  transition: all calc(var(--transition, 0.3s) * 0.67) cubic-bezier(0.2, 0, 0.2, 1);
+  overflow: hidden;
+
+  &:hover {
+    color: var(--primary-400);
+    background-color: var(--neutral-800);
+    border-radius: 0.5rem;
+    transform: scale(1.02); // Más sutil como el header
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// Form specific styles
+.form-content {
+  max-width: 500px;
+}
+
+.contact-form {
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    @include responsive($breakpoint-sm) {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+
+  .form-group {
+    flex: 1;
+    margin-bottom: 1rem;
+
+    &-half {
+      flex: 0 0 calc(50% - 0.5rem);
+
+      @include responsive($breakpoint-sm) {
+        flex: 1;
+      }
+    }
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--neutral-200);
+
+    &.required::after {
+      content: ' *';
+      color: var(--danger-500);
+    }
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--neutral-600);
+    border-radius: 0.5rem;
+    background-color: var(--background-100);
+    color: var(--neutral-200);
+    font-size: var(--font-size-paragraph);
+
+    &:focus {
+      outline: none;
+      border-color: var(--primary-500);
+      box-shadow: 0 0 0 2px rgba(var(--primary-500-rgb), 0.2);
+    }
+
+    &::placeholder {
+      color: var(--neutral-500);
+    }
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .terms-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: var(--font-size-small);
+    line-height: 1.5;
+
+    input[type="checkbox"] {
+      margin: 0;
+      width: auto;
+    }
+
+    .terms-link {
+      color: var(--primary-500);
+      text-decoration: underline;
+
+      &:hover {
+        color: var(--primary-400);
+      }
+    }
+  }
+
+  .form-submit {
+    margin-top: 1.5rem;
+  }
+}
+
+// Confirm modal specific styles
+.confirm-content {
+  max-width: 400px;
+  text-align: center;
+
+  .content__title {
+    color: var(--danger-600);
+
+    @include dark-theme {
+      color: var(--danger-400);
+    }
+  }
+}
+
+// Promo modal specific styles
+.promo-content {
+  max-width: 700px;
+
+  .background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.4));
+    border-radius: 1rem;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--neutral-900);
+    margin: 1rem;
+    border-radius: 0.5rem;
+
+    @include dark-theme {
+      background: rgba(0, 0, 0, 0.95);
+      color: var(--neutral-100);
+    }
+  }
+}
+
+// Fix for lfr-editable inside buttons
+.content-btn {
+  lfr-editable {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline !important;
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    text-decoration: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: none !important;
+      border: none !important;
+      color: inherit !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  }
+}
+
+// También aplicar a cualquier botón que contenga lfr-editable
+button {
+  lfr-editable {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline !important;
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    text-decoration: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: none !important;
+      border: none !important;
+      color: inherit !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  }
+}
+
+// Solo animaciones necesarias para el modal principal (como header)
+// No se necesitan animaciones de contenido interno
+
+// Contenido sin animaciones escalonadas (como el modal del header)
+.content {
+  // Sin animaciones internas - solo las del container principal
+}
+
+// Responsive adjustments
+@media screen and (max-width: 768px) {
+  .popup-content {
+    width: calc(100dvw - var(--spacing-2xl, 2rem));
+    height: calc(100dvh - var(--spacing-2xl, 2rem));
+    margin: var(--spacing-lg, 1.5rem);
+
+    // Override transform para móvil - mismo patrón
+    .popup-overlay.show.active & {
+      transform: translateY(0);
+    }
+  }
+
+  .popup-overlay {
+    align-items: flex-start;
+    padding: var(--spacing-md, 1rem);
+    padding-top: var(--spacing-lg, 1.5rem);
+  }
+
+  .content {
+    padding: 1.5rem;
+  }
+}

@@ -4,7 +4,10 @@
 4. Para las preguntas frecuentes, debe de poder seleccionar headers
 5. Para diferenciales, se debe poder seleccionar headers
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 <!-- Medidas de los recursos estáticos del siio web -->
 
 Sección de este programa es para ti:
@@ -25,5 +28,9 @@ Sección de Docentes:
 
 Sección de experiencia javeriana:
 
+<<<<<<< HEAD
 Cuando es tipo testimonio de texto: avatar 70px x 70px en formato webp
 Cuando es tipo imagen: 280px x 370px vertical en formato webp
+=======
+Cuando es tipo testimonio de texto: avatar 70px x 70px en formato webp Cuando es tipo imagen: 280px x 370px vertical en formato webp
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3

@@ -1,15 +1,23 @@
 export default function swiperCarousel() {
+<<<<<<< HEAD
 
   const loadSwiper = async () => {
 
     if (typeof window !== 'undefined' && !window.Swiper) {
 
+=======
+  const loadSwiper = async () => {
+    if (typeof window !== 'undefined' && !window.Swiper) {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       const script = document.createElement('script')
       script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'
       script.async = true
 
       script.onload = () => {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         setTimeout(() => {
           initializeSwiper()
         }, 100)
@@ -22,13 +30,17 @@ export default function swiperCarousel() {
       link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
       document.head.appendChild(link)
     } else if (window.Swiper) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       setTimeout(() => {
         initializeSwiper()
       }, 100)
     }
   }
 
+<<<<<<< HEAD
 
   const initializeSwiper = () => {
 
@@ -36,11 +48,20 @@ export default function swiperCarousel() {
     
     if (window.Swiper && swiperContainer) {
 
+=======
+  const initializeSwiper = () => {
+    const swiperContainer = document.querySelector('.subjects-swiper')
+
+    if (window.Swiper && swiperContainer) {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       if (swiperContainer.swiper) {
         swiperContainer.swiper.destroy(true, true)
       }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       const swiper = new window.Swiper('.subjects-swiper', {
         loop: true,
         spaceBetween: 30,
@@ -52,13 +73,20 @@ export default function swiperCarousel() {
           clickable: true,
           dynamicBullets: true
         },
+<<<<<<< HEAD
         
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
         navigation: {
           nextEl: '.subjects-next',
           prevEl: '.subjects-prev'
         },
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         // Responsive breakpoints
         breakpoints: {
           0: {
@@ -97,4 +125,8 @@ export default function swiperCarousel() {
   }
 
   loadSwiper()
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3

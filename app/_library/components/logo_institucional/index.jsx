@@ -21,8 +21,13 @@ const Logo = ({ className, orientation = 'horizontal' }) => {
 
   return (
     <figure className={logoClasses}>
+<<<<<<< HEAD
       <img src={currentUrls.light} alt={`Logo Javeriana ${orientation}`} className="logo-image light" />
       <img src={currentUrls.dark} alt={`Logo Javeriana ${orientation}`} className="logo-image dark" />
+=======
+      <img src={currentUrls.light} alt={`Logo Javeriana ${orientation}`} className='logo-image light' />
+      <img src={currentUrls.dark} alt={`Logo Javeriana ${orientation}`} className='logo-image dark' />
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     </figure>
   )
 }

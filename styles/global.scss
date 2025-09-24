@@ -19,6 +19,10 @@
 @use '@library/components/contain/icon/styles.scss' as *;
 @use '@library/components/logo_institucional/styles.scss' as *;
 @use '@library/components/liferay_dev_banner/styles.scss' as *;
+<<<<<<< HEAD
+=======
+@use '@library/components/cache-banner/styles.scss' as *;
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
 @include container;
 @include logo;
@@ -29,6 +33,10 @@
 @include icon;
 @include general-btn;
 @include liferay-dev-banner;
+<<<<<<< HEAD
+=======
+@include cache-banner;
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
 // ==========================================
 // ELEMENTOS BASE
@@ -49,6 +57,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+<<<<<<< HEAD
+=======
+  @include dark-theme {
+    background-color: var(--background-200);
+  }
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   @include responsive {
     background-attachment: scroll;
   }

@@ -8,10 +8,15 @@ export default () => {
     // Buscar el elemento
     const element = document.querySelector('.expert-carousel_wrapper')
     if (!element) {
+<<<<<<< HEAD
       console.warn('Elemento .expert-carousel_wrapper no encontrado')
       const fallbackElement = document.querySelector('.expert-swiper')
       if (!fallbackElement) {
         console.error('Ningún elemento swiper encontrado')
+=======
+      const fallbackElement = document.querySelector('.expert-swiper')
+      if (!fallbackElement) {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         return
       }
     }
@@ -21,7 +26,10 @@ export default () => {
     const totalSlides = slides.length
 
     if (!window.Swiper) {
+<<<<<<< HEAD
       console.error('Swiper no está disponible')
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return
     }
 
@@ -137,20 +145,35 @@ export default () => {
     const prevBtn = document.querySelector('.expert-carousel_prev') || document.querySelector('.expert-prev')
 
     if (!nextBtn || !prevBtn) {
+<<<<<<< HEAD
       console.warn('Botones de navegación no encontrados')
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return
     }
 
     // Validar que swiper y sus parámetros estén disponibles
     if (!swiper || !swiper.params) {
+<<<<<<< HEAD
       console.warn('Swiper no está inicializado correctamente')
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return
     }
 
     // Obtener los slides visibles actuales desde la instancia de swiper
+<<<<<<< HEAD
     const slidesPerView = swiper.params.slidesPerView === 'auto' ? 
       (swiper.slidesPerViewDynamic ? swiper.slidesPerViewDynamic() : 1) : 
       (swiper.params.slidesPerView || 1)
+=======
+    const slidesPerView =
+      swiper.params.slidesPerView === 'auto'
+        ? swiper.slidesPerViewDynamic
+          ? swiper.slidesPerViewDynamic()
+          : 1
+        : swiper.params.slidesPerView || 1
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 
     // Si todos los slides son visibles, ocultar navegación
     const needsNavigation = totalSlides > slidesPerView

@@ -100,7 +100,11 @@ const Icon = ({
 
   return (
     <span {...containerProps}>
+<<<<<<< HEAD
       <i className={`${iconClasses} ${icon}`} aria-hidden="true"></i>
+=======
+      <i className={`${iconClasses} ${icon}`} aria-hidden='true'></i>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     </span>
   )
 }

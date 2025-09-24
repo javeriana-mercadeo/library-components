@@ -17,13 +17,19 @@ const AccordionSystem = {
   },
 
   init() {
+<<<<<<< HEAD
     Logger.debug('Inicializando sistema de acordeón responsivo...')
 
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     // Verificar que existe el DOM
     const accordionItems = document.querySelectorAll(this.config.itemSelector)
 
     if (accordionItems.length === 0) {
+<<<<<<< HEAD
       Logger.warning('No se encontraron elementos del acordeón')
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return false
     }
 
@@ -36,7 +42,10 @@ const AccordionSystem = {
     // Configurar responsive listener
     this.setupResponsiveListener()
 
+<<<<<<< HEAD
     Logger.success(`Acordeón inicializado: ${accordionItems.length} items`)
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     return true
   },
 
@@ -52,7 +61,10 @@ const AccordionSystem = {
       const content = document.querySelector(targetId)
 
       if (!content) {
+<<<<<<< HEAD
         Logger.warning(`Contenido del acordeón no encontrado: ${targetId}`)
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         return
       }
 
@@ -87,7 +99,10 @@ const AccordionSystem = {
     const content = document.querySelector(targetId)
 
     if (!content) {
+<<<<<<< HEAD
       Logger.error(`Contenido no encontrado: ${targetId}`)
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       return
     }
 
@@ -211,8 +226,11 @@ const AccordionSystem = {
 // ===========================================
 const DiferencialesSystem = {
   init() {
+<<<<<<< HEAD
     Logger.debug('🚀 Inicializando sistema de diferenciales...')
 
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     const systems = {
       accordion: AccordionSystem.init()
     }
@@ -221,7 +239,10 @@ const DiferencialesSystem = {
       .filter(([_, isActive]) => isActive)
       .map(([name]) => name)
 
+<<<<<<< HEAD
     Logger.success(`✅ Diferenciales iniciado - ${activeSystems.length} sistemas activos: ${activeSystems.join(', ')}`)
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     return systems
   }
 }
@@ -229,6 +250,7 @@ const DiferencialesSystem = {
 // ===========================================
 // AUTO-INICIALIZACIÓN
 // ===========================================
+<<<<<<< HEAD
 export default () => {
   DOMHelpers.isReady(() => {
     DiferencialesSystem.init()
@@ -240,3 +262,36 @@ export default () => {
     window.DiferencialesSystem = DiferencialesSystem
   }
 }
+=======
+const initDiferencialesSystem = () => {
+  // Fallback simple sin dependencias externas
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      DiferencialesSystem.init()
+    })
+  } else {
+    DiferencialesSystem.init()
+  }
+
+  document.addEventListener('data_load-program', () => {
+    const context = document.getElementById('diferenciales')
+    const dataPujLocation = context.querySelector('[data-puj-simple-location]')
+    let currentContent = dataPujLocation.textContent.trim()
+    dataPujLocation.textContent = `${currentContent}?`
+  })
+}
+
+// Auto-ejecutar si no es un módulo Y está en el cliente
+if (typeof module === 'undefined' && typeof window !== 'undefined') {
+  initDiferencialesSystem()
+}
+
+// Exponer globalmente
+if (typeof window !== 'undefined') {
+  window.AccordionSystem = AccordionSystem
+  window.DiferencialesSystem = DiferencialesSystem
+  window.initDiferencialesSystem = initDiferencialesSystem
+}
+
+export default initDiferencialesSystem
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3

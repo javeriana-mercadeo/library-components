@@ -36,6 +36,16 @@ $mobile-breakpoint: 1024px;
   &__header {
     text-align: center;
     margin-bottom: var(--spacing-xl);
+<<<<<<< HEAD
+=======
+
+    span {
+      display: inline;
+      color: var(--neutral-200) !important;
+      font-size: var(--font-size-title) !important;
+      font-weight: var(--font-weight-bold) !important;
+    }
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   }
 
   &__title {

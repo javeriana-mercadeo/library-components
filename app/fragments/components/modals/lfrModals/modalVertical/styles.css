@@ -1,0 +1,258 @@
+.modalVertical-overlay {
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10001;
+  display: none;
+
+  /* Animación de entrada - estado inicial */
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* Estado activo - usando clase */
+.modalVertical-overlay.active {
+  opacity: 1;
+}
+
+.modalVertical-content {
+  box-sizing: border-box;
+  position: relative;
+  width: 579px;
+  height: 547px;
+  color: var(--neutral-100);
+  background-color: var(--neutral-1000);
+  border-radius: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+
+  /* Animación de entrada del modal */
+  transform: translateY(-16px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* Estado activo del contenido del modal */
+.modalVertical-overlay.active .modalVertical-content {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.modalVertical-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0;
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  z-index: 10002;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 0.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modalVertical-close-btn:hover {
+  color: var(--primary-400);
+  background-color: var(--neutral-1000);
+}
+
+.modalVertical-open-btn {
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+  width: auto;
+  color: var(--neutral-100);
+  background-color: var(--primary-500);
+  border-radius: 1rem;
+  margin: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+.modalVertical-open-btn:hover {
+  background-color: var(--primary-700);
+  transform: translateY(-2px);
+}
+
+.has-edit-mode-menu .modalVertical-overlay {
+  position: initial !important;
+  display: flex !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.has-edit-mode-menu .modalVertical-content {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.page-editor__editable {
+  margin: 0;
+}
+
+/* Modal Container - Layout Vertical */
+.modalVertical-container {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 200px 1fr;
+  height: 100%;
+  gap: 0;
+}
+
+/* Image Section - Primera fila */
+.modalVertical-image-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.modalVertical-img-wrapper {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.modalVertical-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Content Section - Segunda fila */
+.modalVertical-content-section {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 1.5rem 2rem 2rem 2rem;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+.modalVertical-title-wrapper {
+  margin: 0;
+}
+
+.modalVertical-title-text {
+  margin: 0 0 0.5rem 0;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-500);
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.modalVertical-data {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.modalVertical-text-wrapper {
+  margin: 0;
+  color: var(--neutral-100);
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+.modalVertical-paragraph {
+  margin: 0 0 0.75rem 0;
+}
+
+.modalVertical-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+/* Lista personalizada */
+.modalVertical-list {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.2rem;
+  list-style: none;
+}
+
+.modalVertical-list-item {
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--neutral-100);
+}
+
+.modalVertical-list-item:before {
+  content: "•";
+  color: var(--primary-500);
+  font-weight: bold;
+  position: absolute;
+  left: -1rem;
+}
+
+.modalVertical-list-item:last-child {
+  margin-bottom: 0;
+}
+
+.modalVertical-cta-btn {
+  align-self: stretch;
+  margin-top: auto;
+  min-height: 48px;
+}
+
+/* Responsive para pantallas pequeñas */
+@media only screen and (max-width: 630px) {
+  .modalVertical-content {
+    width: 95vw;
+    height: 90vh;
+    max-height: 600px;
+  }
+  
+  .modalVertical-container {
+    grid-template-rows: 180px 1fr;
+  }
+  
+  .modalVertical-content-section {
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+  }
+  
+  .modalVertical-title-text {
+    font-size: 1.1rem;
+  }
+  
+  .modalVertical-text-wrapper {
+    font-size: 0.85rem;
+  }
+  
+  .modalVertical-list-item {
+    font-size: 0.85rem;
+  }
+  
+  .modalVertical-close-btn {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .modalVertical-content {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+  
+  .modalVertical-container {
+    grid-template-rows: 150px 1fr;
+  }
+  
+  .modalVertical-content-section {
+    padding: 1rem 1rem 1.5rem 1rem;
+  }
+}

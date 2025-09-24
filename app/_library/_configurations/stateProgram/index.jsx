@@ -4,8 +4,13 @@ import './styles.scss'
 
 export default function StateProgram() {
   return (
+<<<<<<< HEAD
     <LiferayDevBanner icon="ph ph-info" variant="info">
       <span id="stateProgramLabel">Estado general del programa: MODO PRODUCCIÓN</span>
+=======
+    <LiferayDevBanner icon='ph ph-info' variant='info'>
+      <span id='stateProgramLabel'>Estado general del programa: MODO PRODUCCIÓN</span>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     </LiferayDevBanner>
   )
 }

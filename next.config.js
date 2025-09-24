@@ -45,6 +45,7 @@ const nextConfig = {
     return config
   },
 
+<<<<<<< HEAD
   // Disable source maps in development to improve performance
   productionBrowserSourceMaps: false,
 
@@ -53,6 +54,10 @@ const nextConfig = {
       fullUrl: false
     }
   }
+=======
+  // Configuración para evitar problemas con esbuild
+  serverExternalPackages: ['esbuild']
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
 }
 
 export default nextConfig

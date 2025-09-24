@@ -18,30 +18,70 @@
       font-size: var(--font-size-xs);
       margin-bottom: var(--spacing-xs);
       line-height: 1;
+<<<<<<< HEAD
+=======
+
+      .lead {
+        font-size: var(--font-size-xs);
+        line-height: 1;
+      }
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     }
 
     &.paragraph-sm {
       font-size: var(--font-size-small);
       margin-bottom: var(--spacing-sm);
       line-height: 1.2;
+<<<<<<< HEAD
+=======
+
+      .lead {
+        font-size: var(--font-size-small);
+        line-height: 1.2;
+      }
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     }
 
     &.paragraph-md {
       font-size: var(--font-size-paragraph);
       margin-bottom: var(--spacing-md);
       line-height: 1.5;
+<<<<<<< HEAD
+=======
+
+      .lead {
+        font-size: var(--font-size-paragraph);
+        line-height: 1.5;
+      }
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     }
 
     &.paragraph-lg {
       font-size: var(--font-size-caption);
       margin-bottom: var(--spacing-md);
       line-height: 1.6;
+<<<<<<< HEAD
+=======
+
+      .lead {
+        font-size: var(--font-size-caption);
+        line-height: 1.6;
+      }
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     }
 
     &.paragraph-xl {
       font-size: var(--font-size-subtitle);
       margin-bottom: var(--spacing-lg);
       line-height: 1.8;
+<<<<<<< HEAD
+=======
+
+      .lead {
+        font-size: var(--font-size-subtitle);
+        line-height: 1.8;
+      }
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     }
 
     // ==========================================
@@ -94,6 +134,17 @@
     // ==========================================
     // ELEMENTOS INTERNOS COMUNES
     // ==========================================
+<<<<<<< HEAD
+=======
+
+    @include liferay-edit-mode {
+      .lead {
+        color: var(--primary);
+        font-weight: bold;
+      }
+    }
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     strong,
     b {
       font-weight: var(--font-weight-bold);

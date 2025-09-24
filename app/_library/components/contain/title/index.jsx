@@ -50,7 +50,11 @@ const Title = ({
   const finalWeight = validWeights.includes(weight) ? weight : 'medium'
 
   // Validar jerarquías disponibles
+<<<<<<< HEAD
   const validHierarchies = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+=======
+  const validHierarchies = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span']
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   const finalHierarchy = validHierarchies.includes(hierarchy) ? hierarchy : 'h2'
 
   // Construcción de clases CSS usando template más limpio

@@ -15,8 +15,13 @@
   }
 
   &_container {
+<<<<<<< HEAD
     display: grid;
     margin-top: rem(86px);
+=======
+    position: relative;
+    display: grid;
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     padding-top: var(--spacing-2xl);
     padding-bottom: var(--spacing-md);
 
@@ -34,14 +39,18 @@
       'dates'
       'enrollment';
 
+<<<<<<< HEAD
     @include dark-theme {
       margin-top: rem(76px);
     }
 
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     @include liferay-edit-mode {
       margin-top: rem(0px);
     }
 
+<<<<<<< HEAD
     @include only-dev-mode {
       margin-top: rem(0px);
     }
@@ -49,6 +58,11 @@
     @include responsive {
       gap: var(--spacing-xs);
       grid-template-columns: 1fr 1fr;
+=======
+    @include responsive {
+      gap: var(--spacing-xs);
+      grid-template-columns: 1fr min-content;
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       grid-template-areas:
         'faculty video'
         'title video'
@@ -71,7 +85,12 @@
     }
 
     @include responsive($breakpoint-xl) {
+<<<<<<< HEAD
       grid-template-columns: 1.2fr 0.9fr;
+=======
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto auto auto auto auto auto;
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       grid-template-areas:
         'faculty video'
         'title video'
@@ -94,6 +113,10 @@
   }
 
   &_faculty {
+<<<<<<< HEAD
+=======
+    color: var(--primary);
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     grid-area: faculty;
   }
 
@@ -263,6 +286,7 @@
   }
 
   // ==========================================
+<<<<<<< HEAD
   // VIDEO/MEDIA CONTAINER - ASPECT RATIO EXACTO
   // ==========================================
   &_media {
@@ -304,11 +328,37 @@
 
     @include responsive($breakpoint-lg) {
       width: clamp(400px, 38vw, 520px);
+=======
+  // VIDEO/MEDIA CONTAINER - PATRÓN EXPERIENCIA MEJORADO
+  // ==========================================
+
+  @include liferay-edit-mode {
+    &_media {
+      max-width: 300px;
+    }
+  }
+
+  &_media {
+    grid-area: video;
+    justify-self: center;
+    margin: auto;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+
+    @include responsive {
+      justify-self: center;
+      align-self: stretch; // Permitir que se estire con el contenido
+      margin-top: 0;
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     }
 
     @include responsive($breakpoint-xl) {
       justify-self: end;
     }
+<<<<<<< HEAD
 
     // Estados de carga
     &:not(.responsive-video-ready) {
@@ -330,12 +380,64 @@
 
     // Overlay sutil
     &::after {
+=======
+  }
+
+  &_video-card {
+    width: clamp(280px, 85vw, 350px);
+    max-width: 428px;
+    background: transparent; // Dejar que el contenedor interno maneje el fondo
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    position: relative;
+
+    @include responsive {
+      width: clamp(300px, 40vw, 520px);
+      max-width: 520px;
+      flex: 1; // Permitir que se estire en altura
+      display: flex;
+      flex-direction: column;
+    }
+
+    @include responsive($breakpoint-lg) {
+      width: clamp(400px, 38vw, 520px);
+    }
+  }
+
+  &_video-container {
+    position: relative;
+    width: 100%;
+    background: transparent;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    min-height: 280px;
+
+    @include responsive {
+      aspect-ratio: 612 / 880;
+      width: clamp(300px, 35vw, 450px);
+      height: auto;
+      margin: auto;
+      min-height: auto;
+    }
+
+    // Fondo gris solo durante la carga
+    &:not(.video-loaded) {
+      background: var(--neutral-900);
+    }
+
+    &:not(.video-loaded)::before {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
+<<<<<<< HEAD
       background: rgba(0, 0, 0, 0.1);
       pointer-events: none;
       z-index: 1;
@@ -365,12 +467,82 @@
   // IFRAME DEL VIDEO - MANTIENE RELACIÓN EXACTA
   // ==========================================
   &__iframe {
+=======
+      width: rem(40px);
+      height: rem(40px);
+      margin: auto;
+      border: rem(4px) solid var(--neutral-600);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: videoLoading 1s linear infinite;
+      z-index: 3;
+    }
+
+    &.video-loaded::before {
+      opacity: 0;
+      animation: none;
+    }
+  }
+
+  // Video overlay para fallback inmediato
+  &__video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: var(--border-radius-lg);
+    transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 3;
+
+    &--fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  // Loader simple con CSS puro
+  &__video-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid var(--color-neutral-300);
+      border-top: 2px solid var(--color-primary-500);
+      border-radius: 50%;
+      animation: video-loader-spin 1s linear infinite;
+    }
+
+    &--hidden {
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+    }
+  }
+
+  &__video {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     border: none;
+<<<<<<< HEAD
     object-fit: cover; // Mantiene proporciones del video original
     object-position: center; // Centra el contenido
     will-change: auto;
@@ -385,6 +557,16 @@
     }
 
     // MODIFICADOR MOBILE
+=======
+    border-radius: var(--border-radius-lg);
+    object-fit: cover;
+    object-position: center;
+    z-index: 2;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    background-color: #000;
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     &--mobile {
       display: block;
 
@@ -393,14 +575,20 @@
       }
     }
 
+<<<<<<< HEAD
     // MODIFICADOR DESKTOP
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     &--desktop {
       display: none;
 
       @include responsive {
         display: block;
+<<<<<<< HEAD
         object-fit: cover;
         object-position: center;
+=======
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       }
     }
   }
@@ -442,6 +630,7 @@
 }
 
 // ==========================================
+<<<<<<< HEAD
 // ESTADOS DE CARGA Y OPTIMIZACIONES
 // ==========================================
 .program-data {
@@ -454,10 +643,16 @@
     }
   }
 
+=======
+// ESTADOS DE CARGA OPTIMIZADOS
+// ==========================================
+.program-data {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   // Estado completamente cargado
   &.loaded {
     .program-data_media {
       opacity: 1;
+<<<<<<< HEAD
       transition: opacity 0.5s ease-in-out;
     }
   }
@@ -474,11 +669,15 @@
   &[data-connection='slow'] {
     .program-data__iframe {
       pointer-events: auto;
+=======
+      transition: opacity 0.3s ease-in-out;
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
     }
   }
 
   // Optimizaciones para dispositivos con poca memoria
   &[data-performance='low'] {
+<<<<<<< HEAD
     .program-data_media {
       &::after {
         transition: none;
@@ -486,6 +685,9 @@
     }
 
     .program-data__iframe {
+=======
+    .program-data__video {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       transition: opacity 0.2s ease;
     }
   }
@@ -495,6 +697,7 @@
 // SOPORTE PARA NAVEGADORES SIN ASPECT-RATIO
 // ==========================================
 @supports not (aspect-ratio: 1/1) {
+<<<<<<< HEAD
   .program-data_media {
     // Fallback usando padding-bottom
 
@@ -517,6 +720,24 @@
     }
 
     .program-data__iframe {
+=======
+  .program-data_video-container {
+    position: relative;
+
+    @media (max-width: 767px) {
+      // Móvil: 1:1 sin pseudo-elementos
+      height: 0;
+      padding-bottom: 100%;
+    }
+
+    @media (min-width: 768px) {
+      // Desktop: 612:880 ≈ 69.5%
+      height: 0;
+      padding-bottom: 69.5%;
+    }
+
+    .program-data__video {
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
       position: absolute;
       top: 0;
       left: 0;
@@ -525,3 +746,18 @@
     }
   }
 }
+<<<<<<< HEAD
+=======
+
+// ==========================================
+// ANIMACIONES PARA VIDEO
+// ==========================================
+@keyframes video-loader-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3

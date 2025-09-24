@@ -7,10 +7,17 @@ import MultimediaRedes from './sections/multimediaRedes'
 import DobleTitulacionUno from './sections/dobleTitulacionUno'
 import DobleTitulacionDos from './sections/dobleTitulacionDos'
 import Herramientas from './sections/herramientas'
+<<<<<<< HEAD
 import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 
 export default function SeccionesOpcionales() {
   const basePath = '/institutional/pgProjects'
+=======
+
+export default function SeccionesOpcionales() {
+  const basePath = '/institutional/pgProjects'
+
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   return (
     <>
       <Proyectos />

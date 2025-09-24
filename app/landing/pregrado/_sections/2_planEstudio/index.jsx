@@ -153,20 +153,32 @@ const PlanEstudio = () => {
     const { year, semester, credits, subjects } = semesterData
 
     return (
+<<<<<<< HEAD
       <div key={index} className={`${baseClass}_slide swiper-slide`} role="listitem">
+=======
+      <div key={index} className={`${baseClass}_slide swiper-slide`} role='listitem'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
         <div className={`${baseClass}_card`}>
           <div className={`${baseClass}_card-header`}>
             <span className={`${baseClass}_badge ${baseClass}_badge`}>{year}</span>
           </div>
 
+<<<<<<< HEAD
           <Title hierarchy="h2" className={`${baseClass}_semester-title`} size="lg" weight="bold" isEditable={false}>
+=======
+          <Title hierarchy='span' className={`${baseClass}_semester-title`} size='lg' weight='bold' isEditable={false}>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
             {semester}
           </Title>
 
           <ul className={`${baseClass}_subjects`}>
             {subjects.map((subject, subjectIndex) => (
               <li key={`${index}-subject-${subjectIndex}`}>
+<<<<<<< HEAD
                 <i className="ph ph-check" aria-hidden="true"></i>
+=======
+                <i className='ph ph-check' aria-hidden='true'></i>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
                 {subject}
               </li>
             ))}
@@ -183,31 +195,51 @@ const PlanEstudio = () => {
   return (
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
+<<<<<<< HEAD
         <Title weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
           Materias por Semestre
         </Title>
 
         <Paragraph id={`${elementName}-description`} align="center">
+=======
+        <Title weight='semibold' size='2xl' align='center' id={`${elementName}-title`}>
+          Materias por Semestre
+        </Title>
+
+        <Paragraph id={`${elementName}-description`} align='center'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
           El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
         </Paragraph>
 
         <Btn
           id={`${elementName}-btn`}
+<<<<<<< HEAD
           href="#"
           target="_blank"
           variant="bordered"
           endIcon={<i className="ph ph-download" aria-hidden="true"></i>}>
+=======
+          href='#'
+          target='_blank'
+          variant='bordered'
+          endIcon={<i className='ph ph-download' aria-hidden='true'></i>}>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
           Descargar Plan de estudios
         </Btn>
 
         <div className={`${baseClass}_carousel swiper`}>
           <div className={`${baseClass}_wrapper subjects-swiper`}>
+<<<<<<< HEAD
             <div className={`${baseClass}_slides swiper-wrapper`} role="list">
+=======
+            <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
               {/* ✅ GENERAR CARDS DINÁMICAMENTE */}
               {semesters.map((semesterData, index) => renderSemesterCard(semesterData, index))}
             </div>
 
             {/* Paginación */}
+<<<<<<< HEAD
             <div className={`swiper-pagination ${baseClass}_pagination`} role="tablist" aria-label="Control de páginas del carrusel"></div>
 
             {/* Botones de navegación */}
@@ -216,6 +248,16 @@ const PlanEstudio = () => {
             </button>
             <button className={`swiper-slide-button ${baseClass}_next`} aria-label="Ir al siguiente slide" type="button">
               <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+=======
+            <div className={`swiper-pagination ${baseClass}_pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
+
+            {/* Botones de navegación */}
+            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label='Ir al slide anterior' type='button'>
+              <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
+            </button>
+            <button className={`swiper-slide-button ${baseClass}_next`} aria-label='Ir al siguiente slide' type='button'>
+              <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
+>>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
             </button>
           </div>
         </div>
