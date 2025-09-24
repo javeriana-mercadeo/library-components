@@ -5,6 +5,17 @@ import parserBabel from 'prettier/plugins/babel'
 import * as prettierPluginEstree from 'prettier/plugins/estree'
 
 const prettierFormat = async (code, type) => {
+  // Para JSON, usar JSON.stringify nativo ya que es más confiable
+  if (type === 'json') {
+    try {
+      const parsed = JSON.parse(code)
+      return JSON.stringify(parsed, null, 2)
+    } catch (error) {
+      // Si no se puede parsear como JSON, devolver el código original
+      return code
+    }
+  }
+
   const parsers = {
     html: [parserHtml],
     css: [parserPostcss],

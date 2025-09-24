@@ -591,7 +591,7 @@ const ModalInvestigacion = {
     // ==========================================
     console.log('[MODAL DEBUG] investigationData:', investigationData)
     console.log('[MODAL DEBUG] additionalImages:', investigationData?.additionalImages)
-    
+
     if (investigationData?.additionalImages?.length > 0) {
       console.log('[MODAL DEBUG] Procesando', investigationData.additionalImages.length, 'imágenes adicionales')
       investigationData.additionalImages.forEach((imgData, index) => {

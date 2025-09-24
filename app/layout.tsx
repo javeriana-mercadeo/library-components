@@ -1,13 +1,12 @@
 import '@/styles/vendors/_tailwind.css'
 import '@/styles/global.scss'
-
 //import '@/styles/liferayStyles.css'
 
 import { Metadata, Viewport } from 'next'
 
 import ThemeSwitch from '../components/themeSwitch/theme-switch'
-import BtnReturn from '../components/btnReturn/btnReturn'
 import { ClientSideUtils } from '../components/clientSideUtils/ClientSideUtils'
+import BtnReturn from '../components/btnReturn/btnReturn'
 
 import { Providers } from './providers'
 
@@ -37,15 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* <!-- Flowbite CSS --> */}
         <link href='https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css' rel='stylesheet' />
-        <link href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' rel='stylesheet' />
-        <link href='http://127.0.0.1:5500/build/form-modules-style.css' rel='stylesheet' />
-
-        <link href='https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css' rel='stylesheet' type='text/css' />
-        <link href='https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css' rel='stylesheet' type='text/css' />
-
-        {/* <link rel="stylesheet" href="https://www.javeriana.edu.co/recursosdb/d/info-prg/form-modules-style" /> */}
-        {/* Utilidades globales - DEBE CARGARSE PRIMERO */}
-        <title>Librería de componentes</title>
+        {/* <ClientSideUtils /> */}
       </head>
       <body suppressHydrationWarning>
         <Providers themeProps={{ attribute: 'data-theme' }}>
@@ -68,21 +59,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }
         </script> */}
 
-        {/* <!-- Swiper JS --> */}
-        <script src='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js' />
+        {/* <!-- Iconos Phosphor --> */}
+        <script src='https://unpkg.com/@phosphor-icons/web@2.1.1'></script>
 
         {/* <!-- Tailwind css --> */}
-        {/* <script src="https://www.javeriana.edu.co/planestudio/pages/libraries/tailwindcss/tailwindcss.js"></script> */}
+        {/* <Script src="https://www.javeriana.edu.co/planestudio/pages/libraries/tailwindcss/tailwindcss.js" strategy="afterInteractive" /> */}
 
         {/* <!-- Flowbite --> */}
-        <script src='https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js' />
+        <script src='https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js'></script>
 
         {/* <!-- DataTables --> */}
-        <script src='https://www.javeriana.edu.co/planestudio/pages/libraries/simple_datatables/simple-datatables.js' />
-
-        {/* Form-modules */}
-        {/* <script src="https://www.javeriana.edu.co/recursosdb/d/info-prg/form-modules-script"></script> */}
-        <script src='http://127.0.0.1:5500/build/form-modules-script.js' />
+        <script src='https://www.javeriana.edu.co/planestudio/pages/libraries/simple_datatables/simple-datatables.js'></script>
       </body>
     </html>
   )

@@ -345,6 +345,182 @@ const StorageUtils = {
         return keys.length
       }
     }
+  },
+
+  // ===========================================
+  // MANEJO DE COOKIES
+  // ===========================================
+
+  getCookieSize() {
+    try {
+      const cookieString = document.cookie
+      return new Blob([cookieString]).size
+    } catch (error) {
+      Logger.error('Error calculando tamaño de cookies:', error)
+      return 0
+    }
+  },
+
+  cleanLargeCookies(options = {}) {
+    const {
+      maxSize = 8192, // 8KB por defecto
+      problematicCookies = ['NID', 'SID', 'SSID', 'SIDCC', 'SAPISID'],
+      domains = ['.google.com', '.google.com.co']
+    } = options
+
+    try {
+      const cookieSize = this.getCookieSize()
+
+      if (cookieSize <= maxSize) {
+        Logger.debug(`Tamaño de cookies OK: ${cookieSize} bytes`)
+        return false
+      }
+
+      Logger.warning(`Cookies demasiado grandes: ${cookieSize} bytes. Limpiando...`)
+
+      let cleanedCount = 0
+      problematicCookies.forEach(cookieName => {
+        domains.forEach(domain => {
+          try {
+            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}`
+            cleanedCount++
+          } catch (error) {
+            Logger.debug(`Error limpiando cookie ${cookieName} para ${domain}:`, error)
+          }
+        })
+      })
+
+      const newSize = this.getCookieSize()
+      Logger.info(`Cookies limpiadas: ${cleanedCount} eliminadas. Tamaño: ${cookieSize} → ${newSize} bytes`)
+
+      return {
+        cleaned: true,
+        before: cookieSize,
+        after: newSize,
+        cookiesRemoved: cleanedCount
+      }
+    } catch (error) {
+      Logger.error('Error en limpieza de cookies:', error)
+      return false
+    }
+  },
+
+  setCookie(name, value, options = {}) {
+    const { expires = null, maxAge = null, domain = null, path = '/', secure = false, sameSite = 'Lax' } = options
+
+    let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`
+
+    if (expires) {
+      cookieString += `; expires=${expires.toUTCString()}`
+    }
+
+    if (maxAge !== null) {
+      cookieString += `; max-age=${maxAge}`
+    }
+
+    if (domain) {
+      cookieString += `; domain=${domain}`
+    }
+
+    cookieString += `; path=${path}`
+
+    if (secure) {
+      cookieString += '; secure'
+    }
+
+    cookieString += `; samesite=${sameSite}`
+
+    try {
+      document.cookie = cookieString
+      Logger.debug(`Cookie establecida: ${name}`)
+      return true
+    } catch (error) {
+      Logger.error(`Error estableciendo cookie ${name}:`, error)
+      return false
+    }
+  },
+
+  getCookie(name) {
+    try {
+      const nameEQ = encodeURIComponent(name) + '='
+      const ca = document.cookie.split(';')
+
+      for (let c of ca) {
+        c = c.trim()
+        if (c.indexOf(nameEQ) === 0) {
+          return decodeURIComponent(c.substring(nameEQ.length))
+        }
+      }
+
+      return null
+    } catch (error) {
+      Logger.error(`Error obteniendo cookie ${name}:`, error)
+      return null
+    }
+  },
+
+  removeCookie(name, options = {}) {
+    const { domain = null, path = '/' } = options
+
+    try {
+      let cookieString = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}`
+
+      if (domain) {
+        cookieString += `; domain=${domain}`
+      }
+
+      document.cookie = cookieString
+      Logger.debug(`Cookie removida: ${name}`)
+      return true
+    } catch (error) {
+      Logger.error(`Error removiendo cookie ${name}:`, error)
+      return false
+    }
+  },
+
+  getAllCookies() {
+    try {
+      const cookies = {}
+      const ca = document.cookie.split(';')
+
+      for (let c of ca) {
+        c = c.trim()
+        if (c) {
+          const [name, ...rest] = c.split('=')
+          const value = rest.join('=')
+          cookies[decodeURIComponent(name)] = decodeURIComponent(value)
+        }
+      }
+
+      return cookies
+    } catch (error) {
+      Logger.error('Error obteniendo todas las cookies:', error)
+      return {}
+    }
+  },
+
+  clearAllCookies(options = {}) {
+    const { domains = [window.location.hostname, `.${window.location.hostname}`], paths = ['/'] } = options
+
+    try {
+      const cookies = this.getAllCookies()
+      let clearedCount = 0
+
+      Object.keys(cookies).forEach(name => {
+        domains.forEach(domain => {
+          paths.forEach(path => {
+            this.removeCookie(name, { domain, path })
+            clearedCount++
+          })
+        })
+      })
+
+      Logger.info(`${clearedCount} cookies limpiadas`)
+      return clearedCount
+    } catch (error) {
+      Logger.error('Error limpiando todas las cookies:', error)
+      return 0
+    }
   }
 }
 

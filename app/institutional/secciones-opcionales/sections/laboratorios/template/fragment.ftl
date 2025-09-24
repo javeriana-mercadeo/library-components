@@ -17,7 +17,3 @@
           <lfr-widget-web-content id="widget1"></lfr-widget-web-content>
   </div>
 </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> 72bbb717d91b2eaa550a0412e9c178f56e6c66db

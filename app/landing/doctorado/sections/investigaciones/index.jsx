@@ -119,7 +119,9 @@ const Investigaciones = () => {
             Investigaciones
           </Title>
           <div className={`${baseClass}_empty-state`}>
-            <Paragraph isEditable={false} align='center'>No hay investigaciones disponibles en este momento.</Paragraph>
+            <Paragraph isEditable={false} align='center'>
+              No hay investigaciones disponibles en este momento.
+            </Paragraph>
           </div>
         </Container>
       </section>
@@ -168,7 +170,7 @@ const Investigaciones = () => {
           role='button'
           tabIndex={0}
           data-id={id}
-          data-video-embed-id="Y2KdypoCAYg"
+          data-video-embed-id='Y2KdypoCAYg'
           onClick={() => handleCardClick(id)}
           onKeyDown={e => handleCardKeyDown(e, id)}
           aria-label={`Ver detalles de la investigación: ${title}`}>
@@ -206,10 +208,10 @@ const Investigaciones = () => {
     const { id, year, title, description, image, alt } = investigacion
 
     // Configurar video embed ID específico para cada investigación
-    const getVideoEmbedId = (investigacionId) => {
+    const getVideoEmbedId = investigacionId => {
       const videoEmbedIds = {
         1: 'Y2KdypoCAYg', // Investigación principal
-        3: 'pBbK6Tf5reE'  // Métodos Cualitativos Avanzados
+        3: 'pBbK6Tf5reE' // Métodos Cualitativos Avanzados
       }
       return videoEmbedIds[investigacionId] || null
     }
@@ -261,9 +263,7 @@ const Investigaciones = () => {
   })
 
   return (
-    <section
-      className={`${baseClass}_container`}
-      data-component-id={elementName}>
+    <section className={`${baseClass}_container`} data-component-id={elementName}>
       <Container id={elementName} className={baseClass} data-investigations-data={JSON.stringify(investigacionesWithoutVideo)}>
         <Title weight='semibold' size='2xl' align='center' id={`${elementName}-title`} className={`${baseClass}_main-title`}>
           Investigaciones

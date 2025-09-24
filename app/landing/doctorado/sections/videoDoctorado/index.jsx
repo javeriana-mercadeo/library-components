@@ -34,81 +34,79 @@ const VideoDoctorado = () => {
   }
 
   return (
-    <section className="video-doctorado">
-      <div className="video-doctorado__background">
-        <div className="video-doctorado__overlay"></div>
+    <section className='video-doctorado'>
+      <div className='video-doctorado__background'>
+        <div className='video-doctorado__overlay'></div>
       </div>
 
-      <div className="video-doctorado__container">
-        <div className="video-doctorado__content">
+      <div className='video-doctorado__container'>
+        <div className='video-doctorado__content'>
           <Container>
             {' '}
-            <div className="video-doctorado__header">
-              <h1 className="video-doctorado__title">{config.title}</h1>
-              <p className="video-doctorado__description">{config.description}</p>
+            <div className='video-doctorado__header'>
+              <h1 className='video-doctorado__title'>{config.title}</h1>
+              <p className='video-doctorado__description'>{config.description}</p>
             </div>
           </Container>
 
-            <div className="video-doctorado__info">
-              <div className="video-doctorado__info-grid">
-                <div className="info-item">
-                  <div className="info-item__icon">
-                    <i className="ph ph-graduation-cap"></i>
-                  </div>
-                  <div className="info-item__content">
-                    <span className="info-item__label">Título</span>
-                    <span className="info-item__value">{config.degree}</span>
-                    <span className="info-item__code">{config.sniesCode}</span>
-                  </div>
+          <div className='video-doctorado__info'>
+            <div className='video-doctorado__info-grid'>
+              <div className='info-item'>
+                <div className='info-item__icon'>
+                  <i className='ph ph-graduation-cap'></i>
                 </div>
-
-                <div className="info-item">
-                  <div className="info-item__icon">
-                    <i className="ph ph-student"></i>
-                   
-                  </div>
-                  <div className="info-item__content">
-                    <span className="info-item__label">Nivel Académico</span>
-                    <span className="info-item__value">{config.academicLevel}</span>
-                  </div>
-                </div>
-
-                <div className="info-item">
-                  <div className="info-item__icon">
-                   <i className="ph ph-calendar-dots"></i>
-                  </div>
-                  <div className="info-item__content">
-                    <span className="info-item__label">Duración & Modalidad</span>
-                    <span className="info-item__value">{config.duration}</span>
-                    <span className="info-item__modality">{config.modality}</span>
-                  </div>
-                </div>
-
-                <div className="info-item">
-                  <div className="info-item__icon">
-                    <i className="ph ph-clock"></i>
-                  </div>
-                  <div className="info-item__content">
-                    <span className="info-item__label">Modalidad</span>
-                    <span className="info-item__value">{config.timeAvailability}</span>
-                  </div>
-                </div>
-
-                <div className="info-item">
-                  <div className="info-item__icon">
-                    <i className="ph ph-piggy-bank"></i>
-                  </div>
-                  <div className="info-item__content">
-                    <span className="info-item__label">Inversión Semestre</span>
-                    <span className="info-item__value">{config.semesterInvestment}</span>
-                    <span className="info-item__value">{config.inscription}</span>
-                  </div>
+                <div className='info-item__content'>
+                  <span className='info-item__label'>Título</span>
+                  <span className='info-item__value'>{config.degree}</span>
+                  <span className='info-item__code'>{config.sniesCode}</span>
                 </div>
               </div>
 
-              <p className="video-doctorado__footnote">{config.footnote}</p>
+              <div className='info-item'>
+                <div className='info-item__icon'>
+                  <i className='ph ph-student'></i>
+                </div>
+                <div className='info-item__content'>
+                  <span className='info-item__label'>Nivel Académico</span>
+                  <span className='info-item__value'>{config.academicLevel}</span>
+                </div>
+              </div>
+
+              <div className='info-item'>
+                <div className='info-item__icon'>
+                  <i className='ph ph-calendar-dots'></i>
+                </div>
+                <div className='info-item__content'>
+                  <span className='info-item__label'>Duración & Modalidad</span>
+                  <span className='info-item__value'>{config.duration}</span>
+                  <span className='info-item__modality'>{config.modality}</span>
+                </div>
+              </div>
+
+              <div className='info-item'>
+                <div className='info-item__icon'>
+                  <i className='ph ph-clock'></i>
+                </div>
+                <div className='info-item__content'>
+                  <span className='info-item__label'>Modalidad</span>
+                  <span className='info-item__value'>{config.timeAvailability}</span>
+                </div>
+              </div>
+
+              <div className='info-item'>
+                <div className='info-item__icon'>
+                  <i className='ph ph-piggy-bank'></i>
+                </div>
+                <div className='info-item__content'>
+                  <span className='info-item__label'>Inversión Semestre</span>
+                  <span className='info-item__value'>{config.semesterInvestment}</span>
+                  <span className='info-item__value'>{config.inscription}</span>
+                </div>
+              </div>
             </div>
-      
+
+            <p className='video-doctorado__footnote'>{config.footnote}</p>
+          </div>
         </div>
       </div>
     </section>

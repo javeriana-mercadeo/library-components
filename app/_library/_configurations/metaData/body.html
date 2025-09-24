@@ -1,0 +1,29 @@
+<!--
+===========================================
+    META DATA - BODY OPTIMIZADO
+    Scripts de librerías organizados
+    Version: 2.1.0 - Optimizado 2025-09-23
+=========================================== -->
+
+<!-- OPTIMIZACIÓN DE CSS LIFERAY -->
+<script>
+  const isEditMode = document.body.classList.contains('has-edit-mode-menu')
+  const isSignedIn = document.body.classList.contains('signed-in')
+
+  if (!isEditMode && !isSignedIn) {
+    document.querySelectorAll('link.lfr-css-file').forEach(link => link.remove())
+  }
+</script>
+
+<!-- LIBRERÍAS JAVASCRIPT -->
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Iconos Phosphor -->
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+<!-- Tailwind CSS -->
+<script src="https://www.javeriana.edu.co/planestudio/pages/libraries/tailwindcss/tailwindcss.js"></script>
+
+<!-- Flowbite -->
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>

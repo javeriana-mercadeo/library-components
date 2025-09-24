@@ -4,6 +4,77 @@ import path from 'path'
 import { NextResponse } from 'next/server'
 import * as sass from 'sass'
 
+// 📌 NOMBRES DE ARCHIVOS COMPILADOS
+const COMPILED_CSS_FILE = 'styles.css'
+const COMPILED_JS_FILE = 'script.js'
+const COMPILATION_INFO_FILE = 'compilation-info.json'
+
+// 📌 FUNCIÓN PARA CREAR CARPETA BUILD Y GUARDAR ARCHIVOS COMPILADOS
+async function saveCompiledFiles(componentPath: string, css: string, js: string): Promise<void> {
+  try {
+    // Verificar si hay contenido para guardar
+    const hasCSS = css && css.trim().length > 0
+    const hasJS = js && js.trim().length > 0
+
+    if (!hasCSS && !hasJS) {
+      return
+    }
+
+    const buildPath = path.join(componentPath, 'build')
+
+    // Creating build folder
+
+    // Crear carpeta build si no existe
+    await fs.mkdir(buildPath, { recursive: true })
+
+    // Build folder created
+
+    const cssPath = path.join(buildPath, COMPILED_CSS_FILE)
+    const jsPath = path.join(buildPath, COMPILED_JS_FILE)
+    const infoPath = path.join(buildPath, COMPILATION_INFO_FILE)
+
+    // Writing files
+
+    // Información de compilación
+    const compilationInfo = {
+      timestamp: new Date().toISOString(),
+      cssSize: hasCSS ? css.length : 0,
+      jsSize: hasJS ? js.length : 0,
+      version: '1.0.0',
+      method: 'file-route-manual',
+      files: {
+        css: hasCSS,
+        js: hasJS
+      }
+    }
+
+    // Preparar array de promesas solo para archivos con contenido
+    const writePromises = []
+
+    if (hasCSS) {
+      writePromises.push(fs.writeFile(cssPath, css, 'utf8'))
+      // CSS file
+    }
+
+    if (hasJS) {
+      writePromises.push(fs.writeFile(jsPath, js, 'utf8'))
+      // JS file
+    }
+
+    // Siempre guardar info si hay al menos un archivo
+    writePromises.push(fs.writeFile(infoPath, JSON.stringify(compilationInfo, null, 2), 'utf8'))
+    // Info file
+
+    // Guardar archivos en paralelo
+    await Promise.all(writePromises)
+
+    // Files saved successfully
+  } catch (error) {
+    console.error('Error saving compiled files:', error)
+    // No lanzar error, continuar con la respuesta
+  }
+}
+
 // Función para resolver imports de JavaScript recursivamente
 async function resolveJavaScriptImports(
   filePath: string,
@@ -110,7 +181,7 @@ export async function GET(req: Request) {
   const basePath = path.join(process.cwd(), 'app')
   const componentPath = path.join(basePath, safePath)
 
-  console.log(componentPath)
+  // Component path determined
 
   if (!componentPath.startsWith(basePath)) {
     return new NextResponse('Acceso denegado', { status: 403 })
@@ -119,17 +190,16 @@ export async function GET(req: Request) {
   try {
     // 📌 Definir rutas de archivos
     const infoPath = path.join(componentPath, 'info.json')
-    const scssPath1 = path.join(componentPath, 'styles.scss')
+    const configPath = path.join(componentPath, 'configuration.json')
+    const scssPath = path.join(componentPath, 'styles.scss')
     const jsPath = path.join(componentPath, 'script.js')
 
-    // 📌 Leer archivos de forma asíncrona - probar ambos nombres de SCSS
-    const [infoContent, scssContent1] = await Promise.all([
+    // 📌 Leer archivos de forma asíncrona
+    const [infoContent, configContent, scssContent] = await Promise.all([
       fs.readFile(infoPath, 'utf8').catch(() => null),
-      fs.readFile(scssPath1, 'utf8').catch(() => null)
+      fs.readFile(configPath, 'utf8').catch(() => null),
+      fs.readFile(scssPath, 'utf8').catch(() => null)
     ])
-
-    // Usar el archivo SCSS que exista
-    const scssContent = scssContent1
 
     // 📌 Resolver JavaScript con imports
     let jsContent = ''
@@ -182,7 +252,7 @@ export async function GET(req: Request) {
           ]
         }).css
       } catch (sassError) {
-        console.error('Error compilando SCSS:', sassError)
+        console.error('Error compiling SCSS:', sassError)
         compiledCSS = ''
       }
     }
@@ -190,11 +260,22 @@ export async function GET(req: Request) {
     // Verificar si el JS tiene imports
     const hasImports = jsContent.includes('// IMPORTED FROM:')
 
+    // Starting file save process
+
+    // 📌 Guardar archivos compilados en carpeta build
+    await saveCompiledFiles(componentPath, compiledCSS, jsContent || '')
+
     return NextResponse.json({
       info: infoContent ? JSON.parse(infoContent) : {},
+      configuration: configContent ? JSON.parse(configContent) : null,
       css: compiledCSS,
       js: jsContent || '',
-      jsCompiled: hasImports // Indicar si se compilaron imports
+      jsCompiled: hasImports, // Indicar si se compilaron imports
+      buildFiles: {
+        css: COMPILED_CSS_FILE,
+        js: COMPILED_JS_FILE,
+        info: COMPILATION_INFO_FILE
+      }
     })
   } catch (error) {
     console.error('Error al cargar el componente:', error)

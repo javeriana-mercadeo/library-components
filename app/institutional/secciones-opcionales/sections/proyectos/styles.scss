@@ -10,11 +10,13 @@
   .carousel-title {
     display: flex;
     justify-content: center;
-    color: var(--neutral-300);
-    font-weight: var(--font-weight-bold);
-    text-align: center;
-    font-size: var(--font-size-title);
-    padding-bottom: rem(20px);
+
+    h1 {
+      color: var(--neutral-300);
+      font-weight: var(--font-weight-bold);
+      text-align: center;
+      font-size: var(--font-size-principal-title);
+    }
   }
 
   .main-container {
@@ -86,10 +88,9 @@
           font-size: var(--font-size-subtitle);
         }
 
-        .description {
+        p {
           font-size: var(--font-size-paragraph);
-          color: var(--neutral);
-          
+
           @media (min-width: 768px) {
             font-size: var(--font-size-paragraph);
           }
@@ -135,14 +136,11 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 0;
-    right: 0;
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     z-index: 10;
-    padding: 0 rem(20px); 
-    pointer-events: none;
+    padding: 0 rem(10px);
 
     @media (max-width: 767px) {
       display: none !important;
@@ -150,58 +148,28 @@
   }
 
   .carousel-control {
-    background: rgba(255, 255, 255, 0.9); 
+    background: rgba(255, 255, 255, 0.836);
     color: var(--primary);
-    width: rem(48px); 
-    height: rem(48px);
-    border: none; 
+    width: rem(32px);
+    height: rem(32px);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.2); // Sombra más pronunciada
-    pointer-events: auto; // Restaurar pointer events para los botones
-    backdrop-filter: blur(4px); // Efecto blur para mejor contraste
-    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 rem(2px) rem(10px) rgba(0, 0, 0, 0.1);
 
     &:hover {
       background: var(--primary);
       color: var(--neutral);
       transform: scale(1.1);
-      box-shadow: 0 rem(6px) rem(16px) rgba(0, 0, 0, 0.3);
     }
 
-    &:active {
-      transform: scale(0.95);
-    }
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 rem(3px) rgba(var(--primary-rgb), 0.3);
-    }
-
-    // Estilos específicos para los iconos
     i {
-      font-size: rem(24px);
+      font-size: rem(32px);
       line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
     }
-
-  }
-
-  // Posicionamiento específico para los botones
-  .carousel-control.prev {
-    margin-right: auto;
-  }
-
-  .carousel-control.next {
-    margin-left: auto;
   }
 
   .carousel-indicators {
@@ -234,15 +202,7 @@
     }
   }
 
-  .modal-body {
-    width: 100%;
-    height: calc(100% - 40px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-  }
-
+  // Modal styles
   .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -265,87 +225,55 @@
     @media (max-width: 768px) {
       width: 95vw;
       height: 95vh;
-<<<<<<< HEAD
-=======
     }
+  }
+
+  .modal-body {
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
   .modal-close {
     position: absolute;
-    top: rem(10px);
-    right: rem(15px);
-    width: rem(40px);
-    height: rem(40px);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #fff;
+    top: 0.625rem;
+    right: 0.9375rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--primary);
     border: none;
     border-radius: 50%;
-    font-size: rem(32px);
+    font-size: 2rem;
     font-weight: bold;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition:
-      background 0.3s ease,
-      transform 0.2s ease;
+    transition: all 0.3s ease;
     z-index: 10;
 
     &:hover {
-      background-color: rgba(8, 29, 57, 0.9);
-      transform: scale(1.05);
+      color: var(--primary);
+      transform: scale(1.2);
     }
 
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 rem(2px) #ffffffaa;
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
+      box-shadow: 0 0 0 0.125rem rgba(var(--primary-rgb), 0.3);
+    }
+
+    &:active {
+      transform: scale(1.1);
     }
   }
-
-.hero-carousel .modal-close {
-  position: absolute;
-  top: 0.625rem;
-  right: 0.9375rem;
-  width: 2.5rem;
-  height: 2.5rem;
-  color: var(--primary); 
-  border: none;
-  border-radius: 50%;
-  font-size: 2rem;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  z-index: 10;
-}
-
-.hero-carousel .modal-close:hover {
-  color: var(--primary); /* Mantiene color primario en hover */
-  transform: scale(1.2); /* Escala en hover */
-}
-
-.hero-carousel .modal-close:focus {
-  outline: none;
-  box-shadow: 0 0 0 0.125rem rgba(var(--primary-rgb), 0.3);
-}
-
-.hero-carousel .modal-close:active {
-  transform: scale(1.1);
-}
 }
 
 // Fallback para iconos Phosphor si no cargan
-.ph-arrow-circle-left::before {
-  font-size: rem(32px);
-  font-weight: 100;
-}
-
+.ph-arrow-circle-left::before,
 .ph-arrow-circle-right::before {
-
   font-size: rem(32px);
   font-weight: 100;
-
 }

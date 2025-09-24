@@ -106,12 +106,12 @@
   // Estilos para íconos SVG inline (fallback de Liferay)
   &.social-icon-svg {
     font-size: inherit; // Hereda el tamaño del contenedor
-    
+
     svg {
       width: rem(36px);
       height: rem(36px);
       vertical-align: middle;
-      
+
       @include responsive {
         width: rem(32px);
         height: rem(32px);

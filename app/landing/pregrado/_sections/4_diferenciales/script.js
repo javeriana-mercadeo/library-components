@@ -17,13 +17,10 @@ const AccordionSystem = {
   },
 
   init() {
-    Logger.debug('Inicializando sistema de acordeón responsivo...')
-
     // Verificar que existe el DOM
     const accordionItems = document.querySelectorAll(this.config.itemSelector)
 
     if (accordionItems.length === 0) {
-      Logger.warning('No se encontraron elementos del acordeón')
       return false
     }
 
@@ -36,7 +33,6 @@ const AccordionSystem = {
     // Configurar responsive listener
     this.setupResponsiveListener()
 
-    Logger.success(`Acordeón inicializado: ${accordionItems.length} items`)
     return true
   },
 
@@ -52,7 +48,6 @@ const AccordionSystem = {
       const content = document.querySelector(targetId)
 
       if (!content) {
-        Logger.warning(`Contenido del acordeón no encontrado: ${targetId}`)
         return
       }
 
@@ -87,7 +82,6 @@ const AccordionSystem = {
     const content = document.querySelector(targetId)
 
     if (!content) {
-      Logger.error(`Contenido no encontrado: ${targetId}`)
       return
     }
 
@@ -211,8 +205,6 @@ const AccordionSystem = {
 // ===========================================
 const DiferencialesSystem = {
   init() {
-
-
     const systems = {
       accordion: AccordionSystem.init()
     }
@@ -221,7 +213,6 @@ const DiferencialesSystem = {
       .filter(([_, isActive]) => isActive)
       .map(([name]) => name)
 
-
     return systems
   }
 }
@@ -229,14 +220,34 @@ const DiferencialesSystem = {
 // ===========================================
 // AUTO-INICIALIZACIÓN
 // ===========================================
-export default () => {
-  DOMHelpers.isReady(() => {
+const initDiferencialesSystem = () => {
+  // Fallback simple sin dependencias externas
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      DiferencialesSystem.init()
+    })
+  } else {
     DiferencialesSystem.init()
-  })
-
-  // Exponer para debugging
-  if (typeof window !== 'undefined') {
-    window.AccordionSystem = AccordionSystem
-    window.DiferencialesSystem = DiferencialesSystem
   }
+
+  document.addEventListener('data_load-program', () => {
+    const context = document.getElementById('diferenciales')
+    const dataPujLocation = context.querySelector('[data-puj-simple-location]')
+    let currentContent = dataPujLocation.textContent.trim()
+    dataPujLocation.textContent = `${currentContent}?`
+  })
 }
+
+// Auto-ejecutar si no es un módulo Y está en el cliente
+if (typeof module === 'undefined' && typeof window !== 'undefined') {
+  initDiferencialesSystem()
+}
+
+// Exponer globalmente
+if (typeof window !== 'undefined') {
+  window.AccordionSystem = AccordionSystem
+  window.DiferencialesSystem = DiferencialesSystem
+  window.initDiferencialesSystem = initDiferencialesSystem
+}
+
+export default initDiferencialesSystem

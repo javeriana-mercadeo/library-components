@@ -8,7 +8,6 @@ export default () => {
   const initializeTabs = () => {
     const tabsContainer = document.querySelector('.plan-estudio__tabs-container')
     if (!tabsContainer) {
-      console.warn('Contenedor de pestañas no encontrado')
       return
     }
 
@@ -16,7 +15,6 @@ export default () => {
     const tabPanels = tabsContainer.querySelectorAll('.plan-estudio__tab-panel')
 
     if (!tabButtons.length || !tabPanels.length) {
-      console.warn('No se encontraron botones o paneles de pestañas')
       return
     }
 
@@ -147,13 +145,11 @@ export default () => {
   const initializeSwiperForActiveTab = () => {
     const activePanel = document.querySelector('.plan-estudio__tab-panel:not(.hidden)')
     if (!activePanel) {
-      console.warn('No se encontró panel activo')
       return
     }
 
     const swiperContainer = activePanel.querySelector('.subjects-swiper')
     if (!swiperContainer) {
-      console.warn('No se encontró contenedor de swiper en panel activo')
       return
     }
 
@@ -165,8 +161,6 @@ export default () => {
     } else if (panelId.includes('diurna')) {
       jornadaId = 'diurna'
     }
-
-    console.log(`Inicializando swiper para jornada: ${jornadaId}`)
 
     // Destruir instancia existente si existe
     if (window.planEstudioSwipers[jornadaId] && typeof window.planEstudioSwipers[jornadaId].destroy === 'function') {
@@ -184,12 +178,10 @@ export default () => {
     const totalSlides = slides.length
 
     if (!window.Swiper) {
-      console.error('Swiper no está disponible')
       return
     }
 
     if (totalSlides === 0) {
-      console.warn(`No se encontraron slides para la jornada ${jornadaId}`)
       return
     }
 
@@ -204,8 +196,7 @@ export default () => {
       pagination: {
         el: container.querySelector('.plan-estudio_pagination'),
         clickable: true,
-        dynamicBullets: true,
-        dynamicMainBullets: 1,
+        dynamicBullets: false,
         renderBullet: function (index, className) {
           return `<span class="${className}" aria-label="Ir a slide ${index + 1}"></span>`
         }
@@ -282,7 +273,7 @@ export default () => {
     try {
       window.planEstudioSwipers[jornadaId] = new window.Swiper(container, swiperConfig)
     } catch (error) {
-      console.error(`Error creando swiper para jornada ${jornadaId}:`, error)
+      console.error('Error creando swiper:', error)
     }
   }
 
@@ -374,27 +365,13 @@ export default () => {
 
   const updatePaginationVisibility = (swiper, totalSlides, container) => {
     const pagination = container.querySelector('.plan-estudio_pagination')
-
     if (!pagination) return
 
-    const needsPagination = totalSlides > 1
-
-    if (needsPagination) {
+    // Simple show/hide como en experiencia
+    if (totalSlides > 1) {
       pagination.style.display = 'flex'
-      pagination.classList.remove('swiper-pagination-hidden')
-      pagination.setAttribute('aria-hidden', 'false')
-
-      setTimeout(() => {
-        const bullets = pagination.querySelectorAll('.swiper-pagination-bullet')
-        bullets.forEach((bullet, index) => {
-          bullet.setAttribute('aria-label', `Ir a slide ${index + 1}`)
-          bullet.style.display = 'block'
-        })
-      }, 100)
     } else {
       pagination.style.display = 'none'
-      pagination.classList.add('swiper-pagination-hidden')
-      pagination.setAttribute('aria-hidden', 'true')
     }
   }
 

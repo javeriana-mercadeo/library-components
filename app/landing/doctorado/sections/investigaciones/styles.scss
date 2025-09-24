@@ -21,7 +21,7 @@
   }
 }
 
-// Mobile Swiper horizontal - Videos y estructura  
+// Mobile Swiper horizontal - Videos y estructura
 .investigations-modal__swiper-container-mobile {
   .swiper-slide {
     // Estilos base para slides móviles
@@ -29,7 +29,7 @@
     align-items: center;
     justify-content: center;
     min-height: rem(200px);
-    
+
     // Video slides en Swiper horizontal móvil
     .investigations-modal__video-wrapper-mobile {
       height: rem(200px);
@@ -48,12 +48,12 @@
       object-fit: cover;
       border-radius: 8px;
       border: none;
-      
+
       @media (max-width: 480px) {
         height: rem(180px);
       }
     }
-    
+
     // Iframe específico dentro del wrapper móvil
     iframe.investigations-modal__video-mobile {
       height: rem(200px) !important;
@@ -61,7 +61,7 @@
       border: none !important;
       border-radius: 8px;
       display: block !important;
-      
+
       @media (max-width: 480px) {
         height: rem(180px) !important;
       }
@@ -85,22 +85,22 @@ $investigations-badge-padding: var(--spacing-xs) var(--spacing-md);
   // Altura mínima para mantener consistencia visual
   min-height: rem(60px); // Aproximadamente 3 líneas
   line-height: 1.5;
-  
+
   // Fallback CSS para navegadores que no soporten truncamiento FTL
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  
+
   // Card principal - más espacio para descripción
   .investigations_card--main & {
     min-height: rem(72px); // Aproximadamente 3-4 líneas
     -webkit-line-clamp: 4;
   }
-  
+
   // Cards secundarias - menos espacio
   .investigations_card--secondary & {
-    min-height: rem(54px); // Aproximadamente 2-3 líneas  
+    min-height: rem(54px); // Aproximadamente 2-3 líneas
     -webkit-line-clamp: 3;
   }
 }
@@ -252,7 +252,7 @@ $nav-button-size-mobile: rem(40px);
   &_wrapper {
     overflow: hidden;
     position: relative;
-    
+
     // PATRÓN EXPERIENCIA: Padding responsivo optimizado para evitar overflow
     padding: rem(20px) rem(40px);
 
@@ -423,12 +423,12 @@ $nav-button-size-mobile: rem(40px);
       display: inline-flex;
       align-items: center;
       margin-left: var(--spacing-xs);
-      
+
       i {
         font-size: rem(20px); // Más grande que el texto
         font-weight: bold;
         color: var(--primary);
-        
+
         @include dark-theme {
           color: var(--primary-400);
         }
@@ -625,7 +625,7 @@ $nav-button-size-mobile: rem(40px);
     // MOBILE: ancho completo
     width: 100%;
     height: 100%;
-    
+
     // DESKTOP: mantener el ancho original de 45% (como estaba configurado)
     @media (min-width: 1024px) {
       width: 45%; // Mismo ancho que tenía originalmente
@@ -635,7 +635,7 @@ $nav-button-size-mobile: rem(40px);
   // DESKTOP: Mostrar solo Swiper vertical
   &__images-swiper-desktop {
     display: none;
-    
+
     @media (min-width: 1024px) {
       display: block;
       width: 100%;
@@ -646,7 +646,7 @@ $nav-button-size-mobile: rem(40px);
   // MOBILE: Mostrar solo Swiper horizontal
   &__images-swiper-mobile {
     display: block;
-    
+
     @media (min-width: 1024px) {
       display: none;
     }
@@ -659,7 +659,7 @@ $nav-button-size-mobile: rem(40px);
     width: 100%;
     height: 100%;
     position: relative;
-    
+
     // Paginación vertical en el lado derecho
     .swiper-pagination {
       position: absolute;
@@ -672,7 +672,7 @@ $nav-button-size-mobile: rem(40px);
       flex-direction: column !important;
       gap: 8px;
       z-index: 10;
-      
+
       .swiper-pagination-bullet {
         width: 12px !important;
         height: 12px !important;
@@ -682,24 +682,24 @@ $nav-button-size-mobile: rem(40px);
         opacity: 1 !important;
         cursor: pointer;
         transition: all 0.3s ease !important;
-        
+
         &.swiper-pagination-bullet-active {
           background: var(--primary) !important;
           border-color: var(--primary) !important;
           transform: scale(1.2);
         }
-        
+
         &:hover:not(.swiper-pagination-bullet-active) {
           background: rgba(255, 255, 255, 0.8) !important;
           transform: scale(1.1);
         }
       }
     }
-    
+
     // Cursor de grab para indicar que se puede arrastrar
     .swiper-wrapper {
       cursor: grab;
-      
+
       &:active {
         cursor: grabbing;
       }
@@ -773,7 +773,7 @@ $nav-button-size-mobile: rem(40px);
   }
 
   // ==========================================
-  // SWIPER HORIZONTAL - MOBILE  
+  // SWIPER HORIZONTAL - MOBILE
   // ==========================================
   &__swiper-container-mobile {
     width: 100% !important; // Patrón experiencia: ancho simple sin cálculos
@@ -781,7 +781,7 @@ $nav-button-size-mobile: rem(40px);
     position: relative;
     padding-bottom: 40px; // Espacio para paginación
     margin: 0; // Sin márgenes complejos
-    
+
     // Paginación horizontal en la parte inferior
     .swiper-pagination {
       position: absolute;
@@ -794,7 +794,7 @@ $nav-button-size-mobile: rem(40px);
       justify-content: center !important;
       gap: 8px;
       z-index: 10;
-      
+
       .swiper-pagination-bullet {
         width: 10px !important;
         height: 10px !important;
@@ -803,12 +803,12 @@ $nav-button-size-mobile: rem(40px);
         opacity: 1 !important;
         cursor: pointer;
         transition: all 0.3s ease !important;
-        
+
         &.swiper-pagination-bullet-active {
           background: var(--primary) !important;
           transform: scale(1.2);
         }
-        
+
         &:hover:not(.swiper-pagination-bullet-active) {
           background: rgba(var(--primary-rgb), 0.6) !important;
           transform: scale(1.1);
@@ -913,7 +913,7 @@ $nav-button-size-mobile: rem(40px);
     height: 200px; // Altura fija para móviles
     object-fit: cover;
     border-radius: 8px;
-    
+
     @media (max-width: 480px) {
       height: 180px;
     }
@@ -942,7 +942,7 @@ $nav-button-size-mobile: rem(40px);
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-    
+
     // En el contexto del swiper, no margin bottom
     .swiper-slide & {
       margin-bottom: 0;
@@ -957,14 +957,14 @@ $nav-button-size-mobile: rem(40px);
     object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    
+
     // En mobile, mantener el comportamiento actual
     @media (max-width: 1023px) {
       width: 100%;
       height: auto;
       object-fit: cover;
     }
-    
+
     // En desktop dentro del swiper, altura uniforme y estandarizada
     @media (min-width: 1024px) {
       .swiper-slide & {

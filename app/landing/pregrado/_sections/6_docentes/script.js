@@ -8,10 +8,8 @@ export default () => {
     // Buscar el elemento
     const element = document.querySelector('.expert-carousel_wrapper')
     if (!element) {
-      console.warn('Elemento .expert-carousel_wrapper no encontrado')
       const fallbackElement = document.querySelector('.expert-swiper')
       if (!fallbackElement) {
-        console.error('Ningún elemento swiper encontrado')
         return
       }
     }
@@ -21,7 +19,6 @@ export default () => {
     const totalSlides = slides.length
 
     if (!window.Swiper) {
-      console.error('Swiper no está disponible')
       return
     }
 
@@ -137,13 +134,11 @@ export default () => {
     const prevBtn = document.querySelector('.expert-carousel_prev') || document.querySelector('.expert-prev')
 
     if (!nextBtn || !prevBtn) {
-      console.warn('Botones de navegación no encontrados')
       return
     }
 
     // Validar que swiper y sus parámetros estén disponibles
     if (!swiper || !swiper.params) {
-      console.warn('Swiper no está inicializado correctamente')
       return
     }
 

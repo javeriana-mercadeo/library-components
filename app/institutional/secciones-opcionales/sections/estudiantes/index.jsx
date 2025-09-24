@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
 import Image from '@library/components/contain/image'
-=======
-import { UniversalComponent as UC, Container } from '@library/components'
 
 import React from 'react'
-
-import { studentsData, getNextSlide, getPrevSlide, getSlideClass } from './script.js'
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
-
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'
@@ -69,129 +62,47 @@ const StudentSlider = () => {
     }, 100)
   }
 
-<<<<<<< HEAD
   return (
     <section id={elementName}>
-      <Container className="slider-container">
-        <Title className="slider-title">Estudiantes</Title>
+      <Container className='slider-container'>
+        <Title className='slider-title'>Estudiantes</Title>
 
-        <div className="slider-content" id={`${elementName}-content`}>
-          <div className="carousel-controlsE">
-            <button className="carousel-controlE prev" id={`${elementName}-prev`} aria-label="Anterior estudiante" type="button">
-              <i className="ph ph-arrow-circle-left"></i>
+        <div className='slider-content' id={`${elementName}-content`}>
+          <div className='carousel-controlsE'>
+            <button className='carousel-controlE prev' id={`${elementName}-prev`} aria-label='Anterior estudiante' type='button'>
+              <i className='ph ph-arrow-circle-left'></i>
             </button>
-            <button className="carousel-controlE next" id={`${elementName}-next`} aria-label="Siguiente estudiante" type="button">
-              <i className="ph ph-arrow-circle-right"></i>
+            <button className='carousel-controlE next' id={`${elementName}-next`} aria-label='Siguiente estudiante' type='button'>
+              <i className='ph ph-arrow-circle-right'></i>
             </button>
           </div>
 
-          <div className="slider-cards" id={`${elementName}-cards`}>
+          <div className='slider-cards' id={`${elementName}-cards`}>
             {studentsData.map((student, index) => (
-              <div key={`student-${index}`} className="student-card" id={`${elementName}-card-${index}`} data-index={index}>
-                <div className="student-image">
+              <div key={`student-${index}`} className='student-card' id={`${elementName}-card-${index}`} data-index={index}>
+                <div className='student-image'>
                   <Image id={`${elementName}-image-${index}`} src={student.image} alt={student.name} />
                 </div>
-                <div className="student-info">
+                <div className='student-info'>
                   <h3 id={`${elementName}-name-${index}`}>{student.name}</h3>
                   <p id={`${elementName}-position-${index}`}>{student.position}</p>
-                  <div className="company-logo">
-                    <Image className="imglogoC" id={`${elementName}-logo-${index}`} src={student.logo} alt={student.company}  />
+                  <div className='company-logo'>
+                    <Image className='imglogoC' id={`${elementName}-logo-${index}`} src={student.logo} alt={student.company} />
                   </div>
                 </div>
               </div>
-=======
-  componentDidMount() {
-    this.startAutoSlide()
-  }
-
-  componentWillUnmount() {
-    this.stopAutoSlide()
-  }
-
-  startAutoSlide = () => {
-    this.autoSlideInterval = setInterval(this.nextSlide, 5000)
-  }
-
-  stopAutoSlide = () => {
-    if (this.autoSlideInterval) {
-      clearInterval(this.autoSlideInterval)
-    }
-  }
-
-  nextSlide = () => {
-    this.setState(prevState => ({
-      currentSlide: getNextSlide(prevState.currentSlide, this.state.students.length)
-    }))
-  }
-
-  prevSlide = () => {
-    this.setState(prevState => ({
-      currentSlide: getPrevSlide(prevState.currentSlide, this.state.students.length)
-    }))
-  }
-
-  goToSlide = index => {
-    this.setState({
-      currentSlide: index
-    })
-  }
-
-  getSlideClassForIndex = index => {
-    return getSlideClass(index, this.state.currentSlide, this.state.students.length)
-  }
-
-  render() {
-    const { students, currentSlide } = this.state
-
-    return (
-      <Container className='slider-container'>
-        <div onMouseEnter={this.stopAutoSlide} onMouseLeave={this.startAutoSlide}>
-          <Title className='slider-title'>
-            <h2>Estudiantes</h2>
-          </Title>
-
-          <div className='slider-content'>
-            <div className='carousel-controls'>
-              <button className='carousel-control prev' onClick={this.prevSlide}>
-                <i className='ph ph-arrow-circle-left'></i>
-              </button>
-              <button className='carousel-control next' onClick={this.nextSlide}>
-                <i className='ph ph-arrow-circle-right'></i>
-              </button>
-            </div>
-
-            <div className='slider-cards'>
-              {students.map((student, index) => (
-                <div key={index} className={`student-card ${this.getSlideClassForIndex(index)}`}>
-                  <div className='student-image'>
-                    <img src={student.image} alt={student.name} />
-                  </div>
-                  <div className='student-info'>
-                    <h3>{student.name}</h3>
-                    <p>{student.position}</p>
-                    <img src={student.logo} alt={student.company} className='company-logo' />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className='slider-dots'>
-            {students.map((_, index) => (
-              <span key={index} className={`dot ${index === currentSlide ? 'active' : ''}`} onClick={() => this.goToSlide(index)}></span>
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
             ))}
           </div>
         </div>
 
-        <div className="slider-dots" id={`${elementName}-dots`}>
+        <div className='slider-dots' id={`${elementName}-dots`}>
           {studentsData.map((_, index) => (
             <span
               key={`dot-${index}`}
-              className="dot"
+              className='dot'
               id={`${elementName}-dot-${index}`}
               data-slide={index}
-              role="button"
+              role='button'
               tabIndex={0}
               aria-label={`Ir al estudiante ${index + 1}`}></span>
           ))}

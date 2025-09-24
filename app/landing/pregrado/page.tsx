@@ -5,10 +5,9 @@ import dynamic from 'next/dynamic'
 import ViewComponent from '@/components/viewComponent/viewComponent'
 import Load from '@/components/load/load'
 
-// Lazy load heavy sections with client-side loading
-
 const Header = dynamic(() => import('@library/components/header'), { ssr: false, loading: () => <Load /> })
 const Datos = dynamic(() => import('./_sections/1_datos'), { ssr: false, loading: () => <Load /> })
+const DobleDatos = dynamic(() => import('./_sections/1-1_dobleDatos'), { ssr: false, loading: () => <Load /> })
 const PlanEstudio = dynamic(() => import('./_sections/2_planEstudio'), { ssr: false, loading: () => <Load /> })
 const DoblePlanEstudio = dynamic(() => import('./_sections/2-1_doblePlanEstudio'), { ssr: false, loading: () => <Load /> })
 const Perfiles = dynamic(() => import('./_sections/3_perfiles'), { ssr: false, loading: () => <Load /> })
@@ -19,6 +18,9 @@ const Experiencia = dynamic(() => import('./_sections/7_experiencia'), { ssr: fa
 const Cita = dynamic(() => import('./_sections/8_cita'), { ssr: false, loading: () => <Load /> })
 const PreguntasFrecuentes = dynamic(() => import('./_sections/9_preguntasFrecuentes'), { ssr: false, loading: () => <Load /> })
 const Relacionados = dynamic(() => import('./_sections/10_relacionados'), { ssr: false, loading: () => <Load /> })
+const EducacionEstrella = dynamic(() => import('./_sections/_educacionEstrella'), { ssr: false, loading: () => <Load /> })
+const Becas = dynamic(() => import('./_sections/_becas'), { ssr: false, loading: () => <Load /> })
+const Requisitos = dynamic(() => import('./_sections/_requisitos'), { ssr: false, loading: () => <Load /> })
 const Footer = dynamic(() => import('@library/components/footer'), { ssr: false, loading: () => <Load /> })
 
 export default function Profesional() {
@@ -35,6 +37,11 @@ export default function Profesional() {
       {/* <Datos /> */}
       <ViewComponent path={`${basePath}/_sections/1_datos`}>
         <Datos />
+      </ViewComponent>
+
+      {/* <DobleDatos /> */}
+      <ViewComponent path={`${basePath}/_sections/1-1_dobleDatos`}>
+        <DobleDatos />
       </ViewComponent>
 
       {/* <PlanEstudio /> */}
@@ -75,6 +82,21 @@ export default function Profesional() {
       {/* <Cita /> */}
       <ViewComponent path={`${basePath}/_sections/8_cita`}>
         <Cita />
+      </ViewComponent>
+
+      {/* <EducacionEstrella /> */}
+      <ViewComponent path={`${basePath}/_sections/_educacionEstrella`}>
+        <EducacionEstrella />
+      </ViewComponent>
+
+      {/* <Becas /> */}
+      <ViewComponent path={`${basePath}/_sections/_becas`}>
+        <Becas />
+      </ViewComponent>
+
+      {/* <Requisitos /> */}
+      <ViewComponent path={`${basePath}/_sections/_requisitos`}>
+        <Requisitos />
       </ViewComponent>
 
       {/*  <PreguntasFrecuentes /> */}

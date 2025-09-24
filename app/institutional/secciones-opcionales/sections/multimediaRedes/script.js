@@ -1,5 +1,28 @@
-<<<<<<< HEAD
 export default () => {
+  // Función para cargar Swiper si no está disponible
+  const loadSwiper = () => {
+    if (!window.Swiper) {
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'
+      script.onload = () => {
+        setTimeout(() => {
+          initializeSwiper()
+        }, 100)
+      }
+      document.head.appendChild(script)
+
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
+      document.head.appendChild(link)
+    } else if (window.Swiper) {
+      setTimeout(() => {
+        initializeSwiper()
+      }, 100)
+    }
+  }
+
+  // Función principal para inicializar el Swiper
   const initializeSwiper = () => {
     // Destruir instancia existente si existe
     if (window.socialCarouselSwiper) {
@@ -14,19 +37,6 @@ export default () => {
       if (!fallbackElement) {
         console.error('Ningún elemento swiper encontrado')
         return
-=======
-export default function swiperCarousel() {
-  const loadSwiper = async () => {
-    if (typeof window !== 'undefined' && !window.Swiper) {
-      const script = document.createElement('script')
-      script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'
-      script.async = true
-
-      script.onload = () => {
-        setTimeout(() => {
-          initializeSwiper()
-        }, 100)
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
       }
       console.log('📦 Usando elemento fallback: .social-swiper')
     }
@@ -35,7 +45,6 @@ export default function swiperCarousel() {
     const slides = document.querySelectorAll('.social-carousel_slide')
     const totalSlides = slides.length
 
-<<<<<<< HEAD
     if (!window.Swiper) {
       console.error('Swiper no está disponible')
       return
@@ -171,7 +180,7 @@ export default function swiperCarousel() {
           embed.style.height = 'auto'
           embed.style.minHeight = 'auto'
           embed.style.maxHeight = 'none'
-          
+
           // Aplicar a elementos hijos también
           const childElements = embed.querySelectorAll('*')
           childElements.forEach(child => {
@@ -181,7 +190,7 @@ export default function swiperCarousel() {
             child.style.overflow = 'visible'
           })
         })
-        
+
         window.instgrm.Embeds.process()
       } catch (error) {
         console.warn('Error procesando embeds de Instagram:', error)
@@ -189,24 +198,24 @@ export default function swiperCarousel() {
     }
   }
 
-  // Nueva función para ajustar alturas de las tarjetas
+  // Función para ajustar alturas de las tarjetas
   const adjustCardHeights = () => {
     const cards = document.querySelectorAll('.social-carousel_card')
     const slides = document.querySelectorAll('.social-carousel_slide')
-    
+
     cards.forEach(card => {
       // Asegurar que la tarjeta tenga altura dinámica
       card.style.height = 'auto'
       card.style.minHeight = 'auto'
       card.style.maxHeight = 'none'
-      
+
       // Aplicar altura dinámica al contenido del post
       const postContent = card.querySelector('.social-carousel_post-content')
       if (postContent) {
         postContent.style.height = 'auto'
         postContent.style.minHeight = 'auto'
         postContent.style.maxHeight = 'none'
-        
+
         // Buscar embeds dentro del contenido
         const instagramEmbeds = postContent.querySelectorAll('.instagram-media')
         instagramEmbeds.forEach(embed => {
@@ -214,7 +223,7 @@ export default function swiperCarousel() {
           embed.style.minHeight = 'auto'
           embed.style.maxHeight = 'none'
           embed.style.overflow = 'visible'
-          
+
           // Aplicar a iframes dentro del embed
           const iframes = embed.querySelectorAll('iframe')
           iframes.forEach(iframe => {
@@ -223,28 +232,9 @@ export default function swiperCarousel() {
             iframe.style.maxHeight = 'none'
           })
         })
-=======
-      const link = document.createElement('link')
-      link.rel = 'stylesheet'
-      link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
-      document.head.appendChild(link)
-    } else if (window.Swiper) {
-      setTimeout(() => {
-        initializeSwiper()
-      }, 100)
-    }
-  }
-
-  const initializeSwiper = () => {
-    const swiperContainer = document.querySelector('.subjects-swiper')
-
-    if (window.Swiper && swiperContainer) {
-      if (swiperContainer.swiper) {
-        swiperContainer.swiper.destroy(true, true)
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
       }
     })
-    
+
     // Ajustar slides también
     slides.forEach(slide => {
       slide.style.height = 'auto'
@@ -253,26 +243,26 @@ export default function swiperCarousel() {
     })
   }
 
-<<<<<<< HEAD
   // Función para observar cambios en los embeds
   const observeEmbedChanges = () => {
     if (typeof window !== 'undefined' && window.MutationObserver) {
-      const observer = new MutationObserver((mutations) => {
+      const observer = new MutationObserver(mutations => {
         let shouldUpdate = false
-        
-        mutations.forEach((mutation) => {
+
+        mutations.forEach(mutation => {
           if (mutation.type === 'childList' || mutation.type === 'attributes') {
             const target = mutation.target
-            if (target.classList && (
-              target.classList.contains('instagram-media') ||
-              target.closest('.instagram-media') ||
-              target.querySelector('.instagram-media')
-            )) {
+            if (
+              target.classList &&
+              (target.classList.contains('instagram-media') ||
+                target.closest('.instagram-media') ||
+                target.querySelector('.instagram-media'))
+            ) {
               shouldUpdate = true
             }
           }
         })
-        
+
         if (shouldUpdate) {
           setTimeout(() => {
             adjustCardHeights()
@@ -280,52 +270,9 @@ export default function swiperCarousel() {
               window.socialCarouselSwiper.updateAutoHeight(200)
             }
           }, 100)
-=======
-      const swiper = new window.Swiper('.subjects-swiper', {
-        loop: true,
-        spaceBetween: 30,
-        grabCursor: true,
-        centeredSlides: false,
-
-        pagination: {
-          el: '.subjects-pagination',
-          clickable: true,
-          dynamicBullets: true
-        },
-
-        navigation: {
-          nextEl: '.subjects-next',
-          prevEl: '.subjects-prev'
-        },
-
-        // Responsive breakpoints
-        breakpoints: {
-          0: {
-            slidesPerView: 1,
-            spaceBetween: 20
-          },
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 25
-          },
-          1024: {
-            slidesPerView: 3,
-            spaceBetween: 30
-          }
-        },
-
-        // Eventos para debugging
-        on: {
-          init: function () {
-            console.log('Swiper inicializado correctamente')
-          },
-          slideChange: function () {
-            console.log('Slide cambiado')
-          }
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
         }
       })
-      
+
       // Observar cambios en el contenedor del carrusel
       const container = document.querySelector('.social-carousel_wrapper')
       if (container) {
@@ -339,8 +286,7 @@ export default function swiperCarousel() {
     }
   }
 
-<<<<<<< HEAD
-  // Resto de funciones existentes...
+  // Funciones de navegación
   const updateNavigationDisplay = (swiper, totalSlides) => {
     const carousel = document.querySelector('.social-carousel')
     const nextBtn = document.querySelector('.social-carousel_next') || document.querySelector('.social-next')
@@ -366,20 +312,20 @@ export default function swiperCarousel() {
 
   const hideAllNavigation = (carousel, nextBtn, prevBtn, pagination) => {
     carousel?.classList.remove('show-pagination-only', 'show-buttons-only')
-    
+
     pagination.style.display = 'none'
     pagination.style.opacity = '0'
     pagination.style.visibility = 'hidden'
     pagination.classList.add('swiper-pagination-hidden')
     pagination.setAttribute('aria-hidden', 'true')
-    
+
     nextBtn.style.display = 'none'
     nextBtn.style.opacity = '0'
     nextBtn.style.visibility = 'hidden'
     nextBtn.classList.remove('show-navigation')
     nextBtn.classList.add('swiper-button-hidden')
     nextBtn.setAttribute('aria-hidden', 'true')
-    
+
     prevBtn.style.display = 'none'
     prevBtn.style.opacity = '0'
     prevBtn.style.visibility = 'hidden'
@@ -391,26 +337,26 @@ export default function swiperCarousel() {
   const showPaginationOnly = (carousel, nextBtn, prevBtn, pagination) => {
     carousel?.classList.add('show-pagination-only')
     carousel?.classList.remove('show-buttons-only')
-    
+
     pagination.style.display = 'flex'
     pagination.style.opacity = '1'
     pagination.style.visibility = 'visible'
     pagination.classList.remove('swiper-pagination-hidden')
     pagination.setAttribute('aria-hidden', 'false')
-    
+
     const bullets = pagination.querySelectorAll('.swiper-pagination-bullet')
     bullets.forEach((bullet, index) => {
       bullet.setAttribute('aria-label', `Ir a slide ${index + 1}`)
       bullet.style.display = 'block'
     })
-    
+
     nextBtn.style.display = 'none'
     nextBtn.style.opacity = '0'
     nextBtn.style.visibility = 'hidden'
     nextBtn.classList.remove('show-navigation')
     nextBtn.classList.add('swiper-button-hidden')
     nextBtn.setAttribute('aria-hidden', 'true')
-    
+
     prevBtn.style.display = 'none'
     prevBtn.style.opacity = '0'
     prevBtn.style.visibility = 'hidden'
@@ -422,20 +368,20 @@ export default function swiperCarousel() {
   const showButtonsOnly = (carousel, nextBtn, prevBtn, pagination) => {
     carousel?.classList.add('show-buttons-only')
     carousel?.classList.remove('show-pagination-only')
-    
+
     pagination.style.display = 'none'
     pagination.style.opacity = '0'
     pagination.style.visibility = 'hidden'
     pagination.classList.add('swiper-pagination-hidden')
     pagination.setAttribute('aria-hidden', 'true')
-    
+
     nextBtn.style.display = 'flex'
     nextBtn.style.opacity = '1'
     nextBtn.style.visibility = 'visible'
     nextBtn.classList.add('show-navigation')
     nextBtn.classList.remove('swiper-button-hidden')
     nextBtn.setAttribute('aria-hidden', 'false')
-    
+
     prevBtn.style.display = 'flex'
     prevBtn.style.opacity = '1'
     prevBtn.style.visibility = 'visible'
@@ -483,6 +429,7 @@ export default function swiperCarousel() {
     }
   }
 
+  // Función para verificar e inicializar
   const checkAndInit = () => {
     if (typeof window !== 'undefined' && window.Swiper) {
       initializeSwiper()
@@ -492,8 +439,7 @@ export default function swiperCarousel() {
     }
   }
 
-  checkAndInit()
-
+  // Listener para redimensionamiento de ventana
   let resizeTimeout
   window.addEventListener('resize', () => {
     if (resizeTimeout) {
@@ -508,8 +454,7 @@ export default function swiperCarousel() {
       }
     }, 250)
   })
-}
-=======
+
+  // Inicializar
   loadSwiper()
 }
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f

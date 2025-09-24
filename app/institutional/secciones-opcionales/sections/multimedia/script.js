@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // ==========================================
 // SISTEMA DE LOGS CONFIGURABLE
 // ==========================================
@@ -102,49 +101,6 @@ const initializeMultimediaSlider = () => {
           thumbnail: img.src, // Usar la misma imagen como thumbnail
           originalIndex: index
         }
-=======
-export class ImageSliderLogic {
-  constructor(component) {
-    this.component = component
-
-    // Datos para las slides
-    this.slides = [
-      {
-        id: 1,
-        type: 'video',
-        videoUrl: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/multimedia-mp41',
-        title: 'Video 1'
-      },
-      {
-        id: 2,
-        type: 'video',
-        videoUrl: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/multimedia-mp44',
-        title: 'Video 2'
-      },
-      {
-        id: 3,
-        type: 'youtube',
-        youtubeUrl: 'https://www.youtube.com/watch?v=xV8jjDRgSyM',
-        title: 'YouTube Video'
-      },
-      {
-        id: 4,
-        type: 'image',
-        image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-        title: 'Imagen 1'
-      },
-      {
-        id: 5,
-        type: 'image',
-        image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-        title: 'Imagen 2'
-      },
-      {
-        id: 6,
-        type: 'image',
-        image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-        title: 'Imagen 3'
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
       }
     )
 
@@ -238,8 +194,8 @@ export class ImageSliderLogic {
 
     if (item.type === 'image') {
       slide.innerHTML = `
-        <img 
-          src="${item.src}" 
+        <img
+          src="${item.src}"
           alt="${item.title || ''}"
           data-lfr-editable-id="multimedia-main-image-${index}"
           data-lfr-editable-type="image"
@@ -331,8 +287,8 @@ export class ImageSliderLogic {
 
     if (item.type === 'image') {
       slide.innerHTML = `
-        <img 
-          src="${item.thumbnail}" 
+        <img
+          src="${item.thumbnail}"
           alt="${item.title || ''}"
           data-lfr-editable-id="multimedia-thumb-image-${index}"
           data-lfr-editable-type="image"
@@ -340,8 +296,8 @@ export class ImageSliderLogic {
       `
     } else if (item.type === 'youtube') {
       slide.innerHTML = `
-        <img 
-          src="${item.thumbnail}" 
+        <img
+          src="${item.thumbnail}"
           alt="${item.title || ''}"
         />
         <div class="multimedia-slider_video-indicator">VIDEO</div>
@@ -540,7 +496,6 @@ const checkAndInit = () => {
     setTimeout(checkAndInit, 300)
   }
 }
-<<<<<<< HEAD
 
 // Iniciar el proceso
 checkAndInit()
@@ -548,7 +503,7 @@ checkAndInit()
 // ==========================================
 // INSTRUCCIONES DE USO DEL SISTEMA DE LOGS
 // ==========================================
-/* 
+/*
 CONTROL DE LOGS:
 
 1. PARA PRODUCCIÓN:
@@ -562,7 +517,7 @@ CONTROL DE LOGS:
 
 3. TIPOS DE LOGS DISPONIBLES:
    - MultimediaLogger.log() - Información general
-   - MultimediaLogger.info() - Información detallada 
+   - MultimediaLogger.info() - Información detallada
    - MultimediaLogger.warn() - Advertencias
    - MultimediaLogger.error() - Errores
 
@@ -571,5 +526,3 @@ EJEMPLO DE USO EN PRODUCCIÓN:
 - En producción: enabled: false (línea 6)
 - Para debugging en vivo: MultimediaLogger.toggle(true) en consola
 */
-=======
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f

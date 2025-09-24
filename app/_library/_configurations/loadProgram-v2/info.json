@@ -1,0 +1,24 @@
+{
+  "name": "CARGAR INFORMACIÓN DEL PROGRAMA V2",
+  "id": "load-program",
+  "type": "section",
+  "description": "Sistema optimizado para cargar datos de programas académicos con APIs independientes y metadatos organizados",
+  "features": [
+    "Selectores centralizados con FIELD_CONFIGS",
+    "APIs con eventos independientes (data_load-program, data_load-program-all, data_load-program-whatsapp)",
+    "Conversión async/await para mejor legibilidad",
+    "Manejo de errores HTTP 431 con limpieza de cookies",
+    "Metadatos optimizados (head.html y body.html) sin redundancias"
+  ],
+  "modules": {
+    "program-processor.js": "Orquestador principal con configuración centralizada",
+    "api-client.js": "Cliente HTTP con manejo de cookies y procesamiento de datos",
+    "utils.js": "Configuración global y utilidades compartidas"
+  },
+  "metadata": {
+    "head.html": "Tracking scripts consolidados (Google Analytics unificado, Meta Pixel, TikTok Pixel)",
+    "body.html": "Librerías JavaScript organizadas (Swiper, Phosphor Icons, Tailwind, Flowbite)"
+  },
+  "version": "2.1.0",
+  "lastUpdated": "2025-09-23"
+}

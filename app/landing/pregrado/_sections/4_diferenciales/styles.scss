@@ -36,6 +36,13 @@ $mobile-breakpoint: 1024px;
   &__header {
     text-align: center;
     margin-bottom: var(--spacing-xl);
+
+    span {
+      display: inline;
+      color: var(--neutral-200) !important;
+      font-size: var(--font-size-title) !important;
+      font-weight: var(--font-weight-bold) !important;
+    }
   }
 
   &__title {

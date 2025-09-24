@@ -70,8 +70,8 @@ export default function GlobalAssetsViewer() {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 30000)
 
-      const response = await fetch(`/api/global${forceCompile ? '?force=true' : ''}`, {
-        // 📌 DINÁMICO
+      const response = await fetch(`/api/build-modules${forceCompile ? '?force=true' : ''}`, {
+        // 📌 USANDO ESBUILD LIMPIO
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
