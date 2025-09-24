@@ -13,7 +13,7 @@ $req-chart-size-mobile: rem(550px);
 .admission-requirements {
   position: relative;
   width: 100%;
-  padding: var(--spacing-xl) 0;
+  padding: var(--spacing-lg) 0;
   background-color: var(--background-100);
 
   @include dark-theme {
@@ -57,7 +57,7 @@ $req-chart-size-mobile: rem(550px);
   }
 
   &_title {
-    font-size: var(--font-size-principal-title);
+    font-size: var(--font-size-title);
     font-weight: 700;
     line-height: 1.2;
     color: var(--neutral-100);
@@ -67,12 +67,8 @@ $req-chart-size-mobile: rem(550px);
       color: var(--neutral-1000);
     }
 
-    @include responsive($breakpoint-lg) {
-      font-size: var(--font-size-title);
-    }
-
     @include responsive($breakpoint-md) {
-      font-size: var(--font-size-subtitle);
+      font-size: var(--font-size-title);
     }
   }
 
@@ -89,7 +85,7 @@ $req-chart-size-mobile: rem(550px);
     grid-template-areas:
       "chart"
       "content";
-    gap: var(--spacing-xl);
+    gap: var(--spacing-lg);
     align-items: start;
     width: 100%;
     justify-items: center;
@@ -97,7 +93,7 @@ $req-chart-size-mobile: rem(550px);
     @include responsive($breakpoint-lg) {
       grid-template-columns: 1fr 1fr;
       grid-template-areas: "chart content";
-      gap: var(--spacing-2xl);
+      gap: var(--spacing-xl);
       justify-items: start;
     }
   }
@@ -137,6 +133,12 @@ $req-chart-size-mobile: rem(550px);
   &_chart-segment {
     cursor: pointer;
     transition: $req-transition;
+    outline: none;
+
+    &:focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
 
     &:hover:not(.is-active) {
       transform: scale(1.02);
@@ -215,6 +217,12 @@ $req-chart-size-mobile: rem(550px);
     font-family: var(--font-family);
     fill: var(--neutral-100);
     transition: $req-transition;
+    outline: none;
+
+    &:focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
 
     @include dark-theme {
       fill: var(--neutral-1000);
@@ -235,6 +243,12 @@ $req-chart-size-mobile: rem(550px);
     font-family: var(--font-family);
     fill: var(--neutral-100);
     transition: $req-transition;
+    outline: none;
+
+    &:focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
 
     @include dark-theme {
       fill: var(--neutral-1000);
@@ -255,13 +269,13 @@ $req-chart-size-mobile: rem(550px);
   &_content-container {
     grid-area: content;
     position: relative;
-    min-height: $req-chart-size;
+    min-height: rem(400px);
     display: flex;
     align-items: center;
     width: 100%;
 
     @include responsive($breakpoint-lg) {
-      min-height: $req-chart-size;
+      min-height: rem(500px);
     }
   }
 
@@ -294,12 +308,6 @@ $req-chart-size-mobile: rem(550px);
     align-items: center;
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 2px solid var(--neutral-200);
-
-    @include dark-theme {
-      border-bottom-color: var(--neutral-800);
-    }
   }
 
   &_panel-icon {
@@ -361,15 +369,18 @@ $req-chart-size-mobile: rem(550px);
   &_items-list {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
     margin-top: var(--spacing-md);
+    list-style: none;
+    padding: 0;
+    margin-left: 0;
   }
 
   &_list-item {
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-sm);
-    padding: var(--spacing-xs) 0;
+    padding: rem(4px) 0;
   }
 
   &_item-check {
@@ -387,7 +398,7 @@ $req-chart-size-mobile: rem(550px);
   &_item-text {
     flex: 1;
     margin: 0;
-    color: var(--neutral-700);
+    color: var(--neutral-500);
 
     @include dark-theme {
       color: var(--neutral-300);
