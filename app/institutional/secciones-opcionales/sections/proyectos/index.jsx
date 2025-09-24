@@ -1,11 +1,5 @@
 'use client'
-<<<<<<< HEAD
 import React from 'react'
-=======
-import { UniversalComponent as UC, Container } from '@library/components'
-
-import React, { Component } from 'react'
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
 import DetalleProyecto from './components/detalleProyecto'
 
 import script from './script.js'
@@ -58,7 +52,6 @@ const Proyectos = () => {
   // Obtener el slide seleccionado para el modal
   const selectedSlide = carouselManager.selectedSlideIndex !== null ? slides[carouselManager.selectedSlideIndex] : null
 
-<<<<<<< HEAD
   return (
     <section className="hero-carousel" id="carousel-section">
       <div>
@@ -89,165 +82,6 @@ const Proyectos = () => {
                     </Paragraph>
                   </div>
                 </div>
-=======
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize)
-  }
-
-  handleResize = () => {
-    this.setState({ isMobile: window.innerWidth < 768 })
-  }
-
-  nextSlide = () => {
-    const { slides, activeIndex } = this.state
-    const nextIndex = (activeIndex + 1) % slides.length
-    this.setState({
-      activeIndex: nextIndex,
-      selectedSlideIndex: nextIndex
-    })
-  }
-
-  prevSlide = () => {
-    const { slides, activeIndex } = this.state
-    const prevIndex = (activeIndex - 1 + slides.length) % slides.length
-    this.setState({
-      activeIndex: prevIndex,
-      selectedSlideIndex: prevIndex
-    })
-  }
-
-  setActiveSlide = index => {
-    this.setState({ activeIndex: index })
-  }
-
-  openModal = index => {
-    this.setState({ showModal: true, selectedSlideIndex: index })
-  }
-
-  closeModal = () => {
-    this.setState({ showModal: false, selectedSlideIndex: null })
-  }
-
-  handleTouchStart = e => {
-    this.setState({
-      touchStartX: e.targetTouches[0].clientX,
-      touchStartY: e.targetTouches[0].clientY
-    })
-  }
-
-  handleTouchMove = e => {
-    this.setState({
-      touchEndX: e.targetTouches[0].clientX,
-      touchEndY: e.targetTouches[0].clientY
-    })
-  }
-
-  handleTouchEnd = () => {
-    const { touchStartX, touchEndX, touchStartY, touchEndY } = this.state
-    const deltaX = touchStartX - touchEndX
-    const deltaY = Math.abs(touchStartY - touchEndY)
-
-    if (deltaY < 50 && Math.abs(deltaX) > 50) {
-      if (deltaX > 0) {
-        this.nextSlide()
-      } else {
-        this.prevSlide()
-      }
-    }
-  }
-
-  handleSwipeInModal = direction => {
-    if (direction === 'up') {
-      this.nextSlide()
-    } else if (direction === 'down') {
-      this.prevSlide()
-    }
-  }
-
-  render() {
-    const { activeIndex, slides, isMobile, showModal, selectedSlideIndex } = this.state
-    const selectedSlide = selectedSlideIndex !== null ? slides[selectedSlideIndex] : null
-
-    const getPositionClass = index => {
-      if (isMobile) {
-        return index === activeIndex ? 'active' : ''
-      } else {
-        if (index === activeIndex) return 'active left'
-        if (index === (activeIndex + 1) % slides.length) return 'active center'
-        if (index === (activeIndex + 2) % slides.length) return 'active right'
-        return ''
-      }
-    }
-
-    return (
-      <section className='hero-carousel'>
-        <div>
-          <Title className='carousel-title'>
-            <h1>Proyectos</h1>
-          </Title>
-        </div>
-        <Container className='main-container'>
-          <div>
-            <div
-              className='carousel-container'
-              onTouchStart={this.handleTouchStart}
-              onTouchMove={this.handleTouchMove}
-              onTouchEnd={this.handleTouchEnd}>
-              {slides.map((slide, index) => (
-                <div
-                  key={index}
-                  className={`carousel-slide ${getPositionClass(index)}`}
-                  onClick={() => this.openModal(index)}
-                  style={{ cursor: 'pointer' }}>
-                  <div className='slide-image' style={{ backgroundImage: `url(${slide.image})` }}>
-                    <div className='slide-content'>
-                      <h2>{slide.title}</h2>
-                      <Paragraph>
-                        <p>{slide.description}</p>
-                      </Paragraph>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className='carousel-controls'>
-              <button className='carousel-control prev' onClick={this.prevSlide}>
-                <i className='ph ph-arrow-circle-left'></i>
-              </button>
-              <button className='carousel-control next' onClick={this.nextSlide}>
-                <i className='ph ph-arrow-circle-right'></i>
-              </button>
-            </div>
-
-            <div className='carousel-indicators'>
-              {slides.map((_, index) => (
-                <button
-                  key={index}
-                  className={`indicator ${index === activeIndex ? 'active' : ''}`}
-                  onClick={() => this.setActiveSlide(index)}
-                />
-              ))}
-            </div>
-          </div>
-        </Container>
-
-        {showModal && selectedSlide && (
-          <div className='modal-backdrop'>
-            <div className='modal-content'>
-              <button className='modal-close' onClick={this.closeModal}>
-                ×
-              </button>
-              <div className='modal-body'>
-                <DetalleProyecto
-                  proyecto={selectedSlide}
-                  slideData={selectedSlide.slideData}
-                  title={selectedSlide.title}
-                  description={selectedSlide.description}
-                  image={selectedSlide.image}
-                  onSwipe={this.handleSwipeInModal}
-                />
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
               </div>
             ))}
           </div>

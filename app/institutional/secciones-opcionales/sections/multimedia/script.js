@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // ==========================================
 // SISTEMA DE LOGS CONFIGURABLE
 // ==========================================
@@ -102,49 +101,6 @@ const initializeMultimediaSlider = () => {
           thumbnail: img.src, // Usar la misma imagen como thumbnail
           originalIndex: index
         }
-=======
-export class ImageSliderLogic {
-  constructor(component) {
-    this.component = component
-
-    // Datos para las slides
-    this.slides = [
-      {
-        id: 1,
-        type: 'video',
-        videoUrl: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/multimedia-mp41',
-        title: 'Video 1'
-      },
-      {
-        id: 2,
-        type: 'video',
-        videoUrl: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/multimedia-mp44',
-        title: 'Video 2'
-      },
-      {
-        id: 3,
-        type: 'youtube',
-        youtubeUrl: 'https://www.youtube.com/watch?v=xV8jjDRgSyM',
-        title: 'YouTube Video'
-      },
-      {
-        id: 4,
-        type: 'image',
-        image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-        title: 'Imagen 1'
-      },
-      {
-        id: 5,
-        type: 'image',
-        image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-        title: 'Imagen 2'
-      },
-      {
-        id: 6,
-        type: 'image',
-        image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-        title: 'Imagen 3'
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
       }
     )
 
@@ -540,7 +496,6 @@ const checkAndInit = () => {
     setTimeout(checkAndInit, 300)
   }
 }
-<<<<<<< HEAD
 
 // Iniciar el proceso
 checkAndInit()
@@ -571,5 +526,3 @@ EJEMPLO DE USO EN PRODUCCIÓN:
 - En producción: enabled: false (línea 6)
 - Para debugging en vivo: MultimediaLogger.toggle(true) en consola
 */
-=======
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f

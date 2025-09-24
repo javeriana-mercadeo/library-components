@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Script principal del carousel - Compatible con SSR y Liferay
 const createCarouselManager = () => {
   // Verificar si estamos en el cliente
@@ -22,9 +21,6 @@ const createCarouselManager = () => {
     }
   }
 
-=======
-const script = () => {
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
   console.log('Script de Proyectos inicializado')
   
   const state = {

@@ -98,7 +98,6 @@
   overflow: hidden;
 }
 
-<<<<<<< HEAD
 .student-info h3 {
   font-size: var(--font-size-small);  
   font-weight: var(--font-weight-bold);
@@ -174,12 +173,6 @@
   .slider-content {
     min-height: rem(288px);
     padding: 0 rem(32px);
-=======
-  h3 {
-    font-size: var(--font-size-subtitle);
-    font-weight: var(--font-weight-bold);
-    margin: 0 0 rem(5px);
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
   }
   .slider-cards {
     min-height: rem(256px);
@@ -379,40 +372,7 @@
 	.ph.ph-arrow-circle-left:before {
     font-weight: 100;
 }
-<<<<<<< HEAD
 	
-=======
-
-@media (min-width: 768px) {
-  .slider-cards {
-    min-height: rem(350px);
-  }
-
-  .student-card {
-    transform: translateX(-50%) scale(0.8);
-    opacity: 0.6;
-    transition:
-      transform 0.5s ease,
-      opacity 0.5s ease;
-
-    &.active {
-      transform: translateX(-50%) scale(1);
-      opacity: 1;
-    }
-
-    &.prev {
-      transform: translateX(-170%) scale(0.8);
-      opacity: 0.6;
-      z-index: 1;
-    }
-
-    &.next {
-      transform: translateX(70%) scale(0.8);
-      opacity: 0.6;
-      z-index: 1;
-    }
-  }
->>>>>>> 2d8d35b1ac780cae4c25b45686a49a08060ebc9f
 }
 
 @media (min-width: 992px) {
