@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { Container, Caption, Title, Paragraph } from '@library/components'
 
-import script from './script.js'
+import initAdmissionRequirements from './script.js'
 import info from './info.json'
 import './styles.scss'
 
@@ -13,7 +13,12 @@ const RequisitosPregrado = () => {
 
   // Inicializar script cuando el componente se monta
   useEffect(() => {
-    script()
+    // Pequeño delay para asegurar que el DOM esté completamente renderizado
+    const timer = setTimeout(() => {
+      initAdmissionRequirements()
+    }, 100)
+
+    return () => clearTimeout(timer)
   }, [])
 
   // Datos de los requisitos de admisión
@@ -22,29 +27,29 @@ const RequisitosPregrado = () => {
       id: 'actitud',
       title: 'ACTITUD',
       percentage: 50,
-      icon: 'ph-heart',
+      icon: 'ph ph-user-circle-plus',
       color: 'primary',
       items: ['Entrevista personal', 'Manejo de situaciones', 'Relaciones interpersonales', 'Sensibilidad social', 'Motivación']
     },
     {
       id: 'conocimiento',
       title: 'CONOCIMIENTO',
-      percentage: 30,
-      icon: 'ph-book-open',
-      color: 'primary',
+      percentage: 40,
+      icon: 'ph ph-brain',
+      color: 'secondary',
       items: [
-        'Ensayo sobre conocimientos en derecho y economía'
+        'Ensayo sobre conocimientos en derecho y economía',
+        'Evaluación de competencias académicas',
+        'Comprensión de lectura especializada'
       ]
     },
     {
       id: 'habilidad',
       title: 'HABILIDAD',
-      percentage: 20,
-      icon: 'ph-lightning-slash',
-      color: 'primary',
-      items: [
-        'Ensayo sobre conocimientos en derecho y economía'
-      ]
+      percentage: 10,
+      icon: 'ph ph-atom',
+      color: 'tertiary',
+      items: ['Pensamiento lógico-matemático', 'Composición escrita', 'Comprensión de lectura', 'Análisis crítico']
     }
   ]
 
@@ -53,76 +58,160 @@ const RequisitosPregrado = () => {
       <Container id={elementName} className={`${baseClass}_container`}>
         {/* === HEADER === */}
         <div className={`${baseClass}_header`}>
-          <div className={`${baseClass}_header-icon`}>
-            <i className="ph ph-chart-pie"></i>
-          </div>
-          <div className={`${baseClass}_header-content`}>
-            <Title hierarchy='h2' className={`${baseClass}_title`}>
-              Requisitos de Admisión
-            </Title>
-            <Caption className={`${baseClass}_subtitle`} size='lg' color='neutral'>
-              Programa de Pregrado
-            </Caption>
-          </div>
+          <Title hierarchy='h2' size='2xl' weight='bold' className={`${baseClass}_title`} color='neutral' isEditable={false}>
+            Requisitos de Admisión
+          </Title>
         </div>
 
-        {/* === REQUIREMENTS SECTIONS === */}
-        <div className={`${baseClass}_sections`}>
-          {/* Accordion Lists */}
-          <div className={`${baseClass}_accordion-container`}>
-            {requirements.map(requirement => (
-              <div key={requirement.id} className={`${baseClass}_accordion-item`} data-requirement={requirement.id}>
-                <div className={`${baseClass}_accordion-header`}>
-                  <div className={`${baseClass}_accordion-icon`}>
+        {/* === MAIN CONTENT - TWO COLUMNS === */}
+        <div className={`${baseClass}_main-content`}>
+          {/* === LEFT COLUMN - CIRCULAR CHART === */}
+          <div className={`${baseClass}_chart-container`}>
+            <div className={`${baseClass}_chart-wrapper`}>
+              <svg className={`${baseClass}_chart`} viewBox='0 0 800 800' width='800' height='800'>
+                {/* Chart segments */}
+                {requirements.map((requirement, index) => {
+                  let startAngle = 0
+                  for (let i = 0; i < index; i++) {
+                    startAngle += requirements[i].percentage * 3.6 // Convert percentage to degrees
+                  }
+                  const endAngle = startAngle + requirement.percentage * 3.6
+
+                  // Calculate path for each segment
+                  const radius = 240
+                  const centerX = 400
+                  const centerY = 400
+
+                  const startAngleRad = (startAngle - 90) * (Math.PI / 180)
+                  const endAngleRad = (endAngle - 90) * (Math.PI / 180)
+
+                  const x1 = centerX + radius * Math.cos(startAngleRad)
+                  const y1 = centerY + radius * Math.sin(startAngleRad)
+                  const x2 = centerX + radius * Math.cos(endAngleRad)
+                  const y2 = centerY + radius * Math.sin(endAngleRad)
+
+                  const largeArcFlag = requirement.percentage > 50 ? 1 : 0
+
+                  const pathData = [
+                    `M ${centerX} ${centerY}`,
+                    `L ${x1} ${y1}`,
+                    `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
+                    'Z'
+                  ].join(' ')
+
+                  return (
+                    <g key={requirement.id}>
+                      <path
+                        d={pathData}
+                        className={`${baseClass}_chart-segment ${baseClass}_chart-segment--${requirement.color}`}
+                        data-requirement={requirement.id}
+                        data-percentage={requirement.percentage}
+                      />
+                    </g>
+                  )
+                })}
+
+                {/* Center circle */}
+                <circle cx='400' cy='400' r='120' className={`${baseClass}_chart-center`} />
+
+                {/* Center text */}
+                <text x='400' y='395' textAnchor='middle' className={`${baseClass}_chart-total-label`}>
+                  Total
+                </text>
+                <text x='400' y='415' textAnchor='middle' className={`${baseClass}_chart-total-value`}>
+                  100%
+                </text>
+
+                {/* Chart Labels dentro del SVG */}
+                {requirements.map((requirement, index) => {
+                  // Calcular posición de cada label dentro del segmento
+                  let startAngle = 0
+                  for (let i = 0; i < index; i++) {
+                    startAngle += requirements[i].percentage * 3.6
+                  }
+                  const segmentAngle = requirement.percentage * 3.6
+                  const midAngle = startAngle + segmentAngle / 2 - 90 // -90 para empezar desde arriba
+
+                  // Convertir a radianes
+                  const midAngleRad = midAngle * (Math.PI / 180)
+
+                  // Radio para posicionar los labels dentro del segmento
+                  const labelRadius = 180 // Más cerca del centro, dentro del segmento
+                  const centerX = 400
+                  const centerY = 400
+
+                  // Calcular posición del label
+                  const labelX = centerX + labelRadius * Math.cos(midAngleRad)
+                  const labelY = centerY + labelRadius * Math.sin(midAngleRad)
+
+                  return (
+                    <g key={`label-${requirement.id}`}>
+                      {/* Texto del porcentaje */}
+                      <text
+                        x={labelX}
+                        y={labelY - 5}
+                        textAnchor='middle'
+                        className={`${baseClass}_chart-label-percentage`}
+                        data-requirement={requirement.id}
+                        style={{ cursor: 'pointer' }}>
+                        {requirement.percentage}%
+                      </text>
+
+                      {/* Texto del título */}
+                      <text
+                        x={labelX}
+                        y={labelY + 10}
+                        textAnchor='middle'
+                        className={`${baseClass}_chart-label-title`}
+                        data-requirement={requirement.id}
+                        style={{ cursor: 'pointer' }}>
+                        {requirement.title}
+                      </text>
+                    </g>
+                  )
+                })}
+              </svg>
+            </div>
+          </div>
+
+          {/* === RIGHT COLUMN - CONTENT PANELS === */}
+          <div className={`${baseClass}_content-container`}>
+            {requirements.map((requirement, index) => (
+              <div
+                key={requirement.id}
+                className={`${baseClass}_content-panel ${index === 0 ? 'is-active' : ''}`}
+                data-requirement={requirement.id}
+                data-content-panel={requirement.id}>
+                <div className={`${baseClass}_panel-header`}>
+                  <div className={`${baseClass}_panel-icon ${baseClass}_panel-icon--${requirement.color}`}>
                     <i className={requirement.icon}></i>
                   </div>
-                  <Title hierarchy='h3' className={`${baseClass}_accordion-title`}>
-                    {requirement.title}
-                  </Title>
-                  <div className={`${baseClass}_accordion-percentage`}>{requirement.percentage}%</div>
-                  <div className={`${baseClass}_accordion-toggle`}>
-                    <i className='ph ph-caret-down'></i>
+                  <div className={`${baseClass}_panel-title`}>
+                    <Title hierarchy='h3' className={`${baseClass}_panel-main-title`}>
+                      {requirement.title}
+                    </Title>
+                    <Caption color='neutral' size='md' className={`${baseClass}_panel-subtitle`}>
+                      {requirement.percentage}% del proceso de evaluación
+                    </Caption>
                   </div>
                 </div>
 
-                {/* Section Content */}
-                <div className={`${baseClass}_section-content`}>
-                  <div className={`${baseClass}_items-grid`}>
+                <div className={`${baseClass}_panel-content`}>
+                  <ul className={`${baseClass}_items-list`}>
                     {requirement.items.map((item, itemIndex) => (
-                      <div key={itemIndex} className={`${baseClass}_item`}>
+                      <li key={itemIndex} className={`${baseClass}_list-item`}>
                         <div className={`${baseClass}_item-check`}>
-                          <i className="ph ph-check"></i>
+                          <i className='ph ph-check'></i>
                         </div>
-                        <Paragraph
-                          className={`${baseClass}_item-text`}
-                          size='sm'
-                          isEditable={false}
-                        >
+                        <span className={`${baseClass}_item-text`}>
                           {item}
-                        </Paragraph>
-                      </div>
+                        </span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* === FOOTER INFO === */}
-        <div className={`${baseClass}_footer`}>
-          <div className={`${baseClass}_info-card`}>
-            <div className={`${baseClass}_info-icon`}>
-              <i className="ph ph-info"></i>
-            </div>
-            <div className={`${baseClass}_info-content`}>
-              <Caption className={`${baseClass}_info-title`} size='md' bold={true}>
-                Paso 3 del proceso de admisión
-              </Caption>
-              <Paragraph className={`${baseClass}_info-text`} size='sm' color='neutral'>
-                Ingresa nuevamente a tu cuenta, agenda y completa las actividades del proceso de admisión.
-              </Paragraph>
-            </div>
           </div>
         </div>
       </Container>
