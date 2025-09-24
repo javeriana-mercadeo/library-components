@@ -81,19 +81,19 @@
   max-height: rem(89.6px);
   overflow: hidden;
 
-.student-info h3 {
-  font-size: var(--font-size-small);
-  font-weight: var(--font-weight-bold);
-  margin-bottom: rem(1.6px);
-  line-height: 1.2;
-  hyphens: auto;
-  word-wrap: break-word;
-  flex-shrink: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  height: auto;
-}
+  .student-info h3 {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: rem(1.6px);
+    line-height: 1.2;
+    hyphens: auto;
+    word-wrap: break-word;
+    flex-shrink: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: auto;
+  }
 
   p {
     font-size: var(--font-size-small);
@@ -429,15 +429,14 @@
   .carousel-controlsE .carousel-controlE i {
     font-size: rem(32px);
     line-height: 1;
-		font-weight: 100;
+    font-weight: 100;
   }
-	.ph.ph-arrow-circle-right:before {
+  .ph.ph-arrow-circle-right:before {
     font-weight: 100;
-}
-	.ph.ph-arrow-circle-left:before {
+  }
+  .ph.ph-arrow-circle-left:before {
     font-weight: 100;
-}
-
+  }
 }
 
 // Desktop - 992px

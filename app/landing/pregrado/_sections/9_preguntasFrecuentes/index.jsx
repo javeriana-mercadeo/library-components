@@ -49,7 +49,7 @@ const PreguntasFrecuentes = () => {
                 </div>
 
                 {/* Contenido dinámico cargado desde la API */}
-                <div data-puj-requirements="true"></div>
+                <div data-puj-requirements='true'></div>
               </div>
             </div>
           </div>
