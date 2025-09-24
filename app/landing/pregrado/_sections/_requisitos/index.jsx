@@ -70,17 +70,9 @@ const RequisitosPregrado = () => {
 
         {/* === HEADER === */}
         <div className={`${baseClass}_header`}>
-          <div className={`${baseClass}_header-icon`}>
-            <i className="ph ph-chart-pie"></i>
-          </div>
-          <div className={`${baseClass}_header-content`}>
-            <Title hierarchy='h2' className={`${baseClass}_title`}>
-              Requisitos de Admisión
-            </Title>
-            <Caption className={`${baseClass}_subtitle`} size='lg' color='neutral'>
-              Programa de Pregrado
-            </Caption>
-          </div>
+          <Title hierarchy='h2' className={`${baseClass}_title`}>
+            Requisitos de Admisión
+          </Title>
         </div>
 
         {/* === MAIN CONTENT - TWO COLUMNS === */}

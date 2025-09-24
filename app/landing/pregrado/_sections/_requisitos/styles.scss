@@ -371,12 +371,10 @@ $req-chart-size-mobile: rem(550px);
     padding: var(--spacing-md) var(--spacing-lg);
     background: var(--neutral-50);
     border-radius: rem(12px);
-    border-left: rem(4px) solid var(--primary-200);
     transition: $req-transition;
 
     @include dark-theme {
       background: var(--neutral-950);
-      border-left-color: var(--primary-800);
     }
 
     &:hover {
@@ -390,18 +388,6 @@ $req-chart-size-mobile: rem(550px);
       }
     }
 
-    // Color variants based on active panel
-    .admission-requirements_content-panel[data-requirement="actitud"].is-active & {
-      border-left-color: var(--primary-600);
-    }
-
-    .admission-requirements_content-panel[data-requirement="conocimiento"].is-active & {
-      border-left-color: var(--secondary-600);
-    }
-
-    .admission-requirements_content-panel[data-requirement="habilidad"].is-active & {
-      border-left-color: var(--tertiary-600);
-    }
   }
 
   &_item-check {
@@ -445,13 +431,11 @@ $req-chart-size-mobile: rem(550px);
     gap: var(--spacing-md);
     padding: var(--spacing-lg);
     background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
-    border: 1px solid var(--primary-200);
     border-radius: rem(12px);
     max-width: rem(500px);
 
     @include dark-theme {
       background: linear-gradient(135deg, var(--primary-950), var(--primary-900));
-      border-color: var(--primary-800);
     }
 
     @include responsive($breakpoint-md) {
