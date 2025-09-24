@@ -175,13 +175,12 @@ $req-chart-size-mobile: rem(550px);
   }
 
   &_chart-center {
-    fill: var(--neutral-50);
-    stroke: var(--neutral-200);
-    stroke-width: 2;
+    fill: var(--background-100);
+    stroke: none;
 
     @include dark-theme {
-      fill: var(--neutral-950);
-      stroke: var(--neutral-800);
+      fill: var(--background-200);
+      stroke: none;
     }
   }
 
