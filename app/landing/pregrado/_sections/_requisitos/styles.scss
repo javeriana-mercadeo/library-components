@@ -21,7 +21,8 @@ $req-chart-size-mobile: rem(550px);
   }
 
   &_container {
-    max-width: rem(1200px);
+    max-width: rem(1600px);
+    width: 100%;
   }
 
   // ==========================================
@@ -29,10 +30,29 @@ $req-chart-size-mobile: rem(550px);
   // ==========================================
   &_header {
     text-align: center;
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-2xl);
 
     @include responsive($breakpoint-md) {
-      margin-bottom: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+  }
+
+  &_header-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(64px);
+    height: rem(64px);
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    border-radius: rem(16px);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-title);
+    color: var(--neutral-100);
+
+    @include responsive($breakpoint-md) {
+      width: rem(48px);
+      height: rem(48px);
+      font-size: var(--font-size-subtitle);
     }
   }
 
@@ -56,32 +76,48 @@ $req-chart-size-mobile: rem(550px);
     }
   }
 
+  &_subtitle {
+    margin-top: var(--spacing-xs);
+  }
+
   // ==========================================
-  // CIRCULAR CHART CONTAINER - TWO COLUMN LAYOUT
+  // MAIN CONTENT - TWO COLUMNS LAYOUT
   // ==========================================
-  &_chart-container {
+  &_main-content {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas:
       "chart"
-      "tabs";
+      "content";
     gap: var(--spacing-xl);
     align-items: start;
+    width: 100%;
+    justify-items: center;
 
     @include responsive($breakpoint-lg) {
       grid-template-columns: 1fr 1fr;
-      grid-template-areas: "chart tabs";
+      grid-template-areas: "chart content";
       gap: var(--spacing-2xl);
-      align-items: center;
+      justify-items: start;
     }
   }
 
-  &_chart-wrapper {
+  // ==========================================
+  // LEFT COLUMN - CIRCULAR CHART
+  // ==========================================
+  &_chart-container {
     grid-area: chart;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  &_chart-wrapper {
     position: relative;
     width: $req-chart-size;
     height: $req-chart-size;
-    justify-self: center;
+    max-width: 100%;
 
     @include responsive($breakpoint-md) {
       width: $req-chart-size-mobile;
@@ -89,64 +125,64 @@ $req-chart-size-mobile: rem(550px);
     }
   }
 
-  // ==========================================
-  // SVG CHART
-  // ==========================================
   &_chart {
     width: 100%;
     height: 100%;
     display: block;
   }
 
-  &_progress-bar {
-    flex: 1;
-    height: $req-progress-height;
-    background: rgba(var(--neutral-500-rgb), 0.2);
-    border-radius: rem(4px);
-    overflow: hidden;
-    position: relative;
+  // ==========================================
+  // CHART SEGMENTS
+  // ==========================================
+  &_chart-segment {
+    cursor: pointer;
+    transition: $req-transition;
 
-    @include dark-theme {
-      background: rgba(var(--neutral-700-rgb), 0.3);
+    &:hover {
+      transform: scale(1.02);
+      transform-origin: center;
     }
 
-    // En columnas, hacer las barras más gruesas y darles ancho completo
-    @include responsive($breakpoint-lg) {
-      height: rem(12px);
-      width: 100%;
-      flex: none;
+    &.is-active {
+      transform: scale(1.03);
+      filter: brightness(1.1);
+    }
+
+    // Color variants
+    &--primary {
+      fill: var(--primary-600);
+
+      &:hover {
+        fill: var(--primary-500);
+      }
+    }
+
+    &--secondary {
+      fill: var(--secondary-600);
+
+      &:hover {
+        fill: var(--secondary-500);
+      }
+    }
+
+    &--tertiary {
+      fill: var(--tertiary-600);
+
+      &:hover {
+        fill: var(--tertiary-500);
+      }
     }
   }
 
-  &_progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary-500) 0%, var(--primary-600) 100%);
-    border-radius: rem(4px);
-    transition: transform $req-progress-animation-duration ease-out;
-    transform: scaleX(0);
-    transform-origin: left;
-    position: relative;
-    overflow: hidden;
+  &_chart-center {
+    fill: var(--neutral-50);
+    stroke: var(--neutral-200);
+    stroke-width: 2;
 
-    // Animated shine effect
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.4),
-        transparent
-      );
-      animation: shine 3s infinite;
+    @include dark-theme {
+      fill: var(--neutral-950);
+      stroke: var(--neutral-800);
     }
-
-    // Color primary para todas las progress bars
-    background: linear-gradient(90deg, var(--primary-500) 0%, var(--primary-600) 100%);
   }
 
   &_chart-total-label {
@@ -211,168 +247,157 @@ $req-chart-size-mobile: rem(550px);
   }
 
   // ==========================================
-  // TABS CONTAINER
+  // RIGHT COLUMN - CONTENT CONTAINER
   // ==========================================
-  &_tabs-container {
-    grid-area: tabs;
-    width: 100%;
-    max-width: rem(800px);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-  }
-
-  // ==========================================
-  // TABS HEADER
-  // ==========================================
-  &_tabs-header {
-    display: flex;
-    border-bottom: 2px solid var(--neutral-300);
-
-    @include dark-theme {
-      border-bottom-color: var(--neutral-700);
-    }
-  }
-
-  &_tab-button {
-    flex: 1;
+  &_content-container {
+    grid-area: content;
+    position: relative;
+    min-height: $req-chart-size;
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-md) var(--spacing-lg);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    transition: $req-transition;
-    border-bottom: 3px solid transparent;
-    position: relative;
+    width: 100%;
 
-    &:hover {
-      background: var(--neutral-200);
-
-      @include dark-theme {
-        background: var(--neutral-800);
-      }
-    }
-
-    &.is-active {
-      background: var(--neutral-100);
-      border-bottom-color: var(--primary-600);
-
-      @include dark-theme {
-        background: var(--neutral-900);
-      }
-    }
-
-    @include responsive($breakpoint-md) {
-      flex-direction: column;
-      text-align: center;
-      gap: var(--spacing-xs);
+    @include responsive($breakpoint-lg) {
+      min-height: $req-chart-size;
     }
   }
 
-  &_tab-icon {
+  // ==========================================
+  // CONTENT PANELS
+  // ==========================================
+  &_content-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(rem(20px));
+    transition: all 0.4s ease;
+
+    &.is-active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    @include responsive($breakpoint-lg) {
+      position: absolute;
+    }
+  }
+
+  &_panel-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--neutral-200);
+
+    @include dark-theme {
+      border-bottom-color: var(--neutral-800);
+    }
+  }
+
+  &_panel-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: rem(40px);
-    height: rem(40px);
-    border-radius: rem(6px);
-    font-size: var(--font-size-caption);
+    width: rem(64px);
+    height: rem(64px);
+    border-radius: rem(16px);
+    font-size: var(--font-size-title);
     flex-shrink: 0;
 
-    .admission-requirements_tab-button[data-requirement="actitud"] & {
+    &--primary {
       background: rgba(var(--primary-600-rgb), 0.1);
       color: var(--primary-600);
     }
 
-    .admission-requirements_tab-button[data-requirement="conocimiento"] & {
+    &--secondary {
       background: rgba(var(--secondary-600-rgb), 0.1);
       color: var(--secondary-600);
     }
 
-    .admission-requirements_tab-button[data-requirement="habilidad"] & {
-      background: rgba(var(--success-600-rgb), 0.1);
-      color: var(--success-600);
+    &--tertiary {
+      background: rgba(var(--tertiary-600-rgb), 0.1);
+      color: var(--tertiary-600);
     }
 
     @include responsive($breakpoint-md) {
-      width: rem(32px);
-      height: rem(32px);
-      font-size: var(--font-size-paragraph);
+      width: rem(48px);
+      height: rem(48px);
+      font-size: var(--font-size-subtitle);
     }
   }
 
-  &_tab-title {
-    font-size: var(--font-size-caption);
-    font-weight: 600;
+  &_panel-title {
+    flex: 1;
+  }
+
+  &_panel-main-title {
+    margin: 0 0 var(--spacing-xs) 0;
     color: var(--neutral-800);
 
     @include dark-theme {
       color: var(--neutral-200);
     }
-
-    @include responsive($breakpoint-md) {
-      font-size: var(--font-size-paragraph);
-    }
   }
 
-  &_tab-percentage {
-    font-size: var(--font-size-paragraph);
-    font-weight: 700;
-    color: var(--neutral-600);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background: var(--neutral-200);
-    border-radius: rem(4px);
-    margin-left: auto;
+  &_panel-subtitle {
+    margin: 0;
+  }
 
-    @include dark-theme {
-      background: var(--neutral-800);
-      color: var(--neutral-400);
-    }
-
-    @include responsive($breakpoint-md) {
-      margin-left: 0;
-      font-size: var(--font-size-small);
-    }
+  &_panel-content {
+    max-width: rem(600px);
   }
 
   // ==========================================
-  // TABS CONTENT
+  // ITEMS LIST
   // ==========================================
-  &_tabs-content {
-    position: relative;
-    min-height: rem(200px);
-  }
-
-  &_tab-panel {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-
-    &.is-active {
-      display: block;
-      opacity: 1;
-    }
-  }
-
-  &_tab-items {
+  &_items-list {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
   }
 
-  &_tab-list-item {
+  &_list-item {
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-md);
-    padding: var(--spacing-md);
-    background: var(--neutral-100);
-    border-radius: rem(8px);
-    border-left: 4px solid var(--primary-600);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--neutral-50);
+    border-radius: rem(12px);
+    border-left: rem(4px) solid var(--primary-200);
+    transition: $req-transition;
 
     @include dark-theme {
-      background: var(--neutral-900);
+      background: var(--neutral-950);
+      border-left-color: var(--primary-800);
+    }
+
+    &:hover {
+      background: var(--neutral-100);
+      transform: translateX(rem(4px));
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+      @include dark-theme {
+        background: var(--neutral-900);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    // Color variants based on active panel
+    .admission-requirements_content-panel[data-requirement="actitud"].is-active & {
+      border-left-color: var(--primary-600);
+    }
+
+    .admission-requirements_content-panel[data-requirement="conocimiento"].is-active & {
+      border-left-color: var(--secondary-600);
+    }
+
+    .admission-requirements_content-panel[data-requirement="habilidad"].is-active & {
+      border-left-color: var(--tertiary-600);
     }
   }
 
@@ -380,20 +405,18 @@ $req-chart-size-mobile: rem(550px);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: rem(20px);
-    height: rem(20px);
-    color: var(--primary-600);
+    width: rem(24px);
+    height: rem(24px);
+    border-radius: rem(6px);
+    background: var(--success-500);
+    color: var(--neutral-100);
     font-size: var(--font-size-xs);
     flex-shrink: 0;
     margin-top: rem(2px);
-
-    @include dark-theme {
-      color: var(--primary-400);
-    }
   }
 
   &_item-text {
-    flex-grow: 1;
+    flex: 1;
     margin: 0;
     color: var(--neutral-700);
     line-height: 1.5;
@@ -402,4 +425,102 @@ $req-chart-size-mobile: rem(550px);
       color: var(--neutral-300);
     }
   }
+
+  // ==========================================
+  // FOOTER
+  // ==========================================
+  &_footer {
+    margin-top: var(--spacing-2xl);
+    text-align: center;
+  }
+
+  &_info-card {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+    border: 1px solid var(--primary-200);
+    border-radius: rem(12px);
+    max-width: rem(500px);
+
+    @include dark-theme {
+      background: linear-gradient(135deg, var(--primary-950), var(--primary-900));
+      border-color: var(--primary-800);
+    }
+
+    @include responsive($breakpoint-md) {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  &_info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(40px);
+    height: rem(40px);
+    background: var(--primary-600);
+    color: var(--neutral-100);
+    border-radius: rem(8px);
+    font-size: var(--font-size-caption);
+    flex-shrink: 0;
+  }
+
+  &_info-content {
+    flex: 1;
+    text-align: left;
+
+    @include responsive($breakpoint-md) {
+      text-align: center;
+    }
+  }
+
+  &_info-title {
+    margin: 0 0 var(--spacing-xs) 0;
+    color: var(--primary-700);
+
+    @include dark-theme {
+      color: var(--primary-300);
+    }
+  }
+
+  &_info-text {
+    margin: 0;
+  }
+}
+
+// ==========================================
+// ANIMATIONS
+// ==========================================
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(rem(30px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes chartSegmentActive {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1.03);
+  }
+}
+
+.admission-requirements_content-panel.is-active {
+  animation: fadeInSlideUp 0.4s ease-out;
+}
+
+.admission-requirements_chart-segment.is-active {
+  animation: chartSegmentActive 0.3s ease-out;
 }
