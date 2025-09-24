@@ -220,8 +220,8 @@ const createCarouselManager = () => {
             ${projectData.imagenes
               .map(
                 (src, index) => `
-              <img 
-                src="${src}" 
+              <img
+                src="${src}"
                 alt="${projectData.titulo} - Imagen ${index + 1}"
                 style="width: 100%; margin-bottom: 1rem; object-fit: cover; pointer-events: none;"
               />

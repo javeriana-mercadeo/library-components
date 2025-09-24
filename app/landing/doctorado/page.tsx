@@ -9,6 +9,8 @@ import Load from '@/components/load/load'
 
 const Header = dynamic(() => import('@library/components/header'), { ssr: false, loading: () => <Load /> })
 const VideoDoctorado = dynamic(() => import('./sections/videoDoctorado'), { ssr: false, loading: () => <Load /> })
+const DocentesDoctorado = dynamic(() => import('./sections/docentesDoctorado'), { ssr: false, loading: () => <Load /> })
+const QueAprenderas = dynamic(() => import('./sections/queAprenderas'), { ssr: false, loading: () => <Load /> })
 const Investigaciones = dynamic(() => import('./sections/investigaciones'), { ssr: false, loading: () => <Load /> })
 const RedesSociales = dynamic(() => import('./sections/redesSociales'), { ssr: false, loading: () => <Load /> })
 const Snies = dynamic(() => import('./sections/Snies'), { ssr: false, loading: () => <Load /> })
@@ -25,9 +27,18 @@ export default function Doctorado() {
       </ViewComponent> */}
 
       {/* <VideoDoctorado /> */}
-      {/* <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
+      <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
         <VideoDoctorado />
-      </ViewComponent> */}
+      </ViewComponent>
+
+      {/* <DocentesDoctorado /> */}
+      <ViewComponent path={`${basePath}/sections/docentesDoctorado`}>
+        <DocentesDoctorado />
+      </ViewComponent>
+
+      <ViewComponent path={`${basePath}/sections/queAprenderas`}>
+        <QueAprenderas />
+      </ViewComponent>
 
       {/* <Investigaciones /> */}
       <ViewComponent path={`${basePath}/sections/investigaciones`}>

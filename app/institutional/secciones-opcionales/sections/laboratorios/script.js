@@ -683,4 +683,4 @@
   }
 
   // ✅ CORREGIDO: No return innecesario
-})()
+})();

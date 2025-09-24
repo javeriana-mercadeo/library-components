@@ -81,19 +81,19 @@
   max-height: rem(89.6px);
   overflow: hidden;
 
-  h3 {
-    font-size: var(--font-size-small);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: rem(1.6px);
-    line-height: 1.2;
-    hyphens: auto;
-    word-wrap: break-word;
-    flex-shrink: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    height: auto;
-  }
+.student-info h3 {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: rem(1.6px);
+  line-height: 1.2;
+  hyphens: auto;
+  word-wrap: break-word;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: auto;
+}
 
   p {
     font-size: var(--font-size-small);
@@ -377,12 +377,10 @@
     min-height: rem(163.2px);
     max-height: rem(163.2px);
     border-radius: rem(35.2px);
-
-    img {
-      border-radius: rem(35.2px);
-    }
   }
-
+  .student-image img {
+    border-radius: rem(35.2px);
+  }
   .student-info {
     height: 40%;
     min-height: rem(108.8px);
@@ -391,11 +389,10 @@
     gap: rem(8px);
     justify-content: space-between;
     border-radius: rem(35.2px);
-
-    .company-logo {
-      height: rem(17.6px);
-      max-height: rem(17.6px);
-    }
+  }
+  .student-info .company-logo {
+    height: rem(17.6px);
+    max-height: rem(17.6px);
   }
 
   .carousel-controlsE {
@@ -409,6 +406,38 @@
     padding: 0 rem(10px);
     pointer-events: none;
   }
+  .carousel-controlsE .carousel-controlE {
+    pointer-events: all;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--primary);
+    width: rem(40px);
+    height: rem(40px);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 rem(2px) rem(10px) rgba(0, 0, 0, 0.15);
+  }
+  .carousel-controlsE .carousel-controlE:hover {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.1);
+  }
+  .carousel-controlsE .carousel-controlE i {
+    font-size: rem(32px);
+    line-height: 1;
+		font-weight: 100;
+  }
+	.ph.ph-arrow-circle-right:before {
+    font-weight: 100;
+}
+	.ph.ph-arrow-circle-left:before {
+    font-weight: 100;
+}
+
 }
 
 // Desktop - 992px
