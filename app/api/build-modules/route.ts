@@ -2,7 +2,8 @@ import { promises as fs } from 'fs'
 import path from 'path'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { build } from 'esbuild'
+// Importación dinámica para evitar problemas con Next.js
+// import { build } from 'esbuild'
 import * as sass from 'sass'
 
 // 📌 CONFIGURACIÓN
@@ -422,7 +423,9 @@ export async function GET(req: NextRequest) {
 
       if (jsExists) {
         try {
-          const result = await build({
+          // Importación dinámica de esbuild
+          const esbuild = await import('esbuild')
+          const result = await esbuild.build({
             entryPoints: [jsPath],
             bundle: true,
             write: false,

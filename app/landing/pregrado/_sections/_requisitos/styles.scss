@@ -85,8 +85,8 @@ $req-progress-animation-duration: 0.8s;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas:
-      "chart"
-      "content";
+      'chart'
+      'content';
     gap: var(--spacing-lg);
     align-items: start;
     width: 100%;
@@ -94,7 +94,7 @@ $req-progress-animation-duration: 0.8s;
 
     @include responsive($breakpoint-lg) {
       grid-template-columns: 1fr 1fr;
-      grid-template-areas: "chart content";
+      grid-template-areas: 'chart content';
       gap: var(--spacing-xl);
       justify-items: start;
     }
@@ -406,7 +406,6 @@ $req-progress-animation-duration: 0.8s;
       color: var(--neutral-300);
     }
   }
-
 }
 
 // ==========================================

@@ -16,6 +16,15 @@ const nextConfig = {
       '@styles': './styles'
     }
 
+    // Excluir archivos problemáticos de esbuild
+    config.module.rules.push({
+      test: /\.(exe|md)$/,
+      type: 'asset/resource',
+      generator: {
+        emit: false
+      }
+    })
+
     // Solo aplicar externals en el servidor para evitar conflictos de configuración
     if (isServer) {
       config.externals = config.externals || []

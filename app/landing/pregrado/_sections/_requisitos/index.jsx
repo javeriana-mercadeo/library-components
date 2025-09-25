@@ -203,9 +203,7 @@ const RequisitosPregrado = () => {
                         <div className={`${baseClass}_item-check`}>
                           <i className='ph ph-check'></i>
                         </div>
-                        <span className={`${baseClass}_item-text`}>
-                          {item}
-                        </span>
+                        <span className={`${baseClass}_item-text`}>{item}</span>
                       </li>
                     ))}
                   </ul>

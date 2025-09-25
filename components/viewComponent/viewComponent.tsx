@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import {
   Button,
@@ -72,6 +72,18 @@ export default function ViewComponent({ path, children }: { path?: string; child
   const jsPages = useMemo(() => createPages(jsContent), [jsContent])
   const configPages = useMemo(() => createPages(configContent), [configContent])
 
+  // Reset states when path changes
+  useEffect(() => {
+    setCodeLoaded(false)
+    setHtmlContent('')
+    setCssContent('')
+    setJsContent('')
+    setConfigContent('')
+    setActiveCodeTab('')
+    setIsLoading(false)
+    setInfo(null)
+  }, [path])
+
   // Cargar solo la información básica al montar (solo si hay path válido)
   useEffect(() => {
     if (!path || path.trim() === '') return
@@ -100,10 +112,18 @@ export default function ViewComponent({ path, children }: { path?: string; child
     }
   }, [path])
 
-  // Función para cargar y procesar todo el código con manejo mejorado de memoria
-  const loadAndProcessCode = async () => {
-    if (codeLoaded) return
+  // Función para cargar y procesar todo el código con manejo mejorado de memoria - Memoized
+  const loadAndProcessCode = useCallback(async () => {
+    // Verificar si realmente tiene contenido válido
+    const hasValidContent = htmlContent.length > 0 || cssContent.length > 0 || jsContent.length > 0 || configContent.length > 0
 
+    if (codeLoaded && hasValidContent) {
+      return
+    }
+
+    if (codeLoaded && !hasValidContent) {
+      setCodeLoaded(false) // Force reload
+    }
     setIsLoading(true)
 
     try {
@@ -114,6 +134,8 @@ export default function ViewComponent({ path, children }: { path?: string; child
       if (path && path.trim() !== '') {
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 30000) // Timeout de 30s
+
+        // Fetch data from API
 
         const res = await fetch(`/api/build-modules?path=${encodeURIComponent(path)}`, {
           signal: controller.signal
@@ -126,18 +148,34 @@ export default function ViewComponent({ path, children }: { path?: string; child
         }
         const data = await res.json()
 
+        // Data received successfully
+
         css = data.css || ''
         js = data.js || ''
         config = data.configuration ? JSON.stringify(data.configuration, null, 2) : ''
+
+        // Data assigned to variables
       }
 
       // Procesar código con límites de memoria
       const processWithLimit = async (content: string, type: string) => {
+        // Process content
+
         if (content.length > 1000000) {
           content = content.substring(0, 1000000) + '\n\n// ... contenido truncado por tamaño'
         }
 
-        return content ? prettierFormat(content, type) : ''
+        if (!content) {
+          return ''
+        }
+
+        try {
+          const formatted = await prettierFormat(content, type)
+          return formatted
+        } catch (error) {
+          // Return original content if formatting fails
+          return content
+        }
       }
 
       // Generar HTML de forma más eficiente
@@ -170,6 +208,8 @@ export default function ViewComponent({ path, children }: { path?: string; child
         processWithLimit(config, 'json')
       ])
 
+      // Content formatted successfully
+
       setHtmlContent(htmlContent)
       setCssContent(formattedCss)
       setJsContent(formattedJs)
@@ -184,7 +224,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [path, codeLoaded, htmlContent, cssContent, jsContent, configContent, children])
 
   // Efecto para cargar código cuando se abre el modal
   useEffect(() => {
@@ -277,8 +317,8 @@ export default function ViewComponent({ path, children }: { path?: string; child
     }
   }, [])
 
-  // Manejar apertura del modal con limpieza de memoria
-  const handleOpenModal = () => {
+  // Manejar apertura del modal con limpieza de memoria - Memoized
+  const handleOpenModal = useCallback(async () => {
     // Limpiar estados previos para evitar acumulación de memoria
     if (!codeLoaded) {
       setHtmlContent('')
@@ -286,46 +326,54 @@ export default function ViewComponent({ path, children }: { path?: string; child
       setJsContent('')
       setConfigContent('')
     }
-    onOpen()
-  }
 
-  // 📌 Filtrar solo los lenguajes con contenido (solo si ya está cargado)
-  const codeElements = codeLoaded
-    ? [
-        {
-          type: 'html',
-          code: htmlContent,
-          label: 'HTML',
-          pages: htmlPages,
-          currentPage: htmlPage,
-          setPage: setHtmlPage
-        },
-        {
-          type: 'css',
-          code: cssContent,
-          label: 'CSS',
-          pages: cssPages,
-          currentPage: cssPage,
-          setPage: setCssPage
-        },
-        {
-          type: 'javascript',
-          code: jsContent,
-          label: 'JS',
-          pages: jsPages,
-          currentPage: jsPage,
-          setPage: setJsPage
-        },
-        {
-          type: 'json',
-          code: configContent,
-          label: 'CONFIG',
-          pages: configPages,
-          currentPage: configPage,
-          setPage: setConfigPage
-        }
-      ].filter(({ code }) => code.trim() !== '')
-    : []
+    onOpen()
+
+    // Cargar el código después de abrir el modal
+    await loadAndProcessCode()
+  }, [codeLoaded, onOpen, loadAndProcessCode])
+
+  // 📌 Filtrar solo los lenguajes con contenido (solo si ya está cargado) - Memoized
+  const codeElements = useMemo(() => {
+    if (!codeLoaded) return []
+
+    return [
+      {
+        type: 'html',
+        code: htmlContent,
+        label: 'HTML',
+        pages: htmlPages,
+        currentPage: htmlPage,
+        setPage: setHtmlPage
+      },
+      {
+        type: 'css',
+        code: cssContent,
+        label: 'CSS',
+        pages: cssPages,
+        currentPage: cssPage,
+        setPage: setCssPage
+      },
+      {
+        type: 'javascript',
+        code: jsContent,
+        label: 'JS',
+        pages: jsPages,
+        currentPage: jsPage,
+        setPage: setJsPage
+      },
+      {
+        type: 'json',
+        code: configContent,
+        label: 'CONFIG',
+        pages: configPages,
+        currentPage: configPage,
+        setPage: setConfigPage
+      }
+    ].filter(({ code }) => code.trim().length > 0)
+  }, [codeLoaded, htmlContent, cssContent, jsContent, configContent, htmlPages, cssPages, jsPages, configPages, htmlPage, cssPage, jsPage, configPage, setHtmlPage, setCssPage, setJsPage, setConfigPage])
+
+  // Code elements ready for display
 
   // Asegurar que activeCodeTab esté sincronizado con elementos disponibles
   React.useEffect(() => {
@@ -338,8 +386,8 @@ export default function ViewComponent({ path, children }: { path?: string; child
     }
   }, [codeElements, activeCodeTab, codeLoaded])
 
-  // Función para manejar la descarga
-  const handleDownload = async () => {
+  // Función para manejar la descarga - Memoized
+  const handleDownload = useCallback(async () => {
     // Solo descargar si hay path válido
     if (!path || path.trim() === '') return
 
@@ -349,12 +397,12 @@ export default function ViewComponent({ path, children }: { path?: string; child
     }
 
     await handleZipExport(info, htmlContent, cssContent, jsContent, configContent, containerRef)
-  }
+  }, [path, codeLoaded, loadAndProcessCode, info, htmlContent, cssContent, jsContent, configContent, containerRef])
 
-  // Función para cambiar de tab
-  const handleTabChange = (key: string) => {
+  // Función para cambiar de tab - Memoized
+  const handleTabChange = useCallback((key: string) => {
     setActiveCodeTab(key)
-  }
+  }, [])
 
   return (
     <div className='w-full border border-[var(--neutral-800)] rounded-xl'>
@@ -362,7 +410,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
 
       {/* Barra de controles */}
       <div className='flex justify-between gap-2 p-2'>
-        <p className='pt-1 text-sm text-default-500 justify-self-start'>{info.name || 'Componente'}</p>
+        <p className='pt-1 text-sm text-default-500 justify-self-start'>{info?.name || 'Componente'}</p>
         <div className='flex justify-end gap-2'>
           {/* Botón para abrir modal de código */}
           <Button
@@ -443,7 +491,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
             <>
               <ModalHeader className='px-4'>
                 <div className='flex flex-col gap-1'>
-                  <p className='text-sm text-default-500'>{info.name || 'Componente'}</p>
+                  <p className='text-sm text-default-500'>{info?.name || 'Componente'}</p>
                 </div>
               </ModalHeader>
 
@@ -473,7 +521,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
                             <div className='flex justify-between items-center bg-default-50 border border-divider rounded-lg p-3 flex-shrink-0'>
                               <div className='flex items-center gap-4'>
                                 <p className='text-sm text-default-600'>
-                                  {info.name} • {label}
+                                  {info?.name || 'Componente'} • {label}
                                 </p>
                                 <div className='flex items-center gap-2'>
                                   <Chip color='default' size='sm' variant='flat'>
@@ -602,7 +650,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
                           return (
                             <div className='flex items-center gap-4'>
                               <span>
-                                {label} • {info.name}
+                                {label} • {info?.name || 'Componente'}
                               </span>
                               {pages.length > 1 && (
                                 <div className='flex items-center gap-2'>
