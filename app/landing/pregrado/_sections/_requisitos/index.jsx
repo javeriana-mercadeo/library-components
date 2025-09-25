@@ -58,7 +58,7 @@ const RequisitosPregrado = () => {
       <Container id={elementName} className={`${baseClass}_container`}>
         {/* === HEADER === */}
         <div className={`${baseClass}_header`}>
-          <Title hierarchy='h2' size='2xl' weight='bold' className={`${baseClass}_title`} color='neutral' isEditable={false}>
+          <Title hierarchy='h2' size='2xl' weight='bold' className={`${baseClass}_title`} color='neutral'>
             Requisitos de Admisión
           </Title>
         </div>
