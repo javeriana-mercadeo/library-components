@@ -4,8 +4,8 @@
 // VARIABLES DEL COMPONENTE
 // ==========================================
 $req-transition: all 0.3s ease-out;
-$req-chart-size: rem(800px);
-$req-chart-size-mobile: rem(550px);
+$req-chart-size: rem(650px);
+$req-chart-size-mobile: rem(450px);
 $req-progress-height: rem(8px);
 $req-progress-animation-duration: 0.8s;
 
@@ -15,7 +15,7 @@ $req-progress-animation-duration: 0.8s;
 .admission-requirements {
   position: relative;
   width: 100%;
-  padding: var(--spacing-lg) 0;
+  padding: var(--spacing-md) 0;
   background-color: var(--background-100);
 
   @include dark-theme {
@@ -32,10 +32,10 @@ $req-progress-animation-duration: 0.8s;
   // ==========================================
   &_header {
     text-align: center;
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-xl);
 
     @include responsive($breakpoint-md) {
-      margin-bottom: var(--spacing-xl);
+      margin-bottom: var(--spacing-lg);
     }
   }
 
@@ -271,13 +271,13 @@ $req-progress-animation-duration: 0.8s;
   &_content-container {
     grid-area: content;
     position: relative;
-    min-height: rem(400px);
+    min-height: rem(300px);
     display: flex;
     align-items: center;
     width: 100%;
 
     @include responsive($breakpoint-lg) {
-      min-height: rem(500px);
+      min-height: rem(400px);
     }
   }
 
