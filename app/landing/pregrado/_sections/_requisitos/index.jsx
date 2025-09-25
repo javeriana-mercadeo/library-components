@@ -78,7 +78,7 @@ const RequisitosPregrado = () => {
                   const endAngle = startAngle + requirement.percentage * 3.6
 
                   // Calculate path for each segment
-                  const radius = 240
+                  const radius = 350
                   const centerX = 400
                   const centerY = 400
 
@@ -112,7 +112,7 @@ const RequisitosPregrado = () => {
                 })}
 
                 {/* Center circle */}
-                <circle cx='400' cy='400' r='120' className={`${baseClass}_chart-center`} />
+                <circle cx='400' cy='400' r='175' className={`${baseClass}_chart-center`} />
 
                 {/* Center text */}
                 <text x='400' y='395' textAnchor='middle' className={`${baseClass}_chart-total-label`}>
@@ -136,7 +136,7 @@ const RequisitosPregrado = () => {
                   const midAngleRad = midAngle * (Math.PI / 180)
 
                   // Radio para posicionar los labels dentro del segmento
-                  const labelRadius = 180 // Más cerca del centro, dentro del segmento
+                  const labelRadius = 260 // Más cerca del centro, dentro del segmento
                   const centerX = 400
                   const centerY = 400
 
