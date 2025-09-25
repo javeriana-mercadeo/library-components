@@ -48,7 +48,7 @@ const RequisitosPregrado = () => {
       title: 'HABILIDAD',
       percentage: 10,
       icon: 'ph ph-atom',
-      color: 'tertiary',
+      color: 'success',
       items: ['Pensamiento lógico-matemático', 'Composición escrita', 'Comprensión de lectura', 'Análisis crítico']
     }
   ]

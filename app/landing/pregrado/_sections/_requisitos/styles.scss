@@ -22,10 +22,6 @@ $req-progress-animation-duration: 0.8s;
     background-color: var(--background-200);
   }
 
-  &_container {
-    max-width: rem(1600px);
-    width: 100%;
-  }
 
   // ==========================================
   // HEADER
@@ -170,11 +166,11 @@ $req-progress-animation-duration: 0.8s;
       }
     }
 
-    &--tertiary {
-      fill: var(--tertiary-600);
+    &--success {
+      fill: var(--success-600);
 
       &:hover {
-        fill: var(--tertiary-500);
+        fill: var(--success-500);
       }
     }
   }
@@ -332,9 +328,9 @@ $req-progress-animation-duration: 0.8s;
       color: var(--secondary-600);
     }
 
-    &--tertiary {
-      background: rgba(var(--tertiary-600-rgb), 0.1);
-      color: var(--tertiary-600);
+    &--success {
+      background: rgba(var(--success-600-rgb), 0.1);
+      color: var(--success-600);
     }
 
     @include responsive($breakpoint-md) {
