@@ -135,10 +135,10 @@ const RequisitosPregrado = () => {
                 <circle cx='400' cy='400' r='175' className={`${baseClass}_chart-center`} />
 
                 {/* Center text */}
-                <text x='400' y='395' textAnchor='middle' className={`${baseClass}_chart-total-label`}>
+                <text x='400' y='385' textAnchor='middle' className={`${baseClass}_chart-total-label`}>
                   Total
                 </text>
-                <text x='400' y='415' textAnchor='middle' className={`${baseClass}_chart-total-value`}>
+                <text x='400' y='425' textAnchor='middle' className={`${baseClass}_chart-total-value`}>
                   100%
                 </text>
 

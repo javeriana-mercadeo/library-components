@@ -545,7 +545,7 @@ function updateSVGChart(component, requirementsData) {
   // 3. Agregar textos centrales encima de todo
   const totalLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text')
   totalLabel.setAttribute('x', '400')
-  totalLabel.setAttribute('y', '395')
+  totalLabel.setAttribute('y', '385')
   totalLabel.setAttribute('text-anchor', 'middle')
   totalLabel.setAttribute('class', 'admission-requirements_chart-total-label')
   totalLabel.textContent = 'Total'
@@ -553,7 +553,7 @@ function updateSVGChart(component, requirementsData) {
 
   const totalValue = document.createElementNS('http://www.w3.org/2000/svg', 'text')
   totalValue.setAttribute('x', '400')
-  totalValue.setAttribute('y', '415')
+  totalValue.setAttribute('y', '425')
   totalValue.setAttribute('text-anchor', 'middle')
   totalValue.setAttribute('class', 'admission-requirements_chart-total-value')
   totalValue.textContent = '100%'
