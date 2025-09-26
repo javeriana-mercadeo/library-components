@@ -465,6 +465,10 @@ function updateDOMDirectly(requirementsData) {
 function updateSVGChart(component, requirementsData) {
   console.log('[RequirementsAPI] Updating SVG chart...')
 
+  // Filtrar datos para excluir categorías con 0%
+  const validRequirements = requirementsData.filter(requirement => requirement.percentage > 0)
+  console.log('[RequirementsAPI] Filtered requirements (excluding 0%):', validRequirements)
+
   // Recalcular y actualizar los paths del SVG
   const svg = component.querySelector('.admission-requirements_chart')
   if (!svg) return
@@ -480,10 +484,10 @@ function updateSVGChart(component, requirementsData) {
 
   // Recrear en el orden correcto: primero segmentos, luego elementos centrales
 
-  // 1. Recrear los segmentos con los nuevos datos
+  // 1. Recrear los segmentos con los nuevos datos (solo válidos)
   let cumulativeAngle = 0
 
-  requirementsData.forEach((requirement, index) => {
+  validRequirements.forEach((requirement, index) => {
     const percentage = requirement.percentage
     const startAngle = cumulativeAngle
     const endAngle = startAngle + (percentage * 3.6) // Convert percentage to degrees
@@ -519,9 +523,9 @@ function updateSVGChart(component, requirementsData) {
   totalValue.textContent = '100%'
   svg.appendChild(totalValue)
 
-  // 4. Finalmente, agregar los labels de los segmentos encima de todo
+  // 4. Finalmente, agregar los labels de los segmentos encima de todo (solo válidos)
   cumulativeAngle = 0
-  requirementsData.forEach((requirement, index) => {
+  validRequirements.forEach((requirement, index) => {
     const percentage = requirement.percentage
     const startAngle = cumulativeAngle
     const endAngle = startAngle + (percentage * 3.6)
@@ -603,14 +607,17 @@ function createSVGLabels(startAngle, endAngle, requirement) {
 function updateContentPanels(component, requirementsData) {
   console.log('[RequirementsAPI] Updating content panels...')
 
+  // Filtrar datos para excluir categorías con 0%
+  const validRequirements = requirementsData.filter(requirement => requirement.percentage > 0)
+
   const contentContainer = component.querySelector('.admission-requirements_content-container')
   if (!contentContainer) return
 
   // Limpiar paneles existentes
   contentContainer.innerHTML = ''
 
-  // Crear nuevos paneles
-  requirementsData.forEach((requirement, index) => {
+  // Crear nuevos paneles (solo válidos)
+  validRequirements.forEach((requirement, index) => {
     const panel = createContentPanel(requirement, index === 0)
     contentContainer.appendChild(panel)
   })
