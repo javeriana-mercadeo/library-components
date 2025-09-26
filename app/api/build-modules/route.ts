@@ -220,8 +220,8 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
     // LIMPIAR carpeta build si existe para evitar archivos obsoletos
     try {
       await fs.rm(buildPath, { recursive: true, force: true })
-    } catch (cleanError) {
-      // Carpeta no existe o no se pudo limpiar
+    } catch {
+      throw new Error('No se pudo limpiar la carpeta build')
     }
 
     // Crear carpeta limpia
@@ -261,8 +261,7 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
     // Guardar archivos en paralelo
     await Promise.all(writePromises)
   } catch (error) {
-    console.error(`Error guardando archivos:`, error)
-    // No lanzar error, continuar con la respuesta
+    throw new Error('Error guardando archivos compilados: ' + (error instanceof Error ? error.message : String(error)))
   }
 }
 

@@ -14,6 +14,7 @@ import Header from '../components/Header'
 
 // Providers and Config
 import { Providers } from './providers'
+
 import { siteConfig } from '@/config/site'
 
 export const metadata: Metadata = {
@@ -80,12 +81,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* External Stylesheets */}
         {/* <link href='https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css' rel='stylesheet' crossOrigin='anonymous' /> */}
-        <link href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' rel='stylesheet' crossOrigin='anonymous' />
-        <link href='https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css' rel='stylesheet' crossOrigin='anonymous' />
+        <link crossOrigin='anonymous' href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' rel='stylesheet' />
+        <link crossOrigin='anonymous' href='https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css' rel='stylesheet' />
         <link
+          crossOrigin='anonymous'
           href='https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css'
           rel='stylesheet'
-          crossOrigin='anonymous'
         />
       </head>
       <body suppressHydrationWarning className='antialiased'>
@@ -107,7 +108,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Providers>
 
         {/* External Scripts */}
-        <Script src='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js' strategy='afterInteractive' crossOrigin='anonymous' />
+        <Script crossOrigin='anonymous' src='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js' strategy='afterInteractive' />
         {/* <Script
           src='https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js'
           strategy='afterInteractive'

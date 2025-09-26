@@ -70,8 +70,7 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
 
     // Files saved successfully
   } catch (error) {
-    console.error('Error saving compiled files:', error)
-    // No lanzar error, continuar con la respuesta
+    throw new Error('Error guardando archivos compilados: ' + (error instanceof Error ? error.message : String(error)))
   }
 }
 
@@ -241,8 +240,6 @@ export async function GET(req: Request) {
                     }
                   }
 
-                  console.warn(`No se encontró el archivo: ${fullPath}`)
-
                   return null
                 }
 
@@ -252,8 +249,7 @@ export async function GET(req: Request) {
           ]
         }).css
       } catch (sassError) {
-        console.error('Error compiling SCSS:', sassError)
-        compiledCSS = ''
+        throw new Error('Error compilando SCSS: ' + (sassError instanceof Error ? sassError.message : String(sassError)))
       }
     }
 
@@ -277,9 +273,7 @@ export async function GET(req: Request) {
         info: COMPILATION_INFO_FILE
       }
     })
-  } catch (error) {
-    console.error('Error al cargar el componente:', error)
-
+  } catch {
     return new NextResponse('Error al cargar el componente', { status: 500 })
   }
 }

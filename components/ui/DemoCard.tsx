@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, CardFooter, Chip, Button, Image } from '@heroui/react'
+import { Card, CardBody, CardFooter, Chip, Button, Image } from '@heroui/react'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
@@ -32,25 +32,24 @@ export default function DemoCard({ title, icon, description, route, image, chips
         border-0
         rounded-xl
         overflow-hidden
-      '
-      isPressable
-    >
+      '>
       {/* Image Section */}
       <div className='relative overflow-hidden'>
         <div className='aspect-[16/10] bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 relative'>
           {image ? (
             <Image
-              src={image}
               alt={title}
               className='object-cover w-full h-full'
               classNames={{
                 img: 'transition-transform duration-300 group-hover:scale-105'
               }}
+              src={image}
             />
           ) : (
             <div className='w-full h-full flex items-center justify-center'>
               <div className='text-center'>
-                <div className='
+                <div
+                  className='
                   w-16 h-16
                   bg-white/80
                   rounded-full
@@ -63,8 +62,8 @@ export default function DemoCard({ title, icon, description, route, image, chips
                   <i className={`ph ph-${icon} text-2xl text-slate-600`} />
                 </div>
                 <div className='px-4'>
-                  <div className='w-full h-2 bg-white/60 rounded-full mb-2'></div>
-                  <div className='w-3/4 h-2 bg-white/40 rounded-full mx-auto'></div>
+                  <div className='w-full h-2 bg-white/60 rounded-full mb-2' />
+                  <div className='w-3/4 h-2 bg-white/40 rounded-full mx-auto' />
                 </div>
               </div>
             </div>
@@ -81,12 +80,8 @@ export default function DemoCard({ title, icon, description, route, image, chips
       <CardBody className='px-4 py-4 space-y-3'>
         {/* Title */}
         <div className='space-y-1'>
-          <h3 className='text-lg font-semibold text-slate-800 leading-tight line-clamp-1'>
-            {title}
-          </h3>
-          <p className='text-sm text-slate-500 leading-relaxed line-clamp-2'>
-            {description}
-          </p>
+          <h3 className='text-lg font-semibold text-slate-800 leading-tight line-clamp-1'>{title}</h3>
+          <p className='text-sm text-slate-500 leading-relaxed line-clamp-2'>{description}</p>
         </div>
 
         {/* Chips */}
@@ -94,15 +89,14 @@ export default function DemoCard({ title, icon, description, route, image, chips
           {chips.map((chip, index) => (
             <Chip
               key={index}
-              size='sm'
-              radius='md'
-              color={chip.color || 'default'}
-              variant={chip.variant || 'flat'}
               classNames={{
                 base: 'h-6 px-2',
                 content: 'text-xs font-medium'
               }}
-            >
+              color={chip.color || 'default'}
+              radius='md'
+              size='sm'
+              variant={chip.variant || 'flat'}>
               {chip.label}
             </Chip>
           ))}
@@ -113,14 +107,9 @@ export default function DemoCard({ title, icon, description, route, image, chips
 
       {/* Action Section */}
       <CardFooter className='px-4 pb-4 pt-0'>
-        <Link href={route} className='w-full'>
+        <Link className='w-full' href={route}>
           <Button
-            color='primary'
-            variant='flat'
-            size='sm'
             fullWidth
-            radius='lg'
-            endContent={<i className='ph ph-arrow-right text-sm' />}
             className='
               font-medium
               bg-primary/10
@@ -129,7 +118,11 @@ export default function DemoCard({ title, icon, description, route, image, chips
               border-0
               transition-all duration-200
             '
-          >
+            color='primary'
+            endContent={<i className='ph ph-arrow-right text-sm' />}
+            radius='lg'
+            size='sm'
+            variant='flat'>
             Ver Demo
           </Button>
         </Link>

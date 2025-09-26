@@ -73,48 +73,54 @@ export default function GlobalAssetsSection() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'loaded': return 'success'
-      case 'loading': return 'warning'
-      case 'error': return 'danger'
-      default: return 'default'
+      case 'loaded':
+        return 'success'
+      case 'loading':
+        return 'warning'
+      case 'error':
+        return 'danger'
+      default:
+        return 'default'
     }
   }
 
   const getTypeIcon = (type: string) => {
     switch (type) {
       case 'scss':
-      case 'css': return 'ph-file-css'
-      case 'js': return 'ph-file-js'
-      case 'font': return 'ph-textbox'
-      default: return 'ph-file'
+      case 'css':
+        return 'ph-file-css'
+      case 'js':
+        return 'ph-file-js'
+      case 'font':
+        return 'ph-textbox'
+      default:
+        return 'ph-file'
     }
   }
 
   const renderAssetList = (assets: any[]) => (
-    <div className="space-y-3">
+    <div className='space-y-3'>
       {assets.map((asset, index) => (
-        <div key={index} className="flex items-center justify-between p-4 border border-divider rounded-lg hover:bg-content2 transition-colors">
-          <div className="flex items-center gap-3">
+        <div
+          key={index}
+          className='flex items-center justify-between p-4 border border-divider rounded-lg hover:bg-content2 transition-colors'>
+          <div className='flex items-center gap-3'>
             <Avatar
-              icon={<i className={`ph ${getTypeIcon(asset.type)} text-lg`} />}
               classNames={{
-                base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
-                icon: "text-white",
+                base: 'bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30',
+                icon: 'text-white'
               }}
-              size="sm"
+              icon={<i className={`ph ${getTypeIcon(asset.type)} text-lg`} />}
+              size='sm'
             />
             <div>
-              <p className="font-medium">{asset.name}</p>
-              <p className="text-sm text-default-500 font-mono">{asset.path}</p>
+              <p className='font-medium'>{asset.name}</p>
+              <p className='text-sm text-default-500 font-mono'>{asset.path}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-default-500">{asset.size}</span>
-            <Chip
-              color={getStatusColor(asset.status)}
-              size="sm"
-              variant="flat"
-            >
+          <div className='flex items-center gap-3'>
+            <span className='text-sm text-default-500'>{asset.size}</span>
+            <Chip color={getStatusColor(asset.status)} size='sm' variant='flat'>
               {asset.status}
             </Chip>
           </div>
@@ -123,44 +129,35 @@ export default function GlobalAssetsSection() {
     </div>
   )
 
-  const totalSize = [
-    ...styleAssets,
-    ...scriptAssets,
-    ...fontAssets
-  ].reduce((total, asset) => {
+  const totalSize = [...styleAssets, ...scriptAssets, ...fontAssets].reduce((total, asset) => {
     const sizeNum = parseFloat(asset.size.replace(' KB', ''))
+
     return total + sizeNum
   }, 0)
 
-  const loadedAssets = [
-    ...styleAssets,
-    ...scriptAssets,
-    ...fontAssets
-  ].filter(asset => asset.status === 'loaded').length
+  const loadedAssets = [...styleAssets, ...scriptAssets, ...fontAssets].filter(asset => asset.status === 'loaded').length
 
   const totalAssets = styleAssets.length + scriptAssets.length + fontAssets.length
 
   return (
-    <div className="w-full max-w-6xl mt-12">
-      <Card shadow="lg" radius="lg">
+    <div className='w-full max-w-6xl mt-12'>
+      <Card radius='lg' shadow='lg'>
         <CardHeader>
-          <div className="flex justify-between items-center w-full">
-            <div className="flex items-center gap-3">
-              <i className="ph ph-package text-2xl text-success" />
+          <div className='flex justify-between items-center w-full'>
+            <div className='flex items-center gap-3'>
+              <i className='ph ph-package text-2xl text-success' />
               <div>
-                <h3 className="text-xl font-bold">Assets Globales</h3>
-                <p className="text-small text-default-500">
-                  Recursos cargados y disponibles en la aplicación
-                </p>
+                <h3 className='text-xl font-bold'>Assets Globales</h3>
+                <p className='text-small text-default-500'>Recursos cargados y disponibles en la aplicación</p>
               </div>
             </div>
-            <div className="text-right">
-              <p className="text-sm text-default-500">Total: {totalSize.toFixed(1)} KB</p>
-              <div className="flex items-center gap-2 mt-1">
-                <AvatarGroup isBordered max={3} size="sm">
-                  <Avatar name="CSS" classNames={{ name: "text-xs" }} />
-                  <Avatar name="JS" classNames={{ name: "text-xs" }} />
-                  <Avatar name="Fonts" classNames={{ name: "text-xs" }} />
+            <div className='text-right'>
+              <p className='text-sm text-default-500'>Total: {totalSize.toFixed(1)} KB</p>
+              <div className='flex items-center gap-2 mt-1'>
+                <AvatarGroup isBordered max={3} size='sm'>
+                  <Avatar classNames={{ name: 'text-xs' }} name='CSS' />
+                  <Avatar classNames={{ name: 'text-xs' }} name='JS' />
+                  <Avatar classNames={{ name: 'text-xs' }} name='Fonts' />
                 </AvatarGroup>
               </div>
             </div>
@@ -171,80 +168,79 @@ export default function GlobalAssetsSection() {
 
         <CardBody>
           {/* Progress Summary */}
-          <div className="mb-6">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium">Estado de Carga</span>
-              <span className="text-sm text-default-500">{loadedAssets}/{totalAssets} assets</span>
+          <div className='mb-6'>
+            <div className='flex justify-between items-center mb-2'>
+              <span className='text-sm font-medium'>Estado de Carga</span>
+              <span className='text-sm text-default-500'>
+                {loadedAssets}/{totalAssets} assets
+              </span>
             </div>
-            <Progress
-              value={(loadedAssets / totalAssets) * 100}
-              color="success"
-              className="max-w-full"
-              showValueLabel
-            />
+            <Progress showValueLabel className='max-w-full' color='success' value={(loadedAssets / totalAssets) * 100} />
           </div>
 
           {/* Asset Tabs */}
           <Tabs
-            selectedKey={selectedAssetTab}
-            onSelectionChange={(key) => setSelectedAssetTab(String(key))}
-            variant="underlined"
             classNames={{
-              tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
-              cursor: "w-full bg-primary",
-              tab: "max-w-fit px-0 h-12",
-              tabContent: "group-data-[selected=true]:text-primary"
+              tabList: 'gap-6 w-full relative rounded-none p-0 border-b border-divider',
+              cursor: 'w-full bg-primary',
+              tab: 'max-w-fit px-0 h-12',
+              tabContent: 'group-data-[selected=true]:text-primary'
             }}
-          >
+            selectedKey={selectedAssetTab}
+            variant='underlined'
+            onSelectionChange={key => setSelectedAssetTab(String(key))}>
             <Tab
-              key="styles"
+              key='styles'
               title={
-                <div className="flex items-center gap-2">
-                  <i className="ph ph-palette" />
+                <div className='flex items-center gap-2'>
+                  <i className='ph ph-palette' />
                   <span>Estilos</span>
-                  <Chip size="sm" variant="faded">{styleAssets.length}</Chip>
+                  <Chip size='sm' variant='faded'>
+                    {styleAssets.length}
+                  </Chip>
                 </div>
-              }
-            >
+              }>
               {renderAssetList(styleAssets)}
             </Tab>
 
             <Tab
-              key="scripts"
+              key='scripts'
               title={
-                <div className="flex items-center gap-2">
-                  <i className="ph ph-code" />
+                <div className='flex items-center gap-2'>
+                  <i className='ph ph-code' />
                   <span>Scripts</span>
-                  <Chip size="sm" variant="faded">{scriptAssets.length}</Chip>
+                  <Chip size='sm' variant='faded'>
+                    {scriptAssets.length}
+                  </Chip>
                 </div>
-              }
-            >
+              }>
               {renderAssetList(scriptAssets)}
             </Tab>
 
             <Tab
-              key="fonts"
+              key='fonts'
               title={
-                <div className="flex items-center gap-2">
-                  <i className="ph ph-textbox" />
+                <div className='flex items-center gap-2'>
+                  <i className='ph ph-textbox' />
                   <span>Fuentes</span>
-                  <Chip size="sm" variant="faded">{fontAssets.length}</Chip>
+                  <Chip size='sm' variant='faded'>
+                    {fontAssets.length}
+                  </Chip>
                 </div>
-              }
-            >
+              }>
               {renderAssetList(fontAssets)}
             </Tab>
           </Tabs>
 
           {/* Actions */}
-          <div className="flex gap-3 mt-6 pt-4 border-t border-divider">
-            <Button color="primary" variant="ghost" startContent={<i className="ph ph-download-simple" />}>
+          <div className='flex gap-3 mt-6 pt-4 border-t border-divider'>
+            <Button color='primary' startContent={<i className='ph ph-download-simple' />} variant='ghost'>
               Exportar Lista
             </Button>
-            <Button color="secondary" variant="light" startContent={<i className="ph ph-arrows-clockwise" />}>
+            <Button color='secondary' startContent={<i className='ph ph-arrows-clockwise' />} variant='light'>
               Refrescar
             </Button>
-            <Button color="success" variant="light" startContent={<i className="ph ph-check-circle" />}>
+            <Button color='success' startContent={<i className='ph ph-check-circle' />} variant='light'>
               Verificar Integridad
             </Button>
           </div>

@@ -32,17 +32,13 @@ export function ClientSideUtils() {
         initGlobalUtils()
         // Utilidades cargadas silenciosamente
       }
-    } catch (error) {
-      console.error('❌ Error al cargar utilidades globales:', error)
-
+    } catch {
       // Fallback de emergencia - cargar la versión legacy
       try {
         const legacyInit = require('@/utils/main.js').default
 
         legacyInit()
-      } catch (legacyError) {
-        console.error('❌ Error crítico: no se pudieron cargar utilidades:', legacyError)
-      }
+      } catch {}
     }
   }, [])
 
@@ -56,9 +52,11 @@ export function ClientSideUtils() {
   }, [])
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
     const originalError = console.error
 
-    console.error = (...args) => {
+    // eslint-disable-next-line no-console
+    console.error = (...args: any[]) => {
       const message = args[0]?.toString() || ''
 
       if (message.includes('configuration is not defined')) {
@@ -69,6 +67,7 @@ export function ClientSideUtils() {
     }
 
     return () => {
+      // eslint-disable-next-line no-console
       console.error = originalError
     }
   }, [])

@@ -20,6 +20,7 @@ export default function Header() {
     if (pathname === '/docs') return 'docs'
     if (pathname === '/demos') return 'demos'
     if (pathname === '/about') return 'about'
+
     return 'overview'
   }
 
@@ -43,8 +44,8 @@ export default function Header() {
               </div>
             </div>
             {/* Empty space for navigation that will load */}
-            <div className='hidden md:block h-12 w-80'></div>
-            <div className='block md:hidden w-10 h-10'></div>
+            <div className='hidden md:block h-12 w-80' />
+            <div className='block md:hidden w-10 h-10' />
           </div>
         </div>
       </div>
@@ -97,15 +98,15 @@ export default function Header() {
           {/* Desktop Navigation Tabs */}
           <div className='hidden md:block'>
             <Tabs
-              selectedKey={getSelectedTab()}
-              onSelectionChange={key => handleTabChange(String(key))}
-              variant='underlined'
               classNames={{
                 tabList: 'gap-6 lg:gap-8 relative rounded-none p-0 border-b-0',
                 cursor: 'w-full bg-blue-600',
                 tab: 'max-w-fit px-0 h-12',
                 tabContent: 'group-data-[selected=true]:text-blue-600 font-medium'
-              }}>
+              }}
+              selectedKey={getSelectedTab()}
+              variant='underlined'
+              onSelectionChange={key => handleTabChange(String(key))}>
               {navigationItems.map(item => (
                 <Tab
                   key={item.key}
@@ -122,7 +123,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <div className='block md:hidden'>
-            <Button isIconOnly variant='light' onPress={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label='Toggle mobile menu'>
+            <Button isIconOnly aria-label='Toggle mobile menu' variant='light' onPress={() => setMobileMenuOpen(!mobileMenuOpen)}>
               <i className={`ph ${mobileMenuOpen ? 'ph-x' : 'ph-list'} text-xl`} />
             </Button>
           </div>
@@ -135,10 +136,10 @@ export default function Header() {
               {navigationItems.map(item => (
                 <button
                   key={item.key}
-                  onClick={() => handleTabChange(item.key)}
                   className={`flex items-center gap-3 px-4 py-3 text-left rounded-lg transition-colors ${
                     getSelectedTab() === item.key ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700 hover:bg-gray-50'
-                  }`}>
+                  }`}
+                  onClick={() => handleTabChange(item.key)}>
                   <i className={`ph ${item.icon} text-lg`} />
                   <span>{item.label}</span>
                 </button>

@@ -171,8 +171,9 @@ export default function ViewComponent({ path, children }: { path?: string; child
 
         try {
           const formatted = await prettierFormat(content, type)
+
           return formatted
-        } catch (error) {
+        } catch {
           // Return original content if formatting fails
           return content
         }
@@ -196,8 +197,7 @@ export default function ViewComponent({ path, children }: { path?: string; child
             .replace(/\n\s*\n/g, '\n') // Limpiar líneas vacías extra
 
           htmlContent = await processWithLimit(cleanedHtml, 'html')
-        } catch (error) {
-          console.error('Error renderizando HTML:', error)
+        } catch {
           htmlContent = '<!-- Error renderizando componente -->'
         }
       }
@@ -371,7 +371,25 @@ export default function ViewComponent({ path, children }: { path?: string; child
         setPage: setConfigPage
       }
     ].filter(({ code }) => code.trim().length > 0)
-  }, [codeLoaded, htmlContent, cssContent, jsContent, configContent, htmlPages, cssPages, jsPages, configPages, htmlPage, cssPage, jsPage, configPage, setHtmlPage, setCssPage, setJsPage, setConfigPage])
+  }, [
+    codeLoaded,
+    htmlContent,
+    cssContent,
+    jsContent,
+    configContent,
+    htmlPages,
+    cssPages,
+    jsPages,
+    configPages,
+    htmlPage,
+    cssPage,
+    jsPage,
+    configPage,
+    setHtmlPage,
+    setCssPage,
+    setJsPage,
+    setConfigPage
+  ])
 
   // Code elements ready for display
 

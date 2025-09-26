@@ -39,7 +39,7 @@ export default function ResourceCard({ title, icon, iconColor, iconBgColor, link
       <ul className='space-y-2'>
         {links.map((link, index) => (
           <li key={index}>
-            <Link href={link.href} className='text-blue-600 hover:underline text-sm flex items-center gap-2'>
+            <Link className='text-blue-600 hover:underline text-sm flex items-center gap-2' href={link.href}>
               <i className='ph ph-arrow-square-out text-xs' />
               {link.label}
             </Link>

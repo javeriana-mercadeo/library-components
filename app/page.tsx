@@ -27,12 +27,12 @@ export default function LibraryHome() {
 
             <div className='mt-6 flex flex-col sm:flex-row gap-4 justify-center mb-8'>
               <Link href='/demos'>
-                <Button color='primary' className='font-semibold px-8' startContent={<i className='ph ph-rocket-launch text-lg' />}>
+                <Button className='font-semibold px-8' color='primary' startContent={<i className='ph ph-rocket-launch text-lg' />}>
                   Ver Demos
                 </Button>
               </Link>
               <Link href='/docs'>
-                <Button variant='bordered' className='font-semibold px-8' startContent={<i className='ph ph-file-text text-lg' />}>
+                <Button className='font-semibold px-8' startContent={<i className='ph ph-file-text text-lg' />} variant='bordered'>
                   Documentación
                 </Button>
               </Link>
@@ -131,23 +131,23 @@ export default function LibraryHome() {
           </p>
           <div className='flex flex-col sm:flex-row gap-4 justify-center'>
             <Link href='/demos'>
-              <Button color='primary' className='font-semibold px-8' startContent={<i className='ph ph-rocket-launch text-lg' />}>
+              <Button className='font-semibold px-8' color='primary' startContent={<i className='ph ph-rocket-launch text-lg' />}>
                 Ver Demos
               </Button>
             </Link>
             <Link href='/docs'>
               <Button
-                variant='bordered'
                 className='font-semibold px-8 border-white text-white hover:bg-white/10'
-                startContent={<i className='ph ph-file-text text-lg' />}>
+                startContent={<i className='ph ph-file-text text-lg' />}
+                variant='bordered'>
                 Documentación
               </Button>
             </Link>
             <Link href='/about'>
               <Button
-                variant='light'
                 className='font-semibold px-8 text-white hover:bg-white/10'
-                startContent={<i className='ph ph-info text-lg' />}>
+                startContent={<i className='ph ph-info text-lg' />}
+                variant='light'>
                 Acerca de
               </Button>
             </Link>

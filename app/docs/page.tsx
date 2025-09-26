@@ -1,12 +1,22 @@
 'use client'
 
 // Reusable Components
+import { Chip } from '@heroui/react'
+
+import { Splash } from '../_library/components'
+
 import SectionTitle from '@/components/ui/SectionTitle'
 import CodeBlock, { InlineCode } from '@/components/ui/CodeBlock'
 import ResourceCard from '@/components/ui/ResourceCard'
 import ViewComponent from '@/components/viewComponent/viewComponent'
-import { Chip } from '@heroui/react'
-
+import SectionCard from '@/components/ui/SectionCard'
+import InfoCard from '@/components/ui/InfoCard'
+import TechStackCard from '@/components/ui/TechStackCard'
+import APIEndpointCard from '@/components/ui/APIEndpointCard'
+import WarningAlert from '@/components/ui/WarningAlert'
+import FeatureList from '@/components/ui/FeatureList'
+import PhaseCard from '@/components/ui/PhaseCard'
+import EnvironmentCard from '@/components/ui/EnvironmentCard'
 // Configuration Components - Real imports
 import GlobalAssets from '@/app/_library/_configurations/globalAssets'
 import StateProgram from '@/app/_library/_configurations/stateProgram'
@@ -14,10 +24,6 @@ import LoadTheme from '@/app/_library/_configurations/loadTheme'
 import LoadProgram from '@/app/_library/_configurations/loadProgram'
 import LoadProgramV2 from '@/app/_library/_configurations/loadProgram-v2'
 import SelectWhatsapp from '@/app/_library/_configurations/selectWhatsapp'
-import MetaData from '@/app/_library/_configurations/metaData'
-
-// Splash component (check if exists)
-const Splash = () => <div>Splash - Component not found</div>
 
 export default function DocsPage() {
   return (
@@ -29,87 +35,49 @@ export default function DocsPage() {
             <div className='w-6 h-6 bg-purple-100 rounded-md flex items-center justify-center'>
               <i className='ph ph-target text-purple-600 text-sm' />
             </div>
-            <SectionTitle title='Proyecto Pikachu - Contexto' className='text-left mb-0' />
+            <SectionTitle className='text-left mb-0' title='Proyecto Pikachu - Contexto' />
           </div>
 
-          <div className='bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm mb-6'>
-            <div className='bg-purple-50 px-4 py-3 border-b border-gray-200'>
-              <h3 className='text-base font-semibold text-gray-800 flex items-center gap-2'>
-                <i className='ph ph-flag text-purple-600 text-sm' />
-                Visión del Proyecto
-              </h3>
-            </div>
-            <div className='p-6'>
-              <p className='text-sm text-gray-600 mb-4 leading-relaxed'>
-                La reestructuración de las Landing Pages de la oferta académica de la Pontificia Universidad Javeriana tiene como objetivo
-                principal <strong>mejorar la experiencia de usuario, especialmente en dispositivos móviles</strong>.
-              </p>
-              <p className='text-sm text-gray-600 leading-relaxed'>
-                Este proyecto facilitará el acceso a la información sobre los programas académicos y optimizará el proceso de inscripción
-                con una <strong>arquitectura modular y fragmentada basada en Liferay</strong>, permitiendo gestión simplificada de contenido
-                y segmentación por nivel académico.
-              </p>
-            </div>
-          </div>
+          <SectionCard className='mb-6' icon='flag' iconColor='purple' title='Visión del Proyecto'>
+            <p className='text-sm text-gray-600 mb-4 leading-relaxed'>
+              La reestructuración de las Landing Pages de la oferta académica de la Pontificia Universidad Javeriana tiene como objetivo
+              principal <strong>mejorar la experiencia de usuario, especialmente en dispositivos móviles</strong>.
+            </p>
+            <p className='text-sm text-gray-600 leading-relaxed'>
+              Este proyecto facilitará el acceso a la información sobre los programas académicos y optimizará el proceso de inscripción con
+              una <strong>arquitectura modular y fragmentada basada en Liferay</strong>, permitiendo gestión simplificada de contenido y
+              segmentación por nivel académico.
+            </p>
+          </SectionCard>
 
           <div className='grid md:grid-cols-2 gap-4 mb-6'>
-            <div className='bg-white border border-green-200 rounded-lg p-4'>
-              <div className='flex items-center gap-2 mb-3'>
-                <i className='ph ph-check-circle text-green-600' />
-                <h4 className='font-semibold text-gray-800'>Lo que resolvemos</h4>
-              </div>
-              <ul className='space-y-2 text-sm text-gray-600'>
-                <li className='flex items-center gap-2'>
-                  <i className='ph ph-dot-outline text-green-500 text-sm' />
-                  Experiencia mobile-first optimizada
-                </li>
-                <li className='flex items-center gap-2'>
-                  <i className='ph ph-dot-outline text-green-500 text-sm' />
-                  Comunicación segmentada por nivel académico
-                </li>
-                <li className='flex items-center gap-2'>
-                  <i className='ph ph-dot-outline text-green-500 text-sm' />
-                  Biblioteca de componentes reutilizables
-                </li>
-                <li className='flex items-center gap-2'>
-                  <i className='ph ph-dot-outline text-green-500 text-sm' />
-                  Automatización de procesos clave
-                </li>
-                <li className='flex items-center gap-2'>
-                  <i className='ph ph-dot-outline text-green-500 text-sm' />
-                  Integración con Salesforce y Liferay
-                </li>
-              </ul>
-            </div>
+            <InfoCard
+              borderColor='green'
+              icon='check-circle'
+              iconColor='green'
+              items={[
+                { text: 'Experiencia mobile-first optimizada' },
+                { text: 'Comunicación segmentada por nivel académico' },
+                { text: 'Biblioteca de componentes reutilizables' },
+                { text: 'Automatización de procesos clave' },
+                { text: 'Integración con Salesforce y Liferay' }
+              ]}
+              title='Lo que resolvemos'
+            />
 
-            <div className='bg-white border border-blue-200 rounded-lg p-4'>
-              <div className='flex items-center gap-2 mb-3'>
-                <i className='ph ph-users text-blue-600' />
-                <h4 className='font-semibold text-gray-800'>Usuarios objetivo</h4>
-              </div>
-              <ul className='space-y-2 text-sm text-gray-600'>
-                <li className='flex items-center gap-2'>
-                  <i className='ph ph-dot-outline text-blue-500 text-sm' />
-                  Aspirantes de pregrado y posgrado
-                </li>
-                <li className='flex items-center gap-2'>
-                  <i className='ph ph-dot-outline text-blue-500 text-sm' />
-                  Estudiantes internacionales
-                </li>
-                <li className='flex items-center gap-2'>
-                  <i className='ph ph-dot-outline text-blue-500 text-sm' />
-                  Personal administrativo y profesores
-                </li>
-                <li className='flex items-center gap-2'>
-                  <i className='ph ph-dot-outline text-blue-500 text-sm' />
-                  Egresados buscando actualización
-                </li>
-                <li className='flex items-center gap-2'>
-                  <i className='ph ph-dot-outline text-blue-500 text-sm' />
-                  Padres de familia
-                </li>
-              </ul>
-            </div>
+            <InfoCard
+              borderColor='blue'
+              icon='users'
+              iconColor='blue'
+              items={[
+                { text: 'Aspirantes de pregrado y posgrado' },
+                { text: 'Estudiantes internacionales' },
+                { text: 'Personal administrativo y profesores' },
+                { text: 'Egresados buscando actualización' },
+                { text: 'Padres de familia' }
+              ]}
+              title='Usuarios objetivo'
+            />
           </div>
         </section>
 
@@ -119,60 +87,46 @@ export default function DocsPage() {
             <div className='w-6 h-6 bg-orange-100 rounded-md flex items-center justify-center'>
               <i className='ph ph-gear text-orange-600 text-sm' />
             </div>
-            <SectionTitle title='Arquitectura del Sistema' className='text-left mb-0' />
+            <SectionTitle className='text-left mb-0' title='Arquitectura del Sistema' />
           </div>
 
-          <div className='bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm mb-6'>
-            <div className='bg-orange-50 px-4 py-3 border-b border-gray-200'>
-              <h3 className='text-base font-semibold text-gray-800 flex items-center gap-2'>
-                <i className='ph ph-stack text-orange-600 text-sm' />
-                Stack Tecnológico
-              </h3>
-            </div>
-            <div className='p-4 space-y-4'>
-              <div>
-                <h4 className='font-medium text-gray-800 mb-2'>Frontend</h4>
-                <p className='text-sm text-gray-600 mb-2'>
-                  <strong>Desarrollo:</strong> <InlineCode>Next.js</InlineCode> sin hooks para crear componentes que se compilan a HTML, CSS
-                  y JavaScript vanilla para máxima compatibilidad.
-                  <br />
-                  <strong>Producción:</strong> HTML, CSS (Sass) y JavaScript vanilla implementado en{' '}
-                  <InlineCode>Liferay Fragments</InlineCode>.
-                </p>
-                <div className='flex flex-wrap gap-1'>
-                  <span className='px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded'>Next.js</span>
-                  <span className='px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded'>Sass</span>
-                  <span className='px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded'>Vanilla JS</span>
-                  <span className='px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded'>Liferay Fragments</span>
-                </div>
-              </div>
-              <div>
-                <h4 className='font-medium text-gray-800 mb-2'>Backend</h4>
-                <p className='text-sm text-gray-600 mb-2'>
-                  <strong>Responsable:</strong> Área de DTI (Dirección de Tecnologías de la Información)
-                  <br />
-                  Arquitectura basada en <InlineCode>Spring Boot</InlineCode> con <InlineCode>JPA/Hibernate</InlineCode> para persistencia
-                  de datos académicos.
-                </p>
-                <div className='flex flex-wrap gap-1'>
-                  <span className='px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded'>Spring Boot</span>
-                  <span className='px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded'>JPA</span>
-                  <span className='px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded'>Hibernate</span>
-                </div>
-              </div>
-              <div>
-                <h4 className='font-medium text-gray-800 mb-2'>Plataforma</h4>
-                <p className='text-sm text-gray-600 mb-2'>
-                  Despliegue en <InlineCode>Liferay DXP</InlineCode> con integración a <InlineCode>Salesforce</InlineCode> para gestión de
-                  leads y seguimiento de prospecto.
-                </p>
-                <div className='flex flex-wrap gap-1'>
-                  <span className='px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-medium rounded'>Liferay DXP</span>
-                  <span className='px-2 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded'>Salesforce</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <TechStackCard
+            icon='stack'
+            iconColor='orange'
+            items={[
+              {
+                category: 'Frontend',
+                description:
+                  '<strong>Desarrollo:</strong> <code>Next.js</code> sin hooks para crear componentes que se compilan a HTML, CSS y JavaScript vanilla para máxima compatibilidad.<br/><strong>Producción:</strong> HTML, CSS (Sass) y JavaScript vanilla implementado en <code>Liferay Fragments</code>.',
+                technologies: [
+                  { name: 'Next.js', color: 'blue' },
+                  { name: 'Sass', color: 'green' },
+                  { name: 'Vanilla JS', color: 'yellow' },
+                  { name: 'Liferay Fragments', color: 'purple' }
+                ]
+              },
+              {
+                category: 'Backend',
+                description:
+                  '<strong>Responsable:</strong> Área de DTI (Dirección de Tecnologías de la Información)<br/>Arquitectura basada en <code>Spring Boot</code> con <code>JPA/Hibernate</code> para persistencia de datos académicos.',
+                technologies: [
+                  { name: 'Spring Boot', color: 'green' },
+                  { name: 'JPA', color: 'blue' },
+                  { name: 'Hibernate', color: 'purple' }
+                ]
+              },
+              {
+                category: 'Plataforma',
+                description:
+                  'Despliegue en <code>Liferay DXP</code> con integración a <code>Salesforce</code> para gestión de leads y seguimiento de prospecto.',
+                technologies: [
+                  { name: 'Liferay DXP', color: 'indigo' },
+                  { name: 'Salesforce', color: 'orange' }
+                ]
+              }
+            ]}
+            title='Stack Tecnológico'
+          />
         </section>
 
         {/* Servicios Backend - DTI */}
@@ -181,107 +135,59 @@ export default function DocsPage() {
             <div className='w-6 h-6 bg-green-100 rounded-md flex items-center justify-center'>
               <i className='ph ph-database text-green-600 text-sm' />
             </div>
-            <SectionTitle title='Servicios Backend - DTI' className='text-left mb-0' />
+            <SectionTitle className='text-left mb-0' title='Servicios Backend - DTI' />
           </div>
 
-          <div className='bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm mb-6'>
-            <div className='bg-green-50 px-4 py-3 border-b border-gray-200'>
-              <h3 className='text-base font-semibold text-gray-800 flex items-center gap-2'>
-                <i className='ph ph-gear text-green-600 text-sm' />
-                API Endpoints Disponibles
-              </h3>
-            </div>
-            <div className='p-4'>
-              <div className='space-y-4'>
-                <div className='bg-gray-50 rounded-lg p-4'>
-                  <div className='flex items-center gap-2 mb-2'>
-                    <span className='px-2 py-1 bg-orange-100 text-orange-800 text-xs font-mono rounded'>POST</span>
-                    <InlineCode>/{'{tp}'}</InlineCode>
-                  </div>
-                  <p className='text-sm text-gray-600'>Actualiza los datos de la fuente</p>
-                </div>
-
-                <div className='bg-gray-50 rounded-lg p-4'>
-                  <div className='flex items-center gap-2 mb-2'>
-                    <span className='px-2 py-1 bg-blue-100 text-blue-800 text-xs font-mono rounded'>GET</span>
-                    <InlineCode>/filter</InlineCode>
-                  </div>
-                  <p className='text-sm text-gray-600 mb-2'>Parámetros de filtro disponibles:</p>
-                  <div className='flex flex-wrap gap-1'>
-                    <span className='px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded'>particula</span>
-                    <span className='px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded'>tipoGrado</span>
-                    <span className='px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded'>nivelEstudio</span>
-                    <span className='px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded'>operacion</span>
-                    <span className='px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded'>facultad</span>
-                    <span className='px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded'>eclesiastico</span>
-                  </div>
-                </div>
-
-                <div className='bg-gray-50 rounded-lg p-4'>
-                  <div className='flex items-center gap-2 mb-2'>
-                    <span className='px-2 py-1 bg-blue-100 text-blue-800 text-xs font-mono rounded'>GET</span>
-                    <InlineCode>/filterprograma</InlineCode>
-                  </div>
-                  <p className='text-sm text-gray-600'>
-                    Filtro por código de programa: <InlineCode>codprograma</InlineCode>
-                  </p>
-                </div>
-
-                <div className='bg-gray-50 rounded-lg p-4'>
-                  <div className='flex items-center gap-2 mb-2'>
-                    <span className='px-2 py-1 bg-blue-100 text-blue-800 text-xs font-mono rounded'>GET</span>
-                    <InlineCode>/getrequisitos</InlineCode>
-                  </div>
-                  <p className='text-sm text-gray-600'>
-                    Obtiene requisitos por código de programa: <InlineCode>codprograma</InlineCode>
-                  </p>
-                </div>
-
-                <div className='bg-gray-50 rounded-lg p-4'>
-                  <div className='flex items-center gap-2 mb-2'>
-                    <span className='px-2 py-1 bg-blue-100 text-blue-800 text-xs font-mono rounded'>GET</span>
-                    <InlineCode>/getrequisitosbyadmittype</InlineCode>
-                  </div>
-                  <p className='text-sm text-gray-600'>
-                    Obtiene requisitos por tipo de admisión: <InlineCode>codprograma</InlineCode>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <APIEndpointCard
+            endpoints={[
+              {
+                method: 'POST',
+                path: '/{tp}',
+                description: 'Actualiza los datos de la fuente'
+              },
+              {
+                method: 'GET',
+                path: '/filter',
+                description: 'Parámetros de filtro disponibles:',
+                parameters: ['particula', 'tipoGrado', 'nivelEstudio', 'operacion', 'facultad', 'eclesiastico']
+              },
+              {
+                method: 'GET',
+                path: '/filterprograma',
+                description: 'Filtro por código de programa: codprograma'
+              },
+              {
+                method: 'GET',
+                path: '/getrequisitos',
+                description: 'Obtiene requisitos por código de programa: codprograma'
+              },
+              {
+                method: 'GET',
+                path: '/getrequisitosbyadmittype',
+                description: 'Obtiene requisitos por tipo de admisión: codprograma'
+              }
+            ]}
+            icon='gear'
+            iconColor='green'
+            title='API Endpoints Disponibles'
+          />
 
           <div className='grid md:grid-cols-2 gap-6'>
-            {/* Enlaces de Prueba */}
-            <div className='bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm'>
-              <div className='bg-blue-50 px-4 py-3 border-b border-gray-200'>
-                <h3 className='text-base font-semibold text-gray-800 flex items-center gap-2'>
-                  <i className='ph ph-test-tube text-blue-600 text-sm' />
-                  Entorno de Pruebas
-                </h3>
-              </div>
-              <div className='p-4'>
-                <p className='text-sm text-gray-600 mb-3'>Base URL para desarrollo y pruebas:</p>
-                <div className='bg-gray-50 border border-gray-200 rounded-lg p-3 font-mono text-sm break-all'>
-                  <span className='text-gray-800'>https://dti-pru.javeriana.edu.co/val-matricula/api/psujsfvaportals/</span>
-                </div>
-              </div>
-            </div>
+            <EnvironmentCard
+              description='Base URL para desarrollo y pruebas:'
+              icon='test-tube'
+              iconColor='blue'
+              title='Entorno de Pruebas'
+              url='https://dti-pru.javeriana.edu.co/val-matricula/api/psujsfvaportals/'
+            />
 
-            {/* Enlaces de Producción */}
-            <div className='bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm'>
-              <div className='bg-green-50 px-4 py-3 border-b border-gray-200'>
-                <h3 className='text-base font-semibold text-gray-800 flex items-center gap-2'>
-                  <i className='ph ph-globe text-green-600 text-sm' />
-                  Entorno de Producción
-                </h3>
-              </div>
-              <div className='p-4'>
-                <p className='text-sm text-gray-600 mb-3'>Base URL para producción:</p>
-                <div className='bg-gray-50 border border-gray-200 rounded-lg p-3 font-mono text-sm break-all'>
-                  <span className='text-gray-800'>https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals</span>
-                </div>
-              </div>
-            </div>
+            <EnvironmentCard
+              description='Base URL para producción:'
+              icon='globe'
+              iconColor='green'
+              title='Entorno de Producción'
+              url='https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals'
+            />
           </div>
         </section>
 
@@ -291,7 +197,7 @@ export default function DocsPage() {
             <div className='w-6 h-6 bg-blue-100 rounded-md flex items-center justify-center'>
               <i className='ph ph-rocket-launch text-blue-600 text-sm' />
             </div>
-            <SectionTitle title='Implementación Rápida' className='text-left mb-0' />
+            <SectionTitle className='text-left mb-0' title='Implementación Rápida' />
           </div>
 
           <div className='grid lg:grid-cols-2 gap-6'>
@@ -326,7 +232,8 @@ export default function DocsPage() {
                   <p className='font-medium text-gray-700 mb-2 text-sm'>Meta Tags</p>
                   <div className='space-y-2'>
                     <CodeBlock>
-                      &lt;meta name="google-site-verification" content="JHV6TL0irU6ND-d9N5NydsmFnB64PkR3_QOCcIT4Fcw" /&gt;
+                      &lt;meta name=&quot;google-site-verification&quot; content=&quot;JHV6TL0irU6ND-d9N5NydsmFnB64PkR3_QOCcIT4Fcw&quot;
+                      /&gt;
                     </CodeBlock>
                   </div>
                 </div>
@@ -405,75 +312,42 @@ export default function DocsPage() {
             <div className='w-6 h-6 bg-yellow-100 rounded-md flex items-center justify-center'>
               <i className='ph ph-warning text-yellow-600 text-sm' />
             </div>
-            <SectionTitle title='Compatibilidad con Liferay' className='text-left mb-0' />
+            <SectionTitle className='text-left mb-0' title='Compatibilidad con Liferay' />
           </div>
 
-          {/* Advertencia prominente */}
-          <div className='bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-6'>
-            <div className='flex items-start gap-3'>
-              <i className='ph ph-warning-circle text-yellow-600 text-xl flex-shrink-0 mt-1' />
-              <div>
-                <h3 className='text-base font-semibold text-yellow-800 mb-2'>⚠️ Importante</h3>
-                <p className='text-yellow-700 mb-2'>
-                  <strong>NO se pueden usar hooks de React</strong> (useState, useEffect, etc.) en los componentes.
-                </p>
-                <p className='text-yellow-700'>
-                  Todo el JavaScript debe ser <strong>vanilla JS</strong> para garantizar compatibilidad total con Liferay DXP.
-                </p>
-              </div>
-            </div>
-          </div>
+          <WarningAlert className='mb-6' title='⚠️ Importante' type='warning'>
+            <p className='mb-2'>
+              <strong>NO se pueden usar hooks de React</strong> (useState, useEffect, etc.) en los componentes.
+            </p>
+            <p>
+              Todo el JavaScript debe ser <strong>vanilla JS</strong> para garantizar compatibilidad total con Liferay DXP.
+            </p>
+          </WarningAlert>
 
           <div className='grid lg:grid-cols-2 gap-8'>
-            {/* NO Permitido */}
-            <div className='bg-white border border-red-200 rounded-xl overflow-hidden'>
-              <div className='bg-red-50 px-4 py-3 border-b border-red-200'>
-                <h4 className='text-sm font-semibold text-red-800 flex items-center gap-2'>
-                  <i className='ph ph-x-circle text-sm' />
-                  NO Permitido
-                </h4>
-              </div>
-              <div className='p-4'>
-                <ul className='space-y-3 text-sm'>
-                  {[
-                    'Hooks de React (useState, useEffect, etc.)',
-                    'Imports dinámicos de React',
-                    'Context API de React',
-                    'Estado local de React'
-                  ].map(item => (
-                    <li key={item} className='flex items-center gap-3 text-red-700'>
-                      <i className='ph ph-x text-red-500 flex-shrink-0' />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <SectionCard icon='x-circle' iconColor='red' title='NO Permitido'>
+              <FeatureList
+                items={[
+                  { text: 'Hooks de React (useState, useEffect, etc.)' },
+                  { text: 'Imports dinámicos de React' },
+                  { text: 'Context API de React' },
+                  { text: 'Estado local de React' }
+                ]}
+                type='forbidden'
+              />
+            </SectionCard>
 
-            {/* SÍ Permitido */}
-            <div className='bg-white border border-green-200 rounded-xl overflow-hidden'>
-              <div className='bg-green-50 px-4 py-3 border-b border-green-200'>
-                <h4 className='text-sm font-semibold text-green-800 flex items-center gap-2'>
-                  <i className='ph ph-check-circle text-sm' />
-                  SÍ Permitido
-                </h4>
-              </div>
-              <div className='p-4'>
-                <ul className='space-y-3 text-sm'>
-                  {[
-                    'JSX estático sin estado',
-                    'Vanilla JavaScript en archivos .js',
-                    'Event listeners con addEventListener',
-                    'DOM manipulation puro'
-                  ].map(item => (
-                    <li key={item} className='flex items-center gap-3 text-green-700'>
-                      <i className='ph ph-check text-green-500 flex-shrink-0' />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <SectionCard icon='check-circle' iconColor='green' title='SÍ Permitido'>
+              <FeatureList
+                items={[
+                  { text: 'JSX estático sin estado' },
+                  { text: 'Vanilla JavaScript en archivos .js' },
+                  { text: 'Event listeners con addEventListener' },
+                  { text: 'DOM manipulation puro' }
+                ]}
+                type='allowed'
+              />
+            </SectionCard>
           </div>
         </section>
 
@@ -525,22 +399,22 @@ export default function DocsPage() {
               </div>
               <div className='p-6'>
                 <div className='flex flex-wrap gap-2'>
-                  <Chip size='sm' color='primary' variant='flat'>
+                  <Chip color='primary' size='sm' variant='flat'>
                     light / dark
                   </Chip>
-                  <Chip size='sm' color='secondary' variant='flat'>
+                  <Chip color='secondary' size='sm' variant='flat'>
                     medicina
                   </Chip>
-                  <Chip size='sm' color='success' variant='flat'>
+                  <Chip color='success' size='sm' variant='flat'>
                     ingeniería
                   </Chip>
-                  <Chip size='sm' color='warning' variant='flat'>
+                  <Chip color='warning' size='sm' variant='flat'>
                     ciencias
                   </Chip>
-                  <Chip size='sm' color='danger' variant='flat'>
+                  <Chip color='danger' size='sm' variant='flat'>
                     derecho
                   </Chip>
-                  <Chip size='sm' color='default' variant='flat'>
+                  <Chip color='default' size='sm' variant='flat'>
                     + 37 más
                   </Chip>
                 </div>
@@ -555,7 +429,7 @@ export default function DocsPage() {
             <div className='w-6 h-6 bg-green-100 rounded-md flex items-center justify-center'>
               <i className='ph ph-tree-structure text-green-600 text-sm' />
             </div>
-            <SectionTitle title='Estructura de Componentes' className='text-left mb-0' />
+            <SectionTitle className='text-left mb-0' title='Estructura de Componentes' />
           </div>
 
           <p className='text-sm text-gray-600 mb-4'>
@@ -603,35 +477,35 @@ export default function DocsPage() {
                   <h4 className='font-medium text-gray-800 mb-3'>Secciones Principales</h4>
                   <div className='space-y-1 text-sm text-gray-600'>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-blue-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-blue-500 rounded-full flex-shrink-0' />
                       <InlineCode>1_datos/</InlineCode> - Información básica
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-green-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-green-500 rounded-full flex-shrink-0' />
                       <InlineCode>2_planEstudio/</InlineCode> - Plan de estudios
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-purple-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-purple-500 rounded-full flex-shrink-0' />
                       <InlineCode>3_perfiles/</InlineCode> - Perfiles profesionales
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-orange-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-orange-500 rounded-full flex-shrink-0' />
                       <InlineCode>4_diferenciales/</InlineCode> - Diferenciales
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-indigo-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-indigo-500 rounded-full flex-shrink-0' />
                       <InlineCode>5_insignias/</InlineCode> - Insignias y logros
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-pink-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-pink-500 rounded-full flex-shrink-0' />
                       <InlineCode>6_docentes/</InlineCode> - Planta docente
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-teal-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-teal-500 rounded-full flex-shrink-0' />
                       <InlineCode>7_experiencia/</InlineCode> - Experiencias
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-red-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-red-500 rounded-full flex-shrink-0' />
                       <InlineCode>8_cita/</InlineCode> - Agendar citas
                     </div>
                   </div>
@@ -640,35 +514,35 @@ export default function DocsPage() {
                   <h4 className='font-medium text-gray-800 mb-3'>Secciones Opcionales/Variantes</h4>
                   <div className='space-y-1 text-sm text-gray-600'>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-gray-400 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-gray-400 rounded-full flex-shrink-0' />
                       <InlineCode>_becas/</InlineCode> - Información de becas
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-gray-400 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-gray-400 rounded-full flex-shrink-0' />
                       <InlineCode>_educacionEstrella/</InlineCode> - Educación estrella
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-gray-400 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-gray-400 rounded-full flex-shrink-0' />
                       <InlineCode>_requisitos/</InlineCode> - Requisitos específicos
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-gray-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-gray-500 rounded-full flex-shrink-0' />
                       <InlineCode>1-1_dobleDatos/</InlineCode> - Doble titulación datos
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-gray-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-gray-500 rounded-full flex-shrink-0' />
                       <InlineCode>2-1_doblePlanEstudio/</InlineCode> - Doble titulación plan
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-gray-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-gray-500 rounded-full flex-shrink-0' />
                       <InlineCode>6-1_docentes/</InlineCode> - Docentes variante
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-yellow-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-yellow-500 rounded-full flex-shrink-0' />
                       <InlineCode>9_preguntasFrecuentes/</InlineCode> - FAQ
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='w-2 h-2 bg-cyan-500 rounded-full flex-shrink-0'></span>
+                      <span className='w-2 h-2 bg-cyan-500 rounded-full flex-shrink-0' />
                       <InlineCode>10_relacionados/</InlineCode> - Programas relacionados
                     </div>
                   </div>
@@ -684,24 +558,14 @@ export default function DocsPage() {
             <div className='w-6 h-6 bg-indigo-100 rounded-md flex items-center justify-center'>
               <i className='ph ph-steps text-indigo-600 text-sm' />
             </div>
-            <SectionTitle title='Fases de Implementación' className='text-left mb-0' />
+            <SectionTitle className='text-left mb-0' title='Fases de Implementación' />
           </div>
 
           <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
-            {[
-              { phase: '1', title: 'Investigación', desc: 'Análisis y benchmarking', color: 'blue' },
-              { phase: '2', title: 'Diseño', desc: 'UI/UX y prototipos', color: 'purple' },
-              { phase: '3', title: 'Desarrollo', desc: 'Frontend y Backend', color: 'orange' },
-              { phase: '4', title: 'Lanzamiento', desc: 'Despliegue y soporte', color: 'green' }
-            ].map(item => (
-              <div key={item.phase} className='bg-white border border-gray-200 rounded-lg p-4 text-center'>
-                <div className={`w-8 h-8 bg-${item.color}-100 rounded-full flex items-center justify-center mx-auto mb-2`}>
-                  <span className={`text-${item.color}-600 font-bold text-sm`}>{item.phase}</span>
-                </div>
-                <h4 className='font-semibold text-gray-800 text-sm mb-1'>{item.title}</h4>
-                <p className='text-xs text-gray-600'>{item.desc}</p>
-              </div>
-            ))}
+            <PhaseCard color='blue' description='Análisis y benchmarking' phase='1' title='Investigación' />
+            <PhaseCard color='purple' description='UI/UX y prototipos' phase='2' title='Diseño' />
+            <PhaseCard color='orange' description='Frontend y Backend' phase='3' title='Desarrollo' />
+            <PhaseCard color='green' description='Despliegue y soporte' phase='4' title='Lanzamiento' />
           </div>
         </section>
 
@@ -711,7 +575,7 @@ export default function DocsPage() {
             <div className='w-6 h-6 bg-indigo-100 rounded-md flex items-center justify-center'>
               <i className='ph ph-file-text text-indigo-600 text-sm' />
             </div>
-            <SectionTitle title='Detalles de Implementación' className='text-left mb-0' />
+            <SectionTitle className='text-left mb-0' title='Detalles de Implementación' />
           </div>
 
           <div className='bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-6'>
@@ -796,7 +660,7 @@ export default function DocsPage() {
             <div className='w-6 h-6 bg-violet-100 rounded-md flex items-center justify-center'>
               <i className='ph ph-gear-six text-violet-600 text-sm' />
             </div>
-            <SectionTitle title='Fragmentos de Configuracion Global' className='text-left mb-0' />
+            <SectionTitle className='text-left mb-0' title='Fragmentos de Configuracion Global' />
           </div>
 
           <div className='bg-violet-50 border-l-4 border-violet-400 p-4 rounded-r-lg mb-6'>
@@ -917,21 +781,6 @@ export default function DocsPage() {
                 </ViewComponent>
               </div>
             </div>
-
-            {/* MetaData */}
-            <div className='bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm'>
-              <div className='bg-gray-50 px-4 py-3 border-b border-gray-200'>
-                <h3 className='text-base font-semibold text-gray-800 flex items-center gap-2'>
-                  <i className='ph ph-file-html text-blue-600 text-sm' />
-                  Meta Data
-                </h3>
-              </div>
-              <div className='p-4'>
-                <ViewComponent path='/_library/_configurations/metaData'>
-                  <MetaData />
-                </ViewComponent>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -941,15 +790,14 @@ export default function DocsPage() {
             <div className='w-6 h-6 bg-blue-100 rounded-md flex items-center justify-center'>
               <i className='ph ph-link text-blue-600 text-sm' />
             </div>
-            <SectionTitle title='Enlaces y Recursos' className='text-left mb-0' />
+            <SectionTitle className='text-left mb-0' title='Enlaces y Recursos' />
           </div>
 
           <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
             <ResourceCard
-              title='Diseño'
               icon='figma-logo'
-              iconColor='blue'
               iconBgColor='blue'
+              iconColor='blue'
               links={[
                 {
                   label: 'Figma Design System',
@@ -957,26 +805,27 @@ export default function DocsPage() {
                 },
                 { label: 'HyperUI Components', href: 'https://www.hyperui.dev/components/marketing' }
               ]}
+              title='Diseño'
             />
             <ResourceCard
-              title='Desarrollo'
               icon='github-logo'
-              iconColor='gray'
               iconBgColor='gray'
+              iconColor='gray'
               links={[
                 { label: 'Repositorio GitHub', href: 'https://github.com/javeriana-mercadeo/Library-components' },
                 { label: 'Documentación Liferay', href: 'https://help.liferay.com/hc/es' }
               ]}
+              title='Desarrollo'
             />
             <ResourceCard
-              title='Librerías'
               icon='package'
-              iconColor='green'
               iconBgColor='green'
+              iconColor='green'
               links={[
                 { label: 'Phosphor Icons', href: 'https://phosphoricons.com/' },
                 { label: 'Swiper.js', href: 'https://swiperjs.com/' }
               ]}
+              title='Librerías'
             />
           </div>
         </section>

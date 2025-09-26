@@ -1,9 +1,10 @@
 'use client'
 
 // Reusable Components
+import { Button } from '@heroui/react'
+
 import SectionTitle from '@/components/ui/SectionTitle'
 import TeamCard from '@/components/ui/TeamCard'
-import { Button } from '@heroui/react'
 
 export default function AboutPage() {
   return (
@@ -11,9 +12,9 @@ export default function AboutPage() {
       <div className='container mx-auto px-6'>
         <div className='max-w-4xl mx-auto text-center'>
           <SectionTitle
-            title='Sobre Nosotros'
-            description='Equipo de desarrollo de la Pontificia Universidad Javeriana, comprometido con crear herramientas de calidad para la comunidad educativa.'
             className='mb-12'
+            description='Equipo de desarrollo de la Pontificia Universidad Javeriana, comprometido con crear herramientas de calidad para la comunidad educativa.'
+            title='Sobre Nosotros'
           />
 
           {/* Mission Section */}
@@ -26,9 +27,9 @@ export default function AboutPage() {
               </div>
               <h3 className='text-xl font-bold text-gray-800 mb-4'>Nuestra Misión</h3>
               <p className='text-gray-600 leading-relaxed'>
-                Desarrollar y mantener un sistema unificado de componentes UI que facilite la creación de experiencias web
-                consistentes y accesibles en toda la Pontificia Universidad Javeriana. Nuestro objetivo es acelerar el
-                desarrollo mientras mantenemos los más altos estándares de calidad y compatibilidad con Liferay DXP.
+                Desarrollar y mantener un sistema unificado de componentes UI que facilite la creación de experiencias web consistentes y
+                accesibles en toda la Pontificia Universidad Javeriana. Nuestro objetivo es acelerar el desarrollo mientras mantenemos los
+                más altos estándares de calidad y compatibilidad con Liferay DXP.
               </p>
             </div>
           </section>
@@ -37,24 +38,14 @@ export default function AboutPage() {
           <section className='mb-12'>
             <h3 className='text-xl font-bold text-gray-800 mb-8'>Nuestro Equipo</h3>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+              <TeamCard avatarColor='blue' description='Especialistas en React, TypeScript y UI/UX' name='Equipo Frontend' role='group' />
               <TeamCard
-                name='Equipo Frontend'
-                role='Frontend Team'
-                description='Especialistas en React, TypeScript y UI/UX'
-                avatarColor='blue'
-              />
-              <TeamCard
-                name='Equipo Backend'
-                role='Backend Team'
-                description='Expertos en Liferay y arquitecturas escalables'
                 avatarColor='green'
+                description='Expertos en Liferay y arquitecturas escalables'
+                name='Equipo Backend'
+                role='group'
               />
-              <TeamCard
-                name='Equipo Diseño'
-                role='Design Team'
-                description='Diseñadores UX/UI enfocados en accesibilidad'
-                avatarColor='purple'
-              />
+              <TeamCard avatarColor='purple' description='Diseñadores UX/UI enfocados en accesibilidad' name='Equipo Diseño' role='group' />
             </div>
           </section>
 
@@ -110,24 +101,14 @@ export default function AboutPage() {
             </div>
             <h3 className='text-xl font-bold text-gray-800 mb-4'>¿Necesitas Ayuda?</h3>
             <p className='text-gray-600 mb-6'>
-              Nuestro equipo está disponible para ayudarte con la implementación, resolver dudas técnicas o recibir
-              feedback sobre los componentes.
+              Nuestro equipo está disponible para ayudarte con la implementación, resolver dudas técnicas o recibir feedback sobre los
+              componentes.
             </p>
             <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-              <Button
-                color='primary'
-                variant='solid'
-                size='md'
-                startContent={<i className='ph ph-envelope text-lg' />}
-              >
+              <Button color='primary' size='md' startContent={<i className='ph ph-envelope text-lg' />} variant='solid'>
                 Contactar Equipo
               </Button>
-              <Button
-                color='default'
-                variant='bordered'
-                size='md'
-                startContent={<i className='ph ph-github-logo text-lg' />}
-              >
+              <Button color='default' size='md' startContent={<i className='ph ph-github-logo text-lg' />} variant='bordered'>
                 Ver en GitHub
               </Button>
             </div>

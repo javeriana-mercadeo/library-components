@@ -20,9 +20,5 @@ interface InlineCodeProps {
 }
 
 export function InlineCode({ children }: InlineCodeProps) {
-  return (
-    <span className='bg-gray-100 px-2 py-1 rounded text-xs font-mono'>
-      {children}
-    </span>
-  )
+  return <span className='bg-gray-100 px-2 py-1 rounded text-xs font-mono'>{children}</span>
 }

@@ -20,12 +20,12 @@ export default function TeamCard({ name, role, description, avatarColor }: TeamC
     <Card className='shadow-md'>
       <CardBody className='text-center'>
         <Avatar
-          size='lg'
           className='mx-auto mb-4'
-          name={name}
           classNames={{
             base: colorClasses[avatarColor]
           }}
+          name={name}
+          size='lg'
         />
         <h3 className='font-semibold text-gray-800 mb-2'>{role}</h3>
         <p className='text-gray-600 text-sm'>{description}</p>

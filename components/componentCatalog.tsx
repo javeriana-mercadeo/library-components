@@ -152,39 +152,38 @@ export default function ComponentCatalog({ selectedTab }: ComponentCatalogProps)
 
   const renderCards = (items: any[], showVariants = false) => {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((item) => (
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        {items.map(item => (
           <Card
             key={item.id}
             isHoverable
+            className='transition-all duration-200'
+            radius='lg'
             shadow={hoveredCard === item.id ? 'lg' : 'md'}
-            radius="lg"
-            className="transition-all duration-200"
             onMouseEnter={() => setHoveredCard(item.id)}
-            onMouseLeave={() => setHoveredCard(null)}
-          >
-            <CardHeader className="flex gap-3">
-              <div className="flex flex-col">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{item.icon}</span>
+            onMouseLeave={() => setHoveredCard(null)}>
+            <CardHeader className='flex gap-3'>
+              <div className='flex flex-col'>
+                <div className='flex items-center gap-3'>
+                  <span className='text-2xl'>{item.icon}</span>
                   <div>
-                    <p className="text-md font-semibold">{item.title}</p>
-                    <p className="text-small text-default-500">{item.description}</p>
+                    <p className='text-md font-semibold'>{item.title}</p>
+                    <p className='text-small text-default-500'>{item.description}</p>
                   </div>
                 </div>
               </div>
             </CardHeader>
-            <Divider/>
+            <Divider />
             <CardBody>
-              <div className="flex justify-between items-center mb-3">
-                <Chip color={item.color} variant="flat" size="sm">
+              <div className='flex justify-between items-center mb-3'>
+                <Chip color={item.color} size='sm' variant='flat'>
                   {item.count} {item.count === 1 ? 'elemento' : 'elementos'}
                 </Chip>
               </div>
               {showVariants && item.variants && (
-                <div className="flex flex-wrap gap-1">
+                <div className='flex flex-wrap gap-1'>
                   {item.variants.map((variant: string, index: number) => (
-                    <Chip key={index} size="sm" variant="bordered">
+                    <Chip key={index} size='sm' variant='bordered'>
                       {variant}
                     </Chip>
                   ))}
@@ -192,13 +191,7 @@ export default function ComponentCatalog({ selectedTab }: ComponentCatalogProps)
               )}
             </CardBody>
             <CardFooter>
-              <Button
-                color={item.color}
-                variant="ghost"
-                size="sm"
-                fullWidth
-                endContent={<i className="ph ph-arrow-right" />}
-              >
+              <Button fullWidth color={item.color} endContent={<i className='ph ph-arrow-right' />} size='sm' variant='ghost'>
                 Explorar
               </Button>
             </CardFooter>
@@ -210,14 +203,10 @@ export default function ComponentCatalog({ selectedTab }: ComponentCatalogProps)
 
   if (selectedTab === 'landing-pages') {
     return (
-      <div className="space-y-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-2">
-            Programas Académicos
-          </h2>
-          <p className="text-default-500">
-            Landing pages organizadas por tipo de programa académico
-          </p>
+      <div className='space-y-8'>
+        <div className='text-center'>
+          <h2 className='text-2xl font-bold text-foreground mb-2'>Programas Académicos</h2>
+          <p className='text-default-500'>Landing pages organizadas por tipo de programa académico</p>
         </div>
         {renderCards(academicPrograms)}
       </div>
@@ -226,14 +215,10 @@ export default function ComponentCatalog({ selectedTab }: ComponentCatalogProps)
 
   if (selectedTab === 'institutional') {
     return (
-      <div className="space-y-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-2">
-            Páginas Institucionales
-          </h2>
-          <p className="text-default-500">
-            Landings especiales para eventos y servicios institucionales
-          </p>
+      <div className='space-y-8'>
+        <div className='text-center'>
+          <h2 className='text-2xl font-bold text-foreground mb-2'>Páginas Institucionales</h2>
+          <p className='text-default-500'>Landings especiales para eventos y servicios institucionales</p>
         </div>
         {renderCards(institutionalPages, true)}
       </div>
@@ -242,14 +227,10 @@ export default function ComponentCatalog({ selectedTab }: ComponentCatalogProps)
 
   if (selectedTab === 'components') {
     return (
-      <div className="space-y-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-2">
-            Elementos y Componentes UI
-          </h2>
-          <p className="text-default-500">
-            Componentes reutilizables para desarrollo web
-          </p>
+      <div className='space-y-8'>
+        <div className='text-center'>
+          <h2 className='text-2xl font-bold text-foreground mb-2'>Elementos y Componentes UI</h2>
+          <p className='text-default-500'>Componentes reutilizables para desarrollo web</p>
         </div>
         {renderCards(uiComponents)}
       </div>
