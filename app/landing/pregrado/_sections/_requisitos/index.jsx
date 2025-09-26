@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Caption, Title, Paragraph } from '@library/components'
 
 import script from './script.js'
@@ -13,40 +13,81 @@ const RequisitosPregrado = () => {
 
   // Inicializar script cuando el componente se monta
   useEffect(() => {
+    console.log('[RequirementsReact] 🎬 React component mounted and useEffect running')
     script()
+
+    // Test global accessibility
+    if (typeof window !== 'undefined') {
+      window.requirementsReactTest = () => {
+        console.log('[RequirementsReact] 🧪 Global test function called - React component is accessible!')
+        return true
+      }
+      console.log('[RequirementsReact] 🌐 Global test function created: window.requirementsReactTest()')
+
+      // Verificar si ya hay datos disponibles antes del event listener
+      if (window.latestRequirementsData) {
+        console.log('[RequirementsReact] 🎁 Found existing data in window.latestRequirementsData')
+        console.log('[RequirementsReact] Existing data:', window.latestRequirementsData)
+        setRequirements(window.latestRequirementsData)
+        console.log('[RequirementsReact] ✅ State updated with existing data')
+      }
+    }
+
+    // Escuchar datos de la API
+    const handleRequirementsData = (event) => {
+      console.log('[RequirementsReact] ✅ Custom event received!')
+      console.log('[RequirementsReact] Event type:', event.type)
+      console.log('[RequirementsReact] Event detail:', event.detail)
+      console.log('[RequirementsReact] Full event object:', event)
+
+      if (event.detail && event.detail.requirements) {
+        const { requirements } = event.detail
+        console.log('[RequirementsReact] Requirements data to set:', requirements)
+        setRequirements(requirements)
+        console.log('[RequirementsReact] ✅ State updated with new requirements')
+      } else {
+        console.error('[RequirementsReact] ❌ No requirements data in event.detail')
+      }
+    }
+
+    console.log('[RequirementsReact] Setting up event listener for requirements:dataLoaded')
+    document.addEventListener('requirements:dataLoaded', handleRequirementsData)
+
+    return () => {
+      document.removeEventListener('requirements:dataLoaded', handleRequirementsData)
+    }
   }, [])
 
-  // Datos de los requisitos de admisión
-  const requirements = [
+  // Estado de carga - fallback mientras se cargan los datos de la API
+  const loadingRequirements = [
     {
       id: 'actitud',
       title: 'ACTITUD',
-      percentage: 50,
+      percentage: 33,
       icon: 'ph ph-user-circle-plus',
       color: 'primary',
-      items: ['Entrevista personal', 'Manejo de situaciones', 'Relaciones interpersonales', 'Sensibilidad social', 'Motivación']
+      items: ['Cargando criterios de evaluación...']
     },
     {
       id: 'conocimiento',
       title: 'CONOCIMIENTO',
-      percentage: 40,
+      percentage: 33,
       icon: 'ph ph-brain',
       color: 'secondary',
-      items: [
-        'Ensayo sobre conocimientos en derecho y economía',
-        'Evaluación de competencias académicas',
-        'Comprensión de lectura especializada'
-      ]
+      items: ['Cargando criterios de evaluación...']
     },
     {
       id: 'habilidad',
       title: 'HABILIDAD',
-      percentage: 10,
+      percentage: 34,
       icon: 'ph ph-atom',
       color: 'success',
-      items: ['Pensamiento lógico-matemático', 'Composición escrita', 'Comprensión de lectura', 'Análisis crítico']
+      items: ['Cargando criterios de evaluación...']
     }
   ]
+
+  // Datos de requisitos (se actualizarán desde la API)
+  const [requirements, setRequirements] = useState(loadingRequirements)
 
   return (
     <div className={baseClass} data-component-id={elementName}>
