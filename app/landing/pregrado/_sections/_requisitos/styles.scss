@@ -4,8 +4,8 @@
 // VARIABLES DEL COMPONENTE
 // ==========================================
 $req-transition: all 0.3s ease-out;
-$req-chart-size: rem(650px);
-$req-chart-size-mobile: rem(450px);
+$req-chart-size: rem(400px);
+$req-chart-size-mobile: min(rem(400px), 80vw);
 $req-progress-height: rem(8px);
 $req-progress-animation-duration: 0.8s;
 
@@ -109,19 +109,30 @@ $req-progress-animation-duration: 0.8s;
 
   &_chart-wrapper {
     position: relative;
-    width: $req-chart-size;
-    height: $req-chart-size;
+    // MÓVIL (por defecto) - pantallas pequeñas
+    width: min(rem(320px), 85vw);
+    height: min(rem(320px), 85vw);
     max-width: 100%;
+    margin: 0 auto;
 
-    @include responsive($breakpoint-md) {
+    // TABLET (576px+) - pantalla un poco más grande
+    @include responsive($breakpoint-sm) {
       width: $req-chart-size-mobile;
       height: $req-chart-size-mobile;
+    }
+
+    // DESKTOP (768px+) - pantalla completa
+    @include responsive($breakpoint-md) {
+      width: $req-chart-size;
+      height: $req-chart-size;
     }
   }
 
   &_chart {
     width: 100%;
     height: 100%;
+    max-width: 100%;
+    height: auto;
     display: block;
   }
 
