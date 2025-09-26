@@ -505,7 +505,27 @@ function updateSVGChart(component, requirementsData) {
   const validRequirements = requirementsData.filter(requirement => requirement.percentage > 0)
   Logger.debug(`Filtering requirements: ${requirementsData.length} total, ${validRequirements.length} valid (>0%)`)
 
-  // Recalcular y actualizar los paths del SVG
+  const chartContainer = component.querySelector('.admission-requirements_chart-container')
+  const contentContainer = component.querySelector('.admission-requirements_content-container')
+  if (!chartContainer) return
+
+  // Aplicar clases condicionales para altura
+  if (validRequirements.length > 1) {
+    chartContainer.classList.add('multiple-requirements')
+    if (contentContainer) contentContainer.classList.add('multiple-requirements')
+  } else {
+    chartContainer.classList.remove('multiple-requirements')
+    if (contentContainer) contentContainer.classList.remove('multiple-requirements')
+  }
+
+  // Verificar si hay solo un requisito
+  if (validRequirements.length === 1) {
+    Logger.debug('Single requirement detected, rendering icon display')
+    renderSingleRequirementDisplay(chartContainer, validRequirements[0])
+    return
+  }
+
+  // Recalcular y actualizar los paths del SVG para múltiples requisitos
   const svg = component.querySelector('.admission-requirements_chart')
   if (!svg) return
 
@@ -652,14 +672,18 @@ function updateContentPanels(component, requirementsData) {
 
   // Crear nuevos paneles (solo válidos)
   validRequirements.forEach((requirement, index) => {
-    const panel = createContentPanel(requirement, index === 0)
+    const panel = createContentPanel(requirement, index === 0, validRequirements.length === 1)
     contentContainer.appendChild(panel)
   })
 }
 
-function createContentPanel(requirement, isActive = false) {
+function createContentPanel(requirement, isActive = false, isSingleRequirement = false) {
   const panel = document.createElement('div')
-  panel.className = `admission-requirements_content-panel${isActive ? ' is-active' : ''}`
+  const classes = ['admission-requirements_content-panel']
+  if (isActive) classes.push('is-active')
+  if (isSingleRequirement) classes.push('single-requirement')
+
+  panel.className = classes.join(' ')
   panel.setAttribute('data-requirement', requirement.id)
   panel.setAttribute('data-content-panel', requirement.id)
 
@@ -733,6 +757,44 @@ function setupAPIIntegration() {
       Logger.error('Error in setupAPIIntegration:', error)
     }
   })
+}
+
+// ===========================================
+// SINGLE REQUIREMENT DISPLAY
+// ===========================================
+function renderSingleRequirementDisplay(chartContainer, requirement) {
+  // Limpiar el contenedor
+  chartContainer.innerHTML = ''
+
+  // Crear el display de requisito único
+  const singleDisplay = document.createElement('div')
+  singleDisplay.className = 'admission-requirements_single-requirement-display'
+
+  // Crear el ícono grande (siempre usar primary para requisito único)
+  const iconElement = document.createElement('div')
+  iconElement.className = `admission-requirements_single-requirement-display_icon admission-requirements_single-requirement-display_icon--primary`
+
+  const iconI = document.createElement('i')
+  iconI.className = requirement.icon
+  iconElement.appendChild(iconI)
+
+  // Crear el texto de porcentaje dentro del ícono
+  const percentageElement = document.createElement('div')
+  percentageElement.className = 'admission-requirements_single-requirement-display_percentage'
+  percentageElement.textContent = `${requirement.percentage}%`
+  iconElement.appendChild(percentageElement)
+
+  // Ensamblar el display
+  singleDisplay.appendChild(iconElement)
+
+  // Agregar al contenedor
+  chartContainer.appendChild(singleDisplay)
+
+  // Configurar accesibilidad
+  singleDisplay.setAttribute('role', 'region')
+  singleDisplay.setAttribute('aria-label', `Requisito único: ${requirement.title} - ${requirement.percentage}%`)
+
+  Logger.debug(`Single requirement display rendered for: ${requirement.title}`)
 }
 
 // Auto-ejecutar si no es un módulo Y está en el cliente

@@ -22,7 +22,6 @@ $req-progress-animation-duration: 0.8s;
     background-color: var(--background-200);
   }
 
-
   // ==========================================
   // HEADER
   // ==========================================
@@ -81,8 +80,8 @@ $req-progress-animation-duration: 0.8s;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas:
-      "chart"
-      "content";
+      'chart'
+      'content';
     gap: var(--spacing-lg);
     align-items: start;
     width: 100%;
@@ -90,7 +89,7 @@ $req-progress-animation-duration: 0.8s;
 
     @include responsive($breakpoint-lg) {
       grid-template-columns: 1fr 1fr;
-      grid-template-areas: "chart content";
+      grid-template-areas: 'chart content';
       gap: var(--spacing-xl);
       justify-items: start;
     }
@@ -105,6 +104,17 @@ $req-progress-animation-duration: 0.8s;
     justify-content: center;
     align-items: center;
     width: 100%;
+
+    // Altura mínima solo para múltiples requisitos (gráfico complejo)
+    &.multiple-requirements {
+      min-height: rem(300px);
+
+      @include responsive($breakpoint-lg) {
+        min-height: rem(400px);
+      }
+    }
+
+    // Sin min-height para requisito único - crece naturalmente
   }
 
   &_chart-wrapper {
@@ -278,14 +288,25 @@ $req-progress-animation-duration: 0.8s;
   &_content-container {
     grid-area: content;
     position: relative;
-    min-height: rem(300px);
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
 
-    @include responsive($breakpoint-lg) {
-      min-height: rem(400px);
+    // Altura mínima solo para múltiples requisitos (gráfico complejo)
+    &.multiple-requirements {
+      min-height: rem(300px);
+
+      @include responsive($breakpoint-lg) {
+        min-height: rem(400px);
+      }
+    }
+
+    // Para requisito único - igualar altura del contenedor izquierdo para centrado vertical perfecto
+    &:not(.multiple-requirements) {
+      @include responsive($breakpoint-lg) {
+        min-height: rem(380px); // Igual al tamaño del ícono circular
+      }
     }
   }
 
@@ -297,7 +318,7 @@ $req-progress-animation-duration: 0.8s;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -315,8 +336,28 @@ $req-progress-animation-duration: 0.8s;
       transform: scale(1) translateY(0);
     }
 
+    // Para requisito único, usar posicionamiento natural para mejor centrado
+    &.single-requirement {
+      position: static;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      width: auto;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
     @include responsive($breakpoint-lg) {
       position: absolute;
+
+      &.single-requirement {
+        position: static;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
     }
   }
 
@@ -422,6 +463,76 @@ $req-progress-animation-duration: 0.8s;
     }
   }
 
+  // ==========================================
+  // SINGLE REQUIREMENT DISPLAY
+  // ==========================================
+  &_single-requirement-display {
+    grid-area: chart;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+
+    &_icon {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: rem(380px);
+      height: rem(380px);
+      border-radius: 50%;
+      font-size: rem(120px);
+      transition: $req-transition;
+
+      &--primary {
+        background: rgba(var(--primary-600-rgb), 0.1);
+        color: var(--primary-600);
+      }
+
+      &--secondary {
+        background: rgba(var(--secondary-600-rgb), 0.1);
+        color: var(--secondary-600);
+      }
+
+      &--success {
+        background: rgba(var(--success-600-rgb), 0.1);
+        color: var(--success-600);
+      }
+
+      @include responsive($breakpoint-md) {
+        width: min(rem(380px), 75vw);
+        height: min(rem(380px), 75vw);
+        font-size: rem(100px);
+      }
+
+      @include responsive($breakpoint-sm) {
+        width: min(rem(300px), 80vw);
+        height: min(rem(300px), 80vw);
+        font-size: rem(80px);
+      }
+    }
+
+    &_percentage {
+      position: absolute;
+      bottom: rem(50px);
+      font-size: var(--font-size-principal-title);
+      font-weight: var(--font-weight-bold);
+      color: inherit;
+      margin: 0;
+
+      @include responsive($breakpoint-md) {
+        font-size: var(--font-size-title);
+        bottom: rem(40px);
+      }
+
+      @include responsive($breakpoint-sm) {
+        font-size: var(--font-size-subtitle);
+        bottom: rem(35px);
+      }
+    }
+  }
 }
 
 // ==========================================
