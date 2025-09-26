@@ -221,7 +221,7 @@ $req-progress-animation-duration: 0.8s;
   // CHART LABELS DENTRO DEL SVG
   // ==========================================
   &_chart-label-percentage {
-    font-size: var(--font-size-title);
+    font-size: calc(var(--font-size-title) * 1.1); // Ligeramente más grande
     font-weight: var(--font-weight-bold);
     font-family: var(--font-family);
     fill: var(--neutral-100);
@@ -247,7 +247,7 @@ $req-progress-animation-duration: 0.8s;
   }
 
   &_chart-label-title {
-    font-size: var(--font-size-caption);
+    font-size: calc(var(--font-size-caption) * 1.15); // Ligeramente más grande
     font-weight: var(--font-weight-semibold);
     font-family: var(--font-family);
     fill: var(--neutral-100);

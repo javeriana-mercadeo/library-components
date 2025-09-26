@@ -3,6 +3,73 @@
  * Compatible con Liferay DXP - Sin dependencias de React
  */
 
+// ===========================================
+// CONFIGURACIÓN DE LOGGING
+// ===========================================
+const LOGGING_CONFIG = {
+  enabled: true, // Cambiar a false para desactivar todos los logs
+  levels: {
+    error: true,   // Errores críticos
+    warn: true,    // Advertencias
+    info: false,   // Información general
+    debug: false   // Información de debugging detallada
+  }
+}
+
+// Logger personalizado
+const Logger = {
+  error: (message, ...args) => {
+    if (LOGGING_CONFIG.enabled && LOGGING_CONFIG.levels.error) {
+      console.error(`[RequirementsAPI] ${message}`, ...args)
+    }
+  },
+  warn: (message, ...args) => {
+    if (LOGGING_CONFIG.enabled && LOGGING_CONFIG.levels.warn) {
+      console.warn(`[RequirementsAPI] ${message}`, ...args)
+    }
+  },
+  info: (message, ...args) => {
+    if (LOGGING_CONFIG.enabled && LOGGING_CONFIG.levels.info) {
+      console.log(`[RequirementsAPI] ${message}`, ...args)
+    }
+  },
+  debug: (message, ...args) => {
+    if (LOGGING_CONFIG.enabled && LOGGING_CONFIG.levels.debug) {
+      console.log(`[RequirementsAPI] 🐛 ${message}`, ...args)
+    }
+  },
+
+  // Funciones de control para configuración dinámica
+  setEnabled: (enabled) => {
+    LOGGING_CONFIG.enabled = enabled
+    Logger.info(`Logging ${enabled ? 'enabled' : 'disabled'}`)
+  },
+
+  setLevel: (level, enabled) => {
+    if (LOGGING_CONFIG.levels.hasOwnProperty(level)) {
+      LOGGING_CONFIG.levels[level] = enabled
+      Logger.info(`Logging level '${level}' ${enabled ? 'enabled' : 'disabled'}`)
+    }
+  },
+
+  enableAll: () => {
+    LOGGING_CONFIG.enabled = true
+    Object.keys(LOGGING_CONFIG.levels).forEach(level => {
+      LOGGING_CONFIG.levels[level] = true
+    })
+    Logger.info('All logging levels enabled')
+  },
+
+  disableAll: () => {
+    Logger.info('Disabling all logging...')
+    LOGGING_CONFIG.enabled = false
+  },
+
+  getConfig: () => {
+    return { ...LOGGING_CONFIG }
+  }
+}
+
 
 /**
  * Inicializa todos los componentes de requisitos de admisión
@@ -88,13 +155,8 @@ function initChartInteractions(component) {
  * @param {string} requirementId - ID del requisito a activar
  */
 function switchContent(component, requirementId) {
-  console.log('[DEBUG] switchContent llamado con requirementId:', requirementId)
-
   const chartSegments = component.querySelectorAll('.admission-requirements_chart-segment')
   const contentPanels = component.querySelectorAll('.admission-requirements_content-panel')
-
-  console.log('[DEBUG] Segmentos encontrados:', chartSegments.length)
-  console.log('[DEBUG] Paneles encontrados:', contentPanels.length)
 
   // Desactivar todos los segmentos y paneles
   chartSegments.forEach(segment => {
@@ -111,9 +173,6 @@ function switchContent(component, requirementId) {
   const activeSegment = component.querySelector(`[data-requirement="${requirementId}"].admission-requirements_chart-segment`)
   const activePanel = component.querySelector(`[data-content-panel="${requirementId}"]`)
 
-  console.log('[DEBUG] Segmento activo encontrado:', !!activeSegment, activeSegment)
-  console.log('[DEBUG] Panel activo encontrado:', !!activePanel, activePanel)
-
   if (activeSegment && activePanel) {
     activeSegment.classList.add('is-active')
     activeSegment.style.filter = 'brightness(1.1)'
@@ -121,11 +180,8 @@ function switchContent(component, requirementId) {
     activePanel.classList.add('is-active')
     activePanel.setAttribute('aria-hidden', 'false')
 
-    console.log('[DEBUG] Panel activado exitosamente para:', requirementId)
     // Anunciar el cambio
     announceContentChange(component, requirementId)
-  } else {
-    console.log('[DEBUG] ERROR: No se pudo activar el panel para:', requirementId)
   }
 }
 
@@ -321,24 +377,26 @@ window.AdmissionRequirements = {
 async function fetchRequirementsFromAPI(programCode) {
   try {
     const apiUrl = `https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals/getrequisitos?codprograma=${programCode}`
-    console.log('[RequirementsAPI] Calling API with URL:', apiUrl)
+    Logger.info(`Fetching requirements for program: ${programCode}`)
+    Logger.debug(`API URL: ${apiUrl}`)
 
     const response = await fetch(apiUrl)
-    console.log('[RequirementsAPI] API Response status:', response.status)
+    Logger.debug(`API response status: ${response.status}`)
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
     const data = await response.json()
-    console.log('[RequirementsAPI] API Data received:', data)
+    Logger.debug('API data received:', data)
 
     const mappedData = mapAPIDataToRequirements(data)
-    console.log('[RequirementsAPI] Mapped data:', mappedData)
+    Logger.info('Requirements successfully mapped from API')
+    Logger.debug('Mapped data:', mappedData)
 
     return mappedData
   } catch (error) {
-    console.error('[RequirementsAPI] Error fetching data:', error)
+    Logger.error('Error fetching data:', error)
     return null
   }
 }
@@ -360,8 +418,6 @@ function mapAPIDataToRequirements(apiData) {
     }
     return acc
   }, {})
-
-  console.log('[RequirementsAPI] 📊 Grouped data:', groupedData)
 
   // Mapear a la estructura que espera nuestro componente
   const mappedRequirements = [
@@ -391,18 +447,13 @@ function mapAPIDataToRequirements(apiData) {
     }
   ]
 
-  console.log('[RequirementsAPI] 🎯 Final mapped requirements:', mappedRequirements)
   return mappedRequirements
 }
 
 function updateReactComponent(requirementsData) {
-  console.log('[RequirementsAPI] 🚀 About to dispatch custom event')
-  console.log('[RequirementsAPI] Requirements data to send:', requirementsData)
-
   // Almacenar datos para acceso posterior en caso de timing issues
   if (typeof window !== 'undefined') {
     window.latestRequirementsData = requirementsData
-    console.log('[RequirementsAPI] 💾 Data stored in window.latestRequirementsData')
   }
 
   // Disparar evento personalizado para actualizar el componente React
@@ -410,15 +461,10 @@ function updateReactComponent(requirementsData) {
     detail: { requirements: requirementsData }
   })
 
-  console.log('[RequirementsAPI] 🎯 Dispatching event:', event)
-  console.log('[RequirementsAPI] Event detail:', event.detail)
-
-  const dispatched = document.dispatchEvent(event)
-  console.log('[RequirementsAPI] ✅ Event dispatched successfully:', dispatched)
+  document.dispatchEvent(event)
 
   // También intentar un dispatch retrasado por si hay timing issues
   setTimeout(() => {
-    console.log('[RequirementsAPI] 🔄 Dispatching delayed event')
     const delayedEvent = new CustomEvent('requirements:dataLoaded', {
       detail: { requirements: requirementsData }
     })
@@ -426,7 +472,6 @@ function updateReactComponent(requirementsData) {
 
     // Si no hay React component activo, actualizar directamente el DOM
     if (!window.requirementsReactTest) {
-      console.log('[RequirementsAPI] 🏗️ No React component detected, updating DOM directly')
       updateDOMDirectly(requirementsData)
     }
   }, 1000)
@@ -436,13 +481,8 @@ function updateReactComponent(requirementsData) {
 // ACTUALIZACIÓN DIRECTA DEL DOM (FALLBACK)
 // ===========================================
 function updateDOMDirectly(requirementsData) {
-  console.log('[RequirementsAPI] 🔧 Starting direct DOM update')
-
   const component = document.querySelector('[data-component-id="requisitos"]')
-  if (!component) {
-    console.log('[RequirementsAPI] ❌ Component container not found')
-    return
-  }
+  if (!component) return
 
   try {
     // Actualizar los porcentajes y labels del SVG
@@ -451,23 +491,19 @@ function updateDOMDirectly(requirementsData) {
     // Actualizar los paneles de contenido
     updateContentPanels(component, requirementsData)
 
-    console.log('[RequirementsAPI] ✅ DOM updated successfully')
-
     // Reinitializar interacciones después de actualizar el DOM
     initChartInteractions(component)
     initAccessibilityEnhancements(component)
 
   } catch (error) {
-    console.error('[RequirementsAPI] ❌ Error updating DOM:', error)
+    Logger.error('Error updating DOM:', error)
   }
 }
 
 function updateSVGChart(component, requirementsData) {
-  console.log('[RequirementsAPI] Updating SVG chart...')
-
   // Filtrar datos para excluir categorías con 0%
   const validRequirements = requirementsData.filter(requirement => requirement.percentage > 0)
-  console.log('[RequirementsAPI] Filtered requirements (excluding 0%):', validRequirements)
+  Logger.debug(`Filtering requirements: ${requirementsData.length} total, ${validRequirements.length} valid (>0%)`)
 
   // Recalcular y actualizar los paths del SVG
   const svg = component.querySelector('.admission-requirements_chart')
@@ -584,7 +620,7 @@ function createSVGLabels(startAngle, endAngle, requirement) {
   // Crear label de porcentaje
   const percentageLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text')
   percentageLabel.setAttribute('x', labelX)
-  percentageLabel.setAttribute('y', labelY - 5)
+  percentageLabel.setAttribute('y', labelY - 8) // Más separación hacia arriba
   percentageLabel.setAttribute('text-anchor', 'middle')
   percentageLabel.setAttribute('class', 'admission-requirements_chart-label-percentage')
   percentageLabel.setAttribute('data-requirement', requirement.id)
@@ -594,7 +630,7 @@ function createSVGLabels(startAngle, endAngle, requirement) {
   // Crear label de título
   const titleLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text')
   titleLabel.setAttribute('x', labelX)
-  titleLabel.setAttribute('y', labelY + 10)
+  titleLabel.setAttribute('y', labelY + 14) // Más separación hacia abajo
   titleLabel.setAttribute('text-anchor', 'middle')
   titleLabel.setAttribute('class', 'admission-requirements_chart-label-title')
   titleLabel.setAttribute('data-requirement', requirement.id)
@@ -605,8 +641,6 @@ function createSVGLabels(startAngle, endAngle, requirement) {
 }
 
 function updateContentPanels(component, requirementsData) {
-  console.log('[RequirementsAPI] Updating content panels...')
-
   // Filtrar datos para excluir categorías con 0%
   const validRequirements = requirementsData.filter(requirement => requirement.percentage > 0)
 
@@ -682,36 +716,23 @@ const initRequirementsSystem = () => {
 }
 
 function setupAPIIntegration() {
-  console.log('[RequirementsAPI] Setting up API integration...')
-
   // Escuchar el evento de carga de programa desde Liferay
   document.addEventListener('data_load-program', async (event) => {
-    console.log('[RequirementsAPI] data_load-program event received:', event)
     try {
       // Obtener el código de programa del evento
       const programCode = event.detail?.dataProgram?.codPrograma
-      console.log('[RequirementsAPI] Program code extracted:', programCode)
-      console.log('[RequirementsAPI] Event detail:', event.detail)
 
       if (programCode) {
-        console.log('[RequirementsAPI] Loading requirements for program:', programCode)
         const requirementsData = await fetchRequirementsFromAPI(programCode)
 
         if (requirementsData) {
           updateReactComponent(requirementsData)
-          console.log('[RequirementsAPI] Requirements loaded successfully')
-        } else {
-          console.log('[RequirementsAPI] No data received from API')
         }
-      } else {
-        console.log('[RequirementsAPI] No program code found')
       }
     } catch (error) {
-      console.error('[RequirementsAPI] Error in setupAPIIntegration:', error)
+      Logger.error('Error in setupAPIIntegration:', error)
     }
   })
-
-  console.log('[RequirementsAPI] Event listener registered for data_load-program')
 }
 
 // Auto-ejecutar si no es un módulo Y está en el cliente
@@ -723,6 +744,9 @@ if (typeof module === 'undefined' && typeof window !== 'undefined') {
 if (typeof window !== 'undefined') {
   window.initAdmissionRequirements = initAdmissionRequirements
   window.initRequirementsSystem = initRequirementsSystem
+
+  // Exponer Logger para control dinámico de logs
+  window.RequirementsLogger = Logger
 }
 
 // Exportar función principal siguiendo el patrón estándar

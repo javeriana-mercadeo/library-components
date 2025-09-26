@@ -13,44 +13,28 @@ const RequisitosPregrado = () => {
 
   // Inicializar script cuando el componente se monta
   useEffect(() => {
-    console.log('[RequirementsReact] 🎬 React component mounted and useEffect running')
     script()
 
     // Test global accessibility
     if (typeof window !== 'undefined') {
       window.requirementsReactTest = () => {
-        console.log('[RequirementsReact] 🧪 Global test function called - React component is accessible!')
         return true
       }
-      console.log('[RequirementsReact] 🌐 Global test function created: window.requirementsReactTest()')
 
       // Verificar si ya hay datos disponibles antes del event listener
       if (window.latestRequirementsData) {
-        console.log('[RequirementsReact] 🎁 Found existing data in window.latestRequirementsData')
-        console.log('[RequirementsReact] Existing data:', window.latestRequirementsData)
         setRequirements(window.latestRequirementsData)
-        console.log('[RequirementsReact] ✅ State updated with existing data')
       }
     }
 
     // Escuchar datos de la API
     const handleRequirementsData = (event) => {
-      console.log('[RequirementsReact] ✅ Custom event received!')
-      console.log('[RequirementsReact] Event type:', event.type)
-      console.log('[RequirementsReact] Event detail:', event.detail)
-      console.log('[RequirementsReact] Full event object:', event)
-
       if (event.detail && event.detail.requirements) {
         const { requirements } = event.detail
-        console.log('[RequirementsReact] Requirements data to set:', requirements)
         setRequirements(requirements)
-        console.log('[RequirementsReact] ✅ State updated with new requirements')
-      } else {
-        console.error('[RequirementsReact] ❌ No requirements data in event.detail')
       }
     }
 
-    console.log('[RequirementsReact] Setting up event listener for requirements:dataLoaded')
     document.addEventListener('requirements:dataLoaded', handleRequirementsData)
 
     return () => {
@@ -185,7 +169,7 @@ const RequisitosPregrado = () => {
                       {/* Texto del porcentaje */}
                       <text
                         x={labelX}
-                        y={labelY - 5}
+                        y={labelY - 8}
                         textAnchor='middle'
                         className={`${baseClass}_chart-label-percentage`}
                         data-requirement={requirement.id}
@@ -196,7 +180,7 @@ const RequisitosPregrado = () => {
                       {/* Texto del título */}
                       <text
                         x={labelX}
-                        y={labelY + 10}
+                        y={labelY + 14}
                         textAnchor='middle'
                         className={`${baseClass}_chart-label-title`}
                         data-requirement={requirement.id}
