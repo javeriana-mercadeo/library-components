@@ -88,10 +88,13 @@ function initChartInteractions(component) {
  * @param {string} requirementId - ID del requisito a activar
  */
 function switchContent(component, requirementId) {
+  console.log('[DEBUG] switchContent llamado con requirementId:', requirementId)
 
   const chartSegments = component.querySelectorAll('.admission-requirements_chart-segment')
   const contentPanels = component.querySelectorAll('.admission-requirements_content-panel')
 
+  console.log('[DEBUG] Segmentos encontrados:', chartSegments.length)
+  console.log('[DEBUG] Paneles encontrados:', contentPanels.length)
 
   // Desactivar todos los segmentos y paneles
   chartSegments.forEach(segment => {
@@ -108,6 +111,9 @@ function switchContent(component, requirementId) {
   const activeSegment = component.querySelector(`[data-requirement="${requirementId}"].admission-requirements_chart-segment`)
   const activePanel = component.querySelector(`[data-content-panel="${requirementId}"]`)
 
+  console.log('[DEBUG] Segmento activo encontrado:', !!activeSegment, activeSegment)
+  console.log('[DEBUG] Panel activo encontrado:', !!activePanel, activePanel)
+
   if (activeSegment && activePanel) {
     activeSegment.classList.add('is-active')
     activeSegment.style.filter = 'brightness(1.1)'
@@ -115,8 +121,11 @@ function switchContent(component, requirementId) {
     activePanel.classList.add('is-active')
     activePanel.setAttribute('aria-hidden', 'false')
 
+    console.log('[DEBUG] Panel activado exitosamente para:', requirementId)
     // Anunciar el cambio
     announceContentChange(component, requirementId)
+  } else {
+    console.log('[DEBUG] ERROR: No se pudo activar el panel para:', requirementId)
   }
 }
 
@@ -306,5 +315,30 @@ window.AdmissionRequirements = {
   }
 }
 
-// Exportar función principal para uso externo
-export default initAdmissionRequirements
+// ===========================================
+// AUTO-INICIALIZACIÓN
+// ===========================================
+const initRequirementsSystem = () => {
+  // Fallback simple sin dependencias externas
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initAdmissionRequirements()
+    })
+  } else {
+    initAdmissionRequirements()
+  }
+}
+
+// Auto-ejecutar si no es un módulo Y está en el cliente
+if (typeof module === 'undefined' && typeof window !== 'undefined') {
+  initRequirementsSystem()
+}
+
+// Exponer globalmente para compatibilidad con Liferay
+if (typeof window !== 'undefined') {
+  window.initAdmissionRequirements = initAdmissionRequirements
+  window.initRequirementsSystem = initRequirementsSystem
+}
+
+// Exportar función principal siguiendo el patrón estándar
+export default initRequirementsSystem

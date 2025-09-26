@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { Container, Caption, Title, Paragraph } from '@library/components'
 
-import initAdmissionRequirements from './script.js'
+import script from './script.js'
 import info from './info.json'
 import './styles.scss'
 
@@ -13,12 +13,7 @@ const RequisitosPregrado = () => {
 
   // Inicializar script cuando el componente se monta
   useEffect(() => {
-    // Pequeño delay para asegurar que el DOM esté completamente renderizado
-    const timer = setTimeout(() => {
-      initAdmissionRequirements()
-    }, 100)
-
-    return () => clearTimeout(timer)
+    script()
   }, [])
 
   // Datos de los requisitos de admisión
