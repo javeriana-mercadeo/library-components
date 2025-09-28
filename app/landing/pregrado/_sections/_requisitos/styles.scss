@@ -451,16 +451,25 @@ $req-progress-animation-duration: 0.8s;
   // ITEMS LIST
   // ==========================================
   &_items-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
+    // CSS Grid con auto-flow columnar y máximo de filas por columna
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(5, auto); // Máximo 5 elementos por columna
+    gap: var(--spacing-xs) var(--spacing-lg); // Gap vertical pequeño, horizontal más grande
     list-style: none;
     padding: 0;
     margin-left: 0;
+    align-content: start; // Alinear contenido al inicio
 
     // Agregar margin-top cuando hay header (múltiples requisitos)
     .admission-requirements_content-panel:not(.single-requirement) & {
       margin-top: var(--spacing-md);
+    }
+
+    // En móviles, usar una sola columna si hay pocos elementos
+    @include responsive($breakpoint-sm) {
+      grid-template-rows: repeat(6, auto); // Un elemento más por columna en móvil
+      gap: var(--spacing-xs) var(--spacing-md); // Gap horizontal más pequeño en móvil
     }
   }
 
