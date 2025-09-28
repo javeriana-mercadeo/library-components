@@ -698,21 +698,29 @@ function createContentPanel(requirement, isActive = false, isSingleRequirement =
     </li>
   `).join('')
 
-  panel.innerHTML = `
-    <div class="admission-requirements_panel-header">
-      <div class="admission-requirements_panel-icon admission-requirements_panel-icon--${requirement.color}">
-        <i class="${requirement.icon}"></i>
+  // Construir HTML condicionalmente
+  let headerHTML = ''
+  if (!isSingleRequirement) {
+    // Solo mostrar header para múltiples requisitos
+    headerHTML = `
+      <div class="admission-requirements_panel-header">
+        <div class="admission-requirements_panel-icon admission-requirements_panel-icon--${requirement.color}">
+          <i class="${requirement.icon}"></i>
+        </div>
+        <div class="admission-requirements_panel-title">
+          <h3 class="admission-requirements_panel-main-title">
+            ${requirement.title}
+          </h3>
+          <span class="admission-requirements_panel-subtitle">
+            ${requirement.percentage}% del proceso de evaluación
+          </span>
+        </div>
       </div>
-      <div class="admission-requirements_panel-title">
-        <h3 class="admission-requirements_panel-main-title">
-          ${requirement.title}
-        </h3>
-        <span class="admission-requirements_panel-subtitle">
-          ${requirement.percentage}% del proceso de evaluación
-        </span>
-      </div>
-    </div>
+    `
+  }
 
+  panel.innerHTML = `
+    ${headerHTML}
     <div class="admission-requirements_panel-content">
       <ul class="admission-requirements_items-list">
         ${itemsHTML}
@@ -770,19 +778,26 @@ function renderSingleRequirementDisplay(chartContainer, requirement) {
   const singleDisplay = document.createElement('div')
   singleDisplay.className = 'admission-requirements_single-requirement-display'
 
-  // Crear el ícono grande (siempre usar primary para requisito único)
+  // Crear el ícono grande usando el color de la categoría
   const iconElement = document.createElement('div')
-  iconElement.className = `admission-requirements_single-requirement-display_icon admission-requirements_single-requirement-display_icon--primary`
+  iconElement.className = `admission-requirements_single-requirement-display_icon admission-requirements_single-requirement-display_icon--${requirement.color}`
 
-  const iconI = document.createElement('i')
-  iconI.className = requirement.icon
-  iconElement.appendChild(iconI)
-
-  // Crear el texto de porcentaje dentro del ícono
+  // Crear el texto de porcentaje PRIMERO (arriba)
   const percentageElement = document.createElement('div')
   percentageElement.className = 'admission-requirements_single-requirement-display_percentage'
   percentageElement.textContent = `${requirement.percentage}%`
   iconElement.appendChild(percentageElement)
+
+  // Crear el título SEGUNDO (debajo del porcentaje)
+  const titleElement = document.createElement('div')
+  titleElement.className = 'admission-requirements_single-requirement-display_title'
+  titleElement.textContent = requirement.title
+  iconElement.appendChild(titleElement)
+
+  // Crear el ícono DESPUÉS (detrás de todo)
+  const iconI = document.createElement('i')
+  iconI.className = requirement.icon
+  iconElement.appendChild(iconI)
 
   // Ensamblar el display
   singleDisplay.appendChild(iconElement)

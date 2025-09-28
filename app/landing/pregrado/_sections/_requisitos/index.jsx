@@ -55,7 +55,7 @@ const RequisitosPregrado = () => {
     {
       id: 'conocimiento',
       title: 'CONOCIMIENTO',
-      percentage: 20,
+      percentage: 30,
       icon: 'ph ph-brain',
       color: 'secondary',
       items: ['Cargando criterios de evaluación...']
@@ -63,7 +63,7 @@ const RequisitosPregrado = () => {
     {
       id: 'habilidad',
       title: 'HABILIDAD',
-      percentage: 50,
+      percentage: 40,
       icon: 'ph ph-atom',
       color: 'success',
       items: ['Cargando criterios de evaluación...']
@@ -92,10 +92,16 @@ const RequisitosPregrado = () => {
             {requirements.filter(req => req.percentage > 0).length === 1 ? (
               // Mostrar ícono grande para requisito único
               <div className={`${baseClass}_single-requirement-display`}>
-                <div className={`${baseClass}_single-requirement-display_icon ${baseClass}_single-requirement-display_icon--primary`}>
+                <div
+                  className={`${baseClass}_single-requirement-display_icon ${baseClass}_single-requirement-display_icon--${requirements.find(req => req.percentage > 0).color}`}>
                   <i className={requirements.find(req => req.percentage > 0).icon}></i>
+                </div>
+                <div className={`${baseClass}_single-requirement-display_text-container`}>
                   <div className={`${baseClass}_single-requirement-display_percentage`}>
                     {requirements.find(req => req.percentage > 0).percentage}%
+                  </div>
+                  <div className={`${baseClass}_single-requirement-display_title`}>
+                    {requirements.find(req => req.percentage > 0).title}
                   </div>
                 </div>
               </div>
@@ -220,19 +226,22 @@ const RequisitosPregrado = () => {
                   className={`${baseClass}_content-panel ${index === 0 ? 'is-active' : ''} ${requirements.filter(req => req.percentage > 0).length === 1 ? 'single-requirement' : ''}`}
                   data-requirement={requirement.id}
                   data-content-panel={requirement.id}>
-                  <div className={`${baseClass}_panel-header`}>
-                    <div className={`${baseClass}_panel-icon ${baseClass}_panel-icon--${requirement.color}`}>
-                      <i className={requirement.icon}></i>
+                  {/* Solo mostrar header para múltiples requisitos */}
+                  {requirements.filter(req => req.percentage > 0).length > 1 && (
+                    <div className={`${baseClass}_panel-header`}>
+                      <div className={`${baseClass}_panel-icon ${baseClass}_panel-icon--${requirement.color}`}>
+                        <i className={requirement.icon}></i>
+                      </div>
+                      <div className={`${baseClass}_panel-title`}>
+                        <Title hierarchy='h3' className={`${baseClass}_panel-main-title`}>
+                          {requirement.title}
+                        </Title>
+                        <Caption color='neutral' size='md' className={`${baseClass}_panel-subtitle`}>
+                          {requirement.percentage}% del proceso de evaluación
+                        </Caption>
+                      </div>
                     </div>
-                    <div className={`${baseClass}_panel-title`}>
-                      <Title hierarchy='h3' className={`${baseClass}_panel-main-title`}>
-                        {requirement.title}
-                      </Title>
-                      <Caption color='neutral' size='md' className={`${baseClass}_panel-subtitle`}>
-                        {requirement.percentage}% del proceso de evaluación
-                      </Caption>
-                    </div>
-                  </div>
+                  )}
 
                   <div className={`${baseClass}_panel-content`}>
                     <ul className={`${baseClass}_items-list`}>

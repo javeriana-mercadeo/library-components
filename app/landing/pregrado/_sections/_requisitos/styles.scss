@@ -83,15 +83,16 @@ $req-progress-animation-duration: 0.8s;
       'chart'
       'content';
     gap: var(--spacing-lg);
-    align-items: start;
+    align-items: start; // En móvil mantener arriba
     width: 100%;
-    justify-items: center;
+    justify-items: center; // Centrado en móvil
 
     @include responsive($breakpoint-lg) {
       grid-template-columns: 1fr 1fr;
       grid-template-areas: 'chart content';
       gap: var(--spacing-xl);
-      justify-items: start;
+      justify-items: stretch; // Permite que cada área use su propio justify-content
+      align-items: center; // En desktop, centrar verticalmente las grid areas
     }
   }
 
@@ -101,9 +102,14 @@ $req-progress-animation-duration: 0.8s;
   &_chart-container {
     grid-area: chart;
     display: flex;
-    justify-content: center;
+    justify-content: center; // Centrado en móvil por defecto
     align-items: center;
     width: 100%;
+
+    // En desktop, alinear hacia la derecha para acercar al contenido
+    @include responsive($breakpoint-lg) {
+      justify-content: flex-end;
+    }
 
     // Altura mínima solo para múltiples requisitos (gráfico complejo)
     &.multiple-requirements {
@@ -123,7 +129,12 @@ $req-progress-animation-duration: 0.8s;
     width: min(rem(320px), 85vw);
     height: min(rem(320px), 85vw);
     max-width: 100%;
-    margin: 0 auto;
+    margin: 0 auto; // Centrado en móvil
+
+    // En desktop, quitar el auto-centrado para respetar el justify-content del contenedor
+    @include responsive($breakpoint-lg) {
+      margin: 0;
+    }
 
     // TABLET (576px+) - pantalla un poco más grande
     @include responsive($breakpoint-sm) {
@@ -289,9 +300,24 @@ $req-progress-animation-duration: 0.8s;
     grid-area: content;
     position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center; // Centrado vertical por defecto
+    justify-content: center; // Centrado en móvil por defecto
     width: 100%;
+
+    // En desktop, alinear hacia la izquierda para acercar al círculo
+    @include responsive($breakpoint-lg) {
+      justify-content: flex-start;
+    }
+
+    // Para múltiples requisitos, asegurar centrado vertical
+    &.multiple-requirements {
+      align-items: center;
+    }
+
+    // Para requisito único, permitir alineación más flexible
+    &:not(.multiple-requirements) {
+      align-items: center; // También mantener centrado para consistencia
+    }
 
     // Altura mínima solo para múltiples requisitos (gráfico complejo)
     &.multiple-requirements {
@@ -302,10 +328,10 @@ $req-progress-animation-duration: 0.8s;
       }
     }
 
-    // Para requisito único - igualar altura del contenedor izquierdo para centrado vertical perfecto
+    // Para requisito único - altura ajustada al nuevo layout horizontal en desktop
     &:not(.multiple-requirements) {
       @include responsive($breakpoint-lg) {
-        min-height: rem(380px); // Igual al tamaño del ícono circular
+        min-height: rem(160px); // Altura mínima basada en el ícono cuadrado + padding
       }
     }
   }
@@ -315,7 +341,7 @@ $req-progress-animation-duration: 0.8s;
   // ==========================================
   &_content-panel {
     position: absolute;
-    top: 0;
+    top: auto;
     left: 0;
     width: 100%;
     height: auto;
@@ -428,10 +454,14 @@ $req-progress-animation-duration: 0.8s;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
-    margin-top: var(--spacing-md);
     list-style: none;
     padding: 0;
     margin-left: 0;
+
+    // Agregar margin-top cuando hay header (múltiples requisitos)
+    .admission-requirements_content-panel:not(.single-requirement) & {
+      margin-top: var(--spacing-md);
+    }
   }
 
   &_list-item {
@@ -469,67 +499,151 @@ $req-progress-animation-duration: 0.8s;
   &_single-requirement-display {
     grid-area: chart;
     display: flex;
-    flex-direction: column;
+    // Cambiar a layout horizontal desde móvil
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    gap: var(--spacing-md); // Espacio entre ícono y textos en móvil
     padding: var(--spacing-lg);
+
+    // En desktop, ajustar espaciado
+    @include responsive($breakpoint-lg) {
+      gap: var(--spacing-xl);
+      padding: var(--spacing-lg) var(--spacing-md);
+    }
 
     &_icon {
       position: relative;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: rem(380px);
-      height: rem(380px);
-      border-radius: 50%;
-      font-size: rem(120px);
+      // MÓVIL (por defecto) - cuadrado con esquinas redondeadas para layout horizontal
+      width: min(rem(120px), 30vw);
+      height: min(rem(120px), 30vw);
+      border-radius: var(--border-radius-lg); // Esquinas redondeadas como panel-icon
+      font-size: min(rem(60px), 15vw); // Ícono proporcionado al cuadrado
       transition: $req-transition;
+      flex-shrink: 0; // No permitir que se encoja
 
-      &--primary {
-        background: rgba(var(--primary-600-rgb), 0.1);
+      // Siempre usar primary - unificado para todos los casos
+      background: rgba(var(--primary-600-rgb), 0.1);
+
+      // Ícono sin atenuación en el nuevo layout
+      i {
         color: var(--primary-600);
+        opacity: 1;
+        position: static;
+        transform: none;
+        z-index: 1;
       }
 
-      &--secondary {
-        background: rgba(var(--secondary-600-rgb), 0.1);
-        color: var(--secondary-600);
-      }
-
+      // Todos los modificadores usan primary
+      &--primary,
+      &--secondary,
       &--success {
-        background: rgba(var(--success-600-rgb), 0.1);
-        color: var(--success-600);
+        background: rgba(var(--primary-600-rgb), 0.1);
+
+        i {
+          color: var(--primary-400);
+        }
       }
 
+      // TABLET
       @include responsive($breakpoint-md) {
-        width: min(rem(380px), 75vw);
-        height: min(rem(380px), 75vw);
-        font-size: rem(100px);
+        width: min(rem(140px), 35vw);
+        height: min(rem(140px), 35vw);
+        font-size: min(rem(70px), 17vw); // Ícono proporcionado al cuadrado en tablet
       }
 
-      @include responsive($breakpoint-sm) {
-        width: min(rem(300px), 80vw);
-        height: min(rem(300px), 80vw);
-        font-size: rem(80px);
+      // DESKTOP - cambiar a cuadrado con esquinas redondeadas
+      @include responsive($breakpoint-lg) {
+        width: rem(120px); // Cuadrado más compacto
+        height: rem(120px);
+        border-radius: var(--border-radius-lg); // Esquinas redondeadas como panel-icon
+        font-size: rem(60px); // Ícono proporcionado al nuevo tamaño
+        flex-shrink: 0; // No permitir que se encoja en el layout horizontal
+
+        // El ícono ya no necesita estar atenuado ni centrado absolutamente
+        i {
+          position: static;
+          transform: none;
+          opacity: 1;
+          color: var(--primary-600); // Color más sólido como en panel-icon
+        }
+      }
+    }
+
+    // Contenedor para los textos - activo desde móvil
+    &_text-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: rem(2px); // Espacio mínimo en móvil
+      flex: 1; // Ocupa el espacio restante
+
+      @include responsive($breakpoint-lg) {
+        gap: rem(4px); // Ligeramente más espacio en desktop
       }
     }
 
     &_percentage {
-      position: absolute;
-      bottom: rem(50px);
-      font-size: var(--font-size-principal-title);
+      // Posicionamiento estático desde móvil
+      position: static;
+      transform: none;
+      font-size: var(--font-size-title);
       font-weight: var(--font-weight-bold);
-      color: inherit;
+      color: var(--primary-800);
       margin: 0;
+      text-align: left; // Alineado a la izquierda desde móvil
+      text-shadow: none; // Sin sombra en el nuevo layout
+
+      @include dark-theme {
+        color: var(--primary-200);
+      }
 
       @include responsive($breakpoint-md) {
         font-size: var(--font-size-title);
-        bottom: rem(40px);
       }
 
       @include responsive($breakpoint-sm) {
         font-size: var(--font-size-subtitle);
-        bottom: rem(35px);
+      }
+
+      // En desktop, agrandar el texto
+      @include responsive($breakpoint-lg) {
+        font-size: var(--font-size-principal-title);
+      }
+    }
+
+    &_title {
+      // Posicionamiento estático desde móvil
+      position: static;
+      transform: none;
+      margin-top: 0;
+      font-size: var(--font-size-caption);
+      font-weight: var(--font-weight-semibold);
+      color: var(--primary-700);
+      text-align: left; // Alineado a la izquierda desde móvil
+      text-shadow: none; // Sin sombra en el nuevo layout
+      text-transform: uppercase;
+      letter-spacing: rem(1px);
+
+      @include dark-theme {
+        color: var(--primary-300);
+      }
+
+      @include responsive($breakpoint-md) {
+        font-size: var(--font-size-body);
+      }
+
+      @include responsive($breakpoint-sm) {
+        font-size: var(--font-size-caption);
+        letter-spacing: rem(0.5px);
+      }
+
+      // En desktop, agrandar el texto
+      @include responsive($breakpoint-lg) {
+        font-size: var(--font-size-subtitle);
       }
     }
   }
