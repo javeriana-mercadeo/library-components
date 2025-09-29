@@ -876,29 +876,34 @@ function renderSingleRequirementDisplay(chartContainer, requirement) {
   const singleDisplay = document.createElement('div')
   singleDisplay.className = 'admission-requirements_single-requirement-display'
 
-  // Crear el ícono grande usando el color de la categoría
+  // Crear el contenedor del ícono (solo para el ícono)
   const iconElement = document.createElement('div')
   iconElement.className = `admission-requirements_single-requirement-display_icon admission-requirements_single-requirement-display_icon--${requirement.color}`
 
-  // Crear el texto de porcentaje PRIMERO (arriba)
-  const percentageElement = document.createElement('div')
-  percentageElement.className = 'admission-requirements_single-requirement-display_percentage'
-  percentageElement.textContent = `${requirement.percentage}%`
-  iconElement.appendChild(percentageElement)
-
-  // Crear el título SEGUNDO (debajo del porcentaje)
-  const titleElement = document.createElement('div')
-  titleElement.className = 'admission-requirements_single-requirement-display_title'
-  titleElement.textContent = requirement.title
-  iconElement.appendChild(titleElement)
-
-  // Crear el ícono DESPUÉS (detrás de todo)
+  // Crear el ícono dentro del contenedor de ícono
   const iconI = document.createElement('i')
   iconI.className = requirement.icon
   iconElement.appendChild(iconI)
 
-  // Ensamblar el display
+  // Crear el contenedor de texto separado
+  const textContainer = document.createElement('div')
+  textContainer.className = 'admission-requirements_single-requirement-display_text-container'
+
+  // Crear el texto de porcentaje dentro del contenedor de texto
+  const percentageElement = document.createElement('div')
+  percentageElement.className = 'admission-requirements_single-requirement-display_percentage'
+  percentageElement.textContent = `${requirement.percentage}%`
+  textContainer.appendChild(percentageElement)
+
+  // Crear el título dentro del contenedor de texto
+  const titleElement = document.createElement('div')
+  titleElement.className = 'admission-requirements_single-requirement-display_title'
+  titleElement.textContent = requirement.title
+  textContainer.appendChild(titleElement)
+
+  // Ensamblar el display: ícono + texto como hermanos
   singleDisplay.appendChild(iconElement)
+  singleDisplay.appendChild(textContainer)
 
   // Agregar al contenedor
   chartContainer.appendChild(singleDisplay)
