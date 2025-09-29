@@ -11,6 +11,7 @@ import ThemeSwitch from '../components/themeSwitch/theme-switch'
 import BtnReturn from '../components/btnReturn/btnReturn'
 import { ClientSideUtils } from '../components/clientSideUtils/ClientSideUtils'
 import Header from '../components/Header'
+import NavigationLoader from '../components/NavigationLoader'
 
 // Providers and Config
 import { Providers } from './providers'
@@ -92,6 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body suppressHydrationWarning className='antialiased'>
         <Providers themeProps={{ attribute: 'data-theme' }}>
           <ClientSideUtils />
+          <NavigationLoader />
 
           {/* Layout Structure */}
           <div className='relative flex min-h-screen flex-col'>

@@ -1,5 +1,7 @@
+'use client'
+
 import { Card, CardBody, CardFooter, Chip, Button, Image } from '@heroui/react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
 interface DemoCardProps {
@@ -17,6 +19,12 @@ interface DemoCardProps {
 }
 
 export default function DemoCard({ title, icon, description, route, image, chips, children }: DemoCardProps) {
+  const router = useRouter()
+
+  const handleNavigation = () => {
+    router.push(route)
+  }
+
   return (
     <Card
       className='
@@ -107,25 +115,24 @@ export default function DemoCard({ title, icon, description, route, image, chips
 
       {/* Action Section */}
       <CardFooter className='px-4 pb-4 pt-0'>
-        <Link className='w-full' href={route}>
-          <Button
-            fullWidth
-            className='
-              font-medium
-              bg-primary/10
-              text-primary-600
-              hover:bg-primary/20
-              border-0
-              transition-all duration-200
-            '
-            color='primary'
-            endContent={<i className='ph ph-arrow-right text-sm' />}
-            radius='lg'
-            size='sm'
-            variant='flat'>
-            Ver Demo
-          </Button>
-        </Link>
+        <Button
+          fullWidth
+          className='
+            font-medium
+            bg-primary/10
+            text-primary-600
+            hover:bg-primary/20
+            border-0
+            transition-all duration-200
+          '
+          color='primary'
+          endContent={<i className='ph ph-arrow-right text-sm' />}
+          radius='lg'
+          size='sm'
+          variant='flat'
+          onPress={handleNavigation}>
+          Ver Demo
+        </Button>
       </CardFooter>
     </Card>
   )
