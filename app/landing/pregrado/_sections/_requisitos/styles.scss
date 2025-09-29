@@ -58,7 +58,7 @@ $req-progress-animation-duration: 0.8s;
     font-weight: 700;
     line-height: 1.2;
     color: var(--neutral-100);
-    margin: 0;
+    margin: 0 0 var(--spacing-md) 0;
 
     @include dark-theme {
       color: var(--neutral-1000);
@@ -440,10 +440,11 @@ $req-progress-animation-duration: 0.8s;
 
   &_panel-main-title {
     margin: 0 0 var(--spacing-xs) 0;
-    color: var(--neutral-800);
+    color: var(--neutral-400);
+    font-weight: var(--font-weight-semibold);
 
     @include dark-theme {
-      color: var(--neutral-200);
+      color: var(--neutral-400);
     }
   }
 

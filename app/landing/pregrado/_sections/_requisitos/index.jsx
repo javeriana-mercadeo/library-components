@@ -47,7 +47,7 @@ const RequisitosPregrado = () => {
     {
       id: 'actitud',
       title: 'ACTITUD',
-      percentage: 30,
+      percentage: 100,
       icon: 'ph ph-user-circle-plus',
       color: 'primary',
       items: ['Cargando criterios de evaluación...']
@@ -55,7 +55,7 @@ const RequisitosPregrado = () => {
     {
       id: 'conocimiento',
       title: 'CONOCIMIENTO',
-      percentage: 30,
+      percentage: 0,
       icon: 'ph ph-brain',
       color: 'secondary',
       items: ['Cargando criterios de evaluación...']
@@ -63,7 +63,7 @@ const RequisitosPregrado = () => {
     {
       id: 'habilidad',
       title: 'HABILIDAD',
-      percentage: 40,
+      percentage: 0,
       icon: 'ph ph-atom',
       color: 'success',
       items: ['Cargando criterios de evaluación...']
