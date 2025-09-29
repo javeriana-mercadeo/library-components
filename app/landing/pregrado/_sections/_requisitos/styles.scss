@@ -300,38 +300,31 @@ $req-progress-animation-duration: 0.8s;
     grid-area: content;
     position: relative;
     display: flex;
-    align-items: center; // Centrado vertical por defecto
-    justify-content: center; // Centrado en móvil por defecto
     width: 100%;
 
-    // En desktop, alinear hacia la izquierda para acercar al círculo
-    @include responsive($breakpoint-lg) {
+    // En móvil/tablet, permitir crecimiento vertical natural
+    @media (max-width: 991px) {
+      align-items: flex-start;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    // En desktop, mantener centrado y hacia la izquierda
+    @media (min-width: 992px) {
+      align-items: center;
       justify-content: flex-start;
     }
 
-    // Para múltiples requisitos, asegurar centrado vertical
-    &.multiple-requirements {
-      align-items: center;
-    }
-
-    // Para requisito único, permitir alineación más flexible
-    &:not(.multiple-requirements) {
-      align-items: center; // También mantener centrado para consistencia
-    }
-
-    // Altura mínima solo para múltiples requisitos (gráfico complejo)
-    &.multiple-requirements {
-      min-height: rem(300px);
-
-      @include responsive($breakpoint-lg) {
+    // Altura mínima solo para múltiples requisitos en desktop
+    @media (min-width: 992px) {
+      &.multiple-requirements {
         min-height: rem(400px);
+        align-items: center;
       }
-    }
 
-    // Para requisito único - altura ajustada al nuevo layout horizontal en desktop
-    &:not(.multiple-requirements) {
-      @include responsive($breakpoint-lg) {
-        min-height: rem(160px); // Altura mínima basada en el ícono cuadrado + padding
+      &:not(.multiple-requirements) {
+        min-height: rem(160px);
+        align-items: center;
       }
     }
   }
@@ -340,50 +333,65 @@ $req-progress-animation-duration: 0.8s;
   // CONTENT PANELS
   // ==========================================
   &_content-panel {
-    position: absolute;
-    top: auto;
-    left: 0;
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.95) translateY(#{rem(10px)});
-    transition:
-      opacity 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      visibility 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-    &.is-active {
-      opacity: 1;
-      visibility: visible;
-      transform: scale(1) translateY(0);
-    }
-
-    // Para requisito único, usar posicionamiento natural para mejor centrado
-    &.single-requirement {
+    // En móvil/tablet, usar posicionamiento estático para permitir crecimiento natural
+    @media (max-width: 991px) {
       position: static;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
       opacity: 1;
       visibility: visible;
       transform: none;
-      width: auto;
+
+      // Ocultar paneles no activos en móvil sin absolute positioning
+      &:not(.is-active) {
+        display: none;
+      }
+
+      &.is-active {
+        display: flex;
+        animation: fadeInContent 0.3s ease-in-out;
+      }
+    }
+
+    // En desktop, mantener el comportamiento de overlay absoluto
+    @media (min-width: 992px) {
+      position: absolute;
+      top: auto;
+      left: 0;
+      width: 100%;
       height: auto;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.95) translateY(#{rem(10px)});
+      transition:
+        opacity 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        visibility 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      &.is-active {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1) translateY(0);
+      }
     }
 
-    @include responsive($breakpoint-lg) {
-      position: absolute;
-
-      &.single-requirement {
-        position: static;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
+    // Para requisito único, usar posicionamiento natural en todos los tamaños
+    &.single-requirement {
+      position: static !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      width: auto;
+      height: auto;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
     }
   }
 
@@ -451,25 +459,46 @@ $req-progress-animation-duration: 0.8s;
   // ITEMS LIST
   // ==========================================
   &_items-list {
-    // CSS Grid con auto-flow columnar y máximo de filas por columna
+    // CSS Grid con auto-flow columnar - distribución dinámica en desktop
     display: grid;
     grid-auto-flow: column;
-    grid-template-rows: repeat(5, auto); // Máximo 5 elementos por columna
     gap: var(--spacing-xs) var(--spacing-lg); // Gap vertical pequeño, horizontal más grande
     list-style: none;
     padding: 0;
     margin-left: 0;
     align-content: start; // Alinear contenido al inicio
 
+    // DESKTOP: Distribución dinámica con más filas por columna
+    @media (min-width: 992px) {
+      // Usar un máximo más alto para permitir más elementos por columna
+      // pero mantener distribución columnar vertical
+      grid-template-rows: repeat(8, auto); // Máximo 8 elementos por columna (en lugar de 5)
+    }
+
     // Agregar margin-top cuando hay header (múltiples requisitos)
     .admission-requirements_content-panel:not(.single-requirement) & {
       margin-top: var(--spacing-md);
     }
 
-    // En móviles, usar una sola columna si hay pocos elementos
-    @include responsive($breakpoint-sm) {
-      grid-template-rows: repeat(6, auto); // Un elemento más por columna en móvil
-      gap: var(--spacing-xs) var(--spacing-md); // Gap horizontal más pequeño en móvil
+    // En móviles (hasta tablet), cambiar a layout lineal para acordeón
+    @media (max-width: 991px) {
+      display: flex !important;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      grid-template-rows: none;
+      grid-auto-flow: none;
+
+      // Elementos ocultos en móvil cuando hay más de 5 items
+      &.has-many-items {
+        .admission-requirements_list-item:nth-child(n+6) {
+          display: none;
+
+          &.show-all {
+            display: flex;
+            animation: fadeInContent 0.3s ease-in-out;
+          }
+        }
+      }
     }
   }
 
@@ -499,6 +528,128 @@ $req-progress-animation-duration: 0.8s;
 
     @include dark-theme {
       color: var(--neutral-300);
+    }
+  }
+
+  // ==========================================
+  // BOTÓN "LEER MÁS" PARA MÓVIL (ESTILO DIFERENCIALES)
+  // ==========================================
+
+  &_read-more-toggle {
+    // Resetear estilos base (como en el componente Button) con !important para evitar conflictos
+    appearance: none !important;
+    outline: none !important;
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font: inherit !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+
+    // Base del botón - oculto por defecto
+    display: none;
+
+    // Estilos exactos del componente Btn base + variant='light' + size='sm'
+    position: relative !important;
+    background: transparent !important;
+    border: rem(1px) solid transparent !important; // Transparent como btn-light, no neutral
+    color: var(--primary) !important; // Color primary como btn-light
+    margin: var(--spacing-sm) auto 0 auto !important; // Centrado horizontal
+    display: block !important; // Cambiar a block para que funcione el margin auto
+    transition: all 0.25s ease-in-out !important; // Transición exacta del componente
+
+    // Layout y dimensiones exactas
+    align-items: center;
+    justify-content: center;
+    gap: rem(8px); // Gap exacto del componente
+    padding: rem(6px) rem(14px); // Padding exacto de btn-sm
+    min-height: rem(32px); // Altura exacta de btn-sm
+    min-width: rem(64px); // Min-width del componente base
+    border-radius: rem(12px); // Border-radius exacto del componente
+    font-size: rem(12px); // Font-size exacto de btn-sm
+    font-weight: 500; // Font-weight exacto del componente
+    line-height: 1.5; // Line-height exacto del componente
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+
+    .toggle-text {
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+
+    .toggle-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: rem(16px); // Tamaño icon para btn-sm
+      height: rem(16px);
+      font-size: rem(16px);
+      transition: transform 0.2s ease;
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba(var(--primary-rgb), 0.18); // Exacto de btn-light
+      color: var(--primary-800); // Exacto de btn-light
+      transform: translateY(rem(-2px)); // Transform exacto del componente
+    }
+
+    &:active:not(:disabled) {
+      background: rgba(var(--primary-rgb), 0.25); // Exacto de btn-light
+      transform: translateY(0); // Transform exacto del componente
+    }
+
+    &:focus-visible {
+      outline: rem(2px) solid transparent;
+      outline-offset: rem(2px);
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) var(--primary-300);
+      z-index: 10;
+    }
+
+    // Mostrar solo en móvil/tablet cuando hay muchos items
+    @media (max-width: 991px) {
+      display: inline-flex !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    // Ocultar en desktop siempre
+    @media (min-width: 992px) {
+      display: none !important;
+    }
+
+    // Estado expandido - ícono minus horizontal
+    &[aria-expanded="true"] {
+      .toggle-icon {
+        transform: rotate(0deg); // Sin rotación para mostrar línea horizontal
+      }
+    }
+
+    // Estilos para modo oscuro (siguiendo patrón btn-light)
+    @include dark-theme {
+      color: var(--primary-800); // Color para dark theme del btn-light
+
+      &:hover:not(:disabled) {
+        background: rgba(var(--primary-rgb), 0.18);
+        color: var(--primary-200);
+      }
+
+      &:active:not(:disabled) {
+        background: rgba(var(--primary-rgb), 0.25);
+      }
+    }
+
+    // Centrar el botón horizontalmente en móvil
+    @media (max-width: 991px) {
+      display: block !important;
+      margin: var(--spacing-sm) auto 0 auto !important;
     }
   }
 
@@ -681,6 +832,17 @@ $req-progress-animation-duration: 0.8s;
   }
   100% {
     transform: scale(1.03);
+  }
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(rem(10px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

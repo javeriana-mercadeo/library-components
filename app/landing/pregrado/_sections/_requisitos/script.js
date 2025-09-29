@@ -84,6 +84,7 @@ function initAdmissionRequirements() {
   components.forEach(component => {
     initChartInteractions(component)
     initAccessibilityEnhancements(component)
+    initMobileAccordion(component)
   })
 }
 
@@ -675,6 +676,9 @@ function updateContentPanels(component, requirementsData) {
     const panel = createContentPanel(requirement, index === 0, validRequirements.length === 1)
     contentContainer.appendChild(panel)
   })
+
+  // Reinicializar el acordeón después de crear los paneles dinámicamente
+  initMobileAccordion(component)
 }
 
 function createContentPanel(requirement, isActive = false, isSingleRequirement = false) {
@@ -722,13 +726,107 @@ function createContentPanel(requirement, isActive = false, isSingleRequirement =
   panel.innerHTML = `
     ${headerHTML}
     <div class="admission-requirements_panel-content">
-      <ul class="admission-requirements_items-list">
+      <ul class="admission-requirements_items-list ${requirement.items.length > 5 ? 'has-many-items' : ''}">
         ${itemsHTML}
       </ul>
+      ${requirement.items.length > 5 ? `
+        <button class="admission-requirements_read-more-toggle"
+                aria-expanded="false"
+                aria-controls="admission-requirements_items-list-${requirement.id}">
+          <span class="toggle-text">Leer más</span>
+          <i class="ph ph-plus toggle-icon" aria-hidden="true"></i>
+        </button>
+      ` : ''}
     </div>
   `
 
   return panel
+}
+
+// ===========================================
+// SISTEMA DE ACORDEÓN PARA MÓVIL
+// ===========================================
+function initMobileAccordion(component) {
+  const isMobile = () => window.innerWidth <= 991
+
+  // Remover listeners previos para evitar duplicados
+  const existingButtons = component.querySelectorAll('.admission-requirements_read-more-toggle')
+  existingButtons.forEach(button => {
+    const newButton = button.cloneNode(true)
+    button.parentNode.replaceChild(newButton, button)
+  })
+
+  function setupAccordionBehavior() {
+    const readMoreButtons = component.querySelectorAll('.admission-requirements_read-more-toggle')
+
+    readMoreButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault()
+
+        const isExpanded = this.getAttribute('aria-expanded') === 'true'
+        const listContainer = this.parentElement.querySelector('.admission-requirements_items-list')
+        const hiddenItems = listContainer.querySelectorAll('.admission-requirements_list-item:nth-child(n+6)')
+        const toggleText = this.querySelector('.toggle-text')
+        const toggleIcon = this.querySelector('.toggle-icon')
+
+        if (isExpanded) {
+          // Colapsar
+          hiddenItems.forEach(item => {
+            item.style.display = 'none'
+            item.classList.remove('show-all')
+          })
+          this.setAttribute('aria-expanded', 'false')
+          toggleText.textContent = 'Leer más'
+          toggleIcon.className = 'ph ph-plus toggle-icon'
+        } else {
+          // Expandir
+          hiddenItems.forEach(item => {
+            item.style.display = 'flex'
+            item.classList.add('show-all')
+          })
+          this.setAttribute('aria-expanded', 'true')
+          toggleText.textContent = 'Leer menos'
+          toggleIcon.className = 'ph ph-minus toggle-icon'
+        }
+      })
+    })
+  }
+
+  function handleResize() {
+    const allItems = component.querySelectorAll('.admission-requirements_list-item')
+
+    if (!isMobile()) {
+      // En desktop, mostrar todos los elementos y limpiar estilos inline
+      allItems.forEach(item => {
+        item.style.display = ''
+        item.classList.remove('show-all')
+      })
+    } else {
+      // En móvil, aplicar lógica de acordeón
+      component.querySelectorAll('.admission-requirements_items-list.has-many-items').forEach(list => {
+        const hiddenItems = list.querySelectorAll('.admission-requirements_list-item:nth-child(n+6)')
+        const readMoreButton = list.parentElement.querySelector('.admission-requirements_read-more-toggle')
+
+        if (readMoreButton && readMoreButton.getAttribute('aria-expanded') !== 'true') {
+          hiddenItems.forEach(item => {
+            item.style.display = 'none'
+          })
+        }
+      })
+    }
+  }
+
+  // Configurar eventos
+  setupAccordionBehavior()
+
+  // Configurar resize handler (solo una vez)
+  if (!component.hasAttribute('data-accordion-initialized')) {
+    window.addEventListener('resize', () => handleResize())
+    component.setAttribute('data-accordion-initialized', 'true')
+  }
+
+  // Aplicar estado inicial
+  handleResize()
 }
 
 // ===========================================
