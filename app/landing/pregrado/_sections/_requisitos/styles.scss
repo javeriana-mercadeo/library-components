@@ -808,6 +808,117 @@ $req-progress-animation-duration: 0.8s;
       }
     }
   }
+
+  // ==========================================
+  // PANEL NAVIGATION (INSIDE CONTENT PANEL)
+  // ==========================================
+  &_panel-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid rgba(var(--neutral-600-rgb), 0.15);
+
+    @include responsive($breakpoint-lg) {
+      margin-top: var(--spacing-sm);
+      padding-top: var(--spacing-sm);
+    }
+  }
+
+  &_faq-button {
+    // Reset base styles
+    appearance: none;
+    outline: none;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0 auto;
+    font: inherit;
+    cursor: pointer;
+
+    // Button styles siguiendo el sistema de componentes
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    min-height: rem(48px);
+    border-radius: var(--border-radius-lg);
+    font-size: var(--font-size-paragraph);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    user-select: none;
+    white-space: nowrap;
+    transition: all 0.25s ease-in-out;
+    text-decoration: none;
+
+    // Primary variant styles
+    background: var(--primary-600);
+    color: var(--neutral-100);
+    border: 1px solid var(--primary-600);
+
+    &:hover:not(:disabled) {
+      background: var(--primary-500);
+      border-color: var(--primary-500);
+      transform: translateY(rem(-2px));
+      box-shadow: 0 4px 12px rgba(var(--primary-600-rgb), 0.25);
+    }
+
+    &:active:not(:disabled) {
+      background: var(--primary-700);
+      border-color: var(--primary-700);
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(var(--primary-600-rgb), 0.2);
+    }
+
+    &:focus-visible {
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+      box-shadow:
+        0 0 0 2px var(--background-100),
+        0 0 0 4px var(--primary-300);
+      z-index: 10;
+    }
+
+    // Dark theme
+    @include dark-theme {
+      color: var(--neutral-1000);
+
+      &:hover:not(:disabled) {
+        color: var(--neutral-1000);
+      }
+    }
+
+    // Icon styles
+    i {
+      font-size: rem(18px);
+      transition: transform 0.2s ease;
+    }
+
+    &:hover i {
+      transform: translateX(rem(4px));
+    }
+
+    // Responsive
+    @include responsive($breakpoint-md) {
+      padding: var(--spacing-xs) var(--spacing-md);
+      min-height: rem(44px);
+      font-size: var(--font-size-small);
+
+      i {
+        font-size: rem(16px);
+      }
+    }
+  }
+
+  &_faq-button-text {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
 }
 
 // ==========================================

@@ -254,6 +254,27 @@ const RequisitosPregrado = () => {
                         </li>
                       ))}
                     </ul>
+
+                    {/* === NAVIGATION BUTTON TO FAQ (only show on active panel) === */}
+                    {index === 0 && (
+                      <div className={`${baseClass}_panel-navigation`}>
+                        <button
+                          className={`${baseClass}_faq-button`}
+                          onClick={() => {
+                            document.getElementById('section-eleven')?.scrollIntoView({
+                              behavior: 'smooth',
+                              block: 'start'
+                            })
+                          }}
+                          aria-label="Ver detalles de los criterios de evaluación en preguntas frecuentes"
+                        >
+                          <span className={`${baseClass}_faq-button-text`}>
+                            Ver detalles de evaluación
+                          </span>
+                          <i className="ph ph-arrow-right" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

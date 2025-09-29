@@ -85,6 +85,40 @@ function initAdmissionRequirements() {
     initChartInteractions(component)
     initAccessibilityEnhancements(component)
     initMobileAccordion(component)
+    initNavigationButton(component)
+  })
+}
+
+/**
+ * Inicializa el botón de navegación hacia FAQ
+ * @param {HTMLElement} component - Elemento del componente
+ */
+function initNavigationButton(component) {
+  const navigationButtons = component.querySelectorAll('.admission-requirements_faq-button')
+
+  navigationButtons.forEach(navigationButton => {
+    if (navigationButton) {
+      // Limpiar listeners previos
+      const newButton = navigationButton.cloneNode(true)
+      navigationButton.parentNode.replaceChild(newButton, navigationButton)
+
+      // Agregar event listener
+      newButton.addEventListener('click', () => {
+        window.AdmissionRequirements.navigateToFAQ()
+      })
+
+      // Soporte para teclado
+      newButton.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          window.AdmissionRequirements.navigateToFAQ()
+        }
+      })
+
+      // Configurar accesibilidad
+      newButton.setAttribute('role', 'button')
+      newButton.setAttribute('tabindex', '0')
+    }
   })
 }
 
@@ -314,6 +348,28 @@ window.AdmissionRequirements = {
     const component = document.querySelector('[data-component-id="requisitos"]')
     if (component) {
       switchContent(component, requirementId)
+    }
+  },
+
+  /**
+   * Navega a la sección de preguntas frecuentes
+   */
+  navigateToFAQ: function() {
+    const faqSection = document.getElementById('section-eleven')
+    if (faqSection) {
+      faqSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+
+      // Analytics tracking (opcional)
+      if (typeof window.gtag !== 'undefined') {
+        window.gtag('event', 'navigation', {
+          event_category: 'requirements',
+          event_label: 'navigate_to_faq',
+          value: 1
+        })
+      }
     }
   },
 
