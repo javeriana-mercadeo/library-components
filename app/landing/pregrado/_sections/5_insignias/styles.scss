@@ -128,14 +128,6 @@
     flex-direction: column;
     height: auto;
     max-width: rem(200px);
-    // 🎯 Preparar para efectos de hover
-    transition: transform 0.3s ease;
-    cursor: pointer;
-
-    // 🎨 Efecto hover individual del logo
-    &:hover {
-      transform: translateY(rem(-5px)); // Levantar ligeramente
-    }
   }
 
   .slider-items {
@@ -209,11 +201,6 @@
       p {
         font-size: rem(10px);
       }
-    }
-
-    // En móvil: ralentizar menos para mejor UX
-    .slider:hover .slider-track {
-      animation-duration: 90s; // 3x más lento en lugar de 5x
     }
   }
 
