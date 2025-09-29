@@ -1,8 +1,8 @@
 'use client'
 
 // Reusable Components
-import SectionTitle from '@/components/ui/SectionTitle'
-import DemoCard from '@/components/ui/DemoCard'
+import { SectionTitle } from '@/components/ui'
+import { DemoCard } from '@/components/common'
 
 export default function DemosPage() {
   return (

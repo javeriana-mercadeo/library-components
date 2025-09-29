@@ -5,18 +5,20 @@ import { Chip } from '@heroui/react'
 
 import { Splash } from '../_library/components'
 
-import SectionTitle from '@/components/ui/SectionTitle'
-import CodeBlock, { InlineCode } from '@/components/ui/CodeBlock'
-import ResourceCard from '@/components/ui/ResourceCard'
-import ViewComponent from '@/components/viewComponent/viewComponent'
-import SectionCard from '@/components/ui/SectionCard'
-import InfoCard from '@/components/ui/InfoCard'
-import TechStackCard from '@/components/ui/TechStackCard'
-import APIEndpointCard from '@/components/ui/APIEndpointCard'
-import WarningAlert from '@/components/ui/WarningAlert'
-import FeatureList from '@/components/ui/FeatureList'
-import PhaseCard from '@/components/ui/PhaseCard'
-import EnvironmentCard from '@/components/ui/EnvironmentCard'
+// UI Components
+import { SectionTitle, CodeBlock, FeatureList } from '@/components/ui'
+import { InlineCode } from '@/components/ui/CodeBlock'
+import { WarningAlert } from '@/components/ui/Alerts'
+import { APIEndpointCard, EnvironmentCard, TechStackCard } from '@/components/ui/Cards'
+
+// Common Components (Cards)
+import { ResourceCard, SectionCard, InfoCard } from '@/components/common/Card'
+
+// Utils Components
+import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
+
+// Features Components
+import { PhaseCard } from '@/components/features'
 // Configuration Components - Real imports
 import GlobalAssets from '@/app/_library/_configurations/globalAssets'
 import StateProgram from '@/app/_library/_configurations/stateProgram'

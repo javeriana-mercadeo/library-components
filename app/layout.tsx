@@ -7,11 +7,10 @@ import { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 
 // Components
-import ThemeSwitch from '../components/themeSwitch/theme-switch'
-import BtnReturn from '../components/btnReturn/btnReturn'
-import { ClientSideUtils } from '../components/clientSideUtils/ClientSideUtils'
-import Header from '../components/Header'
-import NavigationLoader from '../components/NavigationLoader'
+import { ThemeSwitch } from '../components/ui'
+import { BtnReturn, NavigationLoader } from '../components/layout/Navigation'
+import { ClientSideUtils } from '../components/utils'
+import { Header } from '../components/layout'
 
 // Providers and Config
 import { Providers } from './providers'
