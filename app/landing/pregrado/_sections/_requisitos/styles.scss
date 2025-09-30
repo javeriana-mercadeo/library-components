@@ -98,6 +98,22 @@ $req-progress-animation-duration: 0.8s;
       justify-items: stretch; // Permite que cada área use su propio justify-content
       align-items: center; // En desktop, centrar verticalmente las grid areas
     }
+
+    // Layout de 2 filas para requisito único
+    &.single-requirement-layout {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'chart'
+        'content'
+        'button';
+
+      @include responsive($breakpoint-lg) {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          'chart content'
+          'button button';
+      }
+    }
   }
 
   // ==========================================
@@ -490,6 +506,17 @@ $req-progress-animation-duration: 0.8s;
       margin-top: var(--spacing-md);
     }
 
+    // Para requisito único: usar grid flexible sin filas predefinidas
+    .admission-requirements_content-panel.single-requirement & {
+      @media (min-width: 992px) {
+        grid-auto-flow: row; // Cambiar a flujo vertical
+        grid-template-rows: none;
+        grid-auto-rows: auto;
+        grid-template-columns: 1fr; // Una sola columna
+        align-content: center; // Centrar verticalmente el contenido
+      }
+    }
+
     // En móviles (hasta tablet), cambiar a layout lineal para acordeón
     @media (max-width: 991px) {
       display: flex !important;
@@ -850,11 +877,106 @@ $req-progress-animation-duration: 0.8s;
       justify-content: center;
     }
   }
+
+  // ==========================================
+  // BUTTON ROW FOR SINGLE REQUIREMENT
+  // ==========================================
+  &_single-requirement-button-row {
+    grid-area: button;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    /*margin-top: var(--spacing-md);*/
+
+    @include responsive($breakpoint-lg) {
+      padding: 0;
+      /*margin-top: var(--spacing-lg);*/
+    }
+  }
+
+  // ==========================================
+  // DYNAMIC CONTENT CONTAINER
+  // ==========================================
+  &_dynamic-content {
+    width: 100%;
+  }
+
+  // ==========================================
+  // LOADING STATE
+  // ==========================================
+  &_loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: rem(400px);
+    gap: var(--spacing-md);
+    padding: var(--spacing-xl);
+  }
+
+  &_loading-spinner {
+    font-size: rem(48px);
+    color: var(--primary-600);
+    animation: spin 1s linear infinite;
+
+    i {
+      display: block;
+    }
+  }
+
+  &_loading-text {
+    text-align: center;
+    margin: 0;
+    font-size: var(--font-size-body);
+    color: var(--neutral-600);
+  }
+
+  // ==========================================
+  // FAQ BUTTON STYLES
+  // ==========================================
+  &_faq-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-semibold);
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: var(--primary-600);
+    color: var(--neutral-0);
+
+    &:hover {
+      background-color: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    i {
+      font-size: rem(18px);
+    }
+  }
 }
 
 // ==========================================
 // ANIMATIONS
 // ==========================================
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 @keyframes fadeInSlideUp {
   from {
     opacity: 0;
