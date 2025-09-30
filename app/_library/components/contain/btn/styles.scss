@@ -401,20 +401,63 @@ $btn-ripple-duration: 0.6s;
   // VARIANTE: FLAT (menos énfasis que light)
   // ===========================================
   &.btn-flat {
-    background: rgba($color-rgb, 0.18);
+    background: transparent;
     color: $color;
     box-shadow: $btn-shadow-flat;
     border: rem(1px) solid transparent;
+    position: relative;
+
+    // Pseudo-elemento para background neutral de fondo
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--neutral-1100);
+      border-radius: inherit;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    // Pseudo-elemento para la capa semitransparente de color
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba($color-rgb, 0.18);
+      border-radius: inherit;
+      z-index: 0;
+      pointer-events: none;
+      transition: $btn-transition;
+    }
+
+    // Asegurar que el contenido esté sobre los pseudo-elementos
+    .btn-icon,
+    .btn-text {
+      position: relative;
+      z-index: 1;
+    }
 
     &:hover:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
-      background: rgba($color-rgb, 0.2);
       color: $color-700;
       transform: $btn-transform-hover;
+
+      &::after {
+        background: rgba($color-rgb, 0.2);
+      }
     }
 
     &:active:not(:disabled):not(.btn-disabled):not([aria-disabled='true']) {
-      background: rgba($color-rgb, 0.23);
       transform: $btn-transform-active;
+
+      &::after {
+        background: rgba($color-rgb, 0.23);
+      }
     }
 
     &:focus-visible {
@@ -425,6 +468,7 @@ $btn-ripple-duration: 0.6s;
 
     .btn-ripple-effect {
       background: rgba($color-rgb, 0.25);
+      z-index: 1;
     }
   }
 
