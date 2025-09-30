@@ -1092,8 +1092,30 @@ function renderFullHTML(requirementsData) {
   `
 
   console.log('[renderFullHTML] Setting innerHTML...')
+
+  // Buscar el loading state (puede estar en el contenedor o en su padre)
+  let loadingState = container.querySelector('.admission-requirements_loading-state')
+
+  if (!loadingState) {
+    // Si no está dentro del contenedor, buscar en el mismo nivel
+    loadingState = container.parentElement?.querySelector('.admission-requirements_loading-state')
+  }
+
+  // Renderizar el contenido primero
   container.innerHTML = html
   console.log('[renderFullHTML] HTML set successfully')
+
+  // Activar animación de fade out del loading state
+  if (loadingState) {
+    console.log('[renderFullHTML] Hiding loading state with animation...')
+    loadingState.classList.add('hidden')
+
+    // Remover completamente después de la transición (500ms)
+    setTimeout(() => {
+      loadingState.remove()
+      console.log('[renderFullHTML] Loading state removed')
+    }, 500)
+  }
 
   // Reinicializar interacciones después de renderizar
   // Buscar el componente que contiene el contenedor (subir en el árbol DOM)
