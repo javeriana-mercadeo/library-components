@@ -5,7 +5,7 @@
 // ===========================================
 
 // Variables del modal usando variables globales
-$modal-z-index: 10000;
+$modal-z-index: 9997;
 $modal-overlay-bg: rgba(0, 0, 0, 0.65);
 $modal-backdrop-blur: 10px;
 $modal-shadow: 0 var(--spacing-lg) var(--spacing-4xl) rgba(0, 0, 0, 0.25);
@@ -83,9 +83,8 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   background: var(--background-100);
   border-radius: var(--border-radius-lg);
   box-shadow: $modal-shadow;
-  width: 100%;
-  height: 80%;
-  max-height: calc(100vh - rem(40px));
+  width: calc(100dvw - var(--spacing-2xl));
+  height: calc(100dvh - var(--spacing-2xl));
   overflow: visible;
   position: relative;
   border: rem(1px) solid var(--neutral-800);
@@ -106,6 +105,7 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   max-width: $modal-max-width-mobile;
   display: flex;
   flex-direction: column;
+  margin: auto;
 
   @include responsive {
     max-width: $modal-max-width-desktop;
@@ -155,7 +155,7 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   padding: var(--spacing-md);
 
   @include responsive {
-    padding: 0 var(--spacing-xs) var(--spacing-md) var(--spacing-2xl);
+    padding: 0 var(--spacing-md) var(--spacing-md) var(--spacing-lg);
     border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
   }
 }
@@ -193,20 +193,24 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
 .modal-content {
   height: 100%;
   padding: var(--spacing-lg);
+  padding-top: 0;
   overflow-y: auto;
   flex: 1;
   min-height: 0;
 
   @include responsive {
     padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
+    padding-top: 0;
   }
 
   @include responsive($breakpoint-sm) {
     padding: rem(16px);
+    padding-top: 0;
   }
 
   @include responsive(375px) {
     padding: rem(12px);
+    padding-top: 0;
   }
 
   // Scrollbar personalizado
@@ -229,7 +233,7 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   }
 }
 
-.form-modules {
+/* .form-modules {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -240,7 +244,10 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
   border-radius: 0;
   box-shadow: none;
   gap: 0;
-  max-height: 600px;
+
+  & > * {
+    scrollbar-color: var(--primary) #f9fafb;
+  }
 
   .form-header {
     padding: 0;
@@ -257,10 +264,12 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
     margin: 0;
 
     .field {
-      margin-bottom: var(--spacing-md);
+      @include responsive {
+        margin-bottom: var(--spacing-md);
 
-      &:last-child {
-        margin-bottom: 0;
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
 
       input,
@@ -272,8 +281,13 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
       input:active,
       select:active,
       textarea:active {
+        color: var(--neutral-500);
         background-color: var(--background-100) !important;
       }
+    }
+
+    #academic-info-text {
+      display: none;
     }
 
     .authorization-section {
@@ -283,7 +297,7 @@ $form-transition: all calc(var(--transition) * 0.5) cubic-bezier(0.4, 0, 0.2, 1)
       border: none;
     }
   }
-}
+} */
 
 // ===========================================
 // ESTADOS DEL BODY

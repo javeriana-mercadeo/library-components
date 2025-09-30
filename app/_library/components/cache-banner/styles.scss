@@ -1,0 +1,579 @@
+@use '@styles/autoload' as *;
+
+@mixin cache-banner {
+  // ==========================================
+  // COOKIES BANNER - SIGUIENDO PATRÓN DEL HEADER
+  // ==========================================
+
+  .cookies-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(135deg, var(--background-100) 0%, var(--background-200) 100%);
+    border-top: rem(1px) solid var(--neutral-800);
+    box-shadow:
+      rem(0px) rem(-4px) rem(20px) rgba(0, 0, 0, 0.1),
+      rem(0px) rem(-2px) rem(10px) rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    z-index: 9998; // Por encima de todo, pero menos del splash
+    transition: transform 0.3s ease-in-out;
+
+    @include dark-theme {
+      background: linear-gradient(135deg, var(--background-200) 0%, var(--background-300) 100%);
+      box-shadow:
+        rem(0px) rem(-4px) rem(20px) rgba(0, 0, 0, 0.2),
+        rem(0px) rem(-2px) rem(10px) rgba(0, 0, 0, 0.1);
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: rgba(var(--primary-100-rgb), 0.1);
+        pointer-events: none;
+      }
+    }
+
+    // Estados del banner
+    &--hidden {
+      transform: translateY(100%);
+    }
+
+    // Estados especiales para Liferay
+    .has-edit-mode-menu &,
+    .signed-in & {
+      position: relative;
+      z-index: 1;
+    }
+
+    // Contenedor principal
+    .container-fluid {
+      padding: rem(12px) rem(16px);
+
+      @include responsive {
+        padding: var(--spacing-md) var(--spacing-lg);
+      }
+
+      @media (min-width: 576px) {
+        padding: rem(12px);
+      }
+    }
+
+    // Fila principal con flexbox mejorado
+    .row {
+      margin: 0;
+
+      .autofit-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+
+        // Mobile: stack vertically
+        @media (max-width: 575px) {
+          flex-direction: column;
+          gap: rem(12px);
+          align-items: stretch;
+        }
+
+        @include responsive {
+          flex-wrap: nowrap;
+          gap: var(--spacing-md);
+          flex-direction: row;
+        }
+
+        // Contenido principal
+        .autofit-col-expand {
+          flex: 1;
+          min-width: 0;
+
+          span {
+            color: var(--neutral-300);
+            font-size: rem(13px);
+            line-height: 1.5;
+
+            @include responsive {
+              font-size: var(--font-size-paragraph);
+            }
+
+            // Enlace del lineamiento
+            a {
+              color: var(--primary-600);
+              text-decoration: underline;
+              transition: color 0.2s ease;
+              font-weight: var(--font-weight-medium);
+
+              &:hover {
+                color: var(--primary-500);
+                text-decoration: none;
+              }
+
+              &:focus {
+                outline: rem(2px) solid var(--primary-500);
+                outline-offset: rem(2px);
+                border-radius: var(--border-radius-xs);
+              }
+            }
+          }
+        }
+
+        // Contenedores de botones
+        .autofit-col {
+          display: flex;
+          align-items: center;
+
+          // Los estilos de botones se heredan del componente btn
+          // Solo ajustes específicos para el banner de cookies
+          .btn.btn-link {
+            color: var(--primary);
+            border: rem(1px) solid var(--neutral-400);
+            border-radius: var(--btn-radius, 0.75rem);
+
+            &:hover {
+              color: var(--primary-600);
+              background: rgba(var(--primary-rgb), 0.05);
+              border-color: var(--neutral-500);
+            }
+          }
+
+          .btn.btn-secondary {
+            background: var(--primary);
+            color: var(--neutral);
+            border-color: var(--primary-600);
+
+            &:hover {
+              background: var(--primary-500);
+              border-color: var(--primary-500);
+              transform: translateY(rem(-1px));
+              box-shadow: rem(0px) rem(4px) rem(12px) rgba(var(--primary-rgb), 0.3);
+            }
+
+            // Botón específico de rechazar cookies
+            &#_com_liferay_cookies_banner_web_portlet_CookiesBannerPortlet_declineAllButton {
+              background: var(--neutral-600);
+              border-color: var(--neutral-600);
+
+              &:hover {
+                background: var(--neutral-500);
+                border-color: var(--neutral-500);
+                box-shadow: rem(0px) rem(4px) rem(12px) rgba(var(--neutral-rgb), 0.3);
+              }
+
+              &:active {
+                box-shadow: rem(0px) rem(2px) rem(6px) rgba(var(--neutral-rgb), 0.2);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // ==========================================
+    // RESPONSIVE MOBILE OPTIMIZATIONS
+    // ==========================================
+    @media (max-width: 575px) {
+      .autofit-row {
+        .autofit-col-expand {
+          order: 1;
+          margin-bottom: rem(8px);
+
+          span {
+            text-align: left;
+            display: block;
+          }
+        }
+
+        .autofit-col {
+          order: 2;
+          width: 100%;
+
+          &:not(:last-child) {
+            margin-bottom: rem(8px);
+          }
+
+          .btn {
+            width: 100%;
+            min-height: rem(40px);
+            padding: rem(12px) rem(16px);
+            font-size: rem(14px);
+            justify-content: center;
+          }
+        }
+      }
+    }
+
+    @media (min-width: 576px) {
+      .autofit-row {
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+
+      .autofit-row .autofit-col-expand {
+        order: 1;
+        text-align: left;
+
+        span {
+          font-size: var(--font-size-small);
+        }
+      }
+
+      .autofit-row .autofit-col {
+        order: 2;
+        justify-content: center;
+
+        &:last-child {
+          order: 3;
+        }
+
+        .btn {
+          min-width: rem(120px);
+          justify-content: center;
+        }
+      }
+    }
+
+    // ==========================================
+    // ANIMACIONES Y TRANSICIONES
+    // ==========================================
+    &.cookies-banner-entering {
+      transform: translateY(100%);
+      animation: slideUpBanner 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    &.cookies-banner-leaving {
+      animation: slideDownBanner 0.3s ease-in forwards;
+    }
+  }
+
+  // ==========================================
+  // AJUSTES DEL BODY CUANDO EL BANNER ESTÁ VISIBLE
+  // ==========================================
+  body:has(.cookies-banner:not(.cookies-banner--hidden)) {
+    padding-bottom: rem(140px); // Aumentado para mobile
+
+    @media (min-width: 576px) {
+      padding-bottom: rem(100px);
+    }
+
+    @media (min-width: 768px) {
+      padding-bottom: rem(80px);
+    }
+
+    [data-env='development'] & {
+      padding-bottom: 0;
+    }
+  }
+
+  // Cuando el banner está oculto, remover el padding
+  body.cookies-banner-hidden {
+    padding-bottom: 0 !important;
+  }
+
+  // ==========================================
+  // ANIMACIONES
+  // ==========================================
+  @keyframes slideUpBanner {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideDownBanner {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+
+  // ==========================================
+  // ACCESIBILIDAD Y ESTADOS DE ENFOQUE
+  // ==========================================
+  @media (prefers-reduced-motion: reduce) {
+    .cookies-banner {
+      transition: none;
+      animation: none;
+
+      &.cookies-banner-entering,
+      &.cookies-banner-leaving {
+        animation: none;
+      }
+    }
+  }
+
+  // ==========================================
+  // MODAL DE CONFIGURACIÓN FALLBACK - Compatible con estructura HTML existente
+  // ==========================================
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.15s linear;
+    pointer-events: none;
+
+    &.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    &.fade {
+      transition: opacity 0.15s linear;
+    }
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+
+    &.fade {
+      transition: opacity 0.15s linear;
+    }
+
+    &.show {
+      display: block !important;
+    }
+
+    &.d-block {
+      display: block !important;
+    }
+
+    .modal-dialog {
+      position: relative;
+      width: auto;
+      margin: rem(10px);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      min-height: calc(100% - rem(20px));
+
+      @media (min-width: 576px) {
+        max-width: rem(500px);
+        margin: rem(30px) auto;
+        min-height: calc(100% - rem(60px));
+      }
+
+      &.modal-lg {
+        @media (min-width: 992px) {
+          max-width: rem(800px);
+        }
+      }
+    }
+
+    .modal-content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      pointer-events: auto;
+      background-color: var(--background-100);
+      background-clip: padding-box;
+      border: rem(1px) solid var(--neutral-300);
+      border-radius: var(--border-radius-lg);
+      outline: 0;
+      box-shadow:
+        rem(0px) rem(4px) rem(6px) rgba(0, 0, 0, 0.1),
+        rem(0px) rem(20px) rem(25px) rgba(0, 0, 0, 0.1);
+
+      @include dark-theme {
+        background-color: var(--background-200);
+        border-color: var(--neutral-700);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: rem(16px) rem(24px);
+      border-bottom: rem(1px) solid var(--neutral-200);
+      border-top-left-radius: calc(var(--border-radius-lg) - rem(1px));
+      border-top-right-radius: calc(var(--border-radius-lg) - rem(1px));
+
+      @include dark-theme {
+        border-bottom-color: var(--neutral-700);
+      }
+
+      .modal-title {
+        margin-bottom: 0;
+        line-height: 1.5;
+        font-size: rem(20px);
+        font-weight: var(--font-weight-semibold);
+        color: var(--neutral-900);
+
+        @include dark-theme {
+          color: var(--neutral-100);
+        }
+      }
+
+      .close {
+        padding: rem(8px);
+        margin: rem(-8px) rem(-8px) rem(-8px) auto;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        border-radius: var(--border-radius-sm);
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: rem(32px);
+        min-height: rem(32px);
+
+        &:hover {
+          background: var(--neutral-100);
+
+          @include dark-theme {
+            background: var(--neutral-800);
+          }
+        }
+
+        &:focus {
+          outline: rem(2px) solid var(--primary-500);
+          outline-offset: rem(2px);
+        }
+
+        .lexicon-icon {
+          width: rem(16px);
+          height: rem(16px);
+          fill: var(--neutral-600);
+
+          @include dark-theme {
+            fill: var(--neutral-400);
+          }
+        }
+
+        svg {
+          width: rem(16px);
+          height: rem(16px);
+          fill: currentColor;
+        }
+      }
+    }
+
+    .modal-body {
+      position: relative;
+      flex: 1 1 auto;
+      padding: rem(24px);
+      overflow-y: auto;
+
+      &.modal-body-iframe {
+        padding: 0;
+        height: 70vh;
+        min-height: rem(400px);
+
+        iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+          background: var(--background-50);
+
+          @include dark-theme {
+            background: var(--background-300);
+          }
+        }
+      }
+    }
+
+    .modal-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      padding: rem(12px) rem(24px) rem(16px);
+      border-top: rem(1px) solid var(--neutral-200);
+      border-bottom-right-radius: calc(var(--border-radius-lg) - rem(1px));
+      border-bottom-left-radius: calc(var(--border-radius-lg) - rem(1px));
+
+      @include dark-theme {
+        border-top-color: var(--neutral-700);
+      }
+
+      .modal-item-first {
+        margin-right: auto;
+      }
+
+      .modal-item {
+        flex: 0 0 auto;
+      }
+
+      .modal-item-last {
+        margin-left: auto;
+
+        .btn-group {
+          display: flex;
+          gap: rem(8px);
+          flex-wrap: wrap;
+
+          .btn-group-item {
+            flex: 0 0 auto;
+
+            .btn {
+              min-width: rem(100px);
+              white-space: nowrap;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Clase de compatibilidad con Liferay
+  .liferay-modal {
+    // Hereda todos los estilos del modal
+  }
+
+  // Contenedor admin de Liferay
+  .cadmin {
+    // Asegurar que el modal tenga los estilos correctos dentro del contenedor admin
+    .modal {
+      font-family: inherit;
+    }
+  }
+
+  // ==========================================
+  // PRINT STYLES
+  // ==========================================
+  @media print {
+    .cookies-banner,
+    .modal,
+    .modal-backdrop {
+      display: none !important;
+    }
+  }
+
+  // ==========================================
+  // ANIMACIONES PARA COMPATIBILIDAD CON BOOTSTRAP
+  // ==========================================
+  @media (prefers-reduced-motion: no-preference) {
+    .modal.fade .modal-dialog {
+      transition: transform 0.3s ease-out;
+      transform: translate(0, -50px);
+    }
+
+    .modal.show .modal-dialog {
+      transform: none;
+    }
+  }
+}

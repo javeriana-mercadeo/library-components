@@ -10,7 +10,7 @@ import Splash from '@/app/_library/components/splash'
  * Componente que muestra las diferentes variantes de un título por color
  * Incluye todas las jerarquías, tamaños y configuraciones disponibles
  */
-const VariantTitle = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' | 'neutral' | 'success' | 'warning' | 'danger' }) => {
+const VariantTitle = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'neutral' }) => {
   return (
     <div className='space-y-6 mt-8 border p-4 rounded-lg bg-[var(--background-100)]'>
       <div>
@@ -107,10 +107,10 @@ const VariantTitle = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' |
           <ViewComponent>
             <p className='text-sm text-[var(--neutral-500)] mb-2'>Títulos interactivos</p>
             <div className='space-y-2'>
-              <Title color={color} size='lg' onClick={() => alert(`Clickeaste el título ${color}!`)}>
+              <Title color={color} size='lg' onClick={() => {}}>
                 Título clickeable (hover para ver efecto)
               </Title>
-              <Title color={color} size='xl' weight='bold' onClick={() => console.log('Título clickeado')}>
+              <Title color={color} size='xl' weight='bold' onClick={() => {}}>
                 Título interactivo con peso bold
               </Title>
             </div>
@@ -146,27 +146,27 @@ const VariantTitle = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' |
   )
 }
 
-const variantColorsTitle: Array<'primary' | 'secondary' | 'tertiary' | 'neutral' | 'success' | 'warning' | 'danger'> = [
+const variantColorsTitle: Array<'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'neutral'> = [
   'primary',
   'secondary',
   'tertiary',
-  'neutral',
   'success',
   'warning',
-  'danger'
+  'danger',
+  'neutral'
 ]
 
 export default function TitleShowcase() {
   return (
     <>
       <Splash />
-      <Container>
+      <Container className='' id=''>
         {/* Header mejorado */}
         <div className='text-center mb-8'>
           <Title align='center' color='primary' hierarchy='h1' size='3xl' weight='bold'>
             Biblioteca de Títulos
           </Title>
-          <Title align='center' className='max-w-2xl mx-auto mt-4' color='neutral' hierarchy='h2' size='lg' weight='regular'>
+          <Title align='center' className='max-w-2xl mx-auto mt-4' color='primary' hierarchy='h2' size='lg' weight='regular'>
             Explora todas las variantes de títulos disponibles con diferentes colores, tamaños, jerarquías y efectos. Compatible con el
             sistema de temas.
           </Title>

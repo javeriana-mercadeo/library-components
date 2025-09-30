@@ -123,6 +123,6 @@ $logo-size: rem(140px);
 }
 
 // Estado oculto
-.hidden {
+#splash .hidden {
   animation: fadeOut var(--transition) ease-in-out forwards;
 }

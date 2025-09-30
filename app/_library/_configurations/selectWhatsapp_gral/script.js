@@ -9,12 +9,19 @@ const mockConfiguration = {
 }
 
 // En Liferay usa 'configuration', en Next.js usa mock
-const whatsAppConfig = (typeof configuration !== 'undefined') ? configuration : mockConfiguration
+const whatsAppConfig = typeof configuration !== 'undefined' ? configuration : mockConfiguration
 
 // Obtener utilidades globales
 const StringUtils = window.StringUtils || {
   removeAccents: str => str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '',
-  slugify: str => str?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/[\s-]+/g, '-') || ''
+  slugify: str =>
+    str
+      ?.toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/[\s-]+/g, '-') || ''
 }
 
 try {
@@ -23,7 +30,7 @@ try {
 
   const wpAcademicLevel = whatsAppConfig['whatsAppAcademicLevel'] || 'pre'
   let academicLevel = wpAcademicLevel
-  
+
   // Parsing robusto para configuración de Liferay
   try {
     if (typeof wpAcademicLevel === 'string' && wpAcademicLevel.startsWith('{')) {
@@ -46,14 +53,14 @@ try {
       if (typeof configuration === 'undefined') {
         return true
       }
-      
+
       // En Liferay, verificar configuración
       const enableLogs = whatsAppConfig['enableDebugLogs']
       if (typeof enableLogs === 'string' && enableLogs.startsWith('{')) {
         const parsed = JSON.parse(enableLogs)
         return parsed.dataTheme === 'true' || parsed.value === true
       }
-      
+
       return enableLogs === true || enableLogs === 'true'
     } catch (e) {
       // Por defecto, NO mostrar logs en producción
@@ -100,13 +107,13 @@ try {
     try {
       logger.log('🔄 Cargando WhatsApps directamente desde API...')
       const response = await fetch('https://www.javeriana.edu.co/recursosdb/d/info-prg/whatsapps')
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
-      
+
       const whatsApps = await response.json()
-      
+
       if (whatsApps && typeof whatsApps === 'object') {
         window.whatsApps = whatsApps
         logger.log('✅ WhatsApps cargados directamente desde API')
@@ -137,29 +144,29 @@ try {
 
     console.log('📋 [WhatsApp-Gral] TABLA DE NÚMEROS DE WHATSAPP DISPONIBLES:')
     console.log('='.repeat(80))
-    
+
     // Crear tabla para mostrar en consola
     const tableData = []
-    
+
     Object.keys(whatsApps).forEach(facultyKey => {
       const faculty = whatsApps[facultyKey]
       if (faculty && typeof faculty === 'object') {
         Object.keys(faculty).forEach(level => {
           const number = faculty[level]
           tableData.push({
-            'Facultad': facultyKey,
-            'Nivel': level,
-            'Número': number,
-            'Tipo': facultyKey === 'default' ? '🏛️ Institucional' : '🎓 Específico'
+            Facultad: facultyKey,
+            Nivel: level,
+            Número: number,
+            Tipo: facultyKey === 'default' ? '🏛️ Institucional' : '🎓 Específico'
           })
         })
       }
     })
-    
+
     if (tableData.length > 0) {
       console.table(tableData)
       console.log(`📊 Total de números encontrados: ${tableData.length}`)
-      
+
       // Mostrar resumen por facultad
       const facultyCount = Object.keys(whatsApps).length
       console.log(`🏢 Facultades disponibles: ${facultyCount}`)
@@ -167,7 +174,7 @@ try {
     } else {
       console.warn('⚠️ No se encontraron números de WhatsApp válidos')
     }
-    
+
     console.log('='.repeat(80))
   }
 
@@ -237,12 +244,12 @@ try {
 
     // Marcar que se detectó un programa
     programDetected = true
-    
+
     logger.log('Programa detectado en página con WhatsApp general')
     logger.log('Datos del programa:', dataProgram)
-    
+
     logger.log('No aplicando números institucionales - el sistema regular de WhatsApp se encargará')
-    
+
     // El sistema regular de WhatsApp se encargará de este caso
     // Este script solo actúa cuando NO hay programa
   })
@@ -254,19 +261,18 @@ try {
   setTimeout(async () => {
     if (!programDetected) {
       logger.log('No se detectó programa específico - aplicando WhatsApp institucional')
-      
+
       // Verificar si hay datos reales de WhatsApp (guardados por el evento o ya existentes)
       if (typeof window.whatsApps !== 'undefined' && window.whatsApps) {
         logger.log('✅ Usando datos reales de WhatsApp disponibles:')
         showWhatsAppTable(window.whatsApps)
         institutionalWhatsApp = applyInstitutionalWhatsApp(window.whatsApps, academicLevel)
-        
+
         // Actualizar display element con éxito
         const displayElement = document.getElementById('whatsAppSelector')
         if (displayElement) {
           displayElement.textContent = `WhatsApp institucional: ${academicLevel === 'pre' ? 'Pregrado' : 'Posgrado'} | General`
         }
-        
       } else {
         // Solo para desarrollo en Next.js - NO crear números fake en Liferay
         if (typeof configuration === 'undefined') {
@@ -280,7 +286,7 @@ try {
           logger.log('🔧 [DEV] Usando números mock para Next.js')
           showWhatsAppTable(window.whatsApps)
           institutionalWhatsApp = applyInstitutionalWhatsApp(window.whatsApps, academicLevel)
-          
+
           // Actualizar display element
           const displayElement = document.getElementById('whatsAppSelector')
           if (displayElement) {
@@ -289,12 +295,12 @@ try {
         } else {
           // Estamos en Liferay - intentar cargar directamente desde API
           logger.log('⚠️ No se encontraron datos desde evento - intentando cargar desde API directamente')
-          
+
           const whatsApps = await loadWhatsAppsDirectly()
-          
+
           if (whatsApps) {
             institutionalWhatsApp = applyInstitutionalWhatsApp(whatsApps, academicLevel)
-            
+
             // Actualizar display element con éxito
             const displayElement = document.getElementById('whatsAppSelector')
             if (displayElement) {
@@ -304,7 +310,7 @@ try {
             // ERROR CRÍTICO - siempre mostrar
             logger.forceError('No se pudieron cargar los datos de WhatsApp desde API')
             logger.forceError('Verifica la conectividad y que la API esté funcionando')
-            
+
             // Actualizar display element con error
             const displayElement = document.getElementById('whatsAppSelector')
             if (displayElement) {
@@ -335,8 +341,6 @@ try {
   if (displayElement) {
     displayElement.textContent = `WhatsApp institucional: ${academicLevel === 'pre' ? 'Pregrado' : 'Posgrado'} | Esperando detección...`
   }
-
 } catch (error) {
   console.error('Error al cargar la configuración de WhatsApp institucional:', error)
 }
-

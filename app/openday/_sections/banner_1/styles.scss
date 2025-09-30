@@ -1,0 +1,371 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$open-day-overlay-z-index: 5;
+$open-day-image-z-index: 1;
+$open-day-border-radius: rem(12px);
+$open-day-button-border-radius: rem(23px);
+$open-day-transition: all 0.2s ease;
+
+// ==========================================
+// OPEN DAY BANNER COMPONENT
+// ==========================================
+.open-day-banner {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  // ==========================================
+  // HERO IMAGE
+  // ==========================================
+  &_hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: $open-day-image-z-index;
+  }
+
+  // ==========================================
+  // OVERLAY
+  // ==========================================
+  &_overlay {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    background: linear-gradient(to top, var(--primary) 3%, color-mix(in srgb, var(--primary) 100%, transparent) 20%, transparent 110%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    z-index: $open-day-overlay-z-index;
+    padding: var(--spacing-lg) 0;
+
+    @include responsive {
+      justify-content: center;
+      padding: var(--spacing-lg) 0;
+    }
+
+    @include responsive($breakpoint-lg) {
+      background: linear-gradient(to right, var(--primary) 0%, color-mix(in srgb, var(--primary) 70%, transparent) 35%, transparent 110%);
+      padding: var(--spacing-xl) 0;
+    }
+
+    @include dark-theme {
+      background: linear-gradient(
+        to top,
+        var(--primary-300) 3%,
+        color-mix(in srgb, var(--primary-300) 100%, transparent) 20%,
+        transparent 110%
+      );
+
+      @include responsive($breakpoint-lg) {
+        background: linear-gradient(
+          to right,
+          var(--primary-300) 0%,
+          color-mix(in srgb, var(--primary-300) 70%, transparent) 35%,
+          transparent 110%
+        );
+      }
+    }
+  }
+
+  // ==========================================
+  // CONTAINER
+  // ==========================================
+  &_container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+
+    @include responsive {
+      justify-content: center;
+    }
+  }
+
+  // ==========================================
+  // LOGO CONTAINER
+  // ==========================================
+  &_logo-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+    order: -1;
+    padding: var(--spacing-sm);
+
+    // Mancha con mejor contraste para el logo
+    &::before {
+      content: '';
+      position: absolute;
+      top: rem(-30px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: rem(500px);
+      height: rem(160px);
+      background: radial-gradient(
+        ellipse 250px 80px at center,
+        color-mix(in srgb, var(--primary) 45%, transparent) 0%,
+        color-mix(in srgb, var(--primary) 30%, transparent) 25%,
+        color-mix(in srgb, var(--primary) 18%, transparent) 50%,
+        color-mix(in srgb, var(--primary) 8%, transparent) 75%,
+        transparent 100%
+      );
+      z-index: -1;
+      filter: blur(rem(2px));
+    }
+
+    @include responsive($breakpoint-lg) {
+      justify-content: flex-end;
+      margin-bottom: var(--spacing-md);
+      position: absolute;
+      top: var(--spacing-md);
+      right: var(--spacing-md);
+      width: auto;
+
+      &::before {
+        left: auto;
+        right: rem(-60px);
+        transform: none;
+        width: rem(600px);
+        height: rem(140px);
+        background: radial-gradient(
+          ellipse 300px 70px at 80% center,
+          color-mix(in srgb, var(--primary) 50%, transparent) 0%,
+          color-mix(in srgb, var(--primary) 35%, transparent) 30%,
+          color-mix(in srgb, var(--primary) 22%, transparent) 55%,
+          color-mix(in srgb, var(--primary) 10%, transparent) 80%,
+          transparent 100%
+        );
+        filter: blur(rem(3px));
+      }
+    }
+
+    @include responsive($breakpoint-lg) {
+      &::before {
+        width: rem(700px);
+        height: rem(160px);
+        right: rem(-80px);
+        background: radial-gradient(
+          ellipse 350px 80px at 85% center,
+          color-mix(in srgb, var(--primary) 55%, transparent) 0%,
+          color-mix(in srgb, var(--primary) 40%, transparent) 25%,
+          color-mix(in srgb, var(--primary) 25%, transparent) 50%,
+          color-mix(in srgb, var(--primary) 12%, transparent) 75%,
+          transparent 100%
+        );
+        filter: blur(rem(4px));
+      }
+    }
+
+    @include dark-theme {
+      &::before {
+        background: radial-gradient(
+          ellipse 200px 60px at center,
+          color-mix(in srgb, var(--primary-300) 30%, transparent) 0%,
+          color-mix(in srgb, var(--primary-300) 18%, transparent) 30%,
+          color-mix(in srgb, var(--primary-300) 10%, transparent) 60%,
+          transparent 100%
+        );
+
+        @include responsive {
+          background: radial-gradient(
+            ellipse 225px 50px at 80% center,
+            color-mix(in srgb, var(--primary-300) 35%, transparent) 0%,
+            color-mix(in srgb, var(--primary-300) 22%, transparent) 40%,
+            color-mix(in srgb, var(--primary-300) 12%, transparent) 70%,
+            transparent 100%
+          );
+        }
+
+        @include responsive($breakpoint-lg) {
+          background: radial-gradient(
+            ellipse 250px 55px at 85% center,
+            color-mix(in srgb, var(--primary-300) 40%, transparent) 0%,
+            color-mix(in srgb, var(--primary-300) 25%, transparent) 35%,
+            color-mix(in srgb, var(--primary-300) 15%, transparent) 65%,
+            transparent 100%
+          );
+        }
+      }
+    }
+  }
+
+  &_logo {
+    width: rem(220px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(rem(2px) rem(2px) rem(4px) rgba(0, 0, 0, 0.4));
+
+    @include responsive($breakpoint-md) {
+      width: rem(200px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      width: rem(240px);
+    }
+
+    @include dark-theme {
+      filter: drop-shadow(rem(2px) rem(2px) rem(6px) rgba(0, 0, 0, 0.6));
+    }
+  }
+
+  // ==========================================
+  // CONTENT
+  // ==========================================
+  &_content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    @include responsive($breakpoint-lg) {
+      width: 50%;
+    }
+  }
+
+  // ==========================================
+  // FACULTY TAG
+  // ==========================================
+  &_faculty-tag {
+    margin-bottom: var(--spacing-md);
+  }
+
+  &_faculty-text {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
+    color: var(--neutral);
+    text-transform: uppercase;
+    letter-spacing: rem(0.5px);
+    text-shadow: rem(1px) rem(1px) rem(2px) rgba(0, 0, 0, 0.3);
+
+    @include dark-theme {
+      color: var(--neutral);
+      text-shadow: rem(1px) rem(1px) rem(2px) rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  // ==========================================
+  // MAIN TITLE
+  // ==========================================
+  &_main-title {
+    color: var(--neutral) !important;
+    margin-bottom: var(--spacing-lg) !important;
+    max-width: rem(1400px);
+    text-shadow: rem(2px) rem(2px) rem(4px) rgba(0, 0, 0, 0.4);
+
+    @include responsive {
+      margin-bottom: var(--spacing-xl) !important;
+    }
+
+    @include responsive($breakpoint-lg) {
+      margin-bottom: var(--spacing-2xl) !important;
+    }
+
+    @include dark-theme {
+      color: var(--neutral) !important;
+      text-shadow: rem(2px) rem(2px) rem(6px) rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  // ==========================================
+  // DESCRIPTION
+  // ==========================================
+  &_description {
+    color: var(--neutral) !important;
+    margin-bottom: var(--spacing-xl) !important;
+    text-shadow: rem(1px) rem(1px) rem(3px) rgba(0, 0, 0, 0.4);
+
+    @include responsive {
+      margin-bottom: var(--spacing-2xl) !important;
+    }
+
+    @include responsive($breakpoint-lg) {
+      margin-bottom: var(--spacing-3xl) !important;
+    }
+
+    @include dark-theme {
+      color: var(--neutral) !important;
+      text-shadow: rem(1px) rem(1px) rem(4px) rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  // ==========================================
+  // EVENT INFO
+  // ==========================================
+  &_event-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+
+    @include responsive {
+      flex-direction: row;
+      gap: var(--spacing-xl);
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xl);
+    }
+  }
+
+  &_info-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  &_info-label {
+    font-size: var(--font-size-paragraph);
+    font-weight: var(--font-weight-regular);
+    color: var(--neutral);
+    display: flex;
+    gap: var(--spacing-xs);
+    align-items: center;
+    margin: 0;
+    text-shadow: rem(1px) rem(1px) rem(2px) rgba(0, 0, 0, 0.4);
+
+    i {
+      font-size: rem(18px);
+      color: var(--neutral);
+      filter: drop-shadow(rem(1px) rem(1px) rem(2px) rgba(0, 0, 0, 0.3));
+    }
+
+    @include dark-theme {
+      color: var(--neutral);
+      text-shadow: rem(1px) rem(1px) rem(3px) rgba(0, 0, 0, 0.6);
+
+      i {
+        color: var(--neutral);
+        filter: drop-shadow(rem(1px) rem(1px) rem(3px) rgba(0, 0, 0, 0.5));
+      }
+    }
+  }
+
+  &_info-text {
+    font-size: var(--font-size-paragraph);
+    font-weight: var(--font-weight-semibold);
+    color: var(--neutral);
+    display: block;
+    text-shadow: rem(1px) rem(1px) rem(2px) rgba(0, 0, 0, 0.4);
+
+    @include dark-theme {
+      color: var(--neutral);
+      text-shadow: rem(1px) rem(1px) rem(3px) rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  // ==========================================
+  // CTA CONTAINER
+  // ==========================================
+  &_cta-container {
+    width: fit-content;
+  }
+}

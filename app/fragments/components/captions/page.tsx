@@ -117,7 +117,11 @@ const CaptionExamples = () => {
 
         {/* Caption con contenido rico */}
         <Caption color='secondary' id='rich-caption' size='md' variant='subtle'>
-          Este caption tiene <strong>texto en negrita</strong> y <em>texto en cursiva</em>, además de un <a href='#'>enlace</a>.
+          Este caption tiene <strong>texto en negrita</strong> y <em>texto en cursiva</em>, además de un{' '}
+          <button className='text-blue-600 underline bg-transparent border-none p-0 cursor-pointer' type='button'>
+            enlace
+          </button>
+          .
         </Caption>
       </div>
     </div>

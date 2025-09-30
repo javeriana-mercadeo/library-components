@@ -9,8 +9,6 @@ import DobleTitulacionDos from './sections/dobleTitulacionDos'
 import Herramientas from './sections/herramientas'
 
 export default function SeccionesOpcionales() {
-  const basePath = '/institutional/pgProjects'
-
   return (
     <>
       <Proyectos />

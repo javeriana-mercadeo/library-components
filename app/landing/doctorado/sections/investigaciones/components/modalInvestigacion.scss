@@ -1,0 +1,793 @@
+@use '@styles/autoload' as *;
+
+// ===========================================
+// MODAL INVESTIGACIONES - NUEVO SISTEMA
+// ===========================================
+
+// Variables del modal usando variables globales
+$modal-z-index: 10000;
+$modal-z-index-mobile: 50000; // Z-index más alto para móviles
+$modal-overlay-bg: rgba(0, 0, 0, 0.65);
+$modal-backdrop-blur: 10px;
+$modal-shadow: 0 var(--spacing-lg) var(--spacing-4xl) rgba(0, 0, 0, 0.25);
+$modal-max-width-mobile: var(--max-width-sm);
+$modal-max-width-desktop: var(--max-width-lg);
+
+// Animaciones unificadas para mobile y desktop
+$modal-animation-duration: calc(var(--transition) * 0.67); // 0.2s uniforme
+$modal-animation-easing: cubic-bezier(0.2, 0, 0.2, 1);
+
+// Variables específicas del modal de investigaciones
+$modal-border-radius: rem(16px);
+$modal-max-width: rem(1200px);
+$modal-max-height: 90vh;
+$modal-padding: rem(32px);
+$gallery-width: 45%;
+$content-width: 55%;
+
+// ===========================================
+// OVERLAY Y CONTENEDOR PRINCIPAL
+// ===========================================
+.investigations-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: $modal-z-index;
+
+  // Z-index más alto en dispositivos móviles para evitar interferencia del header
+  @media (max-width: #{$breakpoint-md - 1}) {
+    z-index: $modal-z-index-mobile;
+  }
+
+  // Estados iniciales
+  opacity: 0;
+  visibility: hidden;
+  backdrop-filter: blur(0px);
+  background: transparent;
+  // Optimización de rendimiento
+  will-change: opacity, visibility, backdrop-filter;
+  // Asegurar que capture todos los eventos de pointer
+  pointer-events: auto;
+
+  // Transiciones optimizadas - solo las propiedades que cambian
+  transition:
+    opacity $modal-animation-duration $modal-animation-easing,
+    visibility $modal-animation-duration $modal-animation-easing,
+    backdrop-filter $modal-animation-duration $modal-animation-easing;
+
+  // Estado activo
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur($modal-backdrop-blur);
+    background: $modal-overlay-bg;
+    pointer-events: auto;
+  }
+
+  // Centrado responsivo usando variables globales
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+
+  @include responsive {
+    padding: var(--spacing-xl);
+    align-items: center;
+  }
+
+  @include responsive($breakpoint-sm) {
+    padding: rem(10px);
+  }
+
+  @include responsive(375px) {
+    padding: rem(8px);
+  }
+}
+
+// ===========================================
+// CONTENEDOR DEL MODAL
+// ===========================================
+.investigations-modal {
+  align-items: normal;
+  justify-items: normal;
+  background: var(--background-100);
+  border-radius: $modal-border-radius;
+  box-shadow: $modal-shadow;
+  width: 100%;
+  height: 80%;
+  max-height: calc(100vh - rem(40px));
+  overflow: visible; // Desktop sin scroll general
+
+  // Scroll general solo en móviles
+  @media (max-width: #{$breakpoint-md - 1}) {
+    height: auto; // Altura automática para permitir crecimiento del contenido
+    max-height: 95vh; // Límite máximo para activar scroll
+    overflow-y: auto;
+  }
+  position: relative;
+
+  // Animaciones sutiles de entrada (similar al menú móvil)
+  transform: translateY(calc(var(--spacing-md) * -1));
+  opacity: 0;
+  visibility: hidden;
+  // Optimización de rendimiento
+  will-change: transform, opacity, visibility;
+  // Transiciones específicas para mejor rendimiento
+  transition:
+    transform $modal-animation-duration $modal-animation-easing,
+    opacity $modal-animation-duration $modal-animation-easing,
+    visibility $modal-animation-duration $modal-animation-easing;
+
+  // Responsive layout
+  max-width: $modal-max-width;
+  display: flex;
+
+  @include responsive {
+    max-width: $modal-max-width-desktop;
+    flex-direction: row;
+    height: 100%;
+    max-height: rem(650px);
+  }
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    flex-direction: column-reverse; // Invertir orden: info arriba, galería abajo
+    max-height: 95vh;
+  }
+
+  // Estados (patrón similar al menú móvil)
+  &.show {
+    visibility: visible;
+  }
+
+  &.show.active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @include dark-theme {
+    background: var(--background-200);
+    box-shadow: 0 rem(20px) rem(60px) rgba(0, 0, 0, 0.5);
+  }
+
+  // Scroll visible personalizado solo en móviles
+  @media (max-width: #{$breakpoint-md - 1}) {
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(var(--primary-rgb), 0.1);
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 3px;
+
+      &:hover {
+        background: var(--primary-dark);
+      }
+    }
+
+    // Botones de flecha (arriba)
+    &::-webkit-scrollbar-button:single-button:vertical:decrement {
+      display: block;
+      width: 6px;
+      height: 12px;
+      background: var(--primary);
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M8 2l6 6H2l6-6z'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 3px 3px 0 0;
+
+      &:hover {
+        background-color: var(--primary-dark);
+      }
+    }
+
+    // Botones de flecha (abajo)
+    &::-webkit-scrollbar-button:single-button:vertical:increment {
+      display: block;
+      width: 6px;
+      height: 12px;
+      background: var(--primary);
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M2 6h12l-6 6-6-6z'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 0 0 3px 3px;
+
+      &:hover {
+        background-color: var(--primary-dark);
+      }
+    }
+
+    // Para Firefox
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) rgba(var(--primary-rgb), 0.1);
+  }
+}
+
+// ===========================================
+// SWIPER CONTAINERS - DESKTOP Y MOBILE
+// ===========================================
+
+// Desktop Swiper (Vertical)
+.investigations-modal__swiper-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  // Configuración específica para Swiper vertical
+  .swiper-wrapper {
+    flex-direction: column;
+  }
+
+  .swiper-slide {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// Mobile Swiper (Horizontal) - CONFIGURACIÓN SIMPLIFICADA COMO PREGRADO
+.investigations-modal__swiper-container-mobile {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  // ✅ SIN TOUCH-ACTION: Usar comportamiento nativo del navegador
+
+  // Configuración específica para Swiper horizontal
+  .swiper-wrapper {
+    display: flex;
+    flex-direction: row;
+    // ✅ SIN TOUCH-ACTION: Navegador maneja touch naturalmente
+  }
+
+  .swiper-slide {
+    // ✅ CORREGIDO: Remover width: auto que causaba conflictos con slides personalizados
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // ✅ TÉCNICA AVANZADA: Overlay transparente para captura de touch
+    iframe {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      z-index: 1; // Video debajo del overlay
+      opacity: 0;
+      transition: opacity 0.5s ease;
+
+      &.loaded {
+        opacity: 1;
+      }
+    }
+
+    // ✅ SISTEMA DE PLACEHOLDER/LOADING SOLO PARA VIDEOS (CORREGIDO)
+    // Solo aplicar a wrappers de video, NO a imágenes
+    &.investigations-modal__video-wrapper,
+    &.investigations-modal__video-wrapper-mobile {
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 100%);
+        opacity: 0.3;
+        z-index: 1;
+      }
+
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+
+        &.loaded {
+          opacity: 1;
+        }
+      }
+
+      // Loading state - Icono de play animado
+      &:not(.video-loaded)::after {
+        content: '▶';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+        color: var(--primary);
+        z-index: 3;
+        animation: pulse 2s infinite;
+      }
+
+      // Ocultar placeholder cuando video carga
+      &.video-loaded::before {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+    }
+  }
+
+  // Navegación móvil
+  .investigations-modal__nav-prev-mobile,
+  .investigations-modal__nav-next-mobile {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: rem(40px);
+    height: rem(40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.7);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    i {
+      font-size: rem(20px);
+    }
+  }
+
+  .investigations-modal__nav-prev-mobile {
+    left: rem(10px);
+  }
+
+  .investigations-modal__nav-next-mobile {
+    right: rem(10px);
+  }
+
+  // Paginación móvil
+  .investigations-modal__pagination-mobile {
+    position: absolute;
+    bottom: rem(15px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: rem(8px);
+    z-index: 10;
+
+    .swiper-pagination-bullet {
+      width: rem(8px);
+      height: rem(8px);
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      cursor: pointer;
+
+      &.swiper-pagination-bullet-active {
+        background: white;
+        transform: scale(1.2);
+      }
+    }
+  }
+}
+
+// ===========================================
+// GALERÍA DE IMÁGENES (COLUMNA IZQUIERDA)
+// ===========================================
+.investigations-modal__gallery {
+  width: $gallery-width;
+  background: var(--background-100); // Fondo blanco como la columna derecha
+  position: relative;
+  overflow: hidden;
+  border-radius: $modal-border-radius 0 0 $modal-border-radius; // Solo esquinas izquierdas
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    width: 100%;
+    height: rem(260px); // Altura específica
+    min-height: rem(260px); // Altura mínima para las imágenes
+    flex: 0 0 rem(260px); // No crece, no se encoge, altura fija de 260px
+    border-radius: 0 0 $modal-border-radius $modal-border-radius; // Solo esquinas inferiores
+    position: relative; // Posicionamiento normal en el flujo
+    margin-top: rem(20px); // Separación adicional con el contenido
+  }
+
+  @include dark-theme {
+    background: var(--background-200); // Consistente con tema oscuro
+  }
+}
+
+.investigations-modal__images-container {
+  height: 100%;
+  padding: $modal-padding;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+
+  // Scroll en desktop solamente
+  overflow-y: auto;
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    flex-direction: row;
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+    overflow-y: visible; // Sin scroll en móviles (usa el scroll general del modal)
+    overflow-x: auto;
+  }
+
+  // Scroll invisible solo en desktop
+  @media (min-width: #{$breakpoint-md}) {
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
+
+.investigations-modal__image-wrapper {
+  flex-shrink: 0;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    min-width: rem(200px);
+    height: rem(150px); // Altura específica para móviles
+  }
+}
+
+.investigations-modal__image {
+  width: 100%;
+  height: rem(200px);
+  object-fit: cover;
+  display: block;
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    width: rem(200px);
+    height: rem(150px);
+  }
+}
+
+// ===========================================
+// CONTENIDO (COLUMNA DERECHA)
+// ===========================================
+.investigations-modal__content {
+  width: $content-width;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 0 $modal-border-radius $modal-border-radius 0; // Solo esquinas derechas
+  height: 100%; // Asegurar altura completa para flexbox
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    width: 100%;
+    flex: 0 0 auto; // No crece, no se encoge, tamaño automático
+    border-radius: $modal-border-radius $modal-border-radius 0 0; // Solo esquinas superiores
+    padding-bottom: rem(20px); // Separación con la galería
+    overflow: visible; // Sin scroll independiente
+  }
+}
+
+.investigations-modal__header {
+  padding: var(--spacing-lg) var(--spacing-lg) 0;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+
+  // Header fijo solo en móviles
+  @media (max-width: #{$breakpoint-md - 1}) {
+    position: sticky;
+    top: 0;
+    background: var(--background-100);
+    z-index: 10;
+
+    @include dark-theme {
+      background: var(--background-200);
+    }
+  }
+}
+
+// El botón de cierre ahora usa el sistema de botones iconOnly
+// Los estilos se generan dinámicamente en JavaScript
+
+.investigations-modal__info {
+  padding: 0 var(--spacing-lg) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    min-height: 0; // Asegurar que respete los límites en móviles
+    flex-shrink: 1; // Permitir que se contraiga si es necesario
+  }
+}
+
+.investigations-modal__badge {
+  display: inline-block;
+  background: var(--primary);
+  color: var(--neutral);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-xl);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-md);
+}
+
+.investigations-modal__title {
+  margin-bottom: var(--spacing-lg);
+  color: var(--neutral-100);
+  line-height: 1.2;
+  font-weight: var(--font-weight-bold);
+
+  @include dark-theme {
+    color: var(--neutral-100);
+  }
+}
+
+// ===========================================
+// METADATOS HORIZONTALES
+// ===========================================
+.investigations-modal__metadata {
+  margin-bottom: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.investigations-modal__metadata-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+
+  // Layout vertical para descripción en todas las pantallas
+  &:has(.investigations-modal__description) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  // MÓVILES: Fecha y estudiante mantienen layout horizontal
+  @media (max-width: #{$breakpoint-md - 1}) {
+    // Fecha y estudiante mantienen layout horizontal
+    &:not(:has(.investigations-modal__description)) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  // Scroll específico para metadata-item con descripción solo en desktop
+  @media (min-width: #{$breakpoint-md}) {
+    &:has(.investigations-modal__description) {
+      flex: 1;
+      overflow-y: auto;
+      max-height: rem(350px);
+      padding-right: var(--spacing-sm);
+
+      // Scroll visible personalizado en desktop
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(var(--primary-rgb), 0.1);
+        border-radius: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 3px;
+
+        &:hover {
+          background: var(--primary-dark);
+        }
+      }
+
+      // Botones de flecha (arriba)
+      &::-webkit-scrollbar-button:single-button:vertical:decrement {
+        display: block;
+        width: 6px;
+        height: 12px;
+        background: var(--primary);
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M8 2l6 6H2l6-6z'/%3E%3C/svg%3E");
+        background-size: 8px 8px;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 3px 3px 0 0;
+
+        &:hover {
+          background-color: var(--primary-dark);
+        }
+      }
+
+      // Botones de flecha (abajo)
+      &::-webkit-scrollbar-button:single-button:vertical:increment {
+        display: block;
+        width: 6px;
+        height: 12px;
+        background: var(--primary);
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M2 6h12l-6 6-6-6z'/%3E%3C/svg%3E");
+        background-size: 8px 8px;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 0 0 3px 3px;
+
+        &:hover {
+          background-color: var(--primary-dark);
+        }
+      }
+
+      // Para Firefox
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) rgba(var(--primary-rgb), 0.1);
+    }
+  }
+}
+
+.investigations-modal__label {
+  font-weight: var(--font-weight-bold);
+  color: var(--neutral-100);
+  width: rem(120px); // Ancho fijo para crear columnas tipo tabla
+  font-size: var(--font-size-base);
+  flex-shrink: 0;
+  line-height: 1.6; // Mismo line-height que la descripción
+  margin-top: 0; // Asegurar que no tenga margen superior
+
+  // MÓVILES: Ajustes específicos por tipo
+  @media (max-width: #{$breakpoint-md - 1}) {
+    // Para la descripción: centrado
+    .investigations-modal__metadata-item:has(.investigations-modal__description) & {
+      width: 100%;
+      text-align: center;
+      flex-shrink: 1;
+    }
+
+    // Para fecha y estudiante: mantener ancho y alineación
+    .investigations-modal__metadata-item:not(:has(.investigations-modal__description)) & {
+      width: auto;
+      text-align: left;
+      flex-shrink: 0;
+    }
+  }
+
+  @include dark-theme {
+    color: var(--neutral-200);
+  }
+}
+
+.investigations-modal__value {
+  color: var(--neutral-100);
+  font-size: var(--font-size-base);
+
+  // MÓVILES: Ajustes específicos por tipo
+  @media (max-width: #{$breakpoint-md - 1}) {
+    // Para fecha y estudiante: alineado a la derecha
+    .investigations-modal__metadata-item:not(:has(.investigations-modal__description)) & {
+      text-align: right;
+    }
+  }
+
+  @include dark-theme {
+    color: var(--neutral-200);
+  }
+}
+
+// ===========================================
+// DESCRIPCIÓN EXPANDIDA
+// ===========================================
+.investigations-modal__description {
+  color: var(--neutral-300);
+  line-height: 1.6;
+  flex: 1;
+
+  // MÓVILES: Subtítulo centrado, párrafo alineado a la izquierda
+  @media (max-width: #{$breakpoint-md - 1}) {
+    text-align: left; // Párrafos alineados a la izquierda
+  }
+
+  p {
+    margin-bottom: var(--spacing-lg);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @include dark-theme {
+    color: var(--neutral-300);
+  }
+}
+
+// ===========================================
+// ELEMENTOS DE VIDEO
+// ===========================================
+.investigations-modal__video-wrapper {
+  flex-shrink: 0;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  position: relative;
+  aspect-ratio: 16/9;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    min-width: rem(280px);
+    height: rem(158px); // 16:9 ratio for 280px width
+  }
+}
+
+.investigations-modal__video-wrapper-mobile {
+  flex-shrink: 0;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  width: 100%;
+  height: rem(200px);
+  position: relative;
+  aspect-ratio: 16/9;
+}
+
+.investigations-modal__video {
+  width: 100%;
+  height: rem(200px);
+  border: 0;
+  border-radius: var(--border-radius-lg);
+  display: block;
+
+  @media (max-width: #{$breakpoint-md - 1}) {
+    width: rem(280px);
+    height: rem(158px);
+  }
+}
+
+.investigations-modal__video-mobile {
+  width: 100%;
+  height: rem(200px);
+  border: 0;
+  border-radius: var(--border-radius-lg);
+  display: block;
+}
+
+// ==========================================
+// ANIMACIÓN PULSE PARA ICONO DE LOADING (COPIADO DE PREGRADO)
+// ==========================================
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+
+// ===========================================
+// ESTADOS DEL BODY
+// ===========================================
+body.modal-open {
+  overflow: hidden;
+}

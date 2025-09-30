@@ -1,8 +1,6 @@
 'use client'
 import { Title, Paragraph, Container, Image, Icon } from '@library/components'
 
-import { useEffect } from 'react'
-
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'
@@ -11,12 +9,15 @@ const Experiencia = () => {
   const elementName = info.id || 'experiencia'
   const baseClass = 'experience-carousel'
 
-  useEffect(() => {
-    const initScript = script()
-    if (typeof initScript === 'function') {
-      initScript()
-    }
-  }, [])
+  // Inicializar script manualmente cuando el componente se monta
+  if (typeof window !== 'undefined') {
+    // Usar setTimeout para asegurar que el DOM esté completamente renderizado
+    setTimeout(() => {
+      if (typeof script === 'function') {
+        script()
+      }
+    }, 100)
+  }
 
   // Datos del carrusel - estos vendrán de Liferay
   const carouselData = [
@@ -47,23 +48,23 @@ const Experiencia = () => {
       orientation: 'vertical',
       videoId: 'IWZvfiu3gX4',
       link: '#'
-    },
-    {
-      type: 'testimonial',
-      text: 'La Javeriana me dio las herramientas para liderar proyectos empresariales. Hoy impulso estrategias de crecimiento en una multinacional.',
-      user: {
-        name: 'Anamaría López',
-        job: 'Gerente de Estrategia en GlobalCorp',
-        avatar:
-          'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461',
-        linkedin: '#'
-      }
-    },
-    {
-      type: 'video',
-      orientation: 'vertical',
-      videoId: 'wUmYyNrVjfg'
     }
+    // {
+    //   type: 'testimonial',
+    //   text: 'La Javeriana me dio las herramientas para liderar proyectos empresariales. Hoy impulso estrategias de crecimiento en una multinacional.',
+    //   user: {
+    //     name: 'Anamaría López',
+    //     job: 'Gerente de Estrategia en GlobalCorp',
+    //     avatar:
+    //       'https://www.javeriana.edu.co/olife7/adaptive-media/imagenes7/12773745/Preview-1000x0/CarlosEduardoNietoG.png?t=1719869506461',
+    //     linkedin: '#'
+    //   }
+    // },
+    // {
+    //   type: 'video',
+    //   orientation: 'vertical',
+    //   videoId: 'wUmYyNrVjfg'
+    // }
   ]
 
   // Componente para renderizar imagen
@@ -159,9 +160,6 @@ const Experiencia = () => {
               ))}
             </div>
 
-            {/* Paginación - DENTRO del carousel como en 10_relacionados */}
-            <div className={`swiper-pagination ${baseClass}__pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
-
             {/* Botones de navegación */}
             <button className={`swiper-slide-button ${baseClass}__prev`} aria-label='Ir al slide anterior' type='button'>
               <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
@@ -169,6 +167,9 @@ const Experiencia = () => {
             <button className={`swiper-slide-button ${baseClass}__next`} aria-label='Ir al siguiente slide' type='button'>
               <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
             </button>
+
+            {/* Paginación - AL FINAL como en 10_relacionados */}
+            <div className={`swiper-pagination ${baseClass}__pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
           </div>
         </div>
       </Container>

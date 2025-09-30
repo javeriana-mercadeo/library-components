@@ -10,7 +10,6 @@ export default function SelectWhatsappGral() {
     // Solo para testing en Next.js - en Liferay el script se ejecuta automáticamente
     if (typeof window !== 'undefined' && !window.selectWhatsappGralLoaded) {
       window.selectWhatsappGralLoaded = true
-      
       // Crear objeto mock de configuration para testing
       if (typeof window.configuration === 'undefined') {
         window.configuration = {
@@ -19,7 +18,6 @@ export default function SelectWhatsappGral() {
           enableDebugLogs: true
         }
       }
-      
       console.log('🧪 [DEV] Simulando carga del script para Next.js')
     }
   }, [])

@@ -1,0 +1,904 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$req-transition: all 0.3s ease-out;
+$req-chart-size: rem(400px);
+$req-chart-size-mobile: min(rem(400px), 80vw);
+$req-progress-height: rem(8px);
+$req-progress-animation-duration: 0.8s;
+
+// ==========================================
+// COMPONENTE PRINCIPAL
+// ==========================================
+.admission-requirements {
+  position: relative;
+  width: 100%;
+  padding: var(--spacing-md) 0;
+  background-color: var(--background-100);
+
+  @include dark-theme {
+    background-color: var(--background-200);
+  }
+
+  // ==========================================
+  // HEADER
+  // ==========================================
+  &_header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+
+    @include responsive($breakpoint-md) {
+      margin-bottom: var(--spacing-lg);
+    }
+  }
+
+  &_header-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(64px);
+    height: rem(64px);
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    border-radius: rem(16px);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-title);
+    color: var(--neutral-100);
+
+    @include responsive($breakpoint-md) {
+      width: rem(48px);
+      height: rem(48px);
+      font-size: var(--font-size-subtitle);
+    }
+  }
+
+  &_title {
+    font-size: var(--font-size-title);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--neutral-100);
+    margin: 0 0 var(--spacing-md) 0;
+
+    @include dark-theme {
+      color: var(--neutral-1000);
+    }
+
+    @include responsive($breakpoint-md) {
+      font-size: var(--font-size-title);
+    }
+  }
+
+  &_subtitle {
+    margin-top: var(--spacing-xs);
+  }
+
+  // ==========================================
+  // MAIN CONTENT - TWO COLUMNS LAYOUT
+  // ==========================================
+  &_main-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'chart'
+      'content';
+    gap: var(--spacing-lg);
+    align-items: start; // En móvil mantener arriba
+    width: 100%;
+    justify-items: center; // Centrado en móvil
+
+    @include responsive($breakpoint-lg) {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: 'chart content';
+      gap: var(--spacing-xl);
+      justify-items: stretch; // Permite que cada área use su propio justify-content
+      align-items: center; // En desktop, centrar verticalmente las grid areas
+    }
+  }
+
+  // ==========================================
+  // LEFT COLUMN - CIRCULAR CHART
+  // ==========================================
+  &_chart-container {
+    grid-area: chart;
+    display: flex;
+    justify-content: center; // Centrado en móvil por defecto
+    align-items: center;
+    width: 100%;
+
+    // En desktop, alinear hacia la derecha para acercar al contenido
+    @include responsive($breakpoint-lg) {
+      justify-content: flex-end;
+    }
+
+    // Altura mínima solo para múltiples requisitos (gráfico complejo)
+    &.multiple-requirements {
+      min-height: rem(300px);
+
+      @include responsive($breakpoint-lg) {
+        min-height: rem(400px);
+      }
+    }
+
+    // Sin min-height para requisito único - crece naturalmente
+  }
+
+  &_chart-wrapper {
+    position: relative;
+    // MÓVIL (por defecto) - pantallas pequeñas
+    width: min(rem(320px), 85vw);
+    height: min(rem(320px), 85vw);
+    max-width: 100%;
+    margin: 0 auto; // Centrado en móvil
+
+    // En desktop, quitar el auto-centrado para respetar el justify-content del contenedor
+    @include responsive($breakpoint-lg) {
+      margin: 0;
+    }
+
+    // TABLET (576px+) - pantalla un poco más grande
+    @include responsive($breakpoint-sm) {
+      width: $req-chart-size-mobile;
+      height: $req-chart-size-mobile;
+    }
+
+    // DESKTOP (768px+) - pantalla completa
+    @include responsive($breakpoint-md) {
+      width: $req-chart-size;
+      height: $req-chart-size;
+    }
+  }
+
+  &_chart {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  // ==========================================
+  // CHART SEGMENTS
+  // ==========================================
+  &_chart-segment {
+    cursor: pointer;
+    transition: $req-transition;
+    outline: none;
+
+    &:focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
+
+    &:hover:not(.is-active) {
+      transform: scale(1.02);
+      transform-origin: center;
+    }
+
+    &.is-active {
+      transform: scale(1.03);
+      transform-origin: center;
+      filter: brightness(1.1);
+    }
+
+    // Color variants
+    &--primary {
+      fill: var(--primary-600);
+
+      &:hover {
+        fill: var(--primary-500);
+      }
+    }
+
+    &--secondary {
+      fill: var(--secondary-600);
+
+      &:hover {
+        fill: var(--secondary-500);
+      }
+    }
+
+    &--success {
+      fill: var(--success-600);
+
+      &:hover {
+        fill: var(--success-500);
+      }
+    }
+  }
+
+  &_chart-center {
+    fill: var(--background-100);
+    stroke: none;
+
+    @include dark-theme {
+      fill: var(--background-200);
+      stroke: none;
+    }
+  }
+
+  &_chart-total-label {
+    font-size: calc(var(--font-size-caption) * 1.25);
+    font-weight: 600;
+    fill: var(--neutral-400);
+
+    @include dark-theme {
+      fill: var(--neutral-600);
+    }
+  }
+
+  &_chart-total-value {
+    font-size: calc(var(--font-size-title) * 1.2);
+    font-weight: var(--font-weight-bold);
+    font-family: var(--font-family);
+    fill: var(--neutral-200);
+
+    @include dark-theme {
+      fill: var(--neutral-800);
+    }
+  }
+
+  // ==========================================
+  // CHART LABELS DENTRO DEL SVG
+  // ==========================================
+  &_chart-label-percentage {
+    font-size: calc(var(--font-size-title) * 1.1); // Ligeramente más grande
+    font-weight: var(--font-weight-bold);
+    font-family: var(--font-family);
+    fill: var(--neutral-100);
+    transition: $req-transition;
+    outline: none;
+
+    &:focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
+
+    @include dark-theme {
+      fill: var(--neutral-1000);
+    }
+
+    &:hover {
+      fill: var(--neutral-50);
+
+      @include dark-theme {
+        fill: var(--neutral-200);
+      }
+    }
+  }
+
+  &_chart-label-title {
+    font-size: calc(var(--font-size-caption) * 1.15); // Ligeramente más grande
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-family);
+    fill: var(--neutral-100);
+    transition: $req-transition;
+    outline: none;
+
+    &:focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
+
+    @include dark-theme {
+      fill: var(--neutral-1000);
+    }
+
+    &:hover {
+      fill: var(--neutral-50);
+
+      @include dark-theme {
+        fill: var(--neutral-200);
+      }
+    }
+  }
+
+  // ==========================================
+  // RIGHT COLUMN - CONTENT CONTAINER
+  // ==========================================
+  &_content-container {
+    grid-area: content;
+    position: relative;
+    display: flex;
+    width: 100%;
+
+    // En móvil/tablet, permitir crecimiento vertical natural
+    @media (max-width: 991px) {
+      align-items: flex-start;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    // En desktop, mantener centrado y hacia la izquierda
+    @media (min-width: 992px) {
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    // Altura mínima solo para múltiples requisitos en desktop
+    @media (min-width: 992px) {
+      &.multiple-requirements {
+        min-height: rem(400px);
+        align-items: center;
+        padding-bottom: rem(80px); // Espacio para el botón fijo
+      }
+
+      &:not(.multiple-requirements) {
+        min-height: rem(160px);
+        align-items: center;
+        padding-bottom: rem(80px); // Espacio para el botón fijo
+      }
+    }
+
+    // En mobile, agregar padding-bottom para el botón
+    @media (max-width: 991px) {
+      padding-bottom: rem(20px); // Espacio para el botón en flujo normal
+    }
+  }
+
+  // ==========================================
+  // CONTENT PANELS
+  // ==========================================
+  &_content-panel {
+    // En móvil/tablet, usar posicionamiento estático para permitir crecimiento natural
+    @media (max-width: 991px) {
+      position: static;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+
+      // Ocultar paneles no activos en móvil sin absolute positioning
+      &:not(.is-active) {
+        display: none;
+      }
+
+      &.is-active {
+        display: flex;
+        animation: fadeInContent 0.3s ease-in-out;
+      }
+    }
+
+    // En desktop, mantener el comportamiento de overlay absoluto
+    @media (min-width: 992px) {
+      position: absolute;
+      top: auto;
+      left: 0;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.95) translateY(#{rem(10px)});
+      transition:
+        opacity 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        visibility 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      &.is-active {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    // Para requisito único, usar posicionamiento natural en todos los tamaños
+    &.single-requirement {
+      position: static !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      width: auto;
+      height: auto;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  &_panel-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  &_panel-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(64px);
+    height: rem(64px);
+    border-radius: rem(16px);
+    font-size: var(--font-size-title);
+    flex-shrink: 0;
+
+    &--primary {
+      background: rgba(var(--primary-600-rgb), 0.1);
+      color: var(--primary-600);
+    }
+
+    &--secondary {
+      background: rgba(var(--secondary-600-rgb), 0.1);
+      color: var(--secondary-600);
+    }
+
+    &--success {
+      background: rgba(var(--success-600-rgb), 0.1);
+      color: var(--success-600);
+    }
+
+    @include responsive($breakpoint-md) {
+      width: rem(48px);
+      height: rem(48px);
+      font-size: var(--font-size-subtitle);
+    }
+  }
+
+  &_panel-title {
+    flex: 1;
+  }
+
+  &_panel-main-title {
+    margin: 0 0 var(--spacing-xs) 0;
+    color: var(--neutral-400);
+    font-weight: var(--font-weight-semibold);
+
+    @include dark-theme {
+      color: var(--neutral-400);
+    }
+  }
+
+  &_panel-subtitle {
+    margin: 0;
+  }
+
+  &_panel-content {
+    max-width: rem(600px);
+  }
+
+  // ==========================================
+  // ITEMS LIST
+  // ==========================================
+  &_items-list {
+    // CSS Grid con auto-flow columnar - distribución dinámica en desktop
+    display: grid;
+    grid-auto-flow: column;
+    gap: var(--spacing-xs) var(--spacing-lg); // Gap vertical pequeño, horizontal más grande
+    list-style: none;
+    padding: 0;
+    margin-left: 0;
+    align-content: start; // Alinear contenido al inicio
+
+    // DESKTOP: Distribución dinámica con más filas por columna
+    @media (min-width: 992px) {
+      // Usar un máximo más alto para permitir más elementos por columna
+      // pero mantener distribución columnar vertical
+      grid-template-rows: repeat(8, auto); // Máximo 8 elementos por columna (en lugar de 5)
+    }
+
+    // Agregar margin-top cuando hay header (múltiples requisitos)
+    .admission-requirements_content-panel:not(.single-requirement) & {
+      margin-top: var(--spacing-md);
+    }
+
+    // En móviles (hasta tablet), cambiar a layout lineal para acordeón
+    @media (max-width: 991px) {
+      display: flex !important;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      grid-template-rows: none;
+      grid-auto-flow: none;
+
+      // Elementos ocultos en móvil cuando hay más de 5 items
+      &.has-many-items {
+        .admission-requirements_list-item:nth-child(n+6) {
+          display: none;
+
+          &.show-all {
+            display: flex;
+            animation: fadeInContent 0.3s ease-in-out;
+          }
+        }
+      }
+    }
+  }
+
+  &_list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: rem(4px) 0;
+  }
+
+  &_item-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(24px);
+    height: rem(24px);
+    color: var(--primary-600);
+    font-size: var(--font-size-caption);
+    flex-shrink: 0;
+    margin-top: rem(2px);
+  }
+
+  &_item-text {
+    flex: 1;
+    margin: 0;
+    color: var(--neutral-500);
+
+    @include dark-theme {
+      color: var(--neutral-300);
+    }
+  }
+
+  // ==========================================
+  // BOTÓN "LEER MÁS" PARA MÓVIL (ESTILO DIFERENCIALES)
+  // ==========================================
+
+  &_read-more-toggle {
+    // Resetear estilos base (como en el componente Button) con !important para evitar conflictos
+    appearance: none !important;
+    outline: none !important;
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font: inherit !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+
+    // Base del botón - oculto por defecto
+    display: none;
+
+    // Estilos exactos del componente Btn base + variant='light' + size='sm'
+    position: relative !important;
+    background: transparent !important;
+    border: rem(1px) solid transparent !important; // Transparent como btn-light, no neutral
+    color: var(--primary) !important; // Color primary como btn-light
+    margin: var(--spacing-sm) auto 0 auto !important; // Centrado horizontal
+    display: block !important; // Cambiar a block para que funcione el margin auto
+    transition: all 0.25s ease-in-out !important; // Transición exacta del componente
+
+    // Layout y dimensiones exactas
+    align-items: center;
+    justify-content: center;
+    gap: rem(8px); // Gap exacto del componente
+    padding: rem(6px) rem(14px); // Padding exacto de btn-sm
+    min-height: rem(32px); // Altura exacta de btn-sm
+    min-width: rem(64px); // Min-width del componente base
+    border-radius: rem(12px); // Border-radius exacto del componente
+    font-size: rem(12px); // Font-size exacto de btn-sm
+    font-weight: 500; // Font-weight exacto del componente
+    line-height: 1.5; // Line-height exacto del componente
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+
+    .toggle-text {
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+
+    .toggle-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: rem(16px); // Tamaño icon para btn-sm
+      height: rem(16px);
+      font-size: rem(16px);
+      transition: transform 0.2s ease;
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba(var(--primary-rgb), 0.18); // Exacto de btn-light
+      color: var(--primary-800); // Exacto de btn-light
+      transform: translateY(rem(-2px)); // Transform exacto del componente
+    }
+
+    &:active:not(:disabled) {
+      background: rgba(var(--primary-rgb), 0.25); // Exacto de btn-light
+      transform: translateY(0); // Transform exacto del componente
+    }
+
+    &:focus-visible {
+      outline: rem(2px) solid transparent;
+      outline-offset: rem(2px);
+      box-shadow:
+        0 0 0 rem(2px) var(--background-100),
+        0 0 0 rem(4px) var(--primary-300);
+      z-index: 10;
+    }
+
+    // Mostrar solo en móvil/tablet cuando hay muchos items
+    @media (max-width: 991px) {
+      display: inline-flex !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    // Ocultar en desktop siempre
+    @media (min-width: 992px) {
+      display: none !important;
+    }
+
+    // Estado expandido - ícono minus horizontal
+    &[aria-expanded="true"] {
+      .toggle-icon {
+        transform: rotate(0deg); // Sin rotación para mostrar línea horizontal
+      }
+    }
+
+    // Estilos para modo oscuro (siguiendo patrón btn-light)
+    @include dark-theme {
+      color: var(--primary-800); // Color para dark theme del btn-light
+
+      &:hover:not(:disabled) {
+        background: rgba(var(--primary-rgb), 0.18);
+        color: var(--primary-200);
+      }
+
+      &:active:not(:disabled) {
+        background: rgba(var(--primary-rgb), 0.25);
+      }
+    }
+
+    // Centrar el botón horizontalmente en móvil
+    @media (max-width: 991px) {
+      display: block !important;
+      margin: var(--spacing-sm) auto 0 auto !important;
+    }
+  }
+
+  // ==========================================
+  // SINGLE REQUIREMENT DISPLAY
+  // ==========================================
+  &_single-requirement-display {
+    grid-area: chart;
+    display: flex;
+    // Cambiar a layout horizontal desde móvil
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--spacing-md); // Espacio entre ícono y textos en móvil
+    padding: var(--spacing-lg);
+
+    // En desktop, ajustar espaciado
+    @include responsive($breakpoint-lg) {
+      gap: var(--spacing-xl);
+      padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    &_icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // MÓVIL (por defecto) - cuadrado con esquinas redondeadas para layout horizontal
+      width: min(rem(120px), 30vw);
+      height: min(rem(120px), 30vw);
+      border-radius: var(--border-radius-lg); // Esquinas redondeadas como panel-icon
+      font-size: min(rem(60px), 15vw); // Ícono proporcionado al cuadrado
+      transition: $req-transition;
+      flex-shrink: 0; // No permitir que se encoja
+
+      // Siempre usar primary - unificado para todos los casos
+      background: rgba(var(--primary-600-rgb), 0.1);
+
+      // Ícono sin atenuación en el nuevo layout
+      i {
+        color: var(--primary-600);
+        opacity: 1;
+        position: static;
+        transform: none;
+        z-index: 1;
+      }
+
+      // Todos los modificadores usan primary
+      &--primary,
+      &--secondary,
+      &--success {
+        background: rgba(var(--primary-600-rgb), 0.1);
+
+        i {
+          color: var(--primary-400);
+        }
+      }
+
+      // TABLET
+      @include responsive($breakpoint-md) {
+        width: min(rem(140px), 35vw);
+        height: min(rem(140px), 35vw);
+        font-size: min(rem(70px), 17vw); // Ícono proporcionado al cuadrado en tablet
+      }
+
+      // DESKTOP - cambiar a cuadrado con esquinas redondeadas
+      @include responsive($breakpoint-lg) {
+        width: rem(120px); // Cuadrado más compacto
+        height: rem(120px);
+        border-radius: var(--border-radius-lg); // Esquinas redondeadas como panel-icon
+        font-size: rem(60px); // Ícono proporcionado al nuevo tamaño
+        flex-shrink: 0; // No permitir que se encoja en el layout horizontal
+
+        // El ícono ya no necesita estar atenuado ni centrado absolutamente
+        i {
+          position: static;
+          transform: none;
+          opacity: 1;
+          color: var(--primary-600); // Color más sólido como en panel-icon
+        }
+      }
+    }
+
+    // Contenedor para los textos - activo desde móvil
+    &_text-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: rem(2px); // Espacio mínimo en móvil
+      flex: 1; // Ocupa el espacio restante
+
+      @include responsive($breakpoint-lg) {
+        gap: rem(4px); // Ligeramente más espacio en desktop
+      }
+    }
+
+    &_percentage {
+      // Posicionamiento estático desde móvil
+      position: static;
+      transform: none;
+      font-size: var(--font-size-title);
+      font-weight: var(--font-weight-bold);
+      color: var(--primary-800);
+      margin: 0;
+      text-align: left; // Alineado a la izquierda desde móvil
+      text-shadow: none; // Sin sombra en el nuevo layout
+
+      @include dark-theme {
+        color: var(--primary-200);
+      }
+
+      @include responsive($breakpoint-md) {
+        font-size: var(--font-size-title);
+      }
+
+      @include responsive($breakpoint-sm) {
+        font-size: var(--font-size-subtitle);
+      }
+
+      // En desktop, agrandar el texto
+      @include responsive($breakpoint-lg) {
+        font-size: var(--font-size-principal-title);
+      }
+    }
+
+    &_title {
+      // Posicionamiento estático desde móvil
+      position: static;
+      transform: none;
+      margin-top: 0;
+      font-size: var(--font-size-caption);
+      font-weight: var(--font-weight-semibold);
+      color: var(--primary-700);
+      text-align: left; // Alineado a la izquierda desde móvil
+      text-shadow: none; // Sin sombra en el nuevo layout
+      text-transform: uppercase;
+      letter-spacing: rem(1px);
+
+      @include dark-theme {
+        color: var(--primary-300);
+      }
+
+      @include responsive($breakpoint-md) {
+        font-size: var(--font-size-body);
+      }
+
+      @include responsive($breakpoint-sm) {
+        font-size: var(--font-size-caption);
+        letter-spacing: rem(0.5px);
+      }
+
+      // En desktop, agrandar el texto
+      @include responsive($breakpoint-lg) {
+        font-size: var(--font-size-subtitle);
+      }
+    }
+  }
+
+  // ==========================================
+  // FIXED PANEL NAVIGATION (FAQ BUTTON OUTSIDE PANELS)
+  // ==========================================
+  &_panel-navigation-fixed {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-md);
+    z-index: 10; // Encima de los paneles
+    background: var(--background-100); // Fondo para evitar transparencias
+
+    @include dark-theme {
+      background: var(--background-200);
+    }
+
+    // En desktop, posicionarlo al pie del contenedor
+    @media (min-width: 992px) {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin-top: 0;
+      padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    // En mobile, mantener flujo normal
+    @media (max-width: 991px) {
+      position: static;
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-md) var(--spacing-md);
+    }
+  }
+
+}
+
+// ==========================================
+// ANIMATIONS
+// ==========================================
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(rem(30px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes chartSegmentActive {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(rem(10px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admission-requirements_content-panel.is-active {
+  animation: fadeInSlideUp 0.4s ease-out;
+}
+
+.admission-requirements_chart-segment.is-active {
+  animation: chartSegmentActive 0.3s ease-out;
+}

@@ -1,11 +1,46 @@
 // Script para Liferay - Sistema de Temas con Evento Personalizado
 const selectedTheme = configuration
 
-// Obtener utilidades globales
-const StringUtils = window.StringUtils || {
-  removeAccents: str => str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '',
-  slugify: str => str?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/[\s-]+/g, '-') || ''
+// ===========================================
+// ACCESO A UTILIDADES GLOBALES
+// ===========================================
+// Función para obtener utilidades globales del window con fallback
+const getGlobalUtils = () => {
+  if (typeof window === 'undefined') {
+    console.warn('Window no disponible, usando fallbacks básicos')
+    return {
+      StringUtils: {
+        removeAccents: str => str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '',
+        slugify: str =>
+          str
+            ?.toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s-]/g, '')
+            .trim()
+            .replace(/[\s-]+/g, '-') || ''
+      }
+    }
+  }
+
+  // Intentar obtener las utilidades del window
+  return {
+    StringUtils: window.StringUtils || {
+      removeAccents: str => str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '',
+      slugify: str =>
+        str
+          ?.toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9\s-]/g, '')
+          .trim()
+          .replace(/[\s-]+/g, '-') || ''
+    }
+  }
 }
+
+// Obtener utilidades con fallback seguro
+const { StringUtils } = getGlobalUtils()
 
 try {
   const rowBaseTheme = selectedTheme['themeBase']
@@ -86,7 +121,6 @@ try {
     if (facultad && currentFaculty === 'default') {
       // Aplicar normalización de facultad antes del procesamiento
       const normalizedFaculty = normalizeFacultyName(facultad)
-      
       // Usar StringUtils para crear slug de forma más eficiente
       const facultySlug = StringUtils.slugify(normalizedFaculty)
 

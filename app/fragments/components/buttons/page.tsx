@@ -523,13 +523,14 @@ export default function ButtonShowcase() {
                 <div className='flex items-start gap-2'>
                   <span className='text-green-500'>•</span>
                   <span>
-                    Usa <code className='bg-[var(--neutral-800)] px-1 rounded'>variant="solid"</code> para acciones principales
+                    Usa <code className='bg-[var(--neutral-800)] px-1 rounded'>variant=&quot;solid&quot;</code> para acciones principales
                   </span>
                 </div>
                 <div className='flex items-start gap-2'>
                   <span className='text-green-500'>•</span>
                   <span>
-                    Aplica <code className='bg-[var(--neutral-800)] px-1 rounded'>variant="bordered"</code> para acciones secundarias
+                    Aplica <code className='bg-[var(--neutral-800)] px-1 rounded'>variant=&quot;bordered&quot;</code> para acciones
+                    secundarias
                   </span>
                 </div>
                 <div className='flex items-start gap-2'>

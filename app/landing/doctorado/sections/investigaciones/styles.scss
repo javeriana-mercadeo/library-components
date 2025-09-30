@@ -1,0 +1,978 @@
+@use '@styles/autoload' as *;
+@use './components/modalInvestigacion.scss' as *;
+
+// ==========================================
+// SOPORTE PARA VIDEOS EN SWIPER
+// ==========================================
+
+// Desktop Swiper vertical - Videos
+.investigations-modal__swiper-container {
+  .swiper-slide {
+    // Video slides en Swiper vertical desktop
+    .investigations-modal__video-wrapper {
+      height: 300px; // Altura estandarizada como las imágenes
+      width: 100%;
+    }
+
+    .investigations-modal__video {
+      height: 300px; // Altura estandarizada
+      object-fit: cover;
+    }
+  }
+}
+
+// Mobile Swiper horizontal - Videos y estructura
+.investigations-modal__swiper-container-mobile {
+  .swiper-slide {
+    // Estilos base para slides móviles
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-height: rem(200px);
+
+    // Video slides en Swiper horizontal móvil
+    .investigations-modal__video-wrapper-mobile {
+      height: rem(200px);
+      width: 100%;
+      min-width: rem(280px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .investigations-modal__video-mobile {
+      height: rem(200px);
+      width: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      border: none;
+
+      @media (max-width: 480px) {
+        height: rem(180px);
+      }
+    }
+
+    // Iframe específico dentro del wrapper móvil
+    iframe.investigations-modal__video-mobile {
+      height: rem(200px) !important;
+      width: 100% !important;
+      border: none !important;
+      border-radius: 8px;
+      display: block !important;
+
+      @media (max-width: 480px) {
+        height: rem(180px) !important;
+      }
+    }
+  }
+}
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$investigations-card-border-radius: rem(16px);
+$investigations-card-padding: rem(24px);
+$investigations-transition: all 0.3s ease;
+$investigations-badge-border-radius: rem(24px);
+$investigations-badge-padding: var(--spacing-xs) var(--spacing-md);
+
+// ==========================================
+// TRUNCAMIENTO DE TEXTO EN DESCRIPCIONES
+// ==========================================
+.investigations_description {
+  // Altura mínima para mantener consistencia visual
+  min-height: rem(60px); // Aproximadamente 3 líneas
+  line-height: 1.5;
+
+  // Fallback CSS para navegadores que no soporten truncamiento FTL
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  // Card principal - más espacio para descripción
+  .investigations_card--main & {
+    min-height: rem(72px); // Aproximadamente 3-4 líneas
+    -webkit-line-clamp: 4;
+  }
+
+  // Cards secundarias - menos espacio
+  .investigations_card--secondary & {
+    min-height: rem(54px); // Aproximadamente 2-3 líneas
+    -webkit-line-clamp: 3;
+  }
+}
+
+// Navegación
+$nav-button-size: rem(50px);
+$nav-button-size-mobile: rem(40px);
+
+// ==========================================
+// CONTENEDOR PRINCIPAL
+// ==========================================
+.investigations {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: var(--spacing-2xl) 0;
+
+  &_container {
+    width: 100%;
+    background: var(--neutral-variant-200);
+    min-height: rem(600px);
+  }
+
+  .paragraph i {
+    font-style: normal !important;
+    color: var(--primary);
+  }
+
+  // ==========================================
+  // TÍTULOS Y DESCRIPCIÓN
+  // ==========================================
+  &_main-title {
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    color: var(--neutral-100);
+
+    @include dark-theme {
+      color: var(--neutral-100);
+    }
+  }
+
+  &_main-description {
+    margin-bottom: var(--spacing-2xl);
+    text-align: center;
+    max-width: rem(600px);
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--neutral-300);
+
+    @include dark-theme {
+      color: var(--neutral-300);
+    }
+  }
+
+  // ==========================================
+  // LAYOUT DE DOS COLUMNAS: FIJA + SWIPER
+  // ==========================================
+  &_layout {
+    margin-top: var(--spacing-xl);
+
+    // DESKTOP: Layout horizontal (lado a lado)
+    @include responsive($breakpoint-lg) {
+      display: flex;
+      gap: var(--spacing-xl);
+      align-items: stretch;
+      width: inherit;
+    }
+
+    // MÓVILES: Layout vertical (arriba y abajo)
+    @media (max-width: #{$breakpoint-lg - 1}) {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+      width: inherit;
+    }
+  }
+
+  // ==========================================
+  // COLUMNA IZQUIERDA - CARD PRINCIPAL FIJA
+  // ==========================================
+  &_fixed-column {
+    // DESKTOP: 50% del ancho
+    @include responsive($breakpoint-lg) {
+      width: 50%;
+      flex-shrink: 0;
+    }
+
+    // MÓVILES: Ancho completo, va primero
+    @media (max-width: #{$breakpoint-lg - 1}) {
+      width: 100%;
+      order: 1;
+    }
+  }
+
+  &_main-card {
+    height: 100%;
+
+    // DESKTOP: Flexbox para alineación
+    @include responsive($breakpoint-lg) {
+      display: flex;
+      align-items: stretch;
+      padding: 0;
+    }
+
+    // MÓVILES: Padding que coincida con el wrapper (patrón experiencia)
+    @media (max-width: #{$breakpoint-lg - 1}) {
+      display: block;
+      width: 100%;
+      padding: rem(20px) rem(40px);
+      box-sizing: border-box;
+    }
+
+    @include responsive($breakpoint-md) {
+      padding: rem(20px) rem(25px); // Consistente con el wrapper
+    }
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(10px) rem(15px);
+    }
+  }
+
+  // ==========================================
+  // COLUMNA DERECHA - SWIPER
+  // ==========================================
+  &_slider-column {
+    // DESKTOP: 50% del ancho
+    @include responsive($breakpoint-lg) {
+      width: 50%;
+      flex-grow: 1;
+      position: relative;
+    }
+
+    // MÓVILES: Ancho completo, va segundo
+    @media (max-width: #{$breakpoint-lg - 1}) {
+      width: 100%;
+      order: 2;
+      position: relative;
+    }
+  }
+
+  // Contenedor con overflow hidden para cortar contenido
+  &_mask-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &_wrapper {
+    overflow: hidden;
+    position: relative;
+
+    // PATRÓN EXPERIENCIA: Padding responsivo optimizado para evitar overflow
+    padding: rem(20px) rem(40px);
+
+    @include responsive($breakpoint-md) {
+      padding: rem(20px) rem(25px); // Reducido de 30px a 25px para dar más espacio a los slides
+    }
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(10px) rem(15px);
+    }
+  }
+
+  &_slides {
+    align-items: stretch !important;
+
+    // Asegurar que todos los slides tengan la misma altura
+    .swiper-slide {
+      height: auto !important;
+      display: flex !important;
+      align-items: stretch !important;
+    }
+  }
+
+  // ==========================================
+  // SLIDES SECUNDARIAS EN EL SWIPER
+  // ==========================================
+  &_slide {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    flex-shrink: 0 !important;
+
+    &--secondary {
+      // MÓVIL: 100% simple como experiencia (sin cálculos complejos)
+      @media (max-width: #{$breakpoint-sm - 1}) {
+        width: 100% !important;
+        margin-right: 0;
+      }
+
+      // MÓVIL GRANDE: 100% simple
+      @media (min-width: #{$breakpoint-sm}) and (max-width: #{$breakpoint-md - 1}) {
+        width: 100% !important;
+        margin-right: 0;
+      }
+
+      // TABLET: 2 slides visibles con ancho optimizado para evitar overflow
+      @include responsive($breakpoint-md) {
+        width: rem(300px) !important;
+        margin-right: rem(20px);
+      }
+
+      // DESKTOP: 2 slides exactos con swiper nativo
+      @include responsive($breakpoint-lg) {
+        width: calc(50% - rem(12.5px)) !important;
+        margin-right: 0;
+      }
+
+      @include responsive($breakpoint-xl) {
+        width: calc(50% - rem(12.5px)) !important;
+        margin-right: 0;
+      }
+
+      @include responsive($breakpoint-2xl) {
+        width: calc(50% - rem(12.5px)) !important;
+        margin-right: 0;
+      }
+    }
+  }
+
+  // ==========================================
+  // TARJETAS (MAIN Y SECONDARY)
+  // ==========================================
+  &_card {
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    border-radius: $investigations-card-border-radius;
+    transition: $investigations-transition;
+    height: auto; // JavaScript sincronizará las alturas
+    overflow: hidden;
+    border: rem(1px) solid transparent;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    cursor: pointer; // Cursor pointer para todas las cards
+
+    &:hover {
+      //transform: translateY(rem(-8px));
+      background: var(--background-100);
+      border-color: var(--primary-300);
+
+      @include dark-theme {
+        background: var(--background-200);
+        border-color: var(--primary-400);
+      }
+    }
+  }
+
+  // ==========================================
+  // IMAGEN
+  // ==========================================
+  &_image {
+    width: 100%;
+    height: rem(250px);
+    object-fit: cover;
+    display: block;
+    border-radius: var(--border-radius-lg);
+    flex-shrink: 0; // Evitar que la imagen se comprima
+
+    // Altura uniforme en desktop para main y secondary
+    @include responsive($breakpoint-lg) {
+      height: rem(280px); // Altura uniforme para todas las imágenes
+    }
+
+    &--main {
+      // Mantener la misma altura que secondary en desktop
+    }
+
+    &--secondary {
+      // Mantener la misma altura que main en desktop
+    }
+  }
+
+  // ==========================================
+  // CONTENIDO DE LA TARJETA
+  // ==========================================
+  &_content {
+    padding: $investigations-card-padding;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0; // Permitir que el contenido se comprima si es necesario
+  }
+
+  &_badge {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--neutral);
+    padding: $investigations-badge-padding;
+    border-radius: $investigations-badge-border-radius;
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+    width: fit-content;
+  }
+
+  &_title {
+    margin-bottom: var(--spacing-md);
+    color: var(--neutral-100);
+    line-height: 1.3;
+
+    @include dark-theme {
+      color: var(--neutral-100);
+    }
+  }
+
+  &_description {
+    color: var(--neutral-300);
+    line-height: 1.6;
+    flex-grow: 1;
+
+    @include dark-theme {
+      color: var(--neutral-300);
+    }
+
+    // Icono de arrow más prominente
+    span {
+      display: inline-flex;
+      align-items: center;
+      margin-left: var(--spacing-xs);
+
+      i {
+        font-size: rem(20px); // Más grande que el texto
+        font-weight: bold;
+        color: var(--primary);
+
+        @include dark-theme {
+          color: var(--primary-400);
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // BOTONES DE NAVEGACIÓN
+  // ==========================================
+  &_prev,
+  &_next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 11;
+    width: $nav-button-size;
+    height: $nav-button-size;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(rem(8px));
+    border: rem(1px) solid var(--neutral-600);
+    box-shadow: 0 rem(4px) rem(12px) rgba(0, 0, 0, 0.15);
+    background: rgba(var(--background-100-rgb, 255, 255, 255), 0.95);
+
+    @include responsive($breakpoint-sm) {
+      width: $nav-button-size-mobile;
+      height: $nav-button-size-mobile;
+    }
+
+    i {
+      font-size: rem(24px);
+      color: var(--primary);
+      transition: all 0.3s ease;
+
+      @include responsive($breakpoint-sm) {
+        font-size: rem(20px);
+      }
+    }
+
+    &:hover {
+      //transform: translateY(-50%) scale(1.1);
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary);
+      box-shadow: 0 rem(6px) rem(20px) rgba(var(--primary-rgb), 0.25);
+
+      i {
+        color: var(--primary-600);
+      }
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0.3 !important;
+      pointer-events: none !important;
+      transform: translateY(-50%) scale(0.9);
+    }
+
+    &.swiper-button-hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      display: none !important;
+    }
+
+    &.show-navigation {
+      @include responsive($breakpoint-sm) {
+        display: flex !important;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    @include dark-theme {
+      background: rgba(var(--background-200-rgb), 0.95);
+      border-color: var(--neutral-500);
+
+      &:hover {
+        background: rgba(var(--primary-rgb), 0.2);
+        border-color: var(--primary-400);
+      }
+    }
+  }
+
+  &_prev {
+    left: rem(12px);
+
+    @include responsive($breakpoint-md) {
+      left: rem(20px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      left: rem(30px);
+    }
+  }
+
+  &_next {
+    right: rem(12px);
+
+    @include responsive($breakpoint-md) {
+      right: rem(20px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      right: rem(30px);
+    }
+  }
+}
+
+// ==========================================
+// OPTIMIZACIONES PARA SWIPER
+// ==========================================
+.swiper {
+  overflow: visible !important;
+
+  &-wrapper {
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  }
+
+  &-slide {
+    transition: transform 0.3s ease !important;
+
+    // &:hover {
+    //   transform: translateY(rem(-2px)) !important;
+    // }
+  }
+
+  // Ocultar navegacion cuando no es necesaria
+  &.swiper-container-lock {
+    .investigations_prev,
+    .investigations_next {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  }
+}
+
+// ==========================================
+// ANIMACIONES Y ESTADOS
+// ==========================================
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(rem(30px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.investigations_slide {
+  animation: slideInUp 0.6s ease forwards;
+
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{($i - 1) * 0.1s};
+    }
+  }
+}
+
+// ==========================================
+// ESTADOS DE CARGA
+// ==========================================
+.investigations_card {
+  opacity: 0;
+  animation: slideInUp 0.6s ease forwards;
+}
+
+.investigations_image {
+  transition: opacity 0.3s ease;
+
+  &[src=''],
+  &:not([src]) {
+    opacity: 0.3;
+    background: var(--neutral-700);
+  }
+}
+
+// ==========================================
+// MODAL - SWIPER VERTICAL PARA DESKTOP
+// ==========================================
+
+.investigations-modal {
+  // ==========================================
+  // GALERÍA: RESPONSIVE CONTAINERS
+  // ==========================================
+  &__gallery {
+    position: relative;
+    // MOBILE: ancho completo
+    width: 100%;
+    height: 100%;
+
+    // DESKTOP: mantener el ancho original de 45% (como estaba configurado)
+    @media (min-width: 1024px) {
+      width: 45%; // Mismo ancho que tenía originalmente
+    }
+  }
+
+  // DESKTOP: Mostrar solo Swiper vertical
+  &__images-swiper-desktop {
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // MOBILE: Mostrar solo Swiper horizontal
+  &__images-swiper-mobile {
+    display: block;
+
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  // ==========================================
+  // SWIPER VERTICAL - DESKTOP
+  // ==========================================
+  &__swiper-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    // Paginación vertical en el lado derecho
+    .swiper-pagination {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      width: auto !important;
+      height: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 8px;
+      z-index: 10;
+
+      .swiper-pagination-bullet {
+        width: 12px !important;
+        height: 12px !important;
+        margin: 0 !important;
+        background: rgba(255, 255, 255, 0.5) !important;
+        border: 2px solid rgba(255, 255, 255, 0.8) !important;
+        opacity: 1 !important;
+        cursor: pointer;
+        transition: all 0.3s ease !important;
+
+        &.swiper-pagination-bullet-active {
+          background: var(--primary) !important;
+          border-color: var(--primary) !important;
+          transform: scale(1.2);
+        }
+
+        &:hover:not(.swiper-pagination-bullet-active) {
+          background: rgba(255, 255, 255, 0.8) !important;
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    // Cursor de grab para indicar que se puede arrastrar
+    .swiper-wrapper {
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+  }
+
+  // ==========================================
+  // NAVEGACIÓN VERTICAL - BOTONES (PATRÓN EXPERIENCIA)
+  // ==========================================
+  &__nav-prev,
+  &__nav-next {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 11;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 1;
+    visibility: visible;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--neutral-700);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+
+    i {
+      font-size: 24px;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateX(-50%) scale(1.05);
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary);
+
+      i {
+        color: var(--primary-600);
+      }
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    &.swiper-button-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+
+  // Ocultar botones nativos de Swiper (solo usar los personalizados de Phosphor)
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none !important;
+  }
+
+  &__nav-prev {
+    top: 8px;
+  }
+
+  &__nav-next {
+    bottom: 8px;
+  }
+
+  // ==========================================
+  // SWIPER HORIZONTAL - MOBILE
+  // ==========================================
+  &__swiper-container-mobile {
+    width: 100% !important; // Patrón experiencia: ancho simple sin cálculos
+    height: 100%;
+    position: relative;
+    padding-bottom: 40px; // Espacio para paginación
+    margin: 0; // Sin márgenes complejos
+
+    // Paginación horizontal en la parte inferior
+    .swiper-pagination {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto !important;
+      height: auto !important;
+      display: flex !important;
+      justify-content: center !important;
+      gap: 8px;
+      z-index: 10;
+
+      .swiper-pagination-bullet {
+        width: 10px !important;
+        height: 10px !important;
+        margin: 0 !important;
+        background: rgba(var(--primary-rgb), 0.3) !important;
+        opacity: 1 !important;
+        cursor: pointer;
+        transition: all 0.3s ease !important;
+
+        &.swiper-pagination-bullet-active {
+          background: var(--primary) !important;
+          transform: scale(1.2);
+        }
+
+        &:hover:not(.swiper-pagination-bullet-active) {
+          background: rgba(var(--primary-rgb), 0.6) !important;
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // NAVEGACIÓN HORIZONTAL - BOTONES MÓVILES
+  // ==========================================
+  &__nav-prev-mobile,
+  &__nav-next-mobile {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 11;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 1;
+    visibility: visible;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--neutral-700);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+
+    i {
+      font-size: 24px;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateY(-50%) scale(1.05);
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary);
+
+      i {
+        color: var(--primary-600);
+      }
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    &.swiper-button-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+
+  &__nav-prev-mobile {
+    left: 8px;
+  }
+
+  &__nav-next-mobile {
+    right: 8px;
+  }
+
+  // Ocultar botones nativos de Swiper móvil (solo usar los personalizados de Phosphor)
+  .swiper-container-mobile .swiper-button-prev,
+  .swiper-container-mobile .swiper-button-next {
+    display: none !important;
+  }
+
+  // ==========================================
+  // SLIDES DEL SWIPER MÓVIL
+  // ==========================================
+  &__slide-mobile {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    // ✅ CORREGIDO: Remover width y margin forzados para permitir que Swiper controle el posicionamiento
+    // ✅ CORREGIDO: Mover padding al wrapper interno para no afectar cálculos de Swiper
+  }
+
+  &__image-wrapper-mobile {
+    width: 100%; // ✅ CORREGIDO: Sin !important para permitir flexibilidad
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 10px; // ✅ CORREGIDO: Padding movido aquí desde el slide
+    box-sizing: border-box;
+    // ✅ CORREGIDO: Sin margin-right para permitir espaciado nativo de Swiper
+  }
+
+  &__image-mobile {
+    width: 100%;
+    height: 200px; // Altura fija para móviles
+    object-fit: cover;
+    border-radius: 8px;
+
+    @media (max-width: 480px) {
+      height: 180px;
+    }
+  }
+
+  // ==========================================
+  // SLIDES DEL SWIPER DESKTOP
+  // ==========================================
+  &__slide {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 320px !important; // Altura fija: 300px imagen + 20px padding
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  // ==========================================
+  // IMÁGENES (COMÚN PARA MOBILE Y DESKTOP)
+  // ==========================================
+  &__image-wrapper {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    // En el contexto del swiper, no margin bottom
+    .swiper-slide & {
+      margin-bottom: 0;
+    }
+  }
+
+  &__image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+
+    // En mobile, mantener el comportamiento actual
+    @media (max-width: 1023px) {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    // En desktop dentro del swiper, altura uniforme y estandarizada
+    @media (min-width: 1024px) {
+      .swiper-slide & {
+        height: 300px; // Altura uniforme para todas las imágenes
+        max-height: 300px; // Límite máximo estandarizado
+        width: 100%;
+        object-fit: cover; // Mantiene proporciones, rellena el espacio
+      }
+    }
+  }
+}

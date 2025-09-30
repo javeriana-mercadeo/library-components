@@ -18,19 +18,19 @@ const MobileMenu = {
     }
 
     // Verificar que las utilidades globales estén disponibles
-    if (typeof window === 'undefined' || !window.DOMHelpers || !window.Logger || !window.EventManager) {
+    if (typeof window === 'undefined' || !window.DOMUtils || !window.Logger || !window.EventManager) {
       return false
     }
 
     // Buscar elementos del menú móvil
-    this.mobileMenu = DOMHelpers.findElement('#mobile-menu')
-    this.menuOverlay = DOMHelpers.findElement('#menu-overlay')
-    this.menuIcon = DOMHelpers.findElement('#menu-icon')
-    this.triggers = DOMHelpers.findElements('[data-menu-target="mobile-menu"]')
+    this.mobileMenu = DOMUtils.findElement('#mobile-menu')
+    this.menuOverlay = DOMUtils.findElement('#menu-overlay')
+    this.menuIcon = DOMUtils.findElement('#menu-icon')
+    this.triggers = DOMUtils.findElements('[data-menu-target="mobile-menu"]')
 
     // Fallback para el trigger si no usa data-attribute
     if (this.triggers.length === 0) {
-      const fallbackTrigger = DOMHelpers.findElement('#menu-toggle')
+      const fallbackTrigger = DOMUtils.findElement('#menu-toggle')
       if (fallbackTrigger) {
         this.triggers = [fallbackTrigger]
       }
@@ -103,7 +103,7 @@ const MobileMenu = {
   },
 
   setupLinkHandlers() {
-    const menuLinks = DOMHelpers.findElements('a', this.mobileMenu)
+    const menuLinks = DOMUtils.findElements('a', this.mobileMenu)
     menuLinks.forEach(link => {
       EventManager.add(link, 'click', () => {
         this.close()
@@ -113,18 +113,18 @@ const MobileMenu = {
 
   open() {
     // Aplicar 'show' inmediatamente
-    DOMHelpers.toggleClasses(this.mobileMenu, ['show'], true)
+    DOMUtils.toggleClasses(this.mobileMenu, ['show'], true)
 
     if (this.menuOverlay) {
-      DOMHelpers.toggleClasses(this.menuOverlay, ['active'], true)
+      DOMUtils.toggleClasses(this.menuOverlay, ['active'], true)
     }
 
     // Aplicar 'active' con delay para animación
     TimingUtils.delay(() => {
-      DOMHelpers.toggleClasses(this.mobileMenu, ['active'], true)
+      DOMUtils.toggleClasses(this.mobileMenu, ['active'], true)
 
       if (this.menuIcon) {
-        DOMHelpers.toggleClasses(this.menuIcon, ['active'], true)
+        DOMUtils.toggleClasses(this.menuIcon, ['active'], true)
       }
     }, 10)
   },
@@ -132,18 +132,18 @@ const MobileMenu = {
   close() {
     // Quitar clases del menú
     if (this.menuIcon) {
-      DOMHelpers.toggleClasses(this.menuIcon, ['active'], false)
+      DOMUtils.toggleClasses(this.menuIcon, ['active'], false)
     }
 
     // Quitar 'active' inmediatamente
-    DOMHelpers.toggleClasses(this.mobileMenu, ['active'], false)
+    DOMUtils.toggleClasses(this.mobileMenu, ['active'], false)
 
     // Quitar 'show' y overlay con delay para animación
     TimingUtils.delay(() => {
-      DOMHelpers.toggleClasses(this.mobileMenu, ['show'], false)
+      DOMUtils.toggleClasses(this.mobileMenu, ['show'], false)
 
       if (this.menuOverlay) {
-        DOMHelpers.toggleClasses(this.menuOverlay, ['active'], false)
+        DOMUtils.toggleClasses(this.menuOverlay, ['active'], false)
       }
     }, 300)
   },
@@ -172,16 +172,16 @@ const ContactModal = {
     }
 
     // Verificar que las utilidades globales estén disponibles
-    if (typeof window === 'undefined' || !window.DOMHelpers || !window.Logger || !window.EventManager) {
+    if (typeof window === 'undefined' || !window.DOMUtils || !window.Logger || !window.EventManager) {
       return false
     }
 
     // Elementos específicos del modal de contacto
-    this.modal = DOMHelpers.findElement('#contact-modal')
-    this.overlay = DOMHelpers.findElement('#modal-overlay')
+    this.modal = DOMUtils.findElement('#contact-modal')
+    this.overlay = DOMUtils.findElement('#modal-overlay')
     this.closeBtn = null // Se configurará dinámicamente
-    this.form = DOMHelpers.findElement('#contact-form')
-    this.triggers = DOMHelpers.findElements('[data-modal-target="contact-modal"]')
+    this.form = DOMUtils.findElement('#contact-form')
+    this.triggers = DOMUtils.findElements('[data-modal-target="contact-modal"]')
 
     // Verificar que es específicamente nuestro modal
     if (this.modal && !this.modal.classList.contains('contact-modal')) {
@@ -247,7 +247,7 @@ const ContactModal = {
     // Buscar el botón de cerrar cada vez que se necesite
     const findAndSetupCloseButton = () => {
       // Buscar ESPECÍFICAMENTE en nuestro modal de contacto
-      const closeBtn = DOMHelpers.findElement('#modal-close', this.modal) || DOMHelpers.findElement('.modal-header button', this.modal)
+      const closeBtn = DOMUtils.findElement('#modal-close', this.modal) || DOMUtils.findElement('.modal-header button', this.modal)
 
       if (closeBtn) {
         // Verificar si ya tiene nuestro event listener específico
@@ -289,13 +289,13 @@ const ContactModal = {
 
   async open() {
     // Aplicar 'show' inmediatamente (patrón similar al menú móvil)
-    DOMHelpers.toggleClasses(this.modal, ['show'], true)
-    DOMHelpers.toggleClasses(this.overlay, ['active'], true)
-    DOMHelpers.toggleClasses(document.body, ['modal-open'], true)
+    DOMUtils.toggleClasses(this.modal, ['show'], true)
+    DOMUtils.toggleClasses(this.overlay, ['active'], true)
+    DOMUtils.toggleClasses(document.body, ['modal-open'], true)
 
     // Aplicar 'active' con delay sutil para animación
     TimingUtils.delay(() => {
-      DOMHelpers.toggleClasses(this.modal, ['active'], true)
+      DOMUtils.toggleClasses(this.modal, ['active'], true)
     }, 10)
 
     // Asegurar que el botón de cerrar esté configurado cuando se abre el modal
@@ -318,7 +318,7 @@ const ContactModal = {
         }, 50)
 
         TimingUtils.delay(() => {
-          const firstInput = DOMHelpers.findElement('input:not([type="radio"]):not([type="checkbox"])', this.modal)
+          const firstInput = DOMUtils.findElement('input:not([type="radio"]):not([type="checkbox"])', this.modal)
           if (firstInput) firstInput.focus()
         }, 100)
 
@@ -334,7 +334,7 @@ const ContactModal = {
 
   close() {
     // Quitar 'active' inmediatamente para comenzar animación de salida
-    DOMHelpers.toggleClasses(this.modal, ['active'], false)
+    DOMUtils.toggleClasses(this.modal, ['active'], false)
 
     // CRÍTICO: Limpiar TODAS las clases de modal que puedan existir
     if (this.modal) {
@@ -347,9 +347,9 @@ const ContactModal = {
 
     // Quitar 'show' y limpiar completamente con delay para animación
     TimingUtils.delay(() => {
-      DOMHelpers.toggleClasses(this.modal, ['show'], false)
-      DOMHelpers.toggleClasses(this.overlay, ['active'], false)
-      DOMHelpers.toggleClasses(document.body, ['modal-open'], false)
+      DOMUtils.toggleClasses(this.modal, ['show'], false)
+      DOMUtils.toggleClasses(this.overlay, ['active'], false)
+      DOMUtils.toggleClasses(document.body, ['modal-open'], false)
 
       // Limpiar estilos del body completamente
       document.body.style.overflow = ''

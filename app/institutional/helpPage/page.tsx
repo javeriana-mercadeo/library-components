@@ -1,6 +1,6 @@
 'use client'
+import HelpHero from '@/components/_institutional/helpHero'
 import ViewComponent from '@/components/viewComponent/viewComponent'
-import HelpHero from '@library/_institutional/helpHero'
 
 export default function page() {
   const basePath = '/institutional/helpPage'

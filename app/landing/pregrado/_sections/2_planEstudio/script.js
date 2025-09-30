@@ -8,10 +8,8 @@ export default () => {
     // Buscar el elemento con la nueva clase
     const element = document.querySelector('.plan-estudio_wrapper')
     if (!element) {
-      console.warn('Elemento .plan-estudio_wrapper no encontrado')
       const fallbackElement = document.querySelector('.subjects-swiper')
       if (!fallbackElement) {
-        console.error('Ningún elemento swiper encontrado')
         return
       }
     }
@@ -21,7 +19,6 @@ export default () => {
     const totalSlides = slides.length
 
     if (!window.Swiper) {
-      console.error('Swiper no está disponible')
       return
     }
 
@@ -121,7 +118,6 @@ export default () => {
     const prevBtn = document.querySelector('.plan-estudio_prev') || document.querySelector('.subjects-prev')
 
     if (!nextBtn || !prevBtn) {
-      console.warn('Botones de navegación no encontrados')
       return
     }
 
@@ -205,7 +201,6 @@ export default () => {
     const pagination = document.querySelector('.plan-estudio_pagination') || document.querySelector('.subjects-pagination')
 
     if (!pagination) {
-      console.warn('Paginación no encontrada')
       return
     }
 
@@ -230,14 +225,27 @@ export default () => {
   }
 
   const checkAndInit = () => {
-    if (typeof window !== 'undefined' && window.Swiper) {
-      initializeSwiper()
+    // Verificar que Swiper esté disponible Y que el DOM esté listo
+    if (typeof window !== 'undefined' && window.Swiper && document.readyState === 'complete') {
+      // Verificar que el elemento exista antes de inicializar
+      const element = document.querySelector('.plan-estudio_wrapper') || document.querySelector('.subjects-swiper')
+      if (element) {
+        initializeSwiper()
+      } else {
+        // Si no existe el elemento, intentar de nuevo en 500ms
+        setTimeout(checkAndInit, 500)
+      }
     } else {
       setTimeout(checkAndInit, 300)
     }
   }
 
-  checkAndInit()
+  // Esperar a que el DOM esté completamente cargado
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkAndInit)
+  } else {
+    checkAndInit()
+  }
 
   let resizeTimeout
   window.addEventListener('resize', () => {
