@@ -724,13 +724,22 @@ function updateContentPanels(component, requirementsData) {
   const contentContainer = component.querySelector('.admission-requirements_content-container')
   if (!contentContainer) return
 
-  // Limpiar paneles existentes
-  contentContainer.innerHTML = ''
+  // Limpiar solo los paneles existentes, NO todo el contenedor
+  // Esto preserva el botón de navegación fijo
+  const existingPanels = contentContainer.querySelectorAll('.admission-requirements_content-panel')
+  existingPanels.forEach(panel => panel.remove())
 
-  // Crear nuevos paneles (solo válidos)
+  // Crear nuevos paneles (solo válidos) e insertarlos antes del botón de navegación
+  const navigationButton = contentContainer.querySelector('.admission-requirements_panel-navigation-fixed')
+
   validRequirements.forEach((requirement, index) => {
     const panel = createContentPanel(requirement, index === 0, validRequirements.length === 1)
-    contentContainer.appendChild(panel)
+    // Insertar antes del botón de navegación si existe, sino al final
+    if (navigationButton) {
+      contentContainer.insertBefore(panel, navigationButton)
+    } else {
+      contentContainer.appendChild(panel)
+    }
   })
 
   // Reinicializar el acordeón después de crear los paneles dinámicamente

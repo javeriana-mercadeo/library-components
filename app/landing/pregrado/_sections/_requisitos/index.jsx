@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Container, Caption, Title, Paragraph } from '@library/components'
+import Btn from '@library/components/contain/btn'
 
 import script from './script.js'
 import info from './info.json'
@@ -255,29 +256,28 @@ const RequisitosPregrado = () => {
                       ))}
                     </ul>
 
-                    {/* === NAVIGATION BUTTON TO FAQ (only show on active panel) === */}
-                    {index === 0 && (
-                      <div className={`${baseClass}_panel-navigation`}>
-                        <button
-                          className={`${baseClass}_faq-button`}
-                          onClick={() => {
-                            document.getElementById('section-eleven')?.scrollIntoView({
-                              behavior: 'smooth',
-                              block: 'start'
-                            })
-                          }}
-                          aria-label="Ver detalles de los criterios de evaluación en preguntas frecuentes"
-                        >
-                          <span className={`${baseClass}_faq-button-text`}>
-                            Ver detalles de evaluación
-                          </span>
-                          <i className="ph ph-arrow-right" aria-hidden="true"></i>
-                        </button>
-                      </div>
-                    )}
                   </div>
                 </div>
               ))}
+
+            {/* === FIXED NAVIGATION BUTTON TO FAQ === */}
+            <div className={`${baseClass}_panel-navigation-fixed`}>
+              <Btn
+                className={`${baseClass}_faq-button`}
+                variant="solid"
+                color="primary"
+                size="md"
+                onClick={() => {
+                  document.getElementById('section-eleven')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                  })
+                }}
+                endIcon={<i className="ph ph-arrow-right" aria-hidden="true"></i>}
+              >
+                Ver detalles de evaluación
+              </Btn>
+            </div>
           </div>
         </div>
       </Container>
