@@ -2,18 +2,18 @@
 
 
 $social-card-border-radius: rem(12px);
-$social-card-padding: rem(12px); 
-$social-card-min-height: rem(500px); 
-$social-card-max-height: rem(650px); 
+$social-card-padding: rem(12px);
+$social-card-min-height: rem(500px);
+$social-card-max-height: rem(650px);
 $social-card-max-width: rem(400px);
 $social-transition: all 0.3s ease;
 $social-header-padding: rem(8px) rem(12px);
 
 
-$nav-button-size: rem(44px); 
-$nav-button-size-mobile: rem(38px); 
+$nav-button-size: rem(44px);
+$nav-button-size-mobile: rem(38px);
 $nav-bullet-size: rem(12px);
-$nav-button-offset: rem(60px); 
+$nav-button-offset: rem(60px);
 
 
 .social-carousel {
@@ -54,11 +54,11 @@ $nav-button-offset: rem(60px);
 
   &_wrapper {
     margin: 0 0 rem(35px) 0;
-   
+
     padding: rem(20px) rem(75px);
-    overflow: visible; 
+    overflow: visible;
     position: relative;
-    min-height: rem(550px); 
+    min-height: rem(550px);
 
     @include responsive($breakpoint-sm) {
       margin: 0 0 rem(25px) 0;
@@ -75,7 +75,7 @@ $nav-button-offset: rem(60px);
 
     @include responsive($breakpoint-xl) {
       margin: 0 auto;
-      padding: rem(20px) rem(95px); 
+      padding: rem(20px) rem(95px);
       min-height: rem(570px);
     }
   }
@@ -95,7 +95,7 @@ $nav-button-offset: rem(60px);
     justify-content: flex-start;
 
     @include responsive($breakpoint-sm) {
-      min-height: rem(450px) !important; 
+      min-height: rem(450px) !important;
       max-height: rem(600px) !important;
     }
 
@@ -121,13 +121,13 @@ $nav-button-offset: rem(60px);
     border: rem(1px) solid var(--neutral-800);
     transition: $social-transition;
     width: 100%;
-    height: auto; 
-    min-height: $social-card-min-height; 
-    max-height: $social-card-max-height; 
+    height: auto;
+    min-height: $social-card-min-height;
+    max-height: $social-card-max-height;
     max-width: $social-card-max-width;
     margin: 0 auto;
-    box-shadow: 0 rem(2px) rem(6px) rgba(0, 0, 0, 0.08); 
-    overflow: visible; 
+    box-shadow: 0 rem(2px) rem(6px) rgba(0, 0, 0, 0.08);
+    overflow: visible;
 
     &:active {
       cursor: grabbing;
@@ -219,7 +219,7 @@ $nav-button-offset: rem(60px);
     .instagram-media {
       margin: 0 !important;
       width: 100% !important;
-      height: auto !important; 
+      height: auto !important;
       min-height: unset !important;
       max-height: unset !important;
       border-radius: rem(8px) !important;
@@ -462,7 +462,7 @@ $nav-button-offset: rem(60px);
     }
 
     &_wrapper {
-      padding: rem(20px) rem(40px); 
+      padding: rem(20px) rem(40px);
     }
 
     &_pagination {
@@ -492,7 +492,7 @@ $nav-button-offset: rem(60px);
     }
 
     .social-carousel_wrapper {
-      padding: rem(20px) rem(40px); 
+      padding: rem(20px) rem(40px);
     }
 
     .social-carousel_pagination {
@@ -745,8 +745,8 @@ $nav-button-offset: rem(60px);
   min-height: unset !important;
   max-height: unset !important;
   // QUITAR todas las restricciones de altura máxima
-  overflow: visible !important; 
-  min-height: rem(450px) !important; 
+  overflow: visible !important;
+  min-height: rem(450px) !important;
 
   @include responsive($breakpoint-sm) {
     min-height: rem(350px) !important;

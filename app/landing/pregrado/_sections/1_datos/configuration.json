@@ -1,0 +1,41 @@
+{
+  "fieldSets": [
+    {
+      "fields": [
+        {
+          "name": "urlVideoDesktop",
+          "label": "URL del video de escritorio",
+          "description": "URL completa del video de escritorio que se mostrará en la sección de datos del programa (desde Liferay).",
+          "type": "text",
+          "typeOptions": {
+            "placeholder": "https://www.javeriana.edu.co/recursosdb/d/info-prg/nombre-del-video"
+          },
+          "dataType": "string",
+          "defaultValue": "https://www.javeriana.edu.co/recursosdb/d/info-prg/administracion-de-empresas-7-1"
+        },
+        {
+          "name": "urlVideoMobile",
+          "label": "URL del video móvil",
+          "description": "URL completa del video móvil que se mostrará en dispositivos móviles (opcional - si no se proporciona, se usará el de escritorio).",
+          "type": "text",
+          "typeOptions": {
+            "placeholder": "https://www.javeriana.edu.co/recursosdb/d/info-prg/nombre-del-video-mobile"
+          },
+          "dataType": "string",
+          "defaultValue": ""
+        },
+        {
+          "name": "fallbackImage",
+          "label": "Imagen de fallback",
+          "description": "URL de la imagen que se mostrará en caso de que falle la carga del video (para desktop y mobile).",
+          "type": "text",
+          "typeOptions": {
+            "placeholder": "https://www.javeriana.edu.co/recursosdb/d/info-prg/img-20200414-wa0023?imagePreview=1"
+          },
+          "dataType": "string",
+          "defaultValue": ""
+        }
+      ]
+    }
+  ]
+}

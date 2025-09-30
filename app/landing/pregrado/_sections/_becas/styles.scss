@@ -1,0 +1,830 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// COMPONENTE BECAS - SOLO VARIABLES DEL SISTEMA
+// ==========================================
+
+.scholarships {
+  // Variables locales
+  --content-spacing: var(--spacing-lg);
+
+  background-color: var(--primary);
+
+  // Contenedor principal de la sección
+  &_container {
+    width: 100%;
+    background-color: var(--primary);
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+
+    // Mobile - reducir padding vertical aún más
+    @include responsive($breakpoint-md) {
+      padding-top: var(--spacing-md);
+      padding-bottom: var(--spacing-sm);
+    }
+  }
+
+  // Título principal
+  &__main-title {
+    margin-bottom: var(--spacing-xl);
+    color: var(--neutral);
+  }
+
+  // Contenedor de tabs
+  &__tabs-container {
+    // El Container padre ya maneja el max-width y centrado
+  }
+
+  // Navegación de tabs
+  &__tabs-nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  &__tabs-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: rem(500px); // Ancho máximo para que no se vea demasiado ancho
+    margin: 0 auto; // Centrar el contenedor
+    padding: rem(6px);
+    background: var(--color-neutral-50);
+    border-radius: rem(16px);
+    border: rem(1px) solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+      0 rem(4px) rem(12px) rgba(0, 0, 0, 0.1),
+      0 rem(2px) rem(4px) rgba(0, 0, 0, 0.05);
+    position: relative;
+    backdrop-filter: blur(rem(8px));
+    gap: rem(8px);
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(8px);
+      border-radius: rem(20px);
+      gap: rem(10px);
+      max-width: rem(600px);
+    }
+  }
+
+  &__tab-button {
+    display: flex;
+    align-items: center;
+    flex-direction: column; // Ícono arriba en móvil
+    flex-wrap: wrap; // Permitir que el contenido se ajuste
+    gap: rem(4px); // Gap más pequeño para layout vertical
+    padding: rem(10px) rem(12px);
+    border: none;
+    background: transparent;
+    color: var(--color-neutral-600);
+    font-size: var(--font-size-paragraph); // Aumentar tamaño de fuente
+    font-weight: var(--font-weight-medium);
+    border-radius: rem(12px);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: normal; // Permitir salto de línea en móvil
+    position: relative;
+    z-index: 1;
+    flex: 1; // Hacer que ambos botones ocupen el mismo espacio
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    line-height: 1.3; // Mejor espaciado entre líneas
+    min-height: rem(40px); // Altura mínima para consistencia
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(14px) rem(24px);
+      border-radius: rem(14px);
+      gap: rem(10px);
+      font-size: var(--font-size-paragraph); // Restablecer tamaño normal en tablet+
+      white-space: nowrap; // Restablecer a una línea en tablet+
+      min-height: rem(48px); // Altura mayor en tablet+
+      flex-wrap: nowrap; // Sin wrap en tablet+
+      flex-direction: row; // Volver a layout horizontal en tablet+
+    }
+
+    // Estados hover
+    &:hover:not(.active) {
+      color: var(--color-neutral-800);
+      background: var(--color-neutral-100);
+      transform: translateY(rem(-1px));
+
+      .scholarships__tab-icon {
+        transform: scale(1.1);
+      }
+    }
+
+    // Estado activo
+    &.active {
+      background: var(--primary);
+      color: var(--neutral);
+      font-weight: var(--font-weight-semibold);
+      box-shadow: 0 rem(2px) rem(8px) rgba(0, 0, 0, 0.1);
+
+      span {
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .scholarships__tab-icon {
+        transform: scale(1.1);
+      }
+    }
+
+    // Focus visible solo para navegación con teclado
+    &:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    // Quitar outline cuando se hace clic
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
+  }
+
+  &__tab-icon {
+    font-size: rem(16px); // Ícono más pequeño en móvil
+    transition: transform 0.3s ease;
+    flex-shrink: 0; // Evitar que el ícono se comprima
+    color: inherit; // Heredar el color del texto del botón
+
+    @include responsive($breakpoint-sm) {
+      font-size: rem(20px); // Tamaño normal en tablet+
+    }
+  }
+
+  // Contenido de tabs
+  &__tabs-content {
+    min-height: 400px;
+  }
+
+  &__tab-panel {
+    animation: fadeIn 0.3s ease-in-out;
+
+    &.hidden {
+      display: none;
+    }
+
+    // Asegurar que el contenido sea accesible cuando está visible
+    &:not(.hidden) {
+      display: block;
+    }
+  }
+
+  &__content-wrapper {
+    display: grid;
+    gap: var(--content-spacing);
+    padding: var(--content-spacing);
+
+    // Mobile por defecto - columna única
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto; // Contenido arriba, imagen abajo
+    gap: var(--spacing-lg);
+    text-align: center;
+    min-height: auto;
+    align-items: center;
+
+    // Tablet - mejor ratio para tablets (min-width: 768px)
+    @include responsive($breakpoint-md) {
+      grid-template-columns: 40% 60%;
+      grid-template-rows: none;
+      gap: var(--content-spacing);
+      text-align: left;
+      align-items: stretch;
+      min-height: 220px;
+    }
+
+    // Desktop - 2 columnas (min-width: 992px)
+    @include responsive($breakpoint-lg) {
+      grid-template-columns: 40% 60%;
+      min-height: 250px;
+    }
+  }
+
+  // Contenedor de media (imagen o ícono)
+  &__media-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: rem(12px);
+
+    // Mobile por defecto - imagen grande y prominente, mostrar después del texto
+    width: 100%;
+    max-width: rem(300px);
+    height: rem(200px);
+    min-height: rem(200px);
+    margin: 0 auto;
+    order: 2; // Mostrar después del contenido en mobile
+
+    // Tablet - tamaño intermedio (min-width: 768px)
+    @include responsive($breakpoint-md) {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      min-height: 180px;
+      border-radius: rem(14px);
+      margin: 0;
+      order: 0; // Restablecer orden normal en tablet/desktop
+    }
+
+    // Desktop - tamaño completo (min-width: 992px)
+    @include responsive($breakpoint-lg) {
+      min-height: 200px;
+      border-radius: rem(16px);
+    }
+
+    // Cuando contiene ícono, aplicar estilos específicos para ícono
+    &:has(.scholarships__content-icon) {
+      background-color: var(--primary-100);
+      border-radius: 50%;
+      margin: 0 auto;
+
+      // Mobile por defecto - íconos visibles
+      width: 120px;
+      height: 120px;
+      max-width: 120px;
+
+      // Tablet - tamaño intermedio para íconos (min-width: 768px)
+      @include responsive($breakpoint-md) {
+        width: 120px;
+        height: 120px;
+        max-width: 120px;
+      }
+
+      // Desktop - íconos grandes (min-width: 992px)
+      @include responsive($breakpoint-lg) {
+        width: 150px;
+        height: 150px;
+        max-width: 150px;
+      }
+    }
+  }
+
+  &__content-icon {
+    color: var(--primary-500);
+
+    // Mobile por defecto - tamaño visible
+    font-size: 70px;
+
+    // Tablet - tamaño intermedio (min-width: 768px)
+    @include responsive($breakpoint-md) {
+      font-size: 80px;
+    }
+
+    // Desktop - tamaño grande (min-width: 992px)
+    @include responsive($breakpoint-lg) {
+      font-size: 100px;
+    }
+  }
+
+  &__content-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit; // Heredar el border-radius del contenedor
+    transition:
+      transform 0.3s ease,
+      filter 0.3s ease;
+
+    // Efecto hover solo en desktop (min-width: 993px)
+    @media (min-width: #{$breakpoint-lg + 1px}) {
+      &:hover {
+        transform: scale(1.02);
+        filter: brightness(1.05);
+      }
+    }
+  }
+
+  &__text-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    // Mobile por defecto - alinear al inicio sin padding, mostrar primero
+    justify-content: flex-start;
+    padding: 0;
+    text-align: left;
+    order: 1; // Mostrar antes que la imagen en mobile
+
+    // Tablet - mantener centrado pero menos padding (min-width: 768px)
+    @include responsive($breakpoint-md) {
+      justify-content: center;
+      padding: var(--spacing-xs) 0;
+      text-align: left;
+      order: 0; // Restablecer orden normal en tablet/desktop
+    }
+
+    // Desktop - centrado con más padding (min-width: 992px)
+    @include responsive($breakpoint-lg) {
+      justify-content: center;
+      padding: var(--spacing-sm) 0;
+    }
+  }
+
+  &__content-title {
+    margin-bottom: var(--spacing-md);
+    color: #ffffff !important; // Blanco puro en ambos temas
+  }
+
+  &__content-text {
+    margin-bottom: var(--spacing-lg);
+    color: var(--neutral);
+    line-height: 1.6;
+    font-size: var(--font-size-paragraph); // Aplicar tamaño de fuente paragraph
+
+    p {
+      margin-bottom: var(--spacing-sm);
+      font-size: var(--font-size-paragraph); // Asegurar que los párrafos usen el tamaño correcto
+      color: var(--color-neutral-100);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul {
+      list-style: none !important;
+      margin: var(--spacing-sm) 0 !important;
+      padding-left: var(--spacing-xl) !important;
+      display: block !important;
+
+      li {
+        position: relative !important;
+        display: list-item !important;
+        margin-bottom: var(--spacing-xs) !important;
+        padding-left: var(--spacing-sm) !important;
+        line-height: 1.6 !important;
+        color: var(--color-neutral-100);
+        font-size: var(--font-size-paragraph);
+        font-family: var(--font-family);
+
+        &::before {
+          content: '•' !important;
+          color: var(--neutral) !important;
+          font-weight: var(--font-weight-bold) !important;
+          position: absolute !important;
+          left: rem(-16px) !important;
+          top: 0 !important;
+          font-size: rem(18px) !important;
+          line-height: 1.2 !important;
+        }
+
+        &:last-child {
+          margin-bottom: 0 !important;
+        }
+
+        strong {
+          color: var(--neutral);
+        }
+      }
+    }
+
+    .terms-note {
+      font-size: var(--font-size-small); // Mantener tamaño small para nota de términos
+      font-style: italic;
+      color: var(--neutral-500);
+      margin-top: var(--spacing-md);
+    }
+
+    // ==========================================
+    // SISTEMA DE TEXTO ENRIQUECIDO - TÍTULOS
+    // ==========================================
+    h3 {
+      font-family: var(--font-family);
+      font-size: var(--font-size-paragraph) !important;
+      font-weight: var(--font-weight-bold) !important;
+      color: var(--neutral) !important;
+      margin: var(--spacing-sm) 0 var(--spacing-xs) 0 !important;
+      line-height: var(--line-height-heading, 1.2) !important;
+      text-align: left !important;
+    }
+
+    h4 {
+      font-family: var(--font-family);
+      font-size: var(--font-size-small) !important;
+      font-weight: var(--font-weight-medium) !important;
+      color: var(--color-neutral-200) !important;
+      margin: var(--spacing-xs) 0 var(--spacing-xs) 0 !important;
+      line-height: var(--line-height-heading, 1.2) !important;
+      text-align: left !important;
+    }
+
+    // ==========================================
+    // TEXTO Y FORMATO ENRIQUECIDO
+    // ==========================================
+    strong,
+    b {
+      font-weight: var(--font-weight-bold) !important;
+      color: var(--neutral) !important;
+    }
+
+    em,
+    i {
+      font-style: italic !important;
+      color: inherit !important;
+    }
+
+    u {
+      text-decoration: underline !important;
+      color: var(--neutral) !important;
+      text-underline-offset: rem(2px) !important;
+    }
+
+    cite {
+      font-style: italic !important;
+      color: var(--color-neutral-400) !important;
+      font-size: var(--font-size-small) !important;
+      opacity: 0.8 !important;
+    }
+
+    // ==========================================
+    // LISTAS ORDENADAS (NUEVAS)
+    // ==========================================
+    ol {
+      list-style: none !important;
+      margin: var(--spacing-sm) 0 !important;
+      padding-left: var(--spacing-xl) !important;
+      counter-reset: scholarships-counter !important;
+      display: block !important;
+
+      li {
+        position: relative !important;
+        display: list-item !important;
+        margin-bottom: var(--spacing-xs) !important;
+        padding-left: var(--spacing-sm) !important;
+        line-height: 1.6 !important;
+        color: var(--color-neutral-100);
+        font-size: var(--font-size-paragraph);
+        font-family: var(--font-family);
+        counter-increment: scholarships-counter !important;
+
+        &::before {
+          content: counter(scholarships-counter) '.' !important;
+          color: var(--neutral) !important;
+          font-weight: var(--font-weight-bold) !important;
+          position: absolute !important;
+          left: rem(-24px) !important;
+          top: 0 !important;
+          font-size: inherit !important;
+        }
+
+        &:last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+    }
+
+    // ==========================================
+    // MENSAJES ESPECIALES PARA BECAS
+    // ==========================================
+    .overflow-auto.portlet-msg-info {
+      background-color: rgba(255, 255, 255, 0.15) !important;
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      border-left: 3px solid var(--neutral) !important;
+      border-radius: var(--border-radius-md) !important;
+      padding: var(--spacing-sm) var(--spacing-md) !important;
+      margin: var(--spacing-sm) 0 !important;
+      color: var(--neutral) !important;
+      font-family: var(--font-family) !important;
+      font-size: var(--font-size-paragraph) !important;
+      line-height: 1.6 !important;
+      font-weight: var(--font-weight-medium) !important;
+      overflow: auto !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+
+      &::before {
+        content: '💡 ' !important;
+        font-weight: var(--font-weight-bold) !important;
+        margin-right: var(--spacing-2xs) !important;
+      }
+    }
+
+    .overflow-auto.portlet-msg-alert {
+      background-color: rgba(245, 158, 11, 0.2) !important;
+      border: 1px solid rgba(245, 158, 11, 0.4) !important;
+      border-left: 3px solid #f59e0b !important;
+      border-radius: var(--border-radius-md) !important;
+      padding: var(--spacing-sm) var(--spacing-md) !important;
+      margin: var(--spacing-sm) 0 !important;
+      color: #fbbf24 !important;
+      font-family: var(--font-family) !important;
+      font-size: var(--font-size-paragraph) !important;
+      line-height: 1.6 !important;
+      font-weight: var(--font-weight-medium) !important;
+      overflow: auto !important;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2) !important;
+
+      &::before {
+        content: '⚠️ ' !important;
+        font-weight: var(--font-weight-bold) !important;
+        margin-right: var(--spacing-2xs) !important;
+      }
+    }
+
+    .overflow-auto.portlet-msg-error {
+      background-color: rgba(var(--error-rgb, 239, 68, 68), 0.08) !important;
+      border: 1px solid rgba(var(--error-rgb, 239, 68, 68), 0.3) !important;
+      border-left: 3px solid var(--error, #ef4444) !important;
+      border-radius: var(--border-radius-md) !important;
+      padding: var(--spacing-sm) var(--spacing-md) !important;
+      margin: var(--spacing-sm) 0 !important;
+      color: var(--error, #ef4444) !important;
+      font-family: var(--font-family) !important;
+      font-size: var(--font-size-paragraph) !important;
+      line-height: 1.6 !important;
+      font-weight: var(--font-weight-medium) !important;
+      overflow: auto !important;
+      box-shadow: 0 2px 8px rgba(var(--error-rgb, 239, 68, 68), 0.15) !important;
+
+      &::before {
+        content: '❌ ' !important;
+        font-weight: var(--font-weight-bold) !important;
+        margin-right: var(--spacing-2xs) !important;
+      }
+    }
+
+    // ==========================================
+    // TABLAS PARA CRONOGRAMAS Y DATOS
+    // ==========================================
+    table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+      margin: var(--spacing-md) 0 !important;
+      background-color: rgba(255, 255, 255, 0.08) !important;
+      border-radius: var(--border-radius-md) !important;
+      overflow: hidden !important;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+
+      caption {
+        caption-side: top !important;
+        padding: var(--spacing-sm) var(--spacing-md) !important;
+        font-weight: var(--font-weight-bold) !important;
+        font-size: var(--font-size-caption) !important;
+        color: var(--neutral) !important;
+        text-align: left !important;
+        background-color: rgba(255, 255, 255, 0.12) !important;
+        margin-bottom: 0 !important;
+      }
+
+      tbody {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+
+      tr {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+        transition: background-color 0.2s ease !important;
+
+        &:first-child {
+          background-color: rgba(255, 255, 255, 0.12) !important;
+        }
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        &:last-child {
+          border-bottom: none !important;
+        }
+      }
+
+      td {
+        padding: var(--spacing-sm) var(--spacing-md) !important;
+        color: var(--color-neutral-100) !important;
+        font-size: var(--font-size-paragraph) !important;
+        line-height: 1.6 !important;
+        font-family: var(--font-family) !important;
+        vertical-align: top !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+
+        &:last-child {
+          border-right: none !important;
+        }
+
+        &:empty::after {
+          content: '-' !important;
+          color: var(--neutral-500) !important;
+          font-style: italic !important;
+        }
+      }
+
+      @media (max-width: $breakpoint-md) {
+        caption {
+          font-size: var(--font-size-paragraph) !important;
+        }
+
+        td {
+          padding: var(--spacing-xs) var(--spacing-sm) !important;
+          font-size: var(--font-size-small) !important;
+        }
+      }
+    }
+
+    // ==========================================
+    // CÓDIGO Y ELEMENTOS TÉCNICOS
+    // ==========================================
+    code {
+      background: rgba(0, 0, 0, 0.3) !important;
+      color: var(--neutral) !important;
+      padding: rem(2px) rem(4px) !important;
+      border-radius: rem(3px) !important;
+      font-family: 'Courier New', monospace !important;
+      font-size: 0.9em !important;
+      opacity: 1 !important;
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.4) !important;
+      border: rem(1px) solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: rem(4px) !important;
+      padding: var(--spacing-sm) !important;
+      overflow-x: auto !important;
+      margin: var(--spacing-sm) 0 !important;
+      color: var(--neutral) !important;
+      font-family: 'Courier New', monospace !important;
+      font-size: 0.9em !important;
+      line-height: 1.5 !important;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+      }
+
+      code {
+        background: none !important;
+        padding: 0 !important;
+        border: none !important;
+        color: inherit !important;
+      }
+    }
+
+    // ==========================================
+    // ENLACES CON DETECCIÓN AUTOMÁTICA
+    // ==========================================
+    a {
+      color: var(--color-neutral-100) !important;
+      text-decoration: underline !important;
+      text-underline-offset: rem(2px) !important;
+      font-weight: var(--font-weight-medium) !important;
+      transition: all 0.2s ease !important;
+      word-break: break-word !important;
+      opacity: 1 !important;
+      text-decoration-color: rgba(255, 255, 255, 0.5) !important;
+
+      &:hover {
+        color: var(--neutral) !important;
+        text-decoration-color: var(--neutral) !important;
+        text-decoration-thickness: rem(2px) !important;
+      }
+
+      &:visited {
+        color: var(--color-neutral-300) !important;
+      }
+
+      &:focus {
+        outline: rem(2px) solid var(--neutral) !important;
+        outline-offset: rem(2px) !important;
+        border-radius: rem(2px) !important;
+        color: var(--neutral) !important;
+      }
+
+      &:active {
+        transform: translateY(1px) !important;
+      }
+
+      // Enlaces externos automáticos
+      &[href*='http']:not([href*='localhost']):not([href*='127.0.0.1'])::after {
+        content: ' 🔗' !important;
+        font-size: 0.8em !important;
+        opacity: 0.7 !important;
+        margin-left: rem(2px) !important;
+      }
+    }
+  }
+
+  &__cta-button {
+    // Override para forzar colores neutros sobre fondo primary
+    border-color: var(--neutral) !important;
+    color: var(--neutral) !important;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      border-color: var(--neutral) !important;
+      color: var(--neutral) !important;
+      transform: translateY(-2px);
+    }
+
+    &:focus {
+      background-color: rgba(255, 255, 255, 0.15) !important;
+      border-color: var(--neutral) !important;
+      color: var(--neutral) !important;
+    }
+
+    // Layout y spacing
+    margin-top: var(--spacing-sm);
+    max-width: max-content; // Limitar ancho al contenido
+    width: auto; // Ancho automático basado en contenido
+    align-self: center; // Centrar en mobile
+
+    // Tablet y Desktop - alinear al inicio (min-width: 768px)
+    @include responsive($breakpoint-md) {
+      align-self: flex-start;
+    }
+  }
+
+  // Estados y animaciones
+  transition: all 0.3s ease;
+
+  // Soporte para tema oscuro
+  @include dark-theme {
+    // El fondo principal ya usa var(--primary) que automáticamente cambia a primary-dark
+
+    &__tabs-wrapper {
+      background: var(--background-100);
+      border-color: var(--neutral-300);
+      box-shadow:
+        0 rem(4px) rem(12px) rgba(0, 0, 0, 0.2),
+        0 rem(2px) rem(4px) rgba(0, 0, 0, 0.1);
+    }
+
+    &__tab-button {
+      color: var(--neutral); // Botones inactivos blancos para mejor contraste
+
+      &:hover:not(.active) {
+        color: var(--neutral);
+        background: var(--color-neutral-600);
+      }
+
+      &.active {
+        background: var(--primary);
+        color: var(--neutral);
+      }
+    }
+
+    // Solo aplicar fondo oscuro cuando hay ícono
+    &__media-container:has(.scholarships__content-icon) {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    // Ajustes específicos para elementos de texto enriquecido en modo oscuro
+    &__content-text {
+      .overflow-auto.portlet-msg-alert {
+        background-color: rgba(245, 158, 11, 0.15) !important;
+        border: 1px solid rgba(245, 158, 11, 0.3) !important;
+        color: #fde047 !important;
+      }
+
+      table {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+
+        caption {
+          background-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
+        tr:first-child {
+          background-color: rgba(255, 255, 255, 0.08) !important;
+        }
+      }
+    }
+  }
+}
+
+// ==========================================
+// ANIMACIÓN FADEIN
+// ==========================================
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(rem(10px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ==========================================
+// ACCESIBILIDAD - Reducir movimiento
+// ==========================================
+@media (prefers-reduced-motion: reduce) {
+  .scholarships {
+    &__tab-panel {
+      animation: none;
+    }
+
+    &__tab-button {
+      transition: none;
+
+      &::after {
+        transition: none;
+      }
+    }
+  }
+}

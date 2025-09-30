@@ -156,7 +156,7 @@ export default () => {
           embed.style.height = 'auto'
           embed.style.minHeight = 'auto'
           embed.style.maxHeight = 'none'
-          
+
           // Aplicar a elementos hijos también
           const childElements = embed.querySelectorAll('*')
           childElements.forEach(child => {
@@ -166,7 +166,7 @@ export default () => {
             child.style.overflow = 'visible'
           })
         })
-        
+
         window.instgrm.Embeds.process()
       } catch (error) {
         console.warn('Error procesando embeds de Instagram:', error)
@@ -174,24 +174,24 @@ export default () => {
     }
   }
 
-  // Nueva función para ajustar alturas de las tarjetas
+  // Función para ajustar alturas de las tarjetas
   const adjustCardHeights = () => {
     const cards = document.querySelectorAll('.social-carousel_card')
     const slides = document.querySelectorAll('.social-carousel_slide')
-    
+
     cards.forEach(card => {
       // Asegurar que la tarjeta tenga altura dinámica
       card.style.height = 'auto'
       card.style.minHeight = 'auto'
       card.style.maxHeight = 'none'
-      
+
       // Aplicar altura dinámica al contenido del post
       const postContent = card.querySelector('.social-carousel_post-content')
       if (postContent) {
         postContent.style.height = 'auto'
         postContent.style.minHeight = 'auto'
         postContent.style.maxHeight = 'none'
-        
+
         // Buscar embeds dentro del contenido
         const instagramEmbeds = postContent.querySelectorAll('.instagram-media')
         instagramEmbeds.forEach(embed => {
@@ -199,7 +199,7 @@ export default () => {
           embed.style.minHeight = 'auto'
           embed.style.maxHeight = 'none'
           embed.style.overflow = 'visible'
-          
+
           // Aplicar a iframes dentro del embed
           const iframes = embed.querySelectorAll('iframe')
           iframes.forEach(iframe => {
@@ -210,7 +210,7 @@ export default () => {
         })
       }
     })
-    
+
     // Ajustar slides también
     slides.forEach(slide => {
       slide.style.height = 'auto'
@@ -222,22 +222,23 @@ export default () => {
   // Función para observar cambios en los embeds
   const observeEmbedChanges = () => {
     if (typeof window !== 'undefined' && window.MutationObserver) {
-      const observer = new MutationObserver((mutations) => {
+      const observer = new MutationObserver(mutations => {
         let shouldUpdate = false
-        
-        mutations.forEach((mutation) => {
+
+        mutations.forEach(mutation => {
           if (mutation.type === 'childList' || mutation.type === 'attributes') {
             const target = mutation.target
-            if (target.classList && (
-              target.classList.contains('instagram-media') ||
-              target.closest('.instagram-media') ||
-              target.querySelector('.instagram-media')
-            )) {
+            if (
+              target.classList &&
+              (target.classList.contains('instagram-media') ||
+                target.closest('.instagram-media') ||
+                target.querySelector('.instagram-media'))
+            ) {
               shouldUpdate = true
             }
           }
         })
-        
+
         if (shouldUpdate) {
           setTimeout(() => {
             adjustCardHeights()
@@ -247,7 +248,7 @@ export default () => {
           }, 100)
         }
       })
-      
+
       // Observar cambios en el contenedor del carrusel
       const container = document.querySelector('.social-carousel_wrapper')
       if (container) {
@@ -261,7 +262,7 @@ export default () => {
     }
   }
 
-  // Resto de funciones existentes...
+  // Funciones de navegación
   const updateNavigationDisplay = (swiper, totalSlides) => {
     const carousel = document.querySelector('.social-carousel')
     const nextBtn = document.querySelector('.social-carousel_next') || document.querySelector('.social-next')
@@ -287,20 +288,20 @@ export default () => {
 
   const hideAllNavigation = (carousel, nextBtn, prevBtn, pagination) => {
     carousel?.classList.remove('show-pagination-only', 'show-buttons-only')
-    
+
     pagination.style.display = 'none'
     pagination.style.opacity = '0'
     pagination.style.visibility = 'hidden'
     pagination.classList.add('swiper-pagination-hidden')
     pagination.setAttribute('aria-hidden', 'true')
-    
+
     nextBtn.style.display = 'none'
     nextBtn.style.opacity = '0'
     nextBtn.style.visibility = 'hidden'
     nextBtn.classList.remove('show-navigation')
     nextBtn.classList.add('swiper-button-hidden')
     nextBtn.setAttribute('aria-hidden', 'true')
-    
+
     prevBtn.style.display = 'none'
     prevBtn.style.opacity = '0'
     prevBtn.style.visibility = 'hidden'
@@ -312,26 +313,26 @@ export default () => {
   const showPaginationOnly = (carousel, nextBtn, prevBtn, pagination) => {
     carousel?.classList.add('show-pagination-only')
     carousel?.classList.remove('show-buttons-only')
-    
+
     pagination.style.display = 'flex'
     pagination.style.opacity = '1'
     pagination.style.visibility = 'visible'
     pagination.classList.remove('swiper-pagination-hidden')
     pagination.setAttribute('aria-hidden', 'false')
-    
+
     const bullets = pagination.querySelectorAll('.swiper-pagination-bullet')
     bullets.forEach((bullet, index) => {
       bullet.setAttribute('aria-label', `Ir a slide ${index + 1}`)
       bullet.style.display = 'block'
     })
-    
+
     nextBtn.style.display = 'none'
     nextBtn.style.opacity = '0'
     nextBtn.style.visibility = 'hidden'
     nextBtn.classList.remove('show-navigation')
     nextBtn.classList.add('swiper-button-hidden')
     nextBtn.setAttribute('aria-hidden', 'true')
-    
+
     prevBtn.style.display = 'none'
     prevBtn.style.opacity = '0'
     prevBtn.style.visibility = 'hidden'
@@ -343,20 +344,20 @@ export default () => {
   const showButtonsOnly = (carousel, nextBtn, prevBtn, pagination) => {
     carousel?.classList.add('show-buttons-only')
     carousel?.classList.remove('show-pagination-only')
-    
+
     pagination.style.display = 'none'
     pagination.style.opacity = '0'
     pagination.style.visibility = 'hidden'
     pagination.classList.add('swiper-pagination-hidden')
     pagination.setAttribute('aria-hidden', 'true')
-    
+
     nextBtn.style.display = 'flex'
     nextBtn.style.opacity = '1'
     nextBtn.style.visibility = 'visible'
     nextBtn.classList.add('show-navigation')
     nextBtn.classList.remove('swiper-button-hidden')
     nextBtn.setAttribute('aria-hidden', 'false')
-    
+
     prevBtn.style.display = 'flex'
     prevBtn.style.opacity = '1'
     prevBtn.style.visibility = 'visible'
@@ -404,6 +405,7 @@ export default () => {
     }
   }
 
+  // Función para verificar e inicializar
   const checkAndInit = () => {
     if (typeof window !== 'undefined' && window.Swiper) {
       initializeSwiper()
@@ -413,8 +415,7 @@ export default () => {
     }
   }
 
-  checkAndInit()
-
+  // Listener para redimensionamiento de ventana
   let resizeTimeout
   window.addEventListener('resize', () => {
     if (resizeTimeout) {

@@ -19,7 +19,9 @@ html.grayscale {
 .whatsapp-floating-button {
   opacity: 0 !important;
   visibility: hidden !important;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
 }
 
 /* Clase para mostrar cuando esté listo */
@@ -27,7 +29,6 @@ body.floating-menu-ready .floating-menu,
 body.floating-menu-ready .whatsapp-floating-button {
   opacity: 1 !important;
   visibility: visible !important;
-	
 }
 
 /* ===== AISLAMIENTO DE LA BARRA DEL ZOOM ===== */
@@ -91,7 +92,7 @@ body.floating-menu-ready .whatsapp-floating-button {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  display: none; 
+  display: none;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer;
@@ -135,7 +136,7 @@ body.floating-menu-ready .whatsapp-floating-button {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  display: flex; 
+  display: flex;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer;
@@ -186,11 +187,21 @@ body.floating-menu-ready .whatsapp-floating-button {
   transform: translate(-50%, -50%) scale(1);
 }
 
-.menu-item:nth-child(3):hover:not(.whatsapp-button) span { background-color: #10b981; }
-.menu-item:nth-child(4):hover:not(.whatsapp-button) span { background-color: #ef4444; }
-.menu-item:nth-child(5):hover:not(.whatsapp-button) span { background-color: var(--primary); }
-.menu-item:nth-child(6):hover:not(.whatsapp-button) span { background-color: #9ca3af; }
-.menu-item:nth-child(7):hover:not(.whatsapp-button) span { background-color: #4caf50; }
+.menu-item:nth-child(3):hover:not(.whatsapp-button) span {
+  background-color: #10b981;
+}
+.menu-item:nth-child(4):hover:not(.whatsapp-button) span {
+  background-color: #ef4444;
+}
+.menu-item:nth-child(5):hover:not(.whatsapp-button) span {
+  background-color: var(--primary);
+}
+.menu-item:nth-child(6):hover:not(.whatsapp-button) span {
+  background-color: #9ca3af;
+}
+.menu-item:nth-child(7):hover:not(.whatsapp-button) span {
+  background-color: #4caf50;
+}
 
 .menu-item:hover:not(.whatsapp-button) i {
   color: white;
@@ -214,7 +225,7 @@ body.floating-menu-ready .whatsapp-floating-button {
   background-color: #25d366;
   border-radius: 50%;
   z-index: 999998;
-  display: flex !important; 
+  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
@@ -266,14 +277,14 @@ body.floating-menu-ready .whatsapp-floating-button {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  display: none !important; 
+  display: none !important;
 }
 
 .share-modal-overlay.share-modal-visible {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  display: flex !important; 
+  display: flex !important;
 }
 
 .share-modal {
@@ -378,12 +389,24 @@ body.floating-menu-ready .whatsapp-floating-button {
 }
 
 /* Colores hover específicos */
-.share-option:nth-child(1):hover i { color: #25d366; }
-.share-option:nth-child(2):hover i { color: #1877f2; }
-.share-option:nth-child(3):hover i { color: #e4405f; }
-.share-option:nth-child(4):hover i { color: #0a66c2; }
-.share-option:nth-child(5):hover i { color: #d44638; }
-.share-option:nth-child(6):hover i { color: #374151; }
+.share-option:nth-child(1):hover i {
+  color: #25d366;
+}
+.share-option:nth-child(2):hover i {
+  color: #1877f2;
+}
+.share-option:nth-child(3):hover i {
+  color: #e4405f;
+}
+.share-option:nth-child(4):hover i {
+  color: #0a66c2;
+}
+.share-option:nth-child(5):hover i {
+  color: #d44638;
+}
+.share-option:nth-child(6):hover i {
+  color: #374151;
+}
 
 /* ===== NOTIFICACIONES ===== */
 .floating-menu-notification {
@@ -398,7 +421,7 @@ body.floating-menu-ready .whatsapp-floating-button {
 
 /* Detectar modo de edición REAL usando selectores más específicos */
 body.controls-visible .control-menu:not(.hide) ~ * .floating-menu-container,
-body[class*="dockbar"] .floating-menu-container,
+body[class*='dockbar'] .floating-menu-container,
 .has-control-menu .floating-menu-container,
 body:has(.control-menu-level-1:not(.hide)) .floating-menu-container {
   position: relative;
@@ -406,7 +429,7 @@ body:has(.control-menu-level-1:not(.hide)) .floating-menu-container {
 
 /* Menú principal en modo edición - forzar estado collapsed */
 body.controls-visible .control-menu:not(.hide) ~ * .floating-menu,
-body[class*="dockbar"] .floating-menu,
+body[class*='dockbar'] .floating-menu,
 .has-control-menu .floating-menu,
 body:has(.control-menu-level-1:not(.hide)) .floating-menu {
   position: fixed !important;
@@ -429,7 +452,7 @@ body:has(.control-menu-level-1:not(.hide)) .floating-menu {
 
 /* Hover para mayor visibilidad */
 body.controls-visible .control-menu:not(.hide) ~ * .floating-menu:hover,
-body[class*="dockbar"] .floating-menu:hover,
+body[class*='dockbar'] .floating-menu:hover,
 .has-control-menu .floating-menu:hover,
 body:has(.control-menu-level-1:not(.hide)) .floating-menu:hover {
   opacity: 1 !important;
@@ -438,7 +461,7 @@ body:has(.control-menu-level-1:not(.hide)) .floating-menu:hover {
 
 /* Forzar estado collapsed - no expandir en modo edición */
 body.controls-visible .control-menu:not(.hide) ~ * .floating-menu.mobile-expanded,
-body[class*="dockbar"] .floating-menu.mobile-expanded,
+body[class*='dockbar'] .floating-menu.mobile-expanded,
 .has-control-menu .floating-menu.mobile-expanded,
 body:has(.control-menu-level-1:not(.hide)) .floating-menu.mobile-expanded {
   width: 42px !important;
@@ -450,7 +473,7 @@ body:has(.control-menu-level-1:not(.hide)) .floating-menu.mobile-expanded {
 
 /* Solo mostrar botón toggle en modo edición */
 body.controls-visible .control-menu:not(.hide) ~ * .menu-toggle-button,
-body[class*="dockbar"] .menu-toggle-button,
+body[class*='dockbar'] .menu-toggle-button,
 .has-control-menu .menu-toggle-button,
 body:has(.control-menu-level-1:not(.hide)) .menu-toggle-button {
   display: flex !important;
@@ -461,7 +484,7 @@ body:has(.control-menu-level-1:not(.hide)) .menu-toggle-button {
 }
 
 body.controls-visible .control-menu:not(.hide) ~ * .menu-toggle-button i,
-body[class*="dockbar"] .menu-toggle-button i,
+body[class*='dockbar'] .menu-toggle-button i,
 .has-control-menu .menu-toggle-button i,
 body:has(.control-menu-level-1:not(.hide)) .menu-toggle-button i {
   font-size: 16px !important;
@@ -470,7 +493,7 @@ body:has(.control-menu-level-1:not(.hide)) .menu-toggle-button i {
 
 /* Ocultar botón close en modo edición */
 body.controls-visible .control-menu:not(.hide) ~ * .menu-close-button,
-body[class*="dockbar"] .menu-close-button,
+body[class*='dockbar'] .menu-close-button,
 .has-control-menu .menu-close-button,
 body:has(.control-menu-level-1:not(.hide)) .menu-close-button {
   display: none !important;
@@ -478,7 +501,7 @@ body:has(.control-menu-level-1:not(.hide)) .menu-close-button {
 
 /* Ocultar todos los elementos del menú excepto toggle */
 body.controls-visible .control-menu:not(.hide) ~ * .floating-menu .menu-item:not(.menu-toggle-button),
-body[class*="dockbar"] .floating-menu .menu-item:not(.menu-toggle-button),
+body[class*='dockbar'] .floating-menu .menu-item:not(.menu-toggle-button),
 .has-control-menu .floating-menu .menu-item:not(.menu-toggle-button),
 body:has(.control-menu-level-1:not(.hide)) .floating-menu .menu-item:not(.menu-toggle-button) {
   display: none !important;
@@ -486,7 +509,7 @@ body:has(.control-menu-level-1:not(.hide)) .floating-menu .menu-item:not(.menu-t
 
 /* WhatsApp button en modo edición */
 body.controls-visible .control-menu:not(.hide) ~ * .whatsapp-floating-button,
-body[class*="dockbar"] .whatsapp-floating-button,
+body[class*='dockbar'] .whatsapp-floating-button,
 .has-control-menu .whatsapp-floating-button,
 body:has(.control-menu-level-1:not(.hide)) .whatsapp-floating-button {
   position: fixed !important;
@@ -502,7 +525,7 @@ body:has(.control-menu-level-1:not(.hide)) .whatsapp-floating-button {
 }
 
 body.controls-visible .control-menu:not(.hide) ~ * .whatsapp-floating-button:hover,
-body[class*="dockbar"] .whatsapp-floating-button:hover,
+body[class*='dockbar'] .whatsapp-floating-button:hover,
 .has-control-menu .whatsapp-floating-button:hover,
 body:has(.control-menu-level-1:not(.hide)) .whatsapp-floating-button:hover {
   opacity: 1 !important;
@@ -511,7 +534,7 @@ body:has(.control-menu-level-1:not(.hide)) .whatsapp-floating-button:hover {
 
 /* Modal oculto en modo edición */
 body.controls-visible .control-menu:not(.hide) ~ * .share-modal-overlay,
-body[class*="dockbar"] .share-modal-overlay,
+body[class*='dockbar'] .share-modal-overlay,
 .has-control-menu .share-modal-overlay,
 body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
   display: none !important;
@@ -522,7 +545,7 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
 /* Responsive para móvil en modo edición */
 @media (max-width: 768px) {
   body.controls-visible .control-menu:not(.hide) ~ * .floating-menu,
-  body[class*="dockbar"] .floating-menu,
+  body[class*='dockbar'] .floating-menu,
   .has-control-menu .floating-menu,
   body:has(.control-menu-level-1:not(.hide)) .floating-menu {
     bottom: 15px !important;
@@ -533,7 +556,7 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
   }
 
   body.controls-visible .control-menu:not(.hide) ~ * .menu-toggle-button,
-  body[class*="dockbar"] .menu-toggle-button,
+  body[class*='dockbar'] .menu-toggle-button,
   .has-control-menu .menu-toggle-button,
   body:has(.control-menu-level-1:not(.hide)) .menu-toggle-button {
     width: 28px !important;
@@ -541,14 +564,14 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
   }
 
   body.controls-visible .control-menu:not(.hide) ~ * .menu-toggle-button i,
-  body[class*="dockbar"] .menu-toggle-button i,
+  body[class*='dockbar'] .menu-toggle-button i,
   .has-control-menu .menu-toggle-button i,
   body:has(.control-menu-level-1:not(.hide)) .menu-toggle-button i {
     font-size: 14px !important;
   }
 
   body.controls-visible .control-menu:not(.hide) ~ * .whatsapp-floating-button,
-  body[class*="dockbar"] .whatsapp-floating-button,
+  body[class*='dockbar'] .whatsapp-floating-button,
   .has-control-menu .whatsapp-floating-button,
   body:has(.control-menu-level-1:not(.hide)) .whatsapp-floating-button {
     bottom: 60px !important;
@@ -558,7 +581,7 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
   }
 
   body.controls-visible .control-menu:not(.hide) ~ * .whatsapp-floating-button .menu-item i,
-  body[class*="dockbar"] .whatsapp-floating-button .menu-item i,
+  body[class*='dockbar'] .whatsapp-floating-button .menu-item i,
   .has-control-menu .whatsapp-floating-button .menu-item i,
   body:has(.control-menu-level-1:not(.hide)) .whatsapp-floating-button .menu-item i {
     font-size: 20px !important;
@@ -583,9 +606,9 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     padding: 0 !important;
     border-radius: 20px !important;
     justify-content: center !important;
-    display: flex !important; 
+    display: flex !important;
   }
-  
+
   /* MOBILE: Estado collapsed debe sobrescribir el estado general */
   .floating-menu.collapsed {
     width: 42px !important;
@@ -595,11 +618,11 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     border-radius: 20px !important;
     justify-content: center !important;
   }
-  
+
   /* MOBILE: Estado expandido - MANTIENE POSICIÓN DERECHA */
   .floating-menu.mobile-expanded {
-    left: auto !important; 
-    right: 10px !important; 
+    left: auto !important;
+    right: 10px !important;
     width: 42px !important;
     height: auto !important;
     min-height: 243px !important;
@@ -608,21 +631,21 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     justify-content: space-between !important;
     display: flex !important;
   }
-  
+
   /* MOBILE: Botón toggle */
   .floating-menu.collapsed .menu-toggle-button {
-    display: flex !important; 
+    display: flex !important;
     width: 32px;
     height: 52px;
     align-items: center !important;
     justify-content: center !important;
   }
-  
+
   .floating-menu.collapsed .menu-toggle-button i {
     font-size: 20px !important;
     text-align: center !important;
   }
-  
+
   .floating-menu.mobile-expanded .menu-close-button {
     display: flex !important;
     width: 32px;
@@ -630,29 +653,29 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     align-items: center !important;
     justify-content: center !important;
   }
-  
+
   .floating-menu.mobile-expanded .menu-close-button i {
     font-size: 20px !important;
     text-align: center !important;
   }
-  
+
   .floating-menu .menu-item:not(.menu-toggle-button):not(.menu-close-button) {
     width: 32px;
     height: 32px;
     align-items: center !important;
     justify-content: center !important;
   }
-  
+
   .floating-menu .menu-item:not(.menu-toggle-button):not(.menu-close-button) i {
     font-size: 20px !important;
     text-align: center !important;
   }
-  
+
   /* MOBILE: WhatsApp button - POSICIONADO A LA DERECHA */
   .whatsapp-floating-button {
     top: 175px !important;
-    left: auto !important; 
-    right: 10px !important; 
+    left: auto !important;
+    right: 10px !important;
     transform: none !important;
     width: 42px !important;
     height: 42px !important;
@@ -660,16 +683,16 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     align-items: center !important;
     justify-content: center !important;
   }
-  
+
   .whatsapp-floating-button:hover {
     transform: scale(1.05) !important;
   }
-  
+
   .whatsapp-floating-button .menu-item i {
     font-size: 25px !important;
     text-align: center !important;
   }
-  
+
   /* MOBILE: Ajustar WhatsApp cuando menú está expandido */
   .floating-menu.mobile-expanded + .whatsapp-floating-button {
     top: 360px !important;
@@ -681,7 +704,7 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     justify-content: center !important;
     padding: 0 !important;
   }
-  
+
   .share-modal {
     width: 100% !important;
     max-width: 100% !important;
@@ -694,14 +717,14 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
   /* PANTALLAS PEQUEÑAS: posición derecha - DIMENSIONES ORIGINALES */
   .floating-menu {
     top: 100px !important;
-    left: auto !important; 
-    right: 10px !important; 
+    left: auto !important;
+    right: 10px !important;
     transform: none !important;
     width: 42px !important;
     height: 62px !important;
     min-height: 62px !important;
   }
-  
+
   /* PANTALLAS PEQUEÑAS: Estado collapsed específico */
   .floating-menu.collapsed {
     width: 42px !important;
@@ -711,14 +734,14 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     border-radius: 20px !important;
     justify-content: center !important;
   }
-  
+
   .floating-menu.mobile-expanded {
-    left: auto !important; 
+    left: auto !important;
     right: 10px !important;
     width: 42px !important;
     min-height: 225px !important;
   }
-  
+
   .floating-menu .menu-toggle-button,
   .floating-menu .menu-close-button {
     width: 30px;
@@ -726,30 +749,30 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     align-items: center !important;
     justify-content: center !important;
   }
-  
+
   .floating-menu .menu-toggle-button i,
   .floating-menu .menu-close-button i {
     text-align: center !important;
   }
-  
+
   .floating-menu .menu-item:not(.menu-toggle-button):not(.menu-close-button) {
     width: 30px;
     height: 30px;
     align-items: center !important;
     justify-content: center !important;
   }
-    
+
   /* PANTALLAS PEQUEÑAS: WhatsApp button a la derecha */
   .whatsapp-floating-button {
     top: 175px !important;
-    left: auto !important; 
-    right: 10px !important; 
+    left: auto !important;
+    right: 10px !important;
     width: 42px !important;
     height: 42px !important;
     align-items: center !important;
     justify-content: center !important;
   }
-  
+
   .floating-menu.mobile-expanded + .whatsapp-floating-button {
     top: 340px !important;
   }
@@ -760,7 +783,7 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     justify-content: center !important;
     padding: 0 !important;
   }
-  
+
   .share-modal {
     width: 100% !important;
     max-width: 100% !important;
@@ -776,7 +799,7 @@ body:has(.control-menu-level-1:not(.hide)) .share-modal-overlay {
     justify-content: center !important;
     padding: 20px !important;
   }
-  
+
   .share-modal {
     width: 100% !important;
     max-width: 400px !important;

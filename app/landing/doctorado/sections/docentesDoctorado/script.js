@@ -1,33 +1,226 @@
-  const initializeSwiper = () => {
-    // Destruir instancia existente si existe.
-    if (window.expertSwiper) {
-      window.expertSwiper.destroy(true, true)
-    }
+/**
+ * DocentesDoctorado - JavaScript Vanilla
+ * Sistema de carrusel de docentes con Swiper.js
+ */
+;(function () {
+  'use strict'
 
-    // Buscar el elemento
-    const element = document.querySelector('.expert-carousel_wrapper')
-    if (!element) {
-      console.warn('Elemento .expert-carousel_wrapper no encontrado')
-      const fallbackElement = document.querySelector('.expert-swiper')
-      if (!fallbackElement) {
-        console.error('Ningún elemento swiper encontrado')
-        return
+  // Configuración del sistema
+  const CONFIG = {
+    SELECTORS: {
+      wrapper: '.expert-carousel_wrapper',
+      slides: '.expert-carousel_slide',
+      nextBtn: '.expert-carousel_next',
+      prevBtn: '.expert-carousel_prev',
+      cards: '.expert-carousel_card',
+      pagination: '.expert-carousel_pagination'
+    },
+    CLASSES: {
+      showNavigation: 'show-navigation',
+      disabled: 'swiper-button-disabled',
+      hidden: 'swiper-button-hidden',
+      active: 'swiper-pagination-bullet-active'
+    },
+    BREAKPOINTS: {
+      mobile: 428,
+      tablet: 576,
+      desktop: 768,
+      large: 1024,
+      xlarge: 1200,
+      xxlarge: 1440
+    }
+  }
+
+  // Estado global del sistema
+  let systemState = {
+    swiperInstance: null,
+    initialized: false,
+    resizeTimeout: null
+  }
+
+  /* =====================
+     UTILIDADES
+  ===================== */
+
+  /**
+   * Debounce function para optimizar eventos
+   */
+  function debounce(fn, delay) {
+    let timeout
+    return function () {
+      const context = this
+      const args = arguments
+      clearTimeout(timeout)
+      timeout = setTimeout(() => fn.apply(context, args), delay)
+    }
+  }
+
+  /**
+   * Espera a que Swiper esté disponible
+   */
+  function waitForSwiper(callback, maxAttempts = 10) {
+    let attempts = 0
+
+    function checkSwiper() {
+      if (window.Swiper) {
+        callback()
+      } else if (attempts < maxAttempts) {
+        attempts++
+        setTimeout(checkSwiper, 300)
+      } else {
+        console.error('DocentesDoctorado: Swiper no se pudo cargar después de múltiples intentos')
       }
     }
 
-    // Contar slides
-    const slides = document.querySelectorAll('.expert-carousel_slide')
-    const totalSlides = slides.length
+    checkSwiper()
+  }
 
-    if (!window.Swiper) {
-      console.error('Swiper no está disponible')
+  /* =====================
+     FUNCIONES DEL CARRUSEL
+  ===================== */
+
+  /**
+   * Iguala las alturas de todas las tarjetas
+   */
+  function equalizeHeights() {
+    const cards = document.querySelectorAll(CONFIG.SELECTORS.cards)
+    if (cards.length === 0) return
+
+    let maxHeight = 0
+
+    // Resetear alturas y encontrar la máxima
+    cards.forEach(card => {
+      card.style.height = 'auto'
+      const height = card.offsetHeight
+      if (height > maxHeight) {
+        maxHeight = height
+      }
+    })
+
+    // Aplicar altura máxima a todas las tarjetas
+    cards.forEach(card => {
+      card.style.height = maxHeight + 'px'
+    })
+
+    console.log('DocentesDoctorado: Alturas igualadas a', maxHeight + 'px')
+  }
+
+  /**
+   * Actualiza la visibilidad de la navegación
+   */
+  function updateNavigationVisibility(swiper, totalSlides) {
+    const nextBtn = document.querySelector(CONFIG.SELECTORS.nextBtn)
+    const prevBtn = document.querySelector(CONFIG.SELECTORS.prevBtn)
+
+    if (!nextBtn || !prevBtn) {
+      console.warn('DocentesDoctorado: Botones de navegación no encontrados')
       return
     }
 
-    // Usar la clase como selector
-    const swiperSelector = element ? '.expert-carousel_wrapper' : '.expert-swiper'
+    // Obtener slides visibles actuales
+    const slidesPerView = swiper.params.slidesPerView === 'auto' ? swiper.slidesPerViewDynamic() : swiper.params.slidesPerView
 
-    window.expertSwiper = new window.Swiper(swiperSelector, {
+    const needsNavigation = totalSlides > slidesPerView
+
+    if (needsNavigation) {
+      // Mostrar navegación
+      nextBtn.classList.add(CONFIG.CLASSES.showNavigation)
+      nextBtn.classList.remove(CONFIG.CLASSES.hidden)
+      nextBtn.setAttribute('aria-hidden', 'false')
+
+      prevBtn.classList.add(CONFIG.CLASSES.showNavigation)
+      prevBtn.classList.remove(CONFIG.CLASSES.hidden)
+      prevBtn.setAttribute('aria-hidden', 'false')
+
+      updateButtonStates(swiper)
+    } else {
+      // Ocultar navegación
+      nextBtn.classList.remove(CONFIG.CLASSES.showNavigation)
+      nextBtn.classList.add(CONFIG.CLASSES.hidden)
+      nextBtn.setAttribute('aria-hidden', 'true')
+
+      prevBtn.classList.remove(CONFIG.CLASSES.showNavigation)
+      prevBtn.classList.add(CONFIG.CLASSES.hidden)
+      prevBtn.setAttribute('aria-hidden', 'true')
+    }
+  }
+
+  /**
+   * Actualiza los estados de los botones
+   */
+  function updateButtonStates(swiper) {
+    const nextBtn = document.querySelector(CONFIG.SELECTORS.nextBtn)
+    const prevBtn = document.querySelector(CONFIG.SELECTORS.prevBtn)
+
+    if (!nextBtn || !prevBtn) return
+
+    // Botón anterior
+    if (swiper.isBeginning || !swiper.allowSlidePrev) {
+      prevBtn.classList.add(CONFIG.CLASSES.disabled)
+      prevBtn.style.opacity = '0.3'
+      prevBtn.style.pointerEvents = 'none'
+      prevBtn.setAttribute('aria-disabled', 'true')
+    } else {
+      prevBtn.classList.remove(CONFIG.CLASSES.disabled)
+      prevBtn.style.opacity = '1'
+      prevBtn.style.pointerEvents = 'auto'
+      prevBtn.setAttribute('aria-disabled', 'false')
+    }
+
+    // Botón siguiente
+    if (swiper.isEnd || !swiper.allowSlideNext) {
+      nextBtn.classList.add(CONFIG.CLASSES.disabled)
+      nextBtn.style.opacity = '0.3'
+      nextBtn.style.pointerEvents = 'none'
+      nextBtn.setAttribute('aria-disabled', 'true')
+    } else {
+      nextBtn.classList.remove(CONFIG.CLASSES.disabled)
+      nextBtn.style.opacity = '1'
+      nextBtn.style.pointerEvents = 'auto'
+      nextBtn.setAttribute('aria-disabled', 'false')
+    }
+
+    // Asegurar visibilidad si la navegación está habilitada
+    if (nextBtn.classList.contains(CONFIG.CLASSES.showNavigation)) {
+      nextBtn.style.visibility = 'visible'
+      nextBtn.style.display = 'flex'
+    }
+    if (prevBtn.classList.contains(CONFIG.CLASSES.showNavigation)) {
+      prevBtn.style.visibility = 'visible'
+      prevBtn.style.display = 'flex'
+    }
+  }
+
+  /**
+   * Inicializa el carrusel Swiper
+   */
+  function initializeSwiper() {
+    // Destruir instancia existente
+    if (systemState.swiperInstance) {
+      systemState.swiperInstance.destroy(true, true)
+      systemState.swiperInstance = null
+    }
+
+    // Buscar el elemento wrapper
+    const element = document.querySelector(CONFIG.SELECTORS.wrapper)
+    if (!element) {
+      console.warn('DocentesDoctorado: Wrapper no encontrado')
+      return
+    }
+
+    // Contar slides
+    const slides = document.querySelectorAll(CONFIG.SELECTORS.slides)
+    const totalSlides = slides.length
+
+    if (totalSlides === 0) {
+      console.log('DocentesDoctorado: No hay slides para mostrar')
+      return
+    }
+
+    console.log('DocentesDoctorado: Inicializando con', totalSlides, 'slides')
+
+    // Crear instancia de Swiper
+    systemState.swiperInstance = new window.Swiper(CONFIG.SELECTORS.wrapper, {
       loop: false,
       spaceBetween: 20,
       watchOverflow: true,
@@ -36,10 +229,20 @@
       allowTouchMove: totalSlides > 1,
 
       navigation: {
-        nextEl: '.expert-carousel_next, .expert-next',
-        prevEl: '.expert-carousel_prev, .expert-prev',
-        disabledClass: 'swiper-button-disabled',
-        hiddenClass: 'swiper-button-hidden'
+        nextEl: CONFIG.SELECTORS.nextBtn,
+        prevEl: CONFIG.SELECTORS.prevBtn,
+        disabledClass: CONFIG.CLASSES.disabled,
+        hiddenClass: CONFIG.CLASSES.hidden
+      },
+
+      pagination: {
+        el: CONFIG.SELECTORS.pagination,
+        clickable: true,
+        bulletClass: 'swiper-pagination-bullet',
+        bulletActiveClass: CONFIG.CLASSES.active,
+        renderBullet: function (index, className) {
+          return '<span class="' + className + '" aria-label="Ir al slide ' + (index + 1) + '"></span>'
+        }
       },
 
       // Breakpoints optimizados
@@ -48,34 +251,36 @@
           slidesPerView: 1,
           spaceBetween: 10
         },
-        428: {
+        [CONFIG.BREAKPOINTS.mobile]: {
           slidesPerView: Math.min(2, totalSlides),
           spaceBetween: 10
         },
-        576: {
+        [CONFIG.BREAKPOINTS.tablet]: {
           slidesPerView: Math.min(3, totalSlides),
           spaceBetween: 10
         },
-        768: {
+        [CONFIG.BREAKPOINTS.desktop]: {
           slidesPerView: Math.min(4, totalSlides),
           spaceBetween: 15
         },
-        1024: {
+        [CONFIG.BREAKPOINTS.large]: {
           slidesPerView: Math.min(4, totalSlides),
           spaceBetween: 20
         },
-        1200: {
+        [CONFIG.BREAKPOINTS.xlarge]: {
           slidesPerView: Math.min(5, totalSlides),
           spaceBetween: 20
         },
-        1440: {
+        [CONFIG.BREAKPOINTS.xxlarge]: {
           slidesPerView: Math.min(6, totalSlides),
           spaceBetween: 20
         }
       },
 
+      // Event handlers
       on: {
         init: function () {
+          console.log('DocentesDoctorado: Swiper inicializado')
           equalizeHeights()
           updateNavigationVisibility(this, totalSlides)
           updateButtonStates(this)
@@ -110,141 +315,103 @@
         }
       }
     })
+
+    systemState.initialized = true
   }
 
-  const equalizeHeights = () => {
-    let cards = document.querySelectorAll('.expert-carousel_card')
-    let maxHeight = 0
+  /* =====================
+     GESTIÓN DE EVENTOS
+  ===================== */
 
-    // Restablecer la altura para evitar acumulación
-    cards.forEach(card => {
-      card.style.height = 'auto'
-      let height = card.offsetHeight
-      if (height > maxHeight) {
-        maxHeight = height
-      }
-    })
-
-    // Aplicar la altura máxima a todas las tarjetas
-    cards.forEach(card => {
-      card.style.height = maxHeight + 'px'
-    })
-  }
-
-  const updateNavigationVisibility = (swiper, totalSlides) => {
-    const nextBtn =
-      document.querySelector('.expert-carousel_next') || document.querySelector('.expert-next')
-    const prevBtn =
-      document.querySelector('.expert-carousel_prev') || document.querySelector('.expert-prev')
-
-    if (!nextBtn || !prevBtn) {
-      console.warn('Botones de navegación no encontrados')
-      return
-    }
-
-    // Obtener los slides visibles actuales desde la instancia de swiper
-    const slidesPerView =
-      swiper.params.slidesPerView === 'auto'
-        ? swiper.slidesPerViewDynamic()
-        : swiper.params.slidesPerView
-
-    // Si todos los slides son visibles, ocultar navegación
-    const needsNavigation = totalSlides > slidesPerView
-
-    if (needsNavigation) {
-      // Mostrar contenedor de botones
-      nextBtn.classList.add('show-navigation')
-      nextBtn.classList.remove('swiper-button-hidden')
-      nextBtn.setAttribute('aria-hidden', 'false')
-
-      prevBtn.classList.add('show-navigation')
-      prevBtn.classList.remove('swiper-button-hidden')
-      prevBtn.setAttribute('aria-hidden', 'false')
-
-      updateButtonStates(swiper)
-    } else {
-      // Ocultar completamente si todos los slides son visibles
-      nextBtn.classList.remove('show-navigation')
-      nextBtn.classList.add('swiper-button-hidden')
-      nextBtn.setAttribute('aria-hidden', 'true')
-
-      prevBtn.classList.remove('show-navigation')
-      prevBtn.classList.add('swiper-button-hidden')
-      prevBtn.setAttribute('aria-hidden', 'true')
-    }
-  }
-
-  const updateButtonStates = swiper => {
-    const nextBtn =
-      document.querySelector('.expert-carousel_next') || document.querySelector('.expert-next')
-    const prevBtn =
-      document.querySelector('.expert-carousel_prev') || document.querySelector('.expert-prev')
-
-    if (!nextBtn || !prevBtn) return
-
-    // Verificar si los botones deben estar activos
-    const isBeginning = swiper.isBeginning
-    const isEnd = swiper.isEnd
-    const allowSlideNext = swiper.allowSlideNext
-    const allowSlidePrev = swiper.allowSlidePrev
-
-    // Botón anterior
-    if (isBeginning || !allowSlidePrev) {
-      prevBtn.classList.add('swiper-button-disabled')
-      prevBtn.style.opacity = '0.3'
-      prevBtn.style.pointerEvents = 'none'
-      prevBtn.setAttribute('aria-disabled', 'true')
-    } else {
-      prevBtn.classList.remove('swiper-button-disabled')
-      prevBtn.style.opacity = '1'
-      prevBtn.style.pointerEvents = 'auto'
-      prevBtn.setAttribute('aria-disabled', 'false')
-    }
-
-    // Botón siguiente
-    if (isEnd || !allowSlideNext) {
-      nextBtn.classList.add('swiper-button-disabled')
-      nextBtn.style.opacity = '0.3'
-      nextBtn.style.pointerEvents = 'none'
-      nextBtn.setAttribute('aria-disabled', 'true')
-    } else {
-      nextBtn.classList.remove('swiper-button-disabled')
-      nextBtn.style.opacity = '1'
-      nextBtn.style.pointerEvents = 'auto'
-      nextBtn.setAttribute('aria-disabled', 'false')
-    }
-
-    // Asegurar visibilidad si la navegación está habilitada
-    if (nextBtn.classList.contains('show-navigation')) {
-      nextBtn.style.visibility = 'visible'
-      nextBtn.style.display = 'flex'
-    }
-    if (prevBtn.classList.contains('show-navigation')) {
-      prevBtn.style.visibility = 'visible'
-      prevBtn.style.display = 'flex'
-    }
-  }
-
-  const checkAndInit = () => {
-    if (typeof window !== 'undefined' && window.Swiper) {
-      initializeSwiper()
-    } else {
-      setTimeout(checkAndInit, 300)
-    }
-  }
-
-  checkAndInit()
-
-  let resizeTimeout
-  window.addEventListener('resize', () => {
-    if (resizeTimeout) {
-      clearTimeout(resizeTimeout)
-    }
-
-    resizeTimeout = setTimeout(() => {
+  /**
+   * Configura el listener de resize
+   */
+  function setupResizeListener() {
+    const handleResize = debounce(() => {
       equalizeHeights()
-      if (window.expertSwiper) {
-        window.expertSwiper.update()
+      if (systemState.swiperInstance) {
+        systemState.swiperInstance.update()
       }
     }, 250)
-  })
+
+    window.addEventListener('resize', handleResize)
+  }
+
+  /**
+   * Reinicializa el sistema completo
+   */
+  function reinitializeSystem() {
+    systemState.initialized = false
+    waitForSwiper(initializeSwiper)
+  }
+
+  /* =====================
+     INICIALIZACIÓN
+  ===================== */
+
+  /**
+   * Función principal de inicialización
+   */
+  function init() {
+    console.log('DocentesDoctorado: Inicializando sistema')
+
+    // Configurar eventos
+    setupResizeListener()
+
+    // Inicializar Swiper
+    waitForSwiper(initializeSwiper)
+
+    // Integración con Liferay
+    if (typeof Liferay !== 'undefined' && Liferay.on) {
+      Liferay.on('allPortletsReady', () => {
+        console.log('DocentesDoctorado: Portlets listos')
+        setTimeout(reinitializeSystem, 250)
+      })
+
+      Liferay.on('fragmentEntryLinkEditableChanged', () => {
+        console.log('DocentesDoctorado: Contenido editado')
+        setTimeout(reinitializeSystem, 350)
+      })
+    }
+  }
+
+  /* =====================
+     API PÚBLICA
+  ===================== */
+
+  // Exponer API pública
+  window.DocentesDoctorado = {
+    init: init,
+    reinit: reinitializeSystem,
+    equalizeHeights: equalizeHeights,
+    updateNavigation: function () {
+      if (systemState.swiperInstance) {
+        const totalSlides = document.querySelectorAll(CONFIG.SELECTORS.slides).length
+        updateNavigationVisibility(systemState.swiperInstance, totalSlides)
+        updateButtonStates(systemState.swiperInstance)
+      }
+    },
+    getInstance: () => systemState.swiperInstance,
+    getState: () => ({ ...systemState })
+  }
+
+  // Función global para compatibilidad
+  window.reinitDocentesCarousel = reinitializeSystem
+
+  /* =====================
+     AUTO-INICIALIZACIÓN
+  ===================== */
+
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init)
+  } else {
+    init()
+  }
+
+  // Fallbacks para diferentes entornos
+  setTimeout(init, 100)
+  setTimeout(init, 500)
+
+  console.log('DocentesDoctorado: Script cargado')
+})()

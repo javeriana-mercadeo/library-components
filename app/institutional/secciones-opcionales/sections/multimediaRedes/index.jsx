@@ -2,6 +2,7 @@
 // COMPONENTE REACT - CARRUSEL DE REDES SOCIALES
 // ==========================================
 'use client'
+import { UniversalComponent as UC, Container } from '@library/components'
 
 import { useEffect } from 'react'
 import Container from '@library/components/container'
@@ -15,7 +16,6 @@ import './styles.scss'
 const SocialCarousel = () => {
   const elementName = info.id || 'socialCarousel'
   const baseClass = 'social-carousel'
-
   useEffect(() => {
     script()
   }, [])
@@ -93,7 +93,7 @@ const SocialCarousel = () => {
     const { id, embedCode, fallbackText, description } = postData
 
     return (
-      <div key={index} className={`${baseClass}_slide swiper-slide`} role="listitem">
+      <div key={index} className={`${baseClass}_slide swiper-slide`} role='listitem'>
         <div className={`${baseClass}_card`}>
           <div className={`${baseClass}_post-content`} dangerouslySetInnerHTML={{ __html: embedCode }} aria-label={description} />
 
@@ -101,7 +101,7 @@ const SocialCarousel = () => {
           <noscript>
             <div className={`${baseClass}_fallback`}>
               <p>{fallbackText}</p>
-              <a href="#" target="_blank" rel="noopener noreferrer">
+              <a href='#' target='_blank' rel='noopener noreferrer'>
                 Ver en Instagram
               </a>
             </div>
@@ -114,26 +114,26 @@ const SocialCarousel = () => {
   return (
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
-        <Title className='title-multimediaR' weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
+        <Title className='title-multimediaR' weight='semibold' size='2xl' align='center' id={`${elementName}-title`}>
           Multimedia Redes
         </Title>
 
         <div className={`${baseClass}_carousel swiper`}>
           <div className={`${baseClass}_wrapper social-swiper`}>
-            <div className={`${baseClass}_slides swiper-wrapper`} role="list">
+            <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
               {/* GENERAR CARDS DINÁMICAMENTE */}
               {instagramPosts.map((postData, index) => renderPostCard(postData, index))}
             </div>
 
             {/* Paginación */}
-            <div className={`swiper-pagination ${baseClass}_pagination`} role="tablist" aria-label="Control de páginas del carrusel"></div>
+            <div className={`swiper-pagination ${baseClass}_pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
 
             {/* Botones de navegación */}
-            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label="Ir al slide anterior" type="button">
-              <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
+            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label='Ir al slide anterior' type='button'>
+              <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
             </button>
-            <button className={`swiper-slide-button ${baseClass}_next`} aria-label="Ir al siguiente slide" type="button">
-              <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+            <button className={`swiper-slide-button ${baseClass}_next`} aria-label='Ir al siguiente slide' type='button'>
+              <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
             </button>
           </div>
         </div>

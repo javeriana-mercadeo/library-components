@@ -9,39 +9,26 @@ const Laboratorios = () => {
   // Datos estáticos para el render inicial - compatibles con Liferay
   const initialSlide = {
     title: 'Laboratorio de Investigación Biomédica',
-    description: 'Nuestro laboratorio de investigación biomédica cuenta con equipos de última generación para el análisis molecular y celular. Desarrollamos investigaciones en genética, biología molecular y medicina regenerativa.'
+    description:
+      'Nuestro laboratorio de investigación biomédica cuenta con equipos de última generación para el análisis molecular y celular. Desarrollamos investigaciones en genética, biología molecular y medicina regenerativa.'
   }
 
   const initialImages = {
-    firstImage: { 
-      imageSrc: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/project-uno', 
-      label: 'Lab. Biomédica' 
+    firstImage: {
+      imageSrc: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/project-uno',
+      label: 'Lab. Biomédica'
     },
-    secondImage: { 
-      imageSrc: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/project-dos', 
-      label: 'Lab. Materiales' 
+    secondImage: {
+      imageSrc: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/project-dos',
+      label: 'Lab. Materiales'
     }
   }
 
   // Funciones de navegación optimizadas para Liferay
   const handlePrevSlide = () => {
     try {
-      if (typeof window !== 'undefined') {
-        // Orden de prioridad para compatibilidad Liferay
-        if (window.labSliderDebug && typeof window.labSliderDebug.prev === 'function') {
-          window.labSliderDebug.prev()
-        } else if (window.labSliderInstance && typeof window.labSliderInstance.prevSlide === 'function') {
-          window.labSliderInstance.prevSlide()
-        } else if (window.LabSlider && typeof window.LabSlider.prev === 'function') {
-          window.LabSlider.prev()
-        } else {
-          console.warn('Lab Slider no está disponible, reintentando...')
-          setTimeout(() => {
-            if (window.labSliderDebug && typeof window.labSliderDebug.prev === 'function') {
-              window.labSliderDebug.prev()
-            }
-          }, 500)
-        }
+      if (window.LabSliderInstance && typeof window.LabSliderInstance.previousSlide === 'function') {
+        window.LabSliderInstance.previousSlide()
       }
     } catch (error) {
       console.error('Error en navegación anterior:', error)
@@ -50,22 +37,8 @@ const Laboratorios = () => {
 
   const handleNextSlide = () => {
     try {
-      if (typeof window !== 'undefined') {
-        // Orden de prioridad para compatibilidad Liferay
-        if (window.labSliderDebug && typeof window.labSliderDebug.next === 'function') {
-          window.labSliderDebug.next()
-        } else if (window.labSliderInstance && typeof window.labSliderInstance.nextSlide === 'function') {
-          window.labSliderInstance.nextSlide()
-        } else if (window.LabSlider && typeof window.LabSlider.next === 'function') {
-          window.LabSlider.next()
-        } else {
-          console.warn('Lab Slider no está disponible, reintentando...')
-          setTimeout(() => {
-            if (window.labSliderDebug && typeof window.labSliderDebug.next === 'function') {
-              window.labSliderDebug.next()
-            }
-          }, 500)
-        }
+      if (window.LabSliderInstance && typeof window.LabSliderInstance.nextSlide === 'function') {
+        window.LabSliderInstance.nextSlide()
       }
     } catch (error) {
       console.error('Error en navegación siguiente:', error)
@@ -73,42 +46,32 @@ const Laboratorios = () => {
   }
 
   return (
-    <Container className="lab-slider-container">
-      <div className="lab-slider">
-        <Title 
-          className="lab-slider-title"
-          id="laboratorios-main-title"
-        >
+    <Container className='lab-slider-container'>
+      <div className='lab-slider'>
+        <Title className='lab-slider-title' id='laboratorios-main-title'>
           Laboratorios
         </Title>
 
-        <div className="lab-slider-content">
-          <div className="lab-slider-text">
-            <Title 
-              className='subtitle-lab'
-              id="laboratorios-slide-title"
-              data-testid="slide-title"
-            > 
+        <div className='lab-slider-content'>
+          <div className='lab-slider-text'>
+            <Title className='subtitle-lab' id='laboratorios-slide-title' data-testid='slide-title'>
               {initialSlide.title}
             </Title>
-            <Paragraph 
-              className='paragraph-lab'
-              id="laboratorios-slide-description"
-              data-testid="slide-description"
-            >
+            <Paragraph className='paragraph-lab' id='laboratorios-slide-description' data-testid='slide-description'>
               {initialSlide.description}
             </Paragraph>
 
-            <div className="lab-slider-navigation">
+            <div className='lab-slider-navigation'>
               <button
                 onClick={handlePrevSlide}
-                aria-label="Imagen anterior"
-                className="nav-button prev"
-                type="button"
-                data-action="prev"
-                data-testid="prev-button"
-               >
-                <span><i className="ph ph-arrow-circle-left"></i></span>
+                aria-label='Imagen anterior'
+                className='nav-button prev'
+                type='button'
+                data-action='prev'
+                data-testid='prev-button'>
+                <span>
+                  <i className='ph ph-arrow-circle-left'></i>
+                </span>
               </button>
               <button
                 onClick={handleNextSlide}
@@ -125,10 +88,10 @@ const Laboratorios = () => {
 
           <div className="lab-slider-images">
             <div className="image-container">
-              <img 
-                src={initialImages.firstImage.imageSrc} 
-                alt={initialImages.firstImage.label} 
-                className="lab-image" 
+              <img
+                src={initialImages.firstImage.imageSrc}
+                alt={initialImages.firstImage.label}
+                className="lab-image"
                 data-testid="first-image"
               />
               <div className="image-label" data-testid="first-label">
@@ -137,10 +100,10 @@ const Laboratorios = () => {
             </div>
 
             <div className="image-container desktop-only">
-              <img 
-                src={initialImages.secondImage.imageSrc} 
-                alt={initialImages.secondImage.label} 
-                className="lab-image" 
+              <img
+                src={initialImages.secondImage.imageSrc}
+                alt={initialImages.secondImage.label}
+                className="lab-image"
                 data-testid="second-image"
               />
               <div className="image-label" data-testid="second-label">

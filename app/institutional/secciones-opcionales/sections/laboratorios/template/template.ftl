@@ -1,4 +1,3 @@
-
  <div class="lab-slider-content">
      <#if container_sliders.getSiblings()?has_content>
          <#list container_sliders.getSiblings() as cur_container_sliders>
@@ -68,4 +67,3 @@
          </#list>
      </#if>
  </div>
-

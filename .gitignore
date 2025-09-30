@@ -35,7 +35,7 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+# next-env.d.ts
 
 ### Node ###
 # Logs
@@ -232,7 +232,19 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/node,react,nextjs,windows,visualstudiocode
 
-# build output
+# build output en raíz
 /build/
 !build/script.js
-!build/style.scss
+!build/styles.scss
+
+# 📌 Archivos compilados en secciones - Excluir carpetas build/
+# Excluir todas las carpetas build dentro de secciones de componentes y páginas (excepto raíz)
+app/**/build/
+components/**/build/
+institutional/**/build/
+landing/**/build/
+
+# También excluir archivos compilados sueltos en raíz de secciones (legacy)
+**/*_sections/*/compiled-*.css
+**/*_sections/*/compiled-*.js
+**/*_sections/*/compilation-info.json

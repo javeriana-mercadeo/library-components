@@ -1,4 +1,4 @@
-@use '@styles/autoload' as *; 
+@use '@styles/autoload' as *;
 
 .slider-container {
   padding: 0;
@@ -19,7 +19,7 @@
   justify-content: center;
   overflow: hidden;
   padding: 0 rem(32px);
-  min-height: rem(288px); 
+  min-height: rem(288px);
   height: auto;
 }
 
@@ -37,11 +37,11 @@
 .student-card {
   position: absolute;
   width: 100%;
-  max-width: rem(224px);  
+  max-width: rem(224px);
   min-height: rem(224px);
   height: rem(224px);
   background-color: white;
-  border-radius: rem(28.8px);  
+  border-radius: rem(28.8px);
   box-shadow: 0 rem(4px) rem(8px) rgba(0, 0, 0, 0.1);
   overflow: visible;
   transition: all 0.5s ease;
@@ -73,20 +73,20 @@
   overflow: hidden;
   flex-shrink: 0;
   border-radius: rem(28.8px);
-}
 
-.student-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: rem(28.8px);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: rem(28.8px);
+  }
 }
 
 .student-info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: rem(9.6px) rem(14.4px); 
+  padding: rem(9.6px) rem(14.4px);
   background-color: white;
   border-radius: rem(28.8px);
   justify-content: space-between;
@@ -96,102 +96,142 @@
   min-height: rem(89.6px);
   max-height: rem(89.6px);
   overflow: hidden;
-}
 
-.student-info h3 {
-  font-size: var(--font-size-small);  
-  font-weight: var(--font-weight-bold);
-  margin-bottom: rem(1.6px); 
-  line-height: 1.2; 
-  hyphens: auto;
-  word-wrap: break-word;
-  flex-shrink: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  height: auto;
-}
+  .student-info h3 {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: rem(1.6px);
+    line-height: 1.2;
+    hyphens: auto;
+    word-wrap: break-word;
+    flex-shrink: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: auto;
+  }
 
-.student-info p {
-  font-size: var(--font-size-small);  
-  color: var(--neutral-400);
-  margin: 0;
-  line-height: 1.2;
-  hyphens: auto;
-  word-wrap: break-word;
-  flex-grow: 1;
-  flex-shrink: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  height: auto;
-}
+  p {
+    font-size: var(--font-size-small);
+    color: var(--neutral-400);
+    margin: 0;
+    line-height: 1.2;
+    hyphens: auto;
+    word-wrap: break-word;
+    flex-grow: 1;
+    flex-shrink: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: auto;
+  }
 
-.student-info .company-logo {
-  max-height: rem(12.8px);  
-  height: rem(12.8px);
-  object-fit: contain;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  flex-shrink: 0;
-}
+  .company-logo {
+    max-height: rem(12.8px);
+    height: rem(12.8px);
+    object-fit: contain;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex-shrink: 0;
 
-.student-info .imglogoC {
-  object-fit: contain;
-  width: auto;
-  height: 100%;
-  display: block;
+    .imglogoC {
+      object-fit: contain;
+      width: auto;
+      height: 100%;
+      display: block;
+    }
+  }
 }
 
 .carousel-controlsE {
   display: none;
+
+  .carousel-controlE {
+    pointer-events: all;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--primary);
+    width: rem(40px);
+    height: rem(40px);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 rem(2px) rem(10px) rgba(0, 0, 0, 0.15);
+
+    &:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    i {
+      font-size: rem(32px);
+      line-height: 1;
+      font-weight: 100;
+    }
+  }
+}
+
+// Estilos para iconos específicos
+.ph.ph-arrow-circle-right:before,
+.ph.ph-arrow-circle-left:before {
+  font-weight: 100;
 }
 
 .slider-dots {
   display: flex;
   justify-content: center;
   margin-top: 15px;
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin: 0 rem(4px);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.active {
+      background-color: var(--primary);
+      transform: scale(1.3);
+    }
+  }
 }
 
-.slider-dots .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #ccc;
-  margin: 0 rem(4px);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.slider-dots .dot.active {
-  background-color: var(--primary);
-  transform: scale(1.3);
-}
-
+// Mobile - 480px
 @media (min-width: 480px) {
   .slider-content {
     min-height: rem(288px);
     padding: 0 rem(32px);
   }
+
   .slider-cards {
     min-height: rem(256px);
   }
+
   .student-card {
     max-width: rem(224px);
     min-height: rem(224px);
     height: rem(224px);
     border-radius: rem(28.8px);
   }
+
   .student-image {
     height: 60%;
     min-height: rem(134.4px);
     max-height: rem(134.4px);
     border-radius: rem(28.8px);
+
+    img {
+      border-radius: rem(28.8px);
+    }
   }
-  .student-image img {
-    border-radius: rem(28.8px);
-  }
+
   .student-info {
     padding: rem(9.6px) rem(14.4px);
     height: 40%;
@@ -200,21 +240,25 @@
     gap: rem(6.4px);
     justify-content: space-between;
     border-radius: rem(28.8px);
-  }
-  .student-info .company-logo {
-    height: rem(16px);
-    max-height: rem(16px);
+
+    .company-logo {
+      height: rem(16px);
+      max-height: rem(16px);
+    }
   }
 }
 
+// Mobile - 500px
 @media (min-width: 500px) {
   .slider-content {
     min-height: rem(304px);
     padding: 0 rem(40px);
   }
+
   .slider-cards {
     min-height: rem(272px);
   }
+
   .student-card {
     max-width: rem(240px);
     min-height: rem(240px);
@@ -229,37 +273,44 @@
       opacity 0.5s ease,
       height 0.3s ease;
     margin: 0 rem(9.6px);
+
+    &.active {
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+      z-index: 3;
+    }
+
+    &:not(.active) {
+      opacity: 0.7;
+      visibility: visible;
+      pointer-events: auto;
+      z-index: 1;
+    }
+
+    &.prev {
+      transform: translateX(-110%) scale(0.85);
+      opacity: 0.7;
+      z-index: 1;
+    }
+
+    &.next {
+      transform: translateX(10%) scale(0.85);
+      opacity: 0.7;
+      z-index: 1;
+    }
   }
-  .student-card.active {
-    transform: translateX(-50%) scale(1);
-    opacity: 1;
-    z-index: 3;
-  }
-  .student-card:not(.active) {
-    opacity: 0.7;
-    visibility: visible;
-    pointer-events: auto;
-    z-index: 1;
-  }
-  .student-card.prev {
-    transform: translateX(-110%) scale(0.85);
-    opacity: 0.7;
-    z-index: 1;
-  }
-  .student-card.next {
-    transform: translateX(10%) scale(0.85);
-    opacity: 0.7;
-    z-index: 1;
-  }
+
   .student-image {
     height: 60%;
     min-height: rem(144px);
     max-height: rem(144px);
     border-radius: rem(32px);
+
+    img {
+      border-radius: rem(32px);
+    }
   }
-  .student-image img {
-    border-radius: rem(32px);
-  }
+
   .student-info {
     justify-content: space-between;
     gap: rem(6.4px);
@@ -268,45 +319,75 @@
     max-height: rem(96px);
     padding: rem(11.2px) rem(16px);
     border-radius: rem(32px);
-  }
-  .student-info h3 {
-    font-size: var(--font-size-paragraph);
-    line-height: 1.2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .student-info p {
-    font-size: var(--font-size-small);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex-grow: 1;
-    line-height: 1.2;
-  }
-  .student-info .company-logo {
-    height: rem(16px);
-    max-height: rem(16px);
+
+    h3 {
+      font-size: var(--font-size-paragraph);
+      line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    p {
+      font-size: var(--font-size-small);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex-grow: 1;
+      line-height: 1.2;
+    }
+
+    .company-logo {
+      height: rem(16px);
+      max-height: rem(16px);
+    }
   }
 }
 
+// Tablet - 768px
 @media (min-width: 768px) {
   .slider-content {
-    min-height: rem(336px);
+    min-height: rem(368px);
     padding: 0 rem(48px);
   }
+
   .slider-cards {
-    min-height: rem(304px);
+    min-height: rem(350px);
     gap: rem(12.8px);
   }
+
   .student-card {
     max-width: rem(272px);
     min-height: rem(272px);
     height: rem(272px);
     border-radius: rem(35.2px);
     margin: 0 rem(11.2px);
+    transform: translateX(-50%) scale(0.8);
+    opacity: 0.6;
+    transition:
+      transform 0.5s ease,
+      opacity 0.5s ease;
+
+    &.active {
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+      z-index: 3;
+    }
+
+    &.prev {
+      transform: translateX(-170%) scale(0.8);
+      opacity: 0.6;
+      z-index: 1;
+    }
+
+    &.next {
+      transform: translateX(70%) scale(0.8);
+      opacity: 0.6;
+      z-index: 1;
+    }
   }
+
   .student-image {
     height: 60%;
     min-height: rem(163.2px);
@@ -329,7 +410,7 @@
     height: rem(17.6px);
     max-height: rem(17.6px);
   }
-  
+
   .carousel-controlsE {
     position: absolute;
     top: 50%;
@@ -364,26 +445,72 @@
   .carousel-controlsE .carousel-controlE i {
     font-size: rem(32px);
     line-height: 1;
-		font-weight: 100;
+    font-weight: 100;
   }
-	.ph.ph-arrow-circle-right:before {
+  .ph.ph-arrow-circle-right:before {
     font-weight: 100;
-}
-	.ph.ph-arrow-circle-left:before {
+  }
+  .ph.ph-arrow-circle-left:before {
     font-weight: 100;
-}
-	
 }
 
+}
+
+// Desktop - 992px
 @media (min-width: 992px) {
   .slider-content {
     padding: 0 rem(56px);
     min-height: rem(368px);
   }
+
+  .student-image {
+    height: 60%;
+    min-height: rem(182.4px);
+    max-height: rem(182.4px);
+    border-radius: rem(38.4px);
+
+    img {
+      border-radius: rem(38.4px);
+    }
+  }
+
+  .student-info {
+    height: 40%;
+    min-height: rem(121.6px);
+    max-height: rem(121.6px);
+    padding: rem(14.4px) rem(19.2px);
+    gap: rem(8px);
+    justify-content: space-between;
+    border-radius: rem(38.4px);
+
+    h3 {
+      font-size: var(--font-size-paragraph);
+      margin-bottom: rem(3.2px);
+    }
+
+    p {
+      font-size: var(--font-size-small);
+    }
+
+    .company-logo {
+      height: rem(20.8px);
+      max-height: rem(20.8px);
+    }
+  }
+}
+
+// Desktop Large - 1200px
+@media (min-width: 1200px) {
+  .slider-content {
+    min-height: rem(368px);
+    padding: 0 rem(56px);
+  }
+
   .slider-cards {
     min-height: rem(336px);
     gap: rem(16px);
   }
+
   .student-card {
     max-width: rem(304px);
     min-height: rem(304px);
@@ -449,21 +576,24 @@
     gap: rem(16px);
   }
   .student-card {
-    max-width: rem(304px);  
+    max-width: rem(304px);
     min-height: rem(304px);
     height: rem(304px);
     border-radius: rem(38.4px);
     margin: 0 rem(12.8px);
   }
+
   .student-image {
     height: 60%;
     min-height: rem(182.4px);
     max-height: rem(182.4px);
     border-radius: rem(38.4px);
+
+    img {
+      border-radius: rem(38.4px);
+    }
   }
-  .student-image img {
-    border-radius: rem(38.4px);
-  }
+
   .student-info {
     justify-content: space-between;
     padding: rem(14.4px) rem(19.2px);
@@ -472,9 +602,32 @@
     max-height: rem(121.6px);
     gap: rem(8px);
     border-radius: rem(38.4px);
+
+    h3 {
+      font-size: var(--font-size-paragraph);
+      line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-bottom: rem(4.8px);
+    }
+
+    p {
+      font-size: var(--font-size-small);
+      line-height: 1.2;
+      flex-grow: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .company-logo {
+      height: rem(20.8px);
+      max-height: rem(20.8px);
+    }
   }
   .student-info h3 {
-    font-size: var(--font-size-paragraph);  
+    font-size: var(--font-size-paragraph);
     line-height: 1.2;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -482,7 +635,7 @@
 		margin-bottom: rem(4.8px);
   }
   .student-info p {
-    font-size: var(--font-size-small); 
+    font-size: var(--font-size-small);
     line-height: 1.2;
     flex-grow: 1;
     overflow: hidden;
@@ -490,7 +643,7 @@
     white-space: nowrap;
   }
   .student-info .company-logo {
-    height: rem(20.8px); 
+    height: rem(20.8px);
     max-height: rem(20.8px);
   }
   .student-card.prev {

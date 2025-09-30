@@ -233,13 +233,12 @@ const MultimediaSlider = () => {
           <iframe
             ref={el => (videoRefs.current[item.videoId] = el)}
             src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=1&playlist=${item.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&enablejsapi=0`}
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
+            frameBorder='0'
+            allow='autoplay; encrypted-media'
             allowFullScreen
-            loading="lazy"
+            loading='lazy'
             title={item.title}
-            style={{ display: index === currentSlideIndex ? 'block' : 'none', zIndex: 2 }}
-          ></iframe>
+            style={{ display: index === currentSlideIndex ? 'block' : 'none', zIndex: 2 }}></iframe>
           {/* Overlay con texto para videos */}
           <div className={`${baseClass}_content-text-overlay`}>
             <div className={`${baseClass}_overlay-content`}>
@@ -272,31 +271,31 @@ const MultimediaSlider = () => {
   return (
     <section className={`${baseClass}_container`}>
       <Container id={elementName} className={baseClass}>
-        <Title className="multimedia-titulo" weight="semibold" size="2xl" align="center" id={`${elementName}-title`}>
+        <Title className='multimedia-titulo' weight='semibold' size='2xl' align='center' id={`${elementName}-title`}>
           Multimedia
         </Title>
 
         <div className={`${baseClass}_slider-container`}>
           {/* Slider principal */}
           <div className={`${baseClass}_main-swiper swiper`} ref={mainSwiperRef}>
-            <div className={`${baseClass}_main-wrapper swiper-wrapper`} role="list">
+            <div className={`${baseClass}_main-wrapper swiper-wrapper`} role='list'>
               {mediaContent.map((item, index) => renderMainSlide(item, index))}
             </div>
           </div>
 
           {/* Slider de miniaturas */}
           <div className={`${baseClass}_thumbs-swiper swiper`} ref={thumbsSwiperRef}>
-            <div className={`${baseClass}_thumbs-wrapper swiper-wrapper`} role="list">
+            <div className={`${baseClass}_thumbs-wrapper swiper-wrapper`} role='list'>
               {mediaContent.map((item, index) => renderThumbnail(item, index))}
             </div>
 
             {/* Botones de navegación para thumbnails */}
-            <button className={`swiper-slide-button ${baseClass}_thumbs-prev`} aria-label="Ir al slide anterior" type="button">
-              <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
+            <button className={`swiper-slide-button ${baseClass}_thumbs-prev`} aria-label='Ir al slide anterior' type='button'>
+              <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
             </button>
 
-            <button className={`swiper-slide-button ${baseClass}_thumbs-next`} aria-label="Ir al siguiente slide" type="button">
-              <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+            <button className={`swiper-slide-button ${baseClass}_thumbs-next`} aria-label='Ir al siguiente slide' type='button'>
+              <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
             </button>
           </div>
         </div>

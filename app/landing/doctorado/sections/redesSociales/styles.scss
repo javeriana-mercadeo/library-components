@@ -1,0 +1,146 @@
+@use '@styles/autoload' as *;
+
+.socialMedia_inner {
+  // MÓVILES PRIMERO (base styles) - Apilado verticalmente
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+
+  // DESKTOP (min-width: 768px+) - Lado a lado
+  @include responsive {
+    flex-direction: row;
+    gap: var(--spacing-lg);
+    justify-content: center;
+    text-align: left;
+  }
+}
+
+.socialMedia_container {
+  padding: var(--spacing-md) 0;
+}
+
+.socialMedia_title {
+  // MÓVILES PRIMERO (base styles)
+  line-height: 1.2;
+  margin: 0;
+  margin-bottom: var(--spacing-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--neutral-200);
+  text-align: center;
+  flex-shrink: 0;
+
+  @include dark-theme {
+    color: var(--neutral-800);
+  }
+
+  // DESKTOP (min-width: 768px+)
+  @include responsive {
+    white-space: nowrap; // No romper línea en desktop
+    text-align: left;
+    margin-bottom: 0;
+    flex: 0 0 auto;
+  }
+}
+
+.socialMedia_social-list {
+  // MÓVILES PRIMERO (base styles)
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-xs);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  // DESKTOP (min-width: 768px+)
+  @include responsive {
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    flex: 0 0 auto;
+  }
+}
+
+.socialMedia_item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Estilos base para todos los enlaces sociales
+.socialMedia_link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: rem(36px);
+  transition: all 0.3s ease;
+  border-radius: rem(8px);
+  padding: var(--spacing-xs);
+  text-decoration: none;
+
+  &:hover {
+    transform: translateY(-2px) scale(1.05);
+    opacity: 0.8;
+  }
+
+  &:focus {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+  }
+
+  // Responsive para móviles
+  @include responsive {
+    font-size: rem(32px);
+    padding: rem(4px);
+  }
+
+  // Estilos para íconos SVG inline (fallback de Liferay)
+  &.social-icon-svg {
+    font-size: inherit; // Hereda el tamaño del contenedor
+
+    svg {
+      width: rem(36px);
+      height: rem(36px);
+      vertical-align: middle;
+
+      @include responsive {
+        width: rem(32px);
+        height: rem(32px);
+      }
+    }
+  }
+}
+
+// Estilos usando el sistema de variables CSS del tema activo
+.socialMedia_link--facebook,
+.socialMedia_link--instagram,
+.socialMedia_link--youtube,
+.socialMedia_link--twitter,
+.socialMedia_link--linkedin,
+.socialMedia_link--tiktok,
+.socialMedia_link--whatsapp,
+.socialMedia_link--telegram,
+.socialMedia_link--generic {
+  // Color principal del tema activo
+  color: var(--primary);
+
+  &:hover {
+    color: var(--primary);
+    transform: translateY(-2px) scale(1.05);
+    opacity: 0.8;
+  }
+
+  &:focus {
+    color: var(--primary);
+    opacity: 0.9;
+  }
+}

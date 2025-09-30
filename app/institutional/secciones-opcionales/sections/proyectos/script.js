@@ -3,7 +3,7 @@
 class CarouselManager {
   constructor() {
     console.log('🎠 Inicializando Carousel Touch Manual v5.0 con Múltiples Videos...');
-    
+
     // Variables de estado
     this.currentSlideIndex = 0;
     this.totalSlides = 0;
@@ -56,13 +56,13 @@ class CarouselManager {
   waitForReady() {
     return new Promise((resolve) => {
       const checkReady = () => {
-        const hasRequiredElements = 
+        const hasRequiredElements =
           document.getElementById('modal-backdrop-carousel') &&
           document.getElementById('modal-project-gallery-items') &&
           document.getElementById('modal-project-videos') &&
           document.getElementById('carousel-container') &&
           document.getElementById('slides-wrapper');
-        
+
         if (document.readyState === 'complete' && hasRequiredElements) {
           console.log('✅ DOM completamente listo');
           resolve();
@@ -86,7 +86,7 @@ class CarouselManager {
       `#${id}`,
       `[id="${id}"]`
     ];
-    
+
     for (const selector of selectors) {
       const element = document.querySelector(selector);
       if (element) {
@@ -103,7 +103,7 @@ class CarouselManager {
       `#${id}`,
       `[id="${id}"]`
     ];
-    
+
     for (const selector of selectors) {
       const element = document.querySelector(selector);
       if (element) {
@@ -119,10 +119,10 @@ class CarouselManager {
     const videoUrls = [];
     let videoIndex = 0;
     let hasMoreVideos = true;
-    
+
     while (hasMoreVideos) {
       const videoUrl = this.getEditableContent(`project-video-${slideIndex}-${videoIndex}`);
-      
+
       if (videoUrl && videoUrl.trim() !== '') {
         videoUrls.push(videoUrl.trim());
         videoIndex++;
@@ -130,7 +130,7 @@ class CarouselManager {
         hasMoreVideos = false;
       }
     }
-    
+
     console.log(`📹 Videos encontrados para slide ${slideIndex}:`, videoUrls);
     return videoUrls;
   }
@@ -140,11 +140,11 @@ class CarouselManager {
     const date = this.getEditableContent(`project-date-${slideIndex}`);
     const responsible = this.getEditableContent(`project-responsible-${slideIndex}`);
     const description = this.getEditableHTML(`project-description-${slideIndex}`);
-    
+
     const videoUrls = this.getMultipleVideoUrls(slideIndex);
-    
+
     const galleryText = this.getEditableContent(`project-gallery-${slideIndex}`);
-    const gallery = galleryText 
+    const gallery = galleryText
       ? galleryText.split(',').map(url => url.trim()).filter(url => url.length > 0)
       : [];
 
@@ -212,7 +212,7 @@ class CarouselManager {
   createInfiniteCarousel() {
     const wrapper = document.getElementById('slides-wrapper');
     const container = document.getElementById('carousel-container');
-    
+
     if (!wrapper || !container) {
       console.error('❌ Elementos no encontrados para carrusel infinito');
       return false;
@@ -221,9 +221,9 @@ class CarouselManager {
     const slides = wrapper.querySelectorAll('.carousel-slide');
     this.originalSlides = Array.from(slides);
     const totalOriginalSlides = this.originalSlides.length;
-    
+
     const needsInfinite = totalOriginalSlides < 8;
-    
+
     if (!needsInfinite) {
       console.log('📋 Suficientes tarjetas, carrusel infinito deshabilitado');
       this.isInfiniteEnabled = false;
@@ -231,32 +231,32 @@ class CarouselManager {
     }
 
     console.log('🔄 Creando carrusel infinito...');
-    
+
     const minSlidesNeeded = this.slidesPerView * 3;
     let slidesToDuplicate = Math.ceil((minSlidesNeeded - totalOriginalSlides) / totalOriginalSlides);
     slidesToDuplicate = Math.max(2, slidesToDuplicate);
-    
+
     for (let i = 0; i < slidesToDuplicate; i++) {
       this.originalSlides.forEach((slide, index) => {
         const clonedSlide = slide.cloneNode(true);
-        
+
         const originalIndex = parseInt(slide.getAttribute('data-slide-index')) || index;
         clonedSlide.setAttribute('data-slide-index', `${originalIndex}-clone-${i}`);
         clonedSlide.setAttribute('data-clone-of', originalIndex);
         clonedSlide.classList.add('cloned-slide');
-        
+
         clonedSlide.onclick = () => {
           this.openCarouselModal(originalIndex);
         };
-        
+
         wrapper.appendChild(clonedSlide);
         this.duplicatedSlides++;
       });
     }
-    
+
     this.totalSlides = wrapper.querySelectorAll('.carousel-slide').length;
     this.isInfiniteEnabled = true;
-    
+
     console.log(`✅ Carrusel infinito creado: ${this.originalSlides.length} originales, ${this.duplicatedSlides} duplicadas, ${this.totalSlides} total`);
     return true;
   }
@@ -266,34 +266,34 @@ class CarouselManager {
 
     const originalSlidesCount = this.originalSlides.length;
     const wrapper = document.getElementById('slides-wrapper');
-    
+
     const nearEnd = this.currentSlideIndex >= this.totalSlides - (originalSlidesCount * 1.5);
     const nearStart = this.currentSlideIndex <= originalSlidesCount * 0.5;
-    
+
     if (nearEnd) {
       setTimeout(() => {
         wrapper.classList.add('no-transition');
         this.currentSlideIndex = this.currentSlideIndex - originalSlidesCount;
-        
+
         const slidePercentage = 100 / this.slidesPerView;
         const translateX = this.currentSlideIndex * slidePercentage;
         wrapper.style.transform = `translateX(-${translateX}%)`;
-        
+
         setTimeout(() => {
           wrapper.classList.remove('no-transition');
         }, 50);
       }, this.CONFIG.SLIDE_TRANSITION_DURATION);
     }
-    
+
     if (nearStart && this.currentSlideIndex < 0) {
       setTimeout(() => {
         wrapper.classList.add('no-transition');
         this.currentSlideIndex = originalSlidesCount + this.currentSlideIndex;
-        
+
         const slidePercentage = 100 / this.slidesPerView;
         const translateX = this.currentSlideIndex * slidePercentage;
         wrapper.style.transform = `translateX(-${translateX}%)`;
-        
+
         setTimeout(() => {
           wrapper.classList.remove('no-transition');
         }, 50);
@@ -304,7 +304,7 @@ class CarouselManager {
   // Funciones del slider
   calculateSlidesPerView() {
     const containerWidth = window.innerWidth;
-    
+
     if (containerWidth >= this.CONFIG.RESPONSIVE_BREAKPOINTS.DESKTOP) {
       return 4;
     } else if (containerWidth >= this.CONFIG.RESPONSIVE_BREAKPOINTS.TABLET) {
@@ -319,7 +319,7 @@ class CarouselManager {
   updateSliderDimensions() {
     const wrapper = document.getElementById('slides-wrapper');
     const container = document.getElementById('carousel-container');
-    
+
     if (!wrapper || !container) {
       console.error('❌ Elementos del slider no encontrados');
       return false;
@@ -328,14 +328,14 @@ class CarouselManager {
     const slides = wrapper.querySelectorAll('.carousel-slide');
     this.totalSlides = slides.length;
     this.slidesPerView = this.calculateSlidesPerView();
-    
+
     if (this.totalSlides === 0) {
       console.warn('⚠️ No se encontraron slides');
       return false;
     }
 
     console.log(`📐 Dimensiones: ${this.slidesPerView} slides por vista de ${this.totalSlides} totales`);
-    
+
     if (this.totalSlides <= this.slidesPerView) {
       wrapper.style.justifyContent = 'center';
       wrapper.classList.add('centered-slides');
@@ -356,11 +356,11 @@ class CarouselManager {
     }
 
     const maxPosition = Math.max(0, this.totalSlides - this.slidesPerView);
-    
+
     if (this.currentSlideIndex > maxPosition) {
       this.currentSlideIndex = maxPosition;
     }
-    
+
     if (this.currentSlideIndex < 0) {
       this.currentSlideIndex = 0;
     }
@@ -372,11 +372,11 @@ class CarouselManager {
       const slidePercentage = 100 / this.slidesPerView;
       translateX = this.currentSlideIndex * slidePercentage;
     }
-    
-    wrapper.style.transition = animated 
-      ? `transform ${this.CONFIG.SLIDE_TRANSITION_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)` 
+
+    wrapper.style.transition = animated
+      ? `transform ${this.CONFIG.SLIDE_TRANSITION_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`
       : 'none';
-    
+
     wrapper.style.transform = `translateX(-${translateX}%)`;
 
     console.log(`🎯 Posición actualizada: slide ${this.currentSlideIndex} (${translateX}%)`);
@@ -384,15 +384,15 @@ class CarouselManager {
 
   updateIndicators() {
     const indicators = document.querySelectorAll('#carousel-indicators .indicator');
-    
+
     indicators.forEach((indicator, index) => {
       const indicatorIndex = parseInt(indicator.getAttribute('data-indicator-index')) || index;
-      
+
       if (indicatorIndex < this.originalSlides.length) {
         indicator.style.display = 'block';
-        
+
         let isActive = false;
-        
+
         if (this.isInfiniteEnabled) {
           const currentOriginalSlide = this.currentSlideIndex % this.originalSlides.length;
           isActive = indicatorIndex === currentOriginalSlide;
@@ -401,7 +401,7 @@ class CarouselManager {
           const slideEnd = this.currentSlideIndex + this.slidesPerView - 1;
           isActive = indicatorIndex >= slideStart && indicatorIndex <= slideEnd;
         }
-        
+
         if (isActive) {
           indicator.classList.add('active');
         } else {
@@ -416,7 +416,7 @@ class CarouselManager {
   updateNavigationButtons() {
     const prevBtn = document.getElementById('carousel-prev');
     const nextBtn = document.getElementById('carousel-next');
-    
+
     if (!prevBtn || !nextBtn) return;
 
     if (this.isInfiniteEnabled) {
@@ -430,23 +430,23 @@ class CarouselManager {
       nextBtn.style.cursor = 'pointer';
     } else {
       const maxPosition = Math.max(0, this.totalSlides - this.slidesPerView);
-      
+
       if (this.totalSlides <= this.slidesPerView) {
         prevBtn.style.display = 'none';
         nextBtn.style.display = 'none';
       } else {
         prevBtn.style.display = 'flex';
         nextBtn.style.display = 'flex';
-        
+
         const isPrevDisabled = this.currentSlideIndex <= 0;
         const isNextDisabled = this.currentSlideIndex >= maxPosition;
-        
+
         prevBtn.disabled = isPrevDisabled;
         nextBtn.disabled = isNextDisabled;
-        
+
         prevBtn.style.opacity = isPrevDisabled ? '0.3' : '1';
         nextBtn.style.opacity = isNextDisabled ? '0.3' : '1';
-        
+
         prevBtn.style.cursor = isPrevDisabled ? 'not-allowed' : 'pointer';
         nextBtn.style.cursor = isNextDisabled ? 'not-allowed' : 'pointer';
       }
@@ -455,11 +455,11 @@ class CarouselManager {
 
   updateSliderLayout() {
     if (!this.updateSliderDimensions()) return;
-    
+
     this.updateSliderPosition(false);
     this.updateIndicators();
     this.updateNavigationButtons();
-    
+
     console.log('🎨 Layout actualizado completamente');
   }
 
@@ -468,32 +468,32 @@ class CarouselManager {
       console.log('⏳ Transición en progreso');
       return;
     }
-    
+
     let maxPosition, clampedIndex;
-    
+
     if (this.isInfiniteEnabled) {
       clampedIndex = targetIndex;
     } else {
       maxPosition = Math.max(0, this.totalSlides - this.slidesPerView);
       clampedIndex = Math.max(0, Math.min(targetIndex, maxPosition));
     }
-    
+
     if (clampedIndex === this.currentSlideIndex && !this.isInfiniteEnabled) {
       console.log('🎯 Ya en el slide objetivo');
       return;
     }
-    
+
     console.log(`🚀 Navegando de slide ${this.currentSlideIndex} a ${clampedIndex}`);
-    
+
     if (animated) {
       this.isTransitioning = true;
       setTimeout(() => {
         this.isTransitioning = false;
       }, this.CONFIG.SLIDE_TRANSITION_DURATION);
     }
-    
+
     this.currentSlideIndex = clampedIndex;
-    
+
     this.updateSliderPosition(animated);
     this.updateIndicators();
     this.updateNavigationButtons();
@@ -510,7 +510,7 @@ class CarouselManager {
 
   onTouchStart(event) {
     if (this.isTransitioning) return;
-    
+
     const wrapper = document.getElementById('slides-wrapper');
     if (!wrapper) return;
 
@@ -526,19 +526,19 @@ class CarouselManager {
     this.startTranslateX = match ? parseFloat(match[1]) : 0;
 
     wrapper.classList.add('no-transition');
-    
+
     console.log('👆 Touch iniciado');
   }
 
   onTouchMove(event) {
     if (!this.touchStartX) return;
-    
+
     this.touchCurrentX = this.getTouchX(event);
     this.touchCurrentY = this.getTouchY(event);
-    
+
     const diffX = this.touchCurrentX - this.touchStartX;
     const diffY = this.touchCurrentY - this.touchStartY;
-    
+
     if (!this.isDragging && Math.abs(diffX) > 10) {
       if (Math.abs(diffY) > Math.abs(diffX)) {
         return;
@@ -546,26 +546,26 @@ class CarouselManager {
       this.isDragging = true;
       console.log('👆 Iniciando arrastre horizontal');
     }
-    
+
     if (!this.isDragging) return;
-    
+
     event.preventDefault();
-    
+
     const wrapper = document.getElementById('slides-wrapper');
     if (!wrapper) return;
 
     const slidePercentage = 100 / this.slidesPerView;
     const movePercentage = (diffX / wrapper.offsetWidth) * 100;
     let newTranslateX = this.startTranslateX - movePercentage;
-    
+
     if (!this.isInfiniteEnabled) {
       const maxTranslate = (this.totalSlides - this.slidesPerView) * slidePercentage;
       newTranslateX = Math.max(-maxTranslate, Math.min(0, newTranslateX));
     }
-    
+
     wrapper.style.transform = `translateX(${newTranslateX}%)`;
     wrapper.classList.add('dragging');
-    
+
     console.log(`👆 Arrastrando: ${newTranslateX}%`);
   }
 
@@ -575,34 +575,34 @@ class CarouselManager {
       this.isDragging = false;
       return;
     }
-    
+
     const wrapper = document.getElementById('slides-wrapper');
     if (!wrapper) return;
 
     const diffX = this.touchCurrentX - this.touchStartX;
     const diffTime = Date.now() - this.startTime;
     const velocity = Math.abs(diffX) / diffTime;
-    
+
     wrapper.classList.remove('no-transition');
     wrapper.classList.remove('dragging');
-    
+
     console.log(`👆 Touch terminado: diffX=${diffX}, velocity=${velocity}`);
-    
+
     let shouldChangeSlide = false;
     let direction = 0;
-    
+
     if (Math.abs(diffX) > this.CONFIG.TOUCH_THRESHOLD || velocity > this.CONFIG.VELOCITY_THRESHOLD) {
       shouldChangeSlide = true;
       direction = diffX > 0 ? -1 : 1;
     }
-    
+
     if (shouldChangeSlide) {
       const newIndex = this.currentSlideIndex + direction;
       this.goToSlide(newIndex, true);
     } else {
       this.updateSliderPosition(true);
     }
-    
+
     this.touchStartX = 0;
     this.touchCurrentX = 0;
     this.touchCurrentY = 0;
@@ -611,7 +611,7 @@ class CarouselManager {
 
   carouselPrevSlide() {
     console.log('⬅️ Navegación anterior');
-    
+
     if (this.isInfiniteEnabled) {
       this.goToSlide(this.currentSlideIndex - 1);
     } else {
@@ -623,7 +623,7 @@ class CarouselManager {
 
   carouselNextSlide() {
     console.log('➡️ Navegación siguiente');
-    
+
     if (this.isInfiniteEnabled) {
       this.goToSlide(this.currentSlideIndex + 1);
     } else {
@@ -637,18 +637,18 @@ class CarouselManager {
   // Funciones de video
   extractYouTubeId(url) {
     if (!url) return null;
-    
+
     const patterns = [
       /(?:youtube\.com\/watch\?v=)([^&\n?#]+)/,
       /(?:youtube\.com\/embed\/)([^&\n?#]+)/,
       /(?:youtu\.be\/)([^&\n?#]+)/
     ];
-    
+
     for (const pattern of patterns) {
       const match = url.match(pattern);
       if (match && match[1]) return match[1];
     }
-    
+
     return null;
   }
 
@@ -674,7 +674,7 @@ class CarouselManager {
 
     const isMobile = window.innerWidth <= 768;
     const videoHeight = isMobile ? '350px' : '400px';
-    
+
     iframe.style.cssText = `
         width: 100% !important;
         height: ${videoHeight} !important;
@@ -704,7 +704,7 @@ class CarouselManager {
       if (!videoUrl || !videoUrl.trim()) return;
 
       const iframe = this.createVideoIframe(videoUrl.trim(), title, index);
-      
+
       if (iframe) {
         const videoWrapper = document.createElement('div');
         videoWrapper.style.cssText = `
@@ -783,10 +783,10 @@ class CarouselManager {
       image.src = imageUrl_clean;
       image.alt = `${title} - Imagen ${index + 1}`;
       image.loading = 'lazy';
-      
+
       const isMobile = window.innerWidth <= 768;
       const imageHeight = isMobile ? '250px' : '400px';
-      
+
       image.style.cssText = `
         width: 100%;
         height: ${imageHeight};
@@ -813,9 +813,9 @@ class CarouselManager {
   // Modal
   openCarouselModal(slideIndex) {
     console.log(`🎪 Abriendo modal para slide ${slideIndex}`);
-    
+
     const projectData = this.getProjectDataFromHTML(slideIndex);
-    
+
     if (!projectData.title && projectData.videoUrls.length === 0) {
       console.error(`❌ Datos insuficientes para slide ${slideIndex}`);
       return;
@@ -889,14 +889,14 @@ class CarouselManager {
 
     const prevBtn = document.getElementById('carousel-prev');
     const nextBtn = document.getElementById('carousel-next');
-    
+
     if (prevBtn) {
       prevBtn.addEventListener('click', (e) => {
         e.preventDefault();
         this.carouselPrevSlide();
       });
     }
-    
+
     if (nextBtn) {
       nextBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -907,7 +907,7 @@ class CarouselManager {
     const indicators = document.querySelectorAll('#carousel-indicators .indicator');
     indicators.forEach((indicator, index) => {
       const indicatorIndex = parseInt(indicator.getAttribute('data-indicator-index')) || index;
-      
+
       indicator.addEventListener('click', (e) => {
         e.preventDefault();
         this.goToSlide(indicatorIndex);
@@ -917,7 +917,7 @@ class CarouselManager {
     const slides = document.querySelectorAll('.carousel-slide');
     slides.forEach((slide, index) => {
       const slideIndex = parseInt(slide.getAttribute('data-slide-index')) || index;
-      
+
       if (!slide.getAttribute('onclick')) {
         slide.addEventListener('click', (e) => {
           if (!this.isDragging) {
@@ -943,7 +943,7 @@ class CarouselManager {
 
     document.addEventListener('keydown', (e) => {
       const modalOpen = document.getElementById('modal-backdrop-carousel')?.classList.contains('show');
-      
+
       if (!modalOpen) {
         switch (e.key) {
           case 'ArrowLeft':
@@ -998,10 +998,10 @@ class CarouselManager {
   // Inicialización
   initializeSlider() {
     console.log('🎠 Inicializando slider...');
-    
+
     const carousel = document.getElementById('carousel-container');
     const wrapper = document.getElementById('slides-wrapper');
-    
+
     if (!carousel || !wrapper) {
       console.error('❌ Elementos básicos no encontrados');
       return false;
@@ -1012,14 +1012,14 @@ class CarouselManager {
     this.updateSliderLayout();
     this.setupSliderEventListeners();
     this.setupResponsiveEventListeners();
-    
+
     console.log('✅ Slider inicializado');
     return true;
   }
 
   initializeModal() {
     console.log('🎪 Inicializando modal...');
-    
+
     const modalElements = [
       'modal-backdrop-carousel',
       'modal-project-title',
@@ -1056,7 +1056,7 @@ class CarouselManager {
     console.log(`  - Carrusel infinito: ${this.isInfiniteEnabled ? 'SÍ' : 'NO'}`);
     console.log(`  - Viewport: ${window.innerWidth}x${window.innerHeight}`);
     console.log(`  - Touch activo: ${this.isDragging}`);
-    
+
     this.originalSlides.forEach((slide, index) => {
       const slideIndex = parseInt(slide.getAttribute('data-slide-index')) || index;
       const projectData = this.getProjectDataFromHTML(slideIndex);
@@ -1070,10 +1070,10 @@ class CarouselManager {
 
     try {
       await this.waitForReady();
-      
+
       const sliderOK = this.initializeSlider();
       const modalOK = this.initializeModal();
-      
+
       if (sliderOK && modalOK) {
         this.isInitialized = true;
         console.log('🎉 Inicialización completada exitosamente');
@@ -1092,7 +1092,7 @@ class CarouselManager {
   // Cleanup para componentes React
   cleanup() {
     console.log('🧹 Limpiando carousel...');
-    
+
     // Limpiar event listeners globales
     const carousel = document.getElementById('carousel-container');
     if (carousel) {
@@ -1108,7 +1108,7 @@ class CarouselManager {
 
     // Cerrar modal si está abierto
     this.closeCarouselModal();
-    
+
     this.isInitialized = false;
     console.log('✅ Carousel limpiado');
   }

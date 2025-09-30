@@ -1,0 +1,375 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$profile-bg-color: var(--primary);
+$profile-text-color: var(--neutral);
+$profile-tab-inactive: rgba(255, 255, 255, 0.5);
+$profile-tab-hover: rgba(255, 255, 255, 0.7);
+$profile-tab-active-bg: rgba(255, 255, 255, 0.1);
+$profile-content-text: #ffffff;
+$profile-border-radius: rem(12px);
+$profile-transition: all 0.3s ease;
+
+.program-profile-section {
+  background-color: var(--primary);
+  padding: var(--spacing-md) 0;
+
+  @include responsive($breakpoint-lg) {
+    padding: var(--spacing-xl) 0;
+  }
+}
+
+.program-profile {
+  min-height: rem(515px);
+  transition: 0.2s ease-in-out;
+
+  &__tabs-nav {
+    margin-bottom: var(--spacing-2xl);
+  }
+
+  &__tabs-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: rem(8px);
+    justify-content: center;
+    border-bottom: rem(1px) solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0;
+
+    @include responsive($breakpoint-md) {
+      flex-direction: row;
+    }
+
+    li {
+      width: 100%;
+    }
+  }
+
+  &__tab-button {
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--neutral-800);
+    font-size: rem(18px);
+    font-weight: 400;
+    padding: rem(12px) rem(32px) rem(16px);
+    cursor: pointer;
+    transition: $profile-transition;
+    position: relative;
+    white-space: nowrap;
+    border-radius: 0;
+
+    @include dark-theme {
+      color: var(--neutral-300);
+    }
+
+    // Línea inferior para tab activa
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: rem(-1px);
+      left: 0;
+      right: 0;
+      height: rem(3px);
+      background-color: $profile-text-color;
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    // Hover state
+    &:hover:not(.active) {
+      color: $profile-tab-hover;
+    }
+
+    // Active state
+    &.active {
+      color: $profile-text-color;
+      font-weight: 500;
+
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+
+    // Focus para accesibilidad
+    &:focus-visible {
+      outline: rem(2px) solid $profile-text-color;
+      outline-offset: rem(2px);
+      border-radius: rem(4px);
+    }
+
+    // Estados deshabilitados
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @include responsive($breakpoint-md) {
+      font-size: rem(16px);
+      padding: rem(12px) rem(24px) rem(16px);
+    }
+
+    @include responsive($breakpoint-sm) {
+      font-size: rem(14px);
+      padding: rem(10px) rem(16px) rem(14px);
+    }
+  }
+
+  // ==========================================
+  // CONTENIDO DE TABS
+  // ==========================================
+  &__tabs-content {
+    padding: 0;
+  }
+
+  &__tab-panel {
+    animation: fadeIn 0.3s ease-in-out;
+
+    &.hidden {
+      display: none;
+    }
+
+    // Asegurar que el contenido sea accesible cuando está visible
+    &:not(.hidden) {
+      display: block;
+    }
+  }
+
+  &__content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+
+    @include responsive($breakpoint-lg) {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-2xl);
+      align-items: center;
+    }
+  }
+
+  // ==========================================
+  // IMAGEN
+  // ==========================================
+  &__image-container {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: $profile-border-radius;
+
+    @include responsive($breakpoint-lg) {
+      justify-content: flex-start;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    max-width: rem(600px);
+    max-height: rem(360px);
+    height: auto;
+    border-radius: $profile-border-radius;
+    object-fit: cover;
+    aspect-ratio: 4/3;
+    transition:
+      transform 0.3s ease,
+      filter 0.3s ease;
+    will-change: transform;
+
+    // Aplicar el zoom hover
+    &:hover {
+      transform: scale(1.05);
+      filter: brightness(1.02);
+    }
+  }
+
+  // ==========================================
+  // TEXTO
+  // ==========================================
+  &__text-container {
+    max-width: rem(700px);
+  }
+
+  &__paragraph {
+    color: $profile-content-text;
+    line-height: 1.7;
+
+    p {
+      margin-bottom: rem(24px);
+      font-size: rem(16px);
+      color: inherit;
+      opacity: 0.95;
+      font-weight: 300;
+    }
+
+    h3 {
+      margin-top: rem(32px);
+      margin-bottom: rem(24px);
+      font-size: rem(20px);
+      color: $profile-text-color;
+      font-weight: 600;
+
+      strong {
+        font-weight: 600;
+      }
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: rem(16px);
+
+      li {
+        position: relative;
+        padding-left: rem(32px);
+        color: inherit;
+        font-size: rem(15px);
+        line-height: 1.6;
+        opacity: 0.9;
+        font-weight: 300;
+
+        // Icono de check
+        &::before {
+          content: '✓';
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: rem(20px);
+          height: rem(20px);
+          background-color: rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: rem(12px);
+          font-weight: bold;
+          color: $profile-text-color;
+        }
+      }
+    }
+  }
+}
+
+// ==========================================
+// UTILIDADES DE ACCESIBILIDAD
+// ==========================================
+
+// Screen reader only - para elementos que solo deben ser leídos por lectores de pantalla
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ==========================================
+// ANIMACIONES
+// ==========================================
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(rem(10px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ==========================================
+// ACCESIBILIDAD - Reducir movimiento
+// ==========================================
+@media (prefers-reduced-motion: reduce) {
+  .program-profile {
+    &__tab-button {
+      &::after {
+        transition: none;
+      }
+    }
+
+    &__tab-panel {
+      animation: none;
+    }
+
+    &__image {
+      transition: none;
+
+      &:hover {
+        transform: none;
+        filter: none;
+      }
+    }
+  }
+}
+
+// ==========================================
+// MODO OSCURO
+// ==========================================
+.program-profile {
+  @include dark-theme {
+    &__tab-button {
+      &.active {
+        color: $profile-text-color;
+      }
+    }
+
+    &__paragraph {
+      color: $profile-content-text;
+    }
+  }
+}
+
+// ==========================================
+// PRINT STYLES
+// ==========================================
+@media print {
+  .program-profile {
+    &-section {
+      background: white !important;
+      padding: rem(20px) !important;
+    }
+
+    &__tabs-nav {
+      display: none;
+    }
+
+    &__tab-panel {
+      display: block !important;
+      page-break-inside: avoid;
+      margin-bottom: rem(40px);
+
+      &:not(:first-child) {
+        &::before {
+          content: attr(aria-labelledby);
+          display: block;
+          font-size: rem(24px);
+          font-weight: bold;
+          margin-bottom: rem(20px);
+          color: black;
+        }
+      }
+    }
+
+    &__paragraph {
+      color: black !important;
+
+      h3,
+      p,
+      li {
+        color: black !important;
+        opacity: 1 !important;
+      }
+    }
+  }
+}

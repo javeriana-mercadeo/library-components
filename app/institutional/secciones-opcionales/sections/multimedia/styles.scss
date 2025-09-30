@@ -1,7 +1,7 @@
 @use '@styles/autoload' as *;
 
 // ==========================================
-// VARIABLES DEL COMPONENTE en el local se ve cortado el slider pero en liferay con estas adecuaciones funciona bien 
+// VARIABLES DEL COMPONENTE en el local se ve cortado el slider pero en liferay con estas adecuaciones funciona bien
 // ==========================================
 $multimedia-border-radius: rem(20px);
 $multimedia-main-height: rem(500px);
@@ -23,15 +23,15 @@ $nav-button-size-mobile: rem(30px);
   justify-content: center;
   flex-direction: column;
   padding: rem(20px);
-  overflow: visible; 
-  min-height: auto; 
+  overflow: visible;
+  min-height: auto;
 
   // ==========================================
   // CONTENEDOR PRINCIPAL - FIXED
   // ==========================================
   &_container {
     width: 100%;
-    min-height: auto; 
+    min-height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,20 +49,20 @@ $nav-button-size-mobile: rem(30px);
     border-radius: $multimedia-border-radius;
     overflow: hidden; // Actualizado para evitar scroll horizontal
     margin-top: rem(30px);
-    margin-bottom: rem(32px); 
-    padding-bottom: rem(16px); 
+    margin-bottom: rem(32px);
+    padding-bottom: rem(16px);
 
     @include dark-theme {
       background: var(--background-100);
     }
   }
-  
+
   .multimedia-titulo {
     text-align: center;
     font-size: var(--font-size-title);
     padding: var(--spacing-xl);
     font-weight: var(--font-weight-bold);
-    color: var(--neutral-400);  
+    color: var(--neutral-400);
   }
 
   // ==========================================
@@ -109,7 +109,7 @@ $nav-button-size-mobile: rem(30px);
       z-index: 2;
       opacity: 1;
       transition: opacity 0.3s ease;
-      
+
       &[style*="display: none"] {
         opacity: 0;
         pointer-events: none;
@@ -387,7 +387,7 @@ $nav-button-size-mobile: rem(30px);
       background: var(--primary);
       color: white;
       transform: translateY(-50%) scale(1.1);
-      
+
       i {
         color: white;
       }
@@ -415,7 +415,7 @@ $nav-button-size-mobile: rem(30px);
     &_thumbs-prev {
       top: 50%;
       transform: translateY(-50%);
-      
+
       &:hover {
         transform: translateY(-50%) scale(1.1);
       }
@@ -537,7 +537,7 @@ $nav-button-size-mobile: rem(30px);
 // ==========================================
 .multimedia-slider_container {
   min-height: calc(#{$multimedia-main-height} + #{$multimedia-thumbs-height} + #{rem(64px)}) !important;
-  
+
   @include responsive($breakpoint-sm) {
     min-height: calc(#{rem(550px)} + #{rem(110px)} + #{rem(64px)}) !important;
   }
@@ -564,12 +564,12 @@ $nav-button-size-mobile: rem(30px);
 .debug-multimedia-slider {
   border: 2px solid red !important;
   background: rgba(255, 0, 0, 0.1) !important;
-  
+
   .multimedia-slider_thumbs-swiper {
     border: 2px solid blue !important;
     background: rgba(0, 0, 255, 0.1) !important;
   }
-  
+
   .multimedia-slider_thumbs-next,
   .multimedia-slider_thumbs-prev {
     border: 2px solid green !important;

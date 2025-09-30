@@ -1,7 +1,7 @@
 
 
 export default function swiperCarousel() {
-    
+
   const loadSwiper = async () => {
     if (typeof window !== 'undefined' && !window.Swiper) {
       const script = document.createElement('script')
@@ -52,7 +52,7 @@ export default function swiperCarousel() {
     }
   }
 
-  
+
   const hexagonalPatterns = {
     1: { columns: [[0]], offsets: [false] },
     2: { columns: [[0], [1]], offsets: [false, false] },
@@ -73,7 +73,7 @@ export default function swiperCarousel() {
 
   const reorganizeToHexagonal = () => {
     if (isReorganizing) return false
-    
+
     const gridContainer = document.querySelector('.tools-logos-grid')
     if (!gridContainer) {
       if (reorganizeAttempts < maxAttempts) {
@@ -116,8 +116,8 @@ export default function swiperCarousel() {
     columnConfig.forEach((elementIndexes, columnIndex) => {
       const columna = document.createElement('div')
       columna.className = 'columna-logos'
-      
-     
+
+
       if (totalItems !== 5 && offsets[columnIndex]) {
         columna.classList.add('offset')
       }
@@ -132,7 +132,7 @@ export default function swiperCarousel() {
           columna.classList.add('columna-lateral-5')
         }
       }
-      
+
       if (totalItems === 7) {
         if (columnIndex === 1) {
           // Columna central con 3 elementos
@@ -163,10 +163,10 @@ export default function swiperCarousel() {
     // Marcar como completado
     setTimeout(() => {
       isReorganizing = false
-      
+
       const event = new CustomEvent('hexagonalReorganized', {
-        detail: { 
-          totalItems, 
+        detail: {
+          totalItems,
           pattern: columnConfig.map(col => col.length).join('-'),
           timestamp: Date.now()
         }
@@ -180,12 +180,12 @@ export default function swiperCarousel() {
   const applyHexagonalStyles = (gridContainer) => {
     const columnas = gridContainer.querySelectorAll('.columna-logos')
     const totalItems = parseInt(gridContainer.getAttribute('data-total-items'))
-    
+
     // Estilos base para todas las columnas
     columnas.forEach((columna, index) => {
       // Resetear estilos existentes
       columna.style.cssText = ''
-      
+
       // Aplicar estilos base
       columna.style.display = 'flex'
       columna.style.flexDirection = 'column'
@@ -193,23 +193,23 @@ export default function swiperCarousel() {
       columna.style.rowGap = '25px'
       columna.style.alignItems = 'center'
       columna.style.position = 'relative'
-      
-     
+
+
       if (totalItems === 5) {
         // TODAS las columnas con el mismo tratamiento: centrado sin offsets
         columna.style.justifyContent = 'center'
         columna.style.alignItems = 'center'
         columna.style.minHeight = '200px'
-        columna.style.marginTop = '0px'  
-        columna.style.paddingTop = '0px' 
-        
+        columna.style.marginTop = '0px'
+        columna.style.paddingTop = '0px'
+
         // Centrado perfecto de elementos individuales
         const logoItems = columna.querySelectorAll('.logo-item')
         logoItems.forEach(item => {
           item.style.alignSelf = 'center'
           item.style.margin = '0 auto'
         })
-        
+
       } else if (totalItems === 7) {
         if (index === 1) {
           // Columna central con 3 elementos
@@ -222,7 +222,7 @@ export default function swiperCarousel() {
           columna.style.justifyContent = 'center'
           columna.style.alignItems = 'center'
           columna.style.minHeight = '300px'
-          columna.style.paddingTop = '50px' 
+          columna.style.paddingTop = '50px'
           columna.style.marginTop = '0px'
         }
       } else {
@@ -240,14 +240,14 @@ export default function swiperCarousel() {
     gridContainer.style.width = 'fit-content'
     gridContainer.style.maxWidth = '100%'
     gridContainer.style.margin = '0 auto'
-    
+
     //  5 ELEMENTOS
     if (totalItems === 5) {
       gridContainer.style.alignItems = 'center'
       // Asegurar que NO hay transformaciones o margins en el grid
       gridContainer.style.transform = 'none'
     }
-    
+
     if (totalItems === 7) {
       gridContainer.style.alignItems = 'center'
     }
@@ -259,17 +259,17 @@ export default function swiperCarousel() {
 
     const observer = new MutationObserver((mutations) => {
       let shouldReorganize = false
-      
+
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList') {
           const target = mutation.target
-          
+
           if (isReorganizing) return
-          
+
           if (target.classList.contains('tools-logos-grid')) {
             const currentCount = target.querySelectorAll('.logo-item').length
             const originalCount = parseInt(target.getAttribute('data-original-count') || '0')
-            
+
             if (currentCount !== originalCount && currentCount > 0) {
               shouldReorganize = true
             }
@@ -297,11 +297,11 @@ export default function swiperCarousel() {
 
   const waitForElements = (callback, timeout = 5000) => {
     const startTime = Date.now()
-    
+
     const checkElements = () => {
       const gridContainer = document.querySelector('.tools-logos-grid')
       const logoItems = gridContainer ? gridContainer.querySelectorAll('.logo-item') : []
-      
+
       if (logoItems.length > 0) {
         callback()
       } else if (Date.now() - startTime < timeout) {
@@ -310,13 +310,13 @@ export default function swiperCarousel() {
         console.warn('Timeout: No se encontraron elementos .logo-item')
       }
     }
-    
+
     checkElements()
   }
 
   const initialize = () => {
     loadSwiper()
-    
+
     waitForElements(() => {
       reorganizeToHexagonal()
       setupObserver()
@@ -330,7 +330,7 @@ export default function swiperCarousel() {
       reorganizeAttempts = 0
       reorganizeToHexagonal()
     }
-    
+
     window.setColumnGap = (gapValue) => {
       const columnas = document.querySelectorAll('.tools-logos-grid .columna-logos')
       columnas.forEach(columna => {
@@ -338,25 +338,25 @@ export default function swiperCarousel() {
         columna.style.rowGap = `${gapValue}px`
       })
     }
-    
+
     window.setColumnSpacing = (gapValue) => {
       const gridContainer = document.querySelector('.tools-logos-grid')
       if (gridContainer) {
         gridContainer.style.gap = `${gapValue}px`
       }
     }
-    
+
     window.showHexagonPattern = () => {
       const gridContainer = document.querySelector('.tools-logos-grid')
       if (!gridContainer) return null
-      
+
       const totalItems = gridContainer.getAttribute('data-total-items')
       const pattern = gridContainer.getAttribute('data-pattern')
       const isReorganized = gridContainer.getAttribute('data-reorganized') === 'true'
-      
-      return { 
-        totalItems: parseInt(totalItems), 
-        pattern, 
+
+      return {
+        totalItems: parseInt(totalItems),
+        pattern,
         isReorganized,
         currentElements: gridContainer.querySelectorAll('.logo-item').length
       }

@@ -2,6 +2,7 @@ import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
 import Image from '@library/components/contain/image'
 
+import React from 'react'
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'
@@ -63,30 +64,30 @@ const StudentSlider = () => {
 
   return (
     <section id={elementName}>
-      <Container className="slider-container">
-        <Title className="slider-title">Estudiantes</Title>
+      <Container className='slider-container'>
+        <Title className='slider-title'>Estudiantes</Title>
 
-        <div className="slider-content" id={`${elementName}-content`}>
-          <div className="carousel-controlsE">
-            <button className="carousel-controlE prev" id={`${elementName}-prev`} aria-label="Anterior estudiante" type="button">
-              <i className="ph ph-arrow-circle-left"></i>
+        <div className='slider-content' id={`${elementName}-content`}>
+          <div className='carousel-controlsE'>
+            <button className='carousel-controlE prev' id={`${elementName}-prev`} aria-label='Anterior estudiante' type='button'>
+              <i className='ph ph-arrow-circle-left'></i>
             </button>
-            <button className="carousel-controlE next" id={`${elementName}-next`} aria-label="Siguiente estudiante" type="button">
-              <i className="ph ph-arrow-circle-right"></i>
+            <button className='carousel-controlE next' id={`${elementName}-next`} aria-label='Siguiente estudiante' type='button'>
+              <i className='ph ph-arrow-circle-right'></i>
             </button>
           </div>
 
-          <div className="slider-cards" id={`${elementName}-cards`}>
+          <div className='slider-cards' id={`${elementName}-cards`}>
             {studentsData.map((student, index) => (
-              <div key={`student-${index}`} className="student-card" id={`${elementName}-card-${index}`} data-index={index}>
-                <div className="student-image">
+              <div key={`student-${index}`} className='student-card' id={`${elementName}-card-${index}`} data-index={index}>
+                <div className='student-image'>
                   <Image id={`${elementName}-image-${index}`} src={student.image} alt={student.name} />
                 </div>
-                <div className="student-info">
+                <div className='student-info'>
                   <h3 id={`${elementName}-name-${index}`}>{student.name}</h3>
                   <p id={`${elementName}-position-${index}`}>{student.position}</p>
-                  <div className="company-logo">
-                    <Image className="imglogoC" id={`${elementName}-logo-${index}`} src={student.logo} alt={student.company}  />
+                  <div className='company-logo'>
+                    <Image className='imglogoC' id={`${elementName}-logo-${index}`} src={student.logo} alt={student.company} />
                   </div>
                 </div>
               </div>
@@ -94,14 +95,14 @@ const StudentSlider = () => {
           </div>
         </div>
 
-        <div className="slider-dots" id={`${elementName}-dots`}>
+        <div className='slider-dots' id={`${elementName}-dots`}>
           {studentsData.map((_, index) => (
             <span
               key={`dot-${index}`}
-              className="dot"
+              className='dot'
               id={`${elementName}-dot-${index}`}
               data-slide={index}
-              role="button"
+              role='button'
               tabIndex={0}
               aria-label={`Ir al estudiante ${index + 1}`}></span>
           ))}

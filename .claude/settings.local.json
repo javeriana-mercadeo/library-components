@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(timeout 30s npm run dev)",
+      "WebFetch(domain:www.heroui.com)",
+      "Read(//c/Users/gavilanm-j/Pictures/Screenshots/**)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:*)",
+      "Bash(tree:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

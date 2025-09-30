@@ -17,4 +17,3 @@
           <lfr-widget-web-content id="widget1"></lfr-widget-web-content>
   </div>
 </div>
-

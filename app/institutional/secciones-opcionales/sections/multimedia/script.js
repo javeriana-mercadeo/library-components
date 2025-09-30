@@ -194,8 +194,8 @@ const initializeMultimediaSlider = () => {
 
     if (item.type === 'image') {
       slide.innerHTML = `
-        <img 
-          src="${item.src}" 
+        <img
+          src="${item.src}"
           alt="${item.title || ''}"
           data-lfr-editable-id="multimedia-main-image-${index}"
           data-lfr-editable-type="image"
@@ -287,8 +287,8 @@ const initializeMultimediaSlider = () => {
 
     if (item.type === 'image') {
       slide.innerHTML = `
-        <img 
-          src="${item.thumbnail}" 
+        <img
+          src="${item.thumbnail}"
           alt="${item.title || ''}"
           data-lfr-editable-id="multimedia-thumb-image-${index}"
           data-lfr-editable-type="image"
@@ -296,8 +296,8 @@ const initializeMultimediaSlider = () => {
       `
     } else if (item.type === 'youtube') {
       slide.innerHTML = `
-        <img 
-          src="${item.thumbnail}" 
+        <img
+          src="${item.thumbnail}"
           alt="${item.title || ''}"
         />
         <div class="multimedia-slider_video-indicator">VIDEO</div>
@@ -503,7 +503,7 @@ checkAndInit()
 // ==========================================
 // INSTRUCCIONES DE USO DEL SISTEMA DE LOGS
 // ==========================================
-/* 
+/*
 CONTROL DE LOGS:
 
 1. PARA PRODUCCIÓN:
@@ -517,7 +517,7 @@ CONTROL DE LOGS:
 
 3. TIPOS DE LOGS DISPONIBLES:
    - MultimediaLogger.log() - Información general
-   - MultimediaLogger.info() - Información detallada 
+   - MultimediaLogger.info() - Información detallada
    - MultimediaLogger.warn() - Advertencias
    - MultimediaLogger.error() - Errores
 

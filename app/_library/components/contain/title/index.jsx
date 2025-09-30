@@ -50,7 +50,7 @@ const Title = ({
   const finalWeight = validWeights.includes(weight) ? weight : 'medium'
 
   // Validar jerarquías disponibles
-  const validHierarchies = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+  const validHierarchies = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span']
   const finalHierarchy = validHierarchies.includes(hierarchy) ? hierarchy : 'h2'
 
   // Construcción de clases CSS usando template más limpio
@@ -101,7 +101,7 @@ const Title = ({
   if (isEditable) {
     const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
     baseProps['data-lfr-editable-id'] = editableId
-    baseProps['data-lfr-editable-type'] = 'rich-text'
+    baseProps['data-lfr-editable-type'] = 'text'
   }
 
   // Configurar elemento HTML según jerarquía

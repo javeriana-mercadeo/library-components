@@ -1,0 +1,43 @@
+{
+  "fieldSets": [
+    {
+      "label": "Configuración WhatsApp Institucional",
+      "fields": [
+        {
+          "name": "whatsAppAcademicLevel",
+          "label": "Nivel Académico",
+          "description": "Selecciona el nivel académico para WhatsApp institucional",
+          "type": "select",
+          "dataType": "string",
+          "typeOptions": {
+            "validValues": [
+              {
+                "label": "🎓 Pregrado",
+                "value": "pre"
+              },
+              {
+                "label": "🏛️ Posgrado",
+                "value": "pos"
+              }
+            ]
+          },
+          "defaultValue": "pre"
+        },
+        {
+          "name": "applyImmediate",
+          "label": "Aplicar Inmediatamente",
+          "description": "Aplicar WhatsApp institucional sin esperar detección de programa",
+          "type": "checkbox",
+          "defaultValue": false
+        },
+        {
+          "name": "enableDebugLogs",
+          "label": "Habilitar Logs de Debug",
+          "description": "Mostrar mensajes de debug en consola",
+          "type": "checkbox",
+          "defaultValue": false
+        }
+      ]
+    }
+  ]
+}

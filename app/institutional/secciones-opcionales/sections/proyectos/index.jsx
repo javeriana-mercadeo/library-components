@@ -1,9 +1,6 @@
 'use client'
 import React from 'react'
 import DetalleProyecto from './components/detalleProyecto'
-import Title from '@library/components/contain/title'
-import Paragraph from '@library/components/contain/paragraph'
-import Container from '@library/components/container'
 
 import script from './script.js'
 import './styles.scss'
@@ -25,20 +22,18 @@ const Proyectos = () => {
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
       slideData: { id: 2, type: 'investigacion' }
     },
-        {
+    {
       image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
       title: 'Investigación de Clase Mundial',
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
       slideData: { id: 2, type: 'investigacion' }
     },
-        {
+    {
       image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
       title: 'Investigación de Clase Mundial',
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
       slideData: { id: 2, type: 'investigacion' }
-    },
-
-
+    }
   ]
 
   const getPositionClass = (index, activeIndex, isMobile) => {
@@ -56,49 +51,45 @@ const Proyectos = () => {
   const selectedSlide = carouselManager.selectedSlideIndex !== null ? slides[carouselManager.selectedSlideIndex] : null
 
   return (
-    <section className="hero-carousel" id="carousel-section">
+    <section className='hero-carousel' id='carousel-section'>
       <div>
-        <Title className="carousel-title">Proyectos</Title>
+        <Title className='carousel-title'>Proyectos</Title>
       </div>
-      <Container className="main-container">
+      <Container className='main-container'>
         <div>
-          <div 
-            className="carousel-container"
-            id="carousel-container"
+          <div
+            className='carousel-container'
+            id='carousel-container'
             onTouchStart={carouselManager.handleTouchStart}
             onTouchMove={carouselManager.handleTouchMove}
-            onTouchEnd={carouselManager.handleTouchEnd}
-          >
+            onTouchEnd={carouselManager.handleTouchEnd}>
             {slides.map((slide, index) => (
               <div
                 key={index}
                 className={`carousel-slide ${getPositionClass(index, carouselManager.activeIndex, carouselManager.isMobile)}`}
                 onClick={() => carouselManager.openModal(index)}
                 style={{ cursor: 'pointer' }}
-                data-slide-index={index}
-              >
-                <div className="slide-image" style={{ backgroundImage: `url(${slide.image})` }}>
-                  <div className="slide-content">
+                data-slide-index={index}>
+                <div className='slide-image' style={{ backgroundImage: `url(${slide.image})` }}>
+                  <div className='slide-content'>
                     <h2>{slide.title}</h2>
-                    <Paragraph className='description'>
-                      {slide.description}
-                    </Paragraph>
+                    <Paragraph className='description'>{slide.description}</Paragraph>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="carousel-controls">
-            <button className="carousel-control prev" onClick={carouselManager.prevSlide}>
-              <i className="ph ph-arrow-circle-left"></i>
+          <div className='carousel-controls'>
+            <button className='carousel-control prev' onClick={carouselManager.prevSlide}>
+              <i className='ph ph-arrow-circle-left'></i>
             </button>
-            <button className="carousel-control next" onClick={carouselManager.nextSlide}>
-              <i className="ph ph-arrow-circle-right"></i>
+            <button className='carousel-control next' onClick={carouselManager.nextSlide}>
+              <i className='ph ph-arrow-circle-right'></i>
             </button>
           </div>
 
-          <div className="carousel-indicators" id="carousel-indicators">
+          <div className='carousel-indicators' id='carousel-indicators'>
             {slides.map((_, index) => (
               <button
                 key={index}
@@ -111,12 +102,12 @@ const Proyectos = () => {
         </div>
       </Container>
 
-      <div className="modal-backdrop" id="modal-backdrop" style={{ display: carouselManager.showModal ? 'flex' : 'none' }}>
-        <div className="modal-content">
-          <button className="modal-close" onClick={carouselManager.closeModal}>
+      <div className='modal-backdrop' id='modal-backdrop' style={{ display: carouselManager.showModal ? 'flex' : 'none' }}>
+        <div className='modal-content'>
+          <button className='modal-close' onClick={carouselManager.closeModal}>
             ×
           </button>
-          <div className="modal-body">
+          <div className='modal-body'>
             {selectedSlide && (
               <DetalleProyecto
                 proyecto={selectedSlide}
@@ -150,14 +141,14 @@ export default Proyectos
     <div class="container main-container" id="proyectos-container">
         <div>
             <!-- Carousel container -->
-            <div class="carousel-container swiper" 
+            <div class="carousel-container swiper"
                  id="carousel-container"
                  data-slides-count="8"
                  data-max-cards="4">
 
                 <!-- Wrapper de slides -->
                 <div class="swiper-wrapper" id="slides-wrapper">
-                    
+
                     <!-- Slide 0 -->
                     <div class="carousel-slide swiper-slide"
                          data-slide-index="0"
@@ -306,9 +297,9 @@ export default Proyectos
          id="modal-backdrop-carousel"
          style="display: none;"
          onclick="window.closeCarouselModal && window.closeCarouselModal(event)">
-        
+
         <div class="modal-content" onclick="event.stopPropagation()">
-            
+
             <button class="modal-close"
                     onclick="window.closeCarouselModal && window.closeCarouselModal()"
                     aria-label="Cerrar modal">
@@ -318,7 +309,7 @@ export default Proyectos
             <div class="modal-body">
                 <div class="project-details">
                     <div class="project-layout">
-                        
+
                         <!-- Información del proyecto con campos editables -->
                         <div class="project-info">
                             <!-- Datos editables para cada slide -->
@@ -423,21 +414,21 @@ export default Proyectos
                                 <h2 id="modal-project-title" class="project-title">
                                     <!-- Título dinámico del proyecto -->
                                 </h2>
-                                
+
                                 <div class="info-row">
                                     <strong>Fecha</strong>
                                     <span id="modal-project-date">
                                         <!-- Fecha dinámica -->
                                     </span>
                                 </div>
-                                
+
                                 <div class="info-row">
                                     <strong>Responsable</strong>
                                     <span id="modal-project-responsible">
                                         <!-- Responsable dinámico -->
                                     </span>
                                 </div>
-                                
+
                                 <div class="info-row">
                                     <strong>Descripción</strong>
                                     <p id="modal-project-description" class="project-description">
@@ -449,7 +440,7 @@ export default Proyectos
 
                         <!-- Galería multimedia -->
                         <div class="project-gallery" id="modal-project-gallery">
-                            
+
                             <!-- Contenedor de video -->
                             <div id="modal-project-video" class="video-container">
                                 <!-- El video se insertará dinámicamente -->
@@ -459,15 +450,15 @@ export default Proyectos
                             <div id="modal-project-gallery-items" class="gallery-items">
                                 <!-- Las imágenes se insertarán dinámicamente -->
                             </div>
-                            
+
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
-            
+
         </div>
-        
+
     </div>
 
 </section> */}

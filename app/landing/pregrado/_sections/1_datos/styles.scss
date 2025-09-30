@@ -1,0 +1,536 @@
+@use '@styles/autoload' as *;
+@use './components/programDetail.scss' as *;
+
+@include programDetail;
+
+// ==========================================
+// PROGRAMA DATA VIDEO - ASPECT RATIO EXACTO CON CSS
+// ==========================================
+
+.program-data {
+  background-color: var(--background-100);
+
+  @include dark-theme {
+    background-color: var(--background-200);
+  }
+
+  &_container {
+    position: relative;
+    display: grid;
+    padding-top: var(--spacing-2xl);
+    padding-bottom: var(--spacing-md);
+
+    // ==========================================
+    // MOBILE LAYOUT
+    // ==========================================
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'faculty'
+      'title'
+      'snies'
+      'description'
+      'video'
+      'details'
+      'dates'
+      'enrollment';
+
+    @include liferay-edit-mode {
+      margin-top: rem(0px);
+    }
+
+    @include responsive {
+      gap: var(--spacing-xs);
+      grid-template-columns: 1fr min-content;
+      grid-template-areas:
+        'faculty video'
+        'title video'
+        'snies video'
+        'description video'
+        'details video'
+        'dates enrollment';
+      column-gap: var(--spacing-lg);
+      align-items: start;
+    }
+
+    @include responsive($breakpoint-lg) {
+      grid-template-areas:
+        'faculty video'
+        'title video'
+        'snies video'
+        'description video'
+        'details video'
+        'dates enrollment';
+    }
+
+    @include responsive($breakpoint-xl) {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto auto auto auto auto auto;
+      grid-template-areas:
+        'faculty video'
+        'title video'
+        'snies video'
+        'description video'
+        'details video'
+        'dates video'
+        'enrollment enrollment';
+    }
+  }
+  // ==========================================
+  // ÁREAS DEL GRID
+  // ==========================================
+  &_faculty-container {
+    display: inline;
+
+    & > * {
+      display: inline;
+    }
+  }
+
+  &_faculty {
+    color: var(--primary);
+    grid-area: faculty;
+  }
+
+  &_title {
+    display: inline;
+    grid-area: title;
+
+    span {
+      display: inline;
+      color: var(--neutral-200) !important;
+      font-size: var(--font-size-subtitle) !important;
+      font-weight: var(--font-weight-bold) !important;
+
+      @include responsive {
+        font-size: var(--font-size-principal-title) !important;
+      }
+    }
+
+    span.program-data_title-program {
+      color: var(--primary) !important;
+    }
+  }
+
+  &_snies {
+    grid-area: snies;
+  }
+
+  &_description {
+    grid-area: description;
+  }
+
+  .program-details {
+    grid-area: details;
+    align-self: start;
+    margin-bottom: var(--spacing-md);
+
+    @include responsive {
+      margin-bottom: 0;
+    }
+  }
+
+  .program-dates-container {
+    grid-area: dates;
+    align-self: start;
+
+    .program-dates {
+      display: flex;
+      align-items: start;
+      margin-bottom: var(--spacing-sm);
+
+      // Ícono del detalle
+      &_icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--icon-size-xl);
+        height: var(--icon-size-xl);
+        font-size: var(--icon-size-md);
+        border-radius: 50%;
+        background-color: var(--primary) !important;
+        color: var(--neutral);
+        flex-shrink: 0;
+      }
+
+      // Contenido del detalle
+      &_content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      // Label del detalle
+      &_label {
+        font-size: var(--font-size-paragraph);
+        margin-bottom: rem(0px);
+        margin-left: var(--spacing-sm);
+      }
+
+      // Valor del detalle
+      &_value {
+        font-size: var(--font-size-paragraph);
+        margin-bottom: 0;
+        margin-left: var(--spacing-sm);
+      }
+
+      // Contenedor de fechas
+      &--dates {
+        align-items: start;
+
+        @include responsive {
+          grid-column: 1 / -1;
+        }
+      }
+
+      &_dates {
+        display: flex;
+        align-items: start;
+        justify-content: start;
+        flex-direction: column;
+        gap: var(--spacing-2xs);
+        margin-bottom: 0;
+        margin-left: var(--spacing-sm);
+      }
+
+      &_date-item > * {
+        display: inline;
+      }
+
+      &_date-period {
+        font-size: var(--font-size-paragraph);
+        margin: 0;
+      }
+
+      &_date-value {
+        font-size: var(--font-size-paragraph);
+        margin: 0;
+      }
+    }
+  }
+
+  &_enrollment {
+    grid-area: enrollment;
+    align-self: end;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--spacing-2xs);
+    padding-bottom: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    border-top: 1px solid var(--neutral-900);
+
+    @include responsive {
+      align-items: center;
+      justify-content: center;
+      margin-top: var(--spacing-lg);
+      text-align: center;
+      border-top: none;
+    }
+
+    @include responsive($breakpoint-xl) {
+      border-top: 1px solid var(--neutral-900);
+    }
+
+    &-note-container {
+      display: inline;
+      line-height: 1.2;
+
+      & > * {
+        display: inline;
+      }
+    }
+  }
+
+  &_enrollment-link {
+    margin-left: var(--spacing-2xl);
+  }
+
+  &_enrollment-note {
+    margin-top: var(--spacing-md) !important;
+    margin-bottom: var(--spacing-md) !important;
+    align-self: end;
+    line-height: 1.2;
+
+    @include responsive($breakpoint-xl) {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  // ==========================================
+  // VIDEO/MEDIA CONTAINER - PATRÓN EXPERIENCIA MEJORADO
+  // ==========================================
+
+  @include liferay-edit-mode {
+    &_media {
+      max-width: 300px;
+    }
+  }
+
+  &_media {
+    grid-area: video;
+    justify-self: center;
+    margin: auto;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+
+    @include responsive {
+      justify-self: center;
+      align-self: stretch; // Permitir que se estire con el contenido
+      margin-top: 0;
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @include responsive($breakpoint-xl) {
+      justify-self: end;
+    }
+  }
+
+  &_video-card {
+    width: clamp(280px, 85vw, 350px);
+    max-width: 428px;
+    background: transparent; // Dejar que el contenedor interno maneje el fondo
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    position: relative;
+
+    @include responsive {
+      width: clamp(300px, 40vw, 520px);
+      max-width: 520px;
+      flex: 1; // Permitir que se estire en altura
+      display: flex;
+      flex-direction: column;
+    }
+
+    @include responsive($breakpoint-lg) {
+      width: clamp(400px, 38vw, 520px);
+    }
+  }
+
+  &_video-container {
+    position: relative;
+    width: 100%;
+    background: transparent;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    min-height: 280px;
+
+    @include responsive {
+      aspect-ratio: 612 / 880;
+      width: clamp(300px, 35vw, 450px);
+      height: auto;
+      margin: auto;
+      min-height: auto;
+    }
+
+    // Fondo gris solo durante la carga
+    &:not(.video-loaded) {
+      background: var(--neutral-900);
+    }
+
+    &:not(.video-loaded)::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: rem(40px);
+      height: rem(40px);
+      margin: auto;
+      border: rem(4px) solid var(--neutral-600);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: videoLoading 1s linear infinite;
+      z-index: 3;
+    }
+
+    &.video-loaded::before {
+      opacity: 0;
+      animation: none;
+    }
+  }
+
+  // Video overlay para fallback inmediato
+  &__video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: var(--border-radius-lg);
+    transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 3;
+
+    &--fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  // Loader simple con CSS puro
+  &__video-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid var(--color-neutral-300);
+      border-top: 2px solid var(--color-primary-500);
+      border-radius: 50%;
+      animation: video-loader-spin 1s linear infinite;
+    }
+
+    &--hidden {
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+    }
+  }
+
+  &__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: var(--border-radius-lg);
+    object-fit: cover;
+    object-position: center;
+    z-index: 2;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    background-color: #000;
+
+    &--mobile {
+      display: block;
+
+      @include responsive {
+        display: none;
+      }
+    }
+
+    &--desktop {
+      display: none;
+
+      @include responsive {
+        display: block;
+      }
+    }
+  }
+
+  // ==========================================
+  // PRINT STYLES
+  // ==========================================
+  @media print {
+    display: block !important;
+
+    &_media {
+      display: none;
+    }
+
+    &_content {
+      display: block;
+    }
+
+    &_title {
+      color: #000;
+    }
+
+    &_description {
+      color: #333;
+    }
+  }
+}
+
+// ==========================================
+// ANIMACIONES
+// ==========================================
+@keyframes videoLoading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// ==========================================
+// ESTADOS DE CARGA OPTIMIZADOS
+// ==========================================
+.program-data {
+  // Estado completamente cargado
+  &.loaded {
+    .program-data_media {
+      opacity: 1;
+      transition: opacity 0.3s ease-in-out;
+    }
+  }
+
+  // Optimizaciones para dispositivos con poca memoria
+  &[data-performance='low'] {
+    .program-data__video {
+      transition: opacity 0.2s ease;
+    }
+  }
+}
+
+// ==========================================
+// SOPORTE PARA NAVEGADORES SIN ASPECT-RATIO
+// ==========================================
+@supports not (aspect-ratio: 1/1) {
+  .program-data_video-container {
+    position: relative;
+
+    @media (max-width: 767px) {
+      // Móvil: 1:1 sin pseudo-elementos
+      height: 0;
+      padding-bottom: 100%;
+    }
+
+    @media (min-width: 768px) {
+      // Desktop: 612:880 ≈ 69.5%
+      height: 0;
+      padding-bottom: 69.5%;
+    }
+
+    .program-data__video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+// ==========================================
+// ANIMACIONES PARA VIDEO
+// ==========================================
+@keyframes video-loader-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

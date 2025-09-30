@@ -1,125 +1,477 @@
-// pages/doctorado.js o components/pages/DoctoradoPage.js
-import VideoDoctorado from '../components/VideoDoctorado'
+/**
+ * VideoDoctorado - JavaScript Vanilla
+ * Sistema de gestión de videos de fondo y modales
+ */
+;(function () {
+  'use strict'
 
-const DoctoradoPage = () => {
-  // Configuración básica (usa valores por defecto)
-  const basicConfig = {
-    backgroundMedia: {
-      backgroundUrl: 'https://cloudfront-us-east-1.images.arcpublishing.com/semana/BFV7EVLSUNEGJBWIRE4XO64FXM.gif',
-      mediaType: 'image'
+  // Configuración global
+  const CONFIG = {
+    SELECTORS: {
+      root: '.video-doctorado',
+      youtubeContainer: '#youtube-container',
+      html5Container: '#html5-video-container',
+      bgImage: '[data-lfr-editable-id="background-media-main"] img',
+      modalTrigger: '[data-modal-target]',
+      modalClose: '.program-detail-modal__close',
+      modal: '.program-detail-modal'
+    },
+    CLASSES: {
+      active: 'active',
+      modalActive: 'program-detail-modal--active',
+      loading: 'video-loading'
+    },
+    DELAYS: {
+      resize: 300,
+      configUpdate: 50
     }
   }
 
-  // Configuración con video de fondo
-  const videoConfig = {
-    backgroundMedia: {
-      backgroundUrl: 'https://example.com/video-background.mp4',
-      mediaType: 'video'
-    },
-    title: 'Doctorado en Ciencias Sociales y Humanas',
-    description: 'Comprende, analiza y explica los complejos problemas sociales y humanos.',
-    showAnimations: true
+  // Estado del sistema
+  let systemState = {
+    initialized: false,
+    currentVideoType: 'none', // 'youtube', 'html5', 'none'
+    activeModal: null,
+    resizeTimeout: null
   }
 
-  // Configuración completa personalizada
-  const customConfig = {
-    backgroundMedia: {
-      backgroundUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644',
-      mediaType: 'image'
-    },
-    title: 'Doctorado Personalizado',
-    description: 'Descripción personalizada del programa de doctorado.',
-    degree: 'Doctor en Ciencias Personalizadas',
-    sniesCode: 'SNIES 12345',
-    academicLevel: 'Posgrado Avanzado',
-    duration: 'Seis (6) semestres',
-    modality: 'Virtual / Nocturna',
-    timeAvailability: 'Modalidad flexible',
-    semesterInvestment: '$25.000.000',
-    inscription: 'Inscríbete ahora',
-    ctaLink: 'https://universidad.edu.co/inscripciones',
-    footnote: '*Programa con modalidad híbrida disponible',
-    showAnimations: true,
-    isEditMode: false
+  /* =====================
+       UTILIDADES DE VIDEO
+    ===================== */
+
+  /**
+   * Extrae ID de video de YouTube desde URL
+   * @param {string} url - URL de YouTube
+   * @returns {string|null} ID del video o null
+   */
+  function extractYouTubeId(url) {
+    if (!url) return null
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
+    const match = url.match(regExp)
+    return match && match[2].length === 11 ? match[2] : null
   }
 
-  return (
-    <div>
-      {/* Uso básico */}
-      <VideoDoctorado {...basicConfig} />
-      
-      {/* O con configuración personalizada */}
-      {/* <VideoDoctorado {...customConfig} /> */}
-      
-      {/* O con props individuales */}
-      {/*
-      <VideoDoctorado 
-        backgroundMedia={{
-          backgroundUrl: 'https://example.com/background.jpg',
-          mediaType: 'image'
-        }}
-        title="Mi Doctorado"
-        description="Descripción del programa"
-        semesterInvestment="$20.000.000"
-        ctaLink="/inscripciones"
-        showAnimations={true}
-      />
-      */}
-    </div>
-  )
-}
+  /**
+   * Verifica si una URL es de YouTube
+   * @param {string} text - Texto a verificar
+   * @returns {boolean}
+   */
+  function isYouTubeUrl(text) {
+    return !!text && (text.includes('youtube.com') || text.includes('youtu.be'))
+  }
 
-export default DoctoradoPage
+  /**
+   * Verifica si es URL de video directo
+   * @param {string} text - Texto a verificar
+   * @returns {boolean}
+   */
+  function isDirectVideoUrl(text) {
+    if (!text) return false
+    return (
+      /\.(mp4|webm|ogg|mov|avi)(\?|$)/i.test(text) ||
+      text.includes('cloudfront') ||
+      text.includes('amazonaws') ||
+      text.includes('.mp4') ||
+      text.includes('.webm')
+    )
+  }
 
-// Ejemplo para simular modo edición (desarrollo/testing)
-export const DoctoradoEditMode = () => {
-  return (
-    <VideoDoctorado 
-      isEditMode={true}
-      backgroundMedia={{
-        backgroundUrl: 'https://example.com/editable-background.jpg',
-        mediaType: 'image'
-      }}
-      showAnimations={false}
-    />
-  )
-}
-
-// Ejemplo con gestión de estado global (si usas Context o Redux)
-export const DoctoradoWithGlobalState = () => {
-  // Simular datos que vienen de un CMS o API
-  const programData = {
-    id: 'doctorado-ciencias-sociales',
-    backgroundMedia: {
-      backgroundUrl: process.env.NEXT_PUBLIC_CDN_URL + '/backgrounds/doctorado-bg.jpg',
-      mediaType: 'image'
-    },
-    content: {
-      title: 'Doctorado en Ciencias Sociales y Humanas',
-      description: 'Programa de excelencia académica...',
-      degree: 'Doctor en Ciencias Sociales y Humanas',
-      sniesCode: 'SNIES 54104',
-      academicLevel: 'Posgrado',
-      duration: 'Cuatro (4) semestres',
-      modality: 'Presencial / Diurna',
-      timeAvailability: 'Disponibilidad de tiempo completo',
-      semesterInvestment: '$19.871.000',
-      inscription: 'Descubre cómo inscribirte',
-      ctaLink: '/inscripciones',
-      footnote: '*Opción de clase remota y sincrónica disponible'
-    },
-    settings: {
-      showAnimations: true,
-      isEditMode: false
+  /**
+   * Debounce function para optimizar eventos
+   * @param {Function} fn - Función a ejecutar
+   * @param {number} delay - Delay en ms
+   * @returns {Function}
+   */
+  function debounce(fn, delay) {
+    let timeout
+    return function () {
+      const context = this
+      const args = arguments
+      clearTimeout(timeout)
+      timeout = setTimeout(() => fn.apply(context, args), delay)
     }
   }
 
-  return (
-    <VideoDoctorado 
-      {...programData.backgroundMedia}
-      {...programData.content}
-      {...programData.settings}
-      backgroundMedia={programData.backgroundMedia}
-    />
-  )
-}
+  /* =====================
+       CREADORES DE ELEMENTOS
+    ===================== */
+
+  /**
+   * Crea iframe de YouTube
+   * @param {string} videoId - ID del video
+   * @returns {HTMLIFrameElement}
+   */
+  function createYouTubeIframe(videoId) {
+    const iframe = document.createElement('iframe')
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1`
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+    iframe.allowFullscreen = true
+    iframe.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: cover;
+        `
+    return iframe
+  }
+
+  /**
+   * Crea elemento video HTML5
+   * @param {string} videoUrl - URL del video
+   * @returns {HTMLVideoElement}
+   */
+  function createHTML5Video(videoUrl) {
+    const video = document.createElement('video')
+    video.src = videoUrl
+    video.setAttribute('muted', '')
+    video.setAttribute('loop', '')
+    video.setAttribute('autoplay', '')
+    video.setAttribute('playsinline', '')
+    video.muted = true
+    video.loop = true
+    video.autoplay = true
+    video.playsInline = true
+    video.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        `
+
+    // Manejar eventos de video
+    video.addEventListener('canplay', () => {
+      video.play().catch(e => console.log('Autoplay blocked:', e))
+    })
+
+    return video
+  }
+
+  /**
+   * Crea indicador de carga
+   * @returns {HTMLDivElement}
+   */
+  function createLoadingIndicator() {
+    const loading = document.createElement('div')
+    loading.className = CONFIG.CLASSES.loading
+    loading.innerHTML = `
+            <div style="text-align: center;">
+                <div class="video-loading-spinner"></div>
+                <p>Cargando video...</p>
+            </div>
+        `
+    return loading
+  }
+
+  /* =====================
+       GESTIÓN DE VIDEOS
+    ===================== */
+
+  /**
+   * Obtiene la URL configurada según el dispositivo
+   * @returns {string}
+   */
+  function getConfiguredUrl() {
+    if (typeof configuration === 'undefined' || !configuration) {
+      console.log('VideoDoctorado: Configuration no disponible')
+      return ''
+    }
+
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
+    const desktop = configuration.videoDesktop ? configuration.videoDesktop.trim() : ''
+    const mobile = configuration.videoMobile ? configuration.videoMobile.trim() : ''
+
+    const selectedUrl = isMobile && mobile ? mobile : desktop
+
+    console.log('VideoDoctorado: URL seleccionada:', {
+      isMobile,
+      desktop,
+      mobile,
+      selectedUrl
+    })
+
+    return selectedUrl
+  }
+
+  /**
+   * Limpia todos los contenedores de video
+   */
+  function clearContainers() {
+    const root = document.querySelector(CONFIG.SELECTORS.root)
+    if (!root) return
+
+    const youtubeContainer = root.querySelector(CONFIG.SELECTORS.youtubeContainer)
+    const html5Container = root.querySelector(CONFIG.SELECTORS.html5Container)
+    const bgImage = root.querySelector(CONFIG.SELECTORS.bgImage)
+
+    if (youtubeContainer) {
+      youtubeContainer.innerHTML = ''
+      youtubeContainer.classList.remove(CONFIG.CLASSES.active)
+    }
+
+    if (html5Container) {
+      html5Container.innerHTML = ''
+      html5Container.classList.remove(CONFIG.CLASSES.active)
+    }
+
+    if (bgImage) {
+      bgImage.style.display = 'block'
+    }
+
+    systemState.currentVideoType = 'none'
+  }
+
+  /**
+   * Actualiza el fondo de video según configuración
+   */
+  function updateVideoBackground() {
+    console.log('VideoDoctorado: Actualizando fondo de video')
+
+    const root = document.querySelector(CONFIG.SELECTORS.root)
+    if (!root) {
+      console.error('VideoDoctorado: Elemento root no encontrado')
+      return
+    }
+
+    clearContainers()
+
+    const url = getConfiguredUrl()
+    if (!url) {
+      console.log('VideoDoctorado: No hay URL configurada, mostrando imagen')
+      return
+    }
+
+    console.log('VideoDoctorado: Procesando URL:', url)
+
+    const youtubeContainer = root.querySelector(CONFIG.SELECTORS.youtubeContainer)
+    const html5Container = root.querySelector(CONFIG.SELECTORS.html5Container)
+    const bgImage = root.querySelector(CONFIG.SELECTORS.bgImage)
+
+    // Procesamiento de YouTube
+    if (isYouTubeUrl(url)) {
+      const id = extractYouTubeId(url)
+      console.log('VideoDoctorado: YouTube ID extraído:', id)
+
+      if (id && youtubeContainer) {
+        const iframe = createYouTubeIframe(id)
+        youtubeContainer.appendChild(iframe)
+        youtubeContainer.classList.add(CONFIG.CLASSES.active)
+        if (bgImage) bgImage.style.display = 'none'
+        systemState.currentVideoType = 'youtube'
+        console.log('VideoDoctorado: YouTube configurado')
+      }
+      return
+    }
+
+    // Procesamiento de video HTML5
+    if (isDirectVideoUrl(url)) {
+      console.log('VideoDoctorado: Procesando como video HTML5')
+
+      if (!html5Container) {
+        console.error('VideoDoctorado: Contenedor HTML5 no disponible')
+        return
+      }
+
+      const loading = createLoadingIndicator()
+      html5Container.appendChild(loading)
+      html5Container.classList.add(CONFIG.CLASSES.active)
+
+      const video = createHTML5Video(url)
+
+      video.addEventListener('loadeddata', () => {
+        console.log('VideoDoctorado: Video HTML5 cargado')
+        if (loading && loading.parentNode) {
+          loading.remove()
+        }
+      })
+
+      video.addEventListener('error', e => {
+        console.error('VideoDoctorado: Error en video HTML5:', e)
+        loading.innerHTML = '<p style="color:#ff6b6b;">Error cargando video</p>'
+        setTimeout(() => {
+          html5Container.classList.remove(CONFIG.CLASSES.active)
+          if (bgImage) bgImage.style.display = 'block'
+          systemState.currentVideoType = 'none'
+        }, 3000)
+      })
+
+      html5Container.appendChild(video)
+      if (bgImage) bgImage.style.display = 'none'
+      systemState.currentVideoType = 'html5'
+      console.log('VideoDoctorado: Video HTML5 configurado')
+    }
+  }
+
+  /* =====================
+       SISTEMA DE MODALES
+    ===================== */
+
+  const ModalSystem = {
+    /**
+     * Inicializa el sistema de modales
+     */
+    init() {
+      this.setupEventListeners()
+    },
+
+    /**
+     * Configura event listeners
+     */
+    setupEventListeners() {
+      // Abrir modales
+      document.addEventListener('click', e => {
+        const trigger = e.target.closest(CONFIG.SELECTORS.modalTrigger)
+        if (trigger) {
+          e.preventDefault()
+          const modalId = trigger.getAttribute('data-modal-target')
+          this.openModal(modalId)
+        }
+
+        // Cerrar modales
+        const closeBtn = e.target.closest(CONFIG.SELECTORS.modalClose)
+        if (closeBtn) {
+          e.preventDefault()
+          this.closeModal()
+        }
+
+        // Cerrar con backdrop
+        if (e.target.classList.contains('program-detail-modal') && e.target.classList.contains(CONFIG.CLASSES.modalActive)) {
+          this.closeModal()
+        }
+      })
+
+      // Cerrar con Escape
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && systemState.activeModal) {
+          this.closeModal()
+        }
+      })
+    },
+
+    /**
+     * Abre modal específico
+     * @param {string} modalId - ID del modal
+     */
+    openModal(modalId) {
+      const modal = document.getElementById(modalId)
+      if (modal) {
+        modal.classList.add(CONFIG.CLASSES.modalActive)
+        document.body.style.overflow = 'hidden'
+        systemState.activeModal = modalId
+
+        // Focus para accesibilidad
+        const closeButton = modal.querySelector(CONFIG.SELECTORS.modalClose)
+        if (closeButton) {
+          closeButton.focus()
+        }
+
+        console.log('VideoDoctorado: Modal abierto:', modalId)
+      }
+    },
+
+    /**
+     * Cierra modal activo
+     */
+    closeModal() {
+      if (systemState.activeModal) {
+        const modal = document.getElementById(systemState.activeModal)
+        if (modal) {
+          modal.classList.remove(CONFIG.CLASSES.modalActive)
+        }
+      }
+
+      document.body.style.overflow = ''
+      systemState.activeModal = null
+      console.log('VideoDoctorado: Modal cerrado')
+    }
+  }
+
+  /* =====================
+       INICIALIZACIÓN
+    ===================== */
+
+  /**
+   * Inicializa el sistema completo
+   */
+  function initializeSystem() {
+    if (systemState.initialized) return
+
+    console.log('VideoDoctorado: Inicializando sistema')
+
+    const root = document.querySelector(CONFIG.SELECTORS.root)
+    if (!root) {
+      console.error('VideoDoctorado: Elemento root no encontrado')
+      return
+    }
+
+    // Configurar video inicial con delay para configuration
+    setTimeout(() => {
+      updateVideoBackground()
+    }, 100)
+
+    // Configurar resize listener
+    const onResize = debounce(updateVideoBackground, CONFIG.DELAYS.resize)
+    window.addEventListener('resize', onResize)
+
+    // Configurar listener de configuración
+    if (root.addEventListener) {
+      root.addEventListener('configurationChanged', e => {
+        console.log('VideoDoctorado: Configuración cambiada:', e.detail)
+
+        if (e && e.detail && e.detail.configuration) {
+          if (typeof configuration !== 'undefined') {
+            Object.assign(configuration, e.detail.configuration)
+          } else {
+            window.configuration = e.detail.configuration
+          }
+
+          setTimeout(updateVideoBackground, CONFIG.DELAYS.configUpdate)
+        }
+      })
+    }
+
+    // Integración con Liferay
+    if (typeof Liferay !== 'undefined' && Liferay.on) {
+      Liferay.on('fragmentEntryLinkConfigurationChanged', event => {
+        console.log('VideoDoctorado: FragmentEntryLink cambió:', event)
+        setTimeout(updateVideoBackground, 100)
+      })
+    }
+
+    // Inicializar sistema de modales
+    ModalSystem.init()
+
+    systemState.initialized = true
+    console.log('VideoDoctorado: Sistema inicializado correctamente')
+  }
+
+  /**
+   * API pública
+   */
+  window.VideoDoctorado = {
+    init: initializeSystem,
+    updateVideo: updateVideoBackground,
+    clearContainers: clearContainers,
+    openModal: ModalSystem.openModal.bind(ModalSystem),
+    closeModal: ModalSystem.closeModal.bind(ModalSystem),
+    getState: () => ({ ...systemState })
+  }
+
+  // Inicialización automática
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSystem)
+  } else {
+    initializeSystem()
+  }
+
+  // Fallbacks para diferentes entornos
+  setTimeout(initializeSystem, 100)
+  setTimeout(initializeSystem, 500)
+
+  console.log('VideoDoctorado: Script cargado')
+})()

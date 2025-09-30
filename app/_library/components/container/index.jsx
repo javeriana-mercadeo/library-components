@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-const Container = ({ children, className, id }) => {
+const Container = ({ children, className, id, ...restProps }) => {
   // Construcción de clases CSS
   const classes = {
     base: 'container',
@@ -12,7 +12,8 @@ const Container = ({ children, className, id }) => {
 
   // Configurar propiedades base
   const baseProps = {
-    className: finalClassName
+    className: finalClassName,
+    ...restProps // Spread todas las props adicionales (incluye data-* attributes)
   }
 
   // Agregar id si se proporciona

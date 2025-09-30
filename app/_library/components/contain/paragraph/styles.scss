@@ -18,30 +18,55 @@
       font-size: var(--font-size-xs);
       margin-bottom: var(--spacing-xs);
       line-height: 1;
+
+      .lead {
+        font-size: var(--font-size-xs);
+        line-height: 1;
+      }
     }
 
     &.paragraph-sm {
       font-size: var(--font-size-small);
       margin-bottom: var(--spacing-sm);
       line-height: 1.2;
+
+      .lead {
+        font-size: var(--font-size-small);
+        line-height: 1.2;
+      }
     }
 
     &.paragraph-md {
       font-size: var(--font-size-paragraph);
       margin-bottom: var(--spacing-md);
       line-height: 1.5;
+
+      .lead {
+        font-size: var(--font-size-paragraph);
+        line-height: 1.5;
+      }
     }
 
     &.paragraph-lg {
       font-size: var(--font-size-caption);
       margin-bottom: var(--spacing-md);
       line-height: 1.6;
+
+      .lead {
+        font-size: var(--font-size-caption);
+        line-height: 1.6;
+      }
     }
 
     &.paragraph-xl {
       font-size: var(--font-size-subtitle);
       margin-bottom: var(--spacing-lg);
       line-height: 1.8;
+
+      .lead {
+        font-size: var(--font-size-subtitle);
+        line-height: 1.8;
+      }
     }
 
     // ==========================================
@@ -94,6 +119,14 @@
     // ==========================================
     // ELEMENTOS INTERNOS COMUNES
     // ==========================================
+
+    @include liferay-edit-mode {
+      .lead {
+        color: var(--primary);
+        font-weight: bold;
+      }
+    }
+
     strong,
     b {
       font-weight: var(--font-weight-bold);

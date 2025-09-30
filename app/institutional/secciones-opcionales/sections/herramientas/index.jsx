@@ -5,7 +5,6 @@ import Image from '@library/components/contain/image'
 
 import script from './script.js'
 import info from './info.json'
-import './styles.scss'
 
 const Herramientas = () => {
   const elementName = info.id || 'herramientas'
@@ -28,13 +27,13 @@ const Herramientas = () => {
 
   return (
     <section id={elementName}>
-      <Container className="tools-container">
-        <Title className="tools-titulo" id={`${elementName}-title`} size="2xl" weight="bold" align="center" color="neutral">
+      <Container className='tools-container'>
+        <Title className='tools-titulo' id={`${elementName}-title`} size='2xl' weight='bold' align='center' color='neutral'>
           Herramientas
         </Title>
 
-        <div className="tools-content">
-          <div className="tools-texto">
+        <div className='tools-content'>
+          <div className='tools-texto'>
             <Title id={`${elementName}-sub-titleH`}> Lorem ipsum dolor sit amet</Title>
 
             <Paragraph id={`${elementName}-paragraph`}>
@@ -44,9 +43,9 @@ const Herramientas = () => {
           </div>
 
           {/* Grid que será reorganizado automáticamente en hexágono */}
-          <div className="tools-logos-grid">
+          <div className='tools-logos-grid'>
             {logosHerramientas.map((logo, index) => (
-              <div key={`logo-${index}`} className="logo-item" title={logo.nombre}>
+              <div key={`logo-${index}`} className='logo-item' title={logo.nombre}>
                 <Image id={`${elementName}-logo-${index}`} src={logo.imagen} alt={logo.nombre} />
               </div>
             ))}
