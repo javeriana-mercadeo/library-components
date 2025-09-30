@@ -273,7 +273,7 @@ const RequisitosPregrado = () => {
                     block: 'start'
                   })
                 }}
-                endIcon={<i className="ph ph-arrow-right" aria-hidden="true"></i>}
+                endIcon={<i className="ph ph-arrow-down" aria-hidden="true"></i>}
               >
                 Ver detalles de evaluación
               </Btn>
