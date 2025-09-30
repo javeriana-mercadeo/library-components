@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './styles.scss'
 import Title from '../../../../_library/components/contain/title'
 import Paragraph from '../../../../_library/components/contain/paragraph'
@@ -6,12 +6,14 @@ import Container from '@library/components/container'
 import scrollLogic from './script.js'
 
 const DobleTitulacion2 = () => {
-  // Ejecutar scroll logic solo en cliente
-  if (typeof window !== 'undefined') {
-    setTimeout(() => {
+  // Ejecutar scroll logic solo en cliente después de montar
+  useEffect(() => {
+    const timer = setTimeout(() => {
       scrollLogic()
     }, 100)
-  }
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const programItems = [
     {
@@ -70,8 +72,8 @@ const DobleTitulacion2 = () => {
             </div>
 
             {/* Columna derecha - Contenido con scroll */}
-            <div className='right-column' id='right-column-scroll'>
-              <div className='scroll-container' id='scroll-container'>
+            <div className='right-column' id='right-column-scroll' suppressHydrationWarning>
+              <div className='scroll-container' id='scroll-container' suppressHydrationWarning>
                 {/* Header section - solo desktop */}
                 <div className='header-section'>
                   <div className='title-section'>

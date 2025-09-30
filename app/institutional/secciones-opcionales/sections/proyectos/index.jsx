@@ -3,15 +3,14 @@ import React from 'react'
 import { Container } from '@library/components'
 import Title from '@library/components/contain/title'
 import Paragraph from '@library/components/contain/paragraph'
-import DetalleProyecto from './components/detalleProyecto'
 
-import CarouselManager from './script.js'
+import './script.js'
 import './styles.scss'
 
-// Inicializar el script una sola vez
-const carouselManager = new CarouselManager()
-
 const Proyectos = () => {
+  // El script IIFE se auto-inicializa cuando se carga
+  // No necesitamos hacer nada manualmente aquí
+
   const slides = [
     {
       image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1',
@@ -39,98 +38,68 @@ const Proyectos = () => {
     }
   ]
 
-  const getPositionClass = (index, activeIndex, isMobile) => {
-    if (isMobile) {
-      return index === activeIndex ? 'active' : ''
-    } else {
-      if (index === activeIndex) return 'active left'
-      if (index === (activeIndex + 1) % slides.length) return 'active center'
-      if (index === (activeIndex + 2) % slides.length) return 'active right'
-      return ''
-    }
-  }
-
-  // Obtener el slide seleccionado para el modal
-  const selectedSlide = carouselManager.selectedSlideIndex !== null ? slides[carouselManager.selectedSlideIndex] : null
 
   return (
-    <section className='hero-carousel' id='carousel-section'>
+    <section className='hero-carousel' id='carousel-section' data-slides-count={slides.length}>
       <div>
-        <Title className='carousel-title'>Proyectos</Title>
+        <Title className='carousel-title'>Proyectos Destacados</Title>
       </div>
       <Container className='main-container'>
         <div>
           <div
-            className='carousel-container'
-            id='carousel-container'
-            onTouchStart={carouselManager.handleTouchStart}
-            onTouchMove={carouselManager.handleTouchMove}
-            onTouchEnd={carouselManager.handleTouchEnd}>
-            {slides.map((slide, index) => (
-              <div
-                key={index}
-                className={`carousel-slide ${getPositionClass(index, carouselManager.activeIndex, carouselManager.isMobile)}`}
-                onClick={() => carouselManager.openModal(index)}
-                style={{ cursor: 'pointer' }}
-                data-slide-index={index}>
-                <div className='slide-image' style={{ backgroundImage: `url(${slide.image})` }}>
-                  <div className='slide-content'>
-                    <h2>{slide.title}</h2>
-                    <Paragraph className='description'>{slide.description}</Paragraph>
+            className="carousel-container swiper"
+            id="carousel-container"
+            data-slides-count={slides.length}>
+            <div className="swiper-wrapper" id="slides-wrapper">
+              {slides.map((slide, index) => (
+                <div
+                  key={index}
+                  className="carousel-slide swiper-slide"
+                  data-slide-index={index}
+                  data-slide-type={slide.slideData?.type || 'default'}>
+                  <div className="slide-image" style={{ backgroundImage: `url(${slide.image})` }}>
+                    <div className="slide-content">
+                      <h2 className="slide-title">{slide.title}</h2>
+                      <Paragraph className="description">{slide.description}</Paragraph>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <div className='carousel-controls'>
-            <button className='carousel-control prev' onClick={carouselManager.prevSlide}>
-              <i className='ph ph-arrow-circle-left'></i>
-            </button>
-            <button className='carousel-control next' onClick={carouselManager.nextSlide}>
-              <i className='ph ph-arrow-circle-right'></i>
-            </button>
-          </div>
+            <div className='carousel-controls' id='carousel-controls'>
+              <button className='carousel-control prev' id='carousel-prev' type='button' aria-label='Slide anterior'>
+                <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
+              </button>
+              <button className='carousel-control next' id='carousel-next' type='button' aria-label='Slide siguiente'>
+                <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
+              </button>
+            </div>
 
-          <div className='carousel-indicators' id='carousel-indicators'>
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                className={`indicator ${index === carouselManager.activeIndex ? 'active' : ''}`}
-                onClick={() => carouselManager.setActiveSlide(index)}
-                data-indicator-index={index}
-              />
-            ))}
+            <div className='carousel-indicators' id='carousel-indicators'>
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  className={`indicator ${index === 0 ? 'active' : ''}`}
+                  data-indicator-index={index}
+                  type='button'
+                  aria-label={`Ir a slide ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </Container>
 
-      <div className='modal-backdrop' id='modal-backdrop' style={{ display: carouselManager.showModal ? 'flex' : 'none' }}>
-        <div className='modal-content'>
-          <button className='modal-close' onClick={carouselManager.closeModal}>
-            ×
-          </button>
-          <div className='modal-body'>
-            {selectedSlide && (
-              <DetalleProyecto
-                proyecto={selectedSlide}
-                slideData={selectedSlide.slideData}
-                title={selectedSlide.title}
-                description={selectedSlide.description}
-                image={selectedSlide.image}
-                onSwipe={carouselManager.handleSwipeInModal}
-              />
-            )}
-          </div>
-        </div>
-      </div>
+      {/* El modal es manejado por el script de la IIFE */}
     </section>
   )
 }
 
 export default Proyectos
 
-{/* <section class="container hero-carousel" id="carousel-section">
+{
+  /* <section class="container hero-carousel" id="carousel-section">
     <!-- Título principal -->
     <div>
         <h2 class="title title-lg carousel-title"

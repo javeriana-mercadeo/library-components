@@ -62,7 +62,12 @@ const StudentSlider = () => {
 
   // Ejecutar script al cargar el componente
   useEffect(() => {
-    script()
+    if (script && script.initialize) {
+      const targetElement = document.getElementById('student-slider-root')
+      if (targetElement) {
+        script.initialize(targetElement)
+      }
+    }
   }, [])
 
   return (

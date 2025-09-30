@@ -7,9 +7,5 @@
             Proyectos Destacados
         </h2>
     </div>
-
- <lfr-widget-web-content id="widget1"></lfr-widget-web-content>
-
+    <lfr-widget-web-content id="widget1"></lfr-widget-web-content>
 </section>
-
-
