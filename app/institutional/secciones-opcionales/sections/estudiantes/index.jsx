@@ -1,8 +1,9 @@
+'use client'
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
 import Image from '@library/components/contain/image'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'
@@ -49,18 +50,25 @@ const StudentSlider = () => {
     }
   ]
 
-  // Ejecutar script al cargar el componente
-  if (typeof window !== 'undefined') {
-    // Usar setTimeout para ejecutar después del render
-    setTimeout(() => {
-      try {
-        console.log('Ejecutando script del slider desde JSX...')
-        script()
-      } catch (error) {
-        console.error('Error ejecutando script:', error)
-      }
-    }, 100)
+  // Función para obtener la clase inicial de cada card
+  const getInitialCardClass = (index) => {
+    if (index === 0) return 'student-card active'
+    if (index === 1) return 'student-card next'
+    if (index === 2) return 'student-card next-next'
+    if (index === studentsData.length - 2) return 'student-card prev-prev'
+    if (index === studentsData.length - 1) return 'student-card prev'
+    return 'student-card'
   }
+
+  // Ejecutar script al cargar el componente
+  useEffect(() => {
+    if (script && script.initialize) {
+      const targetElement = document.getElementById('student-slider-root')
+      if (targetElement) {
+        script.initialize(targetElement)
+      }
+    }
+  }, [])
 
   return (
     <section id={elementName}>
@@ -79,7 +87,7 @@ const StudentSlider = () => {
 
           <div className='slider-cards' id={`${elementName}-cards`}>
             {studentsData.map((student, index) => (
-              <div key={`student-${index}`} className='student-card' id={`${elementName}-card-${index}`} data-index={index}>
+              <div key={`student-${index}`} className={getInitialCardClass(index)} id={`${elementName}-card-${index}`} data-index={index}>
                 <div className='student-image'>
                   <Image id={`${elementName}-image-${index}`} src={student.image} alt={student.name} />
                 </div>
@@ -99,7 +107,7 @@ const StudentSlider = () => {
           {studentsData.map((_, index) => (
             <span
               key={`dot-${index}`}
-              className='dot'
+              className={index === 0 ? 'dot active' : 'dot'}
               id={`${elementName}-dot-${index}`}
               data-slide={index}
               role='button'

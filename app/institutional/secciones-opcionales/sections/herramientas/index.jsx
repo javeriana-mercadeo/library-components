@@ -1,3 +1,5 @@
+'use client'
+import { useEffect } from 'react'
 import Container from '@library/components/container'
 import Title from '@library/components/contain/title'
 import Paragraph from '@library/components/contain/paragraph'
@@ -22,8 +24,10 @@ const Herramientas = () => {
     { nombre: 'MAN', imagen: 'https://WWW.javeriana.edu.co/recursosdb/d/info-prg/man' }
   ]
 
-  // Ejecutar script al cargar (Liferay manejará el ciclo de vida)
-  script()
+  // Ejecutar script al cargar (solo en el cliente)
+  useEffect(() => {
+    script()
+  }, [])
 
   return (
     <section id={elementName}>

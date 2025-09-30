@@ -17,8 +17,8 @@
     rel="preload"
     as="image"
     href="https://www.javeriana.edu.co/recursosdb/d/info-prg/microsoft" />
-<section id="student-slider">
-    <div class="container slider-container">
+<section class="container" id="student-slider">
+    <div class="slider-container">
         <h2
             class="title title-lg slider-title"
             data-lfr-editable-id="title"
@@ -26,16 +26,16 @@
             Estudiantes
         </h2>
         <div class="slider-content" id="student-slider-content">
-            <div class="carousel-controls">
+            <div class="carousel-controlsE">
                 <button
-                    class="carousel-control prev"
+                    class="carousel-controlE prev"
                     id="student-slider-prev"
                     aria-label="Anterior estudiante"
                     type="button">
                     <i class="ph ph-arrow-circle-left"></i>
                 </button>
                 <button
-                    class="carousel-control next"
+                    class="carousel-controlE next"
                     id="student-slider-next"
                     aria-label="Siguiente estudiante"
                     type="button">

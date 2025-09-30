@@ -7,8 +7,8 @@
 <link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/sap" />
 <link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/sap200" />
 <link rel="preload" as="image" href="https://WWW.javeriana.edu.co/recursosdb/d/info-prg/man" />
-<section id="herramientas">
-    <div class="container tools-container">
+<section class="container" id="herramientas">
+    <div class="tools-container">
         <h2
             class="title title-neutral title-2xl title-center title-bold tools-titulo"
             data-lfr-editable-id="title-herramientas-title"

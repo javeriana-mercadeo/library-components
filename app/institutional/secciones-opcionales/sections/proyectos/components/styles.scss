@@ -37,7 +37,7 @@
 
       .info-row {
         margin-bottom: 1rem;
-        font-size: var(--font-size-subtitle);
+        font-size: var(--font-size-caption);
         font-weight: var(--font-weight-bold);
 
         strong {
@@ -49,7 +49,7 @@
         span,
         p {
           color: #444;
-          font-size: var(--font-size-subtitle);
+          font-size: var(--font-size-paragraph);
         }
       }
 

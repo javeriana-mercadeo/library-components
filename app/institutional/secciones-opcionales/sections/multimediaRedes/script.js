@@ -1,28 +1,4 @@
 export default () => {
-  // Función para cargar Swiper si no está disponible
-  const loadSwiper = () => {
-    if (!window.Swiper) {
-      const script = document.createElement('script')
-      script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'
-      script.onload = () => {
-        setTimeout(() => {
-          initializeSwiper()
-        }, 100)
-      }
-      document.head.appendChild(script)
-
-      const link = document.createElement('link')
-      link.rel = 'stylesheet'
-      link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'
-      document.head.appendChild(link)
-    } else if (window.Swiper) {
-      setTimeout(() => {
-        initializeSwiper()
-      }, 100)
-    }
-  }
-
-  // Función principal para inicializar el Swiper
   const initializeSwiper = () => {
     // Destruir instancia existente si existe
     if (window.socialCarouselSwiper) {
@@ -454,7 +430,4 @@ export default () => {
       }
     }, 250)
   })
-
-  // Inicializar
-  loadSwiper()
 }

@@ -1,8 +1,10 @@
+// ==========================================
+// COMPONENTE REACT - CARRUSEL DE REDES SOCIALES
+// ==========================================
 'use client'
 import { UniversalComponent as UC, Container } from '@library/components'
 
-import { useEffect } from 'react'
-import Container from '@library/components/container'
+import { useEffect, useState } from 'react'
 import Title from '@library/components/contain/title'
 import Paragraph from '@library/components/contain/paragraph'
 
@@ -13,7 +15,10 @@ import './styles.scss'
 const SocialCarousel = () => {
   const elementName = info.id || 'socialCarousel'
   const baseClass = 'social-carousel'
+  const [isClient, setIsClient] = useState(false)
+
   useEffect(() => {
+    setIsClient(true)
     script()
   }, [])
 
@@ -92,7 +97,15 @@ const SocialCarousel = () => {
     return (
       <div key={index} className={`${baseClass}_slide swiper-slide`} role='listitem'>
         <div className={`${baseClass}_card`}>
-          <div className={`${baseClass}_post-content`} dangerouslySetInnerHTML={{ __html: embedCode }} aria-label={description} />
+          {isClient ? (
+            <div className={`${baseClass}_post-content`} dangerouslySetInnerHTML={{ __html: embedCode }} aria-label={description} />
+          ) : (
+            <div className={`${baseClass}_post-content`} aria-label={description}>
+              <div style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                Cargando post de Instagram...
+              </div>
+            </div>
+          )}
 
           {/* Fallback para cuando no carga el embed */}
           <noscript>

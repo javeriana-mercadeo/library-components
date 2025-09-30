@@ -1,0 +1,362 @@
+@use '@styles/autoload' as *;
+:root {
+  --font-size-principal-title: 2.5rem;
+  --font-size-caption: 1.125rem;
+  --font-size-small: 0.875rem;
+  --primary: #1a365d;
+}
+
+$accent-color: #ffffff;
+$overlay-opacity: 0.7;
+$container-padding: 0;
+$border-radius: 1rem;
+
+// Helper function for rem conversion
+@function rem($pixels) {
+  @return #{$pixels / 16}rem;
+}
+
+.video-doctorado {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
+
+  // Background container
+  &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    z-index: 1;
+
+    @media (min-width: 768px) {
+      height: 50%;
+    }
+
+    @media (min-width: 1400px) {
+      height: 65%;
+      max-height: rem(500);
+    }
+  }
+
+  // Background container for editable content
+  &__background-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    &:hover {
+      background: transparent !important;
+    }
+  }
+
+  // Background image styles
+  &__background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  // Background video styles
+  &__background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+
+    // Hide controls in all browsers
+    &::-webkit-media-controls {
+      display: none !important;
+    }
+    
+    &::-webkit-media-controls-panel {
+      display: none !important;
+    }
+    
+    &::-webkit-media-controls-play-button {
+      display: none !important;
+    }
+    
+    &::-webkit-media-controls-start-playback-button {
+      display: none !important;
+    }
+  }
+
+  // Fallback for when video cannot load
+  &__background-fallback {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  // Placeholder for missing background
+  &__background-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  // Overlay for readability
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(3, 3, 3, 0.3568627451) 0%, rgba(0, 0, 0, 0.7568627451) 100%);
+    z-index: 2;
+  }
+
+  // Main container
+  &__container {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    margin: 0 auto;
+    padding: $container-padding;
+  }
+
+  // Main content
+  &__content {
+    color: $accent-color;
+
+    &.with-animations {
+      animation: fadeInUp 0.8s ease-out;
+    }
+  }
+
+  // Header with title and description
+  &__header {
+    position: relative;
+    margin-bottom: 0;
+    margin-top: rem(100);
+    text-align: left;
+    
+    @media (min-width: 768px) {
+      margin-bottom: rem(90);
+      text-align: center;
+    }
+  }
+
+  &__title {
+    font-size: var(--font-size-principal-title);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: rem(16);
+    text-shadow: 0 rem(2) rem(4) rgba(0, 0, 0, 0.3);
+
+    @media (min-width: 768px) {
+      margin-bottom: rem(20);
+    }
+  }
+
+  &__description {
+    font-size: var(--font-size-caption);
+    line-height: 1.5;
+    opacity: 0.95;
+    margin-bottom: rem(100);
+
+    @media (min-width: 768px) {
+      margin: 0;
+    }
+  }
+
+  // Information section
+  &__info {
+    background-color: var(--primary);
+    backdrop-filter: none;
+    padding: rem(30);
+    border: rem(1) solid rgba(255, 255, 255, 0.2);
+    margin: 0 auto;
+
+    @media (min-width: 768px) {
+      padding: rem(40);
+      margin: rem(40);
+      max-width: rem(1400);
+      border-radius: $border-radius;
+      z-index: 100;
+      position: relative;
+      top: rem(-60);
+    }
+
+    @media (min-width: 1400px) {
+      margin: 0 auto;
+      max-width: 1400px;
+    }
+  }
+
+  // Information grid
+  &__info-grid {
+    display: grid;
+    gap: rem(24);
+    margin-bottom: rem(30);
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: rem(30);
+      margin-bottom: rem(16);
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  // Footnote
+  &__footnote {
+    font-size: var(--font-size-small);
+    opacity: 0.8;
+    line-height: 1.4;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+// Information item styles
+.info-item {
+  display: flex;
+  gap: rem(15);
+
+  @media (min-width: 768px) {
+    display: inline;
+    justify-content: center;
+    text-align: center;
+  }
+
+  // Animation for items
+  &.with-animations {
+    animation: fadeInUp 0.6s ease-out;
+
+    @for $i from 1 through 6 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.1}s;
+      }
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: rem(24);
+    height: rem(24);
+    color: $accent-color;
+    opacity: 0.9;
+    align-self: center;
+
+    @media (min-width: 768px) {
+      justify-self: center;
+      margin-bottom: rem(15);
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: rem(4);
+    min-width: 0;
+  }
+
+  &__label {
+    font-size: var(--font-size-small);
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: rem(0.5);
+    font-weight: 400;
+  }
+
+  &__value {
+    font-size: var(--font-size-small);
+    font-weight: 700;
+    line-height: 1.3;
+
+    // CTA button styles
+    button {
+      background: none;
+      border: none;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+      margin: 0;
+      
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &:focus {
+        outline: 2px solid rgba(255, 255, 255, 0.5);
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  &__code,
+  &__modality {
+    font-size: var(--font-size-small);
+    opacity: 0.9;
+    font-weight: 700;
+  }
+}
+
+// Animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(rem(30));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments
+@media (min-width: 1024px) {
+  .video-doctorado {
+    &__container {
+      padding: 0;
+    }
+
+    &__info-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+}
+
+// Container utility class (if needed)
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 rem(20);
+
+  @media (min-width: 768px) {
+    padding: 0 rem(40);
+  }
+}
