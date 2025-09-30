@@ -4,7 +4,7 @@
 import { Button } from '@heroui/react'
 
 import SectionTitle from '@/components/ui/SectionTitle'
-import TeamCard from '@/components/ui/TeamCard'
+import TeamCard from '@/components/features/TeamShowcase/TeamCard'
 
 export default function AboutPage() {
   return (
