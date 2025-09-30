@@ -1,35 +1,44 @@
 @use '@styles/autoload' as *;
 
 .double-titulacion-container {
+  position: relative;
   width: 100%;
-  display: flex;
-  justify-content: center;
+  overflow: hidden;
 
   .content-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    padding: 0;
   }
 
   .main-title {
-    color: #454f59;
-    font-weight: 700;
-    padding: 50px;
+    font-size: var(--font-size-title);
+    color: var(--neutral-400);
+    font-weight: var(--font-weight-bold);
+    padding: var(--spacing-xl);
     text-align: center;
-    font-size: clamp(1.25rem, 2vw + 1rem, 1.875rem);
   }
 
   .hero-section {
     position: relative;
     width: 100%;
-    height: 700px;
-    background-image: url('https://www.javeriana.edu.co/recursosdb/d/info-prg/fondobiblioteca');
-    background-size: cover;
-    background-position: center;
-    border-radius: 12px;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     overflow: hidden;
-    margin-bottom: 40px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+
+    .hero-background-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+    }
 
     .overlay {
       position: absolute;
@@ -37,98 +46,237 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
-      display: flex;
-      align-items: center;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0.3) 70%, transparent 100%);
+      z-index: 1;
     }
 
     .hero-content {
-      width: 85%;
+      position: relative;
+      z-index: 3;
+      padding: rem(80px) rem(20px) rem(40px);
+      max-width: rem(600px);
       color: white;
 
       .hero-title {
-        font-size: 36px;
-        font-weight: bold;
-        margin-bottom: 16px;
-        max-width: 600px;
+        font-size: var(--font-size-principal-title);
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0 0 rem(20px) 0;
+        text-shadow: rem(2px) rem(2px) rem(4px) rgba(0, 0, 0, 0.7);
+        color: var(--neutral);
       }
 
       .hero-description {
-        font-size: 16px;
-        max-width: 550px;
-        margin-bottom: 30px;
-        line-height: 1.6;
+        font-size: 1rem;
+        line-height: 1.5;
+        margin: 0 0 rem(40px) 0;
+        opacity: 0.95;
+        text-shadow: rem(1px) rem(1px) rem(2px) rgba(0, 0, 0, 0.7);
+        color: white;
       }
-    }
-  }
 
-  .cards-container {
-    display: flex;
-    gap: 16px;
+      .cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: rem(20px);
 
-    @media (max-width: 768px) {
-      flex-direction: column;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
+        .info-card {
+          background: rgba(0, 0, 0, 0.7);
+          backdrop-filter: blur(rem(10px));
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: rem(8px);
+          padding: rem(20px);
+          transition: all 0.3s ease;
 
-  .info-card {
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 8px;
-    padding: 20px;
-    flex: 1;
-    height: auto;
-    max-width: 200px;
-    backdrop-filter: blur(3px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease;
+          &:hover {
+            background: rgba(0, 0, 0, 0.8);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(rem(-2px));
+          }
 
-    &:hover {
-      transform: translateY(-5px);
-    }
+          .card-title {
+            font-size: var(--font-size-caption);
+            font-weight: 600;
+            margin: 0 0 rem(12px) 0;
+            color: #ffffff;
+          }
 
-    .card-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 12px;
-      color: white;
-    }
-
-    .card-description {
-      font-size: 14px;
-      line-height: 1.5;
-      color: rgba(255, 255, 255, 0.9);
+          .card-description {
+            font-size: var(--font-size-small);
+            line-height: 1.4;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.9);
+          }
+        }
+      }
     }
   }
 }
-@media (max-width: 768px) {
+
+// Tablet styles
+@media (min-width: 768px) {
   .double-titulacion-container {
-    .hero-section {
-      height: auto;
-      min-height: 800px;
-      border-radius: 0;
-      padding: 20px;
+    .main-title {
+      font-size: var(--font-size-title);
+      padding: rem(50px) rem(40px) rem(30px);
     }
 
-    .hero-content {
-      .hero-title {
-        font-size: 28px;
+    .hero-section {
+      border-radius: rem(20px);
+
+      .hero-content {
+        padding: rem(100px) rem(40px) rem(60px);
+        max-width: rem(700px);
+
+        .hero-title {
+          font-size: var(--font-size-principal-title);
+          margin-bottom: rem(24px);
+        }
+
+        .hero-description {
+          font-size: 1.1rem;
+          margin-bottom: rem(50px);
+        }
+
+        .cards-container {
+          gap: rem(24px);
+
+          .info-card {
+            padding: rem(24px);
+
+            .card-title {
+              font-size: 1.2rem;
+              margin-bottom: rem(16px);
+            }
+
+            .card-description {
+              font-size: var(--font-size-paragraph);
+            }
+          }
+        }
       }
     }
+  }
+}
 
-    .cards-container {
-      flex-direction: column;
+// Desktop styles
+@media (min-width: 1024px) {
+  .double-titulacion-container {
+    .main-title {
+      font-size: var(--font-size-title);
+      padding: rem(60px) rem(60px) rem(40px);
     }
 
-    .info-card {
-      max-width: 80%;
-      min-width: 200px;
+    .hero-section {
+      .overlay {
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.7) 35%, rgba(0, 0, 0, 0.4) 65%, transparent 100%);
+      }
+
+      .hero-content {
+        padding: rem(120px) rem(60px) rem(80px);
+        max-width: rem(650px);
+
+        .hero-title {
+          font-size: var(--font-size-principal-title);
+          margin-bottom: rem(28px);
+          max-width: rem(600px);
+        }
+
+        .hero-description {
+          font-size: 1.2rem;
+          margin-bottom: rem(50px);
+          max-width: rem(580px);
+        }
+
+        .cards-container {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: rem(20px);
+          max-width: rem(900px);
+
+          .info-card {
+            padding: rem(24px);
+            min-height: rem(160px);
+            display: flex;
+            flex-direction: column;
+
+            .card-title {
+              font-size: var(--font-size-paragraph);
+              margin-bottom: rem(12px);
+              font-weight: 700;
+            }
+
+            .card-description {
+              font-size: var(--font-size-small);
+              line-height: 1.4;
+              flex-grow: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Large desktop styles
+@media (min-width: 1440px) {
+  .double-titulacion-container {
+    .main-title {
+      font-size: var(--font-size-title);
+      padding: rem(80px) rem(80px) rem(50px);
+    }
+
+    .hero-section {
+      .hero-content {
+        padding: rem(140px) rem(80px) rem(100px);
+        max-width: rem(1000px);
+
+        .hero-title {
+          font-size: var(--font-size-principal-title);
+          margin-bottom: rem(32px);
+          max-width: rem(700px);
+        }
+
+        .hero-description {
+          font-size: 1.3rem;
+          margin-bottom: rem(60px);
+          max-width: rem(650px);
+        }
+
+        .cards-container {
+          gap: rem(24px);
+          max-width: rem(950px);
+
+          .info-card {
+            padding: rem(28px);
+            min-height: rem(180px);
+
+            .card-title {
+              font-size: var(--font-size-caption);
+              margin-bottom: rem(16px);
+            }
+
+            .card-description {
+              font-size: var(--font-size-paragraph);
+              line-height: 1.45;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Fallback para cuando la imagen no carga
+.hero-section {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #1a252f 100%);
+
+  // Lazy loading y optimización de imagen
+  .hero-background-image {
+    transition: opacity 0.3s ease-in-out;
+
+    &[src=''] {
+      display: none;
     }
   }
 }

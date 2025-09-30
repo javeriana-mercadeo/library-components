@@ -1,12 +1,5 @@
 // Card components
-export {
-  PageCard,
-  ComponentCard,
-  DemoCard,
-  InfoCard,
-  ResourceCard,
-  SectionCard
-} from './Card'
+export { PageCard, ComponentCard, DemoCard, InfoCard, ResourceCard, SectionCard } from './Card'
 
 // Button components
 export { VariantButtons } from './Button'

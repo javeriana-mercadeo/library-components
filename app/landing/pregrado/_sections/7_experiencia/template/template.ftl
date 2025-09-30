@@ -4,7 +4,7 @@
       <#if slides.getSiblings()?has_content>
         <#list slides.getSiblings() as cur_slides>
           <div class="experience-carousel__slide swiper-slide" role="listitem">
-            
+
             <#-- CONTENIDO DINÁMICO SEGÚN TIPO -->
             <#if (cur_slides.type_item.getData())?? && cur_slides.type_item.getData()=="type_image">
               <#-- CONTENIDO IMAGEN -->
@@ -25,7 +25,7 @@
               <#if (cur_slides.image.image_link.getData())??>
                 </a>
               </#if>
-              
+
             <#elseif (cur_slides.type_item.getData())?? && cur_slides.type_item.getData()=="type_testimonial">
               <#-- CONTENIDO TESTIMONIO -->
               <div class="experience-carousel__testimonial-card">
@@ -68,7 +68,7 @@
                   </#if>
                 </div>
               </div>
-              
+
             <#elseif (cur_slides.type_item.getData())?? && cur_slides.type_item.getData()=="type_media">
               <#-- CONTENIDO VIDEO -->
               <#if (cur_slides.grupo_media.media_id.getData())??>
@@ -86,12 +86,12 @@
                 </div>
               </#if>
             </#if>
-            
+
           </div>
         </#list>
       </#if>
     </div>
-    
+
     <div class="swiper-pagination experience-carousel__pagination"
       role="tablist"
       aria-label="Control de páginas del carrusel">

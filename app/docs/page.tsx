@@ -10,10 +10,8 @@ import { SectionTitle, CodeBlock, FeatureList } from '@/components/ui'
 import { InlineCode } from '@/components/ui/CodeBlock'
 import { WarningAlert } from '@/components/ui/Alerts'
 import { APIEndpointCard, EnvironmentCard, TechStackCard } from '@/components/ui/Cards'
-
 // Common Components (Cards)
 import { ResourceCard, SectionCard, InfoCard } from '@/components/common/Card'
-
 // Utils Components
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 

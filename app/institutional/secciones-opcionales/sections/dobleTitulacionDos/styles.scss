@@ -15,87 +15,145 @@
 
   .content-wrapper {
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    height: calc(100vh - 80px);
 
-    @media (max-width: 768px) {
-      height: auto;
+    // Desktop
+    @media (min-width: 769px) {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    > div {
+      // Desktop
+      @media (min-width: 769px) {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
     }
   }
 
   .main-title {
-    color: #454f59;
-    font-weight: 700;
-    padding: 50px;
+    color: var(--neutral-400);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-title);
+    padding: var(--spacing-xl);
     text-align: center;
-    font-size: clamp(1.25rem, 2vw + 1rem, 1.875rem);
 
-    @media (max-width: 768px) {
-      font-size: 24px;
-      margin: 20px 0;
+    // Desktop
+    @media (min-width: 769px) {
+      font-size: var(--font-size-title);
+      padding: var(--spacing-xl);
+      flex-shrink: 0;
     }
   }
 
+  @include liferay-edit-mode {
+    .main-title {
+      padding: 0px !important;
+      font-size: rem(14px) !important;
+    }
+  }
+
+  // Layout principal - mobile first
   .two-column-layout {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 0;
     width: 100%;
-    height: calc(100% - 60px);
 
-    @media (max-width: 768px) {
-      flex-direction: column;
-      height: auto;
-      gap: 30px;
+    // Desktop - dos columnas
+    @media (min-width: 769px) {
+      flex-direction: row;
+      gap: rem(20px);
+      flex: 1;
+      min-height: 0;
     }
   }
 
+  // Columna izquierda
   .left-column {
-    flex: 0 0 45%;
-    height: 100%;
-    position: relative;
+    width: 100%;
+
+    // Desktop
+    @media (min-width: 769px) {
+      flex: 0 0 45%;
+      height: 100%;
+    }
+
+    // Título móvil - ahora oculto ya que usamos overlay
+    .mobile-title-outside {
+      display: block;
+      font-size: var(--font-size-subtitle);
+      font-weight: var(--font-weight-bold);
+      padding-bottom: rem(20px);
+
+      @media (min-width: 769px) {
+        display: none;
+      }
+    }
+
+    @media (min-width: 769px) {
+      @include liferay-edit-mode {
+        .mobile-title-outside {
+          display: block !important;
+          font-size: rem(12px);
+        }
+      }
+    }
 
     .university-building {
       position: relative;
-      height: 100%;
-      border-radius: 8px;
+      border-radius: rem(8px);
       overflow: hidden;
+      margin-bottom: rem(20px);
+
+      // Desktop
+      @media (min-width: 769px) {
+        height: 100%;
+        margin-bottom: 0;
+      }
 
       .university-image {
         width: 100%;
-        height: 100%;
+        height: auto;
+        aspect-ratio: 9 / 16;
         object-fit: cover;
-        display: block;
+        border-radius: rem(8px);
+        max-height: 500px;
 
-        &.mobile-only {
-          display: none;
-        }
-
-        &.desktop-only {
-          display: block;
+        // Desktop
+        @media (min-width: 769px) {
+          height: 100%;
+          aspect-ratio: auto;
+          border-radius: rem(8px);
         }
       }
 
+      // Overlay - visible en móvil y desktop
       .overlay-content {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
-        height: 40%;
+        height: 50%;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
         align-items: flex-start;
         text-align: left;
-        padding: 30px;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.89), rgba(0, 0, 0, 0));
+        padding: rem(20px);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
         color: #fff;
         z-index: 5;
 
         .overlay-title {
-          font-size: clamp(1.6rem, 2vw + 1rem, 1.875rem);
+          font-size: var(--font-size-subtitle);
           font-weight: bold;
-          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+          text-shadow: rem(1px) rem(1px) rem(3px) rgba(0, 0, 0, 0.7);
+          margin-bottom: rem(8px);
+          line-height: 1.2;
+          color: white;
         }
 
         .overlay-description {
@@ -104,10 +162,9 @@
           max-width: 80%;
           text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
-      }
 
-      @media (max-width: 768px) {
-        .overlay-content {
+        // Mobile overlay adjustments
+        @media (max-width: 768px) {
           position: static;
           background: transparent;
           align-items: flex-start;
@@ -132,76 +189,91 @@
           }
         }
 
-        .university-image {
-          height: auto;
-          max-height: 800px;
-          aspect-ratio: 3 / 4;
-          border-radius: 8px;
-          margin: 15px 0;
+        // Desktop - ajustes para pantalla grande
+        @media (min-width: 769px) {
+          height: 40%;
+          padding: rem(30px);
 
-          &.mobile-only {
-            display: block;
+          .overlay-title {
+            font-size: var(--font-size-title);
+            text-shadow: rem(2px) rem(2px) rem(4px) rgba(0, 0, 0, 0.5);
+            color: white;
           }
 
-          &.desktop-only {
-            display: none;
+          .overlay-description {
+            font-size: rem(16px);
+            line-height: 1.6;
+            max-width: 80%;
+            text-shadow: rem(1px) rem(1px) rem(3px) rgba(0, 0, 0, 0.5);
           }
         }
       }
     }
   }
 
+  @include liferay-edit-mode {
+    .overlay-content {
+      padding-bottom: 100px;
+
+      .overlay-title {
+        font-size: rem(14px);
+      }
+    }
+  }
+
+  // Columna derecha
   .right-column {
-    flex: 1;
-    height: 100%;
-    overflow-y: auto;
-    padding-right: 20px;
+    width: 100%;
 
     @media (max-width: 768px) {
-      height: auto;
-      overflow-y: visible;
-      padding-right: 0;
+      margin-bottom: 15px;
     }
 
+    // Desktop
+    @media (min-width: 769px) {
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    // Header section - oculto en móvil
     .header-section {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 20px;
-      flex-direction: column;
-      gap: 20px;
-      width: 90%;
+      display: none;
 
-      @media (max-width: 768px) {
-        width: 100%;
-        margin-bottom: 15px;
-        display: none;
-      }
+      // Desktop
+      @media (min-width: 769px) {
+        display: block;
+        margin-bottom: rem(25px);
+        padding-top: rem(20px);
+        width: 90%;
 
-      .title-section {
-        .section-title {
-          font-size: 18px;
-          color: #0075c9;
-          margin-bottom: 8px;
-          font-weight: 600;
+        .title-section {
+          margin-bottom: rem(15px);
+
+          .section-title {
+            font-size: rem(18px);
+            color: var(--secondary);
+            margin-bottom: rem(8px);
+            font-weight: 600;
+          }
+
+          .university-info {
+            font-size: var(--font-size-paragraph);
+            color: var(--neutral-400);
+          }
         }
 
-        .university-info {
-          font-size: 14px;
-          color: #666;
-        }
-      }
+        .logo-container {
+          display: flex;
+          gap: rem(15px);
 
-      .logo-container {
-        display: flex;
-        gap: 15px;
+          .university-logo {
+            height: rem(35px);
+            object-fit: contain;
 
-        .university-logo {
-          height: 35px;
-          object-fit: contain;
-
-          @media (max-width: 768px) {
-            height: 25px;
+            @media (max-width: 768px) {
+              height: 25px;
+            }
           }
         }
       }
@@ -210,102 +282,119 @@
     .scroll-container {
       width: 100%;
 
-      @media (max-width: 768px) {
-        overflow-x: visible;
-        overflow-y: visible;
-      }
+      // Desktop - scroll vertical
+      @media (min-width: 769px) {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: rem(10px);
 
-      &::-webkit-scrollbar {
-        height: 6px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 3px;
-      }
-
-      &::-webkit-scrollbar-thumb:hover {
-        background: #a8a8a8;
-      }
-    }
-
-    .program-items {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding-bottom: 10px;
-      min-width: 100%;
-
-      @media (max-width: 768px) {
-        gap: 30px;
-      }
-    }
-
-    .program-item {
-      display: flex;
-      flex-direction: column;
-      border-radius: 8px;
-      overflow: hidden;
-
-      .program-image {
-        width: 100%;
-        height: 600px;
-        object-fit: cover;
-        border-radius: 15px;
-
-        @media (max-width: 1200px) {
-          height: 650px;
+        // Scrollbar personalizada
+        &::-webkit-scrollbar {
+          width: rem(6px);
         }
 
-        @media (max-width: 992px) {
-          height: 700px;
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 3px;
         }
 
-        @media (max-width: 768px) {
-          height: 800px;
-        }
+        &::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 3px;
 
-        @media (max-width: 576px) {
-          height: 600px;
-        }
-
-        @media (max-width: 375px) {
-          height: 400px;
-        }
-      }
-
-      .program-info {
-        padding: 15px;
-        background-color: white;
-
-        @media (max-width: 768px) {
-          padding: 15px;
-        }
-
-        .program-title {
-          font-size: 16px;
-          font-weight: 600;
-          margin-bottom: 8px;
-          color: #333;
-
-          @media (max-width: 768px) {
-            font-size: 16px;
-            text-align: left;
-            margin-top: 0;
+          &:hover {
+            background: #a8a8a8;
           }
         }
 
-        .program-description {
-          font-size: 14px;
-          color: #666;
-          line-height: 1.5;
+        // Firefox scrollbar
+        scrollbar-width: thin;
+        scrollbar-color: rgba(193, 193, 193, 0.6) rgba(241, 241, 241, 0.3);
+      }
+
+      // Items del programa
+      .program-items {
+        display: flex;
+        flex-direction: column;
+        gap: rem(25px);
+        padding-bottom: rem(20px);
+
+        // Desktop
+        @media (min-width: 769px) {
+          padding: rem(10px) 0 rem(80px) 0;
+        }
+
+        @media (max-width: 768px) {
+          gap: 30px;
+        }
+      }
+
+      .program-item {
+        display: flex;
+        flex-direction: column;
+        border-radius: rem(8px);
+        overflow: hidden;
+
+        .program-image {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 9 / 16;
+          object-fit: cover;
+          border-radius: rem(8px);
+
+          @media (min-width: 992px) {
+            height: rem(450px);
+          }
+
+          @media (min-width: 1200px) {
+            height: rem(500px);
+          }
 
           @media (max-width: 768px) {
+            height: 600px;
+          }
+
+          @media (max-width: 576px) {
+            height: 400px;
+          }
+
+          @media (max-width: 375px) {
+            height: 300px;
+          }
+        }
+
+        .program-info {
+          padding: rem(15px);
+          background-color: white;
+
+          // Desktop
+          @media (min-width: 769px) {
+            padding: rem(20px) rem(15px);
+          }
+
+          @media (max-width: 768px) {
+            padding: 15px;
+          }
+
+          .program-title {
+            font-size: rem(16px);
+            font-weight: 600;
+            margin-bottom: rem(10px);
+            color: var(--neutral-400);
+            text-align: left;
+
+            @media (max-width: 768px) {
+              font-size: 16px;
+              text-align: left;
+              margin-top: 0;
+            }
+          }
+
+          .program-description {
+            font-size: var(--font-size-paragraph);
+            color: var(--neutral-100);
+            line-height: 1.6;
             text-align: left;
           }
         }

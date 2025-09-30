@@ -256,7 +256,7 @@ const FAQAccordionSystem = {
 const RequirementsSystem = {
   config: {
     apiBaseUrl: 'https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals/getrequisitos',
-    containerSelector: '[puj-data-requirements]'
+    containerSelector: '[data-puj-requirements]'
   },
 
   async fetchRequirements(programCode) {

@@ -1,4 +1,4 @@
-const initSplash = () => {
+function initSplash() {
   const splash = document.getElementById('splash')
 
   if (splash) {
@@ -21,7 +21,7 @@ const initSplash = () => {
       }, 1000)
     } else {
       // Escuchar el evento de datos cargados
-      document.addEventListener('data_load-program', hideSplash(), { once: true })
+      document.addEventListener('data_load-program', hideSplash, { once: true })
 
       // Si tiene código de programa pero no responde el evento en 3 segundos
       setTimeout(() => {

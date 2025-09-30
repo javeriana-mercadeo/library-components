@@ -3,6 +3,7 @@
 ## 📋 Análisis Actual
 
 **Problemas identificados:**
+
 - ❌ Nombres inconsistentes (kebab-case, camelCase, PascalCase mezclados)
 - ❌ Archivos duplicados (`.tsx` y carpetas con `index.jsx`)
 - ❌ Estructura inconsistente (algunos en carpetas, otros sueltos)
@@ -291,18 +292,21 @@ echo "✅ Refactorización completada!"
 ## 🎯 Convenciones Finales
 
 ### **📛 Nomenclatura:**
+
 - **Carpetas:** PascalCase (`ComponentCatalog/`)
 - **Archivos:** PascalCase (`ComponentCatalog.tsx`)
 - **Exports:** Named exports con default export
 - **Index files:** Solo re-exports
 
 ### **📱 Extensiones:**
+
 - **Componentes React:** `.tsx`
 - **Utilidades:** `.ts`
 - **Tipos:** `.types.ts`
 - **Constantes:** `.constants.ts`
 
 ### **📂 Organización:**
+
 - Un componente por archivo
 - Un archivo por funcionalidad
 - Index files para re-exports limpios

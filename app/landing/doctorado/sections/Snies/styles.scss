@@ -1,0 +1,30 @@
+@use '@styles/autoload' as *;
+
+.snies {
+  max-width: 600px; // Ancho máximo para controlar longitud
+  margin: 0 auto; // Centrado
+  text-align: center; // Centra el texto
+
+  .snies_enrollment-note {
+    display: inline;
+    margin: 0;
+    line-height: 1.4; // Mejor espaciado entre líneas
+    text-align: inherit; // Hereda el centrado del padre
+
+    // Específico para el primer párrafo (el que tiene data-puj-snies)
+    &:first-child {
+      margin-right: 0.25rem; // Pequeño espacio antes del pipe
+    }
+
+    // Específico para el segundo párrafo (información legal)
+    &:last-child {
+      margin-left: 0;
+    }
+  }
+
+  // Responsive: en móviles, más padding
+  @include responsive {
+    padding: 0 var(--spacing-lg);
+    max-width: 800px;
+  }
+}
