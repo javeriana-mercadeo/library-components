@@ -121,7 +121,6 @@ try {
     if (facultad && currentFaculty === 'default') {
       // Aplicar normalización de facultad antes del procesamiento
       const normalizedFaculty = normalizeFacultyName(facultad)
-
       // Usar StringUtils para crear slug de forma más eficiente
       const facultySlug = StringUtils.slugify(normalizedFaculty)
 

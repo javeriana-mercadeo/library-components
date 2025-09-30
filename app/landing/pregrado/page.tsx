@@ -2,8 +2,8 @@
 
 import dynamic from 'next/dynamic'
 
-import ViewComponent from '@/components/viewComponent/viewComponent'
-import Load from '@/components/load/load'
+import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
+import { Load } from '@/components/utils'
 
 const Header = dynamic(() => import('@library/components/header'), { ssr: false, loading: () => <Load /> })
 const Datos = dynamic(() => import('./_sections/1_datos'), { ssr: false, loading: () => <Load /> })

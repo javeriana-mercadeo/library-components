@@ -55,7 +55,6 @@ try {
     if (faculty === 'default' && dataProgram.facultad) {
       // Aplicar normalización de facultad antes del procesamiento
       const normalizedFaculty = normalizeFacultyName(dataProgram.facultad)
-
       // Usar StringUtils para crear slug de forma más eficiente
       finalFaculty = StringUtils.slugify(normalizedFaculty)
     }

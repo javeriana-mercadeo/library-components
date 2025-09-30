@@ -45,7 +45,7 @@ const FIELD_CONFIGS = {
       formatter: val => `SNIES ${val}`
     },
     {
-      dataKey: 'grado',
+      dataKey: 'nivelAcad',
       selector: 'data-puj-academic-level',
       updateKey: 'level',
       formatter: val => DataFormatter.formatProgramName(val)
@@ -69,12 +69,12 @@ const FIELD_CONFIGS = {
     },
 
     // CAMPOS MODIFICADOS EN V2
-    // V1: tituloOtorgado
+    // V1: tituloOtorgado - Ahora maneja arrays de títulos
     {
       dataKey: 'titulo',
       selector: 'data-puj-title-graduation',
       updateKey: 'degree',
-      formatter: val => DataFormatter.formatProgramName(val)
+      special: true // Marcado como especial para manejo personalizado
     },
     // V1: duracion + unidadDuracion
     {
@@ -302,6 +302,51 @@ export const ProgramDataProcessor = {
     }
   },
 
+  // Función especializada para manejo de título otorgar con modal para textos largos
+  _processTitleGraduation(dataProgram, automationUpdates) {
+    const { titulo } = dataProgram
+    const titleSelector = 'data-puj-title-graduation'
+
+    if (!titulo) return
+
+    let titleText = ''
+    let fullTitleText = ''
+
+    if (Array.isArray(titulo)) {
+      fullTitleText = titulo.join(' - ')
+    } else {
+      fullTitleText = DataFormatter.formatProgramName(titulo)
+    }
+
+    // Definir límite de caracteres para mostrar el modal (por ejemplo, 50 caracteres)
+    const MAX_CHAR_LIMIT = 50
+    const shouldShowModal = fullTitleText.length > MAX_CHAR_LIMIT
+
+    if (shouldShowModal) {
+      // Si es muy largo, mostrar versión truncada + "..."
+      titleText = fullTitleText.substring(0, MAX_CHAR_LIMIT) + '...'
+
+      // Actualizar elementos con la versión truncada
+      DOMUpdater.updateElementsText(titleSelector, titleText)
+
+      // Agregar atributos para modal
+      const elements = DOMUtils.findElements(`[${titleSelector}]`)
+      elements.forEach(element => {
+        element.setAttribute('data-modal-content', fullTitleText)
+        element.setAttribute('data-show-modal', 'true')
+        element.setAttribute('title', fullTitleText) // Tooltip como fallback
+      })
+
+      automationUpdates.degree = true
+      automationUpdates.degreeModal = true
+    } else {
+      // Si no es muy largo, mostrar texto completo normalmente
+      DOMUpdater.updateElementsText(titleSelector, fullTitleText)
+      automationUpdates.degree = true
+      automationUpdates.degreeModal = false
+    }
+  },
+
   processAndUpdateDOM(dataProgram) {
     const { jornada, datosFechaCierreInscripcion, ciudad, acredit, estadoAcredit, estadoRegisCali } = dataProgram
     let automationUpdates = {}
@@ -331,6 +376,7 @@ export const ProgramDataProcessor = {
     // Nuevas funcionalidades V2
     this._processAccreditation(dataProgram, automationUpdates)
     this._processRegistration(dataProgram, automationUpdates)
+    this._processTitleGraduation(dataProgram, automationUpdates)
 
     // Actualizar statusPage usando DataUtils global para merge profundo
     if (Object.keys(automationUpdates).length && typeof window !== 'undefined' && window.statusPage) {

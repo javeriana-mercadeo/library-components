@@ -20,7 +20,7 @@
   .footer {
     width: 100%;
     color: var(--neutral);
-    //padding: var(--spacing-xl) var(--spacing-md);
+    padding: var(--spacing-xl) var(--spacing-md);
 
     // breakpoint-md (menor a 768px)
     @media (max-width: $breakpoint-md) {

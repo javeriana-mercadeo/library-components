@@ -24,11 +24,11 @@
           <i class="ph ph-download" aria-hidden="true"></i>
         </span>
       </a>
-      
+
       <div class="plan-estudio_carousel swiper">
         <div class="plan-estudio_wrapper subjects-swiper">
           <div class="plan-estudio_slides swiper-wrapper" role="list">
-            
+
             <!-- ITERACIÓN SEMESTRES JORNADA DIURNA -->
             <#if DAYTIMESHIFT.getSiblings()?has_content>
               <#list DAYTIMESHIFT.getSiblings() as cur_DAYTIMESHIFT>
@@ -41,13 +41,13 @@
                         </#if>
                       </span>
                     </div>
-                    
+
                     <h2 class="title title-lg title-bold plan-estudio_semester-title">
                       <#if (cur_DAYTIMESHIFT.DAY_SEMESTER.getData())??>
                         ${cur_DAYTIMESHIFT.DAY_SEMESTER.getData()}
                       </#if>
                     </h2>
-                    
+
                     <ul class="plan-estudio_subjects">
                       <#if cur_DAYTIMESHIFT.DAY_SUBJECTS.getSiblings()?has_content>
                         <#list cur_DAYTIMESHIFT.DAY_SUBJECTS.getSiblings() as cur_DAYTIMESHIFT_DAY_SUBJECTS>
@@ -60,7 +60,7 @@
                         </#list>
                       </#if>
                     </ul>
-                    
+
                     <#if (cur_DAYTIMESHIFT.DAY_CREDITS.getData())??>
                       <div class="plan-estudio_credits">
                         <strong>${cur_DAYTIMESHIFT.DAY_CREDITS.getData()}</strong>
@@ -70,9 +70,9 @@
                 </div>
               </#list>
             </#if>
-            
+
           </div>
-          
+
           <div
             class="swiper-pagination plan-estudio_pagination"
             role="tablist"
@@ -93,7 +93,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- TAB PANEL JORNADA NOCTURNA -->
   <div
     class="plan-estudio__tab-panel hidden"
@@ -119,11 +119,11 @@
           <i class="ph ph-download" aria-hidden="true"></i>
         </span>
       </a>
-      
+
       <div class="plan-estudio_carousel swiper">
         <div class="plan-estudio_wrapper subjects-swiper">
           <div class="plan-estudio_slides swiper-wrapper" role="list">
-            
+
             <!-- ITERACIÓN SEMESTRES JORNADA NOCTURNA -->
             <#if NIGHTSHIFT.getSiblings()?has_content>
               <#list NIGHTSHIFT.getSiblings() as cur_NIGHTSHIFT>
@@ -136,13 +136,13 @@
                         </#if>
                       </span>
                     </div>
-                    
+
                     <h2 class="title title-lg title-bold plan-estudio_semester-title">
                       <#if (cur_NIGHTSHIFT.NIGHT_SEMESTER.getData())??>
                         ${cur_NIGHTSHIFT.NIGHT_SEMESTER.getData()}
                       </#if>
                     </h2>
-                    
+
                     <ul class="plan-estudio_subjects">
                       <#if cur_NIGHTSHIFT.NIGHT_SUBJECTS.getSiblings()?has_content>
                         <#list cur_NIGHTSHIFT.NIGHT_SUBJECTS.getSiblings() as cur_NIGHTSHIFT_NIGHT_SUBJECTS>
@@ -155,7 +155,7 @@
                         </#list>
                       </#if>
                     </ul>
-                    
+
                     <#if (cur_NIGHTSHIFT.NIGHT_CREDITS.getData())??>
                       <div class="plan-estudio_credits">
                         <strong>${cur_NIGHTSHIFT.NIGHT_CREDITS.getData()}</strong>
@@ -165,9 +165,9 @@
                 </div>
               </#list>
             </#if>
-            
+
           </div>
-          
+
           <div
             class="swiper-pagination plan-estudio_pagination"
             role="tablist"

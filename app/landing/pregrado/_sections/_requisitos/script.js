@@ -128,8 +128,9 @@ function initNavigationButton(component) {
  */
 function initChartInteractions(component) {
   const chartSegments = component.querySelectorAll('.admission-requirements_chart-segment')
-  const chartLabels = component.querySelectorAll('.admission-requirements_chart-label-percentage, .admission-requirements_chart-label-title')
-
+  const chartLabels = component.querySelectorAll(
+    '.admission-requirements_chart-label-percentage, .admission-requirements_chart-label-title'
+  )
 
   // Hover effects para segmentos del gráfico
   chartSegments.forEach(segment => {
@@ -250,7 +251,7 @@ function initAccessibilityEnhancements(component) {
     segment.setAttribute('aria-label', `${requirementId}: ${percentage}%. Presiona para ver detalles`)
 
     // Soporte para teclado en segmentos
-    segment.addEventListener('keydown', (e) => {
+    segment.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault()
         switchContent(component, requirementId)
@@ -259,7 +260,9 @@ function initAccessibilityEnhancements(component) {
   })
 
   // Configurar labels de texto SVG
-  const chartLabels = component.querySelectorAll('.admission-requirements_chart-label-percentage, .admission-requirements_chart-label-title')
+  const chartLabels = component.querySelectorAll(
+    '.admission-requirements_chart-label-percentage, .admission-requirements_chart-label-title'
+  )
   chartLabels.forEach(labelText => {
     const requirementId = labelText.dataset.requirement
 
@@ -268,7 +271,7 @@ function initAccessibilityEnhancements(component) {
     labelText.setAttribute('aria-label', `${requirementId}. Presiona para ver detalles`)
 
     // Soporte para teclado en labels
-    labelText.addEventListener('keydown', (e) => {
+    labelText.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault()
         switchContent(component, requirementId)
@@ -344,7 +347,7 @@ window.AdmissionRequirements = {
    * Activa un contenido específico
    * @param {string} requirementId - ID del requisito
    */
-  switchContent: function(requirementId) {
+  switchContent: function (requirementId) {
     const component = document.querySelector('[data-component-id="requisitos"]')
     if (component) {
       switchContent(component, requirementId)
@@ -377,7 +380,7 @@ window.AdmissionRequirements = {
    * Obtiene el contenido activo
    * @returns {string|null} ID del contenido activo
    */
-  getActiveContent: function() {
+  getActiveContent: function () {
     const component = document.querySelector('[data-component-id="requisitos"]')
     if (component) {
       const activePanel = component.querySelector('.admission-requirements_content-panel.is-active')
@@ -390,7 +393,7 @@ window.AdmissionRequirements = {
    * Obtiene todos los datos de requisitos
    * @returns {Array} Array con los datos de todos los requisitos
    */
-  getRequirementsData: function() {
+  getRequirementsData: function () {
     const component = document.querySelector('[data-component-id="requisitos"]')
     if (!component) return []
 
@@ -414,7 +417,7 @@ window.AdmissionRequirements = {
   /**
    * Reinicia todas las interacciones
    */
-  reinitialize: function() {
+  reinitialize: function () {
     const component = document.querySelector('[data-component-id="requisitos"]')
     if (component) {
       // Limpiar event listeners existentes (básico)

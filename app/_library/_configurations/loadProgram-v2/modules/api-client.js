@@ -8,7 +8,6 @@ import { CONFIG } from './utils.js'
 // Cliente HTTP - se inicializará después de cargar las utilidades
 let apiClient
 
-
 export const initializeApiClient = () => {
   apiClient = new HTTPClient('', {
     timeout: CONFIG.TIMEOUT,

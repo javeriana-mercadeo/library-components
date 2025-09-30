@@ -23,9 +23,9 @@ const Footer = () => {
             <div className='footer__container'>
               <div className='footer__left'>
                 <LogoBlanco alt='Logo Pontificia Universidad Javeriana' className='footer__logo light' isEditable={false} />
-                <p className='footer__title'>
+                <Title className='footer__title'>
                   Explora nuestro campus <br /> y su tecnología de punta.
-                </p>
+                </Title>
               </div>
               <div className='footer__middle'>
                 <div className='footer__video'>
