@@ -1,12 +1,15 @@
 'use client'
 import React from 'react'
+import { Container } from '@library/components'
+import Title from '@library/components/contain/title'
+import Paragraph from '@library/components/contain/paragraph'
 import DetalleProyecto from './components/detalleProyecto'
 
-import script from './script.js'
+import CarouselManager from './script.js'
 import './styles.scss'
 
 // Inicializar el script una sola vez
-const carouselManager = script()
+const carouselManager = new CarouselManager()
 
 const Proyectos = () => {
   const slides = [

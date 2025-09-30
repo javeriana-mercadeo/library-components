@@ -49,26 +49,16 @@ const StudentSliderModule = (function () {
   }
 
   function generateDots() {
-    const dotsContainer = document.querySelector('.slider-dots')
-    if (!dotsContainer) return
+    // Ya no necesitamos generar dots, solo configurar los event listeners
+    const dots = document.querySelectorAll('.slider-dots .dot')
 
-    dotsContainer.innerHTML = ''
-
-    for (let i = 0; i < sliderState.studentsCount; i++) {
-      const dot = document.createElement('div')
-      dot.className = 'dot'
-      if (i === sliderState.currentSlide) {
-        dot.classList.add('active')
-      }
-
+    dots.forEach((dot, i) => {
       dot.onclick = function (e) {
         e.preventDefault()
         e.stopPropagation()
         goToSlide(i, true)
       }
-
-      dotsContainer.appendChild(dot)
-    }
+    })
   }
 
   function updateSlideClasses() {
