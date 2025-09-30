@@ -4,7 +4,7 @@ import ViewComponent from '@/app/_components/viewComponent/viewComponent'
 import VideoDoctorado from './sections/videoDoctorado'
 import DocentesDoctorado from './sections/docentesDoctorado'
 import AprenderasDoctorado from './sections/aprenderasDoctorado'
-import OpenDay from './sections/openDay'
+
 
 
 
@@ -13,10 +13,6 @@ export default function Doctorados() {
   return (
     <>
 
-      {/* <VideoDoctorado /> */}
-     <ViewComponent path={`${basePath}/sections/openDay`}>
-        <OpenDay />
-      </ViewComponent>
 
       <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
         <VideoDoctorado />

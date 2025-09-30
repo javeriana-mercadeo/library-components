@@ -25,20 +25,18 @@ const Proyectos = () => {
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
       slideData: { id: 2, type: 'investigacion' }
     },
-        {
+    {
       image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
       title: 'Investigación de Clase Mundial',
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
       slideData: { id: 2, type: 'investigacion' }
     },
-        {
+    {
       image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
       title: 'Investigación de Clase Mundial',
       description: 'Conoce nuestros proyectos de investigación y logros académicos',
       slideData: { id: 2, type: 'investigacion' }
-    },
-
-
+    }
   ]
 
   const getPositionClass = (index, activeIndex, isMobile) => {
@@ -62,27 +60,23 @@ const Proyectos = () => {
       </div>
       <Container className="main-container">
         <div>
-          <div 
+          <div
             className="carousel-container"
             id="carousel-container"
             onTouchStart={carouselManager.handleTouchStart}
             onTouchMove={carouselManager.handleTouchMove}
-            onTouchEnd={carouselManager.handleTouchEnd}
-          >
+            onTouchEnd={carouselManager.handleTouchEnd}>
             {slides.map((slide, index) => (
               <div
                 key={index}
                 className={`carousel-slide ${getPositionClass(index, carouselManager.activeIndex, carouselManager.isMobile)}`}
                 onClick={() => carouselManager.openModal(index)}
                 style={{ cursor: 'pointer' }}
-                data-slide-index={index}
-              >
+                data-slide-index={index}>
                 <div className="slide-image" style={{ backgroundImage: `url(${slide.image})` }}>
                   <div className="slide-content">
                     <h2>{slide.title}</h2>
-                    <Paragraph className='description'>
-                      {slide.description}
-                    </Paragraph>
+                    <Paragraph className="description">{slide.description}</Paragraph>
                   </div>
                 </div>
               </div>
@@ -136,7 +130,8 @@ const Proyectos = () => {
 
 export default Proyectos
 
-{/* <section class="container hero-carousel" id="carousel-section">
+{
+  /* <section class="container hero-carousel" id="carousel-section">
     <!-- Título principal -->
     <div>
         <h2 class="title title-lg carousel-title"
@@ -470,4 +465,5 @@ export default Proyectos
         
     </div>
 
-</section> */}
+</section> */
+}

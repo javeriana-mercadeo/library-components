@@ -1,678 +1,493 @@
-// Lab Slider - Versión corregida y optimizada
-(function() {
-  'use strict';
+/**
+ * Lab Slider - Vanilla JavaScript
+ * Slider de laboratorios para uso local sin dependencias de Liferay
+ */
 
-  // ✅ Verificación de entorno mejorada
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
-    console.log('LabSlider: Entorno servidor detectado, script no ejecutado');
-    return;
+;(function () {
+  'use strict'
+
+  if (typeof window === 'undefined') {
+    return
   }
 
-  // ✅ Evitar múltiples instancias
-  if (window.LabSliderInstance) {
-    console.log('LabSlider ya existe, limpiando instancia anterior...');
-    window.LabSliderInstance.cleanup();
-  }
+  // Datos por defecto del slider
+  const defaultSlides = [
+    {
+      id: 1,
+      title: 'Laboratorio de Investigación Biomédica',
+      description:
+        'Nuestro laboratorio de investigación biomédica cuenta con equipos de última generación para el análisis molecular y celular.',
+      imageSrc: 'https://picsum.photos/400/300?random=1',
+      label: 'Lab. Biomédica'
+    },
+    {
+      id: 2,
+      title: 'Laboratorio de Ingeniería de Materiales',
+      description: 'Especializado en el desarrollo y caracterización de nuevos materiales. Contamos con equipos avanzados.',
+      imageSrc: 'https://picsum.photos/400/300?random=2',
+      label: 'Lab. Materiales'
+    },
+    {
+      id: 3,
+      title: 'Laboratorio de Química Analítica',
+      description: 'Equipado con tecnología de vanguardia para análisis químicos y estudios de composición molecular.',
+      imageSrc: 'https://picsum.photos/400/300?random=3',
+      label: 'Lab. Química'
+    }
+  ]
 
-  function createLabSlider() {
-    var defaultSlides = [
-      {
-        id: 1,
-        title: 'Laboratorio de Investigación Biomédica',
-        description: 'Nuestro laboratorio de investigación biomédica cuenta con equipos de última generación para el análisis molecular y celular.',
-        imageSrc: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/project-uno',
-        label: 'Lab. Biomédica'
-      },
-      {
-        id: 2,
-        title: 'Laboratorio de Ingeniería de Materiales',
-        description: 'Especializado en el desarrollo y caracterización de nuevos materiales. Contamos con equipos avanzados.',
-        imageSrc: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/project-dos',
-        label: 'Lab. Materiales'
-      }
-    ];
+  function createLabSlider(config = {}) {
+    let slides = []
+    let currentSlide = 0
+    let isInitialized = false
+    let isAnimating = false
 
-    var slides = [];
-    var currentSlide = 0;
-    var isInitialized = false;
-    var isAnimating = false;
-    
-    // ✅ NUEVO: Referencias de event listeners para limpieza
-    var eventListeners = [];
-    var resizeHandler = null;
-    var mutationObserver = null;
+    const settings = {
+      containerSelector: config.containerSelector || '.lab-slider',
+      animationDuration: config.animationDuration || 400,
+      autoPlay: config.autoPlay || false,
+      autoPlayInterval: config.autoPlayInterval || 5000,
+      ...config
+    }
 
+    let autoPlayTimer = null
+
+    // Inicializa las slides desde configuración o datos externos
     function initializeSlides() {
-      if (window.liferayLabSlides && Array.isArray(window.liferayLabSlides) && window.liferayLabSlides.length > 0) {
-        slides = window.liferayLabSlides.slice();
+      if (config.slides && Array.isArray(config.slides) && config.slides.length > 0) {
+        slides = [...config.slides]
+      } else if (window.labSlides && Array.isArray(window.labSlides) && window.labSlides.length > 0) {
+        slides = [...window.labSlides]
       } else {
-        slides = defaultSlides.slice();
+        slides = [...defaultSlides]
       }
     }
 
+    // Actualiza las slides dinámicamente
     function updateSlideData(newSlides) {
       if (Array.isArray(newSlides) && newSlides.length > 0) {
-        slides = newSlides.slice();
-        currentSlide = 0;
-        
+        slides = [...newSlides]
+        currentSlide = 0
+
         if (isInitialized) {
-          updateContentWithAnimation();
+          updateContentWithAnimation()
         }
-        return true;
+        return true
       }
-      return false;
+      return false
     }
 
-    function waitForElement(selector, maxAttempts, interval) {
-      maxAttempts = maxAttempts || 10;
-      interval = interval || 100;
-      
-      return new Promise(function(resolve, reject) {
-        var attempts = 0;
+    // Espera a que un elemento esté disponible en el DOM
+    function waitForElement(selector, maxAttempts = 10, interval = 100) {
+      return new Promise((resolve, reject) => {
+        let attempts = 0
 
         function check() {
-          attempts++;
-          var element = document.querySelector(selector);
+          attempts++
+          const element = document.querySelector(selector)
 
           if (element) {
-            resolve(element);
+            resolve(element)
           } else if (attempts >= maxAttempts) {
-            reject(new Error('Element not found: ' + selector));
+            reject(new Error(`Element not found: ${selector}`))
           } else {
-            setTimeout(check, interval);
+            setTimeout(check, interval)
           }
         }
 
-        check();
-      });
+        check()
+      })
     }
 
     function nextSlide() {
       if (!isInitialized || slides.length === 0 || isAnimating) {
-        return;
+        return
       }
-      
-      currentSlide = currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
-      updateContentWithAnimation();
+
+      currentSlide = currentSlide === slides.length - 1 ? 0 : currentSlide + 1
+      updateContentWithAnimation()
+      resetAutoPlay()
     }
 
     function prevSlide() {
       if (!isInitialized || slides.length === 0 || isAnimating) {
-        return;
+        return
       }
-      
-      currentSlide = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
-      updateContentWithAnimation();
+
+      currentSlide = currentSlide === 0 ? slides.length - 1 : currentSlide - 1
+      updateContentWithAnimation()
+      resetAutoPlay()
+    }
+
+    function goToSlide(index) {
+      if (!isInitialized || slides.length === 0 || isAnimating) {
+        return
+      }
+
+      if (index >= 0 && index < slides.length) {
+        currentSlide = index
+        updateContentWithAnimation()
+        resetAutoPlay()
+      }
     }
 
     function getCurrentSlide() {
-      return slides.length > 0 ? slides[currentSlide] : null;
+      return slides.length > 0 ? slides[currentSlide] : null
     }
 
     function getCurrentImages() {
-      if (slides.length === 0) return { firstImage: null, secondImage: null };
-      
-      var firstImageIndex = currentSlide;
-      var secondImageIndex = (currentSlide + 1) % slides.length;
+      if (slides.length === 0) return { firstImage: null, secondImage: null }
+
+      const firstImageIndex = currentSlide
+      const secondImageIndex = (currentSlide + 1) % slides.length
 
       return {
         firstImage: slides[firstImageIndex],
         secondImage: slides[secondImageIndex]
-      };
+      }
     }
 
-    // ✅ MEJORADO: Función de animación con mejor manejo de errores
     function updateContentWithAnimation() {
-      if (isAnimating) return;
-      
+      if (isAnimating) return
+
       try {
-        isAnimating = true;
-        
-        var sliderContent = document.querySelector('.lab-slider-content');
-        var sliderText = document.querySelector('.lab-slider-text');
-        var sliderImages = document.querySelector('.lab-slider-images');
+        isAnimating = true
+
+        const sliderContent = document.querySelector(`${settings.containerSelector} .lab-slider-content`)
+        const sliderText = document.querySelector(`${settings.containerSelector} .lab-slider-text`)
+        const sliderImages = document.querySelector(`${settings.containerSelector} .lab-slider-images`)
 
         if (!sliderContent) {
-          updateContent();
-          isAnimating = false;
-          return;
+          updateContent()
+          isAnimating = false
+          return
         }
 
-        var elementsToAnimate = [sliderContent];
-        if (sliderText) elementsToAnimate.push(sliderText);
-        if (sliderImages) elementsToAnimate.push(sliderImages);
+        const elementsToAnimate = [sliderContent]
+        if (sliderText) elementsToAnimate.push(sliderText)
+        if (sliderImages) elementsToAnimate.push(sliderImages)
 
-        // Reiniciar animaciones
-        elementsToAnimate.forEach(function(element) {
-          if (element) {
-            element.classList.remove('lab-slider-transition');
-          }
-        });
-        
-        // Forzar reflow
-        if (sliderContent) {
-          void sliderContent.offsetWidth;
-        }
+        elementsToAnimate.forEach(element => {
+          element.classList.remove('lab-slider-transition')
+        })
 
-        // Aplicar animaciones
-        elementsToAnimate.forEach(function(element) {
-          if (element) {
-            element.classList.add('lab-slider-transition');
-          }
-        });
+        void sliderContent.offsetWidth
 
-        // Actualizar contenido
-        updateContent();
+        elementsToAnimate.forEach(element => {
+          element.classList.add('lab-slider-transition')
+        })
 
-        // Limpiar después de la animación
-        setTimeout(function() {
-          try {
-            elementsToAnimate.forEach(function(element) {
-              if (element) {
-                element.classList.remove('lab-slider-transition');
-              }
-            });
-          } catch (e) {
-            console.warn('Error limpiando animaciones:', e);
-          }
-          isAnimating = false;
-        }, 450);
+        updateContent()
 
+        setTimeout(() => {
+          elementsToAnimate.forEach(element => {
+            element.classList.remove('lab-slider-transition')
+          })
+          isAnimating = false
+        }, settings.animationDuration + 50)
       } catch (error) {
-        console.error('Error actualizando contenido con animación:', error);
-        isAnimating = false;
+        console.error('Error updating content with animation:', error)
+        isAnimating = false
       }
     }
 
     function updateContent() {
       try {
-        updateText();
-        updateImages();
+        updateText()
+        updateImages()
+        updateIndicators()
       } catch (error) {
-        console.error('Error actualizando contenido:', error);
+        console.error('Error updating content:', error)
       }
     }
 
     function updateText() {
-      var currentSlideData = getCurrentSlide();
-      if (!currentSlideData) return;
+      const currentSlideData = getCurrentSlide()
+      if (!currentSlideData) return
 
-      var titleSelectors = [
-        '[data-lfr-editable-id="laboratorios-slide-title"]',
-        '[data-testid="slide-title"]',
-        '.lab-slider-text .subtitle-lab',
-        '.subtitle-lab'
-      ];
+      const titleSelectors = [
+        `${settings.containerSelector} [data-slide-title]`,
+        `${settings.containerSelector} .slide-title`,
+        `${settings.containerSelector} .subtitle-lab`
+      ]
 
-      var descriptionSelectors = [
-        '[data-lfr-editable-id="laboratorios-slide-description"]',
-        '[data-testid="slide-description"]',
-        '.lab-slider-text .paragraph-lab',
-        '.paragraph-lab'
-      ];
+      const descriptionSelectors = [
+        `${settings.containerSelector} [data-slide-description]`,
+        `${settings.containerSelector} .slide-description`,
+        `${settings.containerSelector} .paragraph-lab`
+      ]
 
-      // Buscar y actualizar título
-      var titleElement = null;
-      for (var i = 0; i < titleSelectors.length; i++) {
-        titleElement = document.querySelector(titleSelectors[i]);
-        if (titleElement) break;
+      let titleElement = null
+      for (const selector of titleSelectors) {
+        titleElement = document.querySelector(selector)
+        if (titleElement) break
       }
 
-      if (titleElement && currentSlideData.title) {
-        try {
-          if (titleElement.hasAttribute('data-lfr-editable-id')) {
-            titleElement.innerHTML = currentSlideData.title;
-          } else {
-            titleElement.textContent = currentSlideData.title;
-          }
-        } catch (e) {
-          console.warn('Error actualizando título:', e);
-        }
+      if (titleElement) {
+        titleElement.textContent = currentSlideData.title
       }
 
-      // Buscar y actualizar descripción
-      var paragraphElement = null;
-      for (var i = 0; i < descriptionSelectors.length; i++) {
-        paragraphElement = document.querySelector(descriptionSelectors[i]);
-        if (paragraphElement) break;
+      let paragraphElement = null
+      for (const selector of descriptionSelectors) {
+        paragraphElement = document.querySelector(selector)
+        if (paragraphElement) break
       }
 
-      if (paragraphElement && currentSlideData.description) {
-        try {
-          if (paragraphElement.hasAttribute('data-lfr-editable-id')) {
-            paragraphElement.innerHTML = currentSlideData.description;
-          } else {
-            paragraphElement.textContent = currentSlideData.description;
-          }
-        } catch (e) {
-          console.warn('Error actualizando descripción:', e);
-        }
+      if (paragraphElement) {
+        paragraphElement.textContent = currentSlideData.description
       }
     }
 
     function updateImages() {
-      var images = getCurrentImages();
-      if (!images.firstImage) return;
-      
-      var imageSelectors = [
-        '[data-testid="first-image"], [data-testid="second-image"]',
-        '.lab-slider-images .lab-image',
-        '.lab-image'
-      ];
+      const images = getCurrentImages()
+      if (!images.firstImage) return
 
-      var labelSelectors = [
-        '[data-testid="first-label"], [data-testid="second-label"]',
-        '.lab-slider-images .image-label',
-        '.image-label'
-      ];
+      const imageContainers = document.querySelectorAll(`${settings.containerSelector} .lab-image`)
+      const imageLabels = document.querySelectorAll(`${settings.containerSelector} .image-label`)
 
-      var imageContainers = [];
-      for (var i = 0; i < imageSelectors.length; i++) {
-        imageContainers = document.querySelectorAll(imageSelectors[i]);
-        if (imageContainers.length > 0) break;
-      }
-
-      var imageLabels = [];
-      for (var i = 0; i < labelSelectors.length; i++) {
-        imageLabels = document.querySelectorAll(labelSelectors[i]);
-        if (imageLabels.length > 0) break;
-      }
-
-      // Actualizar primera imagen
       if (imageContainers[0] && images.firstImage.imageSrc) {
-        try {
-          imageContainers[0].src = images.firstImage.imageSrc;
-          imageContainers[0].alt = images.firstImage.label || 'Laboratorio';
-        } catch (e) {
-          console.warn('Error actualizando primera imagen:', e);
-        }
+        imageContainers[0].src = images.firstImage.imageSrc
+        imageContainers[0].alt = images.firstImage.label || 'Laboratorio'
       }
       if (imageLabels[0]) {
-        try {
-          imageLabels[0].textContent = images.firstImage.label || 'Lab';
-        } catch (e) {
-          console.warn('Error actualizando primera etiqueta:', e);
-        }
+        imageLabels[0].textContent = images.firstImage.label || 'Lab'
       }
 
-      // Actualizar segunda imagen
-      if (imageContainers[1] && images.secondImage && images.secondImage.imageSrc) {
-        try {
-          imageContainers[1].src = images.secondImage.imageSrc;
-          imageContainers[1].alt = images.secondImage.label || 'Laboratorio';
-        } catch (e) {
-          console.warn('Error actualizando segunda imagen:', e);
-        }
+      if (imageContainers[1] && images.secondImage?.imageSrc) {
+        imageContainers[1].src = images.secondImage.imageSrc
+        imageContainers[1].alt = images.secondImage.label || 'Laboratorio'
       }
       if (imageLabels[1] && images.secondImage) {
-        try {
-          imageLabels[1].textContent = images.secondImage.label || 'Lab';
-        } catch (e) {
-          console.warn('Error actualizando segunda etiqueta:', e);
-        }
+        imageLabels[1].textContent = images.secondImage.label || 'Lab'
       }
     }
 
-    // ✅ MEJORADO: Inicialización de botones con mejor manejo
+    function updateIndicators() {
+      const indicators = document.querySelectorAll(`${settings.containerSelector} .slider-indicator`)
+
+      indicators.forEach((indicator, index) => {
+        if (index === currentSlide) {
+          indicator.classList.add('active')
+        } else {
+          indicator.classList.remove('active')
+        }
+      })
+    }
+
+    function createIndicators() {
+      const container = document.querySelector(`${settings.containerSelector} .slider-indicators`)
+
+      if (!container || slides.length === 0) return
+
+      container.innerHTML = ''
+
+      slides.forEach((_, index) => {
+        const indicator = document.createElement('button')
+        indicator.className = 'slider-indicator'
+        indicator.setAttribute('aria-label', `Ir a slide ${index + 1}`)
+
+        if (index === currentSlide) {
+          indicator.classList.add('active')
+        }
+
+        indicator.addEventListener('click', () => goToSlide(index))
+        container.appendChild(indicator)
+      })
+    }
+
     function initializeButtons() {
-      var buttonSelectors = [
-        '[data-testid="prev-button"], [data-testid="next-button"]',
-        '.lab-slider-navigation .nav-button',
-        '.nav-button'
-      ];
+      const buttons = document.querySelectorAll(`${settings.containerSelector} .nav-button`)
 
-      var buttons = [];
-      for (var i = 0; i < buttonSelectors.length; i++) {
-        buttons = document.querySelectorAll(buttonSelectors[i]);
-        if (buttons.length > 0) break;
-      }
+      buttons.forEach(button => {
+        button.style.border = 'none'
+        button.style.borderRadius = '50%'
+        button.style.cursor = 'pointer'
+        button.style.transition = 'all 0.3s ease'
+        button.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'
 
-      for (var i = 0; i < buttons.length; i++) {
-        var button = buttons[i];
-        if (!button) continue;
-
-        try {
-          button.style.border = 'none';
-          button.style.borderRadius = '50%';
-          button.style.cursor = 'pointer';
-          button.style.transition = 'all 0.3s ease';
-          button.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-
-          if (window.innerWidth <= 768) {
-            button.style.width = '32px';
-            button.style.height = '32px';
-            button.style.fontSize = '18px';
-          } else {
-            button.style.width = '40px';
-            button.style.height = '40px';
-            button.style.fontSize = '20px';
-          }
-        } catch (e) {
-          console.warn('Error estilizando botón:', e);
+        if (window.innerWidth <= 768) {
+          button.style.width = '32px'
+          button.style.height = '32px'
+          button.style.fontSize = '18px'
+        } else {
+          button.style.width = '40px'
+          button.style.height = '40px'
+          button.style.fontSize = '20px'
         }
-      }
+      })
     }
 
-    // ✅ MEJORADO: Bind events con limpieza mejorada
     function bindEvents() {
-      // Limpiar eventos anteriores
-      clearEventListeners();
+      const prevButton = document.querySelector(`${settings.containerSelector} .nav-button.prev`)
+      const nextButton = document.querySelector(`${settings.containerSelector} .nav-button.next`)
 
-      var prevSelectors = [
-        '[data-testid="prev-button"]',
-        '[data-action="prev"]',
-        '.lab-slider-navigation .nav-button.prev',
-        '.nav-button.prev'
-      ];
-
-      var nextSelectors = [
-        '[data-testid="next-button"]', 
-        '[data-action="next"]',
-        '.lab-slider-navigation .nav-button.next',
-        '.nav-button.next'
-      ];
-
-      // Buscar botón anterior
-      var prevButton = null;
-      for (var i = 0; i < prevSelectors.length; i++) {
-        prevButton = document.querySelector(prevSelectors[i]);
-        if (prevButton) break;
-      }
-
-      // Buscar botón siguiente
-      var nextButton = null;
-      for (var i = 0; i < nextSelectors.length; i++) {
-        nextButton = document.querySelector(nextSelectors[i]);
-        if (nextButton) break;
-      }
-
-      // Evento botón anterior
       if (prevButton) {
-        var prevHandler = function(e) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          prevSlide();
-        };
-        prevButton.addEventListener('click', prevHandler, { passive: false });
-        eventListeners.push({ element: prevButton, event: 'click', handler: prevHandler });
+        prevButton.onclick = null
+        prevButton.addEventListener('click', e => {
+          e.preventDefault()
+          e.stopImmediatePropagation()
+          prevSlide()
+        })
       }
 
-      // Evento botón siguiente
       if (nextButton) {
-        var nextHandler = function(e) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          nextSlide();
-        };
-        nextButton.addEventListener('click', nextHandler, { passive: false });
-        eventListeners.push({ element: nextButton, event: 'click', handler: nextHandler });
+        nextButton.onclick = null
+        nextButton.addEventListener('click', e => {
+          e.preventDefault()
+          e.stopImmediatePropagation()
+          nextSlide()
+        })
+      }
+
+      // Soporte para teclado
+      document.addEventListener('keydown', handleKeyboard)
+    }
+
+    function handleKeyboard(e) {
+      if (!isInitialized) return
+
+      const container = document.querySelector(settings.containerSelector)
+      if (!container || !container.matches(':hover')) return
+
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        prevSlide()
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        nextSlide()
       }
     }
 
-    // ✅ NUEVO: Función para limpiar event listeners
-    function clearEventListeners() {
-      for (var i = 0; i < eventListeners.length; i++) {
-        var listener = eventListeners[i];
-        try {
-          if (listener.element && listener.element.removeEventListener) {
-            listener.element.removeEventListener(listener.event, listener.handler);
-          }
-        } catch (e) {
-          console.warn('Error removiendo event listener:', e);
-        }
+    function handleResize() {
+      if (isInitialized) {
+        initializeButtons()
       }
-      eventListeners = [];
     }
 
-    // ✅ MEJORADO: Handle resize con throttling
-    function createResizeHandler() {
-      var throttleTimeout = null;
-      return function() {
-        if (throttleTimeout) return;
-        
-        throttleTimeout = setTimeout(function() {
-          if (isInitialized) {
-            try {
-              initializeButtons();
-            } catch (e) {
-              console.warn('Error en resize handler:', e);
-            }
-          }
-          throttleTimeout = null;
-        }, 250);
-      };
+    function startAutoPlay() {
+      if (!settings.autoPlay) return
+
+      stopAutoPlay()
+      autoPlayTimer = setInterval(() => {
+        nextSlide()
+      }, settings.autoPlayInterval)
     }
 
-    // ✅ MEJORADO: Inicialización con mejor manejo de errores
-    function initialize() {
-      return new Promise(function(resolve) {
-        try {
-          // Evitar doble inicialización
-          if (isInitialized) {
-            resolve(true);
-            return;
-          }
+    function stopAutoPlay() {
+      if (autoPlayTimer) {
+        clearInterval(autoPlayTimer)
+        autoPlayTimer = null
+      }
+    }
 
-          initializeSlides();
+    function resetAutoPlay() {
+      if (settings.autoPlay) {
+        startAutoPlay()
+      }
+    }
 
-          var keySelectors = [
-            '.lab-slider-navigation',
-            '.lab-slider',
-            '[data-testid="prev-button"]'
-          ];
+    async function initialize() {
+      try {
+        initializeSlides()
 
-          var selectorIndex = 0;
+        await waitForElement(settings.containerSelector, 10, 200)
 
-          function tryNextSelector() {
-            if (selectorIndex >= keySelectors.length) {
-              proceedWithInit();
-              return;
-            }
+        initializeButtons()
+        createIndicators()
+        updateContent()
+        bindEvents()
 
-            waitForElement(keySelectors[selectorIndex], 5, 200)
-              .then(function() {
-                proceedWithInit();
-              })
-              .catch(function() {
-                selectorIndex++;
-                tryNextSelector();
-              });
-          }
+        window.removeEventListener('resize', handleResize)
+        window.addEventListener('resize', handleResize)
 
-          function proceedWithInit() {
-            try {
-              initializeButtons();
-              updateContent(); // Inicialización sin animación
-              bindEvents();
-
-              // Configurar resize handler
-              if (resizeHandler) {
-                window.removeEventListener('resize', resizeHandler);
-              }
-              resizeHandler = createResizeHandler();
-              window.addEventListener('resize', resizeHandler, { passive: true });
-
-              isInitialized = true;
-              console.log('LabSlider inicializado correctamente');
-              resolve(true);
-            } catch (error) {
-              console.error('Error en proceedWithInit:', error);
-              resolve(false);
-            }
-          }
-
-          tryNextSelector();
-
-        } catch (error) {
-          console.error('Error en initialize:', error);
-          resolve(false);
+        if (settings.autoPlay) {
+          startAutoPlay()
         }
-      });
+
+        isInitialized = true
+        return true
+      } catch (error) {
+        console.error('Error initializing slider:', error)
+        return false
+      }
     }
 
-    // ✅ MEJORADO: Cleanup completo
     function cleanup() {
       try {
-        console.log('Limpiando LabSlider...');
-        
-        isInitialized = false;
-        isAnimating = false;
-        
-        // Limpiar event listeners
-        clearEventListeners();
-        
-        // Limpiar resize handler
-        if (resizeHandler) {
-          window.removeEventListener('resize', resizeHandler);
-          resizeHandler = null;
-        }
-        
-        // Limpiar mutation observer
-        if (mutationObserver) {
-          mutationObserver.disconnect();
-          mutationObserver = null;
-        }
-        
-        // Limpiar variables globales
-        if (window.labSliderInstance === this) {
-          window.labSliderInstance = null;
-        }
-        if (window.labSliderDebug) {
-          window.labSliderDebug = null;
-        }
-        
-        console.log('LabSlider limpiado correctamente');
+        isInitialized = false
+        isAnimating = false
+        stopAutoPlay()
+        window.removeEventListener('resize', handleResize)
+        document.removeEventListener('keydown', handleKeyboard)
       } catch (error) {
-        console.error('Error en cleanup:', error);
+        console.error('Error cleaning up:', error)
       }
     }
 
-    // ✅ API pública
     return {
-      nextSlide: nextSlide,
-      prevSlide: prevSlide,
-      getCurrentSlide: getCurrentSlide,
-      getCurrentImages: getCurrentImages,
-      initialize: initialize,
-      cleanup: cleanup,
-      updateSlideData: updateSlideData,
-      isInitialized: function() { return isInitialized; },
-      getSlides: function() { return slides.slice(); }
-    };
+      nextSlide,
+      prevSlide,
+      goToSlide,
+      getCurrentSlide,
+      getCurrentImages,
+      initialize,
+      cleanup,
+      updateSlideData,
+      startAutoPlay,
+      stopAutoPlay,
+      isInitialized: () => isInitialized,
+      getSlides: () => [...slides],
+      getCurrentIndex: () => currentSlide,
+      getSlidesCount: () => slides.length
+    }
   }
 
-  // ✅ Crear instancia
-  var labSliderInstance = createLabSlider();
-
-  // ✅ MEJORADO: Función de inicialización única
-  function executeInit() {
-    var initPromise = null;
-    var hasInitialized = false;
-
-    function performInit() {
-      if (hasInitialized || initPromise) return initPromise;
-      
-      hasInitialized = true;
-      initPromise = labSliderInstance.initialize();
-      return initPromise;
-    }
-
-    // DOM ready
+  // Auto-inicialización si existe el contenedor
+  function autoInit() {
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(performInit, 100);
-      });
+      document.addEventListener('DOMContentLoaded', () => {
+        const container = document.querySelector('.lab-slider')
+        if (container && !window.labSliderInstance) {
+          window.labSliderInstance = createLabSlider()
+          window.labSliderInstance.initialize()
+        }
+      })
     } else {
-      setTimeout(performInit, 100);
-    }
-
-    // Liferay ready
-    if (typeof window.Liferay !== 'undefined' && window.Liferay.on) {
-      window.Liferay.on('allPortletsReady', function() {
-        setTimeout(performInit, 200);
-      });
-    }
-
-    // ✅ MEJORADO: MutationObserver con mejor gestión
-    if ('MutationObserver' in window && !labSliderInstance.isInitialized()) {
-      var observer = new MutationObserver(function(mutations) {
-        if (hasInitialized) return;
-
-        var labSliderAdded = mutations.some(function(mutation) {
-          return Array.from(mutation.addedNodes).some(function(node) {
-            return node.nodeType === 1 &&
-                   ((node.classList && node.classList.contains('lab-slider')) ||
-                    (node.querySelector && node.querySelector('.lab-slider')));
-          });
-        });
-
-        if (labSliderAdded) {
-          observer.disconnect();
-          setTimeout(performInit, 300);
-        }
-      });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-
-      // Cleanup después de 15 segundos
-      setTimeout(function() {
-        try {
-          if (observer) {
-            observer.disconnect();
-          }
-        } catch (e) {
-          console.warn('Error desconectando MutationObserver:', e);
-        }
-      }, 15000);
+      const container = document.querySelector('.lab-slider')
+      if (container && !window.labSliderInstance) {
+        window.labSliderInstance = createLabSlider()
+        window.labSliderInstance.initialize()
+      }
     }
   }
 
-  // ✅ Ejecutar inicialización
-  executeInit();
+  autoInit()
 
-  // ✅ MEJORADO: Exports globales más limpios
-  window.LabSliderInstance = labSliderInstance;
-
-  // Debug API (solo en desarrollo)
-  if (typeof window.location !== 'undefined' && 
-      (window.location.hostname === 'localhost' || window.location.search.includes('debug=true'))) {
-    window.labSliderDebug = {
-      next: function() { return labSliderInstance.nextSlide(); },
-      prev: function() { return labSliderInstance.prevSlide(); },
-      getState: function() { return labSliderInstance.getCurrentSlide(); },
-      init: function() { return labSliderInstance.initialize(); },
-      cleanup: function() { return labSliderInstance.cleanup(); },
-      getData: function() { return labSliderInstance.getSlides(); }
-    };
+  // API pública
+  const LabSliderAPI = {
+    create: createLabSlider,
+    init: config => {
+      const instance = createLabSlider(config)
+      instance.initialize()
+      return instance
+    }
   }
 
-  // ✅ CORREGIDO: API para exports (solo si es necesario)
-  var LabSliderAPI = {
-    init: labSliderInstance.initialize,
-    cleanup: labSliderInstance.cleanup,
-    next: labSliderInstance.nextSlide,
-    prev: labSliderInstance.prevSlide,
-    getState: labSliderInstance.getCurrentSlide,
-    getImages: labSliderInstance.getCurrentImages,
-    isInitialized: labSliderInstance.isInitialized,
-    getSlides: labSliderInstance.getSlides,
-    updateSlideData: labSliderInstance.updateSlideData,
-    getInstance: function() { return labSliderInstance; }
-  };
-
-  // Solo exports si es necesario
+  // Exports
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = LabSliderAPI;
+    module.exports = LabSliderAPI
+    module.exports.default = LabSliderAPI
+    module.exports.createLabSlider = createLabSlider
   }
 
   if (typeof define === 'function' && define.amd) {
-    define([], function() {
-      return LabSliderAPI;
-    });
+    define([], () => LabSliderAPI)
   }
 
-  // ✅ CORREGIDO: No return innecesario
-})();
+  if (typeof window !== 'undefined') {
+    window.LabSlider = LabSliderAPI
+    window.createLabSlider = createLabSlider
+  }
+
+  return LabSliderAPI
+})()
