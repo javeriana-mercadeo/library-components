@@ -304,39 +304,32 @@ $req-progress-animation-duration: 0.8s;
     grid-area: content;
     position: relative;
     display: flex;
+    flex-direction: column;
     width: 100%;
+    height: auto;
 
     // En móvil/tablet, permitir crecimiento vertical natural
     @media (max-width: 991px) {
       align-items: flex-start;
-      justify-content: center;
-      flex-direction: column;
-    }
-
-    // En desktop, mantener centrado y hacia la izquierda
-    @media (min-width: 992px) {
-      align-items: center;
       justify-content: flex-start;
+      padding-bottom: rem(20px);
     }
 
-    // Altura mínima solo para múltiples requisitos en desktop
+    // En desktop, permitir crecimiento dinámico
     @media (min-width: 992px) {
+      align-items: flex-start;
+      justify-content: flex-start;
+      min-height: auto;
+      /*padding-bottom: rem(100px);*/
+
+      // Ajustar cuando hay múltiples requisitos
       &.multiple-requirements {
-        min-height: rem(400px);
-        align-items: center;
-        padding-bottom: rem(80px); // Espacio para el botón fijo
+        min-height: auto;
       }
 
       &:not(.multiple-requirements) {
-        min-height: rem(160px);
-        align-items: center;
-        padding-bottom: rem(80px); // Espacio para el botón fijo
+        min-height: auto;
       }
-    }
-
-    // En mobile, agregar padding-bottom para el botón
-    @media (max-width: 991px) {
-      padding-bottom: rem(20px); // Espacio para el botón en flujo normal
     }
   }
 
@@ -344,51 +337,56 @@ $req-progress-animation-duration: 0.8s;
   // CONTENT PANELS
   // ==========================================
   &_content-panel {
-    // En móvil/tablet, usar posicionamiento estático para permitir crecimiento natural
-    @media (max-width: 991px) {
-      position: static;
-      width: 100%;
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      opacity: 1;
-      visibility: visible;
-      transform: none;
+    // Comportamiento común para todos los tamaños
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 
-      // Ocultar paneles no activos en móvil sin absolute positioning
-      &:not(.is-active) {
-        display: none;
-      }
-
-      &.is-active {
-        display: flex;
-        animation: fadeInContent 0.3s ease-in-out;
-      }
+    // Ocultar paneles no activos con display y transiciones suaves
+    &:not(.is-active) {
+      display: none;
+      opacity: 0;
     }
 
-    // En desktop, mantener el comportamiento de overlay absoluto
-    @media (min-width: 992px) {
-      position: absolute;
-      top: auto;
-      left: 0;
-      width: 100%;
-      height: auto;
+    &.is-active {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transform: scale(0.95) translateY(#{rem(10px)});
+      opacity: 1;
+      animation: fadeInContent 0.3s ease-in-out;
+    }
+
+    // En móvil/tablet
+    @media (max-width: 991px) {
+      position: static;
+      transform: none;
+      justify-content: flex-start;
+    }
+
+    // En desktop - usar posicionamiento relativo en lugar de absoluto
+    @media (min-width: 992px) {
+      position: relative;
+      left: auto;
+      top: auto;
+
+      // Transiciones suaves para cambios de panel
       transition:
-        opacity 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-        visibility 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-        transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        max-height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
       &.is-active {
         opacity: 1;
-        visibility: visible;
-        transform: scale(1) translateY(0);
+      }
+
+      // Ocultar con altura 0 en lugar de display none para animación
+      &:not(.is-active) {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        display: block;
+      }
+
+      &.is-active {
+        max-height: none;
+        overflow: visible;
       }
     }
 
@@ -502,7 +500,7 @@ $req-progress-animation-duration: 0.8s;
 
       // Elementos ocultos en móvil cuando hay más de 5 items
       &.has-many-items {
-        .admission-requirements_list-item:nth-child(n+6) {
+        .admission-requirements_list-item:nth-child(n + 6) {
           display: none;
 
           &.show-all {
@@ -638,7 +636,7 @@ $req-progress-animation-duration: 0.8s;
     }
 
     // Estado expandido - ícono minus horizontal
-    &[aria-expanded="true"] {
+    &[aria-expanded='true'] {
       .toggle-icon {
         transform: rotate(0deg); // Sin rotación para mostrar línea horizontal
       }
@@ -821,41 +819,37 @@ $req-progress-animation-duration: 0.8s;
   }
 
   // ==========================================
-  // FIXED PANEL NAVIGATION (FAQ BUTTON OUTSIDE PANELS)
+  // PANEL NAVIGATION (INSIDE CONTENT PANEL)
   // ==========================================
   &_panel-navigation-fixed {
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: var(--spacing-md);
-    padding: var(--spacing-md) var(--spacing-md);
-    z-index: 10; // Encima de los paneles
-    background: var(--background-100); // Fondo para evitar transparencias
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md) 0;
+    z-index: 10;
+    background: transparent;
 
-    @include dark-theme {
-      background: var(--background-200);
-    }
-
-    // En desktop, posicionarlo al pie del contenedor
+    // En desktop, alineado a la izquierda
     @media (min-width: 992px) {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin-top: 0;
-      padding: var(--spacing-sm) var(--spacing-md);
+      position: relative;
+      margin-top: var(--spacing-lg);
+      padding: var(--spacing-md) 0;
+      justify-content: flex-start;
+      bottom: auto;
+      left: auto;
+      right: auto;
     }
 
-    // En mobile, mantener flujo normal
+    // En mobile, centrado horizontal
     @media (max-width: 991px) {
       position: static;
       margin-top: var(--spacing-md);
-      padding: var(--spacing-md) var(--spacing-md);
+      padding: var(--spacing-md) 0;
+      justify-content: center;
     }
   }
-
 }
 
 // ==========================================
@@ -895,10 +889,7 @@ $req-progress-animation-duration: 0.8s;
   }
 }
 
-.admission-requirements_content-panel.is-active {
-  animation: fadeInSlideUp 0.4s ease-out;
-}
-
+// Aplicar animaciones a elementos específicos
 .admission-requirements_chart-segment.is-active {
   animation: chartSegmentActive 0.3s ease-out;
 }
