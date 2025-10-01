@@ -1,5 +1,5 @@
 /* ===== ESTILOS COMPILADOS CON ESBUILD ===== */
-/* Compilado el: 25/09/2025, 04:40:02 p. m. (COT) */
+/* Compilado el: 01/10/2025, 05:39:05 p. m. (COT) */
 /* Archivo fuente: styles.scss */
 
 @charset "UTF-8";
@@ -5836,25 +5836,61 @@ lfr-editable:empty::before {
   background: rgba(var(--primary-rgb), 0.3);
 }
 .btn-primary.btn-flat {
-  background: rgba(var(--primary-rgb), 0.18);
+  background: transparent;
   color: var(--primary);
   box-shadow: none;
   border: 0.0625rem solid transparent;
+  position: relative;
+}
+.btn-primary.btn-flat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--neutral-1100);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn-primary.btn-flat::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--primary-rgb), 0.18);
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  transition: all 0.25s ease-in-out;
+}
+.btn-primary.btn-flat .btn-icon,
+.btn-primary.btn-flat .btn-text {
+  position: relative;
+  z-index: 1;
 }
 .btn-primary.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--primary-rgb), 0.2);
   color: var(--primary-700);
   transform: translateY(-0.125rem);
 }
+.btn-primary.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--primary-rgb), 0.2);
+}
 .btn-primary.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--primary-rgb), 0.23);
   transform: translateY(0);
+}
+.btn-primary.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--primary-rgb), 0.23);
 }
 .btn-primary.btn-flat:focus-visible {
   box-shadow: 0 0 0 0.125rem var(--background-100), 0 0 0 0.25rem var(--primary-300);
 }
 .btn-primary.btn-flat .btn-ripple-effect {
   background: rgba(var(--primary-rgb), 0.25);
+  z-index: 1;
 }
 .btn-primary.btn-ghost {
   background: transparent;
@@ -6097,25 +6133,61 @@ lfr-editable:empty::before {
   background: rgba(var(--secondary-rgb), 0.3);
 }
 .btn-secondary.btn-flat {
-  background: rgba(var(--secondary-rgb), 0.18);
+  background: transparent;
   color: var(--secondary);
   box-shadow: none;
   border: 0.0625rem solid transparent;
+  position: relative;
+}
+.btn-secondary.btn-flat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--neutral-1100);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn-secondary.btn-flat::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--secondary-rgb), 0.18);
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  transition: all 0.25s ease-in-out;
+}
+.btn-secondary.btn-flat .btn-icon,
+.btn-secondary.btn-flat .btn-text {
+  position: relative;
+  z-index: 1;
 }
 .btn-secondary.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--secondary-rgb), 0.2);
   color: var(--secondary-700);
   transform: translateY(-0.125rem);
 }
+.btn-secondary.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--secondary-rgb), 0.2);
+}
 .btn-secondary.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--secondary-rgb), 0.23);
   transform: translateY(0);
+}
+.btn-secondary.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--secondary-rgb), 0.23);
 }
 .btn-secondary.btn-flat:focus-visible {
   box-shadow: 0 0 0 0.125rem var(--background-100), 0 0 0 0.25rem var(--secondary-300);
 }
 .btn-secondary.btn-flat .btn-ripple-effect {
   background: rgba(var(--secondary-rgb), 0.25);
+  z-index: 1;
 }
 .btn-secondary.btn-ghost {
   background: transparent;
@@ -6358,25 +6430,61 @@ lfr-editable:empty::before {
   background: rgba(var(--tertiary-rgb), 0.3);
 }
 .btn-tertiary.btn-flat {
-  background: rgba(var(--tertiary-rgb), 0.18);
+  background: transparent;
   color: var(--tertiary);
   box-shadow: none;
   border: 0.0625rem solid transparent;
+  position: relative;
+}
+.btn-tertiary.btn-flat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--neutral-1100);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn-tertiary.btn-flat::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--tertiary-rgb), 0.18);
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  transition: all 0.25s ease-in-out;
+}
+.btn-tertiary.btn-flat .btn-icon,
+.btn-tertiary.btn-flat .btn-text {
+  position: relative;
+  z-index: 1;
 }
 .btn-tertiary.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--tertiary-rgb), 0.2);
   color: var(--tertiary-700);
   transform: translateY(-0.125rem);
 }
+.btn-tertiary.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--tertiary-rgb), 0.2);
+}
 .btn-tertiary.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--tertiary-rgb), 0.23);
   transform: translateY(0);
+}
+.btn-tertiary.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--tertiary-rgb), 0.23);
 }
 .btn-tertiary.btn-flat:focus-visible {
   box-shadow: 0 0 0 0.125rem var(--background-100), 0 0 0 0.25rem var(--tertiary-300);
 }
 .btn-tertiary.btn-flat .btn-ripple-effect {
   background: rgba(var(--tertiary-rgb), 0.25);
+  z-index: 1;
 }
 .btn-tertiary.btn-ghost {
   background: transparent;
@@ -6619,25 +6727,61 @@ lfr-editable:empty::before {
   background: rgba(var(--neutral-rgb), 0.3);
 }
 .btn-neutral.btn-flat {
-  background: rgba(var(--neutral-rgb), 0.18);
+  background: transparent;
   color: var(--neutral);
   box-shadow: none;
   border: 0.0625rem solid transparent;
+  position: relative;
+}
+.btn-neutral.btn-flat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--neutral-1100);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn-neutral.btn-flat::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--neutral-rgb), 0.18);
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  transition: all 0.25s ease-in-out;
+}
+.btn-neutral.btn-flat .btn-icon,
+.btn-neutral.btn-flat .btn-text {
+  position: relative;
+  z-index: 1;
 }
 .btn-neutral.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--neutral-rgb), 0.2);
   color: var(--neutral-700);
   transform: translateY(-0.125rem);
 }
+.btn-neutral.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--neutral-rgb), 0.2);
+}
 .btn-neutral.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--neutral-rgb), 0.23);
   transform: translateY(0);
+}
+.btn-neutral.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--neutral-rgb), 0.23);
 }
 .btn-neutral.btn-flat:focus-visible {
   box-shadow: 0 0 0 0.125rem var(--background-100), 0 0 0 0.25rem var(--neutral-300);
 }
 .btn-neutral.btn-flat .btn-ripple-effect {
   background: rgba(var(--neutral-rgb), 0.25);
+  z-index: 1;
 }
 .btn-neutral.btn-ghost {
   background: transparent;
@@ -6880,25 +7024,61 @@ lfr-editable:empty::before {
   background: rgba(var(--success-rgb), 0.3);
 }
 .btn-success.btn-flat {
-  background: rgba(var(--success-rgb), 0.18);
+  background: transparent;
   color: var(--success);
   box-shadow: none;
   border: 0.0625rem solid transparent;
+  position: relative;
+}
+.btn-success.btn-flat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--neutral-1100);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn-success.btn-flat::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--success-rgb), 0.18);
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  transition: all 0.25s ease-in-out;
+}
+.btn-success.btn-flat .btn-icon,
+.btn-success.btn-flat .btn-text {
+  position: relative;
+  z-index: 1;
 }
 .btn-success.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--success-rgb), 0.2);
   color: var(--success-700);
   transform: translateY(-0.125rem);
 }
+.btn-success.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--success-rgb), 0.2);
+}
 .btn-success.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--success-rgb), 0.23);
   transform: translateY(0);
+}
+.btn-success.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--success-rgb), 0.23);
 }
 .btn-success.btn-flat:focus-visible {
   box-shadow: 0 0 0 0.125rem var(--background-100), 0 0 0 0.25rem var(--success-300);
 }
 .btn-success.btn-flat .btn-ripple-effect {
   background: rgba(var(--success-rgb), 0.25);
+  z-index: 1;
 }
 .btn-success.btn-ghost {
   background: transparent;
@@ -7141,25 +7321,61 @@ lfr-editable:empty::before {
   background: rgba(var(--warning-rgb), 0.3);
 }
 .btn-warning.btn-flat {
-  background: rgba(var(--warning-rgb), 0.18);
+  background: transparent;
   color: var(--warning);
   box-shadow: none;
   border: 0.0625rem solid transparent;
+  position: relative;
+}
+.btn-warning.btn-flat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--neutral-1100);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn-warning.btn-flat::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--warning-rgb), 0.18);
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  transition: all 0.25s ease-in-out;
+}
+.btn-warning.btn-flat .btn-icon,
+.btn-warning.btn-flat .btn-text {
+  position: relative;
+  z-index: 1;
 }
 .btn-warning.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--warning-rgb), 0.2);
   color: var(--warning-700);
   transform: translateY(-0.125rem);
 }
+.btn-warning.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--warning-rgb), 0.2);
+}
 .btn-warning.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--warning-rgb), 0.23);
   transform: translateY(0);
+}
+.btn-warning.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--warning-rgb), 0.23);
 }
 .btn-warning.btn-flat:focus-visible {
   box-shadow: 0 0 0 0.125rem var(--background-100), 0 0 0 0.25rem var(--warning-300);
 }
 .btn-warning.btn-flat .btn-ripple-effect {
   background: rgba(var(--warning-rgb), 0.25);
+  z-index: 1;
 }
 .btn-warning.btn-ghost {
   background: transparent;
@@ -7402,25 +7618,61 @@ lfr-editable:empty::before {
   background: rgba(var(--danger-rgb), 0.3);
 }
 .btn-danger.btn-flat {
-  background: rgba(var(--danger-rgb), 0.18);
+  background: transparent;
   color: var(--danger);
   box-shadow: none;
   border: 0.0625rem solid transparent;
+  position: relative;
+}
+.btn-danger.btn-flat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--neutral-1100);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn-danger.btn-flat::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--danger-rgb), 0.18);
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  transition: all 0.25s ease-in-out;
+}
+.btn-danger.btn-flat .btn-icon,
+.btn-danger.btn-flat .btn-text {
+  position: relative;
+  z-index: 1;
 }
 .btn-danger.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--danger-rgb), 0.2);
   color: var(--danger-700);
   transform: translateY(-0.125rem);
 }
+.btn-danger.btn-flat:hover:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--danger-rgb), 0.2);
+}
 .btn-danger.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true]) {
-  background: rgba(var(--danger-rgb), 0.23);
   transform: translateY(0);
+}
+.btn-danger.btn-flat:active:not(:disabled):not(.btn-disabled):not([aria-disabled=true])::after {
+  background: rgba(var(--danger-rgb), 0.23);
 }
 .btn-danger.btn-flat:focus-visible {
   box-shadow: 0 0 0 0.125rem var(--background-100), 0 0 0 0.25rem var(--danger-300);
 }
 .btn-danger.btn-flat .btn-ripple-effect {
   background: rgba(var(--danger-rgb), 0.25);
+  z-index: 1;
 }
 .btn-danger.btn-ghost {
   background: transparent;

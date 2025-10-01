@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Button, Container } from '@library/components'
+import { Button, Container, Title, Paragraph } from '@library/components'
 import InfoItem from './components/InfoItem'
 import script from './script.js'
 import info from './info.json'
@@ -53,7 +53,7 @@ const Video = () => {
       type: 'modal',
       modalId: 'modal-horarios-doctorado',
       modalContent: (
-        <div className='program-data__modal-content'>
+        <Paragraph className='program-data__modal-content' id={`${elementName}-horarios-modal`}>
           <p>
             <strong>Jornada de atención:</strong>
           </p>
@@ -69,7 +69,7 @@ const Video = () => {
             Si necesitas atención en un horario diferente, por favor comunícate con nosotros con antelación para agendar una cita
             personalizada.
           </p>
-        </div>
+        </Paragraph>
       )
     },
     {
@@ -108,13 +108,13 @@ const Video = () => {
         <div className='video-doctorado__content'>
           <Container>
             <div className='video-doctorado__header'>
-              <h1 className='video-doctorado__title' data-puj-name>
+              <Title hierarchy='h1' className='video-doctorado__title' data-puj-name='true'>
                 Doctorado en Ciencias Sociales y Humanas
-              </h1>
+              </Title>
 
-              <p className='video-doctorado__description' data-puj-description>
+              <Paragraph className='video-doctorado__description' size='lg' data-puj-description='true'>
                 Comprende, analiza y explica los complejos problemas sociales y humanos en un contexto globalizado.
-              </p>
+              </Paragraph>
             </div>
 
             {/* Información del programa */}
@@ -131,6 +131,7 @@ const Video = () => {
                 href='https://www.javeriana.edu.co/info-prg/proceso_de_inscripcion'
                 target='_blank'
                 variant='flat'
+                isEditable={false}
                 startIcon={<i className='ph ph-hand-pointing'></i>}
                 size='sm'>
                 Conoce el proceso de inscripción
@@ -138,12 +139,12 @@ const Video = () => {
 
               {/* Información legal */}
               <div className='program-data_enrollment-note-container'>
-                <p className='program-data_enrollment-note'>
-                  <span data-puj-snies>SNIES 54104</span> | <span data-puj-registry>Cargando registro...</span>{' '}
-                  <span data-puj-accreditation>Cargando acreditación...</span> | Lugar donde se oferta:{' '}
-                  <span data-puj-full-location>Cargando lugar...</span> | Total de créditos:{' '}
-                  <span data-puj-credits>Cargando créditos...</span>
-                </p>
+                <Paragraph className='program-data_enrollment-note' size='sm' isEditable={false}>
+                  <span data-puj-snies='true'>SNIES 54104</span> | <span data-puj-registry='true'>Cargando registro...</span>{' '}
+                  <span data-puj-accreditation='true'>Cargando acreditación...</span> | Lugar donde se oferta:{' '}
+                  <span data-puj-full-location='true'>Cargando lugar...</span> | Total de créditos:{' '}
+                  <span data-puj-credits='true'>Cargando créditos...</span>
+                </Paragraph>
               </div>
             </div>
           </Container>
