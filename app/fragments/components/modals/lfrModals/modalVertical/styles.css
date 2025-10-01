@@ -24,7 +24,7 @@
   box-sizing: border-box;
   position: relative;
   width: 579px;
-  height: 547px;
+  height: 600px;
   color: var(--neutral-100);
   background-color: var(--neutral-1000);
   border-radius: 2rem;
@@ -101,7 +101,7 @@
 .modalVertical-container {
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: 200px 1fr;
+  grid-template-rows: 250px 1fr;
   height: 100%;
   gap: 0;
 }
@@ -205,16 +205,30 @@
   min-height: 48px;
 }
 
+/* Legal Text */
+.modalVertical-legal-wrapper {
+  margin: 0;
+}
+
+.modalVertical-legal-text {
+  margin: 0;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: var(--neutral-500);
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
 /* Responsive para pantallas pequeñas */
 @media only screen and (max-width: 630px) {
   .modalVertical-content {
     width: 95vw;
     height: 90vh;
-    max-height: 600px;
+    max-height: 650px;
   }
-  
+
   .modalVertical-container {
-    grid-template-rows: 180px 1fr;
+    grid-template-rows: 220px 1fr;
   }
   
   .modalVertical-content-section {
@@ -239,6 +253,11 @@
     width: 35px;
     height: 35px;
   }
+
+  .modalVertical-legal-text {
+    font-size: 0.65rem;
+    padding: 0 0.25rem;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -247,12 +266,17 @@
     height: 100vh;
     border-radius: 0;
   }
-  
+
   .modalVertical-container {
-    grid-template-rows: 150px 1fr;
+    grid-template-rows: 180px 1fr;
   }
   
   .modalVertical-content-section {
     padding: 1rem 1rem 1.5rem 1rem;
+  }
+
+  .modalVertical-legal-text {
+    font-size: 0.6rem;
+    line-height: 1.3;
   }
 }
