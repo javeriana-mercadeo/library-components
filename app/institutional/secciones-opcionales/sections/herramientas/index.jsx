@@ -1,5 +1,5 @@
 // index.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import './styles.scss';
 
 const toolsData = {
@@ -31,8 +31,109 @@ const hexagonalPatterns = {
   9: { columns: [[0, 3, 6], [1, 4, 7], [2, 5, 8]], offsets: [false, true, false] }
 };
 
-class ToolsSection extends React.Component {
-  componentDidMount() {
+const reorganizeToHexagonal = () => {
+  const gridContainer = document.querySelector('.tools-logos-grid');
+  if (!gridContainer) {
+    console.warn('No se encontró .tools-logos-grid');
+    return;
+  }
+
+  const allLogoItems = Array.from(gridContainer.querySelectorAll('.logo-item'));
+  if (allLogoItems.length === 0) {
+    console.warn('No se encontraron .logo-item');
+    return;
+  }
+
+  const totalItems = allLogoItems.length;
+  const pattern = hexagonalPatterns[totalItems] || hexagonalPatterns[9];
+  const { columns: columnConfig, offsets } = pattern;
+
+  const originalElements = allLogoItems.map(item => item.cloneNode(true));
+
+  gridContainer.setAttribute('data-reorganized', 'true');
+  gridContainer.setAttribute('data-original-count', totalItems);
+  gridContainer.innerHTML = '';
+
+  columnConfig.forEach((elementIndexes, columnIndex) => {
+    const columna = document.createElement('div');
+    columna.className = 'columna-logos';
+
+    if (totalItems !== 5 && offsets[columnIndex]) {
+      columna.classList.add('offset');
+    }
+
+    if (totalItems === 5) {
+      columna.classList.add(columnIndex === 1 ? 'columna-central-5' : 'columna-lateral-5');
+    }
+
+    if (totalItems === 7) {
+      columna.classList.add(columnIndex === 1 ? 'columna-central-7' : 'columna-lateral-7');
+    }
+
+    elementIndexes.forEach(elementIndex => {
+      if (originalElements[elementIndex]) {
+        columna.appendChild(originalElements[elementIndex]);
+      }
+    });
+
+    gridContainer.appendChild(columna);
+  });
+
+  gridContainer.setAttribute('data-total-items', totalItems);
+  gridContainer.setAttribute('data-pattern', columnConfig.map(col => col.length).join('-'));
+
+  applyHexagonalStyles(gridContainer, totalItems);
+};
+
+const applyHexagonalStyles = (gridContainer, totalItems) => {
+  const columnas = gridContainer.querySelectorAll('.columna-logos');
+
+  columnas.forEach((columna, index) => {
+    columna.style.display = 'flex';
+    columna.style.flexDirection = 'column';
+    columna.style.gap = '25px';
+    columna.style.rowGap = '25px';
+    columna.style.alignItems = 'center';
+    columna.style.position = 'relative';
+
+    if (totalItems === 5) {
+      columna.style.justifyContent = 'center';
+      columna.style.minHeight = '200px';
+      columna.style.marginTop = '0px';
+      columna.style.paddingTop = '0px';
+
+      const logoItems = columna.querySelectorAll('.logo-item');
+      logoItems.forEach(item => {
+        item.style.alignSelf = 'center';
+        item.style.margin = '0 auto';
+      });
+    } else if (totalItems === 7) {
+      columna.style.justifyContent = 'center';
+      columna.style.minHeight = '300px';
+      columna.style.marginTop = '0px';
+      
+      if (index !== 1) {
+        columna.style.paddingTop = '50px';
+      } else {
+        columna.style.paddingTop = '0px';
+      }
+    } else {
+      columna.style.justifyContent = 'flex-start';
+    }
+  });
+
+  gridContainer.style.display = 'flex';
+  gridContainer.style.justifyContent = 'center';
+  gridContainer.style.gap = '20px';
+  gridContainer.style.flexWrap = 'nowrap';
+  gridContainer.style.alignItems = totalItems === 5 || totalItems === 7 ? 'center' : 'flex-start';
+  gridContainer.style.width = 'fit-content';
+  gridContainer.style.maxWidth = '100%';
+  gridContainer.style.margin = '0 auto';
+};
+
+const ToolsSection = () => {
+  useEffect(() => {
     // Precargar imágenes
     toolsData.logos.forEach(logo => {
       const link = document.createElement('link');
@@ -43,145 +144,44 @@ class ToolsSection extends React.Component {
     });
 
     // Ejecutar reorganización después del renderizado
-    setTimeout(() => {
-      this.reorganizeToHexagonal();
+    const timer = setTimeout(() => {
+      reorganizeToHexagonal();
     }, 150);
-  }
 
-  reorganizeToHexagonal = () => {
-    const gridContainer = document.querySelector('.tools-logos-grid');
-    if (!gridContainer) {
-      console.warn('No se encontró .tools-logos-grid');
-      return;
-    }
+    return () => clearTimeout(timer);
+  }, []);
 
-    const allLogoItems = Array.from(gridContainer.querySelectorAll('.logo-item'));
-    if (allLogoItems.length === 0) {
-      console.warn('No se encontraron .logo-item');
-      return;
-    }
-
-    const totalItems = allLogoItems.length;
-    const pattern = hexagonalPatterns[totalItems] || hexagonalPatterns[9];
-    const { columns: columnConfig, offsets } = pattern;
-
-    const originalElements = allLogoItems.map(item => item.cloneNode(true));
-
-    gridContainer.setAttribute('data-reorganized', 'true');
-    gridContainer.setAttribute('data-original-count', totalItems);
-    gridContainer.innerHTML = '';
-
-    columnConfig.forEach((elementIndexes, columnIndex) => {
-      const columna = document.createElement('div');
-      columna.className = 'columna-logos';
-
-      if (totalItems !== 5 && offsets[columnIndex]) {
-        columna.classList.add('offset');
-      }
-
-      if (totalItems === 5) {
-        columna.classList.add(columnIndex === 1 ? 'columna-central-5' : 'columna-lateral-5');
-      }
-
-      if (totalItems === 7) {
-        columna.classList.add(columnIndex === 1 ? 'columna-central-7' : 'columna-lateral-7');
-      }
-
-      elementIndexes.forEach(elementIndex => {
-        if (originalElements[elementIndex]) {
-          columna.appendChild(originalElements[elementIndex]);
-        }
-      });
-
-      gridContainer.appendChild(columna);
-    });
-
-    gridContainer.setAttribute('data-total-items', totalItems);
-    gridContainer.setAttribute('data-pattern', columnConfig.map(col => col.length).join('-'));
-
-    this.applyHexagonalStyles(gridContainer, totalItems);
-  }
-
-  applyHexagonalStyles = (gridContainer, totalItems) => {
-    const columnas = gridContainer.querySelectorAll('.columna-logos');
-
-    columnas.forEach((columna, index) => {
-      columna.style.display = 'flex';
-      columna.style.flexDirection = 'column';
-      columna.style.gap = '25px';
-      columna.style.rowGap = '25px';
-      columna.style.alignItems = 'center';
-      columna.style.position = 'relative';
-
-      if (totalItems === 5) {
-        columna.style.justifyContent = 'center';
-        columna.style.minHeight = '200px';
-        columna.style.marginTop = '0px';
-        columna.style.paddingTop = '0px';
-
-        const logoItems = columna.querySelectorAll('.logo-item');
-        logoItems.forEach(item => {
-          item.style.alignSelf = 'center';
-          item.style.margin = '0 auto';
-        });
-      } else if (totalItems === 7) {
-        columna.style.justifyContent = 'center';
-        columna.style.minHeight = '300px';
-        columna.style.marginTop = '0px';
-        
-        if (index !== 1) {
-          columna.style.paddingTop = '50px';
-        } else {
-          columna.style.paddingTop = '0px';
-        }
-      } else {
-        columna.style.justifyContent = 'flex-start';
-      }
-    });
-
-    gridContainer.style.display = 'flex';
-    gridContainer.style.justifyContent = 'center';
-    gridContainer.style.gap = '20px';
-    gridContainer.style.flexWrap = 'nowrap';
-    gridContainer.style.alignItems = totalItems === 5 || totalItems === 7 ? 'center' : 'flex-start';
-    gridContainer.style.width = 'fit-content';
-    gridContainer.style.maxWidth = '100%';
-    gridContainer.style.margin = '0 auto';
-  }
-
-  render() {
-    return (
-      <section className="container" id="herramientas">
-        <div className="tools-container">
-          <h2 className="title title-neutral title-2xl title-center title-bold tools-titulo">
-            {toolsData.title}
-          </h2>
-          <div className="tools-content">
-            <div className="tools-texto">
-              <h2 className="title title-lg">
-                {toolsData.subtitle}
-              </h2>
-              <p className="paragraph paragraph-neutral paragraph-md">
-                {toolsData.description}
-              </p>
-            </div>
-            
-            <div className="tools-logos-grid">
-              {toolsData.logos.map((logo) => (
-                <div key={logo.id} className="logo-item" title={logo.title}>
-                  <img 
-                    className="image" 
-                    alt={logo.alt} 
-                    src={logo.src}
-                  />
-                </div>
-              ))}
-            </div>
+  return (
+    <section className="container" id="herramientas">
+      <div className="tools-container">
+        <h2 className="title title-neutral title-2xl title-center title-bold tools-titulo">
+          {toolsData.title}
+        </h2>
+        <div className="tools-content">
+          <div className="tools-texto">
+            <h2 className="title title-lg">
+              {toolsData.subtitle}
+            </h2>
+            <p className="paragraph paragraph-neutral paragraph-md">
+              {toolsData.description}
+            </p>
+          </div>
+          
+          <div className="tools-logos-grid">
+            {toolsData.logos.map((logo) => (
+              <div key={logo.id} className="logo-item" title={logo.title}>
+                <img 
+                  className="image" 
+                  alt={logo.alt} 
+                  src={logo.src}
+                />
+              </div>
+            ))}
           </div>
         </div>
-      </section>
-    );
-  }
-}
+      </div>
+    </section>
+  );
+};
 
 export default ToolsSection;

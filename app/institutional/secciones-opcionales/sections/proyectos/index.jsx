@@ -1,436 +1,317 @@
-'use client'
-import React from 'react'
-import { Container } from '@library/components'
-import Title from '@library/components/contain/title'
-import Paragraph from '@library/components/contain/paragraph'
+import { useEffect, useState, useRef } from 'react';
+import DetalleProyecto from './components/detalleProyecto';
+import './styles.scss';
 
-import './script.js'
-import './styles.scss'
+// Datos de ejemplo - reemplazar con tu API o JSON
+const SLIDES_DATA = [
+  {
+    id: 0,
+    imagenPrincipal: 'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg',
+    titulo: 'Universidad Destacada',
+    descripcionCorta: 'Descubre nuestros programas académicos de alta calidad.',
+    tituloModal: 'Universidad Destacada',
+    fecha: '2024',
+    responsable: 'Equipo Académico',
+    descripcionCompleta: 'Descubre nuestros programas académicos de alta calidad.',
+    videosYoutube: ['https://www.youtube.com/watch?v=Y2KdypoCAYg&t=27s'],
+    galeriaImagenes: ['https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg']
+  },
+  {
+    id: 1,
+    imagenPrincipal: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1',
+    titulo: 'Investigación de Clase Mundial',
+    descripcionCorta: 'Proyectos innovadores y logros académicos destacados.',
+    tituloModal: 'Investigación de Clase Mundial',
+    fecha: '2023-2024',
+    responsable: 'Centro de Investigación',
+    descripcionCompleta: 'Proyectos innovadores y logros académicos destacados.',
+    videosYoutube: ['https://www.youtube.com/watch?v=h3GuFxrk8aI'],
+    galeriaImagenes: []
+  }
+];
 
-const Proyectos = () => {
-  // El script IIFE se auto-inicializa cuando se carga
-  // No necesitamos hacer nada manualmente aquí
+const CONFIG = {
+  SLIDE_TRANSITION_DURATION: 400,
+  MIN_SWIPE_DISTANCE: 50
+};
 
-  const slides = [
-    {
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1',
-      title: 'Universidad Destacada',
-      description: 'Descubre nuestros programas académicos y la experiencia universitaria',
-      slideData: { id: 1, type: 'universidad' }
-    },
-    {
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-      title: 'Investigación de Clase Mundial',
-      description: 'Conoce nuestros proyectos de investigación y logros académicos',
-      slideData: { id: 2, type: 'investigacion' }
-    },
-    {
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-      title: 'Investigación de Clase Mundial',
-      description: 'Conoce nuestros proyectos de investigación y logros académicos',
-      slideData: { id: 2, type: 'investigacion' }
-    },
-    {
-      image: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-      title: 'Investigación de Clase Mundial',
-      description: 'Conoce nuestros proyectos de investigación y logros académicos',
-      slideData: { id: 2, type: 'investigacion' }
+export default function Proyectos() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isTouching, setIsTouching] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const wrapperRef = useRef(null);
+  const containerRef = useRef(null);
+
+  const isMobile = () => window.innerWidth <= 767;
+  const isTabletSmall = () => window.innerWidth >= 768 && window.innerWidth <= 899;
+  const isMobileTablet = () => window.innerWidth < 900;
+  const shouldShowNavigationButtons = () => window.innerWidth >= 900;
+
+  const calculateRealLimit = () => {
+    if (!containerRef.current) return 0;
+
+    const containerWidth = containerRef.current.offsetWidth;
+    const slideWidth = isMobileTablet() ? 260 : 280;
+    const gap = isMobileTablet() ? 8 : 10;
+    const contentWidth = (SLIDES_DATA.length * slideWidth) + ((SLIDES_DATA.length - 1) * gap);
+
+    if (contentWidth <= containerWidth) return 0;
+
+    if (isMobileTablet()) {
+      const slidesCompletelyVisible = Math.floor(containerWidth / (slideWidth + gap));
+      return Math.max(0, SLIDES_DATA.length - slidesCompletelyVisible);
     }
-  ]
 
+    const maxDisplacement = contentWidth - containerWidth;
+    const lastValidPosition = Math.floor(maxDisplacement / (slideWidth + gap));
+    return Math.min(lastValidPosition, SLIDES_DATA.length - 1);
+  };
+
+  const shouldCenterContent = () => {
+    if (!containerRef.current) return false;
+
+    const slideWidth = isMobileTablet() ? 260 : 280;
+    const gap = isMobileTablet() ? 8 : 10;
+    const containerWidth = containerRef.current.offsetWidth;
+    const totalContentWidth = (SLIDES_DATA.length * slideWidth) + ((SLIDES_DATA.length - 1) * gap);
+
+    if (totalContentWidth <= containerWidth) return true;
+    if (SLIDES_DATA.length <= 2) return true;
+
+    if (isMobileTablet()) {
+      return totalContentWidth <= (containerWidth - 40);
+    }
+
+    if (SLIDES_DATA.length === 3 && window.innerWidth >= 900) return true;
+    if (SLIDES_DATA.length === 4 && window.innerWidth >= 1200) return true;
+
+    return false;
+  };
+
+  const updatePosition = () => {
+    if (!wrapperRef.current || !containerRef.current) return;
+
+    if (shouldCenterContent()) {
+      wrapperRef.current.style.transform = 'none';
+      return;
+    }
+
+    const slideWidth = isMobileTablet() ? 260 : 280;
+    const gap = isMobileTablet() ? 8 : 10;
+    const translateX = currentSlide * (slideWidth + gap);
+    
+    wrapperRef.current.style.transform = `translateX(-${translateX}px)`;
+  };
+
+  const nextSlide = () => {
+    if (isTransitioning) return;
+
+    const limit = calculateRealLimit();
+    if (currentSlide >= limit) return;
+
+    setIsTransitioning(true);
+    setCurrentSlide(prev => prev + 1);
+
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, CONFIG.SLIDE_TRANSITION_DURATION);
+  };
+
+  const prevSlide = () => {
+    if (isTransitioning || currentSlide <= 0) return;
+
+    setIsTransitioning(true);
+    setCurrentSlide(prev => prev - 1);
+
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, CONFIG.SLIDE_TRANSITION_DURATION);
+  };
+
+  const goToSlide = (index) => {
+    if (isTransitioning || index === currentSlide) return;
+
+    const limit = calculateRealLimit();
+    if (index >= 0 && index <= limit) {
+      setIsTransitioning(true);
+      setCurrentSlide(index);
+
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, CONFIG.SLIDE_TRANSITION_DURATION);
+    }
+  };
+
+  const handleTouchStart = (e) => {
+    if (isTransitioning) return;
+    touchStartX.current = e.touches[0].clientX;
+    setIsTouching(true);
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!isTouching) return;
+
+    touchEndX.current = e.changedTouches[0].clientX;
+    const distance = touchStartX.current - touchEndX.current;
+
+    if (Math.abs(distance) > CONFIG.MIN_SWIPE_DISTANCE) {
+      const limit = calculateRealLimit();
+      
+      if (distance > 0 && currentSlide < limit) {
+        nextSlide();
+      } else if (distance < 0 && currentSlide > 0) {
+        prevSlide();
+      }
+    }
+
+    setIsTouching(false);
+  };
+
+  const handleSlideClick = (project) => {
+    if (!isTouching) {
+      setSelectedProject(project);
+      setModalOpen(true);
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedProject(null);
+    document.body.style.overflow = '';
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      updatePosition();
+    };
+
+    const handleKeyDown = (e) => {
+      if (modalOpen) return;
+      
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextSlide();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('keydown', handleKeyDown);
+
+    updatePosition();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentSlide, modalOpen]);
+
+  const limit = calculateRealLimit();
 
   return (
-    <section className='hero-carousel' id='carousel-section' data-slides-count={slides.length}>
+    <section className="container hero-carousel" id="carousel-section">
       <div>
-        <Title className='carousel-title'>Proyectos Destacados</Title>
+        <h2 className="title title-lg carousel-title">
+          Proyectos Destacados
+        </h2>
       </div>
-      <Container className='main-container'>
+
+      <div className="container main-container" id="proyectos-container">
         <div>
-          <div
+          <div 
             className="carousel-container swiper"
             id="carousel-container"
-            data-slides-count={slides.length}>
-            <div className="swiper-wrapper" id="slides-wrapper">
-              {slides.map((slide, index) => (
+            ref={containerRef}
+            data-slides-count={SLIDES_DATA.length}
+            data-max-cards="4"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div 
+              className="swiper-wrapper" 
+              id="slides-wrapper"
+              ref={wrapperRef}
+            >
+              {SLIDES_DATA.map((slide, index) => (
                 <div
-                  key={index}
+                  key={slide.id}
                   className="carousel-slide swiper-slide"
                   data-slide-index={index}
-                  data-slide-type={slide.slideData?.type || 'default'}>
-                  <div className="slide-image" style={{ backgroundImage: `url(${slide.image})` }}>
-                    <div className="slide-content">
-                      <h2 className="slide-title">{slide.title}</h2>
-                      <Paragraph className="description">{slide.description}</Paragraph>
-                    </div>
+                  onClick={() => handleSlideClick(slide)}
+                >
+                  <div 
+                    className="slide-image"
+                    style={{ backgroundImage: `url('${slide.imagenPrincipal}')` }}
+                  >
+                    <img 
+                      src={slide.imagenPrincipal} 
+                      alt={slide.titulo}
+                      style={{ display: 'none' }}
+                    />
+                  </div>
+                  <div className="slide-content">
+                    <h3 className="slide-title">{slide.titulo}</h3>
+                    <p className="paragraph paragraph-neutral paragraph-md description">
+                      {slide.descripcionCorta}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className='carousel-controls' id='carousel-controls'>
-              <button className='carousel-control prev' id='carousel-prev' type='button' aria-label='Slide anterior'>
-                <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
-              </button>
-              <button className='carousel-control next' id='carousel-next' type='button' aria-label='Slide siguiente'>
-                <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
-              </button>
-            </div>
+            {shouldShowNavigationButtons() && (
+              <div className="carousel-controls" id="carousel-controls">
+                <button
+                  className="carousel-control prev"
+                  type="button"
+                  aria-label="Slide anterior"
+                  onClick={prevSlide}
+                  disabled={currentSlide === 0}
+                >
+                  <i className="ph ph-arrow-circle-left" aria-hidden="true"></i>
+                </button>
+                <button
+                  className="carousel-control next"
+                  type="button"
+                  aria-label="Slide siguiente"
+                  onClick={nextSlide}
+                  disabled={currentSlide >= limit}
+                >
+                  <i className="ph ph-arrow-circle-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            )}
 
-            <div className='carousel-indicators' id='carousel-indicators'>
-              {slides.map((_, index) => (
+            <div className="carousel-indicators" id="carousel-indicators">
+              {SLIDES_DATA.map((_, index) => (
                 <button
                   key={index}
-                  className={`indicator ${index === 0 ? 'active' : ''}`}
+                  className={`indicator ${index === currentSlide ? 'active' : ''}`}
                   data-indicator-index={index}
-                  type='button'
-                  aria-label={`Ir a slide ${index + 1}`}
+                  type="button"
+                  onClick={() => goToSlide(index)}
+                  aria-label={`Ir al slide ${index + 1}`}
                 />
               ))}
             </div>
           </div>
         </div>
-      </Container>
+      </div>
 
-      {/* El modal es manejado por el script de la IIFE */}
+      {modalOpen && selectedProject && (
+        <DetalleProyecto 
+          project={selectedProject} 
+          onClose={handleCloseModal}
+        />
+      )}
     </section>
-  )
+  );
 }
-
-export default Proyectos
-
-{
-  /* <section class="container hero-carousel" id="carousel-section">
-    <!-- Título principal -->
-    <div>
-        <h2 class="title title-lg carousel-title"
-            data-lfr-editable-id="carousel-main-title"
-            data-lfr-editable-type="rich-text">
-            Proyectos Destacados
-        </h2>
-    </div>
-
-    <!-- Container principal -->
-    <div class="container main-container" id="proyectos-container">
-        <div>
-            <!-- Carousel container -->
-            <div class="carousel-container swiper"
-                 id="carousel-container"
-                 data-slides-count="8"
-                 data-max-cards="4">
-
-                <!-- Wrapper de slides -->
-                <div class="swiper-wrapper" id="slides-wrapper">
-
-                    <!-- Slide 0 -->
-                    <div class="carousel-slide swiper-slide"
-                         data-slide-index="0"
-                         data-slide-type="universidad"
-                         onclick="window.openCarouselModal && window.openCarouselModal(0)">
-                        <div class="slide-image"
-                             style="background-image: url('https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1')">
-                            <div class="slide-content">
-                                <lfr-editable id="slide-title-0"
-                                            type="rich-text"
-                                            class="slide-title">
-                                    Universidad Destacada
-                                </lfr-editable>
-                                <lfr-editable id="slide-desc-0"
-                                            type="rich-text"
-                                            class="paragraph paragraph-neutral paragraph-md description">
-                                    Descubre nuestros programas académicos de alta calidad
-                                </lfr-editable>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 1 -->
-                    <div class="carousel-slide swiper-slide"
-                         data-slide-index="1"
-                         data-slide-type="investigacion"
-                         onclick="window.openCarouselModal && window.openCarouselModal(1)">
-                        <div class="slide-image"
-                             style="background-image: url('https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2')">
-                            <div class="slide-content">
-                                <lfr-editable id="slide-title-1"
-                                            type="rich-text"
-                                            class="slide-title">
-                                    Investigación de Clase Mundial
-                                </lfr-editable>
-                                <lfr-editable id="slide-desc-1"
-                                            type="rich-text"
-                                            class="paragraph paragraph-neutral paragraph-md description">
-                                    Proyectos innovadores y logros académicos destacados
-                                </lfr-editable>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 2 -->
-                    <div class="carousel-slide swiper-slide"
-                         data-slide-index="2"
-                         data-slide-type="campus"
-                         onclick="window.openCarouselModal && window.openCarouselModal(2)">
-                        <div class="slide-image"
-                             style="background-image: url('https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg')">
-                            <div class="slide-content">
-                                <lfr-editable id="slide-title-2"
-                                            type="rich-text"
-                                            class="slide-title">
-                                    Campus Innovador
-                                </lfr-editable>
-                                <lfr-editable id="slide-desc-2"
-                                            type="rich-text"
-                                            class="paragraph paragraph-neutral paragraph-md description">
-                                    Instalaciones modernas y espacios de vanguardia
-                                </lfr-editable>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 3 -->
-                    <div class="carousel-slide swiper-slide"
-                         data-slide-index="3"
-                         data-slide-type="internacional"
-                         onclick="window.openCarouselModal && window.openCarouselModal(3)">
-                        <div class="slide-image"
-                             style="background-image: url('https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png')">
-                            <div class="slide-content">
-                                <lfr-editable id="slide-title-3"
-                                            type="rich-text"
-                                            class="slide-title">
-                                    Oportunidades Internacionales
-                                </lfr-editable>
-                                <lfr-editable id="slide-desc-3"
-                                            type="rich-text"
-                                            class="paragraph paragraph-neutral paragraph-md description">
-                                    Programas de intercambio y colaboraciones globales
-                                </lfr-editable>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slides adicionales... -->
-                    <div class="carousel-slide swiper-slide"
-                         data-slide-index="4"
-                         data-slide-type="universidad"
-                         onclick="window.openCarouselModal && window.openCarouselModal(4)">
-                        <div class="slide-image"
-                             style="background-image: url('https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3')">
-                            <div class="slide-content">
-                                <lfr-editable id="slide-title-4"
-                                            type="rich-text"
-                                            class="slide-title">
-                                    Excelencia Académica
-                                </lfr-editable>
-                                <lfr-editable id="slide-desc-4"
-                                            type="rich-text"
-                                            class="paragraph paragraph-neutral paragraph-md description">
-                                    Formación integral de la más alta calidad
-                                </lfr-editable>
-                            </div>
-                        </div>
-                    </div>
-
-                </div> <!-- /swiper-wrapper -->
-
-                <!-- Controles de navegación -->
-                <div class="carousel-controls" id="carousel-controls">
-                    <button class="carousel-control prev"
-                            id="carousel-prev"
-                            type="button"
-                            aria-label="Slide anterior"
-                            onclick="window.carouselPrevSlide && window.carouselPrevSlide()">
-                        <i class="ph ph-arrow-circle-left" aria-hidden="true"></i>
-                    </button>
-                    <button class="carousel-control next"
-                            id="carousel-next"
-                            type="button"
-                            aria-label="Slide siguiente"
-                            onclick="window.carouselNextSlide && window.carouselNextSlide()">
-                        <i class="ph ph-arrow-circle-right" aria-hidden="true"></i>
-                    </button>
-                </div>
-
-                <!-- Indicadores -->
-                <div class="carousel-indicators" id="carousel-indicators">
-                    <button class="indicator active" data-indicator-index="0" type="button"></button>
-                    <button class="indicator" data-indicator-index="1" type="button"></button>
-                    <button class="indicator" data-indicator-index="2" type="button"></button>
-                    <button class="indicator" data-indicator-index="3" type="button"></button>
-                    <button class="indicator" data-indicator-index="4" type="button"></button>
-                </div>
-
-            </div> <!-- /carousel-container -->
-        </div>
-    </div>
-
-    <!-- MODAL PARA PROYECTOS CON CAMPOS EDITABLES -->
-    <div class="modal-backdrop"
-         id="modal-backdrop-carousel"
-         style="display: none;"
-         onclick="window.closeCarouselModal && window.closeCarouselModal(event)">
-
-        <div class="modal-content" onclick="event.stopPropagation()">
-
-            <button class="modal-close"
-                    onclick="window.closeCarouselModal && window.closeCarouselModal()"
-                    aria-label="Cerrar modal">
-                &times;
-            </button>
-
-            <div class="modal-body">
-                <div class="project-details">
-                    <div class="project-layout">
-
-                        <!-- Información del proyecto con campos editables -->
-                        <div class="project-info">
-                            <!-- Datos editables para cada slide -->
-                            <div class="project-data" data-project="0" style="display: none;">
-                                <lfr-editable id="project-title-0" type="rich-text" class="project-title">
-                                    Universidad Destacada - Programas Académicos
-                                </lfr-editable>
-                                <div class="info-row">
-                                    <strong>Fecha</strong>
-                                    <lfr-editable id="project-date-0" type="text">2024</lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Responsable</strong>
-                                    <lfr-editable id="project-responsible-0" type="text">Equipo Académico</lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Video URL</strong>
-                                    <lfr-editable id="project-video-0" type="text">https://www.youtube.com/watch?v=Y2KdypoCAYg&t=27s</lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Descripción</strong>
-                                    <lfr-editable id="project-description-0" type="rich-text" class="project-description">
-                                        Descubre nuestros programas académicos de alta calidad y la experiencia universitaria integral que ofrecemos.
-                                    </lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Galería de Imágenes (URLs separadas por comas)</strong>
-                                    <lfr-editable id="project-gallery-0" type="text">
-                                        https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg,
-                                        https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2,
-                                        https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3
-                                    </lfr-editable>
-                                </div>
-                            </div>
-
-                            <!-- Datos para slide 1 -->
-                            <div class="project-data" data-project="1" style="display: none;">
-                                <lfr-editable id="project-title-1" type="rich-text" class="project-title">
-                                    Investigación de Clase Mundial
-                                </lfr-editable>
-                                <div class="info-row">
-                                    <strong>Fecha</strong>
-                                    <lfr-editable id="project-date-1" type="text">2023-2024</lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Responsable</strong>
-                                    <lfr-editable id="project-responsible-1" type="text">Centro de Investigación</lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Video URL</strong>
-                                    <lfr-editable id="project-video-1" type="text">https://www.youtube.com/watch?v=h3GuFxrk8aI</lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Descripción</strong>
-                                    <lfr-editable id="project-description-1" type="rich-text" class="project-description">
-                                        Conoce nuestros proyectos de investigación innovadores y logros académicos destacados.
-                                    </lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Galería de Imágenes</strong>
-                                    <lfr-editable id="project-gallery-1" type="text">
-                                        https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2,
-                                        https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg
-                                    </lfr-editable>
-                                </div>
-                            </div>
-
-                            <!-- Datos para slide 2 -->
-                            <div class="project-data" data-project="2" style="display: none;">
-                                <lfr-editable id="project-title-2" type="rich-text" class="project-title">
-                                    Campus Innovador
-                                </lfr-editable>
-                                <div class="info-row">
-                                    <strong>Fecha</strong>
-                                    <lfr-editable id="project-date-2" type="text">2024</lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Responsable</strong>
-                                    <lfr-editable id="project-responsible-2" type="text">Departamento de Infraestructura</lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Video URL</strong>
-                                    <lfr-editable id="project-video-2" type="text">https://www.youtube.com/watch?v=Y2KdypoCAYg&t=27s</lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Descripción</strong>
-                                    <lfr-editable id="project-description-2" type="rich-text" class="project-description">
-                                        Explora nuestras instalaciones modernas y entorno de aprendizaje de vanguardia.
-                                    </lfr-editable>
-                                </div>
-                                <div class="info-row">
-                                    <strong>Galería de Imágenes</strong>
-                                    <lfr-editable id="project-gallery-2" type="text">
-                                        https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg,
-                                        https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1
-                                    </lfr-editable>
-                                </div>
-                            </div>
-
-                            <!-- Contenedor dinámico donde se muestra la información -->
-                            <div id="dynamic-project-info">
-                                <h2 id="modal-project-title" class="project-title">
-                                    <!-- Título dinámico del proyecto -->
-                                </h2>
-
-                                <div class="info-row">
-                                    <strong>Fecha</strong>
-                                    <span id="modal-project-date">
-                                        <!-- Fecha dinámica -->
-                                    </span>
-                                </div>
-
-                                <div class="info-row">
-                                    <strong>Responsable</strong>
-                                    <span id="modal-project-responsible">
-                                        <!-- Responsable dinámico -->
-                                    </span>
-                                </div>
-
-                                <div class="info-row">
-                                    <strong>Descripción</strong>
-                                    <p id="modal-project-description" class="project-description">
-                                        <!-- Descripción dinámica -->
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Galería multimedia -->
-                        <div class="project-gallery" id="modal-project-gallery">
-
-                            <!-- Contenedor de video -->
-                            <div id="modal-project-video" class="video-container">
-                                <!-- El video se insertará dinámicamente -->
-                            </div>
-
-                            <!-- Contenedor de imágenes -->
-                            <div id="modal-project-gallery-items" class="gallery-items">
-                                <!-- Las imágenes se insertarán dinámicamente -->
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-</section> */}

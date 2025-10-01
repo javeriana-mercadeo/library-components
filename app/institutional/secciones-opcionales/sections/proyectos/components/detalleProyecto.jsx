@@ -1,247 +1,186 @@
-'use client'
-import React, { Component } from 'react'
-import Title from '../../../../../_library/components/contain/title'
-import Paragraph from '../../../../../_library/components/contain/paragraph'
-import './styles.scss'
+import { useEffect } from 'react';
 
-class DetalleProyecto extends Component {
-  constructor(props) {
-    super(props)
-    this.projectDetailsRef = React.createRef()
-    this.startY = 0
-    this.currentY = 0
-    this.isDragging = false
-  }
-
-  componentDidMount() {
-    const element = this.projectDetailsRef.current
-    if (element && this.isMobile()) {
-      // Touch events
-      element.addEventListener('touchstart', this.handleTouchStart, { passive: false })
-      element.addEventListener('touchmove', this.handleTouchMove, { passive: false })
-      element.addEventListener('touchend', this.handleTouchEnd, { passive: false })
+export default function ModalProyecto({ project, onClose }) {
+  
+  // Extraer ID de video de YouTube
+  const extractYouTubeId = (url) => {
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=)([^&\n?#]+)/,
+      /(?:youtube\.com\/embed\/)([^&\n?#]+)/,
+      /(?:youtu\.be\/)([^&\n?#]+)/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match && match[1]) return match[1];
     }
-  }
+    return null;
+  };
 
-  componentWillUnmount() {
-    const element = this.projectDetailsRef.current
-    if (element) {
-      element.removeEventListener('touchstart', this.handleTouchStart)
-      element.removeEventListener('touchmove', this.handleTouchMove)
-      element.removeEventListener('touchend', this.handleTouchEnd)
-    }
-  }
+  // Obtener parámetro de tiempo del video
+  const getTimeParam = (url) => {
+    const timeMatch = url.match(/[&?]t=(\d+)/);
+    return timeMatch ? `&start=${timeMatch[1]}` : '';
+  };
 
-  isMobile = () => {
-    return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  }
-
-  handleTouchStart = e => {
-    this.startY = e.touches[0].clientY
-    this.isDragging = true
-
-    // Añadir clase para transiciones suaves
-    const element = this.projectDetailsRef.current
-    if (element) {
-      element.style.transition = 'none'
-    }
-  }
-
-  handleTouchMove = e => {
-    if (!this.isDragging) return
-
-    e.preventDefault() // Prevenir scroll del navegador
-    this.currentY = e.touches[0].clientY
-    const deltaY = this.currentY - this.startY
-
-    const element = this.projectDetailsRef.current
-    if (element) {
-      // Aplicar transformación con resistencia en los extremos
-      const resistance = this.getScrollResistance(deltaY)
-      element.style.transform = `translateY(${deltaY * resistance}px)`
-    }
-  }
-
-  handleTouchEnd = e => {
-    if (!this.isDragging) return
-
-    this.isDragging = false
-    const deltaY = this.currentY - this.startY
-    const element = this.projectDetailsRef.current
-
-    if (element) {
-      // Restaurar transición
-      element.style.transition = 'transform 0.3s ease-out'
-
-      // Determinar si hacer snap o regresar
-      const threshold = 50
-
-      // Dentro de handleTouchEnd en DetalleProyecto
-      if (Math.abs(deltaY) > threshold) {
-        console.log('Touch gesture detected:', deltaY > 0 ? 'down' : 'up')
-
-        // Esta línea ejecuta el callback del componente padre
-        if (this.props.onSwipe) {
-          this.props.onSwipe(deltaY > 0 ? 'down' : 'up') // <-- Aquí se ejecuta
-        }
+  // Cerrar modal con tecla Escape
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
       }
+    };
 
-      // Regresar a posición original
-      element.style.transform = 'translateY(0px)'
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [onClose]);
+
+  // Manejar click en backdrop
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
     }
+  };
 
-    this.startY = 0
-    this.currentY = 0
-  }
+  return (
+    <div 
+      className="modal-backdrop show"
+      id="modal-backdrop-carousel"
+      onClick={handleBackdropClick}
+    >
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        {/* Botón cerrar */}
+        <button
+          onClick={onClose}
+          aria-label="Cerrar modal"
+          className="btn btn-primary btn-light btn-icon-only"
+          type="button"
+        >
+          <span className="btn-icon btn-icon-only">
+            <i className="ph ph-x"></i>
+          </span>
+        </button>
 
-  getScrollResistance = deltaY => {
-    // Agregar resistencia cuando se llega a los límites
-    const maxScroll = window.innerHeight * 0.3 // 30% de la altura de pantalla
-    const resistance = Math.max(0.1, 1 - Math.abs(deltaY) / maxScroll)
-    return resistance
-  }
+        {/* Cuerpo del modal */}
+        <div className="modal-body">
+          <div className="project-details">
+            <div className="project-layout">
+              
+              {/* Información del proyecto */}
+              <div className="project-info">
+                <h2 className="project-title">{project.tituloModal}</h2>
+                
+                <div className="info-row">
+                  <strong>Fecha</strong>
+                  <span>{project.fecha}</span>
+                </div>
 
-  getProjectData = () => {
-    const { slideData, title, description, image } = this.props
+                <div className="info-row">
+                  <strong>Responsable</strong>
+                  <span>{project.responsable}</span>
+                </div>
 
-    switch (slideData?.type) {
-      case 'universidad':
-        return {
-          titulo: 'Universidad Destacada - Programas Académicos',
-          fecha: '2024',
-          estudiante: 'Equipo Académico',
-          descripcion:
-            'Descubre nuestros programas académicos de alta calidad y la experiencia universitaria integral que ofrecemos. Contamos con acreditaciones internacionales y un cuerpo docente altamente calificado que garantiza una formación de excelencia.',
-          imagenes: [
-            image,
-            'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg',
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2'
-          ]
-        }
+                <div className="info-row">
+                  <strong>Descripción</strong>
+                  <p className="project-description">
+                    {project.descripcionCompleta}
+                  </p>
+                </div>
+              </div>
 
-      case 'investigacion':
-        return {
-          titulo: 'Investigación de Clase Mundial',
-          fecha: '2023-2024',
-          estudiante: 'Centro de Investigación',
-          descripcion:
-            'Conoce nuestros proyectos de investigación innovadores y logros académicos que contribuyen al avance del conocimiento. Nuestros centros especializados desarrollan investigación de alto impacto con colaboraciones internacionales.',
-          imagenes: [
-            image,
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2',
-            'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg'
-          ]
-        }
+              {/* Galería multimedia */}
+              <div className="project-gallery" id="modal-project-gallery">
+                
+                {/* Videos de YouTube */}
+                {project.videosYoutube && project.videosYoutube.length > 0 && (
+                  <div id="modal-project-videos" className="videos-container">
+                    {project.videosYoutube.map((videoUrl, index) => {
+                      const videoId = extractYouTubeId(videoUrl);
+                      if (!videoId) return null;
 
-      case 'campus':
-        return {
-          titulo: 'Campus Innovador - Instalaciones Modernas',
-          fecha: '2024',
-          estudiante: 'Departamento de Infraestructura',
-          descripcion:
-            'Explora nuestras instalaciones modernas y entorno de aprendizaje diseñado para potenciar el desarrollo académico. Contamos con laboratorios de última tecnología, bibliotecas digitales y espacios colaborativos.',
-          imagenes: [
-            image,
-            'https://www.javeriana.edu.co/sostenibilidad/wp-content/uploads/2021/07/Campus-Sustentable_0000_Javeriana-Sostenible.jpg',
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1'
-          ]
-        }
+                      const timeParam = getTimeParam(videoUrl);
+                      const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&enablejsapi=1${timeParam}`;
 
-      case 'comunidad':
-        return {
-          titulo: 'Comunidad Estudiantil Diversa',
-          fecha: '2024',
-          estudiante: 'Bienestar Universitario',
-          descripcion:
-            'Forma parte de nuestra comunidad diversa y vibrante donde cada estudiante encuentra su lugar. Ofrecemos múltiples organizaciones estudiantiles, eventos culturales y programas de liderazgo que enriquecen la experiencia universitaria.',
-          imagenes: [
-            image,
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj3',
-            'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png'
-          ]
-        }
+                      return (
+                        <div 
+                          key={index} 
+                          className="video-container"
+                          style={{ 
+                            position: 'relative', 
+                            width: '100%', 
+                            marginBottom: '1.5rem' 
+                          }}
+                        >
+                          {project.videosYoutube.length > 1 && (
+                            <div style={{
+                              padding: '0.75rem 1rem',
+                              background: 'rgba(0, 0, 0, 0.05)',
+                              fontSize: '14px',
+                              fontWeight: 600,
+                              color: '#333',
+                              borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+                              display: 'none'
+                            }}>
+                              Video {index + 1}
+                            </div>
+                          )}
+                          
+                          <iframe
+                            src={embedUrl}
+                            title={`${project.titulo} - Video ${index + 1}`}
+                            width="100%"
+                            height="400"
+                            frameBorder="0"
+                            allowFullScreen
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            style={{
+                              border: 'none',
+                              borderRadius: '8px',
+                              display: 'block',
+                              background: '#000'
+                            }}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
 
-      case 'internacional':
-        return {
-          titulo: 'Oportunidades Internacionales',
-          fecha: '2023-2024',
-          estudiante: 'Oficina de Relaciones Internacionales',
-          descripcion:
-            'Descubre programas de intercambio y colaboraciones globales que amplían tu perspectiva académica y cultural. Ofrecemos intercambios académicos, doble titulación y programas de inmersión en universidades de prestigio mundial.',
-          imagenes: [
-            image,
-            'https://marionoriegaasociados.com/wp-content/uploads/2021/02/pweb_pm_javeriana-proyectos_01.png',
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1'
-          ]
-        }
-
-      default:
-        return {
-          titulo: title || 'Proyecto Universitario',
-          fecha: '2024',
-          estudiante: 'Equipo de Desarrollo',
-          descripcion: description || 'Información detallada sobre este proyecto universitario y sus características principales.',
-          imagenes: [
-            image,
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj1',
-            'https://www.javeriana.edu.co/recursosdb/d/info-prg/proj2'
-          ]
-        }
-    }
-  }
-
-  render() {
-    const projectData = this.getProjectData()
-
-    return (
-      <div
-        className='project-details'
-        ref={this.projectDetailsRef}
-        style={{
-          touchAction: 'pan-y',
-          userSelect: 'none'
-        }}>
-        <div className='project-layout'>
-          <div className='project-info'>
-            <Title>
-              <h2>{projectData.titulo}</h2>
-            </Title>
-            <div className='info-row'>
-              <strong>Fecha</strong>
-              <span>{projectData.fecha}</span>
+                {/* Galería de imágenes */}
+                {project.galeriaImagenes && project.galeriaImagenes.length > 0 && (
+                  <div id="modal-project-gallery-items" className="gallery-items">
+                    {project.galeriaImagenes.map((imageUrl, index) => (
+                      <img
+                        key={index}
+                        src={imageUrl}
+                        alt={`${project.titulo} - Imagen ${index + 1}`}
+                        loading="lazy"
+                        style={{
+                          width: '100%',
+                          height: '400px',
+                          borderRadius: '8px',
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                          display: 'block',
+                          objectFit: 'cover',
+                          transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.15)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-            <div className='info-row'>
-              <strong>Responsable</strong>
-              <span>{projectData.estudiante}</span>
-            </div>
-            <div className='info-row'>
-              <strong>Descripción</strong>
-              <Paragraph>
-                {' '}
-                <p>{projectData.descripcion}</p>
-              </Paragraph>
-            </div>
-          </div>
-
-          <div className='project-gallery'>
-            {projectData.imagenes.map((src, index) => (
-              <img
-                key={index}
-                src={src}
-                alt={`${projectData.titulo} - Imagen ${index + 1}`}
-                style={{
-                  width: '100%',
-                  marginBottom: '1rem',
-                  objectFit: 'cover',
-                  pointerEvents: 'none'
-                }}
-              />
-            ))}
           </div>
         </div>
       </div>
-    )
-  }
+    </div>
+  );
 }
-
-export default DetalleProyecto
