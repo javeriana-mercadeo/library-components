@@ -474,16 +474,6 @@
   }
 
   // Exports
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = LabSliderAPI
-    module.exports.default = LabSliderAPI
-    module.exports.createLabSlider = createLabSlider
-  }
-
-  if (typeof define === 'function' && define.amd) {
-    define([], () => LabSliderAPI)
-  }
-
   if (typeof window !== 'undefined') {
     window.LabSlider = LabSliderAPI
     window.createLabSlider = createLabSlider
@@ -491,3 +481,6 @@
 
   return LabSliderAPI
 })()
+
+export default LabSliderAPI
+export { createLabSlider }

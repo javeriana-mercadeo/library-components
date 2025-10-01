@@ -47,10 +47,10 @@ export default function Proyectos() {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
 
-  const isMobile = () => window.innerWidth <= 767;
-  const isTabletSmall = () => window.innerWidth >= 768 && window.innerWidth <= 899;
-  const isMobileTablet = () => window.innerWidth < 900;
-  const shouldShowNavigationButtons = () => window.innerWidth >= 900;
+  const isMobile = () => typeof window !== 'undefined' && window.innerWidth <= 767;
+  const isTabletSmall = () => typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth <= 899;
+  const isMobileTablet = () => typeof window !== 'undefined' && window.innerWidth < 900;
+  const shouldShowNavigationButtons = () => typeof window !== 'undefined' && window.innerWidth >= 900;
 
   const calculateRealLimit = () => {
     if (!containerRef.current) return 0;
@@ -87,8 +87,8 @@ export default function Proyectos() {
       return totalContentWidth <= (containerWidth - 40);
     }
 
-    if (SLIDES_DATA.length === 3 && window.innerWidth >= 900) return true;
-    if (SLIDES_DATA.length === 4 && window.innerWidth >= 1200) return true;
+    if (SLIDES_DATA.length === 3 && typeof window !== 'undefined' && window.innerWidth >= 900) return true;
+    if (SLIDES_DATA.length === 4 && typeof window !== 'undefined' && window.innerWidth >= 1200) return true;
 
     return false;
   };
