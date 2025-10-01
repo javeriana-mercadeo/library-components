@@ -159,13 +159,16 @@
 
   .modal-title {
     margin: 0;
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-500);
+    font-size: var(--font-size-title) !important;
   }
 
   .content__title {
     margin: 0;
     font-weight: var(--font-weight-bold);
     color: var(--primary-500);
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-title) !important;
   }
 
   .content-data {
@@ -253,37 +256,33 @@
     .popup-overlay {
       z-index: 10001;
     }
-    
+
     .popup-content {
       width: 95%;
       max-height: 95vh;
     }
-    
+
     .modal-container {
       grid-template-columns: 1fr;
       grid-template-rows: 250px 1fr;
       min-height: auto;
     }
-    
+
     .content-section {
       padding: 2rem 1.5rem;
       gap: 1rem;
     }
-    
-    .content__title {
-      font-size: var(--font-size-title);
-    }
-    
+
     .content__text {
       font-size: 0.9rem;
     }
-    
+
     .modal-cta {
       align-self: stretch;
       width: 100%;
       text-align: center;
     }
-    
+
     .close {
       top: 0.75rem;
       right: 0.75rem;
@@ -312,6 +311,13 @@
     .motivational-text {
       font-size: var(--font-size-paragraph);
       margin: 0;
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    .modal-title,
+    .content__title {
+      font-size: var(--font-size-subtitle) !important;
     }
   }
 

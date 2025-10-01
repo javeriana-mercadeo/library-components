@@ -130,7 +130,7 @@
   margin: 0;
   font-weight: var(--font-weight-bold);
   color: var(--primary-500);
-  font-size: var(--font-size-title);
+  font-size: var(--font-size-title) !important;
   line-height: var(--line-height-heading);
 }
 
@@ -226,25 +226,21 @@
   .modalWide-content {
     width: 90vw;
   }
-  
+
   .modalWide-main-section {
     padding: 2rem;
     gap: 1.25rem;
   }
-  
+
   .modalWide-side-section {
     padding: 2rem;
     gap: 1.5rem;
-  }
-  
-  .modalWide-main-title-text {
-    font-size: var(--font-size-subtitle);
   }
 
   .modalWide-side-title-text {
     font-size: var(--font-size-caption);
   }
-  
+
   .modalWide-benefits-grid {
     gap: 1.5rem;
   }
@@ -256,27 +252,23 @@
     aspect-ratio: unset;
     height: 90vh;
   }
-  
+
   .modalWide-container {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr auto;
     overflow-y: auto;
   }
-  
+
   .modalWide-main-section {
     border-right: none;
     border-bottom: 1px solid #E5E7EB;
     padding: 1.5rem;
     gap: 1rem;
   }
-  
+
   .modalWide-side-section {
     padding: 1.5rem;
     gap: 1rem;
-  }
-  
-  .modalWide-main-title-text {
-    font-size: var(--font-size-caption);
   }
 
   .modalWide-subtitle-text {
@@ -296,12 +288,12 @@
     font-size: var(--font-size-paragraph);
     margin-bottom: 0.75rem;
   }
-  
+
   .modalWide-cta-btn {
     width: 100%;
     min-width: auto;
   }
-  
+
   .modalWide-close-btn {
     top: 0.75rem;
     right: 0.75rem;
@@ -316,20 +308,20 @@
     height: 100vh;
     border-radius: 0;
   }
-  
+
   .modalWide-main-section {
     padding: 1rem;
   }
-  
+
   .modalWide-side-section {
     padding: 1rem;
   }
-  
+
   .modalWide-main-title-text {
-    font-size: var(--font-size-heading);
+    font-size: var(--font-size-subtitle);
   }
 
   .modalWide-side-title-text {
-    font-size: var(--font-size-heading);
+    font-size: var(--font-size-subtitle);
   }
 }

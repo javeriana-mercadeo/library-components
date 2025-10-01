@@ -139,14 +139,18 @@
 
 .modalVertical-title-wrapper {
   margin: 0;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-500);
+  font-size: var(--font-size-title) !important;
+  line-height: var(--line-height-heading);
 }
 
 .modalVertical-title-text {
   margin: 0 0 0.5rem 0;
   font-weight: var(--font-weight-bold);
   color: var(--primary-500);
-  font-size: 1.25rem;
-  line-height: 1.3;
+  font-size: var(--font-size-title) !important;
+  line-height: var(--line-height-heading);
 }
 
 .modalVertical-data {
@@ -230,23 +234,19 @@
   .modalVertical-container {
     grid-template-rows: 220px 1fr;
   }
-  
+
   .modalVertical-content-section {
     padding: 1rem 1.5rem 1.5rem 1.5rem;
   }
-  
-  .modalVertical-title-text {
-    font-size: 1.1rem;
-  }
-  
+
   .modalVertical-text-wrapper {
     font-size: 0.85rem;
   }
-  
+
   .modalVertical-list-item {
     font-size: 0.85rem;
   }
-  
+
   .modalVertical-close-btn {
     top: 0.75rem;
     right: 0.75rem;
@@ -270,9 +270,14 @@
   .modalVertical-container {
     grid-template-rows: 180px 1fr;
   }
-  
+
   .modalVertical-content-section {
     padding: 1rem 1rem 1.5rem 1rem;
+  }
+
+  .modalVertical-title-wrapper,
+  .modalVertical-title-text {
+    font-size: var(--font-size-subtitle) !important;
   }
 
   .modalVertical-legal-text {
