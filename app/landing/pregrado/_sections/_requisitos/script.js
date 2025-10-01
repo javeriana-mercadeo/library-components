@@ -94,7 +94,7 @@ function initAdmissionRequirements() {
  * @param {HTMLElement} component - Elemento del componente
  */
 function initNavigationButton(component) {
-  const navigationButtons = component.querySelectorAll('.admission-requirements_faq-button')
+  const navigationButtons = component.querySelectorAll('.btn[data-dmpa-element-id="btn"]')
 
   navigationButtons.forEach(navigationButton => {
     if (navigationButton) {
@@ -1071,9 +1071,11 @@ function renderFullHTML(requirementsData) {
         ${validRequirements.length > 1 ? `
           <!-- BUTTON FOR MULTIPLE REQUIREMENTS -->
           <div class="${baseClass}_panel-navigation-fixed">
-            <button class="${baseClass}_faq-button btn-primary" onclick="document.getElementById('section-eleven')?.scrollIntoView({behavior: 'smooth', block: 'start'})">
-              <span>Ver detalles de evaluación</span>
-              <i class="ph ph-arrow-down" aria-hidden="true"></i>
+            <button class="btn btn-primary btn-solid" data-dmpa-element-id="btn" onclick="document.getElementById('section-eleven')?.scrollIntoView({behavior: 'smooth', block: 'start'})">
+              <span class="btn-text">Ver detalles de evaluación</span>
+              <span class="btn-icon btn-icon-end">
+                <i class="ph ph-arrow-down" aria-hidden="true"></i>
+              </span>
             </button>
           </div>
         ` : ''}
@@ -1082,9 +1084,11 @@ function renderFullHTML(requirementsData) {
       ${isSingleRequirement ? `
         <!-- BUTTON ROW FOR SINGLE REQUIREMENT -->
         <div class="${baseClass}_single-requirement-button-row">
-          <button class="${baseClass}_faq-button btn-primary" onclick="document.getElementById('section-eleven')?.scrollIntoView({behavior: 'smooth', block: 'start'})">
-            <span>Ver detalles de evaluación</span>
-            <i class="ph ph-arrow-down" aria-hidden="true"></i>
+          <button class="btn btn-primary btn-solid" data-dmpa-element-id="btn" onclick="document.getElementById('section-eleven')?.scrollIntoView({behavior: 'smooth', block: 'start'})">
+            <span class="btn-text">Ver detalles de evaluación</span>
+            <span class="btn-icon btn-icon-end">
+              <i class="ph ph-arrow-down" aria-hidden="true"></i>
+            </span>
           </button>
         </div>
       ` : ''}

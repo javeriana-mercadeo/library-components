@@ -1,5 +1,5 @@
 /* ===== ESTILOS COMPILADOS CON ESBUILD ===== */
-/* Compilado el: 25/09/2025, 04:40:02 p. m. (COT) */
+/* Compilado el: 30/09/2025, 07:55:30 p. m. (COT) */
 /* Archivo fuente: styles.scss */
 
 @charset "UTF-8";
@@ -7579,19 +7579,17 @@ lfr-editable:empty::before {
 
 .dev-banner {
   display: none;
+  position: relative;
+  margin: var(--spacing-sm) 0;
+  border-radius: var(--border-radius-md);
+  border: 0.0625rem solid;
+  overflow: hidden;
 }
 [data-env=development] .dev-banner {
   display: flex;
 }
 .has-edit-mode-menu .dev-banner, .signed-in .dev-banner {
   display: block;
-}
-.dev-banner {
-  position: relative;
-  margin: var(--spacing-sm) 0;
-  border-radius: var(--border-radius-md);
-  border: 0.0625rem solid;
-  overflow: hidden;
 }
 .dev-banner__container {
   display: flex;

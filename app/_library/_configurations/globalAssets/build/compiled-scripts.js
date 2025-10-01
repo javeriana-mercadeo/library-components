@@ -1,5 +1,5 @@
 // ===== CÓDIGO COMPILADO CON ESBUILD (IIFE) =====
-// Compilado el: 25/09/2025, 04:40:02 p. m. (COT)
+// Compilado el: 30/09/2025, 07:55:30 p. m. (COT)
 
 "use strict";
 (() => {

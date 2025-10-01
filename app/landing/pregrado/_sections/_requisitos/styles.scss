@@ -496,9 +496,9 @@ $req-progress-animation-duration: 0.8s;
 
     // DESKTOP: Distribución dinámica con más filas por columna
     @media (min-width: 992px) {
-      // Usar un máximo más alto para permitir más elementos por columna
-      // pero mantener distribución columnar vertical
-      grid-template-rows: repeat(8, auto); // Máximo 8 elementos por columna (en lugar de 5)
+      // Usar un máximo de 6 elementos por columna para mejor balance visual
+      // y distribución más equilibrada del contenido
+      grid-template-rows: repeat(6, auto); // Máximo 6 elementos por columna
     }
 
     // Agregar margin-top cuando hay header (múltiples requisitos)
@@ -524,6 +524,7 @@ $req-progress-animation-duration: 0.8s;
       gap: var(--spacing-xs);
       grid-template-rows: none;
       grid-auto-flow: none;
+      padding: 0 var(--spacing-md); // Padding horizontal para respetar márgenes del container
 
       // Elementos ocultos en móvil cuando hay más de 5 items
       &.has-many-items {
@@ -960,37 +961,6 @@ $req-progress-animation-duration: 0.8s;
     }
   }
 
-  // ==========================================
-  // FAQ BUTTON STYLES
-  // ==========================================
-  &_faq-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: var(--font-size-body);
-    font-weight: var(--font-weight-semibold);
-    border: none;
-    border-radius: var(--border-radius-md);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background-color: var(--primary-600);
-    color: var(--neutral-0);
-
-    &:hover {
-      background-color: var(--primary-700);
-      transform: translateY(-1px);
-    }
-
-    &:active {
-      transform: translateY(0);
-    }
-
-    i {
-      font-size: rem(18px);
-    }
-  }
 }
 
 // ==========================================
