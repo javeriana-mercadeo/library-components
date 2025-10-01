@@ -11,7 +11,9 @@
       "Bash(rm:*)",
       "Bash(node:*)",
       "Bash(find:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "WebFetch(domain:www.javeriana.edu.co)",
+      "Read(//c/Users/Amaro/Imágenes/Screenshots/**)"
     ],
     "deny": [],
     "ask": []

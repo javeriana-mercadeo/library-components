@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configuración para Turbopack
+  // Configuración básica para Turbopack
   turbopack: {
     resolveAlias: {
       '@library': './app/_library',

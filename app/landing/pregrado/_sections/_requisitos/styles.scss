@@ -502,7 +502,7 @@ $req-progress-animation-duration: 0.8s;
 
       // Elementos ocultos en móvil cuando hay más de 5 items
       &.has-many-items {
-        .admission-requirements_list-item:nth-child(n+6) {
+        .admission-requirements_list-item:nth-child(n + 6) {
           display: none;
 
           &.show-all {
@@ -638,7 +638,7 @@ $req-progress-animation-duration: 0.8s;
     }
 
     // Estado expandido - ícono minus horizontal
-    &[aria-expanded="true"] {
+    &[aria-expanded='true'] {
       .toggle-icon {
         transform: rotate(0deg); // Sin rotación para mostrar línea horizontal
       }
@@ -855,7 +855,6 @@ $req-progress-animation-duration: 0.8s;
       padding: var(--spacing-md) var(--spacing-md);
     }
   }
-
 }
 
 // ==========================================

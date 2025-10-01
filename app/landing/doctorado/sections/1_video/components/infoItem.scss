@@ -1,13 +1,9 @@
 @use '@styles/autoload' as *;
 
-// ==========================================
-// INFO ITEMS (DETALLES DEL PROGRAMA)
-// ==========================================
-
 @mixin info-item {
   .info-item {
     display: flex;
-    gap: 15px;
+    gap: 10px;
 
     @include responsive {
       display: block;
@@ -26,7 +22,7 @@
       @include responsive {
         width: 100%;
         height: auto;
-        margin-bottom: 15px;
+        margin-bottom: 5px;
         font-size: 28px;
       }
 

@@ -32,7 +32,7 @@ $nav-button-size-mobile: rem(40px);
     width: 100%;
     background: linear-gradient(135deg, var(--background-100) 0%, var(--background-200) 100%);
     min-height: rem(600px);
-    
+
     @include dark-theme {
       background: linear-gradient(135deg, var(--background-200) 0%, var(--background-300) 100%);
     }
@@ -444,7 +444,7 @@ $nav-button-size-mobile: rem(40px);
 .investigations_image {
   transition: opacity 0.3s ease;
 
-  &[src=""],
+  &[src=''],
   &:not([src]) {
     opacity: 0.3;
     background: var(--neutral-700);

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import { Button } from '@library/components'
 
-const InfoItem = ({ id, icon, label, value, code, type = 'normal', modalContent = null, modalId = null }) => {
-  const itemClass = `info-item ${type !== 'normal' ? `info-item--${type}` : ''}`
+const InfoItem = ({ id, icon, label, value, code, type = 'normal', modalContent = null, modalId = null, animationOrder = 1 }) => {
+  const itemClass = `info-item ${type !== 'normal' ? `info-item--${type}` : ''} info-item--order-${animationOrder}`
 
   return (
     <>
@@ -86,7 +86,8 @@ InfoItem.propTypes = {
   code: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   type: PropTypes.oneOf(['normal', 'modal', 'link']),
   modalContent: PropTypes.node,
-  modalId: PropTypes.string
+  modalId: PropTypes.string,
+  animationOrder: PropTypes.number
 }
 
 export default InfoItem

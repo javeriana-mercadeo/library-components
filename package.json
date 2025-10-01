@@ -4,7 +4,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "rm -rf .next && next dev --turbopack",
+    "dev:turbo": "rm -rf .next && next dev --turbopack",
+    "dev:clean": "rm -rf .next node_modules/.cache && next dev",
+    "dev:old": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --fix",

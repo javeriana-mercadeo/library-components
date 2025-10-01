@@ -8,7 +8,7 @@ import Load from '@/components/utils/Load'
 // Lazy load heavy sections with client-side loading
 
 const Header = dynamic(() => import('@library/components/header'), { ssr: false, loading: () => <Load /> })
-const VideoDoctorado = dynamic(() => import('./sections/videoDoctorado'), { ssr: false, loading: () => <Load /> })
+const Video = dynamic(() => import('./sections/1_video'), { ssr: false, loading: () => <Load /> })
 const DocentesDoctorado = dynamic(() => import('./sections/docentesDoctorado'), { ssr: false, loading: () => <Load /> })
 const QueAprenderas = dynamic(() => import('./sections/queAprenderas'), { ssr: false, loading: () => <Load /> })
 const Investigaciones = dynamic(() => import('./sections/investigaciones'), { ssr: false, loading: () => <Load /> })
@@ -26,9 +26,9 @@ export default function Doctorado() {
         <Header />
       </ViewComponent>
 
-      {/* <VideoDoctorado /> */}
-      <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
-        <VideoDoctorado />
+      {/* <Video /> */}
+      <ViewComponent path={`${basePath}/sections/1_video`}>
+        <Video />
       </ViewComponent>
 
       {/* <DocentesDoctorado /> */}

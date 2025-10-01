@@ -12,9 +12,7 @@ import { WarningAlert } from '@/components/ui/Alerts'
 import { APIEndpointCard, EnvironmentCard, TechStackCard } from '@/components/ui/Cards'
 // Common Components (Cards)
 import { ResourceCard, SectionCard, InfoCard } from '@/components/common/Card'
-// Utils Components
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
-
 // Features Components
 import { PhaseCard } from '@/components/features'
 // Configuration Components - Real imports

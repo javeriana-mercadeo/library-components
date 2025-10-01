@@ -1,6 +1,6 @@
 // Styles
-import '@/styles/vendors/_tailwind.css'
-import '@/styles/global.scss'
+import '@styles/vendors/_tailwind.css'
+import '@styles/global.scss'
 
 // Next.js
 import { Metadata, Viewport } from 'next'
