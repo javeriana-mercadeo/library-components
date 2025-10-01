@@ -1,3 +1,5 @@
+/*css compilado completo modal y y slider para liferay  */
+
 .container .hero-carousel {
   display: flex;
   flex-direction: column;
@@ -29,19 +31,19 @@
   color: var(--neutral)
 }
 
-  /* ========================================
+/* ========================================
    CONTENEDORES PRINCIPALES - TAMAÑO FIJO COMO DESKTOP
    ======================================== */
 
-  .hero-carousel .main-container {
-    position: relative;
-    width: 100%;
-    height: 280px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
+.hero-carousel .main-container {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
 
 @media (max-width: 767px) {
   .hero-carousel .main-container {
@@ -50,24 +52,11 @@
   }
 }
 
-  .hero-carousel .carousel-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 15px;
-    touch-action: pan-x;
-  }
 .hero-carousel .carousel-container {
   position: absolute;
-  top: 0;
+  top: 0; 
   left: 0;
-  width: 100%;
+  width: 100%; 
   height: 100%;
   overflow: hidden;
   display: flex;
@@ -77,7 +66,7 @@
   touch-action: pan-x;
 }
 
-  /* ========================================
+/* ========================================
    WRAPPER Y SLIDES FUNCIONALES
    ======================================== */
 
@@ -88,8 +77,8 @@
   gap: 10px !important;
   width: calc(100% - 30px) !important;
   justify-content: flex-start;
-  margin: 0 auto;
-  max-width: fit-content;
+  margin: 0 auto; 
+  max-width: fit-content; 
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
   will-change: transform;
   touch-action: pan-x;
@@ -97,82 +86,77 @@
   -webkit-user-drag: none;
 }
 
-  .hero-carousel .swiper-wrapper.centered-slides {
-    justify-content: center !important;
-  }
+.hero-carousel .swiper-wrapper.centered-slides {
+  justify-content: center !important;
+}
 
-  .hero-carousel .swiper-wrapper.no-transition {
-    transition: none !important;
-  }
+.hero-carousel .swiper-wrapper.no-transition {
+  transition: none !important;
+}
 
-  .hero-carousel .swiper-wrapper.dragging {
-    transition: none !important;
-    cursor: grabbing;
-  }
+.hero-carousel .swiper-wrapper.dragging {
+  transition: none !important;
+  cursor: grabbing;
+}
 
-  /* ========================================
+/* ========================================
    SLIDES CUADRADOS - TAMAÑO FIJO CONSISTENTE
    ======================================== */
 
+.hero-carousel .swiper-slide {
+  flex-shrink: 0;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-drag: none;
+  width: 260px !important;
+  flex: 0 0 260px !important;
+  height: 260px !important;
+  aspect-ratio: 1 / 1;
+}
+
+@media (max-width: 767px) {
   .hero-carousel .swiper-slide {
-    flex-shrink: 0;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-drag: none;
     width: 260px !important;
     flex: 0 0 260px !important;
     height: 260px !important;
-    aspect-ratio: 1 / 1;
+    margin: 0 !important;
   }
+}
 
-  @media (max-width: 767px) {
-    .hero-carousel .swiper-slide {
-      width: 260px !important;
-      flex: 0 0 260px !important;
-      height: 260px !important;
-      margin: 0 !important;
-    }
-  }
-
-  /* ========================================
+/* ========================================
    CENTRADO INTELIGENTE
    ======================================== */
 
 .hero-carousel[data-slides-count="1"] .swiper-wrapper,
-.hero-carousel[data-slides-count="2"] .swiper-wrapper {
-  justify-content: center !important;
+.hero-carousel[data-slides-count="2"] .swiper-wrapper { 
+  justify-content: center !important; 
 }
 
 @media (min-width: 900px) {
-  .hero-carousel[data-slides-count="3"] .swiper-wrapper {
-    justify-content: center !important;
+  .hero-carousel[data-slides-count="3"] .swiper-wrapper { 
+    justify-content: center !important; 
   }
 }
 
-  @media (min-width: 1200px) {
-    .hero-carousel[data-slides-count='4'] .swiper-wrapper {
-      justify-content: center !important;
-    }
-  }
 @media (min-width: 1200px) {
-  .hero-carousel[data-slides-count="4"] .swiper-wrapper {
-    justify-content: center !important;
+  .hero-carousel[data-slides-count="4"] .swiper-wrapper { 
+    justify-content: center !important; 
   }
 }
 
-  /* ========================================
+/* ========================================
    SLIDE INDIVIDUAL Y CONTENIDO
    ======================================== */
 
 .hero-carousel .carousel-slide {
-  width: 100%;
+  width: 100%; 
   height: 100%;
   display: flex !important;
-  align-items: center;
+  align-items: center; 
   justify-content: center;
   position: relative;
   cursor: pointer;
@@ -188,9 +172,9 @@
 }
 
 .hero-carousel .carousel-slide .slide-image {
-  width: 100%;
+  width: 100%; 
   height: 100%;
-  background-size: cover;
+  background-size: cover; 
   background-position: center;
   background-repeat: no-repeat;
   transition: all 0.3s ease;
@@ -204,8 +188,8 @@
 
 .hero-carousel .slide-content {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 0; 
+  left: 0; 
   width: 100%;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
   color: var(--neutral);
@@ -214,18 +198,9 @@
   transition: transform 0.3s ease;
 }
 
-  .hero-carousel .carousel-slide:hover .slide-content {
-    transform: scale(0.95);
-  }
-  .hero-carousel .slide-content .slide-title {
-    margin: 0 0 0.5rem 0;
-    font-size: var(--font-size-caption);
-    font-weight: 700;
-    line-height: 1.2;
-  }
 .hero-carousel .carousel-slide:hover .slide-content {
   transform: scale(0.95);
-}
+} 
 .hero-carousel .slide-content .slide-title {
   margin: 0 0 0.5rem 0;
   font-size: var(--font-size-caption);
@@ -233,35 +208,26 @@
   line-height: 1.2;
 }
 
-  .hero-carousel .slide-content .description {
-    font-size: var(--font-size-paragraph);
-    line-height: 1.3;
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
 .hero-carousel .slide-content .description {
   font-size: var(--font-size-paragraph);
   line-height: 1.3;
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+   -webkit-line-clamp: 2; /*genera error aqui pero liferay lo toma bien */
+  -webkit-box-orient: vertical; 
   overflow: hidden;
 }
 
-  /* ========================================
+/* ========================================
    CONTROLES DE NAVEGACIÓN
    ======================================== */
 
 .hero-carousel .carousel-controls {
-  position: absolute;
-  top: 50%;
-  left: 0;
+  position: absolute; 
+  top: 50%; 
+  left: 0; 
   right: 0;
-  display: none;
+  display: none; 
   justify-content: space-between;
   padding: 0 25px;
   z-index: 100;
@@ -269,19 +235,19 @@
   pointer-events: none;
 }
 
-@media (min-width: 768px) {
-  .hero-carousel .carousel-controls {
-    display: flex;
-  }
+@media (min-width: 768px) { 
+  .hero-carousel .carousel-controls { 
+    display: flex; 
+  } 
 }
 
 .hero-carousel .carousel-control {
   background: rgba(255,255,255,0.9);
-  border-radius: 50%;
-  width: 2.5rem;
+  border-radius: 50%; 
+  width: 2.5rem; 
   height: 2.5rem;
-  display: flex;
-  align-items: center;
+  display: flex; 
+  align-items: center; 
   justify-content: center;
   cursor: pointer;
   border: none;
@@ -330,7 +296,7 @@
     height: 100% !important;
     display: flex !important;
   }
-
+  
   .hero-carousel .swiper-wrapper {
     touch-action: pan-x;
     -webkit-overflow-scrolling: touch;
@@ -341,7 +307,7 @@
     align-items: center !important;
     height: 100% !important;
   }
-
+  
   .hero-carousel .swiper-slide {
     width: 260px !important;
     flex: 0 0 260px !important;
@@ -351,7 +317,7 @@
     opacity: 1 !important;
     visibility: visible !important;
   }
-
+  
   .hero-carousel .carousel-slide {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
@@ -361,20 +327,20 @@
     opacity: 1 !important;
     visibility: visible !important;
   }
-
+  
   .hero-carousel .carousel-controls {
     display: none !important;
   }
-
+  
   .hero-carousel .indicator {
     width: 12px;
     height: 12px;
   }
-
+  
   .hero-carousel .swiper-wrapper.centered-slides {
     justify-content: flex-start !important;
   }
-
+  
   .hero-carousel .carousel-slide .slide-image {
     width: 100% !important;
     height: 100% !important;
@@ -389,33 +355,33 @@
    ======================================== */
 
 .modal-backdrop {
-  position: fixed;
+  position: fixed; 
   inset: 0;
   background: rgba(0,0,0,0.6);
-  display: none;
-  align-items: center;
+  display: none; 
+  align-items: center; 
   justify-content: center;
   z-index: 999999;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 
-.modal-backdrop.show {
-  display: flex;
+.modal-backdrop.show { 
+  display: flex; 
 }
 
 .modal-content {
-  width: 100%;
-  height: 100vh;
-  display: flex;
+  width: 100%; 
+  height: 100vh; 
+  display: flex; 
   flex-direction: column;
-  transform: translateY(100%);
+  transform: translateY(100%); 
   overflow: hidden;
 	background-color:var(--background-100);
 }
 
-.modal-backdrop.show .modal-content {
-  transform: translateY(0);
+.modal-backdrop.show .modal-content { 
+  transform: translateY(0); 
 	background-color:var(--background-100);
 }
 
@@ -423,9 +389,9 @@
   .modal-backdrop {
     padding: 2rem !important;
   }
-
+  
   .modal-content {
-    width: 90vw;
+    width: 90vw; 
     max-width: 1200px;
     height: 80vh;
     border-radius: 12px;
@@ -433,9 +399,9 @@
     transform: scale(0.9);
 		background-color:var(--background-100);
   }
-
-  .modal-backdrop.show .modal-content {
-    transform: scale(1);
+  
+  .modal-backdrop.show .modal-content { 
+    transform: scale(1); 
   }
 }
 
@@ -474,7 +440,7 @@
   flex: 1 !important;
 }
 
-.project-info {
+.project-info { 
   flex: 0 0 40% !important;
   width: 40% !important;
   padding: 2rem 1.5rem !important;
@@ -486,7 +452,7 @@
   height: 100% !important;
 }
 
-.project-gallery {
+.project-gallery { 
   flex: 0 0 60% !important;
   width: 60% !important;
   min-width: 0 !important;
@@ -614,7 +580,7 @@
   .modal-backdrop.show {
     padding: 1.5rem !important;
   }
-
+  
   .modal-content {
     width: 90% !important;
     height: 80vh !important;
@@ -624,11 +590,11 @@
     display: flex !important;
     flex-direction: column !important;
   }
-
+  
   .modal-backdrop.show .modal-content {
     transform: scale(1) !important;
   }
-
+  
   .modal-body {
     flex: 1 !important;
     overflow-y: auto !important;
@@ -639,7 +605,7 @@
     min-height: 0 !important;
     -webkit-overflow-scrolling: touch !important;
   }
-
+  
   .project-details {
     flex: 1 !important;
     overflow-y: auto !important;
@@ -649,15 +615,15 @@
     min-height: 0 !important;
     -webkit-overflow-scrolling: touch !important;
   }
-
-  .project-layout {
+  
+  .project-layout { 
     display: block !important;
     height: auto !important;
     width: 100% !important;
     overflow: visible !important;
     min-height: auto !important;
   }
-
+  
   .project-info {
     display: block !important;
     width: 100% !important;
@@ -668,32 +634,32 @@
     background: #fafafa !important;
     margin-bottom: 0 !important;
   }
-
+  
   .project-gallery {
     display: block !important;
     width: 100% !important;
     padding: 1.5rem !important;
     background: #fff !important;
   }
-
+  
   .project-gallery .video-container {
     width: 100% !important;
     margin-bottom: 1.5rem !important;
   }
-
+  
   .project-gallery .video-container iframe {
     width: 100% !important;
     height: 250px !important;
     border-radius: 8px !important;
     margin-bottom: 0 !important;
   }
-
+  
   .project-gallery .gallery-items {
     width: 100% !important;
     padding: 0 !important;
     gap: 1.5rem !important;
   }
-
+  
   .project-gallery .gallery-items img {
     width: 100% !important;
     height: 250px !important;
@@ -703,7 +669,7 @@
     display: block !important;
     object-fit: cover !important;
   }
-
+  
 }
 
 /* ========================================
@@ -733,7 +699,7 @@
   .hero-carousel .swiper-wrapper {
     transition: none !important;
   }
-
+  
   .hero-carousel .carousel-slide,
   .hero-carousel .carousel-control,
   .hero-carousel .indicator {
