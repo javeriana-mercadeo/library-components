@@ -122,19 +122,19 @@ $desktop-breakpoint: 1200px;
 }
 
 // Centrado inteligente
-.hero-carousel[data-slides-count="1"] .swiper-wrapper,
-.hero-carousel[data-slides-count="2"] .swiper-wrapper {
+.hero-carousel[data-slides-count='1'] .swiper-wrapper,
+.hero-carousel[data-slides-count='2'] .swiper-wrapper {
   justify-content: center !important;
 }
 
 @media (min-width: $tablet-breakpoint) {
-  .hero-carousel[data-slides-count="3"] .swiper-wrapper {
+  .hero-carousel[data-slides-count='3'] .swiper-wrapper {
     justify-content: center !important;
   }
 }
 
 @media (min-width: $desktop-breakpoint) {
-  .hero-carousel[data-slides-count="4"] .swiper-wrapper {
+  .hero-carousel[data-slides-count='4'] .swiper-wrapper {
     justify-content: center !important;
   }
 }
@@ -148,7 +148,9 @@ $desktop-breakpoint: 1200px;
   justify-content: center;
   position: relative;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   overflow: hidden;
   border-radius: 8px;
   touch-action: manipulation;
@@ -557,7 +559,9 @@ $desktop-breakpoint: 1200px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
       display: block !important;
       object-fit: cover !important;
-      transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease !important;
       flex-shrink: 0 !important;
 
       &:hover {
