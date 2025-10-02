@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import { useEffect } from 'react'
 
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 import { Load } from '@/components/utils'
@@ -13,6 +14,15 @@ const FooterExpo = dynamic(() => import('./_sections/5_footer'), { ssr: false, l
 
 export default function ExpoJaverianaPregrados() {
   const basePath = '/institutional/expoJaverianaPrg'
+
+  // Activar tema Expo Javeriana
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme-faculty', 'expo-javeriana')
+
+    return () => {
+      document.documentElement.removeAttribute('data-theme-faculty')
+    }
+  }, [])
 
   return (
     <>
