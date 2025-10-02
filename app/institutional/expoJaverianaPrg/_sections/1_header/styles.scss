@@ -1,0 +1,25 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// HEADER EXPO JAVERIANA
+// ==========================================
+
+.header-expo {
+  position: relative;
+  width: 100%;
+  min-height: 700px;
+
+  background-image: url('./assets/BANNER 1920 x 800px.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  // Responsive: altura ajustada en mobile
+  @include responsive($breakpoint-md) {
+    min-height: 700px;
+  }
+
+  @media (max-width: $breakpoint-md - 1px) {
+    min-height: 500px;
+  }
+}
