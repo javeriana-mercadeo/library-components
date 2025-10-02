@@ -9,7 +9,7 @@
   width: 100%;
   min-height: 700px;
 
-  background-image: url('./assets/BANNER 1920 x 800px.webp');
+  background-image: url('https://www.javeriana.edu.co/recursosdb/d/info-prg/banner-1920-x-800px');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -21,5 +21,46 @@
 
   @media (max-width: $breakpoint-md - 1px) {
     min-height: 500px;
+  }
+
+  // Contenedor de 2 columnas
+  &__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+    min-height: inherit;
+    gap: var(--spacing-md);
+    padding: var(--spacing-xl);
+
+    // Mobile: stack vertical
+    @media (max-width: $breakpoint-md - 1px) {
+      grid-template-columns: 1fr;
+      padding: var(--spacing-lg);
+    }
+  }
+
+  // Columna izquierda
+  &__left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // Columna derecha
+  &__right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // Logo
+  &__logo {
+    max-width: 100%;
+    height: auto;
+    width: 400px;
+
+    @media (max-width: $breakpoint-md - 1px) {
+      width: 280px;
+    }
   }
 }
