@@ -29,7 +29,18 @@ const HeaderExpo = () => {
 
         {/* Columna Derecha */}
         <div className={`${baseClass}__right`}>
-          {/* Contenido derecho aqui */}
+          <div className={`${baseClass}__info-box`}>
+            <ul className={`${baseClass}__info-list`}>
+              <li className={`${baseClass}__info-item`}>
+                <i className="ph ph-calendar-dots"></i>
+                <span>Del 24 al 28 de febrero</span>
+              </li>
+              <li className={`${baseClass}__info-item`}>
+                <i className="ph ph-clock"></i>
+                <span>8:00 a.m. a 1:00 p.m.</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
