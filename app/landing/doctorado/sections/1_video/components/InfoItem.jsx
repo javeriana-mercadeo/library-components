@@ -46,7 +46,7 @@ const InfoItem = ({ id, icon, label, value, code, type = 'normal', modalContent 
         </div>
 
         <div className='info-item__content'>
-          <Caption className='info-item__label' color='neutral' size='md' isEditable={false}>
+          <Caption className='info-item__label' color='neutral' size='sm' isEditable={false}>
             {typeof label === 'string' ? label : label}
           </Caption>
 
@@ -67,9 +67,11 @@ const InfoItem = ({ id, icon, label, value, code, type = 'normal', modalContent 
           {/* Tipo modal - Clickeable */}
           {type === 'modal' && (
             <div className='info-item__content--clickable'>
-              <Paragraph className='info-item__value' color='neutral' size='md' bold={true} isEditable={false} {...dynamicAttributes}>
-                {value}
-              </Paragraph>
+              {value && (
+                <Paragraph className='info-item__value' color='neutral' size='md' bold={true} isEditable={false} {...dynamicAttributes}>
+                  {value}
+                </Paragraph>
+              )}
 
               <Button
                 variant='shadow'

@@ -21,6 +21,7 @@ import './styles.scss'
  * @param {number} [props.lineClamp] - Número de líneas máximas (requiere truncate=true)
  * @param {boolean} [props.isEditable=true] - Si el elemento es editable en Liferay
  * @param {Function} [props.onClick] - Función a ejecutar al hacer clic (opcional)
+ * @param {string} [props.as='p'] - Etiqueta HTML a usar (p, span, div, etc.)
  * @returns {JSX.Element} Párrafo renderizado con los estilos aplicados
  */
 const Paragraph = ({
@@ -39,6 +40,7 @@ const Paragraph = ({
   lineClamp,
   isEditable = true,
   onClick,
+  as = 'p',
   ...otherProps
 }) => {
   // Constante para el nombre base del elemento
@@ -111,16 +113,23 @@ const Paragraph = ({
   }
 
   // 2. Para modo no editable
-  if (isEditable) {
+  if (isEditable && as === 'p') {
     baseProps.id = id
+  }
+
+  // 3. ID de Liferay (cuando se usa etiqueta personalizada)
+  if (isEditable && as !== 'p') {
+    const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
+    baseProps['data-lfr-editable-id'] = editableId
+    baseProps['data-lfr-editable-type'] = 'text'
   }
 
   // ==========================================
   // RENDERIZADO CONDICIONAL
   // ==========================================
 
-  if (isEditable) {
-    // Modo editable con lfr-editable (sin data-lfr-editable-id)
+  if (isEditable && as === 'p') {
+    // Modo editable con lfr-editable (solo cuando es <p>)
     const editableId = id ? `${ELEMENT_NAME}-${id}` : ELEMENT_NAME
 
     return (
@@ -129,8 +138,9 @@ const Paragraph = ({
       </lfr-editable>
     )
   } else {
-    // Modo no editable con elemento HTML normal
-    return <p {...baseProps}>{children}</p>
+    // Modo no editable o con etiqueta personalizada
+    const Tag = as
+    return <Tag {...baseProps}>{children}</Tag>
   }
 }
 
@@ -149,7 +159,8 @@ Paragraph.propTypes = {
   truncate: PropTypes.bool,
   lineClamp: PropTypes.number,
   isEditable: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  as: PropTypes.string
 }
 
 export default Paragraph

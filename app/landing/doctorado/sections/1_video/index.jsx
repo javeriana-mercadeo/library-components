@@ -49,7 +49,7 @@ const Video = () => {
       id: 'data-puj-schedule',
       icon: 'ph-clock',
       label: 'Horarios',
-      value: 'Cargando...',
+      value: '',
       type: 'modal',
       modalId: 'modal-horarios-doctorado',
       modalContent: (
@@ -108,11 +108,15 @@ const Video = () => {
         <div className='video-doctorado__content'>
           <Container>
             <div className='video-doctorado__header'>
-              <Title hierarchy='h1' className='video-doctorado__title' data-puj-name='true'>
+              <Title hierarchy='h1' size='3xl' className='video-doctorado__title' data-puj-name='true' id={`${elementName}-title`}>
                 Doctorado en Ciencias Sociales y Humanas
               </Title>
 
-              <Paragraph className='video-doctorado__description' size='lg' data-puj-description='true'>
+              <Paragraph
+                className='video-doctorado__description'
+                size='lg'
+                data-puj-description='true'
+                id={`${elementName}-description`}>
                 Comprende, analiza y explica los complejos problemas sociales y humanos en un contexto globalizado.
               </Paragraph>
             </div>
@@ -139,11 +143,23 @@ const Video = () => {
 
               {/* Información legal */}
               <div className='program-data_enrollment-note-container'>
-                <Paragraph className='program-data_enrollment-note' size='sm' isEditable={false}>
+                {/* <Paragraph className='program-data_enrollment-note' size='sm' isEditable={false}>
                   <span data-puj-snies='true'>SNIES 54104</span> | <span data-puj-registry='true'>Cargando registro...</span>{' '}
                   <span data-puj-accreditation='true'>Cargando acreditación...</span> | Lugar donde se oferta:{' '}
                   <span data-puj-full-location='true'>Cargando lugar...</span> | Total de créditos:{' '}
                   <span data-puj-credits='true'>Cargando créditos...</span>
+                </Paragraph> */}
+
+                <Paragraph className='program-data_enrollment-note' size='sm' isEditable={false}>
+                  <span data-puj-snies='true'>SNIES 54104</span> |{' '}
+                  <Paragraph as='span' size='sm' id={`${elementName}-registry`}>
+                    <span data-puj-registry='true'>Registro calificado vigente</span>
+                  </Paragraph>{' '}
+                  |{' '}
+                  <Paragraph as='span' size='sm' id={`${elementName}-accreditation`}>
+                    <span data-puj-accreditation='true'>Acreditación de alta calidad</span>
+                  </Paragraph>{' '}
+                  | Lugar donde se oferta: <span data-puj-full-location='true'>Cargando lugar...</span>
                 </Paragraph>
               </div>
             </div>
