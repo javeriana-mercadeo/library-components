@@ -81,7 +81,8 @@
       "Bash(npx eslint:*)",
       "Bash(timeout 30s npm run build)",
       "Read(//c/Users/Amaro/Downloads/**)",
-      "Read(//c/Users/Amaro/Imágenes/Screenshots/**)"
+      "Read(//c/Users/Amaro/Imágenes/Screenshots/**)",
+      "Bash(findstr:*)"
     ],
     "deny": []
   }
