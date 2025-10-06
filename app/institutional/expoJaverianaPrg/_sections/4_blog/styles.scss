@@ -5,5 +5,48 @@
 // ==========================================
 
 .blog-expo {
-  // Estilos base aquí
+  position: relative;
+  width: 100%;
+  min-height: 65vh;
+
+  // Imagen de fondo
+  background-image: url('https://www.javeriana.edu.co/recursosdb/d/expojaveriana/blog-imagen-de-fondo1920-x-1000px');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  // Pantallas grandes: altura moderada
+  @include responsive($breakpoint-xl) {
+    min-height: 60vh;
+  }
+
+  // Pantallas medianas: altura proporcional
+  @include responsive($breakpoint-lg) {
+    min-height: 65vh;
+  }
+
+  // Tablet y móvil: altura reducida y más compacta
+  @media (max-width: $breakpoint-md - 1px) {
+    min-height: 420px;
+  }
+
+  // Móviles pequeños: aún más compacto
+  @media (max-width: $breakpoint-sm - 1px) {
+    min-height: 380px;
+  }
+
+  // Contenedor del drop-zone
+  &__content {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl);
+
+    @media (max-width: $breakpoint-md - 1px) {
+      padding: var(--spacing-lg);
+    }
+  }
 }

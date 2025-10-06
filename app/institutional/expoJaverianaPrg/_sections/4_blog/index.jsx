@@ -17,7 +17,10 @@ const BlogExpo = () => {
 
   return (
     <div className={baseClass} id={elementName}>
-      {/* Contenido del blog aquí */}
+      {/* Drop Zone para fragmento de blog de Liferay */}
+      <div className={`${baseClass}__content`}>
+        <lfr-drop-zone id='blog-drop-zone'></lfr-drop-zone>
+      </div>
     </div>
   )
 }

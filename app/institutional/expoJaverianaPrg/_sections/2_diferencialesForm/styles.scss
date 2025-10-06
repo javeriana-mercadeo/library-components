@@ -11,15 +11,19 @@
   position: relative;
   width: 100%;
   padding: var(--spacing-4xl) var(--spacing-xl);
+  padding-bottom: calc(var(--spacing-4xl) + 100px);
+  background-color: var(--neutral-1100);
 
   // Tablet y móvil: padding reducido
   @media (max-width: $breakpoint-md - 1px) {
     padding: var(--spacing-3xl) var(--spacing-lg);
+    padding-bottom: calc(var(--spacing-3xl) + 100px);
   }
 
   // Móviles pequeños: padding aún más compacto
   @media (max-width: $breakpoint-sm - 1px) {
     padding: var(--spacing-2xl) var(--spacing-md);
+    padding-bottom: calc(var(--spacing-2xl) + 80px);
   }
 
   // Contenedor de 2 columnas
@@ -117,9 +121,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     flex-shrink: 0;
+    background-color: var(--tertiary);
+    border-radius: 50%;
 
     img {
       width: 100%;
@@ -127,16 +133,29 @@
       object-fit: contain;
     }
 
+    i {
+      font-size: var(--icon-size-2xl);
+      color: var(--neutral);
+    }
+
     // Tablet y móvil: iconos más pequeños
     @media (max-width: $breakpoint-md - 1px) {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
+
+      i {
+        font-size: var(--icon-size-xl);
+      }
     }
 
     // Móviles pequeños
     @media (max-width: $breakpoint-sm - 1px) {
-      width: 45px;
-      height: 45px;
+      width: 55px;
+      height: 55px;
+
+      i {
+        font-size: var(--icon-size-lg);
+      }
     }
   }
 
@@ -165,7 +184,7 @@
 
   // Contenedor del botón CTA
   &__cta-container {
-    display: flex;
+    display: none;
     justify-content: center;
     margin-top: var(--spacing-3xl);
 

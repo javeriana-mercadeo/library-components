@@ -7,6 +7,8 @@
   position: relative;
   width: 100%;
   padding: var(--spacing-4xl) 0;
+  top: -150px;
+  margin-bottom: -150px;
 
   // ===========================================
   // SECCIÓN SUPERIOR - RECTÁNGULO NARANJA CON ESTADÍSTICAS
@@ -15,7 +17,7 @@
     display: flex;
     justify-content: center;
     padding: 0 var(--spacing-xl);
-    margin-bottom: var(--spacing-3xl);
+    margin-bottom: var(--spacing-2xl);
   }
 
   &__stats-box {
@@ -25,7 +27,7 @@
     align-items: center;
     gap: var(--spacing-3xl);
     padding: var(--spacing-2xl) var(--spacing-3xl);
-    border-radius: 16px;
+    border-radius: 80px;
     width: 100%;
     max-width: 1200px;
 
@@ -37,25 +39,21 @@
   }
 
   &__stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  &__stat-number {
-    font-size: var(--font-size-display);
+    font-size: var(--font-size-title);
     font-weight: var(--font-weight-bold);
     color: var(--neutral);
+    text-align: center;
     line-height: 1.2;
-    margin-bottom: var(--spacing-xs);
-  }
+    white-space: nowrap;
 
-  &__stat-label {
-    font-size: var(--font-size-heading);
-    font-weight: var(--font-weight-medium);
-    color: var(--neutral);
-    text-transform: lowercase;
+    @media (max-width: $breakpoint-md - 1px) {
+      font-size: var(--font-size-subtitle);
+    }
+
+    @media (max-width: $breakpoint-sm - 1px) {
+      font-size: var(--font-size-caption);
+      white-space: normal;
+    }
   }
 
   // ===========================================
@@ -65,11 +63,10 @@
     display: flex;
     justify-content: center;
     padding: 0 var(--spacing-xl);
-    margin-bottom: var(--spacing-4xl);
   }
 
   &__main-title {
-    font-size: var(--font-size-display);
+    font-size: var(--font-size-principal-title);
     font-weight: var(--font-weight-bold);
     color: var(--expo-purple-dark);
     text-align: center;
@@ -91,7 +88,7 @@
   &__bottom-section {
     position: relative;
     width: 100%;
-    min-height: 600px;
+    min-height: 400px;
 
     @media (max-width: $breakpoint-lg - 1px) {
       min-height: 500px;
@@ -102,13 +99,13 @@
     }
   }
 
-  // Franja Naranja de Fondo (40% de altura)
+  // Franja Naranja de Fondo (60% de altura)
   &__orange-strip {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 40%;
+    height: 50%;
     background-color: var(--tertiary);
     z-index: 1;
 
@@ -142,17 +139,14 @@
   &__content-grid {
     display: grid;
     grid-template-columns: 40% 60%;
-    gap: var(--spacing-2xl);
     width: 100%;
 
     @media (max-width: $breakpoint-lg - 1px) {
       grid-template-columns: 45% 55%;
-      gap: var(--spacing-lg);
     }
 
     @media (max-width: $breakpoint-md - 1px) {
       grid-template-columns: 1fr;
-      gap: var(--spacing-xl);
     }
   }
 
@@ -163,14 +157,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 2;
+
+    @media (max-width: $breakpoint-md - 1px) {
+      z-index: auto;
+    }
   }
 
   &__image {
     width: 100%;
     height: auto;
-    border-radius: 30px;
+    border-radius: 50px;
     object-fit: cover;
     box-shadow: var(--shadow-lg);
+
+    @media (max-width: $breakpoint-md - 1px) {
+      border-radius: 50px;
+    }
   }
 
   // ===========================================
@@ -179,18 +183,28 @@
   &__yellow-column {
     display: flex;
     align-items: center;
+    position: relative;
+    z-index: 1;
+
+    @media (max-width: $breakpoint-md - 1px) {
+      z-index: auto;
+    }
   }
 
   &__yellow-box {
     background-color: var(--secondary);
     padding: var(--spacing-2xl) var(--spacing-xl);
-    border-radius: 0 30px 30px 0;
+    padding-left: calc(var(--spacing-xl) + 80px);
+    border-radius: 0 50px 50px 0;
     width: 100%;
+    margin-left: -80px;
     box-shadow: var(--shadow-lg);
 
     @media (max-width: $breakpoint-md - 1px) {
-      border-radius: 30px;
+      border-radius: 50px 50px 0 0;
       padding: var(--spacing-xl) var(--spacing-lg);
+      margin-left: 0;
+      padding-left: var(--spacing-lg);
     }
   }
 
@@ -209,7 +223,7 @@
     font-size: var(--font-size-heading);
     font-weight: var(--font-weight-regular);
     line-height: 1.6;
-    color: var(--expo-purple-dark);
+    color: var(--primary-700);
 
     // Bullet point personalizado
     &::before {
@@ -218,7 +232,7 @@
       left: 0;
       font-size: var(--font-size-title);
       font-weight: var(--font-weight-bold);
-      color: var(--expo-purple-dark);
+      color: var(--primary-700);
     }
 
     strong {
