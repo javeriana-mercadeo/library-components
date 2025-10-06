@@ -64,24 +64,38 @@
 
       <!-- Side Section (40%) -->
       <div class="modalWide-side-section">
-        <!-- Side Title -->
+        <!-- Background Image -->
         <lfr-editable
-          id="modalWide-side-title"
-          type="text"
-          class="modalWide-side-title-wrapper">
-          <h3 class="modalWide-side-title-text">Recibe más información personalizada</h3>
+          id="modalWide-side-bg-image"
+          type="image"
+          class="modalWide-side-bg-wrapper">
+          <img
+            src="https://www.javeriana.edu.co/recursosdb/20129/601896/imagen-banner-home.jpg/d81fef8b-6516-6383-c9a0-5549bdfe21b9?t=1603670514399"
+            alt="Background"
+            class="modalWide-side-bg-image" />
         </lfr-editable>
 
-        <!-- CTA Button -->
-        <button
-          data-dmpa-element-id="btn"
-          class="btn btn-primary btn-solid btn-lg modalWide-btn modalWide-cta-btn"
-          aria-disabled="false"
-          type="submit"
-          data-lfr-editable-id="modalWide-cta"
-          data-lfr-editable-type="text">
-          <span class="btn-text">Continuar</span>
-        </button>
+        <!-- Content Container -->
+        <div class="modalWide-side-content">
+          <!-- Side Title -->
+          <lfr-editable
+            id="modalWide-side-title"
+            type="text"
+            class="modalWide-side-title-wrapper">
+            <h3 class="modalWide-side-title-text">Recibe más información personalizada</h3>
+          </lfr-editable>
+
+          <!-- CTA Button -->
+          <button
+            data-dmpa-element-id="btn"
+            class="btn btn-primary btn-solid btn-lg modalWide-btn modalWide-cta-btn"
+            aria-disabled="false"
+            type="submit"
+            data-lfr-editable-id="modalWide-cta"
+            data-lfr-editable-type="text">
+            <span class="btn-text">Continuar</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
