@@ -1,0 +1,294 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$slide-width-desktop: rem(200px);
+$slide-width-mobile: rem(160px);
+$image-width-desktop: rem(150px);
+$image-width-mobile: rem(120px);
+$fade-width: rem(100px);
+
+// ==========================================
+// SECCIÓN PRINCIPAL
+// ==========================================
+.insignias-section {
+  padding: var(--spacing-xl) 0;
+  background-color: var(--background-100);
+  overflow: hidden;
+
+  @include dark-theme {
+    background-color: var(--background-200);
+  }
+}
+
+// ==========================================
+// CONTENEDOR
+// ==========================================
+.insignias-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  max-width: rem(1200px);
+  margin: 0 auto;
+}
+
+// ==========================================
+// TÍTULO
+// ==========================================
+.insignias__title {
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-bold);
+  width: fit-content;
+  color: var(--neutral-100);
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+
+  @include dark-theme {
+    color: var(--neutral-1000);
+  }
+
+  @include responsive($breakpoint-md) {
+    font-size: var(--font-size-principal-title);
+  }
+}
+
+// ==========================================
+// SWIPER CONTAINER
+// ==========================================
+.insignias-swiper {
+  position: relative;
+  width: 100%;
+  padding: var(--spacing-md) 0;
+  overflow: hidden; // 🔒 Evita que los slides se salgan del contenedor
+
+  // 🌫️ Efecto de niebla lateral (fade) - FIJO
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: $fade-width;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  // Fade izquierdo
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
+
+    @include dark-theme {
+      background: linear-gradient(to right, var(--background-200) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+  }
+
+  // Fade derecho
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
+
+    @include dark-theme {
+      background: linear-gradient(to left, var(--background-200) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+  }
+
+  // 🎨 Reducir opacidad de niebla en hover
+  &:hover {
+    &::before,
+    &::after {
+      opacity: 0.5;
+    }
+  }
+}
+
+// ==========================================
+// SWIPER WRAPPER
+// ==========================================
+.swiper-wrapper {
+  // Swiper maneja esto automáticamente
+  // display: flex se aplica por Swiper
+}
+
+// ==========================================
+// SWIPER SLIDE
+// ==========================================
+.swiper-slide {
+  // ✅ NO definir width fijo - Swiper lo calcula automáticamente según slidesPerView
+  // width controlado por Swiper según breakpoints en script.js
+  flex-shrink: 0;
+}
+
+// ==========================================
+// CONTENIDO DEL SLIDE
+// ==========================================
+.slide-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  transition: transform 0.3s ease;
+
+  // 🎯 Focus state para accesibilidad
+  &:focus-within {
+    outline: rem(2px) solid var(--primary-600);
+    outline-offset: rem(4px);
+    border-radius: rem(8px);
+  }
+}
+
+// ==========================================
+// WRAPPER DE IMAGEN
+// ==========================================
+.slide-content__image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  padding: var(--spacing-sm);
+  border-radius: rem(12px);
+  transition: background-color 0.3s ease;
+
+  // 🎨 Fondo sutil en hover
+  .swiper-slide:hover & {
+    background-color: rgba(var(--primary-600-rgb), 0.05);
+  }
+}
+
+// ==========================================
+// IMAGEN DEL LOGO
+// ==========================================
+.slide-content__image {
+  // ✅ NO usar width fijo - dejar que Swiper controle el tamaño
+  width: 100%;
+  max-width: $image-width-desktop;
+  height: auto;
+  object-fit: contain;
+  border-radius: rem(8px);
+
+  // 🎨 Estado inicial: escala de grises
+  filter: grayscale(100%) brightness(0.8);
+  transition:
+    filter 0.4s ease,
+    transform 0.3s ease;
+
+  // 🌈 HOVER INDIVIDUAL: Logo a color + zoom
+  .swiper-slide:hover & {
+    filter: grayscale(0%) brightness(1.1);
+    transform: scale(1.05);
+  }
+
+  // 🎯 HOVER GENERAL: Todos los logos a color
+  .insignias-swiper:hover & {
+    filter: grayscale(0%) brightness(1);
+  }
+
+  // 🔄 Estado de carga
+  &[src=''],
+  &:not([src]) {
+    opacity: 0.3;
+    filter: grayscale(100%);
+  }
+
+  @include responsive($breakpoint-md) {
+    max-width: $image-width-mobile;
+  }
+
+  // 📱 Móviles pequeños
+  @media (max-width: $breakpoint-sm) {
+    max-width: rem(100px);
+  }
+
+  // 🖥️ Pantallas grandes
+  @media (min-width: $breakpoint-xl) {
+    max-width: rem(170px);
+  }
+}
+
+// ==========================================
+// DESCRIPCIÓN DEL RECONOCIMIENTO
+// ==========================================
+.slide-content__description {
+  font-size: var(--font-size-small);
+  line-height: 1.4;
+  width: 100%;
+  text-align: center;
+  color: var(--neutral-100);
+  margin-top: var(--spacing-sm);
+  padding: 0 var(--spacing-xs);
+  transition:
+    color 0.3s ease,
+    font-weight 0.3s ease;
+
+  @include dark-theme {
+    color: var(--neutral-1000);
+  }
+
+  // 📝 Texto destacado en hover
+  .swiper-slide:hover & {
+    color: var(--primary-600);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  @include responsive($breakpoint-md) {
+    font-size: rem(10px);
+  }
+
+  // 📱 Móviles pequeños
+  @media (max-width: $breakpoint-sm) {
+    font-size: rem(9px);
+  }
+
+  // 🖥️ Pantallas grandes
+  @media (min-width: $breakpoint-xl) {
+    font-size: rem(13px);
+  }
+}
+
+// ==========================================
+// ACCESIBILIDAD: REDUCED MOTION
+// ==========================================
+@media (prefers-reduced-motion: reduce) {
+  .insignias-swiper {
+    // Swiper maneja esto con autoplay.disableOnInteraction
+  }
+
+  .slide-content__image,
+  .slide-content {
+    transition: none;
+  }
+}
+
+// ==========================================
+// ESTADOS ADICIONALES
+// ==========================================
+
+// 🎭 Estado de carga del componente
+.insignias-section[data-loading='true'] {
+  .insignias-swiper {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+// 🚫 Estado sin JavaScript (fallback)
+.no-js {
+  .insignias-swiper {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+
+    .swiper-wrapper {
+      display: flex;
+      gap: rem(30px);
+    }
+
+    .swiper-slide {
+      scroll-snap-align: start;
+    }
+  }
+}

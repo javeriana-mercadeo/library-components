@@ -103,6 +103,13 @@ export default function DemosPage() {
                 route='/institutional/thank-you-3'
                 title='Thank You Page 3'
               />
+              <DemoCard
+                chips={[{ label: 'Evento', color: 'primary' }]}
+                description='Landing page para Expo Javeriana 2026 - Registro de grupos de estudiantes'
+                icon='presentation'
+                route='/institutional/expoJaverianaPrg'
+                title='Expo Javeriana Pregrados'
+              />
             </div>
           </div>
 
