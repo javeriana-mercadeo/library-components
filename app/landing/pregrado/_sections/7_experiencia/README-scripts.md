@@ -68,17 +68,14 @@ import script from './script.js'
 ### Si el script no funciona en Liferay:
 
 1. **Verificar consola:**
-
    - Debe aparecer `[EXPERIENCE] Script cargado`
    - Debe aparecer `[EXPERIENCE] Inicializando carrusel`
 
 2. **Verificar dependencias:**
-
    - `window.Swiper` debe existir
    - Elementos `.experience-carousel__slide` deben existir
 
 3. **Verificar DOM:**
-
    - Los elementos HTML deben estar presentes antes de ejecutar el script
    - El script debe cargarse DESPUÉS del HTML
 
