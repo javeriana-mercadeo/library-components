@@ -13,7 +13,7 @@
     padding-top: var(--spacing-2xl);
     padding-bottom: var(--spacing-2xl);
     gap: var(--spacing-lg);
-    
+
     // Mobile: título, video, lista
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -125,7 +125,7 @@
       overflow-y: auto;
       max-height: calc(100vh - var(--spacing-2xl) * 2 - 100px);
       padding-right: var(--spacing-xs);
-      
+
       // Estilos del scrollbar
       &::-webkit-scrollbar {
         width: 6px;

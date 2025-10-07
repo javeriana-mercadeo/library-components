@@ -145,39 +145,39 @@ const Maestria = () => {
           <div className={`${baseClass}__details-content`}>
             <div className={`${baseClass}__details-grid`}>
               {details.map(detail => renderDetail(detail))}
-                          {/* === FECHAS DE INSCRIPCIÓN === */}
-            <div className='program-dates-container'>
-              <div className='program-dates program-dates--dates'>
-                <div className='program-dates_icon'>
-                  <i className='ph ph-calendar-check'></i>
-                </div>
+              {/* === FECHAS DE INSCRIPCIÓN === */}
+              <div className='program-dates-container'>
+                <div className='program-dates program-dates--dates'>
+                  <div className='program-dates_icon'>
+                    <i className='ph ph-calendar-check'></i>
+                  </div>
 
-                <div className='program-dates_content'>
-                  <Caption className='program-dates_label' color='neutral' size='md' isEditable={false}>
-                    Fechas de cierre de inscripciones
-                  </Caption>
+                  <div className='program-dates_content'>
+                    <Caption className='program-dates_label' color='neutral' size='md' isEditable={false}>
+                      Fechas de cierre de inscripciones
+                    </Caption>
 
-                  <div data-puj-registration-dates='true' className='program-dates_dates'>
-                    <div className='program-dates_date-item'>
-                      <Paragraph className='program-dates_date-period' color='neutral' size='md' bold={true} isEditable={false}>
-                        Cargando fechas...
-                      </Paragraph>
+                    <div data-puj-registration-dates='true' className='program-dates_dates'>
+                      <div className='program-dates_date-item'>
+                        <Paragraph className='program-dates_date-period' color='neutral' size='md' bold={true} isEditable={false}>
+                          Cargando fechas...
+                        </Paragraph>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <Btn
-                id={`${elementName}-enrollment-link-1`}
-                className='mastership-banner_enrollment-link mt-6'
-                href='https://www.javeriana.edu.co/info-prg/proceso_de_inscripcion'
-                target='_blank'
-                variant='flat'
-                startIcon={<i className='ph ph-hand-pointing'></i>}
-                size='sm'>
-                Conoce el proceso de inscripción
-              </Btn>
-            </div>
+                <Btn
+                  id={`${elementName}-enrollment-link-1`}
+                  className='mastership-banner_enrollment-link mt-6'
+                  href='https://www.javeriana.edu.co/info-prg/proceso_de_inscripcion'
+                  target='_blank'
+                  variant='flat'
+                  startIcon={<i className='ph ph-hand-pointing'></i>}
+                  size='sm'>
+                  Conoce el proceso de inscripción
+                </Btn>
+              </div>
             </div>
           </div>
         </div>

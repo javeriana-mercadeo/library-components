@@ -24,11 +24,11 @@ class MastershipSystem {
 
     try {
       console.log('[MastershipSystem] Inicializando sistema')
-      
+
       // Aquí el programFormatter o API cargaría los datos
       // Por ahora solo marca como inicializado
       this.initialized = true
-      
+
       console.log('[MastershipSystem] Sistema inicializado exitosamente')
     } catch (error) {
       console.error('[MastershipSystem] Error durante inicialización:', error)
@@ -62,7 +62,7 @@ function initSystem() {
 
   if (typeof window !== 'undefined') {
     window.mastershipInitialized = true
-    
+
     window.addEventListener('beforeunload', () => {
       if (globalMastershipSystem) {
         globalMastershipSystem.destroy()

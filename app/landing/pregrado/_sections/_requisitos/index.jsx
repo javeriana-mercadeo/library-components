@@ -255,7 +255,6 @@ const RequisitosPregrado = () => {
                         </li>
                       ))}
                     </ul>
-
                   </div>
                 </div>
               ))}
@@ -264,17 +263,16 @@ const RequisitosPregrado = () => {
             <div className={`${baseClass}_panel-navigation-fixed`}>
               <Btn
                 className={`${baseClass}_faq-button`}
-                variant="solid"
-                color="primary"
-                size="md"
+                variant='solid'
+                color='primary'
+                size='md'
                 onClick={() => {
                   document.getElementById('section-eleven')?.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
                   })
                 }}
-                endIcon={<i className="ph ph-arrow-down" aria-hidden="true"></i>}
-              >
+                endIcon={<i className='ph ph-arrow-down' aria-hidden='true'></i>}>
                 Ver detalles de evaluación
               </Btn>
             </div>

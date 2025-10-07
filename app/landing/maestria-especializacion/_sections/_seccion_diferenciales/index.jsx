@@ -31,13 +31,15 @@ const PorQueEstudiar = () => {
       id: 'integral-counseling',
       icon: 'ph-flower',
       title: 'Consejería integral',
-      description: 'Acompañamiento con tu bienestar. Tendremos consejería integral que siempre apoya académica y desarrollo personal, garantiza con estrategias particulares.'
+      description:
+        'Acompañamiento con tu bienestar. Tendremos consejería integral que siempre apoya académica y desarrollo personal, garantiza con estrategias particulares.'
     },
     {
       id: 'different-approaches-second',
       icon: 'ph-eye',
       title: 'Diferentes aproximaciones',
-      description: 'Nuestro énfasis que abre discusiones para poner en juego diferentes y aproximaciones que enriquecen la universidad y la Maestría específica.'
+      description:
+        'Nuestro énfasis que abre discusiones para poner en juego diferentes y aproximaciones que enriquecen la universidad y la Maestría específica.'
     },
     {
       id: 'experience',
@@ -49,13 +51,15 @@ const PorQueEstudiar = () => {
       id: 'research-leaders',
       icon: 'ph-microscope',
       title: 'Líderes en investigación',
-      description: 'Calidad respaldada por dos grupos de investigación reconocidos y avalados por Colciencias: Psicología, salud y Calidad de vida, y relaciones.'
+      description:
+        'Calidad respaldada por dos grupos de investigación reconocidos y avalados por Colciencias: Psicología, salud y Calidad de vida, y relaciones.'
     },
     {
       id: 'at-javeriana',
       icon: 'ph-hand-heart',
       title: 'En la Javeriana',
-      description: 'Tu desarrollo integral en salud. Explora actividades en deporte, cultura, salud e identidad, y enriquece tu vida universitaria.'
+      description:
+        'Tu desarrollo integral en salud. Explora actividades en deporte, cultura, salud e identidad, y enriquece tu vida universitaria.'
     }
   ]
 
