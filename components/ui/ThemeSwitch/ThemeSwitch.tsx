@@ -46,6 +46,7 @@ const CollapsibleThemeSwitch = () => {
     { key: 'educacion', label: 'Educación' },
     { key: 'enfermeria', label: 'Enfermería' },
     { key: 'estudios-ambientales-rurales', label: 'Estudios Ambientales y Rurales' },
+    { key: 'expo-javeriana', label: 'Expo Javeriana - Pregrado' },
     { key: 'filosofia', label: 'Filosofía' },
     { key: 'ingenieria', label: 'Ingeniería' },
     { key: 'instituto-pensar', label: 'Instituto Pensar' },

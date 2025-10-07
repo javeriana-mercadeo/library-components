@@ -93,7 +93,7 @@ function initAdmissionRequirements() {
  * @param {HTMLElement} component - Elemento del componente
  */
 function initNavigationButton(component) {
-  const navigationButtons = component.querySelectorAll('.admission-requirements_faq-button')
+  const navigationButtons = component.querySelectorAll('.btn[data-dmpa-element-id="btn"]')
 
   navigationButtons.forEach(navigationButton => {
     if (navigationButton) {
@@ -510,30 +510,36 @@ function mapAPIDataToRequirements(apiData) {
 }
 
 function updateReactComponent(requirementsData) {
+  console.log('[updateReactComponent] Called with:', requirementsData)
+
   // Almacenar datos para acceso posterior en caso de timing issues
   if (typeof window !== 'undefined') {
     window.latestRequirementsData = requirementsData
   }
 
-  // Disparar evento personalizado para actualizar el componente React
-  const event = new CustomEvent('requirements:dataLoaded', {
-    detail: { requirements: requirementsData }
-  })
+  // Sistema de reintentos con backoff exponencial
+  let attempt = 0
+  const maxAttempts = 20 // Intentar hasta 20 veces
+  const delays = [100, 200, 300, 500, 500, 1000, 1000, 1000, 2000, 2000, 2000, 3000, 3000, 3000, 5000, 5000, 5000, 5000, 5000, 5000] // Total: ~45 segundos
 
-  document.dispatchEvent(event)
+  function tryRender() {
+    console.log(`[updateReactComponent] Attempt ${attempt + 1}/${maxAttempts}`)
+    const rendered = renderFullHTML(requirementsData)
 
-  // También intentar un dispatch retrasado por si hay timing issues
-  setTimeout(() => {
-    const delayedEvent = new CustomEvent('requirements:dataLoaded', {
-      detail: { requirements: requirementsData }
-    })
-    document.dispatchEvent(delayedEvent)
-
-    // Si no hay React component activo, actualizar directamente el DOM
-    if (!window.requirementsReactTest) {
-      updateDOMDirectly(requirementsData)
+    if (!rendered && attempt < maxAttempts - 1) {
+      attempt++
+      const delay = delays[attempt] || 5000
+      console.log(`[updateReactComponent] Retry scheduled in ${delay}ms...`)
+      setTimeout(tryRender, delay)
+    } else if (rendered) {
+      console.log('[updateReactComponent] ✅ Successfully rendered!')
+    } else {
+      console.error('[updateReactComponent] ❌ Failed after all attempts')
     }
-  }, 1000)
+  }
+
+  tryRender()
+  Logger.info('Requirements render initiated')
 }
 
 // ===========================================
@@ -991,10 +997,285 @@ if (typeof module === 'undefined' && typeof window !== 'undefined') {
   initRequirementsSystem()
 }
 
+// ===========================================
+// RENDERIZADO COMPLETO DEL HTML
+// ===========================================
+function renderFullHTML(requirementsData) {
+  console.log('[renderFullHTML] Called with data:', requirementsData)
+
+  // Intentar múltiples selectores para encontrar dónde renderizar
+  let container = document.getElementById('admission-requirements_dynamic-content')
+
+  if (!container) {
+    console.log('[renderFullHTML] React container not found, trying alternative selectors...')
+
+    // Intentar diferentes selectores
+    const selectors = [
+      '[data-component-id="requisitos-pregrado"]',
+      '[data-component-id="requisitos"]',
+      '.admission-requirements',
+      '#requisitos-pregrado',
+      '#section-seven' // ID de la sección según info.json
+    ]
+
+    let targetElement = null
+
+    for (const selector of selectors) {
+      targetElement = document.querySelector(selector)
+      console.log(`[renderFullHTML] Trying selector "${selector}":`, targetElement)
+      if (targetElement) break
+    }
+
+    if (!targetElement) {
+      console.error('[renderFullHTML] No suitable container found with any selector!')
+      console.log('[renderFullHTML] Available elements:', {
+        allDivs: document.querySelectorAll('div[data-component-id]').length,
+        sections: document.querySelectorAll('section').length
+      })
+      Logger.error('Component not found in DOM')
+      return false
+    }
+
+    console.log('[renderFullHTML] Found target element:', targetElement)
+
+    // Buscar o crear el contenedor dinámico
+    container = targetElement.querySelector('#admission-requirements_dynamic-content')
+
+    if (!container) {
+      // Crear el contenedor dinámico
+      container = document.createElement('div')
+      container.id = 'admission-requirements_dynamic-content'
+      container.className = 'admission-requirements_dynamic-content'
+      targetElement.appendChild(container)
+      console.log('[renderFullHTML] Dynamic container created in:', targetElement)
+    }
+  }
+
+  console.log('[renderFullHTML] Container found/created:', container)
+
+  const validRequirements = requirementsData.filter(req => req.percentage > 0)
+  const isSingleRequirement = validRequirements.length === 1
+  const baseClass = 'admission-requirements'
+
+  console.log('[renderFullHTML] Valid requirements:', validRequirements.length, 'Single:', isSingleRequirement)
+
+  // Generar HTML completo
+  const html = `
+    <div class="${baseClass}_main-content ${isSingleRequirement ? 'single-requirement-layout' : ''}">
+      <!-- LEFT COLUMN - CHART OR SINGLE REQUIREMENT -->
+      <div class="${baseClass}_chart-container ${validRequirements.length > 1 ? 'multiple-requirements' : ''}">
+        ${isSingleRequirement ? renderSingleRequirementHTML(validRequirements[0]) : renderMultipleRequirementsHTML(validRequirements)}
+      </div>
+
+      <!-- RIGHT COLUMN - CONTENT PANELS -->
+      <div class="${baseClass}_content-container ${validRequirements.length > 1 ? 'multiple-requirements' : ''}">
+        ${renderContentPanelsHTML(validRequirements, isSingleRequirement)}
+
+        ${validRequirements.length > 1 ? `
+          <!-- BUTTON FOR MULTIPLE REQUIREMENTS -->
+          <div class="${baseClass}_panel-navigation-fixed">
+            <button class="btn btn-primary btn-solid" data-dmpa-element-id="btn" onclick="document.getElementById('section-eleven')?.scrollIntoView({behavior: 'smooth', block: 'start'})">
+              <span class="btn-text">Ver detalles de evaluación</span>
+              <span class="btn-icon btn-icon-end">
+                <i class="ph ph-arrow-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+        ` : ''}
+      </div>
+
+      ${isSingleRequirement ? `
+        <!-- BUTTON ROW FOR SINGLE REQUIREMENT -->
+        <div class="${baseClass}_single-requirement-button-row">
+          <button class="btn btn-primary btn-solid" data-dmpa-element-id="btn" onclick="document.getElementById('section-eleven')?.scrollIntoView({behavior: 'smooth', block: 'start'})">
+            <span class="btn-text">Ver detalles de evaluación</span>
+            <span class="btn-icon btn-icon-end">
+              <i class="ph ph-arrow-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+      ` : ''}
+    </div>
+  `
+
+  console.log('[renderFullHTML] Setting innerHTML...')
+
+  // Buscar el loading state (puede estar en el contenedor o en su padre)
+  let loadingState = container.querySelector('.admission-requirements_loading-state')
+
+  if (!loadingState) {
+    // Si no está dentro del contenedor, buscar en el mismo nivel
+    loadingState = container.parentElement?.querySelector('.admission-requirements_loading-state')
+  }
+
+  // Renderizar el contenido primero
+  container.innerHTML = html
+  console.log('[renderFullHTML] HTML set successfully')
+
+  // Activar animación de fade out del loading state
+  if (loadingState) {
+    console.log('[renderFullHTML] Hiding loading state with animation...')
+    loadingState.classList.add('hidden')
+
+    // Remover completamente después de la transición (500ms)
+    setTimeout(() => {
+      loadingState.remove()
+      console.log('[renderFullHTML] Loading state removed')
+    }, 500)
+  }
+
+  // Reinicializar interacciones después de renderizar
+  // Buscar el componente que contiene el contenedor (subir en el árbol DOM)
+  let component = container.closest('[data-component-id="requisitos-pregrado"]')
+    || container.closest('[data-component-id="requisitos"]')
+    || container.closest('.admission-requirements')
+    || container.parentElement
+
+  console.log('[renderFullHTML] Component for interactions:', component)
+
+  if (component) {
+    console.log('[renderFullHTML] Initializing interactions...')
+
+    // Esperar un tick para que el DOM se actualice completamente
+    setTimeout(() => {
+      try {
+        initChartInteractions(component)
+        console.log('[renderFullHTML] ✅ Chart interactions initialized')
+      } catch (error) {
+        console.error('[renderFullHTML] Error initializing chart interactions:', error)
+      }
+
+      try {
+        initAccessibilityEnhancements(component)
+        console.log('[renderFullHTML] ✅ Accessibility initialized')
+      } catch (error) {
+        console.error('[renderFullHTML] Error initializing accessibility:', error)
+      }
+
+      try {
+        initMobileAccordion(component)
+        console.log('[renderFullHTML] ✅ Mobile accordion initialized')
+      } catch (error) {
+        console.error('[renderFullHTML] Error initializing mobile accordion:', error)
+      }
+
+      console.log('[renderFullHTML] All interactions initialized')
+    }, 50)
+  } else {
+    console.warn('[renderFullHTML] Component not found for interactions')
+  }
+
+  return true // Retornar true si tiene éxito
+}
+
+function renderSingleRequirementHTML(requirement) {
+  return `
+    <div class="admission-requirements_single-requirement-display">
+      <div class="admission-requirements_single-requirement-display_icon admission-requirements_single-requirement-display_icon--${requirement.color}">
+        <i class="${requirement.icon}"></i>
+      </div>
+      <div class="admission-requirements_single-requirement-display_text-container">
+        <div class="admission-requirements_single-requirement-display_percentage">${requirement.percentage}%</div>
+        <div class="admission-requirements_single-requirement-display_title">${requirement.title}</div>
+      </div>
+    </div>
+  `
+}
+
+function renderMultipleRequirementsHTML(requirements) {
+  let cumulativeAngle = 0
+  const segments = requirements.map(req => {
+    const startAngle = cumulativeAngle
+    const endAngle = startAngle + (req.percentage * 3.6)
+    cumulativeAngle = endAngle
+
+    return createSVGSegmentHTML(startAngle, endAngle, req)
+  }).join('')
+
+  const labels = requirements.map((req, index) => {
+    let startAngle = 0
+    for (let i = 0; i < index; i++) {
+      startAngle += requirements[i].percentage * 3.6
+    }
+    const midAngle = startAngle + (req.percentage * 3.6) / 2 - 90
+    const midAngleRad = midAngle * (Math.PI / 180)
+    const labelX = 400 + 260 * Math.cos(midAngleRad)
+    const labelY = 400 + 260 * Math.sin(midAngleRad)
+
+    return `
+      <text x="${labelX}" y="${labelY - 8}" text-anchor="middle" class="admission-requirements_chart-label-percentage" data-requirement="${req.id}">${req.percentage}%</text>
+      <text x="${labelX}" y="${labelY + 14}" text-anchor="middle" class="admission-requirements_chart-label-title" data-requirement="${req.id}">${req.title}</text>
+    `
+  }).join('')
+
+  return `
+    <div class="admission-requirements_chart-wrapper">
+      <svg class="admission-requirements_chart" viewBox="0 0 800 800" width="800" height="800">
+        ${segments}
+        <circle cx="400" cy="400" r="175" class="admission-requirements_chart-center" />
+        <text x="400" y="385" text-anchor="middle" class="admission-requirements_chart-total-label">Total</text>
+        <text x="400" y="425" text-anchor="middle" class="admission-requirements_chart-total-value">100%</text>
+        ${labels}
+      </svg>
+    </div>
+  `
+}
+
+function createSVGSegmentHTML(startAngle, endAngle, requirement) {
+  const radius = 350
+  const centerX = 400
+  const centerY = 400
+
+  const startAngleRad = (startAngle - 90) * (Math.PI / 180)
+  const endAngleRad = (endAngle - 90) * (Math.PI / 180)
+
+  const x1 = centerX + radius * Math.cos(startAngleRad)
+  const y1 = centerY + radius * Math.sin(startAngleRad)
+  const x2 = centerX + radius * Math.cos(endAngleRad)
+  const y2 = centerY + radius * Math.sin(endAngleRad)
+
+  const largeArcFlag = requirement.percentage > 50 ? 1 : 0
+  const pathData = `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`
+
+  return `<path d="${pathData}" class="admission-requirements_chart-segment admission-requirements_chart-segment--${requirement.color}" data-requirement="${requirement.id}" data-percentage="${requirement.percentage}" />`
+}
+
+function renderContentPanelsHTML(requirements, isSingleRequirement) {
+  return requirements.map((req, index) => `
+    <div class="admission-requirements_content-panel ${index === 0 ? 'is-active' : ''} ${isSingleRequirement ? 'single-requirement' : ''}" data-requirement="${req.id}" data-content-panel="${req.id}">
+      ${!isSingleRequirement ? `
+        <div class="admission-requirements_panel-header">
+          <div class="admission-requirements_panel-icon admission-requirements_panel-icon--${req.color}">
+            <i class="${req.icon}"></i>
+          </div>
+          <div class="admission-requirements_panel-title">
+            <h3 class="admission-requirements_panel-main-title">${req.title}</h3>
+            <p class="admission-requirements_panel-subtitle">${req.percentage}% del proceso de evaluación</p>
+          </div>
+        </div>
+      ` : ''}
+
+      <div class="admission-requirements_panel-content">
+        <ul class="admission-requirements_items-list">
+          ${req.items.map(item => `
+            <li class="admission-requirements_list-item">
+              <div class="admission-requirements_item-check">
+                <i class="ph ph-check"></i>
+              </div>
+              <span class="admission-requirements_item-text">${item}</span>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    </div>
+  `).join('')
+}
+
 // Exponer globalmente para compatibilidad con Liferay
 if (typeof window !== 'undefined') {
   window.initAdmissionRequirements = initAdmissionRequirements
   window.initRequirementsSystem = initRequirementsSystem
+  window.renderFullHTML = renderFullHTML
 
   // Exponer Logger para control dinámico de logs
   window.RequirementsLogger = Logger

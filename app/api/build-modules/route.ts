@@ -15,7 +15,7 @@ const TIMEOUT_MS = 25000
 // 📌 NOMBRES DE ARCHIVOS COMPILADOS
 const COMPILED_CSS_FILE = 'compiled-styles.css'
 const COMPILED_JS_FILE = 'compiled-scripts.js'
-const COMPILATION_INFO_FILE = 'compilation-info.json'
+const COMPILED_INFO_FILE = 'compiled-info.json'
 
 // 📌 FUNCIÓN HELPER PARA RESOLVER ARCHIVOS SCSS
 function resolveScssFile(basePath: string): URL | null {
@@ -154,7 +154,7 @@ const globalUtilsPlugin = {
 async function needsRecompilation(componentPath: string): Promise<boolean> {
   try {
     const buildPath = path.join(componentPath, 'build')
-    const compilationInfoPath = path.join(buildPath, COMPILATION_INFO_FILE)
+    const compilationInfoPath = path.join(buildPath, COMPILED_INFO_FILE)
     const scssPath = path.join(componentPath, SCSS_FILE)
     const jsPath = path.join(componentPath, JS_FILE)
 
@@ -229,7 +229,7 @@ async function saveCompiledFiles(componentPath: string, css: string, js: string)
 
     const cssPath = path.join(buildPath, COMPILED_CSS_FILE)
     const jsPath = path.join(buildPath, COMPILED_JS_FILE)
-    const infoPath = path.join(buildPath, COMPILATION_INFO_FILE)
+    const infoPath = path.join(buildPath, COMPILED_INFO_FILE)
 
     // Información de compilación
     const compilationInfo = {
@@ -511,7 +511,7 @@ export async function GET(req: NextRequest) {
       savedFiles: {
         css: COMPILED_CSS_FILE,
         js: COMPILED_JS_FILE,
-        info: COMPILATION_INFO_FILE
+        info: COMPILED_INFO_FILE
       }
     })
   } catch (error) {

@@ -98,6 +98,22 @@ $req-progress-animation-duration: 0.8s;
       justify-items: stretch; // Permite que cada área use su propio justify-content
       align-items: center; // En desktop, centrar verticalmente las grid areas
     }
+
+    // Layout de 2 filas para requisito único
+    &.single-requirement-layout {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'chart'
+        'content'
+        'button';
+
+      @include responsive($breakpoint-lg) {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          'chart content'
+          'button button';
+      }
+    }
   }
 
   // ==========================================
@@ -480,14 +496,25 @@ $req-progress-animation-duration: 0.8s;
 
     // DESKTOP: Distribución dinámica con más filas por columna
     @media (min-width: 992px) {
-      // Usar un máximo más alto para permitir más elementos por columna
-      // pero mantener distribución columnar vertical
-      grid-template-rows: repeat(8, auto); // Máximo 8 elementos por columna (en lugar de 5)
+      // Usar un máximo de 6 elementos por columna para mejor balance visual
+      // y distribución más equilibrada del contenido
+      grid-template-rows: repeat(6, auto); // Máximo 6 elementos por columna
     }
 
     // Agregar margin-top cuando hay header (múltiples requisitos)
     .admission-requirements_content-panel:not(.single-requirement) & {
       margin-top: var(--spacing-md);
+    }
+
+    // Para requisito único: usar grid flexible sin filas predefinidas
+    .admission-requirements_content-panel.single-requirement & {
+      @media (min-width: 992px) {
+        grid-auto-flow: row; // Cambiar a flujo vertical
+        grid-template-rows: none;
+        grid-auto-rows: auto;
+        grid-template-columns: 1fr; // Una sola columna
+        align-content: center; // Centrar verticalmente el contenido
+      }
     }
 
     // En móviles (hasta tablet), cambiar a layout lineal para acordeón
@@ -497,6 +524,7 @@ $req-progress-animation-duration: 0.8s;
       gap: var(--spacing-xs);
       grid-template-rows: none;
       grid-auto-flow: none;
+      padding: 0 var(--spacing-md); // Padding horizontal para respetar márgenes del container
 
       // Elementos ocultos en móvil cuando hay más de 5 items
       &.has-many-items {
@@ -850,11 +878,102 @@ $req-progress-animation-duration: 0.8s;
       justify-content: center;
     }
   }
+
+  // ==========================================
+  // BUTTON ROW FOR SINGLE REQUIREMENT
+  // ==========================================
+  &_single-requirement-button-row {
+    grid-area: button;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    /*margin-top: var(--spacing-md);*/
+
+    @include responsive($breakpoint-lg) {
+      padding: 0;
+      /*margin-top: var(--spacing-lg);*/
+    }
+  }
+
+  // ==========================================
+  // DYNAMIC CONTENT CONTAINER
+  // ==========================================
+  &_dynamic-content {
+    position: relative;
+    width: 100%;
+    min-height: rem(400px); // Para que el overlay tenga altura antes de cargar contenido
+  }
+
+  // ==========================================
+  // LOADING STATE (OVERLAY)
+  // ==========================================
+  &_loading-state {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: rem(400px);
+    gap: var(--spacing-md);
+    padding: var(--spacing-xl);
+    background-color: var(--neutral-0);
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    visibility: visible;
+
+    @include dark-theme {
+      background-color: var(--neutral-900);
+    }
+
+    // Estado oculto
+    &.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+
+  &_loading-spinner {
+    font-size: rem(48px);
+    color: var(--primary-600);
+    animation: spin 1s linear infinite;
+
+    i {
+      display: block;
+    }
+  }
+
+  &_loading-text {
+    text-align: center;
+    margin: 0;
+    font-size: var(--font-size-body);
+    color: var(--neutral-600);
+
+    @include dark-theme {
+      color: var(--neutral-400);
+    }
+  }
+
 }
 
 // ==========================================
 // ANIMATIONS
 // ==========================================
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 @keyframes fadeInSlideUp {
   from {
     opacity: 0;

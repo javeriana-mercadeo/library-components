@@ -1,0 +1,22 @@
+{
+  "name": "5-1 insignias ALT | PREGRADO",
+  "type": "section",
+  "description": "Carrusel infinito de reconocimientos académicos - Versión alternativa 100% compatible con Liferay",
+  "version": "2.0.0",
+  "compatibility": {
+    "liferay": true,
+    "react-hooks": false,
+    "vanilla-js": true
+  },
+  "features": [
+    "Carrusel infinito CSS puro",
+    "Sin dependencia de React hooks",
+    "Auto-inicialización JavaScript",
+    "Fallback de imágenes",
+    "Soporte prefers-reduced-motion",
+    "Pausa en hover automática",
+    "100% responsive"
+  ],
+  "author": "Pontificia Universidad Javeriana",
+  "created": "2025-01-06"
+}

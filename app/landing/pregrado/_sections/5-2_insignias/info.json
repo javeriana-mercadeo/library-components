@@ -1,0 +1,34 @@
+{
+  "name": "5-2 insignias SWIPER | PREGRADO",
+  "type": "section",
+  "description": "Carrusel infinito de reconocimientos académicos con Swiper.js - 100% compatible con Liferay",
+  "version": "3.0.0",
+  "library": "Swiper.js",
+  "compatibility": {
+    "liferay": true,
+    "react-hooks": false,
+    "vanilla-js": true,
+    "swiper": "11.x"
+  },
+  "features": [
+    "Carrusel infinito con Swiper.js",
+    "Sin dependencia de React hooks",
+    "Autoplay continuo configurable",
+    "Drag-to-scroll nativo",
+    "Free mode con momentum",
+    "Pausa en hover automática",
+    "Soporte prefers-reduced-motion",
+    "100% responsive",
+    "Fallback de imágenes",
+    "Accesibilidad completa (a11y)"
+  ],
+  "advantages": [
+    "Drag robusto out-of-the-box",
+    "Loop infinito sin duplicar elementos",
+    "Código 60% más simple que versión custom",
+    "Librería probada y mantenida",
+    "Soporte touch gestures optimizado"
+  ],
+  "author": "Pontificia Universidad Javeriana",
+  "created": "2025-01-07"
+}
