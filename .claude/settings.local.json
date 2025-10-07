@@ -9,7 +9,9 @@
       "Bash(npm run lint:*)",
       "Bash(tree:*)",
       "Bash(dir:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(rm:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

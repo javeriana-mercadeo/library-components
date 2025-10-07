@@ -243,6 +243,12 @@ app/**/build/
 components/**/build/
 institutional/**/build/
 landing/**/build/
+**/build/
+
+# 📌 Archivos compilados generados por /api/build-modules
+**/build/compiled-styles.css
+**/build/compiled-scripts.js
+**/build/compilation-info.json
 
 # También excluir archivos compilados sueltos en raíz de secciones (legacy)
 **/*_sections/*/compiled-*.css
