@@ -232,6 +232,9 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/node,react,nextjs,windows,visualstudiocode
 
+# 📌 Claude Code configuration (local settings)
+.claude/
+
 # build output en raíz
 /build/
 !build/script.js
