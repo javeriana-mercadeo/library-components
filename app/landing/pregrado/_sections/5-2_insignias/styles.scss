@@ -3,15 +3,11 @@
 // ==========================================
 // VARIABLES DEL COMPONENTE
 // ==========================================
-$carousel-animation-duration: 40s;
-$carousel-animation-duration-slow: 60s;
-$carousel-gap-desktop: rem(30px);
-$carousel-gap-mobile: rem(20px);
-$carousel-item-width-desktop: rem(200px);
-$carousel-item-width-mobile: rem(160px);
-$carousel-image-width-desktop: rem(150px);
-$carousel-image-width-mobile: rem(120px);
-$carousel-fade-width: rem(100px);
+$slide-width-desktop: rem(200px);
+$slide-width-mobile: rem(160px);
+$image-width-desktop: rem(150px);
+$image-width-mobile: rem(120px);
+$fade-width: rem(100px);
 
 // ==========================================
 // SECCIÓN PRINCIPAL
@@ -59,22 +55,21 @@ $carousel-fade-width: rem(100px);
 }
 
 // ==========================================
-// WRAPPER DEL CARRUSEL (Contenedor fijo con fades)
+// SWIPER CONTAINER
 // ==========================================
-.carousel-wrapper {
+.insignias-swiper {
   position: relative;
   width: 100%;
-  overflow: hidden;
   padding: var(--spacing-md) 0;
-  border-radius: rem(16px);
+  overflow: hidden; // 🔒 Evita que los slides se salgan del contenedor
 
-  // 🌫️ Efecto de niebla lateral (fade) - FIJO, no se mueve con scroll
+  // 🌫️ Efecto de niebla lateral (fade) - FIJO
   &::before,
   &::after {
     content: '';
     position: absolute;
     top: 0;
-    width: $carousel-fade-width;
+    width: $fade-width;
     height: 100%;
     z-index: 2;
     pointer-events: none;
@@ -111,141 +106,45 @@ $carousel-fade-width: rem(100px);
 }
 
 // ==========================================
-// CONTENEDOR SCROLLEABLE (Nuevo)
+// SWIPER WRAPPER
 // ==========================================
-.carousel-scroll-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: visible;
-
-  // 🖱️ CURSOR: Estado por defecto (draggable)
-  &.draggable {
-    cursor: grab;
-    user-select: none;
-  }
-
-  // 🖱️ CURSOR: Durante el arrastre
-  &.is-grabbing {
-    cursor: grabbing;
-
-    // Prevenir selección de texto
-    * {
-      user-select: none;
-      pointer-events: none;
-    }
-  }
+.swiper-wrapper {
+  // Swiper maneja esto automáticamente
+  // display: flex se aplica por Swiper
 }
 
 // ==========================================
-// TRACK DEL CARRUSEL (CONTENEDOR ANIMADO)
+// SWIPER SLIDE
 // ==========================================
-.carousel-track {
-  display: flex;
-  width: max-content;
-  gap: $carousel-gap-desktop;
-
-  // 🚀 ANIMACIÓN INFINITA - CSS PURO
-  // Mueve exactamente 33.333% (1/3 del total) para loop perfecto con 3 grupos
-  animation: scroll-infinite $carousel-animation-duration linear infinite;
-
-  // ⏸️ PAUSA EN HOVER - Sin JavaScript necesario
-  &:hover {
-    animation-play-state: paused;
-  }
-
-  // 🐢 Variante más lenta en hover (opcional)
-  &.hover-slower:hover {
-    animation-duration: $carousel-animation-duration-slow;
-  }
-
-  // ⏸️ Pausa manual (vía JavaScript)
-  &.paused {
-    animation-play-state: paused !important;
-  }
-
-  // 🎯 ACCESIBILIDAD: Respetar preferencia de movimiento reducido
-  .reduced-motion & {
-    animation: none;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-
-    // Mostrar scrollbar en modo accesibilidad
-    &::-webkit-scrollbar {
-      height: rem(8px);
-    }
-
-    &::-webkit-scrollbar-track {
-      background: var(--neutral-900);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: var(--primary-600);
-      border-radius: rem(4px);
-    }
-  }
-
-  // 📱 RESPONSIVE: Ajustar gap en móvil
-  @include responsive($breakpoint-md) {
-    gap: $carousel-gap-mobile;
-  }
-}
-
-// ==========================================
-// GRUPO DE ITEMS (3 grupos idénticos)
-// ==========================================
-.carousel-group {
-  display: flex;
-  gap: $carousel-gap-desktop;
-  padding: 0 rem(15px);
+.swiper-slide {
+  // ✅ NO definir width fijo - Swiper lo calcula automáticamente según slidesPerView
+  // width controlado por Swiper según breakpoints en script.js
   flex-shrink: 0;
-
-  // Scroll snap para accesibilidad
-  .reduced-motion & {
-    scroll-snap-align: start;
-  }
-
-  @include responsive($breakpoint-md) {
-    gap: $carousel-gap-mobile;
-    padding: 0 rem(10px);
-  }
 }
 
 // ==========================================
-// ITEM INDIVIDUAL (LOGO + DESCRIPCIÓN)
+// CONTENIDO DEL SLIDE
 // ==========================================
-.carousel-item {
+.slide-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: $carousel-item-width-desktop;
-  flex-shrink: 0;
+  height: 100%;
   transition: transform 0.3s ease;
 
-  // 🖱️ Restaurar pointer-events durante el arrastre
-  .is-grabbing & {
-    pointer-events: auto;
-    cursor: grabbing;
-  }
-
-  // 🎯 Hacer focusable para accesibilidad
+  // 🎯 Focus state para accesibilidad
   &:focus-within {
     outline: rem(2px) solid var(--primary-600);
     outline-offset: rem(4px);
     border-radius: rem(8px);
-  }
-
-  @include responsive($breakpoint-md) {
-    width: $carousel-item-width-mobile;
   }
 }
 
 // ==========================================
 // WRAPPER DE IMAGEN
 // ==========================================
-.carousel-item__image-wrapper {
+.slide-content__image-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,7 +155,7 @@ $carousel-fade-width: rem(100px);
   transition: background-color 0.3s ease;
 
   // 🎨 Fondo sutil en hover
-  .carousel-item:hover & {
+  .swiper-slide:hover & {
     background-color: rgba(var(--primary-600-rgb), 0.05);
   }
 }
@@ -264,8 +163,10 @@ $carousel-fade-width: rem(100px);
 // ==========================================
 // IMAGEN DEL LOGO
 // ==========================================
-.carousel-item__image {
-  width: $carousel-image-width-desktop;
+.slide-content__image {
+  // ✅ NO usar width fijo - dejar que Swiper controle el tamaño
+  width: 100%;
+  max-width: $image-width-desktop;
   height: auto;
   object-fit: contain;
   border-radius: rem(8px);
@@ -277,13 +178,13 @@ $carousel-fade-width: rem(100px);
     transform 0.3s ease;
 
   // 🌈 HOVER INDIVIDUAL: Logo a color + zoom
-  .carousel-item:hover & {
+  .swiper-slide:hover & {
     filter: grayscale(0%) brightness(1.1);
     transform: scale(1.05);
   }
 
   // 🎯 HOVER GENERAL: Todos los logos a color
-  .carousel-wrapper:hover & {
+  .insignias-swiper:hover & {
     filter: grayscale(0%) brightness(1);
   }
 
@@ -295,14 +196,24 @@ $carousel-fade-width: rem(100px);
   }
 
   @include responsive($breakpoint-md) {
-    width: $carousel-image-width-mobile;
+    max-width: $image-width-mobile;
+  }
+
+  // 📱 Móviles pequeños
+  @media (max-width: $breakpoint-sm) {
+    max-width: rem(100px);
+  }
+
+  // 🖥️ Pantallas grandes
+  @media (min-width: $breakpoint-xl) {
+    max-width: rem(170px);
   }
 }
 
 // ==========================================
 // DESCRIPCIÓN DEL RECONOCIMIENTO
 // ==========================================
-.carousel-item__description {
+.slide-content__description {
   font-size: var(--font-size-small);
   line-height: 1.4;
   width: 100%;
@@ -319,7 +230,7 @@ $carousel-fade-width: rem(100px);
   }
 
   // 📝 Texto destacado en hover
-  .carousel-item:hover & {
+  .swiper-slide:hover & {
     color: var(--primary-600);
     font-weight: var(--font-weight-semibold);
   }
@@ -327,19 +238,29 @@ $carousel-fade-width: rem(100px);
   @include responsive($breakpoint-md) {
     font-size: rem(10px);
   }
+
+  // 📱 Móviles pequeños
+  @media (max-width: $breakpoint-sm) {
+    font-size: rem(9px);
+  }
+
+  // 🖥️ Pantallas grandes
+  @media (min-width: $breakpoint-xl) {
+    font-size: rem(13px);
+  }
 }
 
 // ==========================================
-// ANIMACIÓN KEYFRAMES
+// ACCESIBILIDAD: REDUCED MOTION
 // ==========================================
-@keyframes scroll-infinite {
-  0% {
-    transform: translateX(0);
+@media (prefers-reduced-motion: reduce) {
+  .insignias-swiper {
+    // Swiper maneja esto con autoplay.disableOnInteraction
   }
-  100% {
-    // Mueve exactamente 1/3 del total (1 grupo completo)
-    // Con 3 grupos idénticos, esto crea un loop perfecto sin saltos
-    transform: translateX(-33.333%);
+
+  .slide-content__image,
+  .slide-content {
+    transition: none;
   }
 }
 
@@ -349,7 +270,7 @@ $carousel-fade-width: rem(100px);
 
 // 🎭 Estado de carga del componente
 .insignias-section[data-loading='true'] {
-  .carousel-track {
+  .insignias-swiper {
     opacity: 0.5;
     pointer-events: none;
   }
@@ -357,72 +278,17 @@ $carousel-fade-width: rem(100px);
 
 // 🚫 Estado sin JavaScript (fallback)
 .no-js {
-  .carousel-track {
-    animation: none;
+  .insignias-swiper {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-  }
-}
 
-// ==========================================
-// MEJORAS DE PERFORMANCE
-// ==========================================
+    .swiper-wrapper {
+      display: flex;
+      gap: rem(30px);
+    }
 
-// 🚀 Optimización de rendering
-.carousel-track {
-  will-change: transform;
-  backface-visibility: hidden;
-  perspective: rem(1000px);
-}
-
-.carousel-item__image {
-  will-change: filter, transform;
-  backface-visibility: hidden;
-}
-
-// 🎯 Desactivar will-change cuando no sea necesario
-.reduced-motion {
-  .carousel-track,
-  .carousel-item__image {
-    will-change: auto;
-  }
-}
-
-// ==========================================
-// RESPONSIVE ADICIONAL
-// ==========================================
-
-// 📱 Móviles pequeños
-@media (max-width: $breakpoint-sm) {
-  .carousel-item {
-    width: rem(140px);
-  }
-
-  .carousel-item__image {
-    width: rem(100px);
-  }
-
-  .carousel-item__description {
-    font-size: rem(9px);
-  }
-
-  .carousel-wrapper::before,
-  .carousel-wrapper::after {
-    width: rem(60px);
-  }
-}
-
-// 🖥️ Pantallas grandes
-@media (min-width: $breakpoint-xl) {
-  .carousel-item {
-    width: rem(220px);
-  }
-
-  .carousel-item__image {
-    width: rem(170px);
-  }
-
-  .carousel-item__description {
-    font-size: rem(13px);
+    .swiper-slide {
+      scroll-snap-align: start;
+    }
   }
 }

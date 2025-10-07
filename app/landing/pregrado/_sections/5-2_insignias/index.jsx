@@ -1,11 +1,16 @@
 'use client'
 import { Container, Title } from '@library/components'
+import { useEffect } from 'react'
 
+import script from './script.js'
 import './styles.scss'
-import './script.js'
 
-const InsigniasAlt = () => {
-  const elementName = 'insignias-alt'
+const InsigniasSwiper = () => {
+  const elementName = 'insignias-swiper'
+
+  useEffect(() => {
+    script()
+  }, [])
 
   const reconocimientos = [
     {
@@ -60,7 +65,7 @@ const InsigniasAlt = () => {
   }
 
   return (
-    <section id='section-five-alt' data-component='insignias-carousel' className='insignias-section'>
+    <section id='section-five-swiper' data-component='insignias-swiper' className='insignias-section'>
       <Container className='container insignias-container'>
         <Title
           id={`title-${elementName}`}
@@ -73,34 +78,32 @@ const InsigniasAlt = () => {
           Reconocimientos Académicos
         </Title>
 
-        <div className='carousel-wrapper' role='region' aria-label='Carrusel de reconocimientos académicos'>
-          <div className='carousel-scroll-container'>
-            <div className='carousel-track'>
-              {/* Renderizar 3 grupos idénticos para loop infinito perfecto */}
-              {[0, 1, 2].map(groupIndex => (
-                <div key={`group-${groupIndex}`} className='carousel-group' aria-hidden={groupIndex > 0 ? 'true' : 'false'}>
-                  {reconocimientos.map((item, idx) => (
-                    <div key={`${groupIndex}-${item.id}-${idx}`} className='carousel-item'>
-                      <div className='carousel-item__image-wrapper'>
-                        <img
-                          src={item.src}
-                          alt={item.alt}
-                          loading='lazy'
-                          onError={e => handleImageError(e, item.srcFallback)}
-                          className='carousel-item__image'
-                        />
-                      </div>
-                      <p className='carousel-item__description'>{item.description}</p>
-                    </div>
-                  ))}
+        {/* Swiper Container */}
+        <div className='swiper insignias-swiper' role='region' aria-label='Carrusel de reconocimientos académicos'>
+          <div className='swiper-wrapper'>
+            {reconocimientos.map((item, idx) => (
+              <div key={`${item.id}-${idx}`} className='swiper-slide'>
+                <div className='slide-content'>
+                  <div className='slide-content__image-wrapper'>
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      loading='lazy'
+                      onError={e => handleImageError(e, item.srcFallback)}
+                      className='slide-content__image'
+                    />
+                  </div>
+                  <p className='slide-content__description'>{item.description}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
+          {/* Paginación */}
+          <div className='swiper-pagination'></div>
         </div>
       </Container>
     </section>
   )
 }
 
-export default InsigniasAlt
+export default InsigniasSwiper
