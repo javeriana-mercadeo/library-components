@@ -261,13 +261,40 @@ $req-progress-animation-duration: 0.8s;
   // ==========================================
   // CHART LABELS DENTRO DEL SVG
   // ==========================================
+
+  // Rectángulos de fondo para mejorar contraste
+  &_chart-label-bg {
+    fill: rgba(30, 30, 35, 0.92); // Fondo oscuro semi-transparente
+    stroke: rgba(255, 255, 255, 0.15);
+    stroke-width: 1;
+    // rx se define en el SVG directamente (no acepta rem en CSS)
+    transition: $req-transition;
+
+    @include dark-theme {
+      fill: rgba(30, 30, 35, 0.95); // Fondo oscuro más sólido en dark mode
+      stroke: rgba(255, 255, 255, 0.2);
+    }
+
+    // Hover effect para el fondo
+    &:hover {
+      fill: rgba(30, 30, 35, 0.96);
+      stroke: rgba(255, 255, 255, 0.25);
+
+      @include dark-theme {
+        fill: rgba(30, 30, 35, 0.98);
+        stroke: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+
   &_chart-label-percentage {
     font-size: calc(var(--font-size-title) * 1.1); // Ligeramente más grande
     font-weight: var(--font-weight-bold);
     font-family: var(--font-family);
-    fill: var(--neutral-100);
+    fill: #ffffff; // Texto blanco sobre fondo oscuro
     transition: $req-transition;
     outline: none;
+    pointer-events: none; // El fondo maneja el hover
 
     &:focus-visible {
       outline: 2px solid var(--primary-500);
@@ -275,15 +302,7 @@ $req-progress-animation-duration: 0.8s;
     }
 
     @include dark-theme {
-      fill: var(--neutral-1000);
-    }
-
-    &:hover {
-      fill: var(--neutral-50);
-
-      @include dark-theme {
-        fill: var(--neutral-200);
-      }
+      fill: #ffffff; // Texto blanco también en dark mode
     }
   }
 
@@ -291,9 +310,10 @@ $req-progress-animation-duration: 0.8s;
     font-size: calc(var(--font-size-caption) * 1.15); // Ligeramente más grande
     font-weight: var(--font-weight-semibold);
     font-family: var(--font-family);
-    fill: var(--neutral-100);
+    fill: #ffffff; // Texto blanco sobre fondo oscuro
     transition: $req-transition;
     outline: none;
+    pointer-events: none; // El fondo maneja el hover
 
     &:focus-visible {
       outline: 2px solid var(--primary-500);
@@ -301,15 +321,7 @@ $req-progress-animation-duration: 0.8s;
     }
 
     @include dark-theme {
-      fill: var(--neutral-1000);
-    }
-
-    &:hover {
-      fill: var(--neutral-50);
-
-      @include dark-theme {
-        fill: var(--neutral-200);
-      }
+      fill: #ffffff; // Texto blanco también en dark mode
     }
   }
 

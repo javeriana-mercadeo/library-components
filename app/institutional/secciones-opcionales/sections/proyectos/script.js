@@ -635,7 +635,6 @@ export default CarouselManager
 // ========================================
 // CÓDIGO LEGACY/IIFE (posiblemente para compatibilidad)
 // ========================================
-
 ;(function () {
   'use strict'
 
