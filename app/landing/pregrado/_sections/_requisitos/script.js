@@ -658,7 +658,7 @@ function updateSVGChart(component, requirementsData) {
   const centerCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
   centerCircle.setAttribute('cx', '400')
   centerCircle.setAttribute('cy', '400')
-  centerCircle.setAttribute('r', '175')
+  centerCircle.setAttribute('r', '150') // Reducido de 175 a 150 para anillo más grueso
   centerCircle.setAttribute('class', 'admission-requirements_chart-center')
   svg.appendChild(centerCircle)
 
@@ -1306,7 +1306,7 @@ function renderMultipleRequirementsHTML(requirements) {
     <div class="admission-requirements_chart-wrapper">
       <svg class="admission-requirements_chart" viewBox="0 0 800 800" width="800" height="800">
         ${segments}
-        <circle cx="400" cy="400" r="175" class="admission-requirements_chart-center" />
+        <circle cx="400" cy="400" r="150" class="admission-requirements_chart-center" />
         <text x="400" y="385" text-anchor="middle" class="admission-requirements_chart-total-label">Total</text>
         <text x="400" y="425" text-anchor="middle" class="admission-requirements_chart-total-value">100%</text>
         ${labels}
