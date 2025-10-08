@@ -1,85 +1,137 @@
-// script.js - Versión autocontenida para Maestría
+/**
+ * Maestria System - JavaScript Vanilla
+ * Sistema de gestión de modales para horarios
+ */
+;(function () {
+  'use strict'
 
-// ==========================================
-// UTILIDADES
-// ==========================================
-function onDOMReady(callback) {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', callback)
-  } else {
-    callback()
-  }
-}
-
-// ==========================================
-// SYSTEM PRINCIPAL
-// ==========================================
-class MastershipSystem {
-  constructor() {
-    this.initialized = false
-  }
-
-  init() {
-    if (this.initialized) return
-
-    try {
-      console.log('[MastershipSystem] Inicializando sistema')
-
-      // Aquí el programFormatter o API cargaría los datos
-      // Por ahora solo marca como inicializado
-      this.initialized = true
-
-      console.log('[MastershipSystem] Sistema inicializado exitosamente')
-    } catch (error) {
-      console.error('[MastershipSystem] Error durante inicialización:', error)
+  const CONFIG = {
+    SELECTORS: {
+      root: '.mastership-banner',
+      modalTrigger: '[data-modal-target]',
+      modalClose: '.program-detail-modal__close',
+      modal: '.program-detail-modal'
+    },
+    CLASSES: {
+      modalActive: 'program-detail-modal--active'
     }
   }
 
-  destroy() {
-    this.initialized = false
-    console.log('[MastershipSystem] Sistema destruido')
-  }
-}
-
-// ==========================================
-// INSTANCIA GLOBAL
-// ==========================================
-let globalMastershipSystem = null
-
-function initMastership() {
-  if (!globalMastershipSystem) {
-    globalMastershipSystem = new MastershipSystem()
-  }
-  globalMastershipSystem.init()
-}
-
-function initSystem() {
-  if (typeof window !== 'undefined' && window.mastershipInitialized) {
-    return
+  let systemState = {
+    initialized: false,
+    activeModal: null
   }
 
-  globalMastershipSystem = new MastershipSystem()
+  /* =====================
+       SISTEMA DE MODALES
+    ===================== */
 
-  if (typeof window !== 'undefined') {
-    window.mastershipInitialized = true
+  const ModalSystem = {
+    init() {
+      this.setupEventListeners()
+    },
 
-    window.addEventListener('beforeunload', () => {
-      if (globalMastershipSystem) {
-        globalMastershipSystem.destroy()
+    setupEventListeners() {
+      // Abrir modales mediante data-modal-target
+      document.addEventListener('click', e => {
+        const trigger = e.target.closest(CONFIG.SELECTORS.modalTrigger)
+        if (trigger) {
+          e.preventDefault()
+          const modalId = trigger.getAttribute('data-modal-target')
+          this.openModal(modalId)
+        }
+
+        // Cerrar modales con botón X
+        const closeBtn = e.target.closest(CONFIG.SELECTORS.modalClose)
+        if (closeBtn) {
+          e.preventDefault()
+          this.closeModal()
+        }
+
+        // Cerrar con click en backdrop
+        if (e.target.classList.contains('program-detail-modal') && e.target.classList.contains(CONFIG.CLASSES.modalActive)) {
+          this.closeModal()
+        }
+      })
+
+      // Cerrar con tecla Escape
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && systemState.activeModal) {
+          this.closeModal()
+        }
+      })
+    },
+
+    openModal(modalId) {
+      const modal = document.getElementById(modalId)
+      if (modal) {
+        modal.classList.add(CONFIG.CLASSES.modalActive)
+        document.body.style.overflow = 'hidden'
+        systemState.activeModal = modalId
+
+        // Focus para accesibilidad
+        const closeButton = modal.querySelector(CONFIG.SELECTORS.modalClose)
+        if (closeButton) {
+          setTimeout(() => closeButton.focus(), 100)
+        }
+
+        console.log('Maestria: Modal abierto:', modalId)
       }
-    })
+    },
+
+    closeModal() {
+      if (systemState.activeModal) {
+        const modal = document.getElementById(systemState.activeModal)
+        if (modal) {
+          modal.classList.remove(CONFIG.CLASSES.modalActive)
+        }
+      }
+
+      document.body.style.overflow = ''
+      systemState.activeModal = null
+      console.log('Maestria: Modal cerrado')
+    }
   }
 
-  onDOMReady(() => {
-    if (typeof requestIdleCallback !== 'undefined') {
-      requestIdleCallback(() => initMastership(), { timeout: 2000 })
-    } else {
-      setTimeout(initMastership, 100)
-    }
-  })
+  /* =====================
+       INICIALIZACIÓN
+    ===================== */
+
+  function initializeSystem() {
+    if (systemState.initialized) return
+
+    const root = document.querySelector(CONFIG.SELECTORS.root)
+    if (!root)
+      // Inicializar sistema de modales
+      ModalSystem.init()
+
+    systemState.initialized = true
+  }
+
+  // API pública
+  window.MastershipSystem = {
+    init: initializeSystem,
+    openModal: ModalSystem.openModal.bind(ModalSystem),
+    closeModal: ModalSystem.closeModal.bind(ModalSystem),
+    getState: () => ({ ...systemState })
+  }
+
+  // Inicialización automática
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSystem)
+  } else {
+    initializeSystem()
+  }
+
+  // Fallback
+  setTimeout(initializeSystem, 100)
+
+  console.log('Maestria: Script cargado')
+})()
+
+// Export default para compatibilidad con módulos
+export default function initMastership() {
+  if (window.MastershipSystem) {
+    window.MastershipSystem.init()
+  }
 }
-
-// Auto-inicialización
-initSystem()
-
-export { MastershipSystem, initSystem as default }

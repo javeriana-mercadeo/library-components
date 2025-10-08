@@ -35,20 +35,14 @@ const Maestria = () => {
       icon: 'ph-calendar-dots',
       label: 'Duración estimada',
       value: 'Cargando duración...',
-      value2: 'Duración adicional...',
-      prefix: 'Diurna',
-      prefix2: 'Nocturna',
-      type: 'doble'
+      type: 'normal'
     },
     {
       id: 'data-puj-price',
       icon: 'ph-piggy-bank',
       label: 'Inversión Semestre',
       value: 'Cargando inversión...',
-      value2: 'Inversión adicional...',
-      prefix: 'Diurno',
-      prefix2: 'Nocturno',
-      type: 'doble'
+      type: 'normal'
     },
     {
       id: 'data-puj-modality',
@@ -57,20 +51,25 @@ const Maestria = () => {
       value: 'Cargando modalidad...',
       type: 'normal'
     },
+    // {
+    //   id: 'data-puj-credits',
+    //   icon: 'ph-calculator',
+    //   label: 'Numero de Creditos',
+    //   value: 'Cargando numero de creditos...',
+    //   type: 'normal'
+    // },
     {
       id: 'data-puj-clock',
       icon: 'ph-clock',
       label: 'Horarios',
       value: 'Cargando horario...',
-      value2: '',
-      prefix: '',
-      prefix2: 'Nocturno',
-      type: 'normal'
+      type: 'modal',
+      modalId: 'modal-horarios-doctorado'
     }
   ]
 
   const renderDetail = detail => {
-    const { id, icon, label, value, value2, prefix, prefix2, type } = detail
+    const { id, icon, label, value, type, modalId, credito } = detail
 
     return (
       <div key={id} className={`${baseClass}__detail-item`}>
@@ -84,29 +83,20 @@ const Maestria = () => {
             </p>
           )}
 
-          {type === 'doble' && (
-            <>
-              {/* Caso 1: Ambos prefixes vacíos - mostrar solo value sin etiqueta */}
-              {!prefix && !prefix2 && (
-                <p className={`${baseClass}__detail-value`}>
-                  <span data-puj-attribute={id}>{value}</span>
-                </p>
-              )}
-
-              {/* Caso 2: Hay prefix - mostrar con etiqueta */}
-              {prefix && (
-                <p className={`${baseClass}__detail-value`}>
-                  <strong>{prefix}:</strong> <span data-puj-attribute={id}>{value}</span>
-                </p>
-              )}
-
-              {/* Caso 3: Hay prefix2 Y value2 - mostrar segundo valor con etiqueta */}
-              {prefix2 && value2 && (
-                <p className={`${baseClass}__detail-value`}>
-                  <strong>{prefix2}:</strong> <span data-puj-attribute={`${id}-2`}>{value2}</span>
-                </p>
-              )}
-            </>
+          {type === 'modal' && (
+            <div className={`${baseClass}__detail-modal-trigger`}>
+              <Btn
+                data-modal-target={modalId}
+                className={`${baseClass}__detail-button`}
+                variant='flat'
+                size='sm'
+                endIcon={<i className='ph ph-info'></i>}
+                onClick={e => {
+                  e.preventDefault()
+                }}>
+                Ver detalles
+              </Btn>
+            </div>
           )}
         </div>
       </div>
@@ -126,7 +116,6 @@ const Maestria = () => {
               Cargando facultad...
             </Caption>
 
-            {/* === TÍTULO === */}
             <Title hierarchy='h1' isEditable={false} className={`${baseClass}__title`}>
               <Caption id={`${elementName}_title-study`} className={`${baseClass}__title-program`}>
                 Estudia{' '}
@@ -145,7 +134,24 @@ const Maestria = () => {
           <div className={`${baseClass}__details-content`}>
             <div className={`${baseClass}__details-grid`}>
               {details.map(detail => renderDetail(detail))}
-              {/* === FECHAS DE INSCRIPCIÓN === */}
+
+              {/* Numero de Creditos - Manual (temporal) */}
+              <div className='__credit'>
+                <div className={`${baseClass}__detail-item `}>
+                  <Icon icon='ph-calculator' size='md' className={`${baseClass}__detail-icon`} />
+                  <div className={`${baseClass}__detail-text`}>
+                    <p className={`${baseClass}__detail-label`}>Número de Créditos</p>
+                    {/* Versión dinámica (comentada hasta que data-puj-credits esté disponible) */}
+                    {/* <p className={`${baseClass}__detail-value`} data-puj-attribute='data-puj-credits'>
+      Cargando numero de creditos...
+    </p> */}
+                    {/* Versión manual (temporal) */}
+                    <p className={`${baseClass}__detail-value`}>38 créditos</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Fechas de inscripción */}
               <div className='program-dates-container'>
                 <div className='program-dates program-dates--dates'>
                   <div className='program-dates_icon'>
@@ -163,26 +169,25 @@ const Maestria = () => {
                           Cargando fechas...
                         </Paragraph>
                       </div>
+                      <Btn
+                        id={`${elementName}-enrollment-link-1`}
+                        className='mastership-banner_enrollment-link mt-6'
+                        href='https://www.javeriana.edu.co/info-prg/proceso_de_inscripcion'
+                        target='_blank'
+                        variant='flat'
+                        startIcon={<i className='ph ph-hand-pointing'></i>}
+                        size='sm'>
+                        Conoce el proceso de inscripción
+                      </Btn>
                     </div>
                   </div>
                 </div>
-
-                <Btn
-                  id={`${elementName}-enrollment-link-1`}
-                  className='mastership-banner_enrollment-link mt-6'
-                  href='https://www.javeriana.edu.co/info-prg/proceso_de_inscripcion'
-                  target='_blank'
-                  variant='flat'
-                  startIcon={<i className='ph ph-hand-pointing'></i>}
-                  size='sm'>
-                  Conoce el proceso de inscripción
-                </Btn>
               </div>
             </div>
           </div>
         </div>
 
-        {/* === INFORMACIÓN LEGAL === */}
+        {/* Información legal */}
         <div className={`${baseClass}_enrollment`}>
           <div className={`${baseClass}_enrollment-note-container`}>
             <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
@@ -194,6 +199,37 @@ const Maestria = () => {
           </div>
         </div>
       </Container>
+
+      {/* Modal de Horarios */}
+      <div id='modal-horarios-doctorado' className='program-detail-modal'>
+        <div className='program-detail-modal__content'>
+          <div className='program-detail-modal__header'>
+            <h3 className='program-detail-modal__title'>Horarios</h3>
+            <button className='program-detail-modal__close' aria-label='Cerrar modal'>
+              <i className='ph ph-x'></i>
+            </button>
+          </div>
+          <div className='program-detail-modal__body'>
+            <div className='program-data__modal-content'>
+              <p>
+                <strong>Jornada de atención:</strong>
+              </p>
+              <ul>
+                <li>
+                  <strong>Lunes a viernes:</strong> 7:00 a.m. a 11:00 a.m.
+                </li>
+                <li>
+                  <strong>Sábados:</strong> 8:00 a.m. a 12:00 p.m. (solo con cita previa)
+                </li>
+              </ul>
+              <p>
+                Si necesitas atención en un horario diferente, por favor comunícate con nosotros con antelación para agendar una cita
+                personalizada.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }

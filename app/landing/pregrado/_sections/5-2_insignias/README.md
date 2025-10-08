@@ -51,7 +51,6 @@ npm install swiper
 
 ```jsx
 import InsigniasSwiper from './_sections/5-2_insignias'
-
 ;<InsigniasSwiper />
 ```
 
@@ -60,7 +59,6 @@ import InsigniasSwiper from './_sections/5-2_insignias'
 ```jsx
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 import InsigniasSwiper from './_sections/5-2_insignias'
-
 ;<ViewComponent path='/landing/pregrado/_sections/5-2_insignias'>
   <InsigniasSwiper />
 </ViewComponent>

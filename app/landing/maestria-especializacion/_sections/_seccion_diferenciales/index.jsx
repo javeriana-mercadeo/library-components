@@ -1,14 +1,21 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Container, Title, Paragraph, Caption } from '@library/components'
+import script from './script.js'
 import info from './info.json'
 import './styles.scss'
 
-const PorQueEstudiar = () => {
-  const elementName = info.id || 'porque-estudiar'
-  const baseClass = 'why-study'
+const Diferenciales = () => {
+  const elementName = info.id || 'diferenciales'
+  const baseClass = 'differentials'
 
-  const reasons = [
+  // Inicializar script cuando el componente se monta
+  useEffect(() => {
+    script()
+  }, [])
+
+  const differentials = [
     {
       id: 'different-approaches',
       icon: 'ph-brain',
@@ -66,12 +73,7 @@ const PorQueEstudiar = () => {
   return (
     <div className={baseClass}>
       <Container id={elementName} className={`${baseClass}_container`}>
-        {/* Título */}
-        <Title hierarchy='h2' className={`${baseClass}_title`} id={`${elementName}-title`}>
-          ¿Por qué estudiar la Maestría en Psicología Clínica en la Javeriana?
-        </Title>
-
-        {/* Video Container */}
+        {/* Contenedor de video */}
         <div className={`${baseClass}_media`}>
           <div
             className={`${baseClass}_video-container`}
@@ -82,27 +84,35 @@ const PorQueEstudiar = () => {
             data-image-fallback='https://www.javeriana.edu.co/recursosdb/d/info-prg/img-20200414-wa0023?imagePreview=1'></div>
         </div>
 
-        {/* Lista de razones */}
-        <div className={`${baseClass}_reasons`}>
-          {reasons.map(reason => (
-            <div key={reason.id} className={`${baseClass}_reason-item`} id={`${elementName}-${reason.id}`}>
-              <div className={`${baseClass}_reason-icon`}>
-                <i className={`ph ${reason.icon}`}></i>
+        {/* Contenedor de contenido con scroll (título + lista) */}
+        <div className={`${baseClass}_content`}>
+          {/* Título principal */}
+          <Title hierarchy='h2' className={`${baseClass}_title`} id={`${elementName}-title`}>
+            ¿Por qué estudiar la Maestría en Psicología Clínica en la Javeriana?
+          </Title>
+
+          {/* Lista de diferenciales */}
+          <div className={`${baseClass}_list`}>
+            {differentials.map((item, index) => (
+              <div key={item.id} className={`${baseClass}_item`} id={`${elementName}-${item.id}`}>
+                <div className={`${baseClass}_item-icon`}>
+                  <i className={`ph ${item.icon}`}></i>
+                </div>
+                <div className={`${baseClass}_item-content`}>
+                  <Caption className={`${baseClass}_item-title`} size='lg' bold={true} isEditable={false}>
+                    {item.title}
+                  </Caption>
+                  <Paragraph className={`${baseClass}_item-description`} size='md' isEditable={false}>
+                    {item.description}
+                  </Paragraph>
+                </div>
               </div>
-              <div className={`${baseClass}_reason-content`}>
-                <Caption className={`${baseClass}_reason-title`} size='md' bold={true} isEditable={false}>
-                  {reason.title}
-                </Caption>
-                <Paragraph className={`${baseClass}_reason-description`} size='sm' isEditable={false}>
-                  {reason.description}
-                </Paragraph>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </Container>
     </div>
   )
 }
 
-export default PorQueEstudiar
+export default Diferenciales
