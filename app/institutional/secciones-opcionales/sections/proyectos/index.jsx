@@ -38,7 +38,6 @@ const Proyectos = () => {
     }
   ]
 
-
   return (
     <section className='hero-carousel' id='carousel-section' data-slides-count={slides.length}>
       <div>
@@ -46,21 +45,18 @@ const Proyectos = () => {
       </div>
       <Container className='main-container'>
         <div>
-          <div
-            className="carousel-container swiper"
-            id="carousel-container"
-            data-slides-count={slides.length}>
-            <div className="swiper-wrapper" id="slides-wrapper">
+          <div className='carousel-container swiper' id='carousel-container' data-slides-count={slides.length}>
+            <div className='swiper-wrapper' id='slides-wrapper'>
               {slides.map((slide, index) => (
                 <div
                   key={index}
-                  className="carousel-slide swiper-slide"
+                  className='carousel-slide swiper-slide'
                   data-slide-index={index}
                   data-slide-type={slide.slideData?.type || 'default'}>
-                  <div className="slide-image" style={{ backgroundImage: `url(${slide.image})` }}>
-                    <div className="slide-content">
-                      <h2 className="slide-title">{slide.title}</h2>
-                      <Paragraph className="description">{slide.description}</Paragraph>
+                  <div className='slide-image' style={{ backgroundImage: `url(${slide.image})` }}>
+                    <div className='slide-content'>
+                      <h2 className='slide-title'>{slide.title}</h2>
+                      <Paragraph className='description'>{slide.description}</Paragraph>
                     </div>
                   </div>
                 </div>
@@ -433,4 +429,5 @@ export default Proyectos
 
     </div>
 
-</section> */}
+</section> */
+}

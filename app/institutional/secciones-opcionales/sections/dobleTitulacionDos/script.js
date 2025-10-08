@@ -244,9 +244,9 @@
 // Exporta una función que inicializa el scroll logic
 const initScrollLogic = () => {
   if (typeof window !== 'undefined' && window.dobleTitulacionScroll) {
-    return window.dobleTitulacionScroll.initialize();
+    return window.dobleTitulacionScroll.initialize()
   }
-  return Promise.resolve(false);
-};
+  return Promise.resolve(false)
+}
 
-export default initScrollLogic;
+export default initScrollLogic

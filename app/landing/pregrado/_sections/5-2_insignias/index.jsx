@@ -73,8 +73,7 @@ const InsigniasSwiper = () => {
           className='insignias__title'
           size='lg'
           weight='bold'
-          aria-label='Reconocimientos académicos de la Universidad Javeriana'
-        >
+          aria-label='Reconocimientos académicos de la Universidad Javeriana'>
           Reconocimientos Académicos
         </Title>
 

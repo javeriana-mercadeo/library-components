@@ -2,7 +2,8 @@
 
 ## 🎯 Descripción
 
-Carrusel infinito de reconocimientos académicos implementado con **Swiper.js**, la librería más robusta y completa para carruseles. **100% compatible con Liferay DXP** y con todas las funcionalidades que necesitas out-of-the-box.
+Carrusel infinito de reconocimientos académicos implementado con **Swiper.js**, la librería más robusta y completa para carruseles. **100%
+compatible con Liferay DXP** y con todas las funcionalidades que necesitas out-of-the-box.
 
 ## ✨ Características Principales
 
@@ -51,7 +52,7 @@ npm install swiper
 ```jsx
 import InsigniasSwiper from './_sections/5-2_insignias'
 
-<InsigniasSwiper />
+;<InsigniasSwiper />
 ```
 
 ### 3. Con ViewComponent
@@ -60,7 +61,7 @@ import InsigniasSwiper from './_sections/5-2_insignias'
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 import InsigniasSwiper from './_sections/5-2_insignias'
 
-<ViewComponent path="/landing/pregrado/_sections/5-2_insignias">
+;<ViewComponent path='/landing/pregrado/_sections/5-2_insignias'>
   <InsigniasSwiper />
 </ViewComponent>
 ```
@@ -114,8 +115,8 @@ En [script.js](script.js:24-25):
 
 ```javascript
 const CONFIG = {
-  autoplayDelay: 1,      // 1ms = continuo
-  speed: 5000,           // 5s de transición (ajustar aquí)
+  autoplayDelay: 1, // 1ms = continuo
+  speed: 5000, // 5s de transición (ajustar aquí)
   spaceBetween: 30
 }
 ```
@@ -123,7 +124,7 @@ const CONFIG = {
 ### Cambiar Espaciado
 
 ```javascript
-spaceBetween: 30  // En píxeles
+spaceBetween: 30 // En píxeles
 ```
 
 ### Responsive Breakpoints
@@ -140,17 +141,17 @@ breakpoints: {
 
 ## 🎯 Ventajas vs Versiones Anteriores
 
-| Aspecto | v1.0 (5_insignias) | v2.0 (5-1_insignias) | v3.0 (5-2_insignias) ✅ |
-|---------|-------------------|----------------------|------------------------|
-| **Drag-to-scroll** | ❌ No | ⚠️ Custom buggy | ✅ Nativo Swiper |
-| **Loop infinito** | ⚠️ 3 grupos JSX | ⚠️ 3 grupos JSX | ✅ Swiper nativo |
-| **Inercia** | ❌ No | ⚠️ Custom buggy | ✅ FreeMode incluido |
-| **Código total** | ~300 líneas | ~500 líneas | ✅ ~200 líneas |
-| **Mantenibilidad** | Media | Baja | ✅ Alta |
-| **Bugs conocidos** | - | Fades, drag | ✅ Ninguno |
-| **Touch gestures** | ❌ No | ⚠️ Custom | ✅ Optimizado |
-| **Pausa en hover** | CSS | CSS + JS | ✅ Config Swiper |
-| **Compatibilidad** | ✅ Liferay | ✅ Liferay | ✅ Liferay |
+| Aspecto            | v1.0 (5_insignias) | v2.0 (5-1_insignias) | v3.0 (5-2_insignias) ✅ |
+| ------------------ | ------------------ | -------------------- | ----------------------- |
+| **Drag-to-scroll** | ❌ No              | ⚠️ Custom buggy      | ✅ Nativo Swiper        |
+| **Loop infinito**  | ⚠️ 3 grupos JSX    | ⚠️ 3 grupos JSX      | ✅ Swiper nativo        |
+| **Inercia**        | ❌ No              | ⚠️ Custom buggy      | ✅ FreeMode incluido    |
+| **Código total**   | ~300 líneas        | ~500 líneas          | ✅ ~200 líneas          |
+| **Mantenibilidad** | Media              | Baja                 | ✅ Alta                 |
+| **Bugs conocidos** | -                  | Fades, drag          | ✅ Ninguno              |
+| **Touch gestures** | ❌ No              | ⚠️ Custom            | ✅ Optimizado           |
+| **Pausa en hover** | CSS                | CSS + JS             | ✅ Config Swiper        |
+| **Compatibilidad** | ✅ Liferay         | ✅ Liferay           | ✅ Liferay              |
 
 ## 🚀 Funcionalidades Implementadas
 
@@ -217,14 +218,14 @@ $slide-width-mobile: rem(160px);
 ```scss
 .swiper-slide:hover .slide-content__image {
   filter: grayscale(0%) brightness(1.1);
-  transform: scale(1.05);  // Ajustar zoom
+  transform: scale(1.05); // Ajustar zoom
 }
 ```
 
 ### Ajustar Fades Laterales
 
 ```scss
-$fade-width: rem(100px);  // Ancho del degradado
+$fade-width: rem(100px); // Ancho del degradado
 ```
 
 ## 🔍 Comparación de Arquitectura
@@ -240,6 +241,7 @@ $fade-width: rem(100px);  // Ancho del degradado
 ```
 
 **Problemas:**
+
 - Transform vs scroll conflict
 - Fades se mueven con scroll
 - Sincronización compleja
@@ -253,6 +255,7 @@ $fade-width: rem(100px);  // Ancho del degradado
 ```
 
 **Ventajas:**
+
 - Loop nativo sin duplicar
 - Drag robusto integrado
 - Fades siempre fijos
@@ -260,16 +263,16 @@ $fade-width: rem(100px);  // Ancho del degradado
 
 ## 📊 Métricas
 
-| Métrica | Valor |
-|---------|-------|
-| **Versión** | 3.0.0 |
-| **Librería** | Swiper.js 11.x |
-| **Líneas de JSX** | ~100 |
-| **Líneas de SCSS** | ~280 |
-| **Líneas de JS** | ~160 |
+| Métrica                | Valor             |
+| ---------------------- | ----------------- |
+| **Versión**            | 3.0.0             |
+| **Librería**           | Swiper.js 11.x    |
+| **Líneas de JSX**      | ~100              |
+| **Líneas de SCSS**     | ~280              |
+| **Líneas de JS**       | ~160              |
 | **Items renderizados** | 6 (no duplicados) |
-| **Código reducido** | -60% vs v2.0 |
-| **Compatible Liferay** | ✅ 100% |
+| **Código reducido**    | -60% vs v2.0      |
+| **Compatible Liferay** | ✅ 100%           |
 
 ## ♿ Accesibilidad
 
@@ -340,10 +343,8 @@ autoplay: prefersReducedMotion ? false : { ... }
 
 ## 👥 Créditos
 
-**Desarrollado por**: Pontificia Universidad Javeriana
-**Librería**: [Swiper.js](https://swiperjs.com/)
-**Fecha**: Enero 2025
-**Versión**: 3.0.0
+**Desarrollado por**: Pontificia Universidad Javeriana **Librería**: [Swiper.js](https://swiperjs.com/) **Fecha**: Enero 2025 **Versión**:
+3.0.0
 
 ---
 

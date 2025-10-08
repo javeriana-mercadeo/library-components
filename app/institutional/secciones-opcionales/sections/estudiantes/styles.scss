@@ -418,8 +418,7 @@
   }
   .ph.ph-arrow-circle-left:before {
     font-weight: 100;
-}
-
+  }
 }
 
 // Desktop - 992px
@@ -477,7 +476,7 @@
   }
   .student-info h3 {
     font-size: var(--font-size-paragraph);
-		margin-bottom:0.2rem;
+    margin-bottom: 0.2rem;
   }
   .student-info p {
     font-size: var(--font-size-small);
@@ -530,7 +529,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-		margin-bottom: 0.3rem;
+    margin-bottom: 0.3rem;
   }
   .student-info p {
     font-size: var(--font-size-paragraph);
