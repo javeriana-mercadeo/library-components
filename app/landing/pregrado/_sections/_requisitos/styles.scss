@@ -437,6 +437,20 @@ $req-progress-animation-duration: 0.8s;
     align-items: center;
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
+
+    // Centrar horizontalmente en móvil
+    @media (max-width: 767px) {
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    // Desktop: comportamiento normal (alineado a la izquierda)
+    @media (min-width: 768px) {
+      width: auto;
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
 
   &_panel-icon {
@@ -472,7 +486,8 @@ $req-progress-animation-duration: 0.8s;
   }
 
   &_panel-title {
-    flex: 1;
+    // Permitir que el título ocupe solo su espacio natural
+    flex: 0 1 auto;
   }
 
   &_panel-main-title {
