@@ -1,3 +1,5 @@
+@use '@styles/autoload' as *;
+
 .container .hero-carousel {
   display: flex;
   flex-direction: column;

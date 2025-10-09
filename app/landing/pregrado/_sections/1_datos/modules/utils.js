@@ -62,11 +62,6 @@ class ModuleEventManager {
   }
 }
 
-// Usar funciones de timing globales directamente
-const debounce = TimingUtils.debounce
-const throttle = TimingUtils.throttle
-const wait = TimingUtils.sleep
-
 /**
  * Generar hash simple para identificadores únicos
  */

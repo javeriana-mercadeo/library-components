@@ -5,8 +5,10 @@ import dynamic from 'next/dynamic'
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 import { Load } from '@/components/utils'
 
+import Datos from './_sections/1_datos'
+
 const Header = dynamic(() => import('@library/components/header'), { ssr: false, loading: () => <Load /> })
-const Datos = dynamic(() => import('./_sections/1_datos'), { ssr: false, loading: () => <Load /> })
+
 const DobleDatos = dynamic(() => import('./_sections/1-1_dobleDatos'), { ssr: false, loading: () => <Load /> })
 const PlanEstudio = dynamic(() => import('./_sections/2_planEstudio'), { ssr: false, loading: () => <Load /> })
 const DoblePlanEstudio = dynamic(() => import('./_sections/2-1_doblePlanEstudio'), { ssr: false, loading: () => <Load /> })

@@ -1,6 +1,9 @@
 @use '@styles/autoload' as *;
 @use './components/infoItem.scss' as *;
 
+// ============================================
+// COMPONENTE PRINCIPAL
+// ============================================
 #video-doctorado,
 .video-doctorado {
   position: relative;
@@ -13,12 +16,15 @@
     background-color: var(--background-200);
   }
 
+  // ============================================
+  // BACKGROUND (contiene video y overlay)
+  // ============================================
   &__background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 60%;
+    height: 70%;
     z-index: 1;
 
     @include responsive {
@@ -31,28 +37,18 @@
     }
   }
 
-  &__background-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: transparent !important;
-    border: none !important;
-    outline: none !important;
-    display: block !important;
-    padding: 0 !important;
-    margin: 0 !important;
-
-    &:hover {
-      background: transparent !important;
-    }
-  }
-
+  // ============================================
+  // MEDIA (contenedor de video)
+  // ============================================
   &__media {
     position: relative;
     width: 100%;
     height: 100%;
   }
 
+  // ============================================
+  // VIDEO CONTAINER
+  // ============================================
   &__video-container {
     position: absolute;
     top: 0;
@@ -69,49 +65,9 @@
     }
   }
 
-  &__video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    transition: opacity 0.4s ease-out;
-    z-index: 1;
-
-    &--fade-out {
-      opacity: 0 !important;
-    }
-  }
-
-  &__video-placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f5f5f5;
-    color: #666;
-
-    .placeholder-content {
-      text-align: center;
-
-      i {
-        display: block;
-        margin-bottom: rem(10px);
-      }
-
-      span {
-        display: block;
-      }
-    }
-  }
-
+  // ============================================
+  // OVERLAY (capa oscura sobre el video)
+  // ============================================
   &__overlay {
     position: absolute;
     top: 0;
@@ -122,6 +78,9 @@
     z-index: 2;
   }
 
+  // ============================================
+  // CONTAINER (contenedor principal de contenido)
+  // ============================================
   &__container {
     position: relative;
     z-index: 3;
@@ -130,12 +89,18 @@
     padding: 0;
   }
 
+  // ============================================
+  // CONTENT (wrapper de contenido)
+  // ============================================
   &__content {
     color: var(--neutral);
     display: flex;
     flex-direction: column;
   }
 
+  // ============================================
+  // HEADER (título y descripción)
+  // ============================================
   &__header {
     position: relative;
     text-align: left;
@@ -153,6 +118,9 @@
     }
   }
 
+  // ============================================
+  // TITLE
+  // ============================================
   &__title {
     font-size: var(--font-size-subtitle);
     font-weight: var(--font-weight-bold);
@@ -169,6 +137,9 @@
     }
   }
 
+  // ============================================
+  // DESCRIPTION
+  // ============================================
   &__description {
     font-size: var(--font-size-caption);
     line-height: var(--line-height-base);
@@ -180,6 +151,9 @@
       0 rem(1px) rem(2px) rgba(0, 0, 0, 0.7);
   }
 
+  // ============================================
+  // INFO (tarjeta con datos del programa)
+  // ============================================
   &__info {
     background-color: var(--primary);
     backdrop-filter: none;
@@ -201,11 +175,15 @@
       order: 1;
     }
 
+    // Botón de inscripción dentro de info
     .enrollment-button {
       margin: 0;
     }
   }
 
+  // ============================================
+  // INFO GRID (grid de items de información)
+  // ============================================
   &__info-grid {
     display: grid;
     gap: var(--spacing-sm);
@@ -215,7 +193,6 @@
     @include responsive {
       grid-template-columns: repeat(2, 1fr);
       gap: var(--spacing-lg);
-      margin-bottom: var(--spacing-md);
     }
 
     @include responsive($breakpoint-lg) {
@@ -226,6 +203,7 @@
       grid-template-columns: repeat(6, 1fr);
     }
 
+    // Animación de los info-items
     .info-item {
       opacity: 0;
       transform: translateY(rem(30px));
@@ -239,8 +217,12 @@
     }
   }
 
+  // Incluir estilos de info-item
   @include info-item;
 
+  // ============================================
+  // MEDIA PRINT (estilos para impresión)
+  // ============================================
   @media print {
     &__background {
       display: none;
@@ -253,6 +235,7 @@
     &__title,
     &__description {
       color: #000;
+      text-shadow: none;
     }
 
     &__info {
@@ -268,18 +251,29 @@
   }
 }
 
+// ============================================
+// ENROLLMENT NOTE CONTAINER
+// ============================================
 .program-data_enrollment-note-container {
+  color: var(--neutral, #fff);
   display: block;
   line-height: 1.2;
   margin-top: rem(20px);
   padding-top: rem(20px);
   border-top: rem(1px) solid rgba(255, 255, 255, 0.2);
 
+  .paragraph {
+    color: var(--neutral, #fff);
+  }
+
   @include responsive {
     text-align: center;
   }
 }
 
+// ============================================
+// ENROLLMENT NOTE (texto legal/SNIES)
+// ============================================
 .program-data_enrollment-note {
   font-size: var(--font-size-small);
   opacity: 0.8;
@@ -292,6 +286,9 @@
   }
 }
 
+// ============================================
+// MODAL (modal de detalles del programa)
+// ============================================
 .program-detail-modal {
   position: fixed;
   top: 0;
@@ -372,6 +369,9 @@
   }
 }
 
+// ============================================
+// MODAL CONTENT (contenido dentro del modal)
+// ============================================
 .program-data__modal-content {
   font-size: var(--font-size-paragraph);
   line-height: 1.6;
@@ -410,41 +410,9 @@
   }
 }
 
-.video-loading {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  color: var(--neutral);
-  z-index: 10;
-
-  p {
-    margin-top: rem(15px);
-    font-size: var(--font-size-paragraph);
-  }
-}
-
-.video-loading-spinner {
-  width: rem(40px);
-  height: rem(40px);
-  border: rem(4px) solid rgba(255, 255, 255, 0.3);
-  border-top-color: var(--neutral);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
+// ============================================
+// KEYFRAMES (animaciones)
+// ============================================
 @keyframes slideInUp {
   0% {
     opacity: 0;
@@ -453,16 +421,5 @@
   100% {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-.container {
-  width: 100%;
-  max-width: rem(1200px);
-  margin: 0 auto;
-  padding: 0 rem(20px);
-
-  @include responsive {
-    padding: 0 rem(40px);
   }
 }

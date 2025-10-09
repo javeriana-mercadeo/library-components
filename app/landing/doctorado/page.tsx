@@ -1,23 +1,17 @@
 'use client'
 
-import dynamic from 'next/dynamic'
+import Header from '@library/components/header'
+
+import Proyectos from '../../institutional/secciones-opcionales/sections/proyectos'
+
+import Video from './_sections/video'
+import DocentesDoctorado from './_sections/docentesDoctorado'
+import QueAprenderas from './_sections/queAprenderas'
+import Investigaciones from './_sections/investigaciones'
+import RedesSociales from './_sections/redesSociales'
+import Snies from './_sections/Snies'
 
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
-import Load from '@/components/utils/Load'
-
-// Lazy load heavy sections with client-side loading
-
-const Header = dynamic(() => import('@library/components/header'), { ssr: false, loading: () => <Load /> })
-const Video = dynamic(() => import('./sections/1_video'), { ssr: false, loading: () => <Load /> })
-const Proyectos = dynamic(() => import('../../institutional/secciones-opcionales/sections/proyectos'), {
-  ssr: false,
-  loading: () => <Load />
-})
-const DocentesDoctorado = dynamic(() => import('./sections/docentesDoctorado'), { ssr: false, loading: () => <Load /> })
-const QueAprenderas = dynamic(() => import('./sections/queAprenderas'), { ssr: false, loading: () => <Load /> })
-const Investigaciones = dynamic(() => import('./sections/investigaciones'), { ssr: false, loading: () => <Load /> })
-const RedesSociales = dynamic(() => import('./sections/redesSociales'), { ssr: false, loading: () => <Load /> })
-const Snies = dynamic(() => import('./sections/Snies'), { ssr: false, loading: () => <Load /> })
 
 export default function Doctorado() {
   const basePath = '/landing/doctorado'
@@ -30,10 +24,10 @@ export default function Doctorado() {
         <Header />
       </ViewComponent> */}
 
-      {/* <Video /> */}
-      <ViewComponent path={`${basePath}/sections/1_video`}>
+      <Video />
+      {/* <ViewComponent path={`${basePath}/sections/video`}>
         <Video />
-      </ViewComponent>
+      </ViewComponent> */}
 
       <Proyectos />
       {/* <ViewComponent path={`${optionalPath}/sections/proyectos`}>

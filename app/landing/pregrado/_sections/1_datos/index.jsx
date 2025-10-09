@@ -1,21 +1,12 @@
-'use client'
-
-import { useEffect } from 'react'
 import { Container, Caption, Title, Paragraph, Button as Btn } from '@library/components'
 import ProgramDetail from './components/ProgramDetail.jsx'
-
-import script from './script.js'
 import info from './info.json'
+import './script.js'
 import './styles.scss'
 
 const DatosProgramaVideo = () => {
   const elementName = info.id || 'datos-programa-video'
   const baseClass = 'program-data'
-
-  // Inicializar script cuando el componente se monta
-  useEffect(() => {
-    script()
-  }, [])
 
   // Configuración de todos los detalles del programa
   const details = [

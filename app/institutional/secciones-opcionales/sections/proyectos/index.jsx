@@ -1,4 +1,6 @@
 import './styles.scss'
+import { Paragraph } from '@library/components'
+import DetalleProyecto from './components/detalleProyecto'
 
 const Proyectos = () => {
   // El script IIFE se auto-inicializa cuando se carga
@@ -67,7 +69,7 @@ const Proyectos = () => {
             </div>
 
             <div className='carousel-indicators' id='carousel-indicators'>
-              {SLIDES_DATA.map((_, index) => (
+              {slides.map((_, index) => (
                 <button
                   key={index}
                   className={`indicator ${index === 0 ? 'active' : ''}`}

@@ -1,19 +1,14 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Container, Title, Paragraph } from '@library/components'
 import InfoItem from './components/InfoItem'
-import script from './script.js'
 import info from './info.json'
+import './script.js'
 import './styles.scss'
 
 const Video = () => {
   const elementName = info.id || 'video-doctorado'
-
-  // Inicializar script cuando el componente se monta
-  useEffect(() => {
-    script()
-  }, [])
 
   // Configuración de items del programa
   const programItems = [
