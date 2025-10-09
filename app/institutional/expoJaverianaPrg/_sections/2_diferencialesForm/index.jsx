@@ -40,7 +40,10 @@ const DiferencialesForm = () => {
             <div className={`${baseClass}__reasons-grid`}>
               {/* Fila 1 */}
               <div className={`${baseClass}__reason-item`}>
-                <div className={`${baseClass}__reason-icon`}>
+                <div
+                  className={`${baseClass}__reason-icon`}
+                  data-lfr-editable-id='diferenciales-reason-1-icon'
+                  data-lfr-editable-type='html'>
                   <i className='ph ph-graduation-cap'></i>
                 </div>
                 <div
@@ -54,7 +57,10 @@ const DiferencialesForm = () => {
 
               {/* Fila 2 */}
               <div className={`${baseClass}__reason-item`}>
-                <div className={`${baseClass}__reason-icon`}>
+                <div
+                  className={`${baseClass}__reason-icon`}
+                  data-lfr-editable-id='diferenciales-reason-2-icon'
+                  data-lfr-editable-type='html'>
                   <i className='ph ph-users-three'></i>
                 </div>
                 <div
@@ -67,7 +73,10 @@ const DiferencialesForm = () => {
 
               {/* Fila 3 */}
               <div className={`${baseClass}__reason-item`}>
-                <div className={`${baseClass}__reason-icon`}>
+                <div
+                  className={`${baseClass}__reason-icon`}
+                  data-lfr-editable-id='diferenciales-reason-3-icon'
+                  data-lfr-editable-type='html'>
                   <i className='ph ph-globe-hemisphere-west'></i>
                 </div>
                 <div
@@ -81,7 +90,10 @@ const DiferencialesForm = () => {
 
               {/* Fila 4 */}
               <div className={`${baseClass}__reason-item`}>
-                <div className={`${baseClass}__reason-icon`}>
+                <div
+                  className={`${baseClass}__reason-icon`}
+                  data-lfr-editable-id='diferenciales-reason-4-icon'
+                  data-lfr-editable-type='html'>
                   <i className='ph ph-gear-six'></i>
                 </div>
                 <div
@@ -95,7 +107,10 @@ const DiferencialesForm = () => {
 
               {/* Fila 5 */}
               <div className={`${baseClass}__reason-item`}>
-                <div className={`${baseClass}__reason-icon`}>
+                <div
+                  className={`${baseClass}__reason-icon`}
+                  data-lfr-editable-id='diferenciales-reason-5-icon'
+                  data-lfr-editable-type='html'>
                   <i className='ph ph-handshake'></i>
                 </div>
                 <div
@@ -109,7 +124,10 @@ const DiferencialesForm = () => {
 
               {/* Fila 6 */}
               <div className={`${baseClass}__reason-item`}>
-                <div className={`${baseClass}__reason-icon`}>
+                <div
+                  className={`${baseClass}__reason-icon`}
+                  data-lfr-editable-id='diferenciales-reason-6-icon'
+                  data-lfr-editable-type='html'>
                   <i className='ph ph-tree'></i>
                 </div>
                 <div
