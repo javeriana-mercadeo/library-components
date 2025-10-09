@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 
+import Container from '@/app/_library/components/container'
 import Btn from '@/app/_library/components/contain/btn'
 import script from './script.js'
 import info from './info.json'
@@ -18,7 +19,7 @@ const DiferencialesForm = () => {
 
   return (
     <div className={baseClass} id={elementName}>
-      <div className={`${baseClass}__container`}>
+      <Container className={`${baseClass}__container`}>
         {/* Columna Izquierda - Contenido de texto */}
         <div className={`${baseClass}__left`}>
           <div className={`${baseClass}__content`}>
@@ -134,7 +135,7 @@ const DiferencialesForm = () => {
         <div className={`${baseClass}__right`}>
           <lfr-drop-zone id='drop-zone'></lfr-drop-zone>
         </div>
-      </div>
+      </Container>
     </div>
   )
 }

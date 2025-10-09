@@ -10,29 +10,27 @@
 
   position: relative;
   width: 100%;
-  padding: var(--spacing-4xl) var(--spacing-xl);
+  padding: var(--spacing-4xl) 0;
   padding-bottom: calc(var(--spacing-4xl) + 100px);
   background-color: var(--neutral-1100);
 
   // Tablet y móvil: padding reducido
   @media (max-width: $breakpoint-md - 1px) {
-    padding: var(--spacing-3xl) var(--spacing-lg);
+    padding: var(--spacing-3xl) 0;
     padding-bottom: calc(var(--spacing-3xl) + 100px);
   }
 
   // Móviles pequeños: padding aún más compacto
   @media (max-width: $breakpoint-sm - 1px) {
-    padding: var(--spacing-2xl) var(--spacing-md);
+    padding: var(--spacing-2xl) 0;
     padding-bottom: calc(var(--spacing-2xl) + 80px);
   }
 
-  // Contenedor de 2 columnas
+  // Contenedor de 2 columnas (el componente Container ya aplica max-width, margin y padding)
   &__container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-3xl);
-    max-width: 1400px;
-    margin: 0 auto;
 
     // Tablet y móvil: stack vertical
     @media (max-width: $breakpoint-lg - 1px) {

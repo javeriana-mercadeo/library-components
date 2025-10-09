@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 
+import Container from '@/app/_library/components/container'
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'
@@ -18,7 +19,7 @@ const DatosExpo = () => {
   return (
     <div className={baseClass} id={elementName}>
       {/* Rectángulo Naranja Superior - Estadísticas */}
-      <div className={`${baseClass}__stats-container`}>
+      <Container className={`${baseClass}__stats-container`}>
         <div className={`${baseClass}__stats-box`}>
           <div className={`${baseClass}__stat-item`} data-lfr-editable-id='datos-stat-1' data-lfr-editable-type='text'>
             +21.000 estudiantes
@@ -30,14 +31,14 @@ const DatosExpo = () => {
             +45 programas
           </div>
         </div>
-      </div>
+      </Container>
 
       {/* Texto Azul Central */}
-      <div className={`${baseClass}__main-title-container`}>
+      <Container className={`${baseClass}__main-title-container`}>
         <h2 className={`${baseClass}__main-title`} data-lfr-editable-id='datos-main-title' data-lfr-editable-type='text'>
           Estudia en la Javeriana y vive una experiencia única
         </h2>
-      </div>
+      </Container>
 
       {/* Contenedor con Franja Naranja y Contenido Sobrepuesto */}
       <div className={`${baseClass}__bottom-section`}>
@@ -45,7 +46,7 @@ const DatosExpo = () => {
         <div className={`${baseClass}__orange-strip`}></div>
 
         {/* Contenedor de 2 Columnas (Sobrepuesto) */}
-        <div className={`${baseClass}__content-wrapper`}>
+        <Container className={`${baseClass}__content-wrapper`}>
           <div className={`${baseClass}__content-grid`}>
             {/* Columna Izquierda - Imagen */}
             <div className={`${baseClass}__image-column`}>
@@ -77,7 +78,7 @@ const DatosExpo = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </div>
     </div>
   )

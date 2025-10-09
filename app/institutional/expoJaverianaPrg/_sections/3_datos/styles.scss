@@ -13,15 +13,11 @@
   // ===========================================
   // SECCIÓN SUPERIOR - RECTÁNGULO NARANJA CON ESTADÍSTICAS
   // ===========================================
+  // Container ya aplica padding horizontal y centrado
   &__stats-container {
     display: flex;
     justify-content: center;
-    padding: 0 var(--spacing-xl);
     margin-bottom: var(--spacing-2xl);
-
-    @media (max-width: $breakpoint-sm - 1px) {
-      padding: 0;
-    }
   }
 
   &__stats-box {
@@ -72,10 +68,10 @@
   // ===========================================
   // TÍTULO AZUL CENTRAL
   // ===========================================
+  // Container ya aplica padding horizontal y centrado
   &__main-title-container {
     display: flex;
     justify-content: center;
-    padding: 0 var(--spacing-xl);
   }
 
   &__main-title {
@@ -143,14 +139,13 @@
   }
 
   // Contenedor de 2 Columnas (Sobrepuesto - 50% vertical offset)
+  // Container ya aplica max-width, padding y margin
   &__content-wrapper {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    max-width: 1400px;
-    padding: 0 var(--spacing-xl);
     z-index: 2;
 
     @media (max-width: $breakpoint-md - 1px) {
@@ -158,12 +153,12 @@
       top: auto;
       left: auto;
       transform: none;
-      padding: var(--spacing-2xl) var(--spacing-xl);
+      padding-top: var(--spacing-2xl);
+      padding-bottom: var(--spacing-2xl);
     }
 
     @media (max-width: $breakpoint-sm - 1px) {
       position: relative;
-      padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
