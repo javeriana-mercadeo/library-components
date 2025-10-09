@@ -15,7 +15,7 @@ const Diferenciales = dynamic(() => import('./_sections/4_diferenciales'), { ssr
 // Versión original con useEffect (deprecada - no compatible Liferay)
 // const Insignias = dynamic(() => import('./_sections/5_insignias'), { ssr: false, loading: () => <Load /> })
 // Versión 2.0 - 100% compatible con Liferay (sin hooks) - con bugs de drag
-// const Insignias = dynamic(() => import('./_sections/5-1_insignias'), { ssr: false, loading: () => <Load /> })
+const Insignias = dynamic(() => import('./_sections/5-1_insignias'), { ssr: false, loading: () => <Load /> })
 // Versión 3.0 - Con Swiper.js - Drag robusto y sin bugs
 const InsigniasSwiper = dynamic(() => import('./_sections/5-2_insignias'), { ssr: false, loading: () => <Load /> })
 const Docentes = dynamic(() => import('./_sections/6_docentes'), { ssr: false, loading: () => <Load /> })
@@ -67,6 +67,10 @@ export default function Profesional() {
       {/* <Diferenciales /> */}
       <ViewComponent path={`${basePath}/_sections/4_diferenciales`}>
         <Diferenciales />
+      </ViewComponent>
+
+      <ViewComponent path={`${basePath}/_sections/5-1_insignias`}>
+        <Insignias />
       </ViewComponent>
 
       {/* <InsigniasSwiper /> - Versión 3.0 con Swiper.js */}

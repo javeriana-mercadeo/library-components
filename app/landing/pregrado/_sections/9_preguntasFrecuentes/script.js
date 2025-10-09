@@ -256,7 +256,7 @@ const FAQAccordionSystem = {
 const RequirementsSystem = {
   config: {
     apiBaseUrl: 'https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals/getrequisitos',
-    containerSelector: '[data-puj-requirements]'
+    containerSelector: '[puj-data-requirements]'
   },
 
   async fetchRequirements(programCode) {
@@ -281,6 +281,8 @@ const RequirementsSystem = {
   },
 
   processRequirementsData(data) {
+    console.log('🔍 DEBUG: processRequirementsData - data recibida:', data)
+
     if (!Array.isArray(data) || data.length === 0) {
       return { categories: [], programInfo: null }
     }
@@ -292,10 +294,17 @@ const RequirementsSystem = {
       activityDescription: data[0].activityDescr
     }
 
+    console.log('🔍 DEBUG: programInfo:', programInfo)
+
     // Agrupar datos por categoría
     const categoriesMap = new Map()
 
     data.forEach(item => {
+      console.log('🔍 DEBUG: procesando item:', {
+        criterio: item.ujGrupoCriterios,
+        activityDescr: item.activityDescr
+      })
+
       const category = item.ujDescr100
       if (!categoriesMap.has(category)) {
         categoriesMap.set(category, {
@@ -305,19 +314,28 @@ const RequirementsSystem = {
         })
       }
 
-      categoriesMap.get(category).criteria.push({
+      const criterionObj = {
         name: item.ujGrupoCriterios,
         weight: item.descr,
-        maxScore: item.descr1
-      })
+        maxScore: item.descr1,
+        activityDescription: item.activityDescr
+      }
+
+      console.log('🔍 DEBUG: criterio agregado:', criterionObj)
+
+      categoriesMap.get(category).criteria.push(criterionObj)
     })
 
     const categories = Array.from(categoriesMap.values())
+
+    console.log('🔍 DEBUG: categories procesadas:', categories)
 
     return { categories, programInfo }
   },
 
   generateRequirementsHTML(processedData) {
+    console.log('🔍 DEBUG: generateRequirementsHTML - processedData:', processedData)
+
     const { categories, programInfo } = processedData
 
     if (!programInfo) {
@@ -345,13 +363,19 @@ const RequirementsSystem = {
       const totalMaxScore = category.criteria.reduce((sum, criterion) => sum + criterion.maxScore, 0)
 
       category.criteria.forEach((criterion, index) => {
+        console.log('🔍 DEBUG: generando HTML para criterio:', {
+          name: criterion.name,
+          activityDescription: criterion.activityDescription,
+          hasProperty: criterion.hasOwnProperty('activityDescription')
+        })
+
         html += `
             <tr>
               ${index === 0 ? `<td rowSpan="${criteriaCount}"><strong>${category.name}</strong></td>` : ''}
               <td>
                 <div class="requirements-table__criterio-interno">
                   <strong>${criterion.name}</strong>
-                  <small>${programInfo.activityDescription}</small>
+                  <small>${criterion.activityDescription}</small>
                 </div>
               </td>
               <td class="requirements-table__cell-center" style="display: none;">${criterion.maxScore}</td>

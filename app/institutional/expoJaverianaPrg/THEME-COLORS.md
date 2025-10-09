@@ -6,16 +6,16 @@ El tema `expo-javeriana` incluye 4 colores principales:
 
 ### **Colores Integrados al Sistema de Temas:**
 
-| Color | Hex | Uso | Variable Base |
-|-------|-----|-----|---------------|
-| **Azul Javeriana** | `#2c5697` | Color principal institucional | `--primary-*` |
-| **Amarillo/Dorado** | `#fbb900` | Color secundario, destacados | `--secondary-*` |
-| **Naranja** | `#e55110` | Acentos, llamadas a la acción | `--tertiary-*` |
+| Color               | Hex       | Uso                           | Variable Base   |
+| ------------------- | --------- | ----------------------------- | --------------- |
+| **Azul Javeriana**  | `#2c5697` | Color principal institucional | `--primary-*`   |
+| **Amarillo/Dorado** | `#fbb900` | Color secundario, destacados  | `--secondary-*` |
+| **Naranja**         | `#e55110` | Acentos, llamadas a la acción | `--tertiary-*`  |
 
 ### **Color Custom (No integrado):**
 
-| Color | Hex | Uso | Variable |
-|-------|-----|-----|----------|
+| Color             | Hex       | Uso                          | Variable             |
+| ----------------- | --------- | ---------------------------- | -------------------- |
 | **Morado Oscuro** | `#170557` | Fondos especiales, contraste | `--expo-purple-dark` |
 
 ---
@@ -27,7 +27,7 @@ El tema `expo-javeriana` incluye 4 colores principales:
 Para activar el tema en toda la página de Expo Javeriana, añade el atributo `data-theme-faculty` al HTML:
 
 ```html
-<html data-theme-base="light" data-theme-faculty="expo-javeriana">
+<html data-theme-base="light" data-theme-faculty="expo-javeriana"></html>
 ```
 
 O en el componente de layout:
@@ -52,7 +52,7 @@ export default function ExpoJaverianaLayout({ children }) {
 Si solo quieres aplicar el tema a una sección específica:
 
 ```jsx
-<div data-theme-faculty="expo-javeriana">
+<div data-theme-faculty='expo-javeriana'>
   <HeaderExpo />
   <DiferencialesForm />
 </div>
@@ -65,6 +65,7 @@ Si solo quieres aplicar el tema a una sección específica:
 Al activar el tema `expo-javeriana`, se generan automáticamente **33 variables CSS**:
 
 ### **Primary (Azul Javeriana - #2c5697)**
+
 ```css
 --primary-100  /* Muy claro (98% lightness) */
 --primary-200  /* Claro (95%) */
@@ -80,16 +81,19 @@ Al activar el tema `expo-javeriana`, se generan automáticamente **33 variables 
 ```
 
 ### **Secondary (Amarillo - #fbb900)**
+
 ```css
 --secondary-100 a --secondary-1100  /* 11 escalas */
 ```
 
 ### **Tertiary (Naranja - #e55110)**
+
 ```css
 --tertiary-100 a --tertiary-1100  /* 11 escalas */
 ```
 
 ### **Custom (Morado Oscuro)**
+
 ```css
 --expo-purple-dark  /* #170557 - Solo disponible dentro de .header-expo */
 ```
@@ -103,21 +107,21 @@ Al activar el tema `expo-javeriana`, se generan automáticamente **33 variables 
 ```scss
 .mi-seccion-expo {
   // Colores principales
-  background-color: var(--primary-500);      // Azul base
-  border-color: var(--secondary-500);        // Amarillo base
+  background-color: var(--primary-500); // Azul base
+  border-color: var(--secondary-500); // Amarillo base
 
   &__accent {
-    background-color: var(--tertiary-500);   // Naranja base
+    background-color: var(--tertiary-500); // Naranja base
   }
 
   // Variantes claras (para fondos)
   &__background {
-    background-color: var(--primary-100);    // Azul muy claro
+    background-color: var(--primary-100); // Azul muy claro
   }
 
   // Variantes oscuras (para textos)
   &__text {
-    color: var(--primary-900);               // Azul muy oscuro
+    color: var(--primary-900); // Azul muy oscuro
   }
 
   // Color custom
@@ -134,16 +138,14 @@ Al activar el tema `expo-javeriana`, se generan automáticamente **33 variables 
   style={{
     backgroundColor: 'var(--primary-500)',
     borderColor: 'var(--secondary-500)'
-  }}
->
-  <h2 style={{ color: 'var(--tertiary-700)' }}>
-    Título con naranja oscuro
-  </h2>
-
-  <button style={{
-    backgroundColor: 'var(--secondary-500)',
-    color: 'var(--primary-900)'
   }}>
+  <h2 style={{ color: 'var(--tertiary-700)' }}>Título con naranja oscuro</h2>
+
+  <button
+    style={{
+      backgroundColor: 'var(--secondary-500)',
+      color: 'var(--primary-900)'
+    }}>
     Botón
   </button>
 </div>
@@ -154,40 +156,43 @@ Al activar el tema `expo-javeriana`, se generan automáticamente **33 variables 
 ## 🎨 Ejemplos de Combinaciones
 
 ### **Combinación 1: Fondo claro con acento**
+
 ```scss
 .seccion {
-  background-color: var(--primary-100);      // Azul muy claro
+  background-color: var(--primary-100); // Azul muy claro
   border-left: 4px solid var(--tertiary-500); // Naranja
-  color: var(--primary-900);                 // Azul oscuro (texto)
+  color: var(--primary-900); // Azul oscuro (texto)
 }
 ```
 
 ### **Combinación 2: Botón llamativo**
+
 ```scss
 .boton-cta {
-  background-color: var(--secondary-500);    // Amarillo
-  color: var(--primary-900);                 // Azul oscuro
-  border: 2px solid var(--tertiary-500);     // Naranja
+  background-color: var(--secondary-500); // Amarillo
+  color: var(--primary-900); // Azul oscuro
+  border: 2px solid var(--tertiary-500); // Naranja
 
   &:hover {
-    background-color: var(--tertiary-500);   // Naranja
-    color: var(--neutral-1100);              // Blanco
+    background-color: var(--tertiary-500); // Naranja
+    color: var(--neutral-1100); // Blanco
   }
 }
 ```
 
 ### **Combinación 3: Card informativa**
+
 ```scss
 .info-card {
-  background-color: var(--neutral-1100);     // Blanco
-  border-top: 3px solid var(--primary-500);  // Azul
+  background-color: var(--neutral-1100); // Blanco
+  border-top: 3px solid var(--primary-500); // Azul
 
   &__icon {
-    color: var(--tertiary-500);              // Naranja
+    color: var(--tertiary-500); // Naranja
   }
 
   &__title {
-    color: var(--primary-700);               // Azul oscuro
+    color: var(--primary-700); // Azul oscuro
   }
 }
 ```
@@ -199,10 +204,11 @@ Al activar el tema `expo-javeriana`, se generan automáticamente **33 variables 
 El tema también funciona en modo oscuro automáticamente:
 
 ```html
-<html data-theme-base="dark" data-theme-faculty="expo-javeriana">
+<html data-theme-base="dark" data-theme-faculty="expo-javeriana"></html>
 ```
 
 En modo oscuro, **las escalas se invierten automáticamente**:
+
 - `--primary-100` se vuelve oscuro
 - `--primary-900` se vuelve claro
 
@@ -212,7 +218,8 @@ No necesitas escribir CSS adicional para dark mode.
 
 ## ⚠️ Notas Importantes
 
-1. **Color personalizado limitado**: `--expo-purple-dark` solo está disponible dentro del componente `.header-expo`. Si necesitas usarlo en otras secciones, debes definirlo también allí.
+1. **Color personalizado limitado**: `--expo-purple-dark` solo está disponible dentro del componente `.header-expo`. Si necesitas usarlo en
+   otras secciones, debes definirlo también allí.
 
 2. **Preferir escalas**: Usa siempre las escalas (`-100` a `-1100`) en lugar del color base sin número.
 

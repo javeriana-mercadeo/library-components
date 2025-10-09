@@ -112,11 +112,7 @@ const Video = () => {
                 Doctorado en Ciencias Sociales y Humanas
               </Title>
 
-              <Paragraph
-                className='video-doctorado__description'
-                size='lg'
-                data-puj-description='true'
-                id={`${elementName}-description`}>
+              <Paragraph className='video-doctorado__description' size='lg' data-puj-description='true' id={`${elementName}-description`}>
                 Comprende, analiza y explica los complejos problemas sociales y humanos en un contexto globalizado.
               </Paragraph>
             </div>
