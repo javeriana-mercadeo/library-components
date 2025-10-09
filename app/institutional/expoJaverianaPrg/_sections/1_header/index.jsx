@@ -24,6 +24,8 @@ const HeaderExpo = () => {
             src='https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-expo-javeriana-2026'
             alt='Logo Expo Javeriana 2026'
             className={`${baseClass}__logo`}
+            data-lfr-editable-id='header-expo-logo'
+            data-lfr-editable-type='image'
           />
         </div>
 

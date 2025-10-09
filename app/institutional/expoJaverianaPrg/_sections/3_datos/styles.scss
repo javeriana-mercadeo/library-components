@@ -31,17 +31,19 @@
     width: 100%;
     max-width: 1200px;
 
+    // Tablet y móvil: disposición vertical con breakout
     @media (max-width: $breakpoint-md - 1px) {
       flex-direction: column;
       gap: var(--spacing-xl);
       padding: var(--spacing-xl) var(--spacing-lg);
-    }
-
-    @media (max-width: $breakpoint-sm - 1px) {
       border-radius: 0 50px 50px 0;
       width: 100vw;
       max-width: none;
       margin-left: calc(-50vw + 50%);
+    }
+
+    // Móvil pequeño: padding reducido
+    @media (max-width: $breakpoint-sm - 1px) {
       padding: var(--spacing-xl) var(--spacing-md);
     }
   }
@@ -54,13 +56,15 @@
     line-height: 1.2;
     white-space: nowrap;
 
+    // Tablet y móvil: permitir wrap y reducir tamaño
     @media (max-width: $breakpoint-md - 1px) {
       font-size: var(--font-size-subtitle);
+      white-space: normal;
+      line-height: 1.2;
     }
 
+    // Móvil pequeño: line-height más compacto
     @media (max-width: $breakpoint-sm - 1px) {
-      font-size: var(--font-size-subtitle);
-      white-space: normal;
       line-height: 0.85;
     }
   }
@@ -99,20 +103,13 @@
     width: 100%;
     min-height: 400px;
 
-    @media (max-width: $breakpoint-lg - 1px) {
-      min-height: 500px;
-    }
-
-    @media (max-width: $breakpoint-md - 1px) {
-      min-height: auto;
-    }
-
-    @media (max-width: $breakpoint-sm - 1px) {
+    // Tablet y móvil: min-height suficiente para overlay
+    @media (max-width: $breakpoint-xl - 1px) {
       min-height: 600px;
     }
   }
 
-  // Franja Naranja de Fondo (60% de altura)
+  // Franja Naranja de Fondo
   &__orange-strip {
     position: absolute;
     bottom: 0;
@@ -122,16 +119,11 @@
     background-color: var(--tertiary);
     z-index: 1;
 
-    @media (max-width: $breakpoint-md - 1px) {
-      position: relative;
-      height: auto;
-      min-height: 200px;
-    }
-
-    @media (max-width: $breakpoint-sm - 1px) {
-      position: absolute;
+    // Tablet y móvil: absolute con 60% altura desde top
+    @media (max-width: $breakpoint-xl - 1px) {
       height: 60%;
       top: 0;
+      bottom: auto;
       width: 100vw;
       left: 50%;
       transform: translateX(-50%);
@@ -148,20 +140,17 @@
     width: 100%;
     z-index: 2;
 
-    @media (max-width: $breakpoint-md - 1px) {
+    // Tablet y móvil: position relative con flex
+    @media (max-width: $breakpoint-xl - 1px) {
       position: relative;
       top: auto;
       left: auto;
       transform: none;
-      padding-top: var(--spacing-2xl);
-      padding-bottom: var(--spacing-2xl);
-    }
-
-    @media (max-width: $breakpoint-sm - 1px) {
-      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding-top: 0;
+      padding-bottom: 0;
     }
   }
 
@@ -170,11 +159,8 @@
     grid-template-columns: 40% 60%;
     width: 100%;
 
-    @media (max-width: $breakpoint-lg - 1px) {
-      grid-template-columns: 45% 55%;
-    }
-
-    @media (max-width: $breakpoint-md - 1px) {
+    // Tablet y móvil: 1 columna
+    @media (max-width: $breakpoint-xl - 1px) {
       grid-template-columns: 1fr;
     }
   }
@@ -189,11 +175,8 @@
     position: relative;
     z-index: 2;
 
-    @media (max-width: $breakpoint-md - 1px) {
-      z-index: auto;
-    }
-
-    @media (max-width: $breakpoint-sm - 1px) {
+    // Tablet y móvil: position absolute centrada arriba
+    @media (max-width: $breakpoint-xl - 1px) {
       position: absolute;
       top: var(--spacing-xl);
       left: 50%;
@@ -225,13 +208,11 @@
     position: relative;
     z-index: 1;
 
-    @media (max-width: $breakpoint-md - 1px) {
-      z-index: auto;
-    }
-
-    @media (max-width: $breakpoint-sm - 1px) {
+    // Tablet y móvil: ancho completo con margin-top para espacio de imagen
+    @media (max-width: $breakpoint-xl - 1px) {
       width: 100%;
       margin-top: 250px;
+      z-index: auto;
     }
   }
 
@@ -240,20 +221,30 @@
     padding: var(--spacing-2xl) var(--spacing-xl);
     padding-left: calc(var(--spacing-xl) + 80px);
     border-radius: 50px;
-    width: 100%;
+    width: calc(100% + 80px);
     margin-left: -80px;
     box-shadow: var(--shadow-lg);
 
-    @media (max-width: $breakpoint-md - 1px) {
+    // Tablet: breakout desde borde izquierdo
+    @media (max-width: $breakpoint-xl - 1px) and (min-width: $breakpoint-md) {
       padding: var(--spacing-xl) var(--spacing-lg);
-      margin-left: 0;
       padding-left: var(--spacing-lg);
+      border-radius: 0 50px 50px 0;
+      width: 100vw;
+      margin-left: calc(-1 * var(--spacing-lg));
     }
 
-    @media (max-width: $breakpoint-sm - 1px) {
+    // Móvil: breakout centrado con técnica estándar
+    @media (max-width: $breakpoint-md - 1px) {
+      padding: var(--spacing-xl) var(--spacing-lg);
+      padding-left: var(--spacing-lg);
       border-radius: 0 50px 50px 0;
       width: 100vw;
       margin-left: calc(-50vw + 50%);
+    }
+
+    // Móvil pequeño: padding más compacto
+    @media (max-width: $breakpoint-sm - 1px) {
       padding: var(--spacing-xl) var(--spacing-md);
     }
   }
@@ -270,7 +261,7 @@
   &__benefit-item {
     position: relative;
     padding-left: var(--spacing-xl);
-    font-size: var(--font-size-heading);
+    font-size: var(--font-size-paragraph);
     font-weight: var(--font-weight-regular);
     line-height: 1.6;
     color: var(--primary-700);

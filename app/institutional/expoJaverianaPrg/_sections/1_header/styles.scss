@@ -10,31 +10,31 @@
 
   position: relative;
   width: 100%;
-  min-height: 65vh;
+  min-height: 45vh;
 
   background-image: url('https://www.javeriana.edu.co/recursosdb/d/info-prg/banner-1920-x-800px');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
-  // Pantallas grandes: altura moderada
+  // Pantallas grandes: altura más compacta
   @include responsive($breakpoint-xl) {
-    min-height: 60vh;
+    min-height: 40vh;
   }
 
-  // Pantallas medianas: altura proporcional
+  // Pantallas medianas: altura compacta
   @include responsive($breakpoint-lg) {
-    min-height: 65vh;
+    min-height: 45vh;
   }
 
-  // Tablet y móvil: altura reducida y más compacta
+  // Tablet: altura reducida
   @media (max-width: $breakpoint-md - 1px) {
-    min-height: 420px;
+    min-height: 300px;
   }
 
-  // Móviles pequeños: aún más compacto
+  // Móviles pequeños: muy compacto
   @media (max-width: $breakpoint-sm - 1px) {
-    min-height: 380px;
+    min-height: 280px;
   }
 
   // Contenedor de 2 columnas
@@ -71,10 +71,14 @@
   &__logo {
     max-width: 100%;
     height: auto;
-    width: 400px;
+    width: 320px;
 
     @media (max-width: $breakpoint-md - 1px) {
-      width: 280px;
+      width: 240px;
+    }
+
+    @media (max-width: $breakpoint-sm - 1px) {
+      width: 200px;
     }
   }
 
