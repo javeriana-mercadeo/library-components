@@ -73,6 +73,11 @@ const Diferenciales = () => {
   return (
     <div className={baseClass}>
       <Container id={elementName} className={`${baseClass}_container`}>
+        {/* Título principal */}
+        <Title hierarchy='h1' className={`${baseClass}_title`} id={`${elementName}-title`}>
+          ¿Por qué estudiar la Maestría en Psicología Clínica en la Javeriana?
+        </Title>
+
         {/* Contenedor de video */}
         <div className={`${baseClass}_media`}>
           <div
@@ -84,31 +89,23 @@ const Diferenciales = () => {
             data-image-fallback='https://www.javeriana.edu.co/recursosdb/d/info-prg/img-20200414-wa0023?imagePreview=1'></div>
         </div>
 
-        {/* Contenedor de contenido con scroll (título + lista) */}
-        <div className={`${baseClass}_content`}>
-          {/* Título principal */}
-          <Title hierarchy='h2' className={`${baseClass}_title`} id={`${elementName}-title`}>
-            ¿Por qué estudiar la Maestría en Psicología Clínica en la Javeriana?
-          </Title>
-
-          {/* Lista de diferenciales */}
-          <div className={`${baseClass}_list`}>
-            {differentials.map((item, index) => (
-              <div key={item.id} className={`${baseClass}_item`} id={`${elementName}-${item.id}`}>
-                <div className={`${baseClass}_item-icon`}>
-                  <i className={`ph ${item.icon}`}></i>
-                </div>
-                <div className={`${baseClass}_item-content`}>
-                  <Caption className={`${baseClass}_item-title`} size='lg' bold={true} isEditable={false}>
-                    {item.title}
-                  </Caption>
-                  <Paragraph className={`${baseClass}_item-description`} size='md' isEditable={false}>
-                    {item.description}
-                  </Paragraph>
-                </div>
+        {/* Lista de diferenciales */}
+        <div className={`${baseClass}_list`}>
+          {differentials.map((item, index) => (
+            <div key={item.id} className={`${baseClass}_item`} id={`${elementName}-${item.id}`}>
+              <div className={`${baseClass}_item-icon`}>
+                <i className={`ph ${item.icon}`}></i>
               </div>
-            ))}
-          </div>
+              <div className={`${baseClass}_item-content`}>
+                <Caption className={`${baseClass}_item-title`} size='lg' bold={true} isEditable={false}>
+                  {item.title}
+                </Caption>
+                <Paragraph className={`${baseClass}_item-description`} size='md' isEditable={false}>
+                  {item.description}
+                </Paragraph>
+              </div>
+            </div>
+          ))}
         </div>
       </Container>
     </div>

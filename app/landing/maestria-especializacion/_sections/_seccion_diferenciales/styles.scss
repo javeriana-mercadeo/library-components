@@ -1,9 +1,5 @@
 @use '@styles/autoload' as *;
 
-// ==========================================
-// DIFERENCIALES - LAYOUT CON VIDEO Y LISTA
-// ==========================================
-
 .differentials {
   background-color: var(--background-100);
 
@@ -11,36 +7,34 @@
     background-color: var(--background-200);
   }
 
-  // ==========================================
-  // CONTENEDOR PRINCIPAL
-  // ==========================================
+  // Contenedor principal - Grid en mobile y desktop
   &_container {
     position: relative;
     display: grid;
     padding-top: var(--spacing-2xl);
     padding-bottom: var(--spacing-2xl);
-    gap: var(--spacing-md);
+    gap: var(--spacing-lg);
 
-    // Layout móvil: título, video, lista
+    // Mobile: áreas verticales (título → video → lista)
     grid-template-columns: 1fr;
     grid-template-areas:
       'title'
       'video'
       'list';
 
-    @include responsive {
-      gap: 0;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 100vh;
-      grid-template-areas: 'video content';
-      align-items: stretch;
-      column-gap: var(--spacing-2xl);
-      padding-top: 0;
-      padding-bottom: 0;
-    }
-
+    // Desktop: video fijo a la izquierda, contenido a la derecha
+    // Breakpoint más alto (lg = 1024px) para mantener mobile más tiempo
     @include responsive($breakpoint-lg) {
-      grid-template-columns: 45% 1fr;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        'video title'
+        'video list';
+      align-items: start;
+      column-gap: var(--spacing-2xl);
+      row-gap: var(--spacing-md);
+      padding-top: var(--spacing-xl);
+      padding-bottom: var(--spacing-xl);
     }
 
     @include responsive($breakpoint-xl) {
@@ -49,51 +43,39 @@
     }
   }
 
-  // ==========================================
-  // CONTENEDOR DE CONTENIDO (TÍTULO + LISTA)
-  // ==========================================
-  &_content {
-    grid-area: content;
-    display: flex;
-    flex-direction: column;
-
-    @include responsive {
-      height: 100vh;
-      overflow: hidden;
-      padding-top: var(--spacing-xl);
-      padding-bottom: var(--spacing-2xl);
-    }
-  }
-
-  // ==========================================
-  // TÍTULO PRINCIPAL
-  // ==========================================
+  // Título principal
   &_title {
     grid-area: title;
-    color: var(--primary);
-    margin-bottom: 0;
-    font-size: var(--font-size-principal-title);
-    font-weight: 600;
-    flex-shrink: 0;
+    display: inline;
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-title) !important;
+    font-weight: var(--font-weight-bold) !important;
+    color: var(--primary) !important;
 
-    @include responsive {
-      margin-bottom: var(--spacing-lg);
+    span {
+      display: inline;
+      color: var(--neutral-200) !important;
+      font-size: var(--font-size-subtitle) !important;
+      font-weight: var(--font-weight-bold) !important;
+    }
+
+    @include responsive($breakpoint-lg) {
+      margin-bottom: 0;
+      align-self: end;
     }
   }
 
-  // ==========================================
-  // CONTENEDOR DEL VIDEO
-  // ==========================================
+  // Contenedor del video
   &_media {
     grid-area: video;
-    justify-self: center;
-    margin: 0;
     width: 100%;
+    margin: 0;
 
-    @include responsive {
-      justify-self: start;
+    @include responsive($breakpoint-lg) {
       align-self: stretch;
-      height: 100%;
+      position: sticky;
+      top: 120px; // Espacio para header de ~100px + margen
+      height: calc(100vh - 140px); // Alto total menos header y margen
       display: flex;
       flex-direction: column;
     }
@@ -110,21 +92,19 @@
     justify-content: center;
     aspect-ratio: 1 / 1;
     min-height: 280px;
+    max-height: 500px; // Limitar tamaño en mobile grande
 
-    @include responsive {
+    @include responsive($breakpoint-lg) {
       aspect-ratio: 612 / 880;
-      max-width: 100%;
-      min-height: auto;
-      height: 100%;
+      height: 100%; // Toma todo el alto disponible
+      max-height: none;
       flex: 1;
     }
 
-    // Fondo durante la carga
     &:not(.video-loaded) {
       background: var(--neutral-900);
     }
 
-    // Spinner de carga
     &:not(.video-loaded)::before {
       content: '';
       position: absolute;
@@ -148,9 +128,6 @@
     }
   }
 
-  // ==========================================
-  // ELEMENTOS DEL VIDEO
-  // ==========================================
   &__video-overlay {
     position: absolute;
     top: 0;
@@ -217,7 +194,7 @@
     &--mobile {
       display: block;
 
-      @include responsive {
+      @include responsive($breakpoint-lg) {
         display: none;
       }
     }
@@ -225,66 +202,35 @@
     &--desktop {
       display: none;
 
-      @include responsive {
+      @include responsive($breakpoint-lg) {
         display: block;
       }
     }
   }
 
-  // ==========================================
-  // LISTA DE DIFERENCIALES
-  // ==========================================
+  // Lista de diferenciales
   &_list {
     grid-area: list;
     display: grid;
     gap: var(--spacing-xs);
     grid-template-columns: 1fr;
 
-    @include responsive {
+    @include responsive($breakpoint-lg) {
       align-content: start;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding-right: var(--spacing-xs);
-      flex: 1;
-
-      // Scrollbar personalizada
-      &::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: var(--neutral-800);
-        border-radius: var(--border-radius-sm);
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: var(--neutral-600);
-        border-radius: var(--border-radius-sm);
-
-        &:hover {
-          background: var(--primary);
-        }
-      }
-
-      // Firefox
-      scrollbar-width: thin;
-      scrollbar-color: var(--neutral-600) var(--neutral-800);
     }
   }
 
-  // ==========================================
-  // ITEM INDIVIDUAL
-  // ==========================================
+  // Item individual - iconos centrados verticalmente
   &_item {
     display: flex;
-    align-items: start;
+    align-items: center;
     gap: var(--spacing-sm);
     padding: var(--spacing-md);
     background-color: transparent;
     transition: all 0.3s ease;
     border-bottom: 2px solid var(--neutral-900);
 
-    @include responsive {
+    @include responsive($breakpoint-lg) {
       padding: var(--spacing-md) var(--spacing-sm);
     }
 
@@ -317,7 +263,7 @@
       font-size: rem(30px);
     }
 
-    @include responsive {
+    @include responsive($breakpoint-lg) {
       width: rem(30px);
       height: rem(30px);
       min-width: rem(30px);
@@ -333,7 +279,7 @@
     min-width: 0;
   }
 
-  &_title {
+  &_item-title {
     margin-bottom: var(--spacing-2xs);
     line-height: 1.4;
 
@@ -354,9 +300,6 @@
   }
 }
 
-// ==========================================
-// ANIMACIONES
-// ==========================================
 @keyframes videoLoading {
   0% {
     transform: rotate(0deg);
@@ -366,20 +309,19 @@
   }
 }
 
-// ==========================================
-// SOPORTE PARA NAVEGADORES SIN ASPECT-RATIO
-// ==========================================
+// Soporte para navegadores sin aspect-ratio
 @supports not (aspect-ratio: 1/1) {
   .differentials_video-container {
     position: relative;
     height: 0;
 
-    @media (max-width: 767px) {
+    @media (max-width: 1023px) {
       padding-bottom: 100%;
     }
 
-    @media (min-width: 768px) {
-      padding-bottom: 69.5%;
+    @media (min-width: 1024px) {
+      padding-bottom: 0;
+      height: 100%;
     }
 
     .differentials__video {
@@ -392,9 +334,6 @@
   }
 }
 
-// ==========================================
-// ESTILOS PARA IMPRESIÓN
-// ==========================================
 @media print {
   .differentials {
     display: block !important;

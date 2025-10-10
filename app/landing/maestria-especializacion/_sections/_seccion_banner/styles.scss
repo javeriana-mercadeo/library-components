@@ -7,11 +7,9 @@
   &_container {
     width: 100%;
     padding-top: var(--spacing-xl);
-    padding-bottom: var(--spacing-xl);
 
     @include responsive($breakpoint-md) {
       padding-top: var(--spacing-2xl);
-      padding-bottom: var(--spacing-2xl);
     }
   }
 
@@ -54,7 +52,7 @@
     span {
       display: inline;
       color: var(--neutral-200) !important;
-      font-size: var(--font-size-subtitle) !important;
+      font-size: var(--font-size-title) !important;
       font-weight: var(--font-weight-bold) !important;
 
       @include responsive {
@@ -252,7 +250,7 @@
     @include responsive($breakpoint-md) {
       align-items: center;
       text-align: center;
-      margin-top: var(--spacing-2xl);
+      margin-top: var(--spacing-xl);
     }
 
     &-note-container {
@@ -422,24 +420,24 @@
       margin-bottom: 0;
     }
   }
-}
 
-// ==========================================
-// ACCESIBILIDAD
-// ==========================================
-@media (prefers-reduced-motion: reduce) {
-  .mastership-banner {
-    &__detail-link,
-    &__detail-button {
-      transition: none;
+  // ==========================================
+  // ACCESIBILIDAD
+  // ==========================================
+  @media (prefers-reduced-motion: reduce) {
+    .mastership-banner {
+      &__detail-link,
+      &__detail-button {
+        transition: none;
+      }
     }
-  }
 
-  .program-detail-modal {
-    transition: none;
-
-    &__content {
+    .program-detail-modal {
       transition: none;
+
+      &__content {
+        transition: none;
+      }
     }
   }
 }
