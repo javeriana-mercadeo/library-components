@@ -237,12 +237,14 @@ function initHeaderSystem() {
   }
 }
 
-// Auto-ejecutar si no es un módulo Y está en el cliente
-if (typeof module === 'undefined' && typeof window !== 'undefined') {
-  initHeaderSystem()
-}
-
 if (typeof window !== 'undefined') {
+  const isNextEnvironment = Boolean(window.__NEXT_DATA__)
+
+  // Solo auto-inicializar cuando no estamos en un entorno Next.js (ej. Liferay)
+  if (typeof module === 'undefined' && !isNextEnvironment) {
+    initHeaderSystem()
+  }
+
   window.initHeaderSystem = initHeaderSystem
 }
 

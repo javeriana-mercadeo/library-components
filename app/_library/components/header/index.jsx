@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { UniversalComponent as UC, Btn, Container, Logo } from '@library/components'
 import ModalForm from './components/ModalForm.jsx'
 
@@ -8,9 +8,19 @@ import script from './script.js'
 import './styles.scss'
 
 const EncabezadoFix = () => {
+  const [mounted, setMounted] = useState(false)
+
   useEffect(() => {
-    script()
+    setMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (mounted) {
+      script()
+    }
+  }, [mounted])
+
+  if (!mounted) return null
 
   return (
     <>

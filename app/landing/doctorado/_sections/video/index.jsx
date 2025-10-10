@@ -4,10 +4,24 @@ import { useEffect, useState } from 'react'
 import { Button, Container, Title, Paragraph } from '@library/components'
 import InfoItem from './components/InfoItem'
 import info from './info.json'
-import './script.js'
+import script from './script.js'
 import './styles.scss'
 
 const Video = () => {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (mounted) {
+      script()
+    }
+  }, [mounted])
+
+  if (!mounted) return null
+
   const elementName = info.id || 'video-doctorado'
 
   // Configuración de items del programa

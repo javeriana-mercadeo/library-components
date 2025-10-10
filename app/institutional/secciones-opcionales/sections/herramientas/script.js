@@ -310,7 +310,7 @@ const setupObserver = () => {
   });
 
   return observer;
-};
+}
 
 const waitForElements = (callback, timeout = 5000) => {
   const startTime = Date.now();
@@ -409,7 +409,5 @@ if (typeof window !== 'undefined') {
 
   setTimeout(waitForContainer, 50);
 }
-
-export default initialize;
 
 export default initialize;
