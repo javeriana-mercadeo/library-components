@@ -13,6 +13,11 @@
       padding-left: var(--spacing-4xl);
     }
 
+    // Variante Expo Javeriana - Container más angosto
+    [data-theme-faculty="expo-javeriana"] & {
+      max-width: #{rem(1200px)};
+    }
+
     // Variantes de ancho máximo
     &.container-sm {
       max-width: var(--max-width-sm);

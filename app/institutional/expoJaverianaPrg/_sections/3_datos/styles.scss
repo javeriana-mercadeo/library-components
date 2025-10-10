@@ -7,7 +7,7 @@
   position: relative;
   width: 100%;
   padding: var(--spacing-4xl) 0;
-  top: -150px;
+  top: -176px;
   margin-bottom: -230px;
 
   // ===========================================
@@ -17,7 +17,7 @@
   &__stats-container {
     display: flex;
     justify-content: center;
-    margin-bottom: var(--spacing-2xl);
+    /*margin-bottom: var(--spacing-2xl);*/
   }
 
   &__stats-box {
@@ -112,10 +112,10 @@
   // Franja Naranja de Fondo
   &__orange-strip {
     position: absolute;
-    bottom: 0;
+    bottom: -26px;
     left: 0;
     width: 100%;
-    height: 50%;
+    height: 57%;
     background-color: var(--tertiary);
     z-index: 1;
 
@@ -156,7 +156,7 @@
 
   &__content-grid {
     display: grid;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 45% 55%;
     width: 100%;
 
     // Tablet y móvil: 1 columna
