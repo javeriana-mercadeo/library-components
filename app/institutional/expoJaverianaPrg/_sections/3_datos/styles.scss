@@ -8,7 +8,7 @@
   width: 100%;
   padding: var(--spacing-4xl) 0;
   top: -176px;
-  margin-bottom: -230px;
+  margin-bottom: -250px;
 
   // ===========================================
   // SECCIÓN SUPERIOR - RECTÁNGULO NARANJA CON ESTADÍSTICAS
@@ -119,10 +119,20 @@
     background-color: var(--tertiary);
     z-index: 1;
 
-    // Tablet y móvil: absolute con 60% altura desde top
-    @media (max-width: $breakpoint-xl - 1px) {
+    // Tablet: absolute con 60% altura desde top
+    @media (max-width: $breakpoint-xl - 1px) and (min-width: $breakpoint-md) {
       height: 60%;
       top: 0;
+      bottom: auto;
+      width: 100vw;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    // Móvil: desplazado hacia abajo
+    @media (max-width: $breakpoint-md - 1px) {
+      height: 60%;
+      top: 246px;
       bottom: auto;
       width: 100vw;
       left: 50%;
@@ -175,14 +185,24 @@
     position: relative;
     z-index: 2;
 
-    // Tablet y móvil: position absolute centrada arriba
-    @media (max-width: $breakpoint-xl - 1px) {
+    // Tablet: position absolute centrada arriba
+    @media (max-width: $breakpoint-xl - 1px) and (min-width: $breakpoint-md) {
       position: absolute;
       top: var(--spacing-xl);
       left: 50%;
       transform: translateX(-50%);
       width: 80%;
       max-width: 400px;
+      z-index: 3;
+    }
+
+    // Móvil: ancho completo
+    @media (max-width: $breakpoint-md - 1px) {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
       z-index: 3;
     }
   }
@@ -194,8 +214,9 @@
     object-fit: cover;
     box-shadow: var(--shadow-lg);
 
+    // Móvil: sin bordes redondeados
     @media (max-width: $breakpoint-md - 1px) {
-      border-radius: 50px;
+      border-radius: 0;
     }
   }
 
@@ -208,11 +229,18 @@
     position: relative;
     z-index: 1;
 
-    // Tablet y móvil: ancho completo con margin-top para espacio de imagen
-    @media (max-width: $breakpoint-xl - 1px) {
+    // Tablet: ancho completo con margin-top para espacio de imagen
+    @media (max-width: $breakpoint-xl - 1px) and (min-width: $breakpoint-md) {
       width: 100%;
       margin-top: 250px;
       z-index: auto;
+    }
+
+    // Móvil: z-index mayor para que aparezca sobre la imagen
+    @media (max-width: $breakpoint-md - 1px) {
+      width: 100%;
+      margin-top: 200px;
+      z-index: 4;
     }
   }
 
