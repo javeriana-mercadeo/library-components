@@ -73,7 +73,7 @@ const Maestria = () => {
 
     return (
       <div key={id} className={`${baseClass}__detail-item`}>
-        <Icon icon={icon} size='md' className={`${baseClass}__detail-icon`} />
+        <Icon id={`icon-${id}`} icon={icon} size='md' className={`${baseClass}__detail-icon`} />
         <div className={`${baseClass}__detail-text`}>
           <p className={`${baseClass}__detail-label`}>{label}</p>
 
@@ -93,7 +93,8 @@ const Maestria = () => {
                 endIcon={<i className='ph ph-info'></i>}
                 onClick={e => {
                   e.preventDefault()
-                }}>
+                }}
+                isEditable={false}>
                 Ver detalles
               </Btn>
             </div>
@@ -138,13 +139,13 @@ const Maestria = () => {
               {/* Numero de Creditos - Manual (temporal) */}
               <div className='__credit'>
                 <div className={`${baseClass}__detail-item `}>
-                  <Icon icon='ph-calculator' size='md' className={`${baseClass}__detail-icon`} />
+                  <Icon id='icon-calculator_detail-item' icon='ph-calculator' size='md' className={`${baseClass}__detail-icon`} />
                   <div className={`${baseClass}__detail-text`}>
                     <p className={`${baseClass}__detail-label`}>Número de Créditos</p>
                     {/* Versión dinámica (comentada hasta que data-puj-credits esté disponible) */}
                     {/* <p className={`${baseClass}__detail-value`} data-puj-attribute='data-puj-credits'>
-      Cargando numero de creditos...
-    </p> */}
+                          Cargando numero de creditos...
+                        </p> */}
                     {/* Versión manual (temporal) */}
                     <p className={`${baseClass}__detail-value`}>38 créditos</p>
                   </div>
@@ -170,7 +171,7 @@ const Maestria = () => {
                         </Paragraph>
                       </div>
                       <Btn
-                        id={`${elementName}-enrollment-link-1`}
+                        id={`${elementName}-enrollment-link`}
                         className='mastership-banner_enrollment-link mt-6'
                         href='https://www.javeriana.edu.co/info-prg/proceso_de_inscripcion'
                         target='_blank'
@@ -215,21 +216,23 @@ const Maestria = () => {
           </div>
           <div className='program-detail-modal__body'>
             <div className='program-data__modal-content'>
-              <p>
-                <strong>Jornada de atención:</strong>
-              </p>
-              <ul>
-                <li>
-                  <strong>Lunes a viernes:</strong> 7:00 a.m. a 11:00 a.m.
-                </li>
-                <li>
-                  <strong>Sábados:</strong> 8:00 a.m. a 12:00 p.m. (solo con cita previa)
-                </li>
-              </ul>
-              <p>
-                Si necesitas atención en un horario diferente, por favor comunícate con nosotros con antelación para agendar una cita
-                personalizada.
-              </p>
+              <Paragraph className={`${baseClass}__modal-content`} id={`${elementName}-horarios-modal`}>
+                <p>
+                  <strong>Jornada de atención:</strong>
+                </p>
+                <ul>
+                  <li>
+                    <strong>Lunes a viernes:</strong> 7:00 a.m. a 11:00 a.m.
+                  </li>
+                  <li>
+                    <strong>Sábados:</strong> 8:00 a.m. a 12:00 p.m. (solo con cita previa)
+                  </li>
+                </ul>
+                <p>
+                  Si necesitas atención en un horario diferente, por favor comunícate con nosotros con antelación para agendar una cita
+                  personalizada.
+                </p>
+              </Paragraph>
             </div>
           </div>
         </div>
