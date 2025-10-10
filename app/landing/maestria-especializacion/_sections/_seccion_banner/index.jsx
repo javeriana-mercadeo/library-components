@@ -188,11 +188,15 @@ const Maestria = () => {
         </div>
 
         {/* Información legal */}
+
         <div className={`${baseClass}_enrollment`}>
+          <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
+            *Aspirantes 2025: el valor de matrícula corresponde al costo fijado para el año 2025.
+          </Paragraph>
           <div className={`${baseClass}_enrollment-note-container`}>
             <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
               <span data-puj-snies>Cargando SNIES...</span> | <span data-puj-registry>Cargando registro...</span>{' '}
-              <span data-puj-accreditation>Cargando acreditación...</span> Duración estimada:{' '}
+              <span data-puj-accreditation isEditable={true}>Cargando acreditación...</span> Duración estimada:{' '}
               <span data-puj-duration>Cargando duración...</span> | Lugar donde se oferta:{' '}
               <span data-puj-full-location>Cargando lugar...</span>
             </Paragraph>
