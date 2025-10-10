@@ -1,8 +1,6 @@
 // ===========================================
-// MODAL SYSTEM - GESTIÓN DE MODALES
+// PROJECT MODAL SYSTEM
 // ===========================================
-
-import { Logger } from './utils.js'
 
 export class ModalSystem {
   constructor(videoSystem) {
@@ -10,18 +8,11 @@ export class ModalSystem {
     this.isInitialized = false
   }
 
-  /**
-   * Inicializar el sistema de modales
-   */
   init() {
     this.setupModalEvents()
     this.isInitialized = true
-    Logger.info('Modal system inicializado')
   }
 
-  /**
-   * Configurar eventos del modal
-   */
   setupModalEvents() {
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
@@ -38,9 +29,6 @@ export class ModalSystem {
     }
   }
 
-  /**
-   * Obtener datos del proyecto desde Liferay
-   */
   getProjectDataFromHTML(slideIndex) {
     const getEditableContent = id => {
       const selectors = [`[data-lfr-editable-id="${id}"]`, `#${id}`, `[id="${id}"]`]
@@ -102,7 +90,6 @@ export class ModalSystem {
           .filter(url => url.length > 0)
       : []
 
-    // Datos fallback si no hay datos de Liferay
     if (!title && videoUrls.length === 0) {
       return this.getFallbackData(slideIndex)
     }
@@ -112,14 +99,11 @@ export class ModalSystem {
       date: date || '2024',
       responsible: responsible || 'Equipo Universitario',
       description: description || 'Descripción del proyecto disponible próximamente.',
-      videoUrls: videoUrls,
-      gallery: gallery
+      videoUrls,
+      gallery
     }
   }
 
-  /**
-   * Datos fallback
-   */
   getFallbackData(slideIndex) {
     const fallbackData = {
       0: {
@@ -152,9 +136,6 @@ export class ModalSystem {
     )
   }
 
-  /**
-   * Insertar galería de imágenes
-   */
   insertGallery(container, gallery, title) {
     if (!container) return
 
@@ -183,16 +164,11 @@ export class ModalSystem {
     })
   }
 
-  /**
-   * Abrir modal
-   */
   openModal(slideIndex) {
-    Logger.info(`Abriendo modal para slide ${slideIndex}`)
-
     const projectData = this.getProjectDataFromHTML(slideIndex)
 
     if (!projectData.title && projectData.videoUrls.length === 0) {
-      Logger.error(`Datos insuficientes para slide ${slideIndex}`)
+      window.Logger?.error?.(`Datos insuficientes para slide ${slideIndex}`)
       return
     }
 
@@ -206,7 +182,7 @@ export class ModalSystem {
       const galleryContainer = document.getElementById('modal-project-gallery-items')
 
       if (!modalBackdrop || !videosContainer || !galleryContainer) {
-        Logger.error('Elementos del modal no encontrados')
+        window.Logger?.error?.('Elementos del modal no encontrados')
         return
       }
 
@@ -217,9 +193,7 @@ export class ModalSystem {
 
       modalBackdrop.classList.add('show')
       modalBackdrop.style.display = 'flex'
-      if (typeof document !== 'undefined') {
-        document.body.style.overflow = 'hidden'
-      }
+      document.body.style.overflow = 'hidden'
 
       setTimeout(() => {
         if (projectData.videoUrls && projectData.videoUrls.length > 0) {
@@ -233,13 +207,10 @@ export class ModalSystem {
         }
       }, 200)
     } catch (error) {
-      Logger.error('Error abriendo modal:', error)
+      window.Logger?.error?.('Error abriendo modal:', error)
     }
   }
 
-  /**
-   * Cerrar modal
-   */
   closeModal(event) {
     if (event && event.target !== event.currentTarget && !event.target.classList.contains('modal-close')) {
       return
@@ -259,17 +230,11 @@ export class ModalSystem {
     if (videosContainer) videosContainer.innerHTML = ''
     if (galleryContainer) galleryContainer.innerHTML = ''
 
-    if (typeof document !== 'undefined') {
-      document.body.style.overflow = ''
-    }
+    document.body.style.overflow = ''
   }
 
-  /**
-   * Destruir el sistema
-   */
   destroy() {
     this.isInitialized = false
-    Logger.info('Modal system destruido')
   }
 }
 

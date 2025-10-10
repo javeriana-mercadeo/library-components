@@ -3,10 +3,25 @@
  * Controla carrusel, modales y videos con inicialización segura para Liferay.
  */
 
-import { runWhenIdle, Logger } from './modules/utils.js'
 import { CarouselSystem } from './modules/carousel-system.js'
 import { VideoSystem } from './modules/video-system.js'
-import { ModalSystem } from './modules/modal-system.js'
+import { ModalSystem } from './components/project-modal/system.js'
+
+const runWhenIdle = (callback, timeout = 2000) => {
+  if (typeof window === 'undefined') return
+
+  if (window.TimingUtils?.runWhenIdle) {
+    window.TimingUtils.runWhenIdle(callback, timeout)
+    return
+  }
+
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(callback, { timeout })
+    return
+  }
+
+  setTimeout(callback, timeout)
+}
 
 class ProyectosSystem {
   constructor() {
@@ -27,11 +42,11 @@ class ProyectosSystem {
     try {
       const initialized = this.carouselSystem.init()
       if (!initialized) {
-        Logger?.warning?.('[Proyectos] El carrusel aún no está listo, se reintentará desde el módulo.')
+        window.Logger?.warning?.('[Proyectos] El carrusel aún no está listo, se reintentará desde el módulo.')
       }
       return initialized
     } catch (error) {
-      Logger?.error?.('[Proyectos] Error inicializando CarouselSystem:', error)
+      window.Logger?.error?.('[Proyectos] Error inicializando CarouselSystem:', error)
       return false
     }
   }
@@ -41,14 +56,13 @@ class ProyectosSystem {
       this.modalSystem.init()
       return true
     } catch (error) {
-      Logger?.error?.('[Proyectos] Error inicializando ModalSystem:', error)
+      window.Logger?.error?.('[Proyectos] Error inicializando ModalSystem:', error)
       return false
     }
   }
 
   init() {
     if (this.initialized || this.pendingInitialization) {
-      Logger?.info?.('[Proyectos] Inicialización omitida (ya ejecutada o en curso).')
       return
     }
 
@@ -59,7 +73,7 @@ class ProyectosSystem {
       this.pendingInitialization = false
 
       if (this.destroyed) {
-        Logger?.warning?.('[Proyectos] Inicialización cancelada: el sistema fue destruido antes de completarse.')
+        window.Logger?.warning?.('[Proyectos] Inicialización cancelada antes de completarse.')
         return
       }
 
@@ -71,8 +85,6 @@ class ProyectosSystem {
       if (typeof window !== 'undefined') {
         window.proyectosSystemInitialized = true
       }
-
-      Logger?.info?.('[Proyectos] Sistema inicializado correctamente.')
     }, this.config.idleTimeout)
   }
 
@@ -83,19 +95,19 @@ class ProyectosSystem {
     try {
       this.carouselSystem?.destroy?.()
     } catch (error) {
-      Logger?.warning?.('[Proyectos] Error al destruir CarouselSystem:', error)
+      window.Logger?.warning?.('[Proyectos] Error al destruir CarouselSystem:', error)
     }
 
     try {
       this.modalSystem?.destroy?.()
     } catch (error) {
-      Logger?.warning?.('[Proyectos] Error al destruir ModalSystem:', error)
+      window.Logger?.warning?.('[Proyectos] Error al destruir ModalSystem:', error)
     }
 
     try {
       this.videoSystem?.destroy?.()
     } catch (error) {
-      Logger?.warning?.('[Proyectos] Error al destruir VideoSystem:', error)
+      window.Logger?.warning?.('[Proyectos] Error al destruir VideoSystem:', error)
     }
 
     this.initialized = false
@@ -103,8 +115,6 @@ class ProyectosSystem {
     if (typeof window !== 'undefined') {
       window.proyectosSystemInitialized = false
     }
-
-    Logger?.info?.('[Proyectos] Sistema destruido.')
   }
 
   ensureModalReady() {
@@ -130,9 +140,9 @@ class ProyectosSystem {
     return {
       initialized: this.initialized,
       carousel: {
-        initialized: this.carouselSystem?.state?.isInitialized || false,
-        currentSlide: this.carouselSystem?.state?.currentSlide || 0,
-        totalSlides: this.carouselSystem?.state?.totalSlides || 0
+        initialized: Boolean(this.carouselSystem?.swiper),
+        currentSlide: this.carouselSystem?.swiper?.activeIndex || 0,
+        totalSlides: this.carouselSystem?.swiper?.slides?.length || 0
       },
       modal: {
         initialized: this.modalSystem?.isInitialized || false
@@ -152,7 +162,7 @@ function initProyectosModule() {
     try {
       proyectosSystem.init()
     } catch (error) {
-      Logger?.error?.('[Proyectos] Error durante la inicialización:', error)
+      window.Logger?.error?.('[Proyectos] Error durante la inicialización:', error)
     }
   }
 
@@ -160,7 +170,7 @@ function initProyectosModule() {
     try {
       proyectosSystem.destroy()
     } catch (error) {
-      Logger?.error?.('[Proyectos] Error durante la destrucción:', error)
+      window.Logger?.error?.('[Proyectos] Error durante la destrucción:', error)
     }
   }
 

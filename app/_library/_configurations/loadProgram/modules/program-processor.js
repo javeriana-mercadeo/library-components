@@ -44,8 +44,32 @@ export const ProgramDataProcessor = {
       automationUpdates.program = true
     }
 
-    if (snies) {
-      DOMUpdater.updateElementsText('data-puj-snies', `SNIES ${snies}`)
+    const sniesSelector = 'data-puj-snies'
+    const rawSniesValue = snies !== undefined && snies !== null ? String(snies).trim() : ''
+    const invalidSniesTokens = ['999999', '9999999', '0']
+    const sniesDigitGroups = rawSniesValue.match(/\d+/g) || []
+    const hasInvalidSnies = !rawSniesValue || sniesDigitGroups.some(token => invalidSniesTokens.includes(token))
+
+    if (hasInvalidSnies) {
+      // Fallback manual porque la versión V1 no expone DOMUpdater.removeElements
+      let removed = false
+
+      if (typeof DOMUtils !== 'undefined') {
+        const elements = DOMUtils.findElements(`[${sniesSelector}]`)
+        if (elements.length) {
+          elements.forEach(element => element.remove())
+          removed = true
+        }
+      }
+
+      if (!removed) {
+        DOMUpdater.updateElementsText(sniesSelector, '')
+      }
+
+      automationUpdates.snies = false
+      automationUpdates.sniesRemoved = true
+    } else {
+      DOMUpdater.updateElementsText(sniesSelector, `SNIES ${rawSniesValue}`)
       automationUpdates.snies = true
     }
 

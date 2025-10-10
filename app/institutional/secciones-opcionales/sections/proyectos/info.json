@@ -1,4 +1,6 @@
 {
-  "name": "proyectos",
+  "id": "proyectos",
+  "name": "Proyectos Destacados",
+  "description": "Sección de proyectos destacados con carrusel y modal para ver más información",
   "type": "section"
 }

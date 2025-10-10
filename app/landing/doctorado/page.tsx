@@ -29,10 +29,10 @@ export default function Doctorado() {
         <Video />
       </ViewComponent> */}
 
-      <Proyectos />
-      {/* <ViewComponent path={`${optionalPath}/sections/proyectos`}>
+      {/* <Proyectos /> */}
+      <ViewComponent path={`${optionalPath}/sections/proyectos`}>
         <Proyectos />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/* <DocentesDoctorado /> */}
       <ViewComponent path={`${basePath}/sections/docentesDoctorado`}>

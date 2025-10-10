@@ -2,8 +2,6 @@
 // VIDEO SYSTEM - GESTIÓN DE VIDEOS YOUTUBE
 // ===========================================
 
-import { Logger } from './utils.js'
-
 export class VideoSystem {
   constructor() {
     this.youtubePlayersRegistry = new Map()
@@ -29,7 +27,6 @@ export class VideoSystem {
 
       window.onYouTubeIframeAPIReady = () => {
         this.isYouTubeAPIReady = true
-        Logger.info('YouTube API cargada')
 
         if (existingCallback && typeof existingCallback === 'function') {
           existingCallback()
@@ -59,7 +56,7 @@ export class VideoSystem {
             player.pauseVideo()
           }
         } catch (error) {
-          Logger.warning(`Error pausando video ${playerId}:`, error)
+          window.Logger?.warning?.(`Error pausando video ${playerId}:`, error)
         }
       }
     })
@@ -158,7 +155,7 @@ export class VideoSystem {
           })
         }, 100)
       } catch (error) {
-        Logger.error('Error creando player de YouTube:', error)
+        window.Logger?.error?.('Error creando player de YouTube:', error)
         return createFallbackIframe()
       }
     } else {
@@ -198,7 +195,7 @@ export class VideoSystem {
         })
       })
       .catch(error => {
-        Logger.error('Error cargando API de YouTube:', error)
+        window.Logger?.error?.('Error cargando API de YouTube:', error)
       })
   }
 
@@ -212,7 +209,7 @@ export class VideoSystem {
           player.pauseVideo()
           player.destroy()
         } catch (error) {
-          Logger.warning(`Error limpiando player ${playerId}:`, error)
+          window.Logger?.warning?.(`Error limpiando player ${playerId}:`, error)
         }
       }
     })
@@ -222,7 +219,6 @@ export class VideoSystem {
 
   destroy() {
     this.cleanupModalVideos()
-    Logger.info('Video system destruido')
   }
 }
 

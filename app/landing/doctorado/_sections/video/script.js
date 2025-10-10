@@ -146,13 +146,8 @@ function initVideoDoctoradoSystem() {
    */
   function initialize() {
     try {
-      // Inicializar videos
       initializeVideos()
-
-      // Inicializar sistema de modales
       modalSystem.init()
-
-      console.log('[VideoDoctorado] Sistema inicializado correctamente')
     } catch (error) {
       console.error('[VideoDoctorado] Error durante inicialización:', error)
     }

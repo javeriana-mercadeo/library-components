@@ -42,7 +42,8 @@ const FIELD_CONFIGS = {
       dataKey: 'snies',
       selector: 'data-puj-snies',
       updateKey: 'snies',
-      formatter: val => `SNIES ${val}`
+      formatter: val => `SNIES ${val}`,
+      special: true
     },
     {
       dataKey: 'nivelAcad',
@@ -231,6 +232,36 @@ export const ProgramDataProcessor = {
     })
   },
 
+  _processSnies(dataProgram, automationUpdates) {
+    const selector = getSelector('basic', 'snies')
+    if (!selector) return
+
+    const rawValue = dataProgram.snies
+    const sniesString = rawValue !== undefined && rawValue !== null ? String(rawValue).trim() : ''
+    const invalidTokens = ['999999', '9999999', '0']
+    const digitGroups = sniesString.match(/\d+/g) || []
+    const hasInvalidToken = !sniesString || digitGroups.some(token => invalidTokens.includes(token))
+
+    if (hasInvalidToken) {
+      const removed = DOMUpdater.removeElements(selector)
+
+      if (!removed && typeof DOMUtils !== 'undefined') {
+        const elements = DOMUtils.findElements(`[${selector}]`)
+        elements.forEach(element => {
+          element.textContent = ''
+          element.style.display = 'none'
+        })
+      }
+
+      automationUpdates.snies = false
+      automationUpdates.sniesRemoved = true
+      return
+    }
+
+    DOMUpdater.updateElementsText(selector, `SNIES ${sniesString}`)
+    automationUpdates.snies = true
+  },
+
   // Función especializada para manejo de acreditación
   _processAccreditation(dataProgram, automationUpdates) {
     const { acredit, estadoAcredit, numResolAcredit, fechaIniAcredit, fechaFinAcredit, vigenciaAcredit, recuReposAcredit, obserAcredit } =
@@ -353,6 +384,7 @@ export const ProgramDataProcessor = {
 
     // Procesar campos básicos
     this._processConfiguredFields('basic', dataProgram, automationUpdates)
+    this._processSnies(dataProgram, automationUpdates)
 
     // Campos con lógica especial (se mantienen desde V1)
     if (jornada) {
