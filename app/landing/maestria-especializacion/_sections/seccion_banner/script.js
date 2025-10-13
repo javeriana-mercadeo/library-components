@@ -1,19 +1,18 @@
 /**
- * Maestria System - JavaScript Vanilla
- * Sistema de gestión de modales para horarios
+ * Sistema de gestión de modales para Maestría
  */
 ;(function () {
   'use strict'
 
   const CONFIG = {
     SELECTORS: {
-      root: '.mastership-banner',
+      root: '.maestria-banner',
       modalTrigger: '[data-modal-target]',
-      modalClose: '.program-detail-modal__close',
-      modal: '.program-detail-modal'
+      modalClose: '.maestria-banner__modal-close',
+      modal: '.maestria-banner__modal'
     },
     CLASSES: {
-      modalActive: 'program-detail-modal--active'
+      modalActive: 'maestria-banner__modal--active'
     }
   }
 
@@ -22,17 +21,12 @@
     activeModal: null
   }
 
-  /* =====================
-       SISTEMA DE MODALES
-    ===================== */
-
   const ModalSystem = {
     init() {
       this.setupEventListeners()
     },
 
     setupEventListeners() {
-      // Abrir modales mediante data-modal-target
       document.addEventListener('click', e => {
         const trigger = e.target.closest(CONFIG.SELECTORS.modalTrigger)
         if (trigger) {
@@ -41,20 +35,19 @@
           this.openModal(modalId)
         }
 
-        // Cerrar modales con botón X
         const closeBtn = e.target.closest(CONFIG.SELECTORS.modalClose)
         if (closeBtn) {
           e.preventDefault()
           this.closeModal()
         }
 
-        // Cerrar con click en backdrop
-        if (e.target.classList.contains('program-detail-modal') && e.target.classList.contains(CONFIG.CLASSES.modalActive)) {
+        // Click en backdrop
+        if (e.target.classList.contains('maestria-banner__modal') && e.target.classList.contains(CONFIG.CLASSES.modalActive)) {
           this.closeModal()
         }
       })
 
-      // Cerrar con tecla Escape
+      // Escape key
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape' && systemState.activeModal) {
           this.closeModal()
@@ -69,7 +62,6 @@
         document.body.style.overflow = 'hidden'
         systemState.activeModal = modalId
 
-        // Focus para accesibilidad
         const closeButton = modal.querySelector(CONFIG.SELECTORS.modalClose)
         if (closeButton) {
           setTimeout(() => closeButton.focus(), 100)
@@ -93,23 +85,18 @@
     }
   }
 
-  /* =====================
-       INICIALIZACIÓN
-    ===================== */
-
   function initializeSystem() {
     if (systemState.initialized) return
 
     const root = document.querySelector(CONFIG.SELECTORS.root)
-    if (!root)
-      // Inicializar sistema de modales
-      ModalSystem.init()
+    if (!root) return
 
+    ModalSystem.init()
     systemState.initialized = true
   }
 
   // API pública
-  window.MastershipSystem = {
+  window.MaestriaSystem = {
     init: initializeSystem,
     openModal: ModalSystem.openModal.bind(ModalSystem),
     closeModal: ModalSystem.closeModal.bind(ModalSystem),
@@ -123,15 +110,13 @@
     initializeSystem()
   }
 
-  // Fallback
   setTimeout(initializeSystem, 100)
 
   console.log('Maestria: Script cargado')
 })()
 
-// Export default para compatibilidad con módulos
-export default function initMastership() {
-  if (window.MastershipSystem) {
-    window.MastershipSystem.init()
+export default function initMaestria() {
+  if (window.MaestriaSystem) {
+    window.MaestriaSystem.init()
   }
 }

@@ -1,10 +1,8 @@
 @use '@styles/autoload' as *;
 
-.mastership-banner {
-  // ==========================================
-  // CONTENEDOR PRINCIPAL
-  // ==========================================
-  &_container {
+.maestria-banner {
+  // Contenedor principal
+  &__container {
     width: 100%;
     padding-top: var(--spacing-xl);
 
@@ -13,9 +11,7 @@
     }
   }
 
-  // ==========================================
-  // WRAPPER PRINCIPAL - LAYOUT 2 COLUMNAS
-  // ==========================================
+  // Layout 2 columnas
   &__content-wrapper {
     display: grid;
     gap: var(--spacing-xl);
@@ -28,9 +24,7 @@
     }
   }
 
-  // ==========================================
-  // COLUMNA IZQUIERDA - INFORMACIÓN PRINCIPAL
-  // ==========================================
+  // Información principal
   &__main-content {
     display: flex;
     flex-direction: column;
@@ -44,7 +38,6 @@
     margin: 0;
   }
 
-  // Título del programa
   &__title {
     display: inline;
     margin-top: rem(12px);
@@ -60,12 +53,11 @@
       }
     }
 
-    span.mastership-banner__title-program {
+    span.maestria-banner__title-program {
       color: var(--primary) !important;
     }
   }
 
-  // Descripción del programa
   &__description {
     color: var(--neutral-100);
     line-height: 1.6;
@@ -76,18 +68,7 @@
     }
   }
 
-  // SNIES
-  &_snies {
-    color: var(--neutral-600);
-    margin-top: var(--spacing-sm);
-    font-size: var(--font-size-paragraph);
-    font-weight: var(--font-weight-regular);
-    margin-bottom: 0;
-  }
-
-  // ==========================================
-  // COLUMNA DERECHA - DETALLES DEL PROGRAMA
-  // ==========================================
+  // Detalles del programa
   &__details-content {
     width: 100%;
   }
@@ -106,11 +87,12 @@
       gap: var(--spacing-lg) var(--spacing-xl);
     }
   }
+
   &__credit {
     display: flex;
     align-items: flex-start;
   }
-  // Items individuales de detalle
+
   &__detail-item {
     display: flex;
     gap: var(--spacing-md);
@@ -154,90 +136,81 @@
     }
   }
 
-  &__detail-link {
-    display: block;
-    color: var(--primary);
-    font-size: var(--font-size-paragraph);
-    font-weight: var(--font-weight-medium);
-    text-decoration: none;
-    transition: color 0.2s ease;
+  &__detail-modal-trigger {
     margin-top: rem(8px);
+  }
+
+  &__detail-button {
+    cursor: pointer;
 
     &:hover {
-      text-decoration: underline;
-      color: var(--primary-600);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
 
-  // ==========================================
-  // FECHAS DE INSCRIPCIÓN
-  // ==========================================
+  // Fechas de inscripción
+  &__dates-container {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+  }
 
-  .program-dates {
+  &__dates {
     display: flex;
     align-items: start;
     margin-bottom: var(--spacing-sm);
-
-    &_icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--icon-size-md);
-      border-radius: 50%;
-      color: var(--primary);
-      flex-shrink: 0;
-    }
-
-    &_content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    &_label {
-      font-size: var(--font-size-paragraph);
-      margin-bottom: rem(0px);
-      margin-left: var(--spacing-sm);
-    }
-
-    &_value {
-      font-size: var(--font-size-paragraph);
-      margin-bottom: 0;
-      margin-left: var(--spacing-sm);
-    }
-
-    &--dates {
-      align-items: center;
-    }
-
-    &_dates {
-      display: flex;
-      align-items: start;
-      justify-content: start;
-      flex-direction: column;
-      gap: var(--spacing-2xs);
-      margin-bottom: 0;
-      margin-left: var(--spacing-sm);
-    }
-
-    &_date-item > * {
-      display: inline;
-    }
-
-    &_date-period {
-      font-size: var(--font-size-paragraph);
-      margin: 0;
-    }
-
-    &_date-value {
-      font-size: var(--font-size-paragraph);
-      margin: 0;
-    }
   }
 
-  // ==========================================
-  // INFORMACIÓN LEGAL
-  // ==========================================
-  &_enrollment {
+  &__dates-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--icon-size-md);
+    border-radius: 50%;
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+
+  &__dates-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__dates-label {
+    font-size: var(--font-size-paragraph);
+    margin-bottom: rem(0px);
+    margin-left: var(--spacing-sm);
+  }
+
+  &__dates-list {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+    gap: var(--spacing-2xs);
+    margin-bottom: 0;
+    margin-left: var(--spacing-sm);
+  }
+
+  &__dates-item > * {
+    display: inline;
+  }
+
+  &__dates-period {
+    font-size: var(--font-size-paragraph);
+    margin: 0;
+  }
+
+  &__info-link {
+    margin-left: rem(35px);
+  }
+
+  // Información legal
+  &__info {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -272,53 +245,30 @@
     }
   }
 
-  // ==========================================
-  // MODAL - BOTÓN VER DETALLES
-  // ==========================================
-  &__detail-modal-trigger {
-    margin-top: rem(8px);
-  }
+  // Modal de horarios
+  &__modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 
-  &__detail-button {
-    // El componente Btn ya tiene sus estilos base
-    // Solo ajustamos lo necesario para mantener consistencia
-    cursor: pointer;
-
-    &:hover {
-      transform: translateY(-1px);
+    &--active {
+      display: flex;
+      opacity: 1;
     }
-
-    &:active {
-      transform: translateY(0);
-    }
-  }
-}
-
-// ==========================================
-// ESTILOS DEL MODAL
-// ==========================================
-.program-detail-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  z-index: 9999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-md);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-
-  &--active {
-    display: flex;
-    opacity: 1;
   }
 
-  &__content {
+  &__modal-content {
     background-color: var(--neutral-1000);
     border-radius: rem(12px);
     width: 100%;
@@ -331,12 +281,12 @@
     transform: scale(0.95);
     transition: transform 0.3s ease;
 
-    .program-detail-modal--active & {
+    .maestria-banner__modal--active & {
       transform: scale(1);
     }
   }
 
-  &__header {
+  &__modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -344,15 +294,14 @@
     border-bottom: 1px solid var(--neutral-900);
   }
 
-  &__title {
+  &__modal-title {
     font-size: var(--font-size-heading);
     font-weight: var(--font-weight-bold);
     color: var(--neutral-200);
     margin: 0;
   }
 
-  // Botón de cerrar
-  &__close {
+  &__modal-close {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -380,64 +329,52 @@
     }
   }
 
-  &__body {
+  &__modal-body {
     padding: var(--spacing-lg);
   }
-}
 
-// ==========================================
-// CONTENIDO DEL MODAL
-// ==========================================
-.program-data__modal-content {
-  color: var(--neutral-300);
-  line-height: 1.6;
+  &__modal-text {
+    color: var(--neutral-300);
+    line-height: 1.6;
+  }
 
-  p {
-    margin-bottom: var(--spacing-md);
-    font-size: var(--font-size-paragraph);
+  &__modal-paragraph {
+    p {
+      margin-bottom: var(--spacing-md);
+      font-size: var(--font-size-paragraph);
 
-    &:last-child {
-      margin-bottom: 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    strong {
+      color: var(--neutral-200);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    ul {
+      margin: var(--spacing-md) 0;
+      padding-left: var(--spacing-lg);
+      list-style-type: disc;
+    }
+
+    li {
+      margin-bottom: var(--spacing-sm);
+      font-size: var(--font-size-paragraph);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
-  strong {
-    color: var(--neutral-200);
-    font-weight: var(--font-weight-semibold);
-  }
-
-  ul {
-    margin: var(--spacing-md) 0;
-    padding-left: var(--spacing-lg);
-    list-style-type: disc;
-  }
-
-  li {
-    margin-bottom: var(--spacing-sm);
-    font-size: var(--font-size-paragraph);
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  // ==========================================
-  // ACCESIBILIDAD
-  // ==========================================
+  // Accesibilidad
   @media (prefers-reduced-motion: reduce) {
-    .mastership-banner {
-      &__detail-link,
-      &__detail-button {
-        transition: none;
-      }
-    }
-
-    .program-detail-modal {
+    &__detail-button,
+    &__modal,
+    &__modal-content {
       transition: none;
-
-      &__content {
-        transition: none;
-      }
     }
   }
 }

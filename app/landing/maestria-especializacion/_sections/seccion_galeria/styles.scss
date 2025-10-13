@@ -1,0 +1,829 @@
+@use '@styles/autoload' as *;
+
+// ==========================================
+// VARIABLES DEL COMPONENTE
+// ==========================================
+$plan-card-border-radius: rem(12px);
+$plan-card-padding: rem(18px);
+$plan-card-min-height: rem(500px);
+$plan-card-max-width: rem(320px);
+$plan-transition: all 0.2s ease;
+$plan-badge-border-radius: rem(50px);
+$plan-badge-padding: var(--spacing-xs) var(--spacing-md);
+
+// Navegación - OPTIMIZADO
+$nav-button-size: rem(50px);
+$nav-button-size-mobile: rem(40px);
+$nav-bullet-size: rem(13px);
+$nav-button-offset: rem(25px);
+
+// ==========================================
+// MIXIN PRINCIPAL
+// ==========================================
+
+.plan-estudio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  // ==========================================
+  // CONTENEDOR PRINCIPAL
+  // ==========================================
+  &_container {
+    width: 100%;
+    background-color: var(--background-100);
+
+    @include dark-theme {
+      background-color: var(--background-200);
+    }
+  }
+
+  // ==========================================
+  // CARRUSEL - OPTIMIZADO
+  // ==========================================
+  &_carousel {
+    width: 100%;
+    position: relative;
+  }
+
+  &_wrapper {
+    overflow: hidden;
+    position: relative;
+    padding: var(--spacing-lg) var(--spacing-sm);
+    margin: 0 0 var(--spacing-xl) 0;
+
+    @include responsive($breakpoint-sm) {
+      margin: 0 0 var(--spacing-lg) 0;
+      padding: var(--spacing-sm) var(--spacing-2xl);
+      margin-top: var(--spacing-sm);
+    }
+
+    @include responsive($breakpoint-md) {
+      padding: var(--spacing-xs) var(--spacing-2xl);
+      margin-top: var(--spacing-md);
+    }
+
+    @include responsive($breakpoint-lg) {
+      padding: var(--spacing-xs) var(--spacing-3xl);
+      margin-top: var(--spacing-xl);
+    }
+
+    @include responsive($breakpoint-xl) {
+      margin: 0 auto;
+      padding: var(--spacing-xs) var(--spacing-3xl);
+      margin-top: var(--spacing-lg);
+    }
+  }
+
+  // ==========================================
+  // CONTENEDOR CON GRADIENTES DINÁMICOS
+  // ==========================================
+  &_carousel {
+    width: 100%;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: rem(40px);
+      z-index: 10;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    &::before {
+      left: 0;
+      background: linear-gradient(
+        to right,
+        var(--background-100) 0%,
+        rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 10%,
+        transparent 100%
+      );
+    }
+
+    &::after {
+      right: 0;
+      background: linear-gradient(
+        to left,
+        var(--background-100) 0%,
+        rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 10%,
+        transparent 100%
+      );
+    }
+
+    @include responsive {
+      &::before {
+        background: linear-gradient(
+          to right,
+          var(--background-100) 0%,
+          rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+          transparent 100%
+        );
+      }
+
+      &::after {
+        background: linear-gradient(
+          to left,
+          var(--background-100) 0%,
+          rgba(var(--background-100-rgb, 255, 255, 255), 0.9) 40%,
+          transparent 100%
+        );
+      }
+    }
+
+    @include dark-theme {
+      &::before {
+        background: linear-gradient(
+          to right,
+          var(--background-200) 0%,
+          rgba(var(--background-200-rgb, 0, 0, 0), 0.9) 40%,
+          transparent 100%
+        );
+      }
+
+      &::after {
+        background: linear-gradient(to left, var(--background-200) 0%, rgba(var(--background-200-rgb, 0, 0, 0), 0.9) 40%, transparent 100%);
+      }
+    }
+
+    &.show-left-fade::before {
+      opacity: 1;
+    }
+
+    &.show-right-fade::after {
+      opacity: 1;
+    }
+
+    &.show-both-fades {
+      &::before,
+      &::after {
+        opacity: 1;
+      }
+    }
+
+    @include responsive($breakpoint-2xl) {
+      &::before,
+      &::after {
+        width: rem(80px);
+      }
+    }
+  }
+
+  // ==========================================
+  // SLIDES Y TARJETAS (MANTENER ESTILO)
+  // ==========================================
+  &_slides {
+    align-items: stretch !important;
+  }
+
+  &_slide {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    margin-top: rem(20px);
+    align-items: stretch;
+    justify-content: center;
+
+    @include responsive($breakpoint-sm) {
+      min-height: rem(420px) !important;
+    }
+  }
+
+  &_card {
+    display: flex;
+    flex-direction: column;
+    background: var(--background-100);
+    padding: $plan-card-padding;
+    user-select: none;
+    border-radius: $plan-card-border-radius;
+    text-decoration: none;
+    border: rem(1px) solid var(--neutral-700);
+    transition: $plan-transition;
+    width: 100%;
+    height: 100%;
+    max-width: $plan-card-max-width;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: rem(4px);
+      background: linear-gradient(90deg, var(--primary), var(--primary-600));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: left;
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &:hover {
+      border: rem(1px) solid var(--primary);
+      box-shadow: 0 rem(2px) rem(2px) rgba(0, 0, 0, 0.3);
+      transform: translateY(rem(-1px)) scale(1.005);
+
+      &::before {
+        transform: scaleX(1);
+      }
+    }
+
+    @include dark-theme {
+      background: var(--background-100);
+      border-color: var(--neutral-700);
+
+      &:hover {
+        border-color: var(--primary);
+      }
+    }
+  }
+
+  // ==========================================
+  // ELEMENTOS DE LA TARJETA (MANTENER ESTILO ORIGINAL)
+  // ==========================================
+  &_card-header {
+    margin-bottom: rem(10px);
+  }
+
+  &_badge {
+    color: var(--neutral);
+    width: fit-content;
+    padding: $plan-badge-padding;
+    font-size: var(--font-size-small);
+    border-radius: $plan-badge-border-radius;
+    font-weight: var(--font-weight-bold);
+    background: var(--primary);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: rem(10px);
+  }
+
+  &_semester-title {
+    margin-bottom: rem(8px);
+    border-bottom: rem(1px) solid var(--neutral-900);
+    font-size: var(--font-size-paragraph);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: normal;
+    color: var(--neutral-100);
+    text-align: left;
+    max-width: 100%;
+    padding-bottom: rem(8px);
+
+    @include dark-theme {
+      color: var(--neutral-100);
+      border-bottom-color: var(--neutral-900);
+    }
+  }
+
+  &_subjects {
+    list-style: none;
+    padding-top: rem(5px);
+    margin: 0;
+    padding-bottom: rem(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-self: start;
+
+    li {
+      color: var(--neutral-100);
+      margin-bottom: rem(8px);
+      display: flex;
+      align-items: center;
+      font-size: var(--font-size-paragraph);
+      font-weight: var(--font-weight-regular);
+
+      @include dark-theme {
+        color: var(--neutral-100);
+      }
+
+      i {
+        font-size: rem(20px);
+        margin-right: rem(8px);
+        color: var(--primary);
+      }
+    }
+  }
+
+  &_credits {
+    font-size: rem(18px);
+    border-top: rem(1px) solid var(--neutral-900);
+    font-weight: bold;
+    color: var(--neutral-800);
+    padding-top: rem(10px);
+    align-self: end;
+    width: 100%;
+    margin-top: auto;
+
+    @include dark-theme {
+      border-top-color: var(--neutral-900);
+      color: var(--neutral-800);
+    }
+
+    strong {
+      color: var(--neutral-500);
+
+      @include dark-theme {
+        color: var(--neutral-500);
+      }
+    }
+  }
+
+  // ==========================================
+  // PAGINACIÓN - BASADA EN EXPERIENCIA (SIMPLE Y CENTRADA)
+  // ==========================================
+  &_pagination {
+    margin-top: rem(20px);
+    text-align: center;
+    width: 100%;
+    position: relative;
+    left: 0;
+    right: 0;
+  }
+
+  // Estilos específicos para los bullets de Swiper con mayor especificidad
+  .plan-estudio_carousel .swiper-pagination,
+  &_carousel .swiper-pagination {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    position: relative !important;
+    bottom: auto !important;
+    margin-top: rem(20px) !important;
+    height: 25px;
+
+    .swiper-pagination-bullet {
+      width: rem(10px) !important;
+      height: rem(10px) !important;
+      margin: 0 rem(6px) !important;
+      background: var(--neutral-400) !important;
+      opacity: 0.6 !important;
+      transition: all 0.3s ease !important;
+      border-radius: 50% !important;
+      cursor: pointer !important;
+
+      &.swiper-pagination-bullet-active {
+        background: var(--primary) !important;
+        opacity: 1 !important;
+        transform: scale(1.2) !important;
+      }
+
+      &:hover {
+        opacity: 0.8 !important;
+        transform: scale(1.1) !important;
+      }
+    }
+  }
+
+  // ==========================================
+  // BOTONES DE NAVEGACIÓN - MEJORADOS
+  // ==========================================
+  &_prev,
+  &_next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 11;
+    width: $nav-button-size;
+    height: $nav-button-size;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(rem(8px));
+    border: rem(1px) solid var(--neutral-700);
+    box-shadow: 0 rem(2px) rem(8px) rgba(0, 0, 0, 0.15);
+    background-color: rgba(var(--background-100-rgb, 255, 255, 255), 0.95);
+
+    @include responsive($breakpoint-sm) {
+      width: rem(40px);
+      height: rem(40px);
+    }
+
+    i {
+      font-size: rem(24px);
+      color: var(--primary);
+      z-index: 100;
+      transition: all 0.3s ease;
+
+      @include responsive($breakpoint-sm) {
+        font-size: rem(20px);
+      }
+    }
+
+    &:hover {
+      transform: translateY(-50%) scale(1.05);
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary-500);
+      box-shadow: 0 rem(4px) rem(12px) rgba(var(--primary-rgb), 0.2);
+
+      i {
+        color: var(--primary-600);
+      }
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateY(-50%) scale(0.8);
+    }
+
+    &.swiper-button-hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      display: none !important;
+    }
+
+    &.show-navigation {
+      display: flex !important;
+      opacity: 1;
+      visibility: visible;
+
+      @include responsive($breakpoint-sm) {
+        display: flex !important;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  &_prev {
+    left: rem(1px);
+
+    @include responsive($breakpoint-sm) {
+      left: rem(8px);
+    }
+
+    @include responsive($breakpoint-md) {
+      left: rem(16px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      left: rem(24px);
+    }
+  }
+
+  &_next {
+    right: rem(1px);
+
+    @include responsive($breakpoint-sm) {
+      right: rem(8px);
+    }
+
+    @include responsive($breakpoint-md) {
+      right: rem(16px);
+    }
+
+    @include responsive($breakpoint-lg) {
+      right: rem(24px);
+    }
+  }
+
+  // ==========================================
+  // OPTIMIZACIONES PARA POCOS SLIDES
+  // ==========================================
+  .swiper-container-lock & {
+    &_slides {
+      justify-content: center;
+    }
+
+    &_wrapper {
+      padding: rem(20px) 0;
+    }
+
+    &_pagination {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    &_carousel {
+      @include responsive($breakpoint-xl) {
+        &::before,
+        &::after {
+          opacity: 0 !important;
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // TEMA OSCURO - MEJORADO
+  // ==========================================
+  @include dark-theme {
+    &_prev,
+    &_next {
+      z-index: 11;
+      background-color: rgba(var(--background-200-rgb), 0.95);
+      border-color: var(--neutral-600);
+
+      &:hover {
+        background-color: rgba(var(--primary-rgb), 0.15);
+        border-color: var(--primary-400);
+      }
+
+      &.swiper-button-disabled {
+        background-color: rgba(var(--neutral-rgb), 0.2);
+        border-color: var(--neutral-800);
+      }
+    }
+
+    &_pagination {
+      .swiper-pagination-bullet {
+        background: var(--primary-400);
+        opacity: 0.4;
+
+        &.swiper-pagination-bullet-active {
+          background: var(--primary-300);
+          opacity: 1;
+        }
+
+        &:hover:not(.swiper-pagination-bullet-active) {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // SISTEMA DE PESTAÑAS MODERNO
+  // ==========================================
+  &__tabs-container {
+    width: 100%;
+  }
+
+  &__tabs-nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+  }
+
+  &__tabs-wrapper {
+    display: inline-flex;
+    padding: rem(6px);
+    background: var(--background-200);
+    border-radius: rem(16px);
+    border: rem(1px) solid var(--neutral-800);
+    box-shadow:
+      0 rem(4px) rem(12px) rgba(0, 0, 0, 0.05),
+      0 rem(2px) rem(4px) rgba(0, 0, 0, 0.02);
+    position: relative;
+    backdrop-filter: blur(rem(8px));
+    gap: rem(8px);
+
+    @include dark-theme {
+      background: var(--background-300);
+      border-color: var(--neutral-700);
+      box-shadow:
+        0 rem(4px) rem(12px) rgba(0, 0, 0, 0.2),
+        0 rem(2px) rem(4px) rgba(0, 0, 0, 0.1);
+    }
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(8px);
+      border-radius: rem(20px);
+      gap: rem(10px);
+    }
+  }
+
+  &__tab-button {
+    display: flex;
+    align-items: center;
+    gap: rem(8px);
+    padding: rem(12px) rem(20px);
+    border: none;
+    background: transparent;
+    color: var(--neutral-500);
+    font-size: var(--font-size-paragraph);
+    font-weight: var(--font-weight-medium);
+    border-radius: rem(12px);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+    min-width: rem(140px);
+    justify-content: center;
+
+    @include responsive($breakpoint-sm) {
+      padding: rem(14px) rem(24px);
+      font-size: var(--font-size-h6);
+      border-radius: rem(14px);
+      min-width: rem(160px);
+      gap: rem(10px);
+    }
+
+    i {
+      font-size: rem(18px);
+      transition: transform 0.3s ease;
+
+      @include responsive($breakpoint-sm) {
+        font-size: rem(20px);
+      }
+    }
+
+    span {
+      font-weight: var(--font-weight-medium);
+      transition: font-weight 0.3s ease;
+    }
+
+    &:hover:not(.active) {
+      color: var(--primary-600);
+      background: rgba(var(--primary-rgb), 0.08);
+      transform: translateY(rem(-1px));
+
+      i {
+        transform: scale(1.1);
+      }
+    }
+
+    &.active {
+      background: var(--primary);
+      color: var(--neutral);
+      font-weight: var(--font-weight-semibold);
+      box-shadow:
+        0 rem(3px) rem(8px) rgba(var(--primary-rgb), 0.3),
+        0 rem(1px) rem(3px) rgba(var(--primary-rgb), 0.2);
+
+      span {
+        font-weight: var(--font-weight-semibold);
+      }
+
+      i {
+        transform: scale(1.1);
+      }
+
+      &:hover {
+        background: var(--primary-600);
+        transform: translateY(rem(-2px));
+        box-shadow:
+          0 rem(4px) rem(12px) rgba(var(--primary-rgb), 0.4),
+          0 rem(2px) rem(4px) rgba(var(--primary-rgb), 0.3);
+      }
+    }
+
+    &:focus-visible {
+      outline: rem(2px) solid var(--primary);
+      outline-offset: rem(3px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    @include dark-theme {
+      color: var(--neutral-400);
+
+      &:hover:not(.active) {
+        color: var(--primary-400);
+        background: rgba(var(--primary-rgb), 0.12);
+      }
+
+      &.active {
+        background: var(--primary-600);
+        color: var(--neutral-100);
+
+        &:hover {
+          background: var(--primary-500);
+        }
+      }
+    }
+  }
+
+  &__tabs-content {
+    width: 100%;
+  }
+
+  &__tab-panel {
+    width: 100%;
+
+    &.hidden {
+      display: none;
+    }
+
+    &:not(.hidden) {
+      animation: fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+  }
+
+  // ==========================================
+  // CONTENIDO DE JORNADA
+  // ==========================================
+  &_jornada-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &_description {
+    margin-bottom: 0;
+    color: var(--neutral-600);
+    text-align: center;
+    max-width: rem(500px);
+    font-size: var(--font-size-paragraph);
+    line-height: 1.6;
+
+    @include responsive($breakpoint-sm) {
+      font-size: var(--font-size-h6);
+    }
+
+    @include dark-theme {
+      color: var(--neutral-400);
+    }
+  }
+
+}
+
+// ==========================================
+// ANIMACIONES MEJORADAS
+// ==========================================
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translateY(rem(30px)) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(rem(-30px));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// ==========================================
+// CLASES GLOBALES DE SWIPER - OPTIMIZADAS
+// ==========================================
+.swiper {
+  overflow: visible;
+
+  &.swiper-container-lock {
+    .swiper-slide-button {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .swiper-pagination {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  }
+
+  .swiper-slide-button,
+  .swiper-pagination {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .swiper-pagination {
+    position: static !important;
+    margin-top: var(--spacing-md);
+  }
+}
