@@ -124,16 +124,12 @@ const Proyectos = () => {
               ))}
             </div>
 
-            <div className='carousel-controls' id='carousel-controls'>
-              <button className='carousel-control prev' id='carousel-prev' type='button' aria-label='Slide anterior'>
-                <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
-              </button>
-              <button className='carousel-control next' id='carousel-next' type='button' aria-label='Slide siguiente'>
-                <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
-              </button>
-            </div>
+            {/* Botones de navegación de Swiper */}
+            <div className='swiper-button-prev' id='carousel-prev'></div>
+            <div className='swiper-button-next' id='carousel-next'></div>
 
-            <div className='carousel-indicators' id='carousel-indicators' aria-label='Paginación del carrusel'></div>
+            {/* Paginación de Swiper */}
+            <div className='swiper-pagination'></div>
           </div>
         </div>
       </Container>

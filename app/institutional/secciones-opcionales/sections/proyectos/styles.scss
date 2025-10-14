@@ -22,6 +22,8 @@
       width: 100%;
       overflow: hidden;
 
+      // Configuración para los indicadores de desbordamiento
+      /*
       &::before,
       &::after {
         content: '';
@@ -37,18 +39,18 @@
 
       &::before {
         left: 0;
-        background: linear-gradient(90deg, rgba(var(--neutral-rgb), 0.55) 0%, rgba(var(--neutral-rgb), 0) 100%);
+        background: linear-gradient(90deg, rgba(var(--neutral-rgb), 1) 0%, rgba(var(--neutral-rgb), 0) 100%);
       }
 
       &::after {
         right: 0;
-        background: linear-gradient(270deg, rgba(var(--neutral-rgb), 0.55) 0%, rgba(var(--neutral-rgb), 0) 100%);
+        background: linear-gradient(270deg, rgba(var(--neutral-rgb), 1) 0%, rgba(var(--neutral-rgb), 0) 100%);
       }
 
       &.hero-carousel__viewport--overflow::before,
       &.hero-carousel__viewport--overflow::after {
         opacity: 1;
-      }
+      } */
     }
 
     .carousel-title {
@@ -71,89 +73,89 @@
     @include project-card();
 
     // ============================================
-    // NAVEGACIÓN
+    // NAVEGACIÓN - Estilización de botones Swiper
     // ============================================
-    .carousel-controls {
-      position: absolute;
-      inset: 50% 0 auto 0;
+    .swiper-button-prev,
+    .swiper-button-next {
+      // Ocultar en móvil
       display: none;
-      justify-content: space-between;
-      padding: 0 var(--spacing-lg);
-      transform: translateY(-50%);
-      pointer-events: none;
-      z-index: 5;
-    }
 
-    .carousel-control {
-      pointer-events: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include responsive($breakpoint-md) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      // Resetear estilos por defecto de Swiper
+      &::after {
+        display: none; // Ocultar la flecha por defecto de Swiper
+      }
+
+      // Estilos personalizados
       width: rem(44px);
       height: rem(44px);
       border-radius: 50%;
-      border: none;
       background: rgba(255, 255, 255, 0.9);
       box-shadow: 0 10px 30px rgba(8, 12, 31, 0.2);
       transition: transform 0.2s ease;
-      z-index: 6;
       cursor: pointer;
+      margin-top: calc(-1 * rem(22px)); // Centrar verticalmente (mitad de la altura)
 
-      &:hover:not(:disabled) {
+      // Estilos para el icono de Phosphor
+      i {
+        font-size: rem(24px);
+        color: var(--brand-primary-600);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &:hover:not(.swiper-button-disabled) {
         transform: scale(1.05);
       }
 
-      &:disabled {
+      &.swiper-button-disabled {
         opacity: 0.35;
         cursor: not-allowed;
-      }
-
-      i {
-        font-size: rem(20px);
-        color: var(--brand-primary-600);
+        pointer-events: none;
       }
     }
 
-    @include responsive($breakpoint-md) {
-      .carousel-controls {
-        display: flex;
-      }
+    .swiper-button-prev {
+      left: var(--spacing-lg);
+    }
+
+    .swiper-button-next {
+      right: var(--spacing-lg);
     }
 
     @media (max-width: 767px) {
-      .carousel-controls {
+      .swiper-button-prev,
+      .swiper-button-next {
         display: none;
       }
     }
 
     // ============================================
-    // INDICADORES
+    // PAGINACIÓN - Estilización de bullets Swiper
     // ============================================
-    .carousel-indicators {
-      display: flex;
-      justify-content: center;
-      gap: rem(10px);
-      margin: rem(24px) 0 0;
+    .swiper-pagination {
+      position: relative;
+      margin-top: rem(24px);
 
-      &.is-single {
-        display: none;
-      }
-    }
+      .swiper-pagination-bullet {
+        width: rem(10px);
+        height: rem(10px);
+        background: var(--neutral-900);
+        opacity: 1;
+        margin: 0 rem(2px);
+        transition:
+          background-color 0.2s ease,
+          transform 0.2s ease;
 
-    .indicator {
-      width: rem(10px);
-      height: rem(10px);
-      border-radius: 50%;
-      border: none;
-      background: var(--neutral-200);
-      transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
-      cursor: pointer;
-
-      &.active {
-        background: var(--brand-primary-500);
-        transform: scale(1.2);
+        &.swiper-pagination-bullet-active {
+          background: var(--primary-500);
+        }
       }
     }
   }

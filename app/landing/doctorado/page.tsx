@@ -29,34 +29,34 @@ export default function Doctorado() {
         <Video />
       </ViewComponent> */}
 
-      {/* <Proyectos /> */}
-      <ViewComponent path={`${optionalPath}/sections/proyectos`}>
+      <Proyectos />
+      {/* <ViewComponent path={`${optionalPath}/sections/proyectos`}>
         <Proyectos />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <DocentesDoctorado /> */}
-      <ViewComponent path={`${basePath}/sections/docentesDoctorado`}>
+      {/* <ViewComponent path={`${basePath}/sections/docentesDoctorado`}>
         <DocentesDoctorado />
-      </ViewComponent>
+      </ViewComponent> */}
 
-      <ViewComponent path={`${basePath}/sections/queAprenderas`}>
+      {/* <ViewComponent path={`${basePath}/sections/queAprenderas`}>
         <QueAprenderas />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Investigaciones /> */}
-      <ViewComponent path={`${basePath}/sections/investigaciones`}>
+      {/* <ViewComponent path={`${basePath}/sections/investigaciones`}>
         <Investigaciones />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <RedesSociales /> */}
-      <ViewComponent path={`${basePath}/sections/redesSociales`}>
+      {/* <ViewComponent path={`${basePath}/sections/redesSociales`}>
         <RedesSociales />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Snies /> */}
-      <ViewComponent path={`${basePath}/sections/Snies`}>
+      {/* <ViewComponent path={`${basePath}/sections/Snies`}>
         <Snies />
-      </ViewComponent>
+      </ViewComponent> */}
     </>
   )
 }
