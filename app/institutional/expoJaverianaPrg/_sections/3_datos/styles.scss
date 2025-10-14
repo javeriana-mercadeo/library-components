@@ -210,6 +210,7 @@
   &__image {
     width: 100%;
     height: auto;
+    aspect-ratio: 4/3;
     border-radius: 50px;
     object-fit: cover;
     box-shadow: var(--shadow-lg);
@@ -259,7 +260,7 @@
       padding-left: var(--spacing-lg);
       border-radius: 0 50px 50px 0;
       width: 100vw;
-      margin-left: calc(-1 * var(--spacing-lg));
+      margin-left: calc(-1 * var(--spacing-4xl));
     }
 
     // Móvil: breakout centrado con técnica estándar
@@ -289,7 +290,7 @@
   &__benefit-item {
     position: relative;
     padding-left: var(--spacing-xl);
-    font-size: var(--font-size-paragraph);
+    font-size: var(--font-size-heading);
     font-weight: var(--font-weight-regular);
     line-height: 1.6;
     color: var(--primary-700);
