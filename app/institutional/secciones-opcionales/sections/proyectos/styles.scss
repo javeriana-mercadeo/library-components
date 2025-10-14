@@ -9,7 +9,6 @@
   &.hero-carousel {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xl);
     width: 100%;
 
     .hero-carousel__header {
@@ -141,7 +140,7 @@
     // ============================================
     .swiper-pagination {
       position: relative;
-      margin-top: rem(24px);
+      margin-top: rem(32px);
 
       .swiper-pagination-bullet {
         width: rem(10px);

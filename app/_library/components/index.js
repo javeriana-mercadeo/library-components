@@ -17,6 +17,7 @@ export { default as Logo } from './logo_institucional' // Clear alias
 export { default as LogoInstitucional } from './logo_institucional'
 export { default as LogoInstitucionalBlanco } from './logo_institucional_blanco'
 export { default as LiferayDevBanner } from './liferay_dev_banner'
+export { default as Modal } from './feedback/modal'
 
 // Convenience aliases (for backward compatibility and ease of use)
 export { default as UC } from './UniversalComponent'
