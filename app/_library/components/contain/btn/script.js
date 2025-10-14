@@ -1,9 +1,26 @@
 /**
- * script.js - Efecto de onda optimizado para botones
- * Versión optimizada para mejor rendimiento y compatibilidad SSR
+ * @fileoverview Button Ripple Effect System - Sistema de efectos de onda para botones
+ * @description Sistema optimizado de efectos visuales tipo Material Design para botones,
+ * compatible con SSR, altamente performante y con soporte para modales dinámicos.
+ * @version 2.0.0
  */
 
-// Configuración personalizable con mejores defaults
+// ==========================================
+// CONFIGURACIÓN
+// ==========================================
+
+/**
+ * @typedef {Object} RippleConfig
+ * @property {string} buttonSelector - Selector CSS para los botones
+ * @property {string} rippleClassName - Clase CSS del efecto ripple
+ * @property {number} animationDuration - Duración de la animación en ms
+ * @property {number} rippleSize - Tamaño del ripple en px
+ * @property {boolean} enableMutationObserver - Habilitar observador de mutaciones
+ * @property {Array<string>} disabledClasses - Clases que indican botón deshabilitado
+ * @property {number} throttleDelay - Delay del throttle para performance
+ * @property {number} maxRipples - Máximo de ripples simultáneos por botón
+ * @property {boolean} useRAF - Usar requestAnimationFrame
+ */
 const CONFIG = {
   buttonSelector: '[data-dmpa-element-id="btn"]',
   rippleClassName: 'btn-ripple-effect',
@@ -11,235 +28,355 @@ const CONFIG = {
   rippleSize: 180,
   enableMutationObserver: true,
   disabledClasses: ['disabled', 'btn-disabled'],
-  // Nuevas opciones de optimización
-  throttleDelay: 16, // ~60fps para mejor rendimiento
-  maxRipples: 3, // Máximo de ripples simultáneos por botón
-  useRAF: true // Usar requestAnimationFrame para animaciones
+  throttleDelay: 16, // ~60fps
+  maxRipples: 3,
+  useRAF: true
 }
 
-// Cache optimizado para botones procesados
-const processedButtons = new WeakMap()
-const activeRipples = new WeakMap() // Tracking de ripples activos
+// ==========================================
+// CLASE PRINCIPAL: RippleEffectSystem
+// ==========================================
 
-// Pool de elementos ripple para reutilización (mejor performance)
-const ripplePool = {
-  pool: [],
-  maxSize: 20,
+/**
+ * @class RippleEffectSystem
+ * @description Sistema completo de gestión de efectos ripple con optimizaciones de performance
+ */
+class RippleEffectSystem {
+  constructor() {
+    /** @private {WeakMap<Element, boolean>} Botones ya procesados */
+    this.processedButtons = new WeakMap()
 
-  get() {
-    if (this.pool.length > 0) {
-      return this.pool.pop()
+    /** @private {WeakMap<Element, Array>} Ripples activos por botón */
+    this.activeRipples = new WeakMap()
+
+    /** @private {MutationObserver|null} Observador de mutaciones DOM */
+    this.mutationObserver = null
+
+    /** @private {Object} Pool de elementos ripple para reutilización */
+    this.ripplePool = {
+      pool: [],
+      maxSize: 20
+    }
+
+    /** @private {boolean} Estado de inicialización del sistema */
+    this.initialized = false
+  }
+
+  // ==========================================
+  // MÉTODOS DE GESTIÓN DE RIPPLE POOL
+  // ==========================================
+
+  /**
+   * Obtiene un elemento ripple del pool o crea uno nuevo
+   * @returns {HTMLElement}
+   * @private
+   */
+  _getRippleFromPool() {
+    if (this.ripplePool.pool.length > 0) {
+      return this.ripplePool.pool.pop()
     }
 
     const ripple = document.createElement('span')
     ripple.className = CONFIG.rippleClassName
     return ripple
-  },
+  }
 
-  release(ripple) {
-    if (this.pool.length < this.maxSize) {
-      // Limpiar el elemento antes de devolverlo al pool
+  /**
+   * Devuelve un elemento ripple al pool para reutilización
+   * @param {HTMLElement} ripple - Elemento a devolver
+   * @private
+   */
+  _releaseRippleToPool(ripple) {
+    if (this.ripplePool.pool.length < this.ripplePool.maxSize) {
+      // Limpiar el elemento antes de devolverlo
       ripple.style.cssText = ''
       ripple.classList.value = CONFIG.rippleClassName
-      this.pool.push(ripple)
+      this.ripplePool.pool.push(ripple)
     }
   }
-}
 
-// Función optimizada para crear el efecto de onda
-const createRippleEffect = event => {
-  if (typeof document === 'undefined') return
+  // ==========================================
+  // MÉTODOS DE CONTROL DEL EFECTO RIPPLE
+  // ==========================================
 
-  const button = event.currentTarget
+  /**
+   * Crea el efecto ripple en un botón
+   * @param {Event} event - Evento de click
+   * @private
+   */
+  _createRippleEffect(event) {
+    if (typeof document === 'undefined') return
 
-  // Verificaciones de estado optimizadas
-  if (
-    button.disabled ||
-    button.getAttribute('aria-disabled') === 'true' ||
-    CONFIG.disabledClasses.some(cls => button.classList.contains(cls))
-  ) {
-    return
+    const button = event.currentTarget
+
+    // Verificar si el botón está deshabilitado
+    if (this._isButtonDisabled(button)) return
+
+    // Verificar límite de ripples activos
+    if (this._hasMaxRipples(button)) return
+
+    // Crear y configurar el ripple
+    this._addRippleToButton(button, event)
   }
 
-  // Control de ripples máximos por botón
-  const currentRipples = activeRipples.get(button) || []
-  if (currentRipples.length >= CONFIG.maxRipples) {
-    return
+  /**
+   * Verifica si un botón está deshabilitado
+   * @param {HTMLElement} button - Elemento botón
+   * @returns {boolean}
+   * @private
+   */
+  _isButtonDisabled(button) {
+    return (
+      button.disabled ||
+      button.getAttribute('aria-disabled') === 'true' ||
+      CONFIG.disabledClasses.some(cls => button.classList.contains(cls))
+    )
   }
 
-  // Usar getBoundingClientRect con caching para mejor performance
-  const buttonRect = button.getBoundingClientRect()
+  /**
+   * Verifica si un botón alcanzó el máximo de ripples
+   * @param {HTMLElement} button - Elemento botón
+   * @returns {boolean}
+   * @private
+   */
+  _hasMaxRipples(button) {
+    const currentRipples = this.activeRipples.get(button) || []
+    return currentRipples.length >= CONFIG.maxRipples
+  }
 
-  // Calcular posición del clic relativa al botón
-  const rippleX = event.clientX - buttonRect.left
-  const rippleY = event.clientY - buttonRect.top
+  /**
+   * Añade un ripple al botón
+   * @param {HTMLElement} button - Elemento botón
+   * @param {Event} event - Evento de click
+   * @private
+   */
+  _addRippleToButton(button, event) {
+    // Calcular posición del ripple
+    const buttonRect = button.getBoundingClientRect()
+    const rippleX = event.clientX - buttonRect.left
+    const rippleY = event.clientY - buttonRect.top
 
-  // Obtener ripple del pool
-  const ripple = ripplePool.get()
+    // Obtener ripple del pool
+    const ripple = this._getRippleFromPool()
 
-  // Configurar posición y tamaño
-  const halfSize = CONFIG.rippleSize / 2
-  ripple.style.cssText = `
-    left: ${rippleX}px;
-    top: ${rippleY}px;
-    width: ${CONFIG.rippleSize}px;
-    height: ${CONFIG.rippleSize}px;
-    margin-top: -${halfSize}px;
-    margin-left: -${halfSize}px;
-  `
+    // Configurar posición y tamaño
+    this._configureRipple(ripple, rippleX, rippleY)
 
-  // Añadir al botón
-  button.appendChild(ripple)
+    // Añadir al DOM
+    button.appendChild(ripple)
 
-  // Tracking de ripples activos
-  currentRipples.push(ripple)
-  activeRipples.set(button, currentRipples)
+    // Registrar ripple activo
+    this._trackRipple(button, ripple)
 
-  // Función de limpieza optimizada
-  const cleanup = () => {
+    // Programar limpieza
+    this._scheduleRippleCleanup(button, ripple)
+  }
+
+  /**
+   * Configura la posición y tamaño del ripple
+   * @param {HTMLElement} ripple - Elemento ripple
+   * @param {number} x - Posición X
+   * @param {number} y - Posición Y
+   * @private
+   */
+  _configureRipple(ripple, x, y) {
+    const halfSize = CONFIG.rippleSize / 2
+    ripple.style.cssText = `
+      left: ${x}px;
+      top: ${y}px;
+      width: ${CONFIG.rippleSize}px;
+      height: ${CONFIG.rippleSize}px;
+      margin-top: -${halfSize}px;
+      margin-left: -${halfSize}px;
+    `
+  }
+
+  /**
+   * Registra un ripple como activo
+   * @param {HTMLElement} button - Elemento botón
+   * @param {HTMLElement} ripple - Elemento ripple
+   * @private
+   */
+  _trackRipple(button, ripple) {
+    const currentRipples = this.activeRipples.get(button) || []
+    currentRipples.push(ripple)
+    this.activeRipples.set(button, currentRipples)
+  }
+
+  /**
+   * Programa la limpieza de un ripple
+   * @param {HTMLElement} button - Elemento botón
+   * @param {HTMLElement} ripple - Elemento ripple
+   * @private
+   */
+  _scheduleRippleCleanup(button, ripple) {
+    const cleanup = () => {
+      this._cleanupRipple(button, ripple)
+    }
+
+    if (CONFIG.useRAF && typeof requestAnimationFrame !== 'undefined') {
+      setTimeout(() => requestAnimationFrame(cleanup), CONFIG.animationDuration)
+    } else {
+      setTimeout(cleanup, CONFIG.animationDuration)
+    }
+  }
+
+  /**
+   * Limpia un ripple del DOM y del tracking
+   * @param {HTMLElement} button - Elemento botón
+   * @param {HTMLElement} ripple - Elemento ripple
+   * @private
+   */
+  _cleanupRipple(button, ripple) {
+    // Remover del DOM
     if (ripple.parentNode === button) {
       button.removeChild(ripple)
     }
 
     // Remover del tracking
-    const ripples = activeRipples.get(button) || []
+    const ripples = this.activeRipples.get(button) || []
     const index = ripples.indexOf(ripple)
     if (index > -1) {
       ripples.splice(index, 1)
       if (ripples.length === 0) {
-        activeRipples.delete(button)
+        this.activeRipples.delete(button)
       } else {
-        activeRipples.set(button, ripples)
+        this.activeRipples.set(button, ripples)
       }
     }
 
     // Devolver al pool
-    ripplePool.release(ripple)
+    this._releaseRippleToPool(ripple)
   }
 
-  // Usar requestAnimationFrame si está disponible
-  if (CONFIG.useRAF && typeof requestAnimationFrame !== 'undefined') {
-    setTimeout(() => {
-      requestAnimationFrame(cleanup)
-    }, CONFIG.animationDuration)
-  } else {
-    setTimeout(cleanup, CONFIG.animationDuration)
-  }
-}
+  // ==========================================
+  // MÉTODOS DE INICIALIZACIÓN
+  // ==========================================
 
-// Función throttled para mejor rendimiento en eventos masivos
-const throttle = (func, delay) => {
-  let timeoutId
-  let lastExecTime = 0
+  /**
+   * Aplica el efecto ripple a un botón individual
+   * @param {HTMLElement} button - Elemento botón
+   * @private
+   */
+  _applyRippleToButton(button) {
+    // Verificar si ya está procesado
+    if (this.processedButtons.has(button)) return
 
-  return function (...args) {
-    const currentTime = Date.now()
+    // Marcar como procesado
+    this.processedButtons.set(button, true)
 
-    if (currentTime - lastExecTime > delay) {
-      func.apply(this, args)
-      lastExecTime = currentTime
-    } else {
-      clearTimeout(timeoutId)
-      timeoutId = setTimeout(
-        () => {
-          func.apply(this, args)
-          lastExecTime = Date.now()
-        },
-        delay - (currentTime - lastExecTime)
-      )
+    // Crear handler con throttle
+    const rippleHandler = this._createThrottledHandler()
+
+    // Añadir event listeners
+    button.addEventListener('click', rippleHandler, { passive: true })
+
+    // Soporte para touch en dispositivos móviles
+    if ('ontouchstart' in window) {
+      button.addEventListener('touchstart', rippleHandler, { passive: true })
     }
   }
-}
 
-// Función optimizada para aplicar el efecto a un botón
-const applyRippleToButton = button => {
-  // Verificar si ya está procesado
-  if (processedButtons.has(button)) {
-    return
+  /**
+   * Crea un handler con throttle para el efecto ripple
+   * @returns {Function}
+   * @private
+   */
+  _createThrottledHandler() {
+    if (CONFIG.throttleDelay > 0) {
+      return this._throttle(event => this._createRippleEffect(event), CONFIG.throttleDelay)
+    }
+    return event => this._createRippleEffect(event)
   }
 
-  // Marcar como procesado
-  processedButtons.set(button, true)
+  /**
+   * Función throttle para optimizar performance
+   * @param {Function} func - Función a throttlear
+   * @param {number} delay - Delay en ms
+   * @returns {Function}
+   * @private
+   */
+  _throttle(func, delay) {
+    let timeoutId
+    let lastExecTime = 0
 
-  // Crear versión throttled del efecto si es necesario
-  const rippleHandler = CONFIG.throttleDelay > 0 ? throttle(createRippleEffect, CONFIG.throttleDelay) : createRippleEffect
+    return function (...args) {
+      const currentTime = Date.now()
 
-  // Añadir event listener optimizado
-  button.addEventListener('click', rippleHandler, { passive: true })
-
-  // Opcional: Añadir soporte para touch en dispositivos móviles
-  if ('ontouchstart' in window) {
-    button.addEventListener('touchstart', rippleHandler, { passive: true })
-  }
-}
-
-// Función principal optimizada con IntersectionObserver
-const initializeRippleEffect = () => {
-  if (typeof document === 'undefined') return
-
-  // Usar DocumentFragment para mejor performance si hay muchos botones
-  const fragment = document.createDocumentFragment()
-
-  try {
-    const buttonList = document.querySelectorAll(CONFIG.buttonSelector)
-
-    // Batch processing para mejor performance
-    const processBatch = (buttons, batchSize = 50) => {
-      for (let i = 0; i < buttons.length; i += batchSize) {
-        const batch = Array.from(buttons).slice(i, i + batchSize)
-
-        // Usar requestIdleCallback si está disponible
-        if (typeof requestIdleCallback !== 'undefined') {
-          requestIdleCallback(() => {
-            batch.forEach(applyRippleToButton)
-          })
-        } else {
-          setTimeout(() => {
-            batch.forEach(applyRippleToButton)
-          }, 0)
-        }
+      if (currentTime - lastExecTime > delay) {
+        func.apply(this, args)
+        lastExecTime = currentTime
+      } else {
+        clearTimeout(timeoutId)
+        timeoutId = setTimeout(
+          () => {
+            func.apply(this, args)
+            lastExecTime = Date.now()
+          },
+          delay - (currentTime - lastExecTime)
+        )
       }
     }
-
-    processBatch(buttonList)
-  } catch (error) {
-    console.warn('Error al aplicar efecto de onda a los botones:', error)
   }
-}
 
-// Inicialización mejorada con mejor detección de estado
-const initSafelyInBrowser = () => {
-  if (typeof document === 'undefined') return
+  /**
+   * Inicializa el efecto ripple en todos los botones
+   * @public
+   */
+  initializeRippleEffect() {
+    if (typeof document === 'undefined') return
 
-  const initialize = () => {
-    // Usar requestIdleCallback para inicialización no bloqueante
-    if (typeof requestIdleCallback !== 'undefined') {
-      requestIdleCallback(initializeRippleEffect, { timeout: 1000 })
-    } else {
-      setTimeout(initializeRippleEffect, 100)
+    try {
+      const buttonList = document.querySelectorAll(CONFIG.buttonSelector)
+
+      // Procesar botones en lotes para mejor performance
+      this._processBatch(buttonList)
+    } catch (error) {
+      console.warn('[ButtonRipple] Error al aplicar efecto:', error)
     }
   }
 
-  // Detección mejorada del estado de carga
-  if (document.readyState === 'complete') {
-    initialize()
-  } else if (document.readyState === 'interactive') {
-    // DOM ya está listo, pero recursos pueden estar cargando
-    initialize()
-  } else {
-    // Esperamos a DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', initialize, { once: true })
+  /**
+   * Procesa botones en lotes para optimizar performance
+   * @param {NodeList} buttons - Lista de botones
+   * @param {number} batchSize - Tamaño del lote
+   * @private
+   */
+  _processBatch(buttons, batchSize = 50) {
+    for (let i = 0; i < buttons.length; i += batchSize) {
+      const batch = Array.from(buttons).slice(i, i + batchSize)
+
+      if (typeof requestIdleCallback !== 'undefined') {
+        requestIdleCallback(() => {
+          batch.forEach(button => this._applyRippleToButton(button))
+        })
+      } else {
+        setTimeout(() => {
+          batch.forEach(button => this._applyRippleToButton(button))
+        }, 0)
+      }
+    }
   }
 
-  // MutationObserver optimizado
-  if (CONFIG.enableMutationObserver && typeof MutationObserver !== 'undefined') {
-    const observer = new MutationObserver(
-      throttle(mutationsList => {
+  // ==========================================
+  // CONFIGURACIÓN DE MUTATION OBSERVER
+  // ==========================================
+
+  /**
+   * Configura el MutationObserver para detectar botones dinámicos
+   * @private
+   */
+  _setupMutationObserver() {
+    if (!CONFIG.enableMutationObserver || typeof MutationObserver === 'undefined') {
+      return
+    }
+
+    this.mutationObserver = new MutationObserver(
+      this._throttle(mutationsList => {
         let shouldInit = false
 
         for (const mutation of mutationsList) {
           if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-            // Verificar solo nodos que realmente pueden contener botones
             for (const node of mutation.addedNodes) {
               if (node.nodeType === Node.ELEMENT_NODE) {
                 if (node.matches?.(CONFIG.buttonSelector) || node.querySelector?.(CONFIG.buttonSelector)) {
@@ -253,18 +390,16 @@ const initSafelyInBrowser = () => {
         }
 
         if (shouldInit) {
-          initializeRippleEffect()
+          this.initializeRippleEffect()
         }
       }, CONFIG.throttleDelay)
     )
 
-    // Iniciar observación cuando el DOM esté listo
     const startObserver = () => {
       if (document.body) {
-        observer.observe(document.body, {
+        this.mutationObserver.observe(document.body, {
           childList: true,
           subtree: true,
-          // Optimización: solo observar cambios relevantes
           attributes: false,
           characterData: false
         })
@@ -281,37 +416,126 @@ const initSafelyInBrowser = () => {
     window.addEventListener(
       'beforeunload',
       () => {
-        observer.disconnect()
+        this.mutationObserver?.disconnect()
       },
       { once: true }
     )
   }
-}
 
-// API pública mejorada
-export const configureRippleEffect = newConfig => {
-  if (typeof newConfig === 'object' && newConfig !== null) {
-    Object.assign(CONFIG, newConfig)
+  // ==========================================
+  // INICIALIZACIÓN PRINCIPAL
+  // ==========================================
+
+  /**
+   * Inicializa el sistema completo de efectos ripple
+   * @public
+   */
+  init() {
+    if (this.initialized) return
+    if (typeof document === 'undefined') return
+
+    const initialize = () => {
+      // Usar requestIdleCallback para inicialización no bloqueante
+      if (typeof requestIdleCallback !== 'undefined') {
+        requestIdleCallback(() => this.initializeRippleEffect(), { timeout: 1000 })
+      } else {
+        setTimeout(() => this.initializeRippleEffect(), 100)
+      }
+
+      // Configurar MutationObserver
+      this._setupMutationObserver()
+
+      this.initialized = true
+    }
+
+    // Verificar estado del DOM
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      initialize()
+    } else {
+      document.addEventListener('DOMContentLoaded', initialize, { once: true })
+    }
+  }
+
+  // ==========================================
+  // API PÚBLICA
+  // ==========================================
+
+  /**
+   * Aplica el efecto ripple a un botón específico
+   * @param {HTMLElement} buttonElement - Elemento botón
+   * @returns {boolean} true si se aplicó correctamente
+   * @public
+   */
+  applyToButton(buttonElement) {
+    if (buttonElement?.nodeType === Node.ELEMENT_NODE) {
+      this._applyRippleToButton(buttonElement)
+      return true
+    }
+    return false
+  }
+
+  /**
+   * Configura el sistema de ripple
+   * @param {Object} newConfig - Nueva configuración
+   * @public
+   */
+  configure(newConfig) {
+    if (typeof newConfig === 'object' && newConfig !== null) {
+      Object.assign(CONFIG, newConfig)
+    }
+  }
+
+  /**
+   * Limpia recursos del sistema (útil para SPAs)
+   * @public
+   */
+  cleanup() {
+    this.activeRipples.clear()
+    this.processedButtons.clear()
+    this.ripplePool.pool.length = 0
+    this.mutationObserver?.disconnect()
+    this.initialized = false
   }
 }
 
-export const applyRippleEffect = buttonElement => {
-  if (buttonElement?.nodeType === Node.ELEMENT_NODE) {
-    applyRippleToButton(buttonElement)
-    return true
-  }
-  return false
+// ==========================================
+// INSTANCIA SINGLETON
+// ==========================================
+
+/** @type {RippleEffectSystem} Instancia singleton del sistema de ripple */
+const rippleSystemInstance = new RippleEffectSystem()
+
+// ==========================================
+// EXPORTS
+// ==========================================
+
+/**
+ * Función de inicialización principal del sistema de ripple
+ * @returns {void}
+ */
+const initializeButtonRippleSystem = () => {
+  rippleSystemInstance.init()
 }
 
-// Función para limpiar recursos (útil para SPA)
-export const cleanupRippleEffect = () => {
-  activeRipples.clear()
-  processedButtons.clear()
-  ripplePool.pool.length = 0
-}
+/**
+ * Aplica el efecto ripple a un botón específico
+ * @param {HTMLElement} buttonElement - Elemento botón
+ * @returns {boolean}
+ */
+export const applyRippleEffect = buttonElement => rippleSystemInstance.applyToButton(buttonElement)
 
-// Ejecutar inicialización
-initSafelyInBrowser()
+/**
+ * Configura el sistema de ripple
+ * @param {Object} newConfig - Nueva configuración
+ */
+export const configureRippleEffect = newConfig => rippleSystemInstance.configure(newConfig)
 
-// Export por defecto
-export default initializeRippleEffect
+/**
+ * Limpia recursos del sistema
+ */
+export const cleanupRippleEffect = () => rippleSystemInstance.cleanup()
+
+/**
+ * Export default de la función de inicialización principal
+ */
+export default initializeButtonRippleSystem

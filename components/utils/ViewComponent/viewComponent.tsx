@@ -184,7 +184,29 @@ export default function ViewComponent({ path, children }: { path?: string; child
 
       if (children) {
         try {
-          const htmlString = ReactDOMServer.renderToString(children)
+          // Función recursiva para clonar y agregar staticMode a todos los componentes
+          const addStaticModeRecursively = (element: any): any => {
+            if (!React.isValidElement(element)) {
+              return element
+            }
+
+            // Clonar el elemento con staticMode
+            const props = {
+              ...(element.props || {}),
+              staticMode: true
+            }
+
+            // Si tiene children, procesarlos recursivamente
+            if (props.children) {
+              props.children = React.Children.map(props.children, child => addStaticModeRecursively(child))
+            }
+
+            return React.cloneElement(element, props)
+          }
+
+          const childrenWithStaticMode = addStaticModeRecursively(children)
+
+          const htmlString = ReactDOMServer.renderToString(childrenWithStaticMode)
 
           // Limpiar específicamente los links de preload que genera Next.js
           const cleanedHtml = htmlString

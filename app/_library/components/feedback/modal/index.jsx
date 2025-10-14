@@ -1,6 +1,7 @@
 'use client'
 import { useEffect } from 'react'
 import script from './script.js'
+import { Button } from '@library/components'
 
 /**
  * Modal - Componente reutilizable estilo Bootstrap para múltiples instancias
@@ -33,18 +34,22 @@ export default function Modal({
   size = 'md',
   contentClassName = '',
   centered = true,
+  staticMode = false, // Nueva prop para modo estático (ViewComponent)
   ...otherProps
 }) {
   const modalId = `modal-${id}`
   const overlayId = `${modalId}-overlay`
 
   useEffect(() => {
-    script()
-  }, [])
+    // Solo ejecutar el script si NO estamos en modo estático
+    if (!staticMode) {
+      script()
+    }
+  }, [staticMode])
 
-  const overlayClasses = ['modal-overlay', !centered && 'modal-overlay-top', className].filter(Boolean).join(' ')
+  const overlayClasses = ['puj-modal-overlay', !centered && 'puj-modal-overlay-top', className].filter(Boolean).join(' ')
 
-  const contentClasses = ['modal-content', size !== 'md' && `modal-content-${size}`, contentClassName].filter(Boolean).join(' ')
+  const contentClasses = ['puj-modal-content', size !== 'md' && `puj-modal-content-${size}`, contentClassName].filter(Boolean).join(' ')
 
   const handleTriggerClick = () => {
     if (typeof window !== 'undefined') {
@@ -55,7 +60,7 @@ export default function Modal({
   return (
     <>
       {trigger && (
-        <div data-modal-trigger={overlayId} onClick={handleTriggerClick}>
+        <div data-puj-modal-trigger={overlayId} onClick={handleTriggerClick}>
           {trigger}
         </div>
       )}
@@ -72,11 +77,16 @@ export default function Modal({
         {...otherProps}>
         <div className={contentClasses} onClick={e => e.stopPropagation()}>
           {showCloseButton && (
-            <button type='button' className='modal-close-btn' aria-label='Cerrar modal' data-modal-close={overlayId}>
-              <i className='ph ph-x' aria-hidden='true'></i>
-            </button>
+            <Button
+              variant='flat'
+              iconOnly={true}
+              className='puj-modal-close-btn'
+              aria-label='Cerrar modal'
+              data-puj-modal-close={overlayId}
+              isEditable={false}
+              startIcon={<i className='ph ph-x' aria-hidden='true'></i>}></Button>
           )}
-          <div className='modal-body'>{children}</div>
+          <div className='puj-modal-body'>{children}</div>
         </div>
       </div>
     </>

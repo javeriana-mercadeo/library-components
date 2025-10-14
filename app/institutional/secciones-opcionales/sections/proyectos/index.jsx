@@ -3,8 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Container, Title } from '@library/components'
 
-import ProjectCard from './components/project-card'
-import ProjectModal from './components/project-modal'
+import ProjectCard from './components/ProjectCard'
 import script from './script.js'
 import './styles.scss'
 
@@ -133,8 +132,6 @@ const Proyectos = () => {
           </div>
         </div>
       </Container>
-
-      <ProjectModal />
     </section>
   )
 }

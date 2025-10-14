@@ -24,10 +24,10 @@ export default function Doctorado() {
         <Header />
       </ViewComponent> */}
 
-      <Video />
-      {/* <ViewComponent path={`${basePath}/sections/video`}>
+      {/* <Video /> */}
+      <ViewComponent path={`${basePath}/_sections/video`}>
         <Video />
-      </ViewComponent> */}
+      </ViewComponent>
 
       <Proyectos />
       {/* <ViewComponent path={`${optionalPath}/sections/proyectos`}>

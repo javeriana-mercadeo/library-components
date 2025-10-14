@@ -7,7 +7,7 @@ import info from './info.json'
 import script from './script.js'
 import './styles.scss'
 
-const Video = () => {
+const Video = ({ staticMode = false }) => {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -15,12 +15,17 @@ const Video = () => {
   }, [])
 
   useEffect(() => {
-    if (mounted) {
+    // Solo ejecutar el script si NO estamos en modo estático
+    if (mounted && !staticMode) {
       script()
     }
-  }, [mounted])
+  }, [mounted, staticMode])
 
-  if (!mounted) return null
+  // En modo estático, siempre renderizar (para ViewComponent)
+  // En modo normal, esperar a que esté montado (para evitar hydration errors)
+  if (!staticMode && !mounted) {
+    return null
+  }
 
   const elementName = info.id || 'video-doctorado'
 

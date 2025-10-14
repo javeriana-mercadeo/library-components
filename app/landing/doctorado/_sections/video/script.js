@@ -3,8 +3,6 @@
  * Compatible con Liferay y optimizado para producción
  */
 
-import { ModalSystem } from './components/modal-system.js'
-
 function initVideoDoctoradoSystem() {
   const CONFIG = {
     selectors: {
@@ -16,9 +14,6 @@ function initVideoDoctoradoSystem() {
       containerActive: 'active'
     }
   }
-
-  // Instanciar sistema de modales
-  const modalSystem = new ModalSystem()
 
   /**
    * Detectar dispositivo móvil
@@ -147,7 +142,6 @@ function initVideoDoctoradoSystem() {
   function initialize() {
     try {
       initializeVideos()
-      modalSystem.init()
     } catch (error) {
       console.error('[VideoDoctorado] Error durante inicialización:', error)
     }
@@ -160,7 +154,6 @@ function initVideoDoctoradoSystem() {
   if (typeof window !== 'undefined') {
     window.initializeVideoDoctorado = initialize
     window.loadVideoDoctorado = loadVideo
-    window.videoDoctoradoModalSystem = modalSystem
   }
 }
 

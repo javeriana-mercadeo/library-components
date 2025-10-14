@@ -579,7 +579,6 @@ $btn-ripple-duration: 0.6s;
     &:focus-visible {
       outline: rem(2px) solid $color-400;
       outline-offset: rem(2px);
-      border-radius: rem(2px);
       box-shadow: none;
       text-decoration: none;
     }

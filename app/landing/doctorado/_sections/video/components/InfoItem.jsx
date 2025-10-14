@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useMemo } from 'react'
-import { Caption, Paragraph, Button } from '@library/components'
+import { Caption, Paragraph, Button, Modal } from '@library/components'
 
 // Cache para atributos generados
 const attributeCache = new Map()
@@ -64,7 +64,7 @@ const InfoItem = ({ id, icon, label, value, code, type = 'normal', modalContent 
             </>
           )}
 
-          {/* Tipo modal - Clickeable */}
+          {/* Tipo modal - Usa componente Modal de la librería */}
           {type === 'modal' && (
             <div className='info-item__content--clickable'>
               {value && (
@@ -73,16 +73,28 @@ const InfoItem = ({ id, icon, label, value, code, type = 'normal', modalContent 
                 </Paragraph>
               )}
 
-              <Button
-                variant='shadow'
+              {/* Modal con trigger integrado */}
+              <Modal
+                id={modalId || `modal-${id}`}
                 size='sm'
-                className='info-item__action-button'
-                data-modal-target={modalId}
-                aria-label={`Ver más detalles sobre ${label}`}
-                isEditable={false}
-                endIcon={<i className='ph ph-info'></i>}>
-                Ver detalles
-              </Button>
+                trigger={
+                  <Button
+                    variant='shadow'
+                    size='sm'
+                    className='info-item__action-button'
+                    aria-label={`Ver más detalles sobre ${label}`}
+                    isEditable={false}
+                    endIcon={<i className='ph ph-info'></i>}>
+                    Ver detalles
+                  </Button>
+                }>
+                <div className='program-detail-modal__header'>
+                  <Caption as='h3' className='program-detail-modal__title' size='lg' bold={true}>
+                    {label}
+                  </Caption>
+                </div>
+                <div className='program-detail-modal__body'>{modalContent}</div>
+              </Modal>
             </div>
           )}
 
@@ -103,23 +115,6 @@ const InfoItem = ({ id, icon, label, value, code, type = 'normal', modalContent 
           )}
         </div>
       </div>
-
-      {/* Modal pequeño */}
-      {type === 'modal' && modalContent && (
-        <div id={modalId} className='program-detail-modal'>
-          <div className='program-detail-modal__content'>
-            <div className='program-detail-modal__header'>
-              <Caption as='h3' className='program-detail-modal__title' size='lg' bold={true}>
-                {label}
-              </Caption>
-              <button className='program-detail-modal__close' aria-label='Cerrar modal'>
-                <i className='ph ph-x'></i>
-              </button>
-            </div>
-            <div className='program-detail-modal__body'>{modalContent}</div>
-          </div>
-        </div>
-      )}
     </>
   )
 }

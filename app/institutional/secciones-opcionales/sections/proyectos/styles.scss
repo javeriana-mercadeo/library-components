@@ -1,10 +1,12 @@
 @use '@styles/autoload' as *;
-@use './components/project-card/styles.scss' as *;
-@use './components/project-modal/styles.scss' as *;
+@use './components/projectCard.scss' as *;
 
 // ============================================
 // SECCIÓN PROYECTOS DESTACADOS
 // ============================================
+
+@include project-card();
+
 #carousel-section {
   &.hero-carousel {
     display: flex;
@@ -20,36 +22,6 @@
       position: relative;
       width: 100%;
       overflow: hidden;
-
-      // Configuración para los indicadores de desbordamiento
-      /*
-      &::before,
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: rem(48px);
-        pointer-events: none;
-        z-index: 4;
-        transition: opacity 0.3s ease;
-        opacity: 0;
-      }
-
-      &::before {
-        left: 0;
-        background: linear-gradient(90deg, rgba(var(--neutral-rgb), 1) 0%, rgba(var(--neutral-rgb), 0) 100%);
-      }
-
-      &::after {
-        right: 0;
-        background: linear-gradient(270deg, rgba(var(--neutral-rgb), 1) 0%, rgba(var(--neutral-rgb), 0) 100%);
-      }
-
-      &.hero-carousel__viewport--overflow::before,
-      &.hero-carousel__viewport--overflow::after {
-        opacity: 1;
-      } */
     }
 
     .carousel-title {
@@ -65,18 +37,10 @@
     }
 
     // ============================================
-    // CONTENEDOR SWIPER
-    // ============================================
-    // Swiper container adjustments will be re-enabled after debugging
-
-    @include project-card();
-
-    // ============================================
     // NAVEGACIÓN - Estilización de botones Swiper
     // ============================================
     .swiper-button-prev,
     .swiper-button-next {
-      // Ocultar en móvil
       display: none;
 
       @include responsive($breakpoint-md) {
@@ -85,12 +49,10 @@
         justify-content: center;
       }
 
-      // Resetear estilos por defecto de Swiper
       &::after {
-        display: none; // Ocultar la flecha por defecto de Swiper
+        display: none;
       }
 
-      // Estilos personalizados
       width: rem(44px);
       height: rem(44px);
       border-radius: 50%;
@@ -98,9 +60,8 @@
       box-shadow: 0 10px 30px rgba(8, 12, 31, 0.2);
       transition: transform 0.2s ease;
       cursor: pointer;
-      margin-top: calc(-1 * rem(22px)); // Centrar verticalmente (mitad de la altura)
+      margin-top: calc(-1 * rem(22px));
 
-      // Estilos para el icono de Phosphor
       i {
         font-size: rem(24px);
         color: var(--brand-primary-600);
@@ -158,6 +119,4 @@
       }
     }
   }
-
-  @include project-modal();
 }

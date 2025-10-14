@@ -327,8 +327,20 @@ class CookieModalFallback {
   }
 }
 
-// Inicializar cuando el script se carga
-const cookieModalFallback = new CookieModalFallback()
+/**
+ * Función de inicialización del sistema de cookies banner
+ * @returns {CookieModalFallback} Instancia del banner
+ */
+const initializeCacheBanner = () => {
+  const cookieModalFallback = new CookieModalFallback()
 
-// Exportar para uso global si es necesario
-window.CookieModalFallback = CookieModalFallback
+  // Exportar para uso global si es necesario
+  if (typeof window !== 'undefined') {
+    window.CookieModalFallback = CookieModalFallback
+  }
+
+  return cookieModalFallback
+}
+
+// Export por defecto
+export default initializeCacheBanner
