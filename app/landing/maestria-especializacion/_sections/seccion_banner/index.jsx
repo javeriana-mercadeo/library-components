@@ -164,9 +164,9 @@ const Maestria = () => {
                       Fechas de cierre de inscripciones
                     </Caption>
 
-                    <div data-puj-registration-dates='true' className='program-dates_dates'>
+                    <div className='program-dates_dates'>
                       <div className='program-dates_date-item'>
-                        <Paragraph className='program-dates_date-period' color='neutral' size='md' bold={true} isEditable={false}>
+                        <Paragraph data-puj-registration-dates='true' className='program-dates_date-period' color='neutral' size='md' bold={true} isEditable={false}>
                           Cargando fechas...
                         </Paragraph>
                       </div>
@@ -197,7 +197,7 @@ const Maestria = () => {
           <div className={`${baseClass}_enrollment-note-container`}>
             <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
               <span data-puj-snies>Cargando SNIES...</span> | <span data-puj-registry>Cargando registro...</span>{' '}
-              <span data-puj-accreditation isEditable={true}>Cargando acreditación...</span> Duración estimada:{' '}
+              <span data-puj-accreditation>Cargando acreditación...</span> Duración estimada:{' '}
               <span data-puj-duration>Cargando duración...</span> | Lugar donde se oferta:{' '}
               <span data-puj-full-location>Cargando lugar...</span>
             </Paragraph>
