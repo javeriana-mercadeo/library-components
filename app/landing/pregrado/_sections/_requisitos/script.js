@@ -70,6 +70,84 @@ const Logger = {
   }
 }
 
+// ===========================================
+// CONFIGURACIÓN DE EXCLUSIÓN DE PROGRAMAS
+// ===========================================
+
+/**
+ * Configuración para excluir programas de mostrar requisitos de admisión
+ *
+ * @property {boolean} enabled - Activar/desactivar la funcionalidad de exclusión
+ * @property {string[]} programs - Lista de códigos de programa a excluir (case-insensitive)
+ * @property {string} hideMode - Modo de ocultación: 'display' (display:none) o 'remove' (eliminar del DOM)
+ * @property {boolean} logExclusions - Registrar en consola cuando un programa es excluido
+ *
+ * @example
+ * // Para agregar un nuevo código a la lista de exclusión:
+ * programs: ['EMSCL', 'PROG123', 'TEST001']
+ */
+const PROGRAM_EXCLUSION_CONFIG = {
+  enabled: true,
+  programs: [
+    'EMSCL'
+    // Agregar más códigos de programa aquí según sea necesario
+  ],
+  hideMode: 'display', // 'display' (ocultar) o 'remove' (eliminar del DOM)
+  logExclusions: true
+}
+
+/**
+ * Verifica si un código de programa está en la lista de exclusión
+ * @param {string} programCode - Código del programa a verificar
+ * @returns {boolean} true si el programa está excluido, false en caso contrario
+ */
+function isProgramExcluded(programCode) {
+  // Si la funcionalidad está desactivada, ningún programa está excluido
+  if (!PROGRAM_EXCLUSION_CONFIG.enabled) {
+    return false
+  }
+
+  // Validar que se proporcione un código
+  if (!programCode) {
+    return false
+  }
+
+  // Normalizar el código (trim y uppercase) y verificar en la lista
+  const normalizedCode = programCode.trim().toUpperCase()
+  const isExcluded = PROGRAM_EXCLUSION_CONFIG.programs.includes(normalizedCode)
+
+  // Logging opcional para debugging
+  if (isExcluded && PROGRAM_EXCLUSION_CONFIG.logExclusions) {
+    Logger.warn(`Program "${programCode}" is in exclusion list - component will be hidden`)
+  }
+
+  return isExcluded
+}
+
+/**
+ * Oculta el componente de requisitos del DOM
+ * Soporta dos modos: display (ocultar) o remove (eliminar)
+ */
+function hideRequirementsComponent() {
+  const component = document.querySelector('[data-component-id="requisitos"]')
+
+  if (!component) {
+    Logger.warn('Requirements component not found in DOM for hiding')
+    return
+  }
+
+  if (PROGRAM_EXCLUSION_CONFIG.hideMode === 'remove') {
+    // Modo 1: Eliminar completamente del DOM
+    component.remove()
+    Logger.info('Requirements component removed from DOM')
+  } else {
+    // Modo 2: Ocultar con display: none (por defecto)
+    component.style.display = 'none'
+    component.setAttribute('aria-hidden', 'true')
+    Logger.info('Requirements component hidden with display:none')
+  }
+}
+
 /**
  * Inicializa todos los componentes de requisitos de admisión
  */
@@ -461,6 +539,109 @@ window.AdmissionRequirements = {
       initChartInteractions(newComponent)
       initAccessibilityEnhancements(newComponent)
     }
+  },
+
+  // ===========================================
+  // FUNCIONES DE CONTROL DE EXCLUSIÓN
+  // ===========================================
+
+  /**
+   * Obtiene la configuración actual de exclusión
+   * @returns {Object} Configuración de exclusión de programas
+   */
+  getExclusionConfig: function () {
+    return {
+      enabled: PROGRAM_EXCLUSION_CONFIG.enabled,
+      programs: [...PROGRAM_EXCLUSION_CONFIG.programs],
+      hideMode: PROGRAM_EXCLUSION_CONFIG.hideMode,
+      logExclusions: PROGRAM_EXCLUSION_CONFIG.logExclusions
+    }
+  },
+
+  /**
+   * Verifica si un programa está excluido
+   * @param {string} programCode - Código del programa a verificar
+   * @returns {boolean} true si está excluido
+   */
+  isProgramExcluded: function (programCode) {
+    return isProgramExcluded(programCode)
+  },
+
+  /**
+   * Agrega un código de programa a la lista de exclusión
+   * @param {string} programCode - Código del programa a excluir
+   */
+  addExcludedProgram: function (programCode) {
+    if (!programCode) {
+      Logger.warn('Cannot add empty program code to exclusion list')
+      return
+    }
+
+    const normalizedCode = programCode.trim().toUpperCase()
+
+    if (PROGRAM_EXCLUSION_CONFIG.programs.includes(normalizedCode)) {
+      Logger.warn(`Program "${normalizedCode}" is already in exclusion list`)
+      return
+    }
+
+    PROGRAM_EXCLUSION_CONFIG.programs.push(normalizedCode)
+    Logger.info(`Added "${normalizedCode}" to exclusion list`)
+    Logger.info(`Current exclusion list: ${PROGRAM_EXCLUSION_CONFIG.programs.join(', ')}`)
+  },
+
+  /**
+   * Remueve un código de programa de la lista de exclusión
+   * @param {string} programCode - Código del programa a remover
+   */
+  removeExcludedProgram: function (programCode) {
+    if (!programCode) {
+      Logger.warn('Cannot remove empty program code from exclusion list')
+      return
+    }
+
+    const normalizedCode = programCode.trim().toUpperCase()
+    const index = PROGRAM_EXCLUSION_CONFIG.programs.indexOf(normalizedCode)
+
+    if (index === -1) {
+      Logger.warn(`Program "${normalizedCode}" is not in exclusion list`)
+      return
+    }
+
+    PROGRAM_EXCLUSION_CONFIG.programs.splice(index, 1)
+    Logger.info(`Removed "${normalizedCode}" from exclusion list`)
+    Logger.info(`Current exclusion list: ${PROGRAM_EXCLUSION_CONFIG.programs.join(', ')}`)
+  },
+
+  /**
+   * Limpia toda la lista de exclusión
+   */
+  clearExclusionList: function () {
+    const previousCount = PROGRAM_EXCLUSION_CONFIG.programs.length
+    PROGRAM_EXCLUSION_CONFIG.programs = []
+    Logger.info(`Cleared exclusion list (removed ${previousCount} programs)`)
+  },
+
+  /**
+   * Activa o desactiva la funcionalidad de exclusión
+   * @param {boolean} enabled - true para activar, false para desactivar
+   */
+  setExclusionEnabled: function (enabled) {
+    PROGRAM_EXCLUSION_CONFIG.enabled = !!enabled
+    Logger.info(`Program exclusion ${enabled ? 'enabled' : 'disabled'}`)
+  },
+
+  /**
+   * Cambia el modo de ocultación del componente
+   * @param {string} mode - 'display' (ocultar) o 'remove' (eliminar del DOM)
+   */
+  setHideMode: function (mode) {
+    if (mode !== 'display' && mode !== 'remove') {
+      Logger.warn(`Invalid hide mode: "${mode}". Use 'display' or 'remove'`)
+      return
+    }
+
+    PROGRAM_EXCLUSION_CONFIG.hideMode = mode
+    Logger.info(`Hide mode set to: ${mode}`)
   }
 }
 
@@ -993,6 +1174,13 @@ function setupAPIIntegration() {
       const programCode = event.detail?.dataProgram?.codPrograma
 
       if (programCode) {
+        // ✅ VERIFICAR SI EL PROGRAMA ESTÁ EN LA LISTA DE EXCLUSIÓN
+        if (isProgramExcluded(programCode)) {
+          hideRequirementsComponent()
+          return // Salir sin llamar API ni renderizar
+        }
+
+        // Continuar con el flujo normal si NO está excluido
         const requirementsData = await fetchRequirementsFromAPI(programCode)
 
         if (requirementsData) {
