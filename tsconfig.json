@@ -21,21 +21,10 @@
     ],
     "paths": {
       "@/*": ["./*"],
-<<<<<<< HEAD
-      "@components/*": ["app/_components/*"],
-      "@library/*": ["app/_library/*"],
-      "@styles/*": ["./styles/*"],
-      "@assets/*": ["./assets/*"],
-      "@utils/*": ["./app/_utils/*"]
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/_components/componentCatalog/index.jsx"],
-=======
       "@library/*": ["./app/_library/*"],
       "@styles/*": ["./styles/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/openday/_sections/banner_1/index.jsx"],
->>>>>>> 2605cab52aa8312d63618e4bc012d1168c315cb3
   "exclude": ["node_modules"]
 }
