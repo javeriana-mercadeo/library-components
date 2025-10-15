@@ -1,4 +1,4 @@
-export default (configuration) => {
+export default configuration => {
   const fragmentElement = document
 
   // document.addEventListener("DOMContentLoaded", () => {
@@ -7,13 +7,13 @@ export default (configuration) => {
   logoImg.style.width = `${configuration.width || 14}%`
   logoImg.style.height = `${configuration.height || 12}%`
 
-  const targetContainer = fragmentElement.querySelector('.program-data_faculty-container')
-  // const targetContainer = fragmentElement.querySelector('.program-data_title-program')
+  const targetContainer = fragmentElement.querySelector('.program-data_title')
+  // const targetContainer = fragmentElement.querySelector('.program-data_faculty-container') // If only want to show next to Faculty name not next to Fragment title
 
-  if (logo && targetContainer) {
+  if (logo && targetContainer && !isEditMode) {
     targetContainer.style.position = 'relative'
     targetContainer.appendChild(logo)
-    //   targetContainer.insertBefore(logo, targetContainer.firstChild)
+    // targetContainer.insertBefore(logo, targetContainer.firstChild) // Insert instead of appendChild in Liferay
   }
   // });
 }
