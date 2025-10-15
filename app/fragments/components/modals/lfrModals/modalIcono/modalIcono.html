@@ -1,0 +1,66 @@
+<link rel="preload" as="image" href="https://www.javeriana.edu.co/recursosdb/d/info-prg/6a3e119d4c657701ef034b939c051dc30adea478" />
+<!-- Botón para abrir modal -->
+<button
+  type="button"
+  data-popup-icon="#popup-icon"
+  class="popup-open-btn-icon"
+  aria-label="Abrir información"
+  data-lfr-editable-id="popup-open-btn-icon"
+  data-lfr-editable-type="text">
+  modal Icon 
+</button>
+<!-- Modal Overlay -->
+<div id="popup-icon" class="popup-overlay-icon">
+  <div class="popup-content-icon">
+    <!-- Botón de cerrar -->
+    <button
+      aria-label="Cerrar Popup"
+      class="btn btn-primary btn-light btn-icon-only popup-close-icon"
+      type="button">
+      <span class="btn-icon btn-icon-only"><i class="ph ph-x"></i></span>
+    </button>
+    
+    <!-- Contenido del modal -->
+    <div class="modal-body-icon">
+      <!-- Image Section - Estructura simplificada -->
+      <div class="icon-container-icon">
+        <lfr-editable id="image-modal-icon" type="image">
+          <img
+            src="https://www.javeriana.edu.co/recursosdb/d/info-prg/6a3e119d4c657701ef034b939c051dc30adea478"
+            alt="Campus Universidad Javeriana"
+            class="modal-image-icon" />
+        </lfr-editable>
+      </div>
+      
+      <div class="main-title-icon">
+        <lfr-editable 
+          id="main-title-part1" 
+          type="rich-text"
+          class="title-part-1">
+          <h2>Una decisión transforma tu futuro. Sé el profesional que el mundo necesita</h2>
+        </lfr-editable>
+      </div>
+      
+      <!-- Texto descriptivo -->
+      <lfr-editable 
+        id="description-icon" 
+        type="rich-text"
+        class="description-icon">
+        <p>Estudia en una universidad de excelencia con acceso a becas de alta calidad académica y acompañamiento constante en cada etapa.</p>
+      </lfr-editable>
+      
+      <!-- Botón CTA -->
+      <div class="cta-container-icon">
+         <button
+            data-dmpa-element-id="btn-icon-modal"
+            class="btn btn-primary btn-solid btn-lg content-btn-v2 modal-cta-v2"
+            aria-disabled="false"
+            type="submit"
+            data-lfr-editable-id="btn-icon-modal"
+            data-lfr-editable-type="text">
+            <span class="btn-text">Continuar</span>
+          </button>
+      </div>
+    </div>
+  </div>
+</div>

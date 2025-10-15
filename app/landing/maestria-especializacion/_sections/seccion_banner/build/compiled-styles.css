@@ -1,0 +1,351 @@
+/* ===== ESTILOS COMPILADOS CON ESBUILD ===== */
+/* Compilado el: 10/10/2025, 10:42:34 a. m. (COT) */
+/* Archivo fuente: styles.scss */
+
+.mastership-banner_container {
+  width: 100%;
+  padding-top: var(--spacing-xl);
+}
+@media (min-width: 768px) {
+  .mastership-banner_container {
+    padding-top: var(--spacing-2xl);
+  }
+}
+.mastership-banner__content-wrapper {
+  display: grid;
+  gap: var(--spacing-xl);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 992px) {
+  .mastership-banner__content-wrapper {
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--spacing-2xl);
+    align-items: start;
+  }
+}
+.mastership-banner__main-content {
+  display: flex;
+  flex-direction: column;
+}
+.mastership-banner__faculty {
+  color: var(--primary);
+  letter-spacing: 0.03125rem;
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-medium);
+  margin: 0;
+}
+.mastership-banner__title {
+  display: inline;
+  margin-top: 0.75rem;
+}
+.mastership-banner__title span {
+  display: inline;
+  color: var(--neutral-200) !important;
+  font-size: var(--font-size-title) !important;
+  font-weight: var(--font-weight-bold) !important;
+}
+@media (min-width: 768px) {
+  .mastership-banner__title span {
+    font-size: var(--font-size-principal-title) !important;
+  }
+}
+.mastership-banner__title span.mastership-banner__title-program {
+  color: var(--primary) !important;
+}
+.mastership-banner__description {
+  color: var(--neutral-100);
+  line-height: 1.6;
+  margin-top: 0.75rem;
+}
+@media (min-width: 768px) {
+  .mastership-banner__description {
+    font-size: var(--font-size-paragraph);
+  }
+}
+.mastership-banner_snies {
+  color: var(--neutral-600);
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-weight-regular);
+  margin-bottom: 0;
+}
+.mastership-banner__details-content {
+  width: 100%;
+}
+.mastership-banner__details-grid {
+  display: grid;
+  gap: var(--spacing-lg);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .mastership-banner__details-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+  }
+}
+@media (min-width: 992px) {
+  .mastership-banner__details-grid {
+    gap: var(--spacing-lg) var(--spacing-xl);
+  }
+}
+.mastership-banner__credit {
+  display: flex;
+  align-items: flex-start;
+}
+.mastership-banner__detail-item {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+.mastership-banner__detail-icon {
+  flex-shrink: 0;
+  font-size: 1.875rem;
+  color: var(--primary);
+  margin-top: 0.125rem;
+}
+.mastership-banner__detail-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.mastership-banner__detail-label {
+  color: var(--neutral-600);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-weight-regular);
+  margin: 0;
+}
+.mastership-banner__detail-value {
+  color: var(--neutral-300);
+  line-height: 1.4;
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+}
+.mastership-banner__detail-value strong {
+  font-weight: var(--font-weight-bold);
+  margin-right: 0.25rem;
+}
+.mastership-banner__detail-value span {
+  font-weight: var(--font-weight-semibold);
+}
+.mastership-banner__detail-link {
+  display: block;
+  color: var(--primary);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  margin-top: 0.5rem;
+}
+.mastership-banner__detail-link:hover {
+  text-decoration: underline;
+  color: var(--primary-600);
+}
+.mastership-banner .program-dates {
+  display: flex;
+  align-items: start;
+  margin-bottom: var(--spacing-sm);
+}
+.mastership-banner .program-dates_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--icon-size-md);
+  border-radius: 50%;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.mastership-banner .program-dates_content {
+  flex: 1;
+  min-width: 0;
+}
+.mastership-banner .program-dates_label {
+  font-size: var(--font-size-paragraph);
+  margin-bottom: 0rem;
+  margin-left: var(--spacing-sm);
+}
+.mastership-banner .program-dates_value {
+  font-size: var(--font-size-paragraph);
+  margin-bottom: 0;
+  margin-left: var(--spacing-sm);
+}
+.mastership-banner .program-dates--dates {
+  align-items: center;
+}
+.mastership-banner .program-dates_dates {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+  margin-bottom: 0;
+  margin-left: var(--spacing-sm);
+}
+.mastership-banner .program-dates_date-item > * {
+  display: inline;
+}
+.mastership-banner .program-dates_date-period {
+  font-size: var(--font-size-paragraph);
+  margin: 0;
+}
+.mastership-banner .program-dates_date-value {
+  font-size: var(--font-size-paragraph);
+  margin: 0;
+}
+.mastership-banner_enrollment {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--spacing-2xs);
+  padding-top: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  margin-top: var(--spacing-xl);
+  border-top: 1px solid var(--neutral-900);
+}
+@media (min-width: 768px) {
+  .mastership-banner_enrollment {
+    align-items: center;
+    text-align: center;
+    margin-top: var(--spacing-xl);
+  }
+}
+.mastership-banner_enrollment-note-container {
+  display: inline;
+  line-height: 1.2;
+}
+.mastership-banner_enrollment-note-container > * {
+  display: inline;
+}
+.mastership-banner_enrollment-note {
+  line-height: 1.2;
+  margin: 0;
+}
+.mastership-banner_enrollment-note span {
+  display: inline;
+}
+.mastership-banner__detail-modal-trigger {
+  margin-top: 0.5rem;
+}
+.mastership-banner__detail-button {
+  cursor: pointer;
+}
+.mastership-banner__detail-button:hover {
+  transform: translateY(-1px);
+}
+.mastership-banner__detail-button:active {
+  transform: translateY(0);
+}
+
+.program-detail-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.program-detail-modal--active {
+  display: flex;
+  opacity: 1;
+}
+.program-detail-modal__content {
+  background-color: var(--neutral-1000);
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 37.5rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+.program-detail-modal--active .program-detail-modal__content {
+  transform: scale(1);
+}
+.program-detail-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--neutral-900);
+}
+.program-detail-modal__title {
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-bold);
+  color: var(--neutral-200);
+  margin: 0;
+}
+.program-detail-modal__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background-color: var(--neutral-700);
+  color: var(--neutral-400);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.program-detail-modal__close:hover {
+  background-color: var(--primary);
+  color: var(--neutral-1000);
+}
+.program-detail-modal__close:focus {
+  outline: 0.125rem solid var(--primary-400);
+  outline-offset: 0.125rem;
+}
+.program-detail-modal__close i {
+  font-size: var(--icon-size-sm);
+}
+.program-detail-modal__body {
+  padding: var(--spacing-lg);
+}
+
+.program-data__modal-content {
+  color: var(--neutral-300);
+  line-height: 1.6;
+}
+.program-data__modal-content p {
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-paragraph);
+}
+.program-data__modal-content p:last-child {
+  margin-bottom: 0;
+}
+.program-data__modal-content strong {
+  color: var(--neutral-200);
+  font-weight: var(--font-weight-semibold);
+}
+.program-data__modal-content ul {
+  margin: var(--spacing-md) 0;
+  padding-left: var(--spacing-lg);
+  list-style-type: disc;
+}
+.program-data__modal-content li {
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-paragraph);
+}
+.program-data__modal-content li:last-child {
+  margin-bottom: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .program-data__modal-content .mastership-banner__detail-link, .program-data__modal-content .mastership-banner__detail-button {
+    transition: none;
+  }
+  .program-data__modal-content .program-detail-modal {
+    transition: none;
+  }
+  .program-data__modal-content .program-detail-modal__content {
+    transition: none;
+  }
+}

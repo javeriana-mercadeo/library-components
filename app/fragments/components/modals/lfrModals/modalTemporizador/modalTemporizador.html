@@ -1,0 +1,79 @@
+<link rel="preload" as="image" href="https://www.javeriana.edu.co/recursosdb/d/info-prg/6a3e119d4c657701ef034b939c051dc30adea478" />
+<button
+  type="button"
+  data-modal="#educational-program-modal"
+  class="educational-modal-trigger"
+  aria-label="Abrir información del programa"
+  data-lfr-editable-id="educational-modal-trigger-btn"
+  data-lfr-editable-type="text">
+  Modal-form
+</button>
+
+<div id="educational-program-modal" class="educational-modal-overlay">
+  <div class="educational-modal-content">
+    <button
+      aria-label="Cerrar Modal"
+      data-dmpa-element-id="btn"
+      class="btn btn-primary btn-light btn-icon-only educational-modal-close"
+      aria-disabled="false"
+      type="button">
+      <span class="btn-icon btn-icon-only"><i class="ph ph-x"></i></span>
+    </button>
+    
+    <div class="educational-program-container">
+      <!-- Sección de Imagen -->
+      <div class="program-image-section">
+        <lfr-editable id="program-featured-image" class="program-image-wrapper" type="image">
+          <img
+            src="https://www.javeriana.edu.co/recursosdb/d/info-prg/6a3e119d4c657701ef034b939c051dc30adea478"
+            alt="Campus Universidad Javeriana"
+            class="program-featured-image" />
+        </lfr-editable>
+      </div>
+      
+      <!-- Sección de Contenido -->
+      <div class="program-content-section-form">
+
+        <!-- Título -->
+        <lfr-editable 
+          id="program-title-form" 
+          type="rich-text"
+          class="program-title-wrapper-form">
+          <h2 class="program-heading-form">Programa de Medicina</h2>
+        </lfr-editable>
+        
+        <!-- Contenido del Texto -->
+        <div class="program-content-data">
+          <lfr-editable
+            id="program-description"
+            type="rich-text"
+            class="program-description">
+            <div>
+              <h2 class="program-description">
+                Accede a un descuento exclusivo antes de que el tiempo se agote
+              </h2>
+            </div>
+          </lfr-editable>
+          
+          <!-- Lista de Beneficios -->
+          <div class="description-form">
+                <p class="program-benefit-text-form">Aprovecha esta oportunidad para obtener un beneficio en tu matrícula si completas el registro antes de que finalice el conteo.</p>
+          </div>
+					
+          <!-- Drop zone para elementos adicionales -->
+          <lfr-drop-zone></lfr-drop-zone>
+					
+          <button
+            data-dmpa-element-id="btn"
+            class="btn btn-primary btn-solid btn-lg program-content-btn program-action-button"
+            aria-disabled="false"
+            type="submit"
+            data-lfr-editable-id="program-action-btn"
+            data-lfr-editable-type="text">
+            <span class="btn-text">Conocer mis opciones</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
