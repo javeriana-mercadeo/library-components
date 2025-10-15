@@ -1,6 +1,6 @@
 'use client'
 
-import Header from '@library/components/header'
+import Header from '@/app/common/header'
 
 import Proyectos from '../../institutional/secciones-opcionales/sections/proyectos'
 

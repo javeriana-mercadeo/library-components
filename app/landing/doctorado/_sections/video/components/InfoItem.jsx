@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useMemo } from 'react'
-import { Caption, Paragraph, Button, Modal } from '@library/components'
+import { Caption, Paragraph, Button, Modal } from '@/app/components'
 
 // Cache para atributos generados
 const attributeCache = new Map()

@@ -1,11 +1,13 @@
-import { Container, Title, Caption, Button, Image } from '@library/components'
+import { useScript } from '@hooks'
+import { Container, Title, Button, Image } from '@/app/components'
 
 import info from './info.json'
 import './styles.scss'
-import './script.js'
 
 const EducacionEstrella = () => {
   const elementName = info.id || 'educacion-estrella'
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // CONTENIDO ENRIQUECIDO PARA EDUCACIÓN ESTRELLA
   const richContent = {
@@ -21,11 +23,11 @@ const EducacionEstrella = () => {
         <li><strong>Cuotas fijas mensuales</strong> sin sorpresas</li>
         <li><strong>Largo plazo</strong> para mayor comodidad</li>
       </ul>
-      
+
       <div class="overflow-auto portlet-msg-info">
         El proceso es 100% digital, tarda menos de 10 minutos y está disponible para estudiantes nuevos.
       </div>
-      
+
       <h4>Líneas de Financiamiento Disponibles</h4>
       <table border="1" style="width: 100%">
         <caption>Opciones de Financiamiento Educación Estrella®</caption>
@@ -47,7 +49,7 @@ const EducacionEstrella = () => {
           </tr>
         </tbody>
       </table>
-      
+
       <h4>Requisitos Generales</h4>
       <ol>
         <li><em>Estudiante nuevo admitido</em> en pregrado</li>
@@ -55,13 +57,13 @@ const EducacionEstrella = () => {
         <li><em>Evaluación crediticia</em> aprobada</li>
         <li><em>Firma digital</em> del contrato</li>
       </ol>
-      
+
       <div class="overflow-auto portlet-msg-alert">
         El cupo es limitado y está sujeto a evaluación crediticia. Aplica solo para estudiantes de primer ingreso.
       </div>
-      
+
       <p>Para más información sobre el proceso de aplicación, visita el <a href="https://www.educacionestrella.com">portal oficial de Educación Estrella</a> o contáctanos al <code>(+57) 1 320 8320 ext. 5050</code></p>
-      
+
       <cite>*Educación Estrella® es una marca registrada. Consulta términos y condiciones específicos.</cite>
     `,
     buttonText: 'Solicitar financiamiento',

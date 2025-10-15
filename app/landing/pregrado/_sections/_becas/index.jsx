@@ -1,14 +1,14 @@
-import { Container, Title, Caption, Button, Icon, Image } from '@library/components'
+import { useScript } from '@hooks'
+import { Container, Title, Caption, Button, Icon, Image } from '@/app/components'
 
 import info from './info.json'
 import './styles.scss'
 
-// Importar el script para que se ejecute
-import './script.js'
-
 const Becas = () => {
   const elementName = info.id || 'becas'
   const baseClass = 'scholarships'
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // Array con la información de las tabs - AHORA CON TEXTO ENRIQUECIDO
   const scholarshipTabs = [

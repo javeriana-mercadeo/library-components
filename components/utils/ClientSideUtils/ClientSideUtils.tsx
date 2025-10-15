@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-import initGlobalUtils from '@/utils/main.js'
+import initGlobalUtils from '@/app/utils/main.js'
 
 declare global {
   interface Window {
@@ -35,7 +35,7 @@ function ClientSideUtils() {
     } catch {
       // Fallback de emergencia - cargar la versión legacy
       try {
-        const legacyInit = require('@/utils/main.js').default
+        const legacyInit = require('@/app/utils/main.js').default
 
         legacyInit()
       } catch {}

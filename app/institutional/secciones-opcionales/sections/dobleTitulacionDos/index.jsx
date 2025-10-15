@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import './styles.scss'
-import Title from '../../../../_library/components/contain/title'
-import Paragraph from '../../../../_library/components/contain/paragraph'
-import Container from '@library/components/container'
+import Title from '../../../../components/title'
+import Paragraph from '../../../../components/paragraph'
+import Container from '@/app/components/container'
 import scrollLogic from './script.js'
 
 const DobleTitulacion2 = () => {

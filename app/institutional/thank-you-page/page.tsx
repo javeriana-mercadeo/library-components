@@ -1,5 +1,5 @@
-import Header from '@library/components/header_partial'
-import Footer from '@library/components/footer'
+import Header from '@/app/common/headerPartial'
+import Footer from '@/app/common/footer'
 
 import Contenido from './contenido'
 

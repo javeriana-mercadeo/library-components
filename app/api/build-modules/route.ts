@@ -377,14 +377,23 @@ export async function GET(req: NextRequest) {
           const scssContent = await fs.readFile(scssPath, 'utf8')
 
           const sassResult = sass.compileString(scssContent, {
-            loadPaths: [componentPath, path.join(process.cwd(), 'styles'), path.join(process.cwd(), 'app'), process.cwd()],
+            loadPaths: [
+              componentPath,
+              path.join(process.cwd(), 'app/styles'),
+              path.join(process.cwd(), 'styles'),
+              path.join(process.cwd(), 'app'),
+              path.join(process.cwd(), 'app/common'),
+              path.join(process.cwd(), 'app/components'),
+              path.join(process.cwd(), 'app/_library'),
+              process.cwd()
+            ],
             importers: [
               {
                 findFileUrl(url: string): URL | null {
                   // Manejar @styles
                   if (url.startsWith('@styles/')) {
                     const fileName = url.substring(8)
-                    const fullPath = path.join(process.cwd(), 'styles', fileName)
+                    const fullPath = path.join(process.cwd(), 'app/styles', fileName)
 
                     return resolveScssFile(fullPath)
                   }
@@ -393,6 +402,22 @@ export async function GET(req: NextRequest) {
                   if (url.startsWith('@library/')) {
                     const fileName = url.substring(9)
                     const fullPath = path.join(process.cwd(), 'app/_library', fileName)
+
+                    return resolveScssFile(fullPath)
+                  }
+
+                  // Manejar @common
+                  if (url.startsWith('@common/')) {
+                    const fileName = url.substring(8)
+                    const fullPath = path.join(process.cwd(), 'app/common', fileName)
+
+                    return resolveScssFile(fullPath)
+                  }
+
+                  // Manejar @components
+                  if (url.startsWith('@components/')) {
+                    const fileName = url.substring(12)
+                    const fullPath = path.join(process.cwd(), 'app/components', fileName)
 
                     return resolveScssFile(fullPath)
                   }

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-import Container from '@/app/_library/components/container'
+import Container from '@/app/components/container/index.jsx'
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'

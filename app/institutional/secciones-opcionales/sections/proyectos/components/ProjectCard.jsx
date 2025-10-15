@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Paragraph, Title, Modal } from '@library/components'
+import { Paragraph, Title, Modal } from '@/app/components'
 
 const ProjectCard = ({ index, project }) => {
   const modalData = project.modal || {}

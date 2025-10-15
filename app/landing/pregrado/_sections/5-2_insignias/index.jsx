@@ -1,16 +1,12 @@
-'use client'
-import { Container, Title } from '@library/components'
-import { useEffect } from 'react'
+import { useScript } from '@hooks'
+import { Container, Title } from '@/app/components'
 
-import script from './script.js'
 import './styles.scss'
 
 const InsigniasSwiper = () => {
   const elementName = 'insignias-swiper'
-
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   const reconocimientos = [
     {

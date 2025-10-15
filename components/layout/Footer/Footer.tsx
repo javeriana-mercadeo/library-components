@@ -1,4 +1,4 @@
-import Logo from '@library/components/logo_institucional'
+import Logo from '@/app/common/logoInstitucional'
 
 const Footer = () => {
   return (

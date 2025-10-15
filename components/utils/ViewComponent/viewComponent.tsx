@@ -191,14 +191,22 @@ export default function ViewComponent({ path, children }: { path?: string; child
             }
 
             // Clonar el elemento con staticMode
-            const props = {
-              ...(element.props || {}),
-              staticMode: true
+            const props: Record<string, unknown> = {
+              ...(typeof element.props === 'object' && element.props !== null ? element.props : {}),
+              staticMode: true,
+              children: (element.props as Record<string, unknown>)?.children
             }
 
-            // Si tiene children, procesarlos recursivamente
-            if (props.children) {
-              props.children = React.Children.map(props.children, child => addStaticModeRecursively(child))
+            // Si el elemento tiene children, procesarlos recursivamente
+            if (
+              element.props &&
+              typeof element.props === 'object' &&
+              'children' in (element.props as Record<string, unknown>) &&
+              (element.props as Record<string, unknown>).children
+            ) {
+              props.children = React.Children.map((element.props as Record<string, unknown>).children, child =>
+                addStaticModeRecursively(child)
+              )
             }
 
             return React.cloneElement(element, props)

@@ -1,4 +1,4 @@
-import { Caption, Paragraph, Button as Btn } from '@library/components'
+import { Caption, Paragraph, Button as Btn } from '@/app/components'
 import PropTypes from 'prop-types'
 import { useMemo } from 'react'
 

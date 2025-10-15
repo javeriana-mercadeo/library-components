@@ -8,11 +8,32 @@
  */
 
 import { detectPlatform } from './modules/platform-detection.js'
-import { onDOMReady, runWhenIdle, isElementVisible } from './modules/utils.js'
 import { VideoSystem } from './modules/video-system.js'
 import { ModalSystem } from './modules/modal-system.js'
 import { PeriodicityObserver } from './modules/periodicity-observer.js'
 import { programFormatter } from './modules/program-formatter.js'
+
+/**
+ * Ejecutar función cuando el DOM esté listo
+ */
+function onDOMReady(callback) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', callback)
+  } else {
+    callback()
+  }
+}
+
+/**
+ * Ejecutar función cuando sea idle o después de timeout
+ */
+function runWhenIdle(callback, timeout = 2000) {
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(callback, { timeout })
+  } else {
+    setTimeout(callback, 100)
+  }
+}
 
 class ProgramDataSystem {
   constructor() {
@@ -161,7 +182,7 @@ function setupUserInteractionHandler() {
     // Intentar reproducir videos visibles
     const containers = document.querySelectorAll('[data-component="video-player"].video-loaded')
     containers.forEach(container => {
-      if (isElementVisible(container)) {
+      if (DOMUtils.isElementVisible(container)) {
         const videos = container.querySelectorAll('video')
         videos.forEach(video => {
           if (video.paused) {

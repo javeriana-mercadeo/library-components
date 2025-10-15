@@ -1,11 +1,12 @@
-'use client'
-import { Container, Title } from '@library/components'
+import { useScript } from '@hooks'
+import { Container, Title } from '@/app/components'
 
 import './styles.scss'
-import './script.js'
 
 const InsigniasAlt = () => {
   const elementName = 'insignias-alt'
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   const reconocimientos = [
     {

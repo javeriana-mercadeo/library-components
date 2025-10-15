@@ -1,4 +1,4 @@
-import Btn from '@/app/_library/components/contain/btn'
+import Btn from '@/app/components/button'
 
 /**
  * Componente que muestra las diferentes variantes de un botón por color

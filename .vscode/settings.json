@@ -25,5 +25,14 @@
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "liveServer.settings.port": 5501
+  "liveServer.settings.port": 5501,
+  "scss.scannerExclude": ["**/.git", "**/node_modules", "**/bower_components"],
+  "css.customData": [".vscode/css-custom-data.json"],
+  "path-intellisense.mappings": {
+    "@common": "${workspaceFolder}/app/common",
+    "@components": "${workspaceFolder}/app/components",
+    "@library": "${workspaceFolder}/app/_library",
+    "@styles": "${workspaceFolder}/styles",
+    "@hooks": "${workspaceFolder}/hooks"
+  }
 }

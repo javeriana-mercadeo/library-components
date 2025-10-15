@@ -1,4 +1,4 @@
-import { Container, Title, Paragraph, Image } from '@library/components'
+import { Container, Title, Paragraph, Image } from '@/app/components'
 import { useEffect } from 'react'
 import React from 'react'
 

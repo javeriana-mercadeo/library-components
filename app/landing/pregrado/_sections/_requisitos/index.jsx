@@ -1,26 +1,14 @@
-'use client'
+import { useScript } from '@hooks'
+import { Container, Title } from '@/app/components'
 
-import { useEffect } from 'react'
-import { Container, Title } from '@library/components'
-
-import script from './script.js'
 import info from './info.json'
 import './styles.scss'
 
 const RequisitosPregrado = () => {
   const elementName = info.id || 'requisitos-pregrado'
   const baseClass = 'admission-requirements'
-
-  // Inicializar script cuando el componente se monta
-  useEffect(() => {
-    console.log('[React Component] Mounting...')
-    const container = document.getElementById('admission-requirements_dynamic-content')
-    console.log('[React Component] Container exists on mount:', container)
-
-    script()
-
-    console.log('[React Component] Script initialized')
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   return (
     <div className={baseClass} data-component-id={elementName}>

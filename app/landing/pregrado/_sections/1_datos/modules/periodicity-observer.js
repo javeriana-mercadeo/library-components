@@ -7,8 +7,6 @@
  * Usa MutationObserver y verificación periódica para asegurar que el primer carácter sea minúscula
  */
 
-import { TimerManager } from './utils.js'
-
 class PeriodicityObserver {
   constructor() {
     this.state = {
@@ -16,8 +14,8 @@ class PeriodicityObserver {
       intervalId: null
     }
 
-    this.timers = new TimerManager()
-    this.logger = Logger // Global Logger
+    this.scheduler = TimingUtils.createScheduler()
+    this.logger = Logger
 
     // Selector para elementos que deben mantener la primera letra en minúscula
     this.targetSelector = '[data-puj-periodicity="true"]'
@@ -90,9 +88,11 @@ class PeriodicityObserver {
    */
   setupPeriodicCheck() {
     // Verificación cada 5 segundos como respaldo
-    this.state.intervalId = this.timers.setInterval(() => {
+    const intervalFn = () => {
       this.applyLowercaseToAll()
-    }, 5000)
+      this.state.intervalId = this.scheduler.schedule(intervalFn, 5000)
+    }
+    this.state.intervalId = this.scheduler.schedule(intervalFn, 5000)
   }
 
   /**
@@ -156,7 +156,7 @@ class PeriodicityObserver {
     }
 
     if (this.state.intervalId) {
-      this.timers.clearTimer(this.state.intervalId)
+      this.scheduler.cancel(this.state.intervalId)
       this.state.intervalId = null
     }
   }
@@ -208,7 +208,7 @@ class PeriodicityObserver {
     }
 
     if (this.state.intervalId) {
-      this.timers.clearTimer(this.state.intervalId)
+      this.scheduler.cancel(this.state.intervalId)
       this.state.intervalId = null
     }
   }
@@ -218,7 +218,7 @@ class PeriodicityObserver {
    */
   destroy() {
     this.cleanup()
-    this.timers.destroy()
+    this.scheduler.cancelAll()
   }
 }
 

@@ -1,10 +1,29 @@
 /** @type {import('next').NextConfig} */
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 const nextConfig = {
+  // Configuración para Sass
+  sassOptions: {
+    includePaths: [
+      path.join(__dirname, 'styles'),
+      path.join(__dirname, 'app'),
+      path.join(__dirname, 'app/_library'),
+      path.join(__dirname, 'app/common'),
+      path.join(__dirname, 'app/components')
+    ],
+  },
+
   // Configuración básica para Turbopack
   turbopack: {
     resolveAlias: {
       '@library': './app/_library',
-      '@styles': './styles'
+      '@styles': './styles',
+      '@common': './app/common',
+      '@components': './app/components'
     }
   },
 
@@ -12,8 +31,13 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
+      '@common': './app/common/index',
+      '@common/*': './app/common/*',
+      '@components': './app/components/index',
+      '@components/*': './app/components/*',
       '@library': './app/_library',
-      '@styles': './styles'
+      '@styles': './app/styles',
+      '@hooks': './hooks'
     }
 
     // Excluir archivos problemáticos de esbuild

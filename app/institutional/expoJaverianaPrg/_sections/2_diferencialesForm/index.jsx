@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react'
 
-import Container from '@/app/_library/components/container'
-import Btn from '@/app/_library/components/contain/btn'
+import Container from '@/app/components/container/index.jsx'
+import Btn from '@/app/components/button/index.jsx'
 import script from './script.js'
 import info from './info.json'
 import './styles.scss'

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Container, Logo, Title, Btn, Paragraph } from '@library/components'
+import { Container, Logo, Title, Btn, Paragraph } from '@/app/components/index.js'
 import initEventosForm from './script.js'
 import './styles.scss'
 

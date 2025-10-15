@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Container, Title } from '@library/components'
+import { Container, Title } from '@/app/components'
 
 import ProjectCard from './components/ProjectCard'
 import script from './script.js'

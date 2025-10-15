@@ -1,5 +1,5 @@
-import HeaderSimple from '@library/components/header_simple'
-import Footer from '@library/components/footer'
+import HeaderSimple from '@/app/common/headerSimple'
+import Footer from '@/app/common/footer'
 
 import EventosForm from './form'
 

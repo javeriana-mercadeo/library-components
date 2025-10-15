@@ -1,21 +1,15 @@
-'use client'
-
-import { useEffect } from 'react'
-import { Container, Caption, Title, Paragraph, Button as Btn } from '@library/components'
+import { useScript } from '@hooks'
+import { Container, Caption, Title, Paragraph, Button as Btn } from '@/app/components/index.js'
 import ProgramDetail from './components/ProgramDetail.jsx'
 
-import script from './script.js'
 import info from './info.json'
 import './styles.scss'
 
 const DatosProgramaVideo = () => {
   const elementName = info.id || 'datos-programa-video'
   const baseClass = 'program-data'
-
-  // Inicializar script cuando el componente se monta
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // Configuración de todos los detalles del programa
   const details = [

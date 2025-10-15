@@ -1,19 +1,14 @@
-'use client'
-import { Container, Title, Paragraph, Button as Btn, Icon, Image, Caption } from '@library/components'
+import { useScript } from '@hooks'
+import { Container, Title, Paragraph, Button as Btn, Icon, Image, Caption } from '@/app/components'
 
-import { useEffect } from 'react'
-
-import script from './script.js'
 import info from './info.json'
 import './styles.scss'
 
 const Diferenciales = () => {
   const elementName = info.id || 'diferenciales'
   const baseClass = 'why-javeriana'
-
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // Configuración de todos los diferenciales
   const diferencialesData = [

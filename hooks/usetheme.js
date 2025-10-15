@@ -219,3 +219,5 @@ export const useTheme = () => {
     DEFAULT_THEMES
   }
 }
+
+export default useTheme

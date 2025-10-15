@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Button, Container, Title, Paragraph } from '@library/components'
+import { Button, Container, Title, Paragraph } from '@/app/components'
 import InfoItem from './components/InfoItem'
 import info from './info.json'
 import script from './script.js'

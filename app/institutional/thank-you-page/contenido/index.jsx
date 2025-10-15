@@ -1,8 +1,8 @@
-import Container from '@library/components/container'
-import Title from '@library/components/contain/title'
-import Image from '@library/components/contain/image'
-import Paragraph from '@library/components/contain/paragraph'
-import Btn from '@library/components/contain/btn'
+import Container from '@/app/components/container'
+import Title from '@/app/components/title'
+import Image from '@/app/components/image'
+import Paragraph from '@/app/components/paragraph'
+import Btn from '@/app/components/button'
 
 import './styles.scss'
 import info from './info.json'

@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Container from '@library/components/container'
-import Title from '@library/components/contain/title'
+import Container from '@/app/components/container'
+import Title from '@/app/components/title'
 
 import info from './info.json'
 import './styles.scss'

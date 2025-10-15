@@ -1,7 +1,7 @@
 'use client'
-import Container from '@library/components/container'
-import Title from '@library/components/contain/title'
-import Image from '@library/components/contain/image'
+import Container from '@/app/components/container/index.jsx'
+import Title from '@/app/components/title/index.jsx'
+import Image from '@/app/components/image/index.jsx'
 
 import React, { useEffect } from 'react'
 import script from './script.js'

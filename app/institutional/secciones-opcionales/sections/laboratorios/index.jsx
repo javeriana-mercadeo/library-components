@@ -1,9 +1,9 @@
 'use client'
 import React, { useEffect } from 'react'
 import './styles.scss'
-import Title from '@library/components/contain/title'
-import Paragraph from '@library/components/contain/paragraph'
-import Container from '@library/components/container'
+import Title from '@/app/components/title'
+import Paragraph from '@/app/components/paragraph'
+import Container from '@/app/components/container'
 
 const Laboratorios = () => {
   useEffect(() => {

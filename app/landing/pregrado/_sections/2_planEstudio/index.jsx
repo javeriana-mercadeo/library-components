@@ -1,22 +1,14 @@
-// ==========================================
-// COMPONENTE REACT CON DATOS DINÁMICOS
-// ==========================================
-'use client'
-import { Container, Title, Paragraph, Button as Btn } from '@library/components'
-
-import { useEffect } from 'react'
+import { useScript } from '@hooks'
+import { Container, Title, Paragraph, Button as Btn } from '@/app/components'
 
 import info from './info.json'
-import script from './script.js'
 import './styles.scss'
 
 const PlanEstudio = () => {
   const elementName = info.id || 'planEstudio'
   const baseClass = 'plan-estudio'
-
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // ==========================================
   // DATOS DINÁMICOS DE LOS SEMESTRES

@@ -1,6 +1,6 @@
 'use client'
 import { useEffect } from 'react'
-import { Container, Title, Paragraph, Btn } from '@library/components'
+import { Container, Title, Paragraph, Btn } from '@/app/components/index.js'
 
 import script from './script.js'
 import info from './info.json'

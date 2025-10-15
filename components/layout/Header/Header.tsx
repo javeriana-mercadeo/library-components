@@ -17,7 +17,8 @@ export default function Header() {
   // Map pathnames to tab keys
   const getSelectedTab = () => {
     if (pathname === '/') return 'overview'
-    if (pathname === '/docs') return 'docs'
+    if (pathname === '/configurations') return 'configurations'
+    if (pathname.startsWith('/components')) return 'components'
     if (pathname === '/demos') return 'demos'
     if (pathname === '/about') return 'about'
 
@@ -57,8 +58,11 @@ export default function Header() {
       case 'overview':
         router.push('/')
         break
-      case 'docs':
-        router.push('/docs')
+      case 'configurations':
+        router.push('/configurations')
+        break
+      case 'components':
+        router.push('/components')
         break
       case 'demos':
         router.push('/demos')
@@ -72,7 +76,8 @@ export default function Header() {
 
   const navigationItems = [
     { key: 'overview', icon: 'ph-house', label: 'Inicio', path: '/' },
-    { key: 'docs', icon: 'ph-book', label: 'Documentación', path: '/docs' },
+    { key: 'configurations', icon: 'ph-gear', label: 'Configuraciones', path: '/configurations' },
+    { key: 'components', icon: 'ph-package', label: 'Componentes', path: '/components' },
     { key: 'demos', icon: 'ph-monitor-play', label: 'Demos', path: '/demos' },
     { key: 'about', icon: 'ph-info', label: 'Acerca de', path: '/about' }
   ]

@@ -1,4 +1,4 @@
-import { Container, Paragraph } from '@library/components'
+import { Container, Paragraph } from '@/app/components'
 import info from './info.json'
 import './styles.scss'
 

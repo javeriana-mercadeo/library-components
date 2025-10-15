@@ -1,15 +1,11 @@
-'use client'
-import { Title, Container, Caption, Button } from '@library/components'
+import { useScript } from '@hooks'
+import { Title, Container, Caption, Button } from '@/app/components'
 
-import { useEffect } from 'react'
-
-import script from './script.js'
 import './styles.scss'
 
 const PreguntasFrecuentes = () => {
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   return (
     <Container id='section-eleven' className='container faq'>
