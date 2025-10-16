@@ -51,7 +51,7 @@ const StudentSlider = () => {
   ]
 
   // Función para obtener la clase inicial de cada card
-  const getInitialCardClass = (index) => {
+  const getInitialCardClass = index => {
     if (index === 0) return 'student-card active'
     if (index === 1) return 'student-card next'
     if (index === 2) return 'student-card next-next'

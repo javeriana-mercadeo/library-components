@@ -9,10 +9,10 @@
 const LOGGING_CONFIG = {
   enabled: true, // Cambiar a false para desactivar todos los logs
   levels: {
-    error: true,   // Errores críticos
-    warn: true,    // Advertencias
-    info: false,   // Información general
-    debug: false   // Información de debugging detallada
+    error: true, // Errores críticos
+    warn: true, // Advertencias
+    info: false, // Información general
+    debug: false // Información de debugging detallada
   }
 }
 
@@ -40,7 +40,7 @@ const Logger = {
   },
 
   // Funciones de control para configuración dinámica
-  setEnabled: (enabled) => {
+  setEnabled: enabled => {
     LOGGING_CONFIG.enabled = enabled
     Logger.info(`Logging ${enabled ? 'enabled' : 'disabled'}`)
   },
@@ -69,7 +69,6 @@ const Logger = {
     return { ...LOGGING_CONFIG }
   }
 }
-
 
 /**
  * Inicializa todos los componentes de requisitos de admisión
@@ -108,7 +107,7 @@ function initNavigationButton(component) {
       })
 
       // Soporte para teclado
-      newButton.addEventListener('keydown', (e) => {
+      newButton.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           window.AdmissionRequirements.navigateToFAQ()
@@ -357,7 +356,7 @@ window.AdmissionRequirements = {
   /**
    * Navega a la sección de preguntas frecuentes
    */
-  navigateToFAQ: function() {
+  navigateToFAQ: function () {
     const faqSection = document.getElementById('section-eleven')
     if (faqSection) {
       faqSection.scrollIntoView({
@@ -560,7 +559,6 @@ function updateDOMDirectly(requirementsData) {
     // Reinitializar interacciones después de actualizar el DOM
     initChartInteractions(component)
     initAccessibilityEnhancements(component)
-
   } catch (error) {
     Logger.error('Error updating DOM:', error)
   }
@@ -598,7 +596,9 @@ function updateSVGChart(component, requirementsData) {
   // Limpiar todos los elementos dinámicos y centrales para reordenarlos
   const existingSegments = svg.querySelectorAll('.admission-requirements_chart-segment')
   const existingLabels = svg.querySelectorAll('.admission-requirements_chart-label-percentage, .admission-requirements_chart-label-title')
-  const existingCenter = svg.querySelectorAll('.admission-requirements_chart-center, .admission-requirements_chart-total-label, .admission-requirements_chart-total-value')
+  const existingCenter = svg.querySelectorAll(
+    '.admission-requirements_chart-center, .admission-requirements_chart-total-label, .admission-requirements_chart-total-value'
+  )
 
   existingSegments.forEach(segment => segment.remove())
   existingLabels.forEach(label => label.remove())
@@ -612,7 +612,7 @@ function updateSVGChart(component, requirementsData) {
   validRequirements.forEach((requirement, index) => {
     const percentage = requirement.percentage
     const startAngle = cumulativeAngle
-    const endAngle = startAngle + (percentage * 3.6) // Convert percentage to degrees
+    const endAngle = startAngle + percentage * 3.6 // Convert percentage to degrees
     cumulativeAngle = endAngle
 
     // Crear path del segmento
@@ -650,7 +650,7 @@ function updateSVGChart(component, requirementsData) {
   validRequirements.forEach((requirement, index) => {
     const percentage = requirement.percentage
     const startAngle = cumulativeAngle
-    const endAngle = startAngle + (percentage * 3.6)
+    const endAngle = startAngle + percentage * 3.6
     cumulativeAngle = endAngle
 
     // Crear labels del segmento
@@ -675,12 +675,7 @@ function createSVGSegment(startAngle, endAngle, percentage, requirement) {
 
   const largeArcFlag = percentage > 50 ? 1 : 0
 
-  const pathData = [
-    `M ${centerX} ${centerY}`,
-    `L ${x1} ${y1}`,
-    `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
-    'Z'
-  ].join(' ')
+  const pathData = [`M ${centerX} ${centerY}`, `L ${x1} ${y1}`, `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`, 'Z'].join(' ')
 
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
   path.setAttribute('d', pathData)
@@ -765,7 +760,9 @@ function createContentPanel(requirement, isActive = false, isSingleRequirement =
   panel.setAttribute('data-requirement', requirement.id)
   panel.setAttribute('data-content-panel', requirement.id)
 
-  const itemsHTML = requirement.items.map(item => `
+  const itemsHTML = requirement.items
+    .map(
+      item => `
     <li class="admission-requirements_list-item">
       <div class="admission-requirements_item-check">
         <i class="ph ph-check"></i>
@@ -774,7 +771,9 @@ function createContentPanel(requirement, isActive = false, isSingleRequirement =
         ${item}
       </span>
     </li>
-  `).join('')
+  `
+    )
+    .join('')
 
   // Construir HTML condicionalmente
   let headerHTML = ''
@@ -803,14 +802,18 @@ function createContentPanel(requirement, isActive = false, isSingleRequirement =
       <ul class="admission-requirements_items-list ${requirement.items.length > 5 ? 'has-many-items' : ''}">
         ${itemsHTML}
       </ul>
-      ${requirement.items.length > 5 ? `
+      ${
+        requirement.items.length > 5
+          ? `
         <button class="admission-requirements_read-more-toggle"
                 aria-expanded="false"
                 aria-controls="admission-requirements_items-list-${requirement.id}">
           <span class="toggle-text">Leer más</span>
           <i class="ph ph-plus toggle-icon" aria-hidden="true"></i>
         </button>
-      ` : ''}
+      `
+          : ''
+      }
     </div>
   `
 
@@ -834,7 +837,7 @@ function initMobileAccordion(component) {
     const readMoreButtons = component.querySelectorAll('.admission-requirements_read-more-toggle')
 
     readMoreButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
+      button.addEventListener('click', function (e) {
         e.preventDefault()
 
         const isExpanded = this.getAttribute('aria-expanded') === 'true'
@@ -921,7 +924,7 @@ const initRequirementsSystem = () => {
 
 function setupAPIIntegration() {
   // Escuchar el evento de carga de programa desde Liferay
-  document.addEventListener('data_load-program', async (event) => {
+  document.addEventListener('data_load-program', async event => {
     try {
       // Obtener el código de programa del evento
       const programCode = event.detail?.dataProgram?.codPrograma
@@ -1068,7 +1071,9 @@ function renderFullHTML(requirementsData) {
       <div class="${baseClass}_content-container ${validRequirements.length > 1 ? 'multiple-requirements' : ''}">
         ${renderContentPanelsHTML(validRequirements, isSingleRequirement)}
 
-        ${validRequirements.length > 1 ? `
+        ${
+          validRequirements.length > 1
+            ? `
           <!-- BUTTON FOR MULTIPLE REQUIREMENTS -->
           <div class="${baseClass}_panel-navigation-fixed">
             <button class="btn btn-primary btn-solid" data-dmpa-element-id="btn" onclick="document.getElementById('section-eleven')?.scrollIntoView({behavior: 'smooth', block: 'start'})">
@@ -1078,10 +1083,14 @@ function renderFullHTML(requirementsData) {
               </span>
             </button>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
       </div>
 
-      ${isSingleRequirement ? `
+      ${
+        isSingleRequirement
+          ? `
         <!-- BUTTON ROW FOR SINGLE REQUIREMENT -->
         <div class="${baseClass}_single-requirement-button-row">
           <button class="btn btn-primary btn-solid" data-dmpa-element-id="btn" onclick="document.getElementById('section-eleven')?.scrollIntoView({behavior: 'smooth', block: 'start'})">
@@ -1091,7 +1100,9 @@ function renderFullHTML(requirementsData) {
             </span>
           </button>
         </div>
-      ` : ''}
+      `
+          : ''
+      }
     </div>
   `
 
@@ -1123,10 +1134,11 @@ function renderFullHTML(requirementsData) {
 
   // Reinicializar interacciones después de renderizar
   // Buscar el componente que contiene el contenedor (subir en el árbol DOM)
-  let component = container.closest('[data-component-id="requisitos-pregrado"]')
-    || container.closest('[data-component-id="requisitos"]')
-    || container.closest('.admission-requirements')
-    || container.parentElement
+  let component =
+    container.closest('[data-component-id="requisitos-pregrado"]') ||
+    container.closest('[data-component-id="requisitos"]') ||
+    container.closest('.admission-requirements') ||
+    container.parentElement
 
   console.log('[renderFullHTML] Component for interactions:', component)
 
@@ -1181,29 +1193,33 @@ function renderSingleRequirementHTML(requirement) {
 
 function renderMultipleRequirementsHTML(requirements) {
   let cumulativeAngle = 0
-  const segments = requirements.map(req => {
-    const startAngle = cumulativeAngle
-    const endAngle = startAngle + (req.percentage * 3.6)
-    cumulativeAngle = endAngle
+  const segments = requirements
+    .map(req => {
+      const startAngle = cumulativeAngle
+      const endAngle = startAngle + req.percentage * 3.6
+      cumulativeAngle = endAngle
 
-    return createSVGSegmentHTML(startAngle, endAngle, req)
-  }).join('')
+      return createSVGSegmentHTML(startAngle, endAngle, req)
+    })
+    .join('')
 
-  const labels = requirements.map((req, index) => {
-    let startAngle = 0
-    for (let i = 0; i < index; i++) {
-      startAngle += requirements[i].percentage * 3.6
-    }
-    const midAngle = startAngle + (req.percentage * 3.6) / 2 - 90
-    const midAngleRad = midAngle * (Math.PI / 180)
-    const labelX = 400 + 260 * Math.cos(midAngleRad)
-    const labelY = 400 + 260 * Math.sin(midAngleRad)
+  const labels = requirements
+    .map((req, index) => {
+      let startAngle = 0
+      for (let i = 0; i < index; i++) {
+        startAngle += requirements[i].percentage * 3.6
+      }
+      const midAngle = startAngle + (req.percentage * 3.6) / 2 - 90
+      const midAngleRad = midAngle * (Math.PI / 180)
+      const labelX = 400 + 260 * Math.cos(midAngleRad)
+      const labelY = 400 + 260 * Math.sin(midAngleRad)
 
-    return `
+      return `
       <text x="${labelX}" y="${labelY - 8}" text-anchor="middle" class="admission-requirements_chart-label-percentage" data-requirement="${req.id}">${req.percentage}%</text>
       <text x="${labelX}" y="${labelY + 14}" text-anchor="middle" class="admission-requirements_chart-label-title" data-requirement="${req.id}">${req.title}</text>
     `
-  }).join('')
+    })
+    .join('')
 
   return `
     <div class="admission-requirements_chart-wrapper">
@@ -1238,9 +1254,13 @@ function createSVGSegmentHTML(startAngle, endAngle, requirement) {
 }
 
 function renderContentPanelsHTML(requirements, isSingleRequirement) {
-  return requirements.map((req, index) => `
+  return requirements
+    .map(
+      (req, index) => `
     <div class="admission-requirements_content-panel ${index === 0 ? 'is-active' : ''} ${isSingleRequirement ? 'single-requirement' : ''}" data-requirement="${req.id}" data-content-panel="${req.id}">
-      ${!isSingleRequirement ? `
+      ${
+        !isSingleRequirement
+          ? `
         <div class="admission-requirements_panel-header">
           <div class="admission-requirements_panel-icon admission-requirements_panel-icon--${req.color}">
             <i class="${req.icon}"></i>
@@ -1250,22 +1270,30 @@ function renderContentPanelsHTML(requirements, isSingleRequirement) {
             <p class="admission-requirements_panel-subtitle">${req.percentage}% del proceso de evaluación</p>
           </div>
         </div>
-      ` : ''}
+      `
+          : ''
+      }
 
       <div class="admission-requirements_panel-content">
         <ul class="admission-requirements_items-list">
-          ${req.items.map(item => `
+          ${req.items
+            .map(
+              item => `
             <li class="admission-requirements_list-item">
               <div class="admission-requirements_item-check">
                 <i class="ph ph-check"></i>
               </div>
               <span class="admission-requirements_item-text">${item}</span>
             </li>
-          `).join('')}
+          `
+            )
+            .join('')}
         </ul>
       </div>
     </div>
-  `).join('')
+  `
+    )
+    .join('')
 }
 
 // Exponer globalmente para compatibilidad con Liferay

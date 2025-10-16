@@ -10,12 +10,12 @@ Landing page para el evento **Expo Javeriana de Pregrados** - presentación de p
 
 Esta página utiliza el tema personalizado `expo-javeriana` con los siguientes colores:
 
-| Color | Hex | Variable | Uso |
-|-------|-----|----------|-----|
-| Azul Javeriana | `#2c5697` | `--primary-*` | Color principal institucional |
-| Amarillo/Dorado | `#fbb900` | `--secondary-*` | Destacados, fondos |
-| Naranja | `#e55110` | `--tertiary-*` | Acentos, CTAs |
-| Morado Oscuro | `#170557` | `--expo-purple-dark` | Fondos especiales |
+| Color           | Hex       | Variable             | Uso                           |
+| --------------- | --------- | -------------------- | ----------------------------- |
+| Azul Javeriana  | `#2c5697` | `--primary-*`        | Color principal institucional |
+| Amarillo/Dorado | `#fbb900` | `--secondary-*`      | Destacados, fondos            |
+| Naranja         | `#e55110` | `--tertiary-*`       | Acentos, CTAs                 |
+| Morado Oscuro   | `#170557` | `--expo-purple-dark` | Fondos especiales             |
 
 **Documentación completa:** Ver [THEME-COLORS.md](./THEME-COLORS.md)
 
@@ -43,6 +43,7 @@ expoJaverianaPrg/
 ### **1. Header (1_header/)** - ✅ Completado (60%)
 
 **Implementado:**
+
 - ✅ Estructura de 2 columnas (logo + info)
 - ✅ Logo institucional desde CDN
 - ✅ Caja de información con:
@@ -54,10 +55,12 @@ expoJaverianaPrg/
 - ✅ Sistema de scripts vanilla JS
 
 **Pendiente:**
+
 - ⚠️ Completar contenido de columna derecha (posible CTA o info adicional)
 - ⚠️ Añadir más elementos de información si es necesario
 
 **Archivos:**
+
 - `index.jsx` - Componente React
 - `styles.scss` - Estilos con tema
 - `script.js` - JavaScript vanilla
@@ -90,6 +93,7 @@ Navegar a: `http://localhost:3000/institutional/expoJaverianaPrg`
 ### **Ver componente en modo desarrollo:**
 
 La página usa `ViewComponent` que permite:
+
 - ✅ Ver el código fuente del componente
 - ✅ Descargar HTML, CSS, JS compilados
 - ✅ Preview en tiempo real
@@ -125,10 +129,12 @@ El tema genera automáticamente 33 variables:
 ## 📦 Assets
 
 ### **CDN Javeriana:**
+
 - Banner: `recursosdb/d/info-prg/banner-1920-x-800px`
 - Logo Expo: `recursosdb/d/info-prg/logo-expo-javeriana-2026`
 
 ### **Assets Locales (no usados actualmente):**
+
 - `1_header/assets/BANNER 1920 x 800px.webp` (1.4 MB)
 - `1_header/assets/Logo Expo Javeriana 2026.svg` (12 KB)
 
@@ -142,13 +148,20 @@ Cada sección implementa el patrón **Singleton System**:
 
 ```javascript
 class HeaderExpoSystem {
-  constructor() { this.initialized = false }
-  init() { /* Lógica de inicialización */ }
-  destroy() { /* Limpieza */ }
+  constructor() {
+    this.initialized = false
+  }
+  init() {
+    /* Lógica de inicialización */
+  }
+  destroy() {
+    /* Limpieza */
+  }
 }
 ```
 
 **Características:**
+
 - ✅ Previene múltiples inicializaciones
 - ✅ Auto-limpieza en `beforeunload`
 - ✅ Compatible con hot-reload de Next.js
@@ -168,36 +181,40 @@ Large:    ≥ 1200px
 ## ⚠️ Compatibilidad Liferay
 
 **✅ Compatible:**
+
 - JSX estático (sin hooks en componentes)
 - Variables CSS estándar
 - Vanilla JavaScript en `script.js`
 - Event listeners nativos
 
 **❌ No Compatible (evitar):**
+
 - Hooks de React en componentes
 - Estado local de React
 - Context API
 
-**Nota:** Actualmente el componente usa `useEffect` en la página principal para activar el tema. Esto es solo para desarrollo con Next.js. En Liferay, el atributo `data-theme-faculty` debe añadirse directamente al HTML.
+**Nota:** Actualmente el componente usa `useEffect` en la página principal para activar el tema. Esto es solo para desarrollo con Next.js.
+En Liferay, el atributo `data-theme-faculty` debe añadirse directamente al HTML.
 
 ---
 
 ## 📊 Métricas
 
-| Métrica | Valor |
-|---------|-------|
-| Secciones totales | 5 |
-| Secciones completadas | 1 (20%) |
-| Líneas de código (header) | ~200 |
-| Tamaño compilado | 2.7 KB |
-| Variables CSS generadas | 34 |
-| Assets locales | 1.4 MB |
+| Métrica                   | Valor   |
+| ------------------------- | ------- |
+| Secciones totales         | 5       |
+| Secciones completadas     | 1 (20%) |
+| Líneas de código (header) | ~200    |
+| Tamaño compilado          | 2.7 KB  |
+| Variables CSS generadas   | 34      |
+| Assets locales            | 1.4 MB  |
 
 ---
 
 ## 🎯 Próximos Pasos
 
 ### **Prioridad Alta:**
+
 1. ✅ ~~Crear tema de colores~~ (Completado)
 2. ✅ ~~Implementar header básico~~ (Completado)
 3. ⚠️ Completar contenido del header
@@ -205,11 +222,13 @@ Large:    ≥ 1200px
 5. ⚠️ Implementar sección 3: Datos/Estadísticas
 
 ### **Prioridad Media:**
+
 6. ⚠️ Implementar sección 4: Blog
 7. ⚠️ Implementar sección 5: Footer
 8. ⚠️ Optimizar assets (banner 1.4MB → ~200KB)
 
 ### **Prioridad Baja:**
+
 9. ⚠️ Decidir estrategia assets (CDN vs local)
 10. ⚠️ Añadir animaciones/transiciones
 11. ⚠️ Testing en diferentes navegadores
@@ -224,5 +243,4 @@ Large:    ≥ 1200px
 
 ---
 
-**Última actualización:** 02/10/2025
-**Estado:** En desarrollo (20% completado)
+**Última actualización:** 02/10/2025 **Estado:** En desarrollo (20% completado)

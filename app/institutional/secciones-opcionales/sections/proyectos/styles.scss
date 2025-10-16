@@ -137,266 +137,266 @@
     transform: translateY(-50%);
     left: 0;
     right: 0;
-  position: relative;
-}
+    position: relative;
+  }
 
-.slide-title {
-  color: var(--neutral);
-  font-weight: 700;
-  font-size: var(--font-size-caption);
-}
+  .slide-title {
+    color: var(--neutral);
+    font-weight: 700;
+    font-size: var(--font-size-caption);
+  }
 
-.hero-carousel .carousel-title {
-  display: flex;
-  justify-content: center;
-  color: var(--neutral-100);
-  font-weight: 700;
-  text-align: center;
-  font-size: var(--font-size-title);
-  padding-bottom: 1.25rem;
-  margin: 0;
-  padding-top: 1rem;
-}
+  .hero-carousel .carousel-title {
+    display: flex;
+    justify-content: center;
+    color: var(--neutral-100);
+    font-weight: 700;
+    text-align: center;
+    font-size: var(--font-size-title);
+    padding-bottom: 1.25rem;
+    margin: 0;
+    padding-top: 1rem;
+  }
 
-.paragraph-neutral {
-  color: var(--neutral);
-}
+  .paragraph-neutral {
+    color: var(--neutral);
+  }
 
-/* ========================================
+  /* ========================================
    CONTENEDORES PRINCIPALES - TAMAÑO FIJO COMO DESKTOP
    ======================================== */
 
-.hero-carousel .main-container {
-  position: relative;
-  width: 100%;
-  height: 280px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-@media (max-width: 767px) {
   .hero-carousel .main-container {
-    height: 280px !important;
-    min-height: 280px !important;
+    position: relative;
+    width: 100%;
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
   }
-}
 
-.hero-carousel .carousel-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 15px;
-  touch-action: pan-x;
-}
+  @media (max-width: 767px) {
+    .hero-carousel .main-container {
+      height: 280px !important;
+      min-height: 280px !important;
+    }
+  }
 
-/* ========================================
+  .hero-carousel .carousel-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 15px;
+    touch-action: pan-x;
+  }
+
+  /* ========================================
    WRAPPER Y SLIDES FUNCIONALES
    ======================================== */
 
-.hero-carousel .swiper-wrapper {
-  display: flex !important;
-  align-items: center;
-  height: 100%;
-  gap: 10px !important;
-  width: calc(100% - 30px) !important;
-  justify-content: flex-start;
-  margin: 0 auto;
-  max-width: fit-content;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: transform;
-  touch-action: pan-x;
-  user-select: none;
-  -webkit-user-drag: none;
-}
+  .hero-carousel .swiper-wrapper {
+    display: flex !important;
+    align-items: center;
+    height: 100%;
+    gap: 10px !important;
+    width: calc(100% - 30px) !important;
+    justify-content: flex-start;
+    margin: 0 auto;
+    max-width: fit-content;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: transform;
+    touch-action: pan-x;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
 
-.hero-carousel .swiper-wrapper.centered-slides {
-  justify-content: center !important;
-}
+  .hero-carousel .swiper-wrapper.centered-slides {
+    justify-content: center !important;
+  }
 
-.hero-carousel .swiper-wrapper.no-transition {
-  transition: none !important;
-}
+  .hero-carousel .swiper-wrapper.no-transition {
+    transition: none !important;
+  }
 
-.hero-carousel .swiper-wrapper.dragging {
-  transition: none !important;
-  cursor: grabbing;
-}
+  .hero-carousel .swiper-wrapper.dragging {
+    transition: none !important;
+    cursor: grabbing;
+  }
 
-/* ========================================
+  /* ========================================
    SLIDES CUADRADOS - TAMAÑO FIJO CONSISTENTE
    ======================================== */
 
-.hero-carousel .swiper-slide {
-  flex-shrink: 0;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-drag: none;
-  width: 260px !important;
-  flex: 0 0 260px !important;
-  height: 260px !important;
-  aspect-ratio: 1 / 1;
-}
-
-@media (max-width: 767px) {
   .hero-carousel .swiper-slide {
+    flex-shrink: 0;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-drag: none;
     width: 260px !important;
     flex: 0 0 260px !important;
     height: 260px !important;
-    margin: 0 !important;
+    aspect-ratio: 1 / 1;
   }
-}
 
-/* ========================================
+  @media (max-width: 767px) {
+    .hero-carousel .swiper-slide {
+      width: 260px !important;
+      flex: 0 0 260px !important;
+      height: 260px !important;
+      margin: 0 !important;
+    }
+  }
+
+  /* ========================================
    CENTRADO INTELIGENTE
    ======================================== */
 
-.hero-carousel[data-slides-count='1'] .swiper-wrapper,
-.hero-carousel[data-slides-count='2'] .swiper-wrapper {
-  justify-content: center !important;
-}
-
-@media (min-width: 900px) {
-  .hero-carousel[data-slides-count='3'] .swiper-wrapper {
+  .hero-carousel[data-slides-count='1'] .swiper-wrapper,
+  .hero-carousel[data-slides-count='2'] .swiper-wrapper {
     justify-content: center !important;
   }
-}
 
-@media (min-width: 1200px) {
-  .hero-carousel[data-slides-count='4'] .swiper-wrapper {
-    justify-content: center !important;
+  @media (min-width: 900px) {
+    .hero-carousel[data-slides-count='3'] .swiper-wrapper {
+      justify-content: center !important;
+    }
   }
-}
 
-/* ========================================
+  @media (min-width: 1200px) {
+    .hero-carousel[data-slides-count='4'] .swiper-wrapper {
+      justify-content: center !important;
+    }
+  }
+
+  /* ========================================
    SLIDE INDIVIDUAL Y CONTENIDO
    ======================================== */
 
-// Sobrescribir estilos antiguos del carrusel
-.container .hero-carousel .carousel-slide {
-  position: relative !important;
-  opacity: 1 !important;
-  display: flex !important;
-}
-
-.hero-carousel .carousel-slide {
-  width: 100%;
-  height: 280px;
-  display: flex !important;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  opacity: 1 !important;
-  cursor: pointer;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-  overflow: hidden;
-  border-radius: 8px;
-  touch-action: manipulation;
-
-  /* En desktop, mostrar 3 slides a la vez */
-  @media (min-width: 900px) {
-    width: calc(33.333% - 7px);
-    min-width: 300px;
-    max-width: 400px;
+  // Sobrescribir estilos antiguos del carrusel
+  .container .hero-carousel .carousel-slide {
+    position: relative !important;
+    opacity: 1 !important;
+    display: flex !important;
   }
-}
 
-.hero-carousel .carousel-slide:hover {
-  transform: scale(1.02);
-  z-index: 2;
-}
+  .hero-carousel .carousel-slide {
+    width: 100%;
+    height: 280px;
+    display: flex !important;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    opacity: 1 !important;
+    cursor: pointer;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    overflow: hidden;
+    border-radius: 8px;
+    touch-action: manipulation;
 
-.hero-carousel .carousel-slide .slide-image {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: all 0.3s ease;
-  overflow: hidden;
-  border-radius: inherit;
-}
+    /* En desktop, mostrar 3 slides a la vez */
+    @media (min-width: 900px) {
+      width: calc(33.333% - 7px);
+      min-width: 300px;
+      max-width: 400px;
+    }
+  }
 
-.hero-carousel .carousel-slide .slide-image:hover {
-  transform: scale(0.95);
-}
+  .hero-carousel .carousel-slide:hover {
+    transform: scale(1.02);
+    z-index: 2;
+  }
 
-.hero-carousel .slide-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-  color: var(--neutral);
-  padding: 16px;
-  pointer-events: none;
-  transition: transform 0.3s ease;
-}
+  .hero-carousel .carousel-slide .slide-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    border-radius: inherit;
+  }
 
-.hero-carousel .carousel-slide:hover .slide-content {
-  transform: scale(0.95);
-}
-.hero-carousel .slide-content .slide-title {
-  margin: 0 0 0.5rem 0;
-  font-size: var(--font-size-caption);
-  font-weight: 700;
-  line-height: 1.2;
-}
+  .hero-carousel .carousel-slide .slide-image:hover {
+    transform: scale(0.95);
+  }
 
-.hero-carousel .slide-content .description {
-  font-size: var(--font-size-paragraph);
-  line-height: 1.3;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+  .hero-carousel .slide-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: var(--neutral);
+    padding: 16px;
+    pointer-events: none;
+    transition: transform 0.3s ease;
+  }
 
-/* ========================================
+  .hero-carousel .carousel-slide:hover .slide-content {
+    transform: scale(0.95);
+  }
+  .hero-carousel .slide-content .slide-title {
+    margin: 0 0 0.5rem 0;
+    font-size: var(--font-size-caption);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .hero-carousel .slide-content .description {
+    font-size: var(--font-size-paragraph);
+    line-height: 1.3;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ========================================
    CONTROLES DE NAVEGACIÓN
    ======================================== */
 
-.hero-carousel .carousel-controls {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  display: none;
-  justify-content: space-between;
-  padding: 0 25px;
-  z-index: 100;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
   .hero-carousel .carousel-controls {
-    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: none;
     justify-content: space-between;
-    align-items: center;
-    z-index: 10;
-    padding: 0 rem(20px);
+    padding: 0 25px;
+    z-index: 100;
+    transform: translateY(-50%);
     pointer-events: none;
-
-    @media (max-width: 767px) {
-      display: none !important;
-    }
   }
+
+  @media (min-width: 768px) {
+    .hero-carousel .carousel-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      padding: 0 rem(20px);
+      pointer-events: none;
+
+      @media (max-width: 767px) {
+        display: none !important;
+      }
+    }
   }
 }
 

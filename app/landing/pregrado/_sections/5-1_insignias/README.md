@@ -2,7 +2,8 @@
 
 ## 🎯 Descripción
 
-Versión alternativa del carrusel de reconocimientos académicos, **100% compatible con Liferay DXP**. Construido desde cero para eliminar dependencias de React hooks y maximizar la compatibilidad con sistemas externos.
+Versión alternativa del carrusel de reconocimientos académicos, **100% compatible con Liferay DXP**. Construido desde cero para eliminar
+dependencias de React hooks y maximizar la compatibilidad con sistemas externos.
 
 ## ✨ Características Principales
 
@@ -39,8 +40,7 @@ Versión alternativa del carrusel de reconocimientos académicos, **100% compati
 
 ```jsx
 import InsigniasAlt from './_sections/5-1_insignias'
-
-<InsigniasAlt />
+;<InsigniasAlt />
 ```
 
 ### Con ViewComponent
@@ -48,8 +48,7 @@ import InsigniasAlt from './_sections/5-1_insignias'
 ```jsx
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 import InsigniasAlt from './_sections/5-1_insignias'
-
-<ViewComponent path="/landing/pregrado/_sections/5-1_insignias">
+;<ViewComponent path='/landing/pregrado/_sections/5-1_insignias'>
   <InsigniasAlt />
 </ViewComponent>
 ```
@@ -93,20 +92,21 @@ $carousel-gap-mobile: rem(20px);
 
 ## 🎯 Diferencias con la Versión Original (5_insignias)
 
-| Aspecto | Versión Original (5) | Versión Nueva (5-1) |
-|---------|---------------------|---------------------|
-| **React Hooks** | ❌ Usa `useEffect` | ✅ Sin hooks |
-| **Duplicación** | JS en runtime | JSX en render time |
-| **Compatibilidad Liferay** | ⚠️ Parcial | ✅ Total |
-| **Grupos renderizados** | 1 + 4 duplicados JS | 3 grupos en JSX |
-| **Animación** | CSS con -20% | CSS con -33.333% |
-| **Fallback imágenes** | ❌ No | ✅ Sí |
-| **Accesibilidad** | ⚠️ Básica | ✅ Completa |
-| **Performance** | Buena | Excelente |
+| Aspecto                    | Versión Original (5) | Versión Nueva (5-1) |
+| -------------------------- | -------------------- | ------------------- |
+| **React Hooks**            | ❌ Usa `useEffect`   | ✅ Sin hooks        |
+| **Duplicación**            | JS en runtime        | JSX en render time  |
+| **Compatibilidad Liferay** | ⚠️ Parcial           | ✅ Total            |
+| **Grupos renderizados**    | 1 + 4 duplicados JS  | 3 grupos en JSX     |
+| **Animación**              | CSS con -20%         | CSS con -33.333%    |
+| **Fallback imágenes**      | ❌ No                | ✅ Sí               |
+| **Accesibilidad**          | ⚠️ Básica            | ✅ Completa         |
+| **Performance**            | Buena                | Excelente           |
 
 ## 🚀 Ventajas Técnicas
 
 ### 1. Compatible con Liferay
+
 ```jsx
 // ✅ Sin hooks - Compatible
 const InsigniasAlt = () => {
@@ -121,6 +121,7 @@ const Insignias = () => {
 ```
 
 ### 2. Animación CSS Pura
+
 ```scss
 // El carrusel funciona sin JavaScript
 .carousel-track {
@@ -134,6 +135,7 @@ const Insignias = () => {
 ```
 
 ### 3. Duplicación en Render Time
+
 ```jsx
 // 3 grupos idénticos = loop perfecto
 {[0, 1, 2].map(groupIndex => (
@@ -188,11 +190,7 @@ El componente respeta las preferencias del usuario:
 ### Lazy Loading
 
 ```jsx
-<img
-  loading='lazy'
-  src={item.src}
-  alt={item.alt}
-/>
+<img loading='lazy' src={item.src} alt={item.alt} />
 ```
 
 ## 🐛 Troubleshooting
@@ -236,9 +234,7 @@ El componente respeta las preferencias del usuario:
 
 ## 👥 Créditos
 
-**Desarrollado por**: Pontificia Universidad Javeriana
-**Fecha**: Enero 2025
-**Versión**: 2.0.0
+**Desarrollado por**: Pontificia Universidad Javeriana **Fecha**: Enero 2025 **Versión**: 2.0.0
 
 ---
 

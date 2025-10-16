@@ -1,6 +1,5 @@
 @use '@styles/autoload' as *;
 
-
 $social-card-border-radius: rem(12px);
 $social-card-padding: rem(12px);
 $social-card-min-height: rem(500px);
@@ -9,19 +8,16 @@ $social-card-max-width: rem(400px);
 $social-transition: all 0.3s ease;
 $social-header-padding: rem(8px) rem(12px);
 
-
 $nav-button-size: rem(44px);
 $nav-button-size-mobile: rem(38px);
 $nav-bullet-size: rem(12px);
 $nav-button-offset: rem(60px);
-
 
 .social-carousel {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
 
   &_container {
     width: 100%;
@@ -45,7 +41,6 @@ $nav-button-offset: rem(60px);
     font-size: var(--font-size-title);
   }
 
-
   &_carousel {
     width: 100%;
     position: relative;
@@ -68,7 +63,6 @@ $nav-button-offset: rem(60px);
     }
 
     @include responsive($breakpoint-xs) {
-
       padding: rem(15px) rem(55px);
       min-height: rem(480px);
     }
@@ -620,7 +614,6 @@ $nav-button-offset: rem(60px);
     }
   }
 }
-
 
 .swiper {
   overflow: visible;

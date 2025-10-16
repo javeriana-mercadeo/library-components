@@ -249,143 +249,143 @@ class AccesosDirectos extends React.Component {
     const { isMobile, isMenuExpanded, showShareModal, currentTheme } = this.state
 
     return (
-      <div id="floating-menu-container" className="floating-menu-container">
-        <div id="floating-menu-main" className={this.getMenuClassName()}>
+      <div id='floating-menu-container' className='floating-menu-container'>
+        <div id='floating-menu-main' className={this.getMenuClassName()}>
           {isMobile && !isMenuExpanded && (
             <div
-              className="menu-toggle-button menu-item"
+              className='menu-toggle-button menu-item'
               onClick={this.toggleMobileMenu}
-              title="Abrir menú de accesibilidad"
-              tabIndex="0"
-              role="button"
-              aria-label="Abrir menú de accesibilidad">
-              <i className="ph ph-person"></i>
+              title='Abrir menú de accesibilidad'
+              tabIndex='0'
+              role='button'
+              aria-label='Abrir menú de accesibilidad'>
+              <i className='ph ph-person'></i>
             </div>
           )}
 
           {isMobile && isMenuExpanded && (
             <div
-              className="menu-close-button menu-item"
+              className='menu-close-button menu-item'
               onClick={this.toggleMobileMenu}
-              title="Cerrar menú de accesibilidad"
-              tabIndex="0"
-              role="button"
-              aria-label="Cerrar menú de accesibilidad">
-              <i className="ph ph-x"></i>
+              title='Cerrar menú de accesibilidad'
+              tabIndex='0'
+              role='button'
+              aria-label='Cerrar menú de accesibilidad'>
+              <i className='ph ph-x'></i>
             </div>
           )}
 
           {this.shouldShowElement('increase') && (
             <div
-              className="menu-item"
+              className='menu-item'
               onClick={this.increaseFontSize}
-              title="Aumentar tamaño de fuente"
-              aria-label="Aumentar tamaño de fuente"
-              tabIndex="0"
-              role="button">
-              <i className="ph ph-plus-circle"></i>
+              title='Aumentar tamaño de fuente'
+              aria-label='Aumentar tamaño de fuente'
+              tabIndex='0'
+              role='button'>
+              <i className='ph ph-plus-circle'></i>
             </div>
           )}
 
           {this.shouldShowElement('decrease') && (
             <div
-              className="menu-item"
+              className='menu-item'
               onClick={this.decreaseFontSize}
-              title="Disminuir tamaño de fuente"
-              aria-label="Disminuir tamaño de fuente"
-              tabIndex="0"
-              role="button">
-              <i className="ph ph-minus-circle"></i>
+              title='Disminuir tamaño de fuente'
+              aria-label='Disminuir tamaño de fuente'
+              tabIndex='0'
+              role='button'>
+              <i className='ph ph-minus-circle'></i>
             </div>
           )}
 
           {this.shouldShowElement('theme') && (
             <div
-              className="menu-item"
+              className='menu-item'
               onClick={this.toggleTheme}
-              title="Cambiar tema"
-              aria-label="Cambiar tema de color"
-              tabIndex="0"
-              role="button">
+              title='Cambiar tema'
+              aria-label='Cambiar tema de color'
+              tabIndex='0'
+              role='button'>
               <i className={currentTheme === 'dark' ? 'ph ph-moon' : 'ph ph-sun'}></i>
             </div>
           )}
 
           {this.shouldShowElement('grayscale') && (
             <div
-              className="menu-item"
+              className='menu-item'
               onClick={this.toggleGrayscale}
-              title="Escala de grises"
-              aria-label="Activar escala de grises"
-              tabIndex="0"
-              role="button">
-              <i className="ph ph-circle-half"></i>
+              title='Escala de grises'
+              aria-label='Activar escala de grises'
+              tabIndex='0'
+              role='button'>
+              <i className='ph ph-circle-half'></i>
             </div>
           )}
 
           {this.shouldShowElement('share') && (
             <div
-              className="menu-item"
+              className='menu-item'
               onClick={this.openShareModal}
-              title="Compartir página"
-              aria-label="Abrir opciones para compartir"
-              tabIndex="0"
-              role="button">
-              <i className="ph ph-share-fat"></i>
+              title='Compartir página'
+              aria-label='Abrir opciones para compartir'
+              tabIndex='0'
+              role='button'>
+              <i className='ph ph-share-fat'></i>
             </div>
           )}
         </div>
 
-        <div id="whatsapp-floating-button" className="whatsapp-floating-button">
+        <div id='whatsapp-floating-button' className='whatsapp-floating-button'>
           <a
-            href="#"
-            className="menu-item whatsapp-button"
+            href='#'
+            className='menu-item whatsapp-button'
             onClick={this.handleWhatsApp}
-            title="Contactar por WhatsApp"
-            aria-label="Contactar por WhatsApp"
-            tabIndex="0"
-            role="button">
-            <i className="ph ph-whatsapp-logo"></i>
+            title='Contactar por WhatsApp'
+            aria-label='Contactar por WhatsApp'
+            tabIndex='0'
+            role='button'>
+            <i className='ph ph-whatsapp-logo'></i>
           </a>
         </div>
 
         {showShareModal && (
           <div
-            id="share-modal-overlay"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="share-modal-title"
-            className="share-modal-overlay share-modal-visible">
-            <div className="share-modal">
-              <div className="share-modal-header">
-                <p id="share-modal-title">Compartir</p>
-                <button className="share-modal-close" onClick={this.closeShareModal} aria-label="Cerrar modal de compartir" type="button">
-                  <i className="ph ph-x"></i>
+            id='share-modal-overlay'
+            role='dialog'
+            aria-modal='true'
+            aria-labelledby='share-modal-title'
+            className='share-modal-overlay share-modal-visible'>
+            <div className='share-modal'>
+              <div className='share-modal-header'>
+                <p id='share-modal-title'>Compartir</p>
+                <button className='share-modal-close' onClick={this.closeShareModal} aria-label='Cerrar modal de compartir' type='button'>
+                  <i className='ph ph-x'></i>
                 </button>
               </div>
-              <div className="share-options">
-                <div className="share-option" onClick={() => this.handleShare('whatsapp')} tabIndex="0" role="button">
-                  <i className="ph ph-whatsapp-logo"></i>
+              <div className='share-options'>
+                <div className='share-option' onClick={() => this.handleShare('whatsapp')} tabIndex='0' role='button'>
+                  <i className='ph ph-whatsapp-logo'></i>
                   <span>WhatsApp</span>
                 </div>
-                <div className="share-option" onClick={() => this.handleShare('facebook')} tabIndex="0" role="button">
-                  <i className="ph ph-facebook-logo"></i>
+                <div className='share-option' onClick={() => this.handleShare('facebook')} tabIndex='0' role='button'>
+                  <i className='ph ph-facebook-logo'></i>
                   <span>Facebook</span>
                 </div>
-                <div className="share-option" onClick={() => this.handleShare('x')} tabIndex="0" role="button">
-                  <i className="ph ph-x-logo"></i>
+                <div className='share-option' onClick={() => this.handleShare('x')} tabIndex='0' role='button'>
+                  <i className='ph ph-x-logo'></i>
                   <span>X</span>
                 </div>
-                <div className="share-option" onClick={() => this.handleShare('linkedin')} tabIndex="0" role="button">
-                  <i className="ph ph-linkedin-logo"></i>
+                <div className='share-option' onClick={() => this.handleShare('linkedin')} tabIndex='0' role='button'>
+                  <i className='ph ph-linkedin-logo'></i>
                   <span>LinkedIn</span>
                 </div>
-                <div className="share-option" onClick={() => this.handleShare('email')} tabIndex="0" role="button">
-                  <i className="ph ph-paper-plane-tilt"></i>
+                <div className='share-option' onClick={() => this.handleShare('email')} tabIndex='0' role='button'>
+                  <i className='ph ph-paper-plane-tilt'></i>
                   <span>Correo</span>
                 </div>
-                <div className="share-option" onClick={() => this.handleShare('copy')} tabIndex="0" role="button">
-                  <i className="ph ph-copy"></i>
+                <div className='share-option' onClick={() => this.handleShare('copy')} tabIndex='0' role='button'>
+                  <i className='ph ph-copy'></i>
                   <span>Copiar Link</span>
                 </div>
               </div>
@@ -393,7 +393,7 @@ class AccesosDirectos extends React.Component {
           </div>
         )}
 
-        <div id="floating-menu-notifications" className="floating-menu-notifications"></div>
+        <div id='floating-menu-notifications' className='floating-menu-notifications'></div>
       </div>
     )
   }

@@ -1,7 +1,7 @@
 .expert-carousel_card-content::after {
   content: '';
   flex-grow: 1;
-  min-height: 0.625rem; 
+  min-height: 0.625rem;
 }
 
 /* Si hay botón, no mostrar el espaciador */
@@ -67,21 +67,21 @@
     grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1rem;
-		justify-content: center;
+    justify-content: center;
     align-items: center;
     display: flex;
-		flex-direction: column;
+    flex-direction: column;
   }
 }
 
 .imgDoctorado {
   width: 490px;
-	height: 295px;
+  height: 295px;
   min-width: auto;
   border-radius: 20px;
   object-fit: cover;
   min-height: 200px;
-	justify-self: right;
+  justify-self: right;
 }
 
 .doctoradoGrid {
@@ -91,7 +91,7 @@
   padding: 1.5rem;
   border-radius: 8px;
   height: fit-content;
-	text-align:left;
+  text-align: left;
 }
 
 .NombreDoctorado {
@@ -110,7 +110,7 @@
   color: var(--neutral);
   line-height: 1.6;
   margin: 0;
-	text-align:left;
+  text-align: left;
 }
 .expert-carousel_carousel {
   width: 100%;
@@ -477,9 +477,7 @@
 [data-theme-base='dark'] .expert-carousel_pagination .swiper-pagination-bullet {
   background: var(--primary-400);
 }
-[data-theme-base='dark']
-  .expert-carousel_pagination
-  .swiper-pagination-bullet.swiper-pagination-bullet-active {
+[data-theme-base='dark'] .expert-carousel_pagination .swiper-pagination-bullet.swiper-pagination-bullet-active {
   background: var(--primary-300);
 }
 
