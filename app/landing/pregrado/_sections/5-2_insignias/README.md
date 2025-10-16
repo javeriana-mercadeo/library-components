@@ -1,41 +1,45 @@
-# 5-2 Insignias SWIPER - Carrusel con Swiper.js (Versión 3.0)
+# 5-2 Insignias SWIPER - Carrusel con Swiper.js (Versión 3.2.0)
 
 ## 🎯 Descripción
 
-Carrusel infinito de reconocimientos académicos implementado con **Swiper.js**, la librería más robusta y completa para carruseles. **100%
-compatible con Liferay DXP** y con todas las funcionalidades que necesitas out-of-the-box.
+Carrusel infinito de reconocimientos académicos implementado con **Swiper.js**, la librería más robusta y completa para carruseles. **100% compatible con Liferay DXP** y con todas las funcionalidades que necesitas out-of-the-box.
 
 ## ✨ Características Principales
 
-- ✅ **Swiper.js Integration** - Librería probada y mantenida
-- ✅ **Loop Infinito Nativo** - Sin necesidad de duplicar elementos
+- ✅ **Swiper.js Integration** - Librería probada y mantenida (v11.x)
+- ✅ **Loop Infinito Bidireccional** - Funciona perfectamente en ambas direcciones
 - ✅ **Drag-to-Scroll Robusto** - Funciona perfectamente desde el inicio
-- ✅ **Autoplay Continuo** - Movimiento suave y constante
-- ✅ **Free Mode** - Drag fluido con momentum/inercia
-- ✅ **Pausa en Hover** - Automática con configuración
+- ✅ **Autoplay Funcional** - Movimiento automático con pausa en hover
+- ✅ **Paginación Clickeable** - Bullets interactivos con animaciones
+- ✅ **Gradientes Laterales** - Ocultan overflow correctamente
 - ✅ **Touch Gestures** - Optimizado para móvil
 - ✅ **Sin React Hooks** - JSX puro compatible con Liferay
-- ✅ **Fallback de Imágenes** - Manejo de errores integrado
+- ✅ **Fallback de Imágenes** - Manejo de errores integrado (WebP optimizado)
 - ✅ **Accesibilidad Completa** - a11y module incluido
 - ✅ **Prefers-reduced-motion** - Respeta preferencias del usuario
-- ✅ **100% Responsive** - 5 breakpoints configurados
+- ✅ **100% Responsive** - Adaptativo con slidesPerView: 'auto'
 
 ## 📁 Estructura de Archivos
 
 ```
 5-2_insignias/
 ├── index.jsx          # Componente React (sin hooks)
-├── script.js          # Inicialización Swiper (vanilla JS)
+├── script.js          # Inicialización Swiper (vanilla JS, 93 líneas)
 ├── styles.scss        # Estilos personalizados
-├── info.json          # Metadatos del componente
+├── info.json          # Metadatos del componente (v3.2.0)
+├── CHANGELOG.md       # Historial de versiones
 ├── README.md          # Esta documentación
-└── assets/            # Imágenes fallback
-    ├── alta-calidad.png
-    ├── impact-rankings.png
-    ├── merco.png
-    ├── obet.png
-    ├── qs-ranking.png
-    └── The-acreditada.png
+├── template/          # Templates para Liferay
+│   ├── template.ftl   # Template FTL principal
+│   ├── fragment.ftl   # Fragment wrapper
+│   └── LIFERAY-SETUP.md  # Guía de configuración Liferay
+└── assets/            # Imágenes fallback (solo Next.js)
+    ├── alta-calidad.webp
+    ├── impact-rankings.webp
+    ├── merco.webp
+    ├── obet.webp
+    ├── qs-ranking.webp
+    └── The-acreditada.webp
 ```
 
 ## 🔧 Instalación y Uso
@@ -64,154 +68,163 @@ import InsigniasSwiper from './_sections/5-2_insignias'
 </ViewComponent>
 ```
 
-## 🎨 Configuración de Swiper
+## 🎨 Configuración de Swiper (v3.2.0)
 
-### Parámetros Principales
+### Configuración Actual (Simplificada y Funcional)
 
 ```javascript
-{
-  // 🔄 Loop infinito
+new window.Swiper('.insignias-swiper', {
+  // 🔄 Loop infinito bidireccional
   loop: true,
 
-  // 📏 Slides configurables
-  slidesPerView: 'auto',
+  // 📏 Slides con ancho automático (controlado por CSS)
+  slidesPerView: 'auto',  // Swiper calcula automáticamente
   spaceBetween: 30,
+  centeredSlides: false,
 
-  // ⚡ Autoplay continuo
-  speed: 5000,              // 5 segundos de transición
+  // ⚡ Autoplay funcional
   autoplay: {
-    delay: 1,               // 1ms = movimiento continuo
+    delay: 3000,  // 3 segundos entre transiciones
     disableOnInteraction: false,
-    pauseOnMouseEnter: true,
-    reverseDirection: false
+    pauseOnMouseEnter: true
   },
 
-  // 🖱️ Free mode (drag suave)
-  freeMode: {
-    enabled: true,
-    momentum: true,
-    momentumBounce: false,
-    momentumRatio: 0.5,
-    sticky: false
-  },
-
-  // 🎯 UX
+  // 🎯 Transiciones suaves
+  speed: 800,
   grabCursor: true,
 
+  // 📍 Paginación clickeable
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true,
+    dynamicBullets: true
+  },
+
   // ♿ Accesibilidad
-  a11y: {
-    enabled: true,
-    prevSlideMessage: 'Reconocimiento anterior',
-    nextSlideMessage: 'Siguiente reconocimiento'
-  }
+  a11y: { enabled: true }
+})
+```
+
+### Modificar Velocidad del Autoplay
+
+En [script.js](script.js#L27):
+
+```javascript
+autoplay: {
+  delay: 3000,  // Cambiar a 5000 para 5 segundos
+  disableOnInteraction: false,
+  pauseOnMouseEnter: true
 }
 ```
 
-### Modificar Velocidad
+### Ajustar Cantidad de Slides Visibles
 
-En [script.js](script.js:24-25):
+En [styles.scss](styles.scss#L8-L20) - Modificar ancho de slides:
 
-```javascript
-const CONFIG = {
-  autoplayDelay: 1, // 1ms = continuo
-  speed: 5000, // 5s de transición (ajustar aquí)
-  spaceBetween: 30
+```scss
+$slide-width-desktop: rem(270px);  // Muestra ~4.2 slides en 1200px
+$slide-width-tablet: rem(220px);   // Muestra ~3.2 slides en 768px
+$slide-width-mobile: rem(180px);   // Muestra ~2 slides en móvil
+
+.swiper-slide {
+  width: $slide-width-desktop;  // Ajustar aquí
 }
 ```
 
 ### Cambiar Espaciado
 
-```javascript
-spaceBetween: 30 // En píxeles
-```
-
-### Responsive Breakpoints
+En [script.js](script.js#L24):
 
 ```javascript
-breakpoints: {
-  320: { slidesPerView: 'auto', spaceBetween: 20 },   // Móvil pequeño
-  576: { slidesPerView: 'auto', spaceBetween: 20 },   // Móvil
-  768: { slidesPerView: 'auto', spaceBetween: 30 },   // Tablet
-  992: { slidesPerView: 'auto', spaceBetween: 30 },   // Desktop
-  1200: { slidesPerView: 'auto', spaceBetween: 30 }   // Large
-}
+spaceBetween: 30  // Cambiar a 40 para más separación
 ```
 
 ## 🎯 Ventajas vs Versiones Anteriores
 
-| Aspecto            | v1.0 (5_insignias) | v2.0 (5-1_insignias) | v3.0 (5-2_insignias) ✅ |
-| ------------------ | ------------------ | -------------------- | ----------------------- |
-| **Drag-to-scroll** | ❌ No              | ⚠️ Custom buggy      | ✅ Nativo Swiper        |
-| **Loop infinito**  | ⚠️ 3 grupos JSX    | ⚠️ 3 grupos JSX      | ✅ Swiper nativo        |
-| **Inercia**        | ❌ No              | ⚠️ Custom buggy      | ✅ FreeMode incluido    |
-| **Código total**   | ~300 líneas        | ~500 líneas          | ✅ ~200 líneas          |
-| **Mantenibilidad** | Media              | Baja                 | ✅ Alta                 |
-| **Bugs conocidos** | -                  | Fades, drag          | ✅ Ninguno              |
-| **Touch gestures** | ❌ No              | ⚠️ Custom            | ✅ Optimizado           |
-| **Pausa en hover** | CSS                | CSS + JS             | ✅ Config Swiper        |
-| **Compatibilidad** | ✅ Liferay         | ✅ Liferay           | ✅ Liferay              |
+| Aspecto            | v1.0 (5_insignias) | v2.0 (5-1_insignias) | v3.2.0 (5-2_insignias) ✅ |
+| ------------------ | ------------------ | -------------------- | ------------------------- |
+| **Drag-to-scroll** | ❌ No              | ⚠️ Custom buggy      | ✅ Nativo Swiper funcional |
+| **Loop infinito**  | ⚠️ 3 grupos JSX    | ⚠️ 3 grupos JSX      | ✅ Bidireccional (nativo)  |
+| **Paginación**     | ❌ No              | ❌ No                | ✅ Clickeable con estilos  |
+| **Código script**  | ~150 líneas        | ~400 líneas          | ✅ 93 líneas (-57%)        |
+| **Mantenibilidad** | Media              | Baja                 | ✅ Alta                    |
+| **Bugs conocidos** | -                  | Fades, drag          | ✅ Ninguno (v3.2.0)        |
+| **Touch gestures** | ❌ No              | ⚠️ Custom            | ✅ Optimizado              |
+| **Autoplay**       | ⚠️ CSS only        | ⚠️ Buggy             | ✅ Funcional 100%          |
+| **Assets**         | PNG (79KB)         | PNG (79KB)           | ✅ WebP (30KB, -62%)       |
+| **Compatibilidad** | ❌ usa hooks       | ✅ Liferay           | ✅ Liferay 100%            |
 
-## 🚀 Funcionalidades Implementadas
+## 🚀 Funcionalidades Implementadas (v3.2.0)
 
-### 1. Autoplay Continuo
+### 1. ✅ Autoplay Funcional
 
-Movimiento constante sin pausas entre slides:
+Movimiento automático con configuración robusta:
 
 ```javascript
 autoplay: {
-  delay: 1,  // Mínimo delay = continuo
-  disableOnInteraction: false
+  delay: 3000,  // 3 segundos entre slides
+  disableOnInteraction: false,
+  pauseOnMouseEnter: true  // Pausa al hacer hover
 }
 ```
 
-### 2. Drag-to-Scroll Perfecto
+### 2. ✅ Drag-to-Scroll Bidireccional
 
-- Click y arrastrar con mouse
+- Click y arrastrar con mouse (ambas direcciones)
 - Swipe táctil en móvil
 - Cursor cambia a `grab`/`grabbing`
-- Sincronización perfecta 1:1
+- Loop infinito funciona correctamente izquierda/derecha
 
-### 3. Momentum/Inercia
+### 3. ✅ Paginación Interactiva
 
-Al soltar el drag, continúa con inercia natural:
+Bullets clickeables con estilos completos:
 
-```javascript
-freeMode: {
-  enabled: true,
-  momentum: true,
-  momentumRatio: 0.5
+- 48 líneas de CSS para bullets
+- Hover effects con scale(1.15)
+- Active state con forma alargada
+- DynamicBullets de Swiper
+
+### 4. ✅ Gradientes Laterales Funcionales
+
+```scss
+.insignias-swiper {
+  overflow: hidden !important;
+
+  &::before, &::after {
+    z-index: 10;  // Por encima del contenido
+  }
 }
 ```
 
-### 4. Pausa en Hover
-
-```javascript
-pauseOnMouseEnter: true
-```
-
-### 5. Accesibilidad
+### 5. ✅ Accesibilidad
 
 - ARIA labels configurados
-- Mensajes para screen readers
 - Soporte `prefers-reduced-motion`
 - Navegación por teclado
+- a11y module de Swiper activado
 
-### 6. Responsive
+### 6. ✅ Responsive Nativo
 
-5 breakpoints configurados desde 320px hasta 1200px+
+`slidesPerView: 'auto'` + CSS width-based:
+- Desktop (1200px): ~4.2 slides visibles (270px/slide)
+- Tablet (768px): ~3.2 slides visibles (220px/slide)
+- Mobile (375px): ~2 slides visibles (180px/slide)
 
 ## 🎨 Personalización de Estilos
 
 ### Cambiar Ancho de Slides
 
-En [styles.scss](styles.scss:7-8):
+En [styles.scss](styles.scss#L8-L10):
 
 ```scss
-$slide-width-desktop: rem(200px);
-$slide-width-mobile: rem(160px);
+$slide-width-desktop: rem(270px);  // Ajustar para más/menos slides visibles
+$slide-width-tablet: rem(220px);
+$slide-width-mobile: rem(180px);
 ```
 
 ### Modificar Efectos de Hover
+
+En [styles.scss](styles.scss#L200-L203):
 
 ```scss
 .swiper-slide:hover .slide-content__image {
@@ -220,15 +233,17 @@ $slide-width-mobile: rem(160px);
 }
 ```
 
-### Ajustar Fades Laterales
+### Ajustar Gradientes Laterales
+
+En [styles.scss](styles.scss#L6):
 
 ```scss
-$fade-width: rem(100px); // Ancho del degradado
+$fade-width: rem(150px);  // Ancho del degradado
 ```
 
 ## 🔍 Comparación de Arquitectura
 
-### Versión 2.0 (5-1 Custom)
+### Versión 2.0 (5-1 Custom) - OBSOLETA
 
 ```
 - carousel-wrapper (fijo con fades)
@@ -238,43 +253,52 @@ $fade-width: rem(100px); // Ancho del degradado
         - 6 items × 3 = 18 elementos
 ```
 
-**Problemas:**
-
+**Problemas identificados:**
 - Transform vs scroll conflict
-- Fades se mueven con scroll
+- Fades se movían con scroll
 - Sincronización compleja
+- 400+ líneas de código custom
+- Bugs en drag y autoplay
 
-### Versión 3.0 (5-2 Swiper) ✅
+### Versión 3.2.0 (5-2 Swiper) - ACTUAL ✅
 
 ```
 - insignias-swiper (fijo con fades)
   - swiper-wrapper (Swiper control)
-    - 6 swiper-slide (Swiper loop nativo)
+    - 6 swiper-slide (loop nativo)
+  - swiper-pagination (bullets clickeables)
 ```
 
-**Ventajas:**
+**Mejoras clave:**
+- Loop bidireccional nativo (sin duplicar elementos)
+- Drag robusto integrado (funciona en ambas direcciones)
+- Paginación interactiva (clickeable)
+- Gradientes fijos con z-index correcto
+- Solo 93 líneas de código (-57% vs versión anterior)
+- `slidesPerView: 'auto'` para responsive nativo
+- Sin bugs conocidos
 
-- Loop nativo sin duplicar
-- Drag robusto integrado
-- Fades siempre fijos
-- Sin conflictos
+## 📊 Métricas v3.2.0
 
-## 📊 Métricas
-
-| Métrica                | Valor             |
-| ---------------------- | ----------------- |
-| **Versión**            | 3.0.0             |
-| **Librería**           | Swiper.js 11.x    |
-| **Líneas de JSX**      | ~100              |
-| **Líneas de SCSS**     | ~280              |
-| **Líneas de JS**       | ~160              |
-| **Items renderizados** | 6 (no duplicados) |
-| **Código reducido**    | -60% vs v2.0      |
-| **Compatible Liferay** | ✅ 100%           |
+| Métrica                | Valor                    |
+| ---------------------- | ------------------------ |
+| **Versión**            | 3.2.0                    |
+| **Librería**           | Swiper.js 11.x           |
+| **Líneas script.js**   | 93 (-57% vs v3.1.0)      |
+| **Líneas styles.scss** | ~280                     |
+| **Líneas index.jsx**   | ~104                     |
+| **Assets WebP**        | 6 archivos (30KB total)  |
+| **Assets PNG**         | Eliminados (liberó 78KB) |
+| **Items renderizados** | 6 (no duplicados)        |
+| **Código reducido**    | -57% vs v3.1.0           |
+| **Compatible Liferay** | ✅ 100% (sin hooks)      |
+| **Bugs conocidos**     | ✅ 0 (todos resueltos)   |
 
 ## ♿ Accesibilidad
 
 ### ARIA Labels
+
+En [index.jsx](index.jsx#L76):
 
 ```jsx
 <div className='swiper' role='region' aria-label='Carrusel de reconocimientos académicos'>
@@ -282,67 +306,101 @@ $fade-width: rem(100px); // Ancho del degradado
 
 ### Swiper a11y Module
 
-```javascript
-a11y: {
-  enabled: true,
-  prevSlideMessage: 'Reconocimiento anterior',
-  nextSlideMessage: 'Siguiente reconocimiento',
-  firstSlideMessage: 'Primer reconocimiento',
-  lastSlideMessage: 'Último reconocimiento'
-}
-```
-
-### Prefers-reduced-motion
+En [script.js](script.js#L43):
 
 ```javascript
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-autoplay: prefersReducedMotion ? false : { ... }
+a11y: { enabled: true }
 ```
+
+### Navegación por Teclado
+
+- Tab para navegar entre bullets
+- Enter/Space para activar bullets
+- Flechas izquierda/derecha para navegar slides (nativo Swiper)
 
 ## 🐛 Troubleshooting
 
 ### Swiper no se inicializa
 
-**Problema**: Mensaje en consola "Swiper no está disponible"
+**Síntoma**: Mensaje en consola "⚠️ Swiper no disponible aún, reintentando..."
 
-**Solución**: Verificar que Swiper esté importado correctamente. En Next.js, Swiper se carga automáticamente desde `node_modules`.
+**Solución**:
+- Verificar que Swiper.js esté cargado: `console.log(window.Swiper)`
+- En Next.js: verificar CDN en [app/layout.tsx](../../layout.tsx)
+- En Liferay: verificar que Swiper.js esté incluido en el tema
 
 ### Las imágenes no cargan
 
-**Problema**: URLs externas no disponibles
+**En Next.js**:
+- URLs externas intentan cargar primero
+- Si fallan, usa fallback WebP en `assets/`
 
-**Solución**: El componente usa fallback automático a imágenes locales en `assets/`
+**En Liferay**:
+- Las imágenes se cargan desde Documents and Media
+- No usa los assets locales
+- Verificar que las URLs en el Web Content sean correctas
 
-### El carrusel no se mueve
+### El drag no funciona en una dirección
 
-**Problema**: Usuario tiene `prefers-reduced-motion` activado
+**Causa**: Puede ser que `loop: true` no tenga suficientes slides
 
-**Solución**: Esto es intencional. El script detecta la preferencia y desactiva autoplay.
+**Solución**: Mantener `slidesPerView: 'auto'` (configuración actual v3.2.0)
+
+### Los bullets no aparecen
+
+**Causa**: Falta CSS de paginación
+
+**Solución**: Verificar que styles.scss incluya las 48 líneas de `.swiper-pagination` (agregadas en v3.2.0)
 
 ## 📝 Notas de Desarrollo
 
-### Agregado en versión 3.0
+### 🎉 Changelog v3.2.0 (Actual)
 
-- ✅ Integración completa con Swiper.js
-- ✅ Eliminación de código custom complejo
+- ✅ **Fix crítico**: Drag bidireccional funcional (removido freeMode)
+- ✅ **Fix crítico**: Paginación clickeable (48 líneas CSS agregadas)
+- ✅ **Fix crítico**: Gradientes funcionan (z-index: 10)
+- ✅ **Simplificación**: 214 → 93 líneas (-57%)
+- ✅ **Optimización**: `slidesPerView: 'auto'` para responsive nativo
+- ✅ **Limpieza**: PNG eliminados (liberó 78KB)
+
+### 🔄 Changelog v3.1.0
+
+- ✅ Compatibilidad Liferay 100% (removido useEffect)
+- ✅ Assets convertidos a WebP (-62%)
+- ✅ Sistema de reintentos con límite (max 20)
+- ✅ Cleanup de event listeners
+
+### 🚀 Changelog v3.0.0
+
+- ✅ Integración inicial con Swiper.js
 - ✅ Loop nativo sin duplicar elementos
-- ✅ Drag robusto y probado
-- ✅ Reducción de 60% de código
-- ✅ Zero bugs conocidos
+- ✅ Templates para Liferay (FTL)
 
 ### Compatibilidad
 
-- **Next.js**: 15.4.5+
+- **Next.js**: 15.5.4+
 - **React**: 18.3.1+
-- **Swiper**: 11.2.10+
-- **Liferay DXP**: ✅ Compatible
+- **Swiper**: 11.x
+- **Liferay DXP**: ✅ 100% Compatible (sin hooks)
 - **Navegadores**: Modernos (últimas 2 versiones)
+
+### Gestión de Imágenes
+
+**En Next.js (Desarrollo)**:
+- Imágenes principales: URLs externas de javeriana.edu.co
+- Fallback: WebP locales en `/assets/insignias/` (30KB total)
+
+**En Liferay (Producción)**:
+- Imágenes gestionadas desde **Documents and Media**
+- Configuradas via **Web Content**
+- **Importante**: El administrador debe cargar imágenes ya optimizadas (idealmente WebP)
 
 ## 👥 Créditos
 
-**Desarrollado por**: Pontificia Universidad Javeriana **Librería**: [Swiper.js](https://swiperjs.com/) **Fecha**: Enero 2025 **Versión**:
-3.0.0
+**Desarrollado por**: Pontificia Universidad Javeriana
+**Librería**: [Swiper.js](https://swiperjs.com/)
+**Versión**: 3.2.0
+**Última actualización**: Octubre 2025
 
 ---
 

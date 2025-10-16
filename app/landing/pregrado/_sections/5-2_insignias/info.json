@@ -2,7 +2,7 @@
   "name": "5-2 insignias SWIPER | PREGRADO",
   "type": "section",
   "description": "Carrusel infinito de reconocimientos académicos con Swiper.js - 100% compatible con Liferay",
-  "version": "3.0.0",
+  "version": "3.2.0",
   "library": "Swiper.js",
   "compatibility": {
     "liferay": true,
@@ -12,23 +12,61 @@
   },
   "features": [
     "Carrusel infinito con Swiper.js",
-    "Sin dependencia de React hooks",
+    "Auto-inicialización sin React hooks",
     "Autoplay continuo configurable",
-    "Drag-to-scroll nativo",
-    "Free mode con momentum",
+    "Drag-to-scroll funcional (sin freeMode)",
+    "Loop infinito robusto",
+    "Paginación clickeable funcional",
+    "Gradientes laterales correctos",
     "Pausa en hover automática",
     "Soporte prefers-reduced-motion",
     "100% responsive",
-    "Fallback de imágenes",
-    "Accesibilidad completa (a11y)"
+    "Fallback de imágenes WebP",
+    "Accesibilidad completa (a11y)",
+    "Sistema de reintentos con límite",
+    "Cleanup automático de listeners"
   ],
   "advantages": [
-    "Drag robusto out-of-the-box",
+    "Drag funcional en ambas direcciones",
     "Loop infinito sin duplicar elementos",
+    "Paginación visible y funcional",
+    "Gradientes laterales que ocultan overflow",
     "Código 60% más simple que versión custom",
     "Librería probada y mantenida",
-    "Soporte touch gestures optimizado"
+    "Soporte touch gestures optimizado",
+    "Assets optimizados en WebP (-65% tamaño)",
+    "Sin memory leaks"
   ],
+  "improvements": {
+    "v3.2.0": [
+      "CRÍTICO: Removido freeMode (incompatible con loop)",
+      "CRÍTICO: Agregados estilos de paginación completos",
+      "CRÍTICO: Mejorado z-index de gradientes (2 → 10)",
+      "Ajustado loopAdditionalSlides a totalSlides dinámico",
+      "Agregado speed: 600ms para transiciones suaves",
+      "Forzado overflow: hidden con !important",
+      "Bullets con hover effects y active state",
+      "Bullet activo con forma alargada distintiva"
+    ],
+    "v3.1.0": [
+      "Removido useEffect - 100% compatible Liferay",
+      "Assets convertidos a WebP (79KB → 30KB)",
+      "Sistema de reintentos con límite (max 20)",
+      "Cleanup automático de event listeners",
+      "Hover effects simplificados",
+      "Fades laterales con 'transparent'",
+      "Backoff exponencial en reintentos"
+    ]
+  },
+  "bugfixes": {
+    "v3.2.0": [
+      "✅ Fix: Drag se atasca al deslizar a la derecha",
+      "✅ Fix: Drag a la izquierda no muestra imágenes",
+      "✅ Fix: Paginación no responde a clicks",
+      "✅ Fix: Gradientes no ocultan overflow de imágenes"
+    ]
+  },
   "author": "Pontificia Universidad Javeriana",
-  "created": "2025-01-07"
+  "created": "2025-01-07",
+  "updated": "2025-10-16"
 }

@@ -725,7 +725,7 @@ function mapAPIDataToRequirements(apiData) {
 }
 
 function updateReactComponent(requirementsData) {
-  console.log('[updateReactComponent] Called with:', requirementsData)
+  Logger.debug('updateReactComponent called with data:', requirementsData)
 
   // Almacenar datos para acceso posterior en caso de timing issues
   if (typeof window !== 'undefined') {
@@ -738,18 +738,18 @@ function updateReactComponent(requirementsData) {
   const delays = [100, 200, 300, 500, 500, 1000, 1000, 1000, 2000, 2000, 2000, 3000, 3000, 3000, 5000, 5000, 5000, 5000, 5000, 5000] // Total: ~45 segundos
 
   function tryRender() {
-    console.log(`[updateReactComponent] Attempt ${attempt + 1}/${maxAttempts}`)
+    Logger.debug(`Render attempt ${attempt + 1}/${maxAttempts}`)
     const rendered = renderFullHTML(requirementsData)
 
     if (!rendered && attempt < maxAttempts - 1) {
       attempt++
       const delay = delays[attempt] || 5000
-      console.log(`[updateReactComponent] Retry scheduled in ${delay}ms...`)
+      Logger.debug(`Retry scheduled in ${delay}ms`)
       setTimeout(tryRender, delay)
     } else if (rendered) {
-      console.log('[updateReactComponent] ✅ Successfully rendered!')
+      Logger.info('Requirements component rendered successfully')
     } else {
-      console.error('[updateReactComponent] ❌ Failed after all attempts')
+      Logger.error('Failed to render requirements after all attempts')
     }
   }
 
@@ -1252,13 +1252,13 @@ if (typeof module === 'undefined' && typeof window !== 'undefined') {
 // RENDERIZADO COMPLETO DEL HTML
 // ===========================================
 function renderFullHTML(requirementsData) {
-  console.log('[renderFullHTML] Called with data:', requirementsData)
+  Logger.debug('renderFullHTML called with data:', requirementsData)
 
   // Intentar múltiples selectores para encontrar dónde renderizar
   let container = document.getElementById('admission-requirements_dynamic-content')
 
   if (!container) {
-    console.log('[renderFullHTML] React container not found, trying alternative selectors...')
+    Logger.debug('Primary container not found, trying alternative selectors')
 
     // Intentar diferentes selectores
     const selectors = [
@@ -1273,21 +1273,20 @@ function renderFullHTML(requirementsData) {
 
     for (const selector of selectors) {
       targetElement = document.querySelector(selector)
-      console.log(`[renderFullHTML] Trying selector "${selector}":`, targetElement)
+      Logger.debug(`Trying selector "${selector}":`, targetElement ? 'found' : 'not found')
       if (targetElement) break
     }
 
     if (!targetElement) {
-      console.error('[renderFullHTML] No suitable container found with any selector!')
-      console.log('[renderFullHTML] Available elements:', {
+      const stats = {
         allDivs: document.querySelectorAll('div[data-component-id]').length,
         sections: document.querySelectorAll('section').length
-      })
-      Logger.error('Component not found in DOM')
+      }
+      Logger.error('No suitable container found with any selector. Available elements:', stats)
       return false
     }
 
-    console.log('[renderFullHTML] Found target element:', targetElement)
+    Logger.debug('Target element found:', targetElement)
 
     // Buscar o crear el contenedor dinámico
     container = targetElement.querySelector('#admission-requirements_dynamic-content')
@@ -1298,17 +1297,17 @@ function renderFullHTML(requirementsData) {
       container.id = 'admission-requirements_dynamic-content'
       container.className = 'admission-requirements_dynamic-content'
       targetElement.appendChild(container)
-      console.log('[renderFullHTML] Dynamic container created in:', targetElement)
+      Logger.debug('Dynamic container created')
     }
   }
 
-  console.log('[renderFullHTML] Container found/created:', container)
+  Logger.debug('Container ready for rendering')
 
   const validRequirements = requirementsData.filter(req => req.percentage > 0)
   const isSingleRequirement = validRequirements.length === 1
   const baseClass = 'admission-requirements'
 
-  console.log('[renderFullHTML] Valid requirements:', validRequirements.length, 'Single:', isSingleRequirement)
+  Logger.debug(`Valid requirements: ${validRequirements.length}, Single requirement: ${isSingleRequirement}`)
 
   // Generar HTML completo
   const html = `
@@ -1357,7 +1356,7 @@ function renderFullHTML(requirementsData) {
     </div>
   `
 
-  console.log('[renderFullHTML] Setting innerHTML...')
+  Logger.debug('Setting innerHTML to container')
 
   // Buscar el loading state (puede estar en el contenedor o en su padre)
   let loadingState = container.querySelector('.admission-requirements_loading-state')
@@ -1369,17 +1368,17 @@ function renderFullHTML(requirementsData) {
 
   // Renderizar el contenido primero
   container.innerHTML = html
-  console.log('[renderFullHTML] HTML set successfully')
+  Logger.debug('HTML content set successfully')
 
   // Activar animación de fade out del loading state
   if (loadingState) {
-    console.log('[renderFullHTML] Hiding loading state with animation...')
+    Logger.debug('Hiding loading state with animation')
     loadingState.classList.add('hidden')
 
     // Remover completamente después de la transición (500ms)
     setTimeout(() => {
       loadingState.remove()
-      console.log('[renderFullHTML] Loading state removed')
+      Logger.debug('Loading state removed from DOM')
     }, 500)
   }
 
@@ -1391,38 +1390,38 @@ function renderFullHTML(requirementsData) {
     container.closest('.admission-requirements') ||
     container.parentElement
 
-  console.log('[renderFullHTML] Component for interactions:', component)
+  Logger.debug('Component for interactions:', component ? 'found' : 'not found')
 
   if (component) {
-    console.log('[renderFullHTML] Initializing interactions...')
+    Logger.debug('Initializing component interactions')
 
     // Esperar un tick para que el DOM se actualice completamente
     setTimeout(() => {
       try {
         initChartInteractions(component)
-        console.log('[renderFullHTML] ✅ Chart interactions initialized')
+        Logger.debug('Chart interactions initialized')
       } catch (error) {
-        console.error('[renderFullHTML] Error initializing chart interactions:', error)
+        Logger.error('Error initializing chart interactions:', error)
       }
 
       try {
         initAccessibilityEnhancements(component)
-        console.log('[renderFullHTML] ✅ Accessibility initialized')
+        Logger.debug('Accessibility enhancements initialized')
       } catch (error) {
-        console.error('[renderFullHTML] Error initializing accessibility:', error)
+        Logger.error('Error initializing accessibility:', error)
       }
 
       try {
         initMobileAccordion(component)
-        console.log('[renderFullHTML] ✅ Mobile accordion initialized')
+        Logger.debug('Mobile accordion initialized')
       } catch (error) {
-        console.error('[renderFullHTML] Error initializing mobile accordion:', error)
+        Logger.error('Error initializing mobile accordion:', error)
       }
 
-      console.log('[renderFullHTML] All interactions initialized')
+      Logger.info('All component interactions initialized successfully')
     }, 50)
   } else {
-    console.warn('[renderFullHTML] Component not found for interactions')
+    Logger.warn('Component not found for interaction initialization')
   }
 
   return true // Retornar true si tiene éxito

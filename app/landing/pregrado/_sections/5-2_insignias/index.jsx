@@ -1,57 +1,52 @@
 'use client'
 import { Container, Title } from '@library/components'
-import { useEffect } from 'react'
 
-import script from './script.js'
+import './script.js'
 import './styles.scss'
 
 const InsigniasSwiper = () => {
   const elementName = 'insignias-swiper'
 
-  useEffect(() => {
-    script()
-  }, [])
-
   const reconocimientos = [
     {
       id: 'the-latin-america',
       src: 'https://www.javeriana.edu.co/recursosdb/1372208/12527648/logo-ranking-the-latin-america.png',
-      srcFallback: '/assets/insignias/The-acreditada.png',
+      srcFallback: '/assets/insignias/The-acreditada.webp',
       alt: 'THE Latin America Rankings',
       description: 'Tercer lugar en Colombia y 36 en Latinoamérica entre 230 instituciones.'
     },
     {
       id: 'alta-calidad',
       src: 'https://www.javeriana.edu.co/recursosdb/1372208/12527648/alta_calidad.png',
-      srcFallback: '/assets/insignias/alta-calidad.png',
+      srcFallback: '/assets/insignias/alta-calidad.webp',
       alt: 'Acreditación de Alta Calidad',
       description: 'Acreditación Institucional de Alta Calidad por 10 años (2020)'
     },
     {
       id: 'qs-empleabilidad',
       src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-qs-empleabilidad-lp',
-      srcFallback: '/assets/insignias/qs-ranking.png',
+      srcFallback: '/assets/insignias/qs-ranking.webp',
       alt: 'QS Empleabilidad',
       description: '3ra en empleabilidad de nuestros graduados'
     },
     {
       id: 'merco',
       src: 'https://www.javeriana.edu.co/recursosdb/1372208/12527648/merco-img.png',
-      srcFallback: '/assets/insignias/merco.png',
+      srcFallback: '/assets/insignias/merco.webp',
       alt: 'MERCO',
       description: '1er en el sector educativo de Colombia (2023).'
     },
     {
       id: 'the-impact',
       src: 'https://www.javeriana.edu.co/recursosdb/1372208/12527648/THE+Impact+Rankings+2024_COL_RGB.jpg',
-      srcFallback: '/assets/insignias/impact-rankings.png',
+      srcFallback: '/assets/insignias/impact-rankings.webp',
       alt: 'THE Impact Rankings',
       description: '1er en Colombia por nuestro compromiso con los ODS (2023).'
     },
     {
       id: 'qs-by-subject',
       src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-qs-by-subject-lp',
-      srcFallback: '/assets/insignias/obet.png',
+      srcFallback: '/assets/insignias/obet.webp',
       alt: 'QS by Subject - ABET',
       description: 'Acreditados en ABET.'
     }

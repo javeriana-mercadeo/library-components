@@ -3,10 +3,15 @@
 // ==========================================
 // VARIABLES DEL COMPONENTE
 // ==========================================
-$slide-width-desktop: rem(200px);
-$slide-width-mobile: rem(160px);
-$image-width-desktop: rem(150px);
-$image-width-mobile: rem(120px);
+// Con slidesPerView: 'auto', calculamos width para mostrar ~4 slides
+// Fórmula: (container-width - (gaps * 3)) / 4
+// Asumiendo container ~1200px: (1200 - 90) / 4 = ~277px por slide
+$slide-width-desktop: rem(270px);      // Desktop: ~4.2 slides visibles
+$slide-width-tablet: rem(220px);       // Tablet: ~3.2 slides visibles
+$slide-width-mobile: rem(180px);       // Móvil: ~2 slides visibles
+$image-width-desktop: rem(200px);
+$image-width-tablet: rem(160px);
+$image-width-mobile: rem(140px);
 $fade-width: rem(100px);
 
 // ==========================================
@@ -61,7 +66,7 @@ $fade-width: rem(100px);
   position: relative;
   width: 100%;
   padding: var(--spacing-md) 0;
-  overflow: hidden; // 🔒 Evita que los slides se salgan del contenedor
+  overflow: hidden !important; // 🔒 Forzar overflow hidden (importante para gradientes)
 
   // 🌫️ Efecto de niebla lateral (fade) - FIJO
   &::before,
@@ -71,7 +76,7 @@ $fade-width: rem(100px);
     top: 0;
     width: $fade-width;
     height: 100%;
-    z-index: 2;
+    z-index: 10; // ✅ Aumentado para estar sobre slides
     pointer-events: none;
     transition: opacity 0.3s ease;
   }
@@ -79,20 +84,20 @@ $fade-width: rem(100px);
   // Fade izquierdo
   &::before {
     left: 0;
-    background: linear-gradient(to right, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(to right, var(--background-100) 0%, transparent 100%);
 
     @include dark-theme {
-      background: linear-gradient(to right, var(--background-200) 0%, rgba(0, 0, 0, 0) 100%);
+      background: linear-gradient(to right, var(--background-200) 0%, transparent 100%);
     }
   }
 
   // Fade derecho
   &::after {
     right: 0;
-    background: linear-gradient(to left, var(--background-100) 0%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(to left, var(--background-100) 0%, transparent 100%);
 
     @include dark-theme {
-      background: linear-gradient(to left, var(--background-200) 0%, rgba(0, 0, 0, 0) 100%);
+      background: linear-gradient(to left, var(--background-200) 0%, transparent 100%);
     }
   }
 
@@ -109,7 +114,8 @@ $fade-width: rem(100px);
 // SWIPER WRAPPER
 // ==========================================
 .swiper-wrapper {
-  // Swiper maneja esto automáticamente
+  position: relative;
+  z-index: 1; // ✅ Asegurar que esté debajo de los gradientes
   // display: flex se aplica por Swiper
 }
 
@@ -117,9 +123,20 @@ $fade-width: rem(100px);
 // SWIPER SLIDE
 // ==========================================
 .swiper-slide {
-  // ✅ NO definir width fijo - Swiper lo calcula automáticamente según slidesPerView
-  // width controlado por Swiper según breakpoints en script.js
+  // ✅ Con slidesPerView: 'auto', definir width explícito
+  // Width calculado para mostrar ~4 slides en desktop
+  width: $slide-width-desktop;
   flex-shrink: 0;
+
+  // Tablet (768px - 991px)
+  @include responsive($breakpoint-md) {
+    width: $slide-width-tablet;
+  }
+
+  // Móvil (< 768px)
+  @media (max-width: $breakpoint-sm) {
+    width: $slide-width-mobile;
+  }
 }
 
 // ==========================================
@@ -177,15 +194,15 @@ $fade-width: rem(100px);
     filter 0.4s ease,
     transform 0.3s ease;
 
-  // 🌈 HOVER INDIVIDUAL: Logo a color + zoom
+  // 🌈 HOVER: Todos los logos a color cuando hay hover en el carrusel
+  .insignias-swiper:hover & {
+    filter: grayscale(0%) brightness(1);
+  }
+
+  // 🎯 HOVER INDIVIDUAL: Logo específico con zoom
   .swiper-slide:hover & {
     filter: grayscale(0%) brightness(1.1);
     transform: scale(1.05);
-  }
-
-  // 🎯 HOVER GENERAL: Todos los logos a color
-  .insignias-swiper:hover & {
-    filter: grayscale(0%) brightness(1);
   }
 
   // 🔄 Estado de carga
@@ -195,18 +212,14 @@ $fade-width: rem(100px);
     filter: grayscale(100%);
   }
 
+  // Tablet
   @include responsive($breakpoint-md) {
-    max-width: $image-width-mobile;
+    max-width: $image-width-tablet;
   }
 
-  // 📱 Móviles pequeños
+  // Móvil
   @media (max-width: $breakpoint-sm) {
-    max-width: rem(100px);
-  }
-
-  // 🖥️ Pantallas grandes
-  @media (min-width: $breakpoint-xl) {
-    max-width: rem(170px);
+    max-width: $image-width-mobile;
   }
 }
 
@@ -251,6 +264,54 @@ $fade-width: rem(100px);
 }
 
 // ==========================================
+// SWIPER PAGINATION
+// ==========================================
+.swiper-pagination {
+  position: relative;
+  margin-top: var(--spacing-md);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: rem(8px);
+  z-index: 10;
+
+  // Bullets individuales (clases globales de Swiper)
+  .swiper-pagination-bullet {
+    width: rem(10px);
+    height: rem(10px);
+    background: var(--neutral-600);
+    opacity: 0.4;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 !important; // Override Swiper default margin
+
+    @include dark-theme {
+      background: var(--neutral-800);
+    }
+
+    &:hover {
+      opacity: 0.7;
+      transform: scale(1.15);
+    }
+
+    // Bullet activo
+    &.swiper-pagination-bullet-active {
+      background: var(--primary-600);
+      opacity: 1;
+      transform: scale(1.25);
+      width: rem(24px);
+      border-radius: rem(5px);
+
+      @include dark-theme {
+        background: var(--primary-500);
+      }
+    }
+  }
+}
+
+// ==========================================
 // ACCESIBILIDAD: REDUCED MOTION
 // ==========================================
 @media (prefers-reduced-motion: reduce) {
@@ -260,6 +321,10 @@ $fade-width: rem(100px);
 
   .slide-content__image,
   .slide-content {
+    transition: none;
+  }
+
+  .swiper-pagination .swiper-pagination-bullet {
     transition: none;
   }
 }
