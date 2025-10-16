@@ -1,5 +1,5 @@
 import { useScript } from '@hooks'
-import { Container, Title, Paragraph, Button as Btn, Image } from '@/app/components'
+import { Container, Title, Paragraph, Button, Image } from '@/app/components'
 
 import info from './info.json'
 import './styles.scss'
@@ -91,7 +91,7 @@ const Docentes = () => {
               {docente.title}
             </Paragraph>
 
-            <Btn
+            <Button
               href={docente.profileUrl}
               target='_blank'
               variant='link'
@@ -101,7 +101,7 @@ const Docentes = () => {
               color='neutral'
               isEditable={false}>
               Ver Perfil
-            </Btn>
+            </Button>
           </div>
         </div>
       </div>

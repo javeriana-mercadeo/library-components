@@ -1,8 +1,4 @@
-import Container from '@/app/components/container'
-import Title from '@/app/components/title'
-import Image from '@/app/components/image'
-import Paragraph from '@/app/components/paragraph'
-import Btn from '@/app/components/button'
+import { Container, Title, Image, Paragraph, Button } from '@components'
 
 import './styles.scss'
 import info from './info.json'
@@ -22,7 +18,7 @@ export default function ThankYouPage() {
         />
       </div>
       <div className={`${baseClass}__content`}>
-        <Btn
+        <Button
           href='#'
           target='_blank'
           variant='link'
@@ -31,7 +27,7 @@ export default function ThankYouPage() {
           isEditable={false}>
           <i className='ph ph-arrow-bend-up-left'></i>
           Volver al programa
-        </Btn>
+        </Button>
 
         <Title hierarchy='h1' data-puj-name='true' className={`${baseClass}_title`} id={`${elementName}-main-title`}>
           ¡Gracias por tu interés en ser parte de la Universidad Javeriana!
@@ -54,7 +50,7 @@ export default function ThankYouPage() {
             <Paragraph id={`${elementName}-tour-description`} className={`${baseClass}_enrollment-note`}>
               Recorre cada espacio de nuestra universidad sin moverte de casa. Conoce los lugares donde vivirás experiencias inolvidables.
             </Paragraph>
-            <Btn
+            <Button
               href='#'
               target='_blank'
               variant='link'
@@ -64,7 +60,7 @@ export default function ThankYouPage() {
               isEditable={false}>
               Ver tour
               <i className='ph ph-arrow-up-right'></i>
-            </Btn>
+            </Button>
           </div>
 
           {/* CARD 2 - Eventos */}
@@ -78,7 +74,7 @@ export default function ThankYouPage() {
             <Paragraph id={`${elementName}-events-description`} className={`${baseClass}_enrollment-note`}>
               Charlas, talleres y ferias académicas diseñadas para ti. Descubre becas, financiación y mucho más.
             </Paragraph>
-            <Btn
+            <Button
               href='#'
               target='_blank'
               variant='link'
@@ -88,7 +84,7 @@ export default function ThankYouPage() {
               isEditable={false}>
               Conoce más
               <i className='ph ph-arrow-up-right'></i>
-            </Btn>
+            </Button>
           </div>
 
           {/* CARD 3 - Contacto */}
@@ -102,7 +98,7 @@ export default function ThankYouPage() {
             <Paragraph id={`${elementName}-contact-description`} className={`${baseClass}_enrollment-note`}>
               Contáctanos por correo o teléfono para recibir información sobre becas, financiación y admisiones.
             </Paragraph>
-            <Btn
+            <Button
               href='#'
               target='_blank'
               variant='link'
@@ -112,7 +108,7 @@ export default function ThankYouPage() {
               isEditable={false}>
               Escríbenos
               <i className='ph ph-arrow-up-right'></i>
-            </Btn>
+            </Button>
           </div>
 
           {/* CARD 4 - Centro de Ayuda */}
@@ -126,7 +122,7 @@ export default function ThankYouPage() {
             <Paragraph id={`${elementName}-help-description`} className={`${baseClass}_enrollment-note`}>
               Desde procesos de inscripción hasta opciones de financiación. Explora nuestro Centro de Ayuda.
             </Paragraph>
-            <Btn
+            <Button
               href='#'
               target='_blank'
               variant='link'
@@ -136,14 +132,14 @@ export default function ThankYouPage() {
               isEditable={false}>
               Ir al centro de ayuda
               <i className='ph ph-arrow-up-right'></i>
-            </Btn>
+            </Button>
           </div>
         </div>
 
         <div className={`${baseClass}__btn-main`}>
-          <Btn id={`${elementName}-view-programs-btn`} isEditable={false}>
+          <Button id={`${elementName}-view-programs-btn`} isEditable={false}>
             Ver más programas
-          </Btn>
+          </Button>
         </div>
       </div>
     </Container>

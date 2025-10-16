@@ -1,9 +1,8 @@
-import HeaderSimple from '@/app/common/headerSimple'
-import Footer from '@/app/common/footer'
+import { HeaderSimple, Footer } from '@common'
 
 import EventosForm from './form'
 
-import ViewComponent from '@/components/viewComponent/viewComponent'
+import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 
 export default function EventosRelacionamientoPage() {
   const basePath = '/institutional/eventos-relacionamiento'

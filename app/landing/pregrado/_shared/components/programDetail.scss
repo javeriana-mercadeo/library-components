@@ -51,6 +51,7 @@
 
       // Label del detalle
       &_label {
+        color: var(--neutral-400);
         font-size: var(--font-size-paragraph);
         margin: 0;
       }
@@ -94,10 +95,43 @@
           font-size: var(--icon-size-xs);
         }
       }
+
+      // Item contenedor para el elemento doble
+      &_content--doble {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+        gap: rem(6px);
+      }
+
+      // Valores para tipo doble - ambos con los mismos estilos
+      &_value--primary,
+      &_value--secondary {
+        opacity: 1;
+
+        // Hacer que todos los elementos hijos se vean inline
+        > * {
+          display: inline;
+          margin: 0;
+        }
+
+        // También intentar con selectores más específicos
+        .caption,
+        [class*='caption'],
+        span,
+        p {
+          font-weight: var(--font-weight-bold) !important;
+          color: var(--neutral-500) !important;
+          display: inline !important;
+          margin: 0 !important;
+        }
+      }
     }
   }
 
-  // Modal
+  // Modal customizado (legacy - ahora se usa el componente Modal reutilizable)
+  // Se mantiene por compatibilidad pero ya no se genera HTML para esto
   .program-detail-modal {
     position: fixed;
     top: 0;

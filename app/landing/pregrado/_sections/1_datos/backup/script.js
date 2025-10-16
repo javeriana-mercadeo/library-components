@@ -1,5 +1,5 @@
 // ===== CÓDIGO COMPILADO CON ESBUILD (IIFE) =====
-// Compilado el: 10/09/2025, 04:32:07 p. m. (COT)
+// Compilado el: 15/10/2025, 08:46:17 a. m. (COT)
 
 'use strict'
 ;(() => {
@@ -138,9 +138,6 @@
       this.listeners.clear()
     }
   }
-  var debounce = TimingUtils.debounce
-  var throttle = TimingUtils.throttle
-  var wait = TimingUtils.sleep
   function isElementVisible(element, threshold = 0.1) {
     if (DOMUtils && DOMUtils.isElementVisible) {
       return DOMUtils.isElementVisible(element, threshold)
@@ -149,8 +146,10 @@
     const rect = element.getBoundingClientRect()
     const windowHeight = window.innerHeight || document.documentElement.clientHeight
     const windowWidth = window.innerWidth || document.documentElement.clientWidth
-    const verticalVisible = rect.top + rect.height * threshold < windowHeight && rect.bottom - rect.height * threshold > 0
-    const horizontalVisible = rect.left + rect.width * threshold < windowWidth && rect.right - rect.width * threshold > 0
+    const verticalVisible =
+      rect.top + rect.height * threshold < windowHeight && rect.bottom - rect.height * threshold > 0
+    const horizontalVisible =
+      rect.left + rect.width * threshold < windowWidth && rect.right - rect.width * threshold > 0
     return verticalVisible && horizontalVisible
   }
   function onDOMReady(callback) {
@@ -169,7 +168,8 @@
   }
   function getVideoUrl(container, type) {
     if (typeof configuration !== 'undefined') {
-      const configUrl = type === 'mobile' ? configuration.urlVideoMobile : configuration.urlVideoDesktop
+      const configUrl =
+        type === 'mobile' ? configuration.urlVideoMobile : configuration.urlVideoDesktop
       if (configUrl?.trim()) return configUrl
     }
     const dataAttr = type === 'mobile' ? 'data-video-mobile-url' : 'data-video-desktop-url'
@@ -419,7 +419,11 @@
       const containers = document.querySelectorAll('[data-component="video-player"]')
       containers.forEach(container => {
         const visible = isElementVisible(container, this.platform.config.intersectionThreshold)
-        if (visible && container.hasAttribute('data-lazy') && !container.classList.contains('video-loaded')) {
+        if (
+          visible &&
+          container.hasAttribute('data-lazy') &&
+          !container.classList.contains('video-loaded')
+        ) {
           this.handleVideoIntersection(container, true)
         } else {
           const videos = container.querySelectorAll('video')
@@ -446,7 +450,10 @@
           return
         }
         if (isVisible) {
-          if (container.hasAttribute('data-lazy') && !container.classList.contains('video-loaded')) {
+          if (
+            container.hasAttribute('data-lazy') &&
+            !container.classList.contains('video-loaded')
+          ) {
             try {
               await this.loadVideoLazily(container)
             } catch (error) {
@@ -668,10 +675,15 @@
           break
         } catch (error) {
           attempts++
-          this.logger.warning(`[VideoSystem] Intento ${attempts}/${finalMaxAttempts} fall\xF3:`, error.message)
+          this.logger.warning(
+            `[VideoSystem] Intento ${attempts}/${finalMaxAttempts} fall\xF3:`,
+            error.message
+          )
           if (attempts >= finalMaxAttempts) {
             if (isManual) {
-              this.logger.error('[VideoSystem] Reproducci\xF3n manual fall\xF3 despu\xE9s de todos los intentos')
+              this.logger.error(
+                '[VideoSystem] Reproducci\xF3n manual fall\xF3 despu\xE9s de todos los intentos'
+              )
             } else {
               this.handlePlaybackError(video, error)
             }
@@ -709,11 +721,15 @@
      */
     scheduleRetryInit() {
       if (this.state.currentRetryCount >= this.state.maxRetryAttempts) {
-        this.logger.error('[VideoSystem] M\xE1ximo n\xFAmero de reintentos alcanzado. Deshabilitando sistema de video.')
+        this.logger.error(
+          '[VideoSystem] M\xE1ximo n\xFAmero de reintentos alcanzado. Deshabilitando sistema de video.'
+        )
         return
       }
       this.state.currentRetryCount++
-      this.logger.info(`[VideoSystem] Programando reintento ${this.state.currentRetryCount}/${this.state.maxRetryAttempts}`)
+      this.logger.info(
+        `[VideoSystem] Programando reintento ${this.state.currentRetryCount}/${this.state.maxRetryAttempts}`
+      )
       this.timers.setTimeout(() => {
         this.setupLazyVideoContainers()
       }, 2e3 * this.state.currentRetryCount)
@@ -818,7 +834,10 @@
         if (modal) this.closeModal(modal.id)
         return
       }
-      if (e.target.classList.contains('program-detail-modal') && e.target.classList.contains('program-detail-modal--active')) {
+      if (
+        e.target.classList.contains('program-detail-modal') &&
+        e.target.classList.contains('program-detail-modal--active')
+      ) {
         this.closeModal(e.target.id)
       }
     }
@@ -842,7 +861,9 @@
     handleTabNavigation(e) {
       const modal = this.activeModal
       if (!modal) return
-      const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+      const focusableElements = modal.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
       const focusableArray = Array.from(focusableElements)
       if (focusableArray.length === 0) return
       const firstElement = focusableArray[0]
@@ -907,7 +928,9 @@
         closeButton.focus()
         return
       }
-      const focusableElement = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+      const focusableElement = modal.querySelector(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
       if (focusableElement) {
         focusableElement.focus()
       }
@@ -1086,7 +1109,8 @@
           this.ensureLowercase(element)
         }
       }
-      const childElements = element.querySelectorAll && element.querySelectorAll(this.targetSelector)
+      const childElements =
+        element.querySelectorAll && element.querySelectorAll(this.targetSelector)
       if (childElements) {
         childElements.forEach(child => this.ensureLowercase(child))
       }
@@ -1173,6 +1197,7 @@
     }
     init() {
       if (this.initialized) return
+      if (typeof document === 'undefined') return
       document.addEventListener('data_load-program', this.handleDataLoad.bind(this))
       this.initialized = true
       Logger?.info?.('ProgramFormatter: Module initialized')
@@ -1186,6 +1211,7 @@
       }
     }
     addColonsToElements() {
+      if (typeof document === 'undefined') return
       const context = document.getElementById('datos')
       const elements = context ? context.querySelectorAll('[data-puj-name="true"]') : []
       Logger?.info?.(`ProgramFormatter: Found ${elements.length} elements to process`)
@@ -1199,9 +1225,13 @@
         if (!currentText.endsWith(':') && !currentText.endsWith('::')) {
           const newText = currentText + ':'
           element.textContent = newText
-          Logger?.debug?.(`ProgramFormatter: Added colon to element ${index + 1}: "${currentText}" -> "${newText}"`)
+          Logger?.debug?.(
+            `ProgramFormatter: Added colon to element ${index + 1}: "${currentText}" -> "${newText}"`
+          )
         } else {
-          Logger?.debug?.(`ProgramFormatter: Element ${index + 1} already has colon(s): "${currentText}"`)
+          Logger?.debug?.(
+            `ProgramFormatter: Element ${index + 1} already has colon(s): "${currentText}"`
+          )
         }
       } catch (error) {
         Logger?.error?.(`ProgramFormatter: Error processing element ${index + 1}`, error)
@@ -1213,13 +1243,14 @@
       this.addColonsToElements()
     }
     destroy() {
+      if (typeof document === 'undefined') return
       document.removeEventListener('data_load-program', this.handleDataLoad.bind(this))
       this.initialized = false
       Logger?.info?.('ProgramFormatter: Module destroyed')
     }
   }
-  var programFormatter = new ProgramFormatter()
-  if (typeof window !== 'undefined') {
+  var programFormatter = typeof window !== 'undefined' ? new ProgramFormatter() : null
+  if (typeof window !== 'undefined' && programFormatter) {
     window.ProgramFormatter = ProgramFormatter
     window.programFormatter = programFormatter
   }

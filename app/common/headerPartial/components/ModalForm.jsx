@@ -1,4 +1,4 @@
-import { Button as Btn, Paragraph, Title } from '@/app/components'
+import { Button, Paragraph, Title } from '@components'
 
 const ModalForm = () => {
   return (
@@ -25,7 +25,7 @@ const ModalForm = () => {
               ¿Tienes dudas?
             </Title>
 
-            <Btn
+            <Button
               variant='light'
               id='modal-close'
               aria-label='Cerrar modal'
@@ -34,7 +34,7 @@ const ModalForm = () => {
               startIcon={<i className='ph ph-x'></i>}
               iconOnly>
               botón de cerrar
-            </Btn>
+            </Button>
           </div>
 
           {/* Contenido del Modal */}
@@ -163,9 +163,9 @@ const ModalForm = () => {
 
               {/* FOOTER: Solo botón fijo */}
               <div className='form-footer'>
-                <Btn type='submit' variant='solid' isEditable={false} size='lg' fullWidth>
+                <Button type='submit' variant='solid' isEditable={false} size='lg' fullWidth>
                   Enviar ahora
-                </Btn>
+                </Button>
               </div>
             </form>
           </div>

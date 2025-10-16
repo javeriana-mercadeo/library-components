@@ -1,7 +1,6 @@
 'use client'
 
-import Container from '@/app/components/container'
-import Btn from '@/app/components/buttons'
+import { Container, Button } from '@components'
 import { useState } from 'react'
 
 import Splash from '@/app/common/splash'
@@ -63,205 +62,205 @@ const VariantButton = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' 
         <div className='space-y-6'>
           {/* Variantes de estilo */}
           <CodePreview
-            code={`<Btn color="${color}" variant="solid">Solid</Btn>
-<Btn color="${color}" variant="faded">Faded</Btn>
-<Btn color="${color}" variant="bordered">Bordered</Btn>
-<Btn color="${color}" variant="light">Light</Btn>
-<Btn color="${color}" variant="flat">Flat</Btn>
-<Btn color="${color}" variant="ghost">Ghost</Btn>
-<Btn color="${color}" variant="shadow">Shadow</Btn>`}
+            code={`<Button color="${color}" variant="solid">Solid</Button>
+<Button color="${color}" variant="faded">Faded</Button>
+<Button color="${color}" variant="bordered">Bordered</Button>
+<Button color="${color}" variant="light">Light</Button>
+<Button color="${color}" variant="flat">Flat</Button>
+<Button color="${color}" variant="ghost">Ghost</Button>
+<Button color="${color}" variant="shadow">Shadow</Button>`}
             description='Todas las variantes disponibles del sistema'
             title='Variantes de estilo'>
             <div className='flex flex-wrap gap-2'>
-              <Btn color={color} variant='solid'>
+              <Button color={color} variant='solid'>
                 Solid
-              </Btn>
-              <Btn color={color} variant='faded'>
+              </Button>
+              <Button color={color} variant='faded'>
                 Faded
-              </Btn>
-              <Btn color={color} variant='bordered'>
+              </Button>
+              <Button color={color} variant='bordered'>
                 Bordered
-              </Btn>
-              <Btn color={color} variant='light'>
+              </Button>
+              <Button color={color} variant='light'>
                 Light
-              </Btn>
-              <Btn color={color} variant='flat'>
+              </Button>
+              <Button color={color} variant='flat'>
                 Flat
-              </Btn>
-              <Btn color={color} variant='ghost'>
+              </Button>
+              <Button color={color} variant='ghost'>
                 Ghost
-              </Btn>
-              <Btn color={color} variant='shadow'>
+              </Button>
+              <Button color={color} variant='shadow'>
                 Shadow
-              </Btn>
+              </Button>
             </div>
           </CodePreview>
 
           {/* Tamaños */}
           <CodePreview
-            code={`<Btn color="${color}" size="sm">Pequeño</Btn>
-<Btn color="${color}" size="md">Mediano</Btn>
-<Btn color="${color}" size="lg">Grande</Btn>`}
+            code={`<Button color="${color}" size="sm">Pequeño</Button>
+<Button color="${color}" size="md">Mediano</Button>
+<Button color="${color}" size="lg">Grande</Button>`}
             description='Tres tamaños: sm, md (default), lg'
             title='Tamaños disponibles'>
             <div className='flex flex-wrap items-center gap-2'>
-              <Btn color={color} size='sm'>
+              <Button color={color} size='sm'>
                 Pequeño
-              </Btn>
-              <Btn color={color} size='md'>
+              </Button>
+              <Button color={color} size='md'>
                 Mediano
-              </Btn>
-              <Btn color={color} size='lg'>
+              </Button>
+              <Button color={color} size='lg'>
                 Grande
-              </Btn>
+              </Button>
             </div>
           </CodePreview>
 
           {/* Botones con iconos */}
           <CodePreview
-            code={`<Btn color="${color}" startIcon={<i className="ph ph-plus"></i>}>
+            code={`<Button color="${color}" startIcon={<i className="ph ph-plus"></i>}>
   Con ícono inicial
-</Btn>
-<Btn color="${color}" endIcon={<i className="ph ph-arrow-right"></i>}>
+</Button>
+<Button color="${color}" endIcon={<i className="ph ph-arrow-right"></i>}>
   Con ícono final
-</Btn>
-<Btn color="${color}"
+</Button>
+<Button color="${color}"
      startIcon={<i className="ph ph-plus"></i>}
      endIcon={<i className="ph ph-arrow-right"></i>}>
   Con ambos íconos
-</Btn>`}
+</Button>`}
             description='Iconos al inicio, final o ambos'
             title='Botones con iconos'>
             <div className='flex flex-wrap gap-2'>
-              <Btn color={color} startIcon={<i className='ph ph-plus' />}>
+              <Button color={color} startIcon={<i className='ph ph-plus' />}>
                 Con ícono inicial
-              </Btn>
-              <Btn color={color} endIcon={<i className='ph ph-arrow-right' />}>
+              </Button>
+              <Button color={color} endIcon={<i className='ph ph-arrow-right' />}>
                 Con ícono final
-              </Btn>
-              <Btn color={color} endIcon={<i className='ph ph-arrow-right' />} startIcon={<i className='ph ph-plus' />}>
+              </Button>
+              <Button color={color} endIcon={<i className='ph ph-arrow-right' />} startIcon={<i className='ph ph-plus' />}>
                 Con ambos íconos
-              </Btn>
+              </Button>
             </div>
           </CodePreview>
 
           {/* NUEVA SECCIÓN: Botones solo icono */}
           <CodePreview
             code={`// Tamaños disponibles para iconOnly
-<Btn color="${color}"
+<Button color="${color}"
      startIcon={<i className="ph ph-heart"></i>}
      iconOnly
      size="sm">
   Me gusta
-</Btn>
-<Btn color="${color}"
+</Button>
+<Button color="${color}"
      startIcon={<i className="ph ph-heart"></i>}
      iconOnly
      size="md">
   Me gusta
-</Btn>
-<Btn color="${color}"
+</Button>
+<Button color="${color}"
      startIcon={<i className="ph ph-heart"></i>}
      iconOnly
      size="lg">
   Me gusta
-</Btn>
+</Button>
 
 // Con diferentes variantes
-<Btn color="${color}"
+<Button color="${color}"
      startIcon={<i className="ph ph-settings"></i>}
      iconOnly
      variant="bordered">
   Configuración
-</Btn>
-<Btn color="${color}"
+</Button>
+<Button color="${color}"
      startIcon={<i className="ph ph-settings"></i>}
      iconOnly
      variant="light">
   Configuración
-</Btn>`}
+</Button>`}
             description='Proporciones cuadradas, solo muestra el icono'
             title='Botones solo icono (NUEVO)'>
             <div className='space-y-3'>
               <div className='flex items-center gap-2'>
                 <span className='text-xs text-[var(--neutral-500)] w-16'>Tamaños:</span>
-                <Btn iconOnly color={color} size='sm' startIcon={<i className='ph ph-heart' />}>
+                <Button iconOnly color={color} size='sm' startIcon={<i className='ph ph-heart' />}>
                   Me gusta
-                </Btn>
-                <Btn iconOnly color={color} size='md' startIcon={<i className='ph ph-heart' />}>
+                </Button>
+                <Button iconOnly color={color} size='md' startIcon={<i className='ph ph-heart' />}>
                   Me gusta
-                </Btn>
-                <Btn iconOnly color={color} size='lg' startIcon={<i className='ph ph-heart' />}>
+                </Button>
+                <Button iconOnly color={color} size='lg' startIcon={<i className='ph ph-heart' />}>
                   Me gusta
-                </Btn>
+                </Button>
               </div>
               <div className='flex items-center gap-2'>
                 <span className='text-xs text-[var(--neutral-500)] w-16'>Variantes:</span>
-                <Btn iconOnly color={color} startIcon={<i className='ph ph-settings' />} variant='solid'>
+                <Button iconOnly color={color} startIcon={<i className='ph ph-settings' />} variant='solid'>
                   Configuración
-                </Btn>
-                <Btn iconOnly color={color} startIcon={<i className='ph ph-settings' />} variant='bordered'>
+                </Button>
+                <Button iconOnly color={color} startIcon={<i className='ph ph-settings' />} variant='bordered'>
                   Configuración
-                </Btn>
-                <Btn iconOnly color={color} startIcon={<i className='ph ph-settings' />} variant='light'>
+                </Button>
+                <Button iconOnly color={color} startIcon={<i className='ph ph-settings' />} variant='light'>
                   Configuración
-                </Btn>
-                <Btn iconOnly color={color} startIcon={<i className='ph ph-settings' />} variant='flat'>
+                </Button>
+                <Button iconOnly color={color} startIcon={<i className='ph ph-settings' />} variant='flat'>
                   Configuración
-                </Btn>
+                </Button>
               </div>
             </div>
           </CodePreview>
 
           {/* Estados deshabilitados */}
           <CodePreview
-            code={`<Btn color="${color}" variant="solid" disabled>
+            code={`<Button color="${color}" variant="solid" disabled>
   Solid deshabilitado
-</Btn>
-<Btn color="${color}" variant="bordered" disabled>
+</Button>
+<Button color="${color}" variant="bordered" disabled>
   Bordered deshabilitado
-</Btn>
-<Btn color="${color}"
+</Button>
+<Button color="${color}"
      startIcon={<i className="ph ph-heart"></i>}
      iconOnly
      disabled>
   Solo icono deshabilitado
-</Btn>`}
+</Button>`}
             description='Botones en estado disabled'
             title='Estados deshabilitados'>
             <div className='flex flex-wrap gap-2'>
-              <Btn disabled color={color} variant='solid'>
+              <Button disabled color={color} variant='solid'>
                 Solid deshabilitado
-              </Btn>
-              <Btn disabled color={color} variant='bordered'>
+              </Button>
+              <Button disabled color={color} variant='bordered'>
                 Bordered deshabilitado
-              </Btn>
-              <Btn disabled iconOnly color={color} startIcon={<i className='ph ph-heart' />}>
+              </Button>
+              <Button disabled iconOnly color={color} startIcon={<i className='ph ph-heart' />}>
                 Solo icono deshabilitado
-              </Btn>
+              </Button>
             </div>
           </CodePreview>
 
           {/* Ancho completo */}
           <CodePreview
-            code={`<Btn color="${color}" variant="solid" fullWidth>
+            code={`<Button color="${color}" variant="solid" fullWidth>
   Botón Solid de ancho completo
-</Btn>
-<Btn color="${color}"
+</Button>
+<Button color="${color}"
      variant="bordered"
      fullWidth
      startIcon={<i className="ph ph-crown"></i>}>
   Botón Bordered de ancho completo con icono
-</Btn>`}
+</Button>`}
             description='Botones que ocupan todo el ancho disponible'
             title='Ancho completo'>
             <div className='space-y-2'>
-              <Btn fullWidth color={color} variant='solid'>
+              <Button fullWidth color={color} variant='solid'>
                 Botón Solid de ancho completo
-              </Btn>
-              <Btn fullWidth color={color} startIcon={<i className='ph ph-crown' />} variant='bordered'>
+              </Button>
+              <Button fullWidth color={color} startIcon={<i className='ph ph-crown' />} variant='bordered'>
                 Botón Bordered de ancho completo con icono
-              </Btn>
+              </Button>
             </div>
           </CodePreview>
         </div>
@@ -283,7 +282,7 @@ export default function ButtonShowcase() {
   return (
     <>
       <Splash />
-      <Container>
+      <Container className='' id='button-showcase-container'>
         {/* Header */}
         <div className='text-center mb-8'>
           <h1 className='text-4xl font-bold mb-4 text-[var(--neutral-200)]'>Biblioteca de Botones</h1>
@@ -300,92 +299,92 @@ export default function ButtonShowcase() {
           <div className='grid gap-6'>
             {/* Botones normales */}
             <CodePreview
-              code={`<Btn color="primary" variant="solid">Solid</Btn>
-<Btn color="primary" variant="faded">Faded</Btn>
-<Btn color="primary" variant="bordered">Bordered</Btn>
-<Btn color="primary" variant="light">Light</Btn>
-<Btn color="primary" variant="flat">Flat</Btn>
-<Btn color="primary" variant="ghost">Ghost</Btn>
-<Btn color="primary" variant="shadow">Shadow</Btn>`}
+              code={`<Button color="primary" variant="solid">Solid</Button>
+<Button color="primary" variant="faded">Faded</Button>
+<Button color="primary" variant="bordered">Bordered</Button>
+<Button color="primary" variant="light">Light</Button>
+<Button color="primary" variant="flat">Flat</Button>
+<Button color="primary" variant="ghost">Ghost</Button>
+<Button color="primary" variant="shadow">Shadow</Button>`}
               description='Las 7 variantes principales del sistema de diseño'
               title='Variantes de estilo tradicionales'>
               <div className='flex flex-wrap gap-3 justify-center'>
-                <Btn color='primary' variant='solid'>
+                <Button color='primary' variant='solid'>
                   Solid
-                </Btn>
-                <Btn color='primary' variant='faded'>
+                </Button>
+                <Button color='primary' variant='faded'>
                   Faded
-                </Btn>
-                <Btn color='primary' variant='bordered'>
+                </Button>
+                <Button color='primary' variant='bordered'>
                   Bordered
-                </Btn>
-                <Btn color='primary' variant='light'>
+                </Button>
+                <Button color='primary' variant='light'>
                   Light
-                </Btn>
-                <Btn color='primary' variant='flat'>
+                </Button>
+                <Button color='primary' variant='flat'>
                   Flat
-                </Btn>
-                <Btn color='primary' variant='ghost'>
+                </Button>
+                <Button color='primary' variant='ghost'>
                   Ghost
-                </Btn>
-                <Btn color='primary' variant='shadow'>
+                </Button>
+                <Button color='primary' variant='shadow'>
                   Shadow
-                </Btn>
+                </Button>
               </div>
             </CodePreview>
 
             {/* NUEVA SECCIÓN: Demostración de iconOnly */}
             <CodePreview
               code={`// Todas las variantes con iconOnly
-<Btn color="primary" variant="solid" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Btn>
-<Btn color="primary" variant="faded" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Btn>
-<Btn color="primary" variant="bordered" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Btn>
-<Btn color="primary" variant="light" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Btn>
-<Btn color="primary" variant="flat" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Btn>
-<Btn color="primary" variant="ghost" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Btn>
-<Btn color="primary" variant="shadow" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Btn>
+<Button color="primary" variant="solid" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Button>
+<Button color="primary" variant="faded" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Button>
+<Button color="primary" variant="bordered" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Button>
+<Button color="primary" variant="light" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Button>
+<Button color="primary" variant="flat" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Button>
+<Button color="primary" variant="ghost" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Button>
+<Button color="primary" variant="shadow" iconOnly startIcon={<i className="ph ph-star"></i>}>Favorito</Button>
 
 // Diferentes tamaños
-<Btn color="primary" iconOnly size="sm" startIcon={<i className="ph ph-plus"></i>}>Agregar</Btn>
-<Btn color="primary" iconOnly size="md" startIcon={<i className="ph ph-plus"></i>}>Agregar</Btn>
-<Btn color="primary" iconOnly size="lg" startIcon={<i className="ph ph-plus"></i>}>Agregar</Btn>`}
+<Button color="primary" iconOnly size="sm" startIcon={<i className="ph ph-plus"></i>}>Agregar</Button>
+<Button color="primary" iconOnly size="md" startIcon={<i className="ph ph-plus"></i>}>Agregar</Button>
+<Button color="primary" iconOnly size="lg" startIcon={<i className="ph ph-plus"></i>}>Agregar</Button>`}
               description='Nueva funcionalidad: botones con proporciones cuadradas que muestran solo el icono'
               title='🆕 Botones solo icono - Todas las variantes'>
               <div className='space-y-4'>
                 <div className='flex flex-wrap gap-3 justify-center'>
-                  <Btn iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='solid'>
+                  <Button iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='solid'>
                     Favorito
-                  </Btn>
-                  <Btn iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='faded'>
+                  </Button>
+                  <Button iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='faded'>
                     Favorito
-                  </Btn>
-                  <Btn iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='bordered'>
+                  </Button>
+                  <Button iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='bordered'>
                     Favorito
-                  </Btn>
-                  <Btn iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='light'>
+                  </Button>
+                  <Button iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='light'>
                     Favorito
-                  </Btn>
-                  <Btn iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='flat'>
+                  </Button>
+                  <Button iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='flat'>
                     Favorito
-                  </Btn>
-                  <Btn iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='ghost'>
+                  </Button>
+                  <Button iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='ghost'>
                     Favorito
-                  </Btn>
-                  <Btn iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='shadow'>
+                  </Button>
+                  <Button iconOnly color='primary' startIcon={<i className='ph ph-star' />} variant='shadow'>
                     Favorito
-                  </Btn>
+                  </Button>
                 </div>
                 <div className='flex items-center justify-center gap-2'>
                   <span className='text-xs text-[var(--neutral-500)]'>Tamaños:</span>
-                  <Btn iconOnly color='primary' size='sm' startIcon={<i className='ph ph-plus' />}>
+                  <Button iconOnly color='primary' size='sm' startIcon={<i className='ph ph-plus' />}>
                     Agregar
-                  </Btn>
-                  <Btn iconOnly color='primary' size='md' startIcon={<i className='ph ph-plus' />}>
+                  </Button>
+                  <Button iconOnly color='primary' size='md' startIcon={<i className='ph ph-plus' />}>
                     Agregar
-                  </Btn>
-                  <Btn iconOnly color='primary' size='lg' startIcon={<i className='ph ph-plus' />}>
+                  </Button>
+                  <Button iconOnly color='primary' size='lg' startIcon={<i className='ph ph-plus' />}>
                     Agregar
-                  </Btn>
+                  </Button>
                 </div>
               </div>
             </CodePreview>
@@ -398,60 +397,60 @@ export default function ButtonShowcase() {
           <div className='grid md:grid-cols-2 gap-6'>
             <CodePreview
               code={`<div className="flex gap-2 p-3 bg-gray-100 rounded-lg">
-  <Btn iconOnly variant="light" color="primary"
+  <Button iconOnly variant="light" color="primary"
        startIcon={<i className="ph ph-pencil"></i>}>
     Editar
-  </Btn>
-  <Btn iconOnly variant="light" color="danger"
+  </Button>
+  <Button iconOnly variant="light" color="danger"
        startIcon={<i className="ph ph-trash"></i>}>
     Eliminar
-  </Btn>
-  <Btn iconOnly variant="light" color="secondary"
+  </Button>
+  <Button iconOnly variant="light" color="secondary"
        startIcon={<i className="ph ph-download"></i>}>
     Descargar
-  </Btn>
-  <Btn iconOnly variant="light" color="tertiary"
+  </Button>
+  <Button iconOnly variant="light" color="tertiary"
        startIcon={<i className="ph ph-share"></i>}>
     Compartir
-  </Btn>
+  </Button>
 </div>`}
               description='Perfectos para barras de herramientas y acciones rápidas'
               title='Barra de herramientas'>
               <div className='flex gap-2 p-3 bg-[var(--neutral-800)] rounded-lg'>
-                <Btn iconOnly color='primary' startIcon={<i className='ph ph-pencil' />} variant='light'>
+                <Button iconOnly color='primary' startIcon={<i className='ph ph-pencil' />} variant='light'>
                   Editar
-                </Btn>
-                <Btn iconOnly color='danger' startIcon={<i className='ph ph-trash' />} variant='light'>
+                </Button>
+                <Button iconOnly color='danger' startIcon={<i className='ph ph-trash' />} variant='light'>
                   Eliminar
-                </Btn>
-                <Btn iconOnly color='secondary' startIcon={<i className='ph ph-download' />} variant='light'>
+                </Button>
+                <Button iconOnly color='secondary' startIcon={<i className='ph ph-download' />} variant='light'>
                   Descargar
-                </Btn>
-                <Btn iconOnly color='tertiary' startIcon={<i className='ph ph-share' />} variant='light'>
+                </Button>
+                <Button iconOnly color='tertiary' startIcon={<i className='ph ph-share' />} variant='light'>
                   Compartir
-                </Btn>
+                </Button>
               </div>
             </CodePreview>
 
             <CodePreview
               code={`<div className="relative h-32 bg-gray-100 rounded-lg">
   <div className="absolute bottom-4 right-4">
-    <Btn iconOnly
+    <Button iconOnly
          variant="shadow"
          color="primary"
          size="lg"
          startIcon={<i className="ph ph-plus"></i>}>
       Agregar elemento
-    </Btn>
+    </Button>
   </div>
 </div>`}
               description='Ideal para acciones principales flotantes'
               title='Botón flotante (FAB)'>
               <div className='relative h-32 bg-[var(--neutral-800)] rounded-lg'>
                 <div className='absolute bottom-4 right-4'>
-                  <Btn iconOnly color='primary' size='lg' startIcon={<i className='ph ph-plus' />} variant='shadow'>
+                  <Button iconOnly color='primary' size='lg' startIcon={<i className='ph ph-plus' />} variant='shadow'>
                     Agregar elemento
-                  </Btn>
+                  </Button>
                 </div>
               </div>
             </CodePreview>
@@ -471,40 +470,40 @@ export default function ButtonShowcase() {
           <h2 className='text-2xl font-semibold mb-6 text-[var(--neutral-200)]'>💡 Casos de uso recomendados</h2>
           <div className='grid md:grid-cols-2 gap-6'>
             <CodePreview
-              code={`<Btn variant="solid" color="primary" fullWidth>
+              code={`<Button variant="solid" color="primary" fullWidth>
   Crear cuenta
-</Btn>
-<Btn variant="shadow" color="success" fullWidth>
+</Button>
+<Button variant="shadow" color="success" fullWidth>
   Confirmar pedido
-</Btn>`}
+</Button>`}
               description='Para las acciones más importantes de la interfaz'
               title='Acciones principales'>
               <div className='space-y-2'>
-                <Btn fullWidth color='primary' variant='solid'>
+                <Button fullWidth color='primary' variant='solid'>
                   Crear cuenta
-                </Btn>
-                <Btn fullWidth color='success' variant='shadow'>
+                </Button>
+                <Button fullWidth color='success' variant='shadow'>
                   Confirmar pedido
-                </Btn>
+                </Button>
               </div>
             </CodePreview>
 
             <CodePreview
-              code={`<Btn variant="bordered" color="secondary" fullWidth>
+              code={`<Button variant="bordered" color="secondary" fullWidth>
   Ver detalles
-</Btn>
-<Btn variant="ghost" color="tertiary" fullWidth>
+</Button>
+<Button variant="ghost" color="tertiary" fullWidth>
   Cancelar
-</Btn>`}
+</Button>`}
               description='Para acciones menos prominentes pero importantes'
               title='Acciones secundarias'>
               <div className='space-y-2'>
-                <Btn fullWidth color='secondary' variant='bordered'>
+                <Button fullWidth color='secondary' variant='bordered'>
                   Ver detalles
-                </Btn>
-                <Btn fullWidth color='tertiary' variant='ghost'>
+                </Button>
+                <Button fullWidth color='tertiary' variant='ghost'>
                   Cancelar
-                </Btn>
+                </Button>
               </div>
             </CodePreview>
           </div>
@@ -638,91 +637,91 @@ export default function ButtonShowcase() {
           <div className='mt-6 grid md:grid-cols-2 gap-6'>
             <CodePreview
               code={`// Botón básico
-<Btn color="primary" variant="solid">
+<Button color="primary" variant="solid">
   Mi botón
-</Btn>
+</Button>
 
 // Botón con icono
-<Btn color="success"
+<Button color="success"
      variant="shadow"
      startIcon={<i className="ph ph-check"></i>}>
   Confirmar
-</Btn>
+</Button>
 
 // Botón solo icono (NUEVO)
-<Btn color="primary"
+<Button color="primary"
      iconOnly
      startIcon={<i className="ph ph-heart"></i>}>
   Me gusta
-</Btn>
+</Button>
 
 // Botón como enlace
-<Btn href="/dashboard"
+<Button href="/dashboard"
      target="_blank"
      color="primary"
      variant="bordered">
   Ir al dashboard
-</Btn>`}
+</Button>`}
               description='Los casos más comunes de implementación'
               title='Ejemplos de uso básico'>
               <div className='space-y-2'>
-                <Btn color='primary' variant='solid'>
+                <Button color='primary' variant='solid'>
                   Mi botón
-                </Btn>
-                <Btn color='success' startIcon={<i className='ph ph-check' />} variant='shadow'>
+                </Button>
+                <Button color='success' startIcon={<i className='ph ph-check' />} variant='shadow'>
                   Confirmar
-                </Btn>
-                <Btn iconOnly color='primary' startIcon={<i className='ph ph-heart' />}>
+                </Button>
+                <Button iconOnly color='primary' startIcon={<i className='ph ph-heart' />}>
                   Me gusta
-                </Btn>
+                </Button>
               </div>
             </CodePreview>
 
             <CodePreview
               code={`// Botón con estado y onClick
-<Btn color="danger"
+<Button color="danger"
      variant="ghost"
      onClick={() => handleDelete()}
      disabled={isLoading}
      endIcon={<i className="ph ph-trash"></i>}>
   {isLoading ? 'Eliminando...' : 'Eliminar'}
-</Btn>
+</Button>
 
 // Botón con radio personalizado
-<Btn color="secondary"
+<Button color="secondary"
      variant="faded"
      radius={20}
      startIcon={<i className="ph ph-settings"></i>}>
   Configuración
-</Btn>
+</Button>
 
 // Formulario con botones
 <form onSubmit={handleSubmit}>
   <div className="flex gap-2 justify-end">
-    <Btn type="button"
+    <Button type="button"
          variant="light"
          color="secondary"
          onClick={() => handleCancel()}>
       Cancelar
-    </Btn>
-    <Btn type="submit"
+    </Button>
+    <Button type="submit"
          variant="solid"
          color="primary"
          disabled={!isValid}
          startIcon={<i className="ph ph-floppy-disk"></i>}>
       Guardar cambios
-    </Btn>
+    </Button>
   </div>
 </form>
 
 // Botón FAB con iconOnly
-<Btn iconOnly
+<Button iconOnly
      variant="shadow"
      color="primary"
      size="lg"
      startIcon={<i className="ph ph-plus"></i>}>
   Agregar elemento
-</Btn>`}
+</Button>`}
               description='Implementaciones más complejas con estado y lógica'
               title='Casos de uso avanzados'>
               <div className='space-y-2'>
@@ -735,66 +734,66 @@ export default function ButtonShowcase() {
             <CodePreview
               code={`// Barra de herramientas completa
 <div className="flex gap-1 p-2 bg-gray-100 rounded-lg">
-  <Btn iconOnly variant="light" color="primary"
+  <Button iconOnly variant="light" color="primary"
        startIcon={<i className="ph ph-bold"></i>}>
     Negrita
-  </Btn>
-  <Btn iconOnly variant="light" color="primary"
+  </Button>
+  <Button iconOnly variant="light" color="primary"
        startIcon={<i className="ph ph-italic"></i>}>
     Cursiva
-  </Btn>
-  <Btn iconOnly variant="light" color="primary"
+  </Button>
+  <Button iconOnly variant="light" color="primary"
        startIcon={<i className="ph ph-underline"></i>}>
     Subrayado
-  </Btn>
+  </Button>
   <div className="w-px bg-gray-300 mx-1"></div>
-  <Btn iconOnly variant="light" color="secondary"
+  <Button iconOnly variant="light" color="secondary"
        startIcon={<i className="ph ph-align-left"></i>}>
     Alinear izquierda
-  </Btn>
-  <Btn iconOnly variant="light" color="secondary"
+  </Button>
+  <Button iconOnly variant="light" color="secondary"
        startIcon={<i className="ph ph-align-center"></i>}>
     Centrar
-  </Btn>
-  <Btn iconOnly variant="light" color="secondary"
+  </Button>
+  <Button iconOnly variant="light" color="secondary"
        startIcon={<i className="ph ph-align-right"></i>}>
     Alinear derecha
-  </Btn>
+  </Button>
 </div>
 
 // Acciones de tabla/lista
 <div className="flex gap-1">
-  <Btn iconOnly size="sm" variant="light" color="primary"
+  <Button iconOnly size="sm" variant="light" color="primary"
        startIcon={<i className="ph ph-eye"></i>}>
     Ver detalles
-  </Btn>
-  <Btn iconOnly size="sm" variant="light" color="warning"
+  </Button>
+  <Button iconOnly size="sm" variant="light" color="warning"
        startIcon={<i className="ph ph-pencil"></i>}>
     Editar
-  </Btn>
-  <Btn iconOnly size="sm" variant="light" color="danger"
+  </Button>
+  <Button iconOnly size="sm" variant="light" color="danger"
        startIcon={<i className="ph ph-trash"></i>}>
     Eliminar
-  </Btn>
+  </Button>
 </div>
 
 // Estados con iconOnly
-<Btn iconOnly variant="flat" color="success"
+<Button iconOnly variant="flat" color="success"
      startIcon={<i className="ph ph-check-circle"></i>}
      disabled>
   Completado
-</Btn>
+</Button>
 
 // Navegación
 <div className="flex gap-2">
-  <Btn iconOnly variant="bordered" color="secondary"
+  <Button iconOnly variant="bordered" color="secondary"
        startIcon={<i className="ph ph-arrow-left"></i>}>
     Anterior
-  </Btn>
-  <Btn iconOnly variant="bordered" color="secondary"
+  </Button>
+  <Button iconOnly variant="bordered" color="secondary"
        startIcon={<i className="ph ph-arrow-right"></i>}>
     Siguiente
-  </Btn>
+  </Button>
 </div>`}
               description='Nuevos patrones de uso con la funcionalidad iconOnly'
               title='Casos específicos con iconOnly'>
@@ -802,39 +801,39 @@ export default function ButtonShowcase() {
                 <div>
                   <p className='text-xs text-[var(--neutral-500)] mb-2'>Barra de herramientas de texto:</p>
                   <div className='flex gap-1 p-2 bg-[var(--neutral-800)] rounded-lg w-fit'>
-                    <Btn iconOnly color='primary' startIcon={<i className='ph ph-text-b' />} variant='light'>
+                    <Button iconOnly color='primary' startIcon={<i className='ph ph-text-b' />} variant='light'>
                       Negrita
-                    </Btn>
-                    <Btn iconOnly color='primary' startIcon={<i className='ph ph-text-italic' />} variant='light'>
+                    </Button>
+                    <Button iconOnly color='primary' startIcon={<i className='ph ph-text-italic' />} variant='light'>
                       Cursiva
-                    </Btn>
-                    <Btn iconOnly color='primary' startIcon={<i className='ph ph-text-underline' />} variant='light'>
+                    </Button>
+                    <Button iconOnly color='primary' startIcon={<i className='ph ph-text-underline' />} variant='light'>
                       Subrayado
-                    </Btn>
+                    </Button>
                     <div className='w-px bg-[var(--neutral-600)] mx-1' />
-                    <Btn iconOnly color='secondary' startIcon={<i className='ph ph-text-align-left' />} variant='light'>
+                    <Button iconOnly color='secondary' startIcon={<i className='ph ph-text-align-left' />} variant='light'>
                       Alinear izquierda
-                    </Btn>
-                    <Btn iconOnly color='secondary' startIcon={<i className='ph ph-text-align-center' />} variant='light'>
+                    </Button>
+                    <Button iconOnly color='secondary' startIcon={<i className='ph ph-text-align-center' />} variant='light'>
                       Centrar
-                    </Btn>
-                    <Btn iconOnly color='secondary' startIcon={<i className='ph ph-text-align-right' />} variant='light'>
+                    </Button>
+                    <Button iconOnly color='secondary' startIcon={<i className='ph ph-text-align-right' />} variant='light'>
                       Alinear derecha
-                    </Btn>
+                    </Button>
                   </div>
                 </div>
                 <div>
                   <p className='text-xs text-[var(--neutral-500)] mb-2'>Acciones de fila:</p>
                   <div className='flex gap-1'>
-                    <Btn iconOnly color='primary' size='sm' startIcon={<i className='ph ph-eye' />} variant='light'>
+                    <Button iconOnly color='primary' size='sm' startIcon={<i className='ph ph-eye' />} variant='light'>
                       Ver detalles
-                    </Btn>
-                    <Btn iconOnly color='warning' size='sm' startIcon={<i className='ph ph-pencil' />} variant='light'>
+                    </Button>
+                    <Button iconOnly color='warning' size='sm' startIcon={<i className='ph ph-pencil' />} variant='light'>
                       Editar
-                    </Btn>
-                    <Btn iconOnly color='danger' size='sm' startIcon={<i className='ph ph-trash' />} variant='light'>
+                    </Button>
+                    <Button iconOnly color='danger' size='sm' startIcon={<i className='ph ph-trash' />} variant='light'>
                       Eliminar
-                    </Btn>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -897,15 +896,15 @@ export default function ButtonShowcase() {
             puedes extender fácilmente los estilos SCSS y las props del componente.
           </p>
           <div className='flex flex-wrap gap-3 justify-center'>
-            <Btn color='primary' startIcon={<i className='ph ph-book' />} variant='solid'>
+            <Button color='primary' startIcon={<i className='ph ph-book' />} variant='solid'>
               Ver documentación
-            </Btn>
-            <Btn color='secondary' startIcon={<i className='ph ph-github-logo' />} variant='bordered'>
+            </Button>
+            <Button color='secondary' startIcon={<i className='ph ph-github-logo' />} variant='bordered'>
               Ver en GitHub
-            </Btn>
-            <Btn color='tertiary' startIcon={<i className='ph ph-question' />} variant='light'>
+            </Button>
+            <Button color='tertiary' startIcon={<i className='ph ph-question' />} variant='light'>
               Preguntas frecuentes
-            </Btn>
+            </Button>
           </div>
         </div>
       </Container>

@@ -1,5 +1,5 @@
 import { useScript } from '@hooks'
-import { Container, Title, Paragraph, Button as Btn, Icon, Image, Caption } from '@/app/components'
+import { Container, Title, Paragraph, Button, Icon, Image, Caption } from '@components'
 
 import info from './info.json'
 import './styles.scss'
@@ -93,7 +93,7 @@ const Diferenciales = () => {
           </div>
 
           {/* Botón toggle - solo visible en móvil */}
-          <Btn
+          <Button
             className={`${baseClass}__accordion-toggle`}
             variant='light'
             size='sm'
@@ -103,7 +103,7 @@ const Diferenciales = () => {
             isEditable={false}
             endIcon={<i className='ph ph-plus toggle-icon' aria-hidden='true'></i>}>
             <span className='toggle-text'>Leer Más</span>
-          </Btn>
+          </Button>
         </div>
 
         {/* Contenido del acordeón */}

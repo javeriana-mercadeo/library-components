@@ -1,6 +1,6 @@
 'use client'
 import { useEffect } from 'react'
-import { Container, Title, Paragraph, Btn } from '@/app/components/index.js'
+import { Container, Title, Paragraph, Button } from '@/app/components/index.js'
 
 import script from './script.js'
 import info from './info.json'
@@ -83,9 +83,9 @@ const Banner = () => {
             </div>
 
             <div className={`${baseClass}_cta-container`}>
-              <Btn href='#form_SF' variant='shadow' isEditable={false}>
+              <Button href='#form_SF' variant='shadow' isEditable={false}>
                 Inscríbete Ahora
-              </Btn>
+              </Button>
             </div>
           </div>
         </Container>

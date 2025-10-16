@@ -63,10 +63,6 @@ $modal-width-xl: 1200px;
 
     @include liferay-edit-mode {
       position: initial !important;
-      display: flex !important;
-      opacity: 1 !important;
-      transform: none !important;
-      background-color: rgba(var(--neutral-100-rgb), $modal-overlay-bg-edit-opacity);
     }
   }
 

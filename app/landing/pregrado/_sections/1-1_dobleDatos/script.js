@@ -91,6 +91,9 @@ class ProgramDataSystem {
       // ProgramFormatter no necesita inicialización explícita ya que se auto-inicializa
       Logger.info('[ProgramDataSystem] ProgramFormatter inicializado')
 
+      // Configurar visibilidad de triggers de modal basados en contenido
+      this.scheduleModalContentVisibilityCheck()
+
       this.initialized = true
       Logger.info('[ProgramDataSystem] Sistema inicializado exitosamente')
     } catch (error) {
@@ -115,6 +118,49 @@ class ProgramDataSystem {
     if (this.videoSystem.state.initialized) {
       this.videoSystem.setupLazyVideoContainers()
     }
+
+    this.scheduleModalContentVisibilityCheck()
+  }
+
+  /**
+   * Verificar contenido para controlar visibilidad de triggers de modal
+   */
+  scheduleModalContentVisibilityCheck() {
+    const contentElements = document.querySelectorAll('[data-modal-content-monitor]')
+    if (!contentElements.length) return
+
+    contentElements.forEach(contentElement => {
+      const overlayId = contentElement.dataset.modalOverlayId
+      if (!overlayId) return
+
+      const triggerWrapper = document.querySelector(`[data-puj-modal-trigger="${overlayId}"]`)
+      if (!triggerWrapper) return
+
+      const shouldDisplay = this.hasMeaningfulContent(contentElement)
+      triggerWrapper.classList.toggle('program-data_modal-trigger--hidden', !shouldDisplay)
+    })
+  }
+
+  /**
+   * Evaluar si el contenedor del modal tiene contenido significativo
+   * @param {HTMLElement} element
+   * @returns {boolean}
+   */
+  hasMeaningfulContent(element) {
+    if (!element) return false
+
+    const text = element.textContent?.replace(/\u00a0/g, ' ').trim()
+
+    // Textos que se consideran como "sin contenido"
+    const emptyTextPatterns = ['N/A', 'No disponible', 'Sin contenido']
+    const normalizedText = text.toLowerCase()
+
+    if (!text || emptyTextPatterns.some(pattern => normalizedText === pattern.toLowerCase())) {
+      return false
+    }
+
+    const mediaSelector = 'img, video, iframe, audio, object, embed, picture, svg, table, ul, ol, li, blockquote'
+    return Boolean(element.querySelector(mediaSelector))
   }
 
   /**
@@ -260,8 +306,7 @@ function initSystem() {
 
   // Inicializar cuando el DOM esté listo
   onDOMReady(() => {
-    // Usar requestIdleCallback si está disponible para no bloquear recursos críticos
-    runWhenIdle(initProgramDataVideo, 2000)
+    initProgramDataVideo()
   })
 }
 

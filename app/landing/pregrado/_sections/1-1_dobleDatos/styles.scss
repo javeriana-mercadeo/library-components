@@ -1,5 +1,5 @@
 @use '@styles/autoload' as *;
-@use './components/programDetail.scss' as *;
+@use '../../_shared/components/programDetail.scss' as *;
 
 @include programDetail;
 
@@ -132,6 +132,31 @@
   .program-dates-container {
     grid-area: dates;
     align-self: start;
+
+    .program-data_dates-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      align-items: flex-start;
+      margin-left: var(--spacing-2xl);
+
+      [data-puj-modal-trigger] {
+        display: inline-flex;
+        width: auto;
+      }
+
+      .program-data_enrollment-link {
+        margin-left: 0;
+      }
+
+      @include responsive {
+        margin-left: rem(50px);
+
+        [data-puj-modal-trigger] {
+          width: auto;
+        }
+      }
+    }
 
     .program-dates {
       display: flex;

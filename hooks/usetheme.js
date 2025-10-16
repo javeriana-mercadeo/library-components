@@ -1,3 +1,5 @@
+'use client'
+
 // hooks/useTheme.js
 import { useState, useEffect, useCallback } from 'react'
 

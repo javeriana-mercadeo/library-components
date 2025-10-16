@@ -101,26 +101,95 @@ export default function swiperCarousel() {
   let reorganizeAttempts = 0
   const maxAttempts = 5
 
-const reorganizeToHexagonal = () => {
-  if (isReorganizing) return false;
+  const applyHexagonalStyles = gridContainer => {
+    const columnas = gridContainer.querySelectorAll('.columna-logos')
+    const totalItems = parseInt(gridContainer.getAttribute('data-total-items'))
 
-  const gridContainer = document.querySelector('.tools-logos-grid');
-  if (!gridContainer) {
-    if (reorganizeAttempts < maxAttempts) {
-      reorganizeAttempts++;
-      setTimeout(reorganizeToHexagonal, 100);
+    // Estilos base para todas las columnas
+    columnas.forEach((columna, index) => {
+      // Resetear estilos existentes
+      columna.style.cssText = ''
+
+      // Aplicar estilos base
+      columna.style.display = 'flex'
+      columna.style.flexDirection = 'column'
+      columna.style.gap = '25px'
+      columna.style.rowGap = '25px'
+      columna.style.alignItems = 'center'
+      columna.style.position = 'relative'
+
+      if (totalItems === 5) {
+        columna.style.justifyContent = 'center'
+        columna.style.alignItems = 'center'
+        columna.style.minHeight = '200px'
+        columna.style.marginTop = '0px'
+        columna.style.paddingTop = '0px'
+
+        // Centrado perfecto de elementos individuales
+        const logoItems = columna.querySelectorAll('.logo-item')
+        logoItems.forEach(item => {
+          item.style.alignSelf = 'center'
+          item.style.margin = '0 auto'
+        })
+      } else if (totalItems === 7) {
+        if (index === 1) {
+          // Columna central con 3 elementos
+          columna.style.justifyContent = 'center'
+          columna.style.alignItems = 'center'
+          columna.style.minHeight = '300px'
+          columna.style.marginTop = '0px'
+        } else {
+          // Columnas laterales con 2 elementos cada una - CENTRAR VERTICALMENTE
+          columna.style.justifyContent = 'center'
+          columna.style.alignItems = 'center'
+          columna.style.minHeight = '300px'
+          columna.style.paddingTop = '50px'
+          columna.style.marginTop = '0px'
+        }
+      } else {
+        columna.style.justifyContent = 'center'
+        columna.style.alignItems = 'center'
+        columna.style.minHeight = '300px'
+        columna.style.paddingTop = '50px'
+        columna.style.marginTop = '0px'
+      }
+    })
+
+    gridContainer.style.display = 'flex'
+    gridContainer.style.justifyContent = 'center'
+    gridContainer.style.gap = '20px'
+    gridContainer.style.flexWrap = 'nowrap'
+    gridContainer.style.alignItems = 'flex-start'
+    gridContainer.style.width = 'fit-content'
+    gridContainer.style.maxWidth = '100%'
+    gridContainer.style.margin = '0 auto'
+
+    if (totalItems === 5 || totalItems === 7) {
+      gridContainer.style.alignItems = 'center'
+      gridContainer.style.transform = 'none'
     }
-    return false;
   }
 
-  const allLogoItems = Array.from(gridContainer.querySelectorAll('.logo-item'));
-  if (allLogoItems.length === 0) {
-    if (reorganizeAttempts < maxAttempts) {
-      reorganizeAttempts++;
-      setTimeout(reorganizeToHexagonal, 100);
+  const reorganizeToHexagonal = () => {
+    if (isReorganizing) return false
+
+    const gridContainer = document.querySelector('.tools-logos-grid')
+    if (!gridContainer) {
+      if (reorganizeAttempts < maxAttempts) {
+        reorganizeAttempts++
+        setTimeout(reorganizeToHexagonal, 100)
+      }
+      return false
     }
-    return false;
-  }
+
+    const allLogoItems = Array.from(gridContainer.querySelectorAll('.logo-item'))
+    if (allLogoItems.length === 0) {
+      if (reorganizeAttempts < maxAttempts) {
+        reorganizeAttempts++
+        setTimeout(reorganizeToHexagonal, 100)
+      }
+      return false
+    }
 
     isReorganizing = true
     reorganizeAttempts = 0
@@ -147,25 +216,25 @@ const reorganizeToHexagonal = () => {
       const columna = document.createElement('div')
       columna.className = 'columna-logos'
 
-    if (totalItems !== 5 && offsets[columnIndex]) {
-      columna.classList.add('offset');
-    }
-
-    if (totalItems === 5) {
-      if (columnIndex === 1) {
-        columna.classList.add('columna-central-5');
-      } else {
-        columna.classList.add('columna-lateral-5');
+      if (totalItems !== 5 && offsets[columnIndex]) {
+        columna.classList.add('offset')
       }
-    }
 
-    if (totalItems === 7) {
-      if (columnIndex === 1) {
-        columna.classList.add('columna-central-7');
-      } else {
-        columna.classList.add('columna-lateral-7');
+      if (totalItems === 5) {
+        if (columnIndex === 1) {
+          columna.classList.add('columna-central-5')
+        } else {
+          columna.classList.add('columna-lateral-5')
+        }
       }
-    }
+
+      if (totalItems === 7) {
+        if (columnIndex === 1) {
+          columna.classList.add('columna-central-7')
+        } else {
+          columna.classList.add('columna-lateral-7')
+        }
+      }
 
       elementIndexes.forEach(elementIndex => {
         if (originalElements[elementIndex]) {
@@ -174,16 +243,16 @@ const reorganizeToHexagonal = () => {
         }
       })
 
-    gridContainer.appendChild(columna);
-  });
+      gridContainer.appendChild(columna)
+    })
 
-  gridContainer.setAttribute('data-total-items', totalItems);
-  gridContainer.setAttribute('data-pattern', columnConfig.map(col => col.length).join('-'));
+    gridContainer.setAttribute('data-total-items', totalItems)
+    gridContainer.setAttribute('data-pattern', columnConfig.map(col => col.length).join('-'))
 
-  applyHexagonalStyles(gridContainer);
+    applyHexagonalStyles(gridContainer)
 
-  setTimeout(() => {
-    isReorganizing = false;
+    setTimeout(() => {
+      isReorganizing = false
 
       const event = new CustomEvent('hexagonalReorganized', {
         detail: {
@@ -198,81 +267,9 @@ const reorganizeToHexagonal = () => {
     return true
   }
 
-  const applyHexagonalStyles = gridContainer => {
-    const columnas = gridContainer.querySelectorAll('.columna-logos')
-    const totalItems = parseInt(gridContainer.getAttribute('data-total-items'))
-
-    // Estilos base para todas las columnas
-    columnas.forEach((columna, index) => {
-      // Resetear estilos existentes
-      columna.style.cssText = ''
-
-      // Aplicar estilos base
-      columna.style.display = 'flex'
-      columna.style.flexDirection = 'column'
-      columna.style.gap = '25px'
-      columna.style.rowGap = '25px'
-      columna.style.alignItems = 'center'
-      columna.style.position = 'relative'
-
-    if (totalItems === 5) {
-      columna.style.justifyContent = 'center';
-      columna.style.alignItems = 'center';
-      columna.style.minHeight = '200px';
-      columna.style.marginTop = '0px';
-      columna.style.paddingTop = '0px';
-
-        // Centrado perfecto de elementos individuales
-        const logoItems = columna.querySelectorAll('.logo-item')
-        logoItems.forEach(item => {
-          item.style.alignSelf = 'center'
-          item.style.margin = '0 auto'
-        })
-      } else if (totalItems === 7) {
-        if (index === 1) {
-          // Columna central con 3 elementos
-          columna.style.justifyContent = 'center'
-          columna.style.alignItems = 'center'
-          columna.style.minHeight = '300px'
-          columna.style.marginTop = '0px'
-        } else {
-          // Columnas laterales con 2 elementos cada una - CENTRAR VERTICALMENTE
-          columna.style.justifyContent = 'center'
-          columna.style.alignItems = 'center'
-          columna.style.minHeight = '300px'
-          columna.style.paddingTop = '50px'
-          columna.style.marginTop = '0px'
-        }
-      } else {
-        columna.style.justifyContent = 'center';
-        columna.style.alignItems = 'center';
-        columna.style.minHeight = '300px';
-        columna.style.paddingTop = '50px';
-        columna.style.marginTop = '0px';
-      }
-    } else {
-      columna.style.justifyContent = 'flex-start';
-    }
-  });
-
-  gridContainer.style.display = 'flex';
-  gridContainer.style.justifyContent = 'center';
-  gridContainer.style.gap = '20px';
-  gridContainer.style.flexWrap = 'nowrap';
-  gridContainer.style.alignItems = 'flex-start';
-  gridContainer.style.width = 'fit-content';
-  gridContainer.style.maxWidth = '100%';
-  gridContainer.style.margin = '0 auto';
-
-  if (totalItems === 5 || totalItems === 7) {
-    gridContainer.style.alignItems = 'center';
-    gridContainer.style.transform = 'none';
-  }
-};
-
-const setupObserver = () => {
-  const gridContainer = document.querySelector('.tools-logos-grid');
-  if (!gridContainer) return null;
+  const setupObserver = () => {
+    const gridContainer = document.querySelector('.tools-logos-grid')
+    if (!gridContainer) return null
 
     const observer = new MutationObserver(mutations => {
       let shouldReorganize = false
@@ -283,51 +280,51 @@ const setupObserver = () => {
 
           if (isReorganizing) return
 
-        if (target.classList.contains('tools-logos-grid')) {
-          const currentCount = target.querySelectorAll('.logo-item').length;
-          const originalCount = parseInt(target.getAttribute('data-original-count') || '0');
+          if (target.classList.contains('tools-logos-grid')) {
+            const currentCount = target.querySelectorAll('.logo-item').length
+            const originalCount = parseInt(target.getAttribute('data-original-count') || '0')
 
-          if (currentCount !== originalCount && currentCount > 0) {
-            shouldReorganize = true;
+            if (currentCount !== originalCount && currentCount > 0) {
+              shouldReorganize = true
+            }
           }
         }
+      })
+
+      if (shouldReorganize) {
+        setTimeout(() => {
+          if (!isReorganizing) {
+            reorganizeToHexagonal()
+          }
+        }, 300)
       }
-    });
+    })
 
-    if (shouldReorganize) {
-      setTimeout(() => {
-        if (!isReorganizing) {
-          reorganizeToHexagonal();
-        }
-      }, 300);
+    observer.observe(gridContainer, {
+      childList: true,
+      subtree: false,
+      attributes: false
+    })
+
+    return observer
+  }
+
+  const waitForElements = (callback, timeout = 5000) => {
+    const startTime = Date.now()
+
+    const checkElements = () => {
+      const gridContainer = document.querySelector('.tools-logos-grid')
+      const logoItems = gridContainer ? gridContainer.querySelectorAll('.logo-item') : []
+
+      if (logoItems.length > 0) {
+        callback()
+      } else if (Date.now() - startTime < timeout) {
+        setTimeout(checkElements, 100)
+      }
     }
-  });
 
-  observer.observe(gridContainer, {
-    childList: true,
-    subtree: false,
-    attributes: false
-  });
-
-  return observer;
-}
-
-const waitForElements = (callback, timeout = 5000) => {
-  const startTime = Date.now();
-
-  const checkElements = () => {
-    const gridContainer = document.querySelector('.tools-logos-grid');
-    const logoItems = gridContainer ? gridContainer.querySelectorAll('.logo-item') : [];
-
-    if (logoItems.length > 0) {
-      callback();
-    } else if (Date.now() - startTime < timeout) {
-      setTimeout(checkElements, 100);
-    }
-  };
-
-  checkElements();
-};
+    checkElements()
+  }
 
   const initialize = () => {
     loadSwiper()
@@ -360,54 +357,54 @@ const waitForElements = (callback, timeout = 5000) => {
         gridContainer.style.gap = `${gapValue}px`
       }
     }
-  };
 
-  window.showHexagonPattern = () => {
-    const gridContainer = document.querySelector('.tools-logos-grid');
-    if (!gridContainer) return null;
+    window.showHexagonPattern = () => {
+      const gridContainer = document.querySelector('.tools-logos-grid')
+      if (!gridContainer) return null
 
-    const totalItems = gridContainer.getAttribute('data-total-items');
-    const pattern = gridContainer.getAttribute('data-pattern');
-    const isReorganized = gridContainer.getAttribute('data-reorganized') === 'true';
+      const totalItems = gridContainer.getAttribute('data-total-items')
+      const pattern = gridContainer.getAttribute('data-pattern')
+      const isReorganized = gridContainer.getAttribute('data-reorganized') === 'true'
 
-    return {
-      totalItems: parseInt(totalItems),
-      pattern,
-      isReorganized,
-      currentElements: gridContainer.querySelectorAll('.logo-item').length
-    };
-  };
-
-  window.forceReorganize = () => {
-    const gridContainer = document.querySelector('.tools-logos-grid');
-    if (gridContainer) {
-      gridContainer.removeAttribute('data-reorganized');
-      gridContainer.removeAttribute('data-original-count');
+      return {
+        totalItems: parseInt(totalItems),
+        pattern,
+        isReorganized,
+        currentElements: gridContainer.querySelectorAll('.logo-item').length
+      }
     }
-    isReorganizing = false;
-    reorganizeAttempts = 0;
-    setTimeout(reorganizeToHexagonal, 100);
-  };
-}
 
-// Auto-ejecutar cuando el DOM esté listo
-if (typeof window !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initialize);
-  } else {
-    setTimeout(initialize, 100);
+    window.forceReorganize = () => {
+      const gridContainer = document.querySelector('.tools-logos-grid')
+      if (gridContainer) {
+        gridContainer.removeAttribute('data-reorganized')
+        gridContainer.removeAttribute('data-original-count')
+      }
+      isReorganizing = false
+      reorganizeAttempts = 0
+      setTimeout(reorganizeToHexagonal, 100)
+    }
   }
 
-  const waitForContainer = () => {
-    const gridContainer = document.querySelector('.tools-logos-grid');
-    if (!gridContainer) {
-      setTimeout(waitForContainer, 200);
+  // Auto-ejecutar cuando el DOM esté listo
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initialize)
     } else {
-      initialize();
+      setTimeout(initialize, 100)
     }
-  };
 
-  setTimeout(waitForContainer, 50);
+    const waitForContainer = () => {
+      const gridContainer = document.querySelector('.tools-logos-grid')
+      if (!gridContainer) {
+        setTimeout(waitForContainer, 200)
+      } else {
+        initialize()
+      }
+    }
+
+    setTimeout(waitForContainer, 50)
+  }
+
+  return initialize
 }
-
-export default initialize;

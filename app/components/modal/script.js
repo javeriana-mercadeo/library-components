@@ -59,8 +59,8 @@ class ModalSystem {
   _openModal(modalOverlay) {
     if (!modalOverlay) return
 
-    // Mover el modal al body justo antes de abrirlo para evitar problemas de stacking
-    this._moveModalToBody(modalOverlay)
+    // Mover el modal al contenedor apropiado justo antes de abrirlo
+    this._moveModalToContainer(modalOverlay)
 
     // Prevenir scroll del body
     document.body.style.overflow = 'hidden'
@@ -157,18 +157,46 @@ class ModalSystem {
   }
 
   /**
-   * Mueve el modal al body para evitar problemas de z-index
+   * Mueve el modal al contenedor apropiado para evitar problemas de z-index
    * @param {HTMLElement} modalOverlay - Elemento del modal
    * @private
    */
-  _moveModalToBody(modalOverlay) {
+  _moveModalToContainer(modalOverlay) {
     if (!modalOverlay._originalParent) {
       modalOverlay._originalParent = modalOverlay.parentElement
       modalOverlay._originalNextSibling = modalOverlay.nextSibling
     }
 
-    if (modalOverlay.parentElement !== document.body) {
-      document.body.appendChild(modalOverlay)
+    // Detectar si estamos en modo edición de Liferay
+    const body = document.body
+    const hasEditMode = body.classList.contains('has-edit-mode-menu')
+    const isSignedIn = body.classList.contains('signed-in')
+
+    // Determinar el contenedor objetivo
+    let targetContainer = document.body
+    let isLiferayMode = false
+
+    if (hasEditMode && isSignedIn) {
+      // Buscar el primer ancestro con clase page-editor__fragment-content
+      let currentElement = modalOverlay._originalParent || modalOverlay.parentElement
+      while (currentElement && currentElement !== document.body) {
+        if (currentElement.classList.contains('page-editor__fragment-content')) {
+          targetContainer = currentElement
+          isLiferayMode = true
+          break
+        }
+        currentElement = currentElement.parentElement
+      }
+    }
+
+    // Mover el modal al contenedor objetivo si no está ya ahí
+    if (modalOverlay.parentElement !== targetContainer) {
+      // Si estamos en modo Liferay, insertar al inicio del contenedor
+      if (isLiferayMode && targetContainer.firstChild) {
+        targetContainer.insertBefore(modalOverlay, targetContainer.firstChild)
+      } else {
+        targetContainer.appendChild(modalOverlay)
+      }
     }
   }
 

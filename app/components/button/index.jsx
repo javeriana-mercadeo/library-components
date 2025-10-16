@@ -1,6 +1,4 @@
-'use client'
-import { useEffect } from 'react'
-import script from './script.js'
+import { useScript } from '@hooks'
 
 /**
  * Componente de botón/enlace reutilizable con estilos configurables
@@ -27,7 +25,7 @@ import script from './script.js'
  * @param {boolean} [props.iconOnly=false] - Si el botón debe mostrar solo el icono (proporciones cuadradas)
  * @returns {JSX.Element} Botón o enlace renderizado con los estilos aplicados
  */
-export default function Btn({
+export default function Button({
   id,
   elementId,
   className = '',
@@ -82,11 +80,8 @@ export default function Btn({
     }
   }
 
-  useEffect(() => {
-    if (shouldApplyRipple) {
-      script()
-    }
-  }, [shouldApplyRipple])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // Configurar propiedades base
   const baseProps = {
@@ -137,7 +132,7 @@ export default function Btn({
     if (iconOnly) {
       const iconToShow = startIcon || endIcon
       if (!iconToShow) {
-        console.warn('Btn: iconOnly está habilitado pero no se proporcionó startIcon ni endIcon')
+        console.warn('Button: iconOnly está habilitado pero no se proporcionó startIcon ni endIcon')
         return <span className='btn-text'>{children}</span>
       }
       return <span className='btn-icon btn-icon-only'>{iconToShow}</span>

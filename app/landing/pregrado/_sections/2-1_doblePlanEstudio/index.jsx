@@ -1,5 +1,5 @@
 import { useScript } from '@hooks'
-import { Container, Title, Paragraph, Button as Btn } from '@/app/components'
+import { Container, Title, Paragraph, Button } from '@/app/components'
 
 import info from './info.json'
 import './styles.scss'
@@ -195,14 +195,14 @@ const DoblePlanEstudio = () => {
   const renderCarousel = (jornadaData, jornadaId) => {
     return (
       <div className={`${baseClass}_jornada-content`}>
-        <Btn
+        <Button
           href={jornadaData.downloadUrl}
           target='_blank'
           variant='bordered'
           className={`${baseClass}_download-btn`}
           endIcon={<i className='ph ph-download' aria-hidden='true'></i>}>
           Descargar Plan de estudios - {jornadaData.title}
-        </Btn>
+        </Button>
 
         <div className={`${baseClass}_carousel swiper`}>
           <div className={`${baseClass}_wrapper subjects-swiper`}>

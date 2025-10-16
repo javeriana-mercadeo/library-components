@@ -8,7 +8,7 @@ import './styles.scss'
 const Relacionados = () => {
   const elementName = info.id || 'relacionados'
   const baseClass = 'related-programs'
-  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  const staticMode = true // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
   useScript(() => import('./script.js'), { staticMode })
 
   return (

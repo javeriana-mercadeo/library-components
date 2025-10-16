@@ -1,10 +1,6 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import { Container, Title } from '@/app/components'
-
+import { useScript } from '@hooks'
+import { Container, Title } from '@components'
 import ProjectCard from './components/ProjectCard'
-import script from './script.js'
 import './styles.scss'
 
 const projects = [
@@ -86,18 +82,8 @@ const projects = [
 ]
 
 const Proyectos = () => {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!mounted) return
-    script()
-  }, [mounted])
-
-  if (!mounted) return null
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   return (
     <section className='hero-carousel' id='carousel-section'>

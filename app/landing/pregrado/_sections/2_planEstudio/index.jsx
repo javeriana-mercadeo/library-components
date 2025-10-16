@@ -1,5 +1,5 @@
 import { useScript } from '@hooks'
-import { Container, Title, Paragraph, Button as Btn } from '@/app/components'
+import { Container, Title, Paragraph, Button } from '@components'
 
 import info from './info.json'
 import './styles.scss'
@@ -183,14 +183,14 @@ const PlanEstudio = () => {
           El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
         </Paragraph>
 
-        <Btn
+        <Button
           id={`${elementName}-btn`}
           href='#'
           target='_blank'
           variant='bordered'
           endIcon={<i className='ph ph-download' aria-hidden='true'></i>}>
           Descargar Plan de estudios
-        </Btn>
+        </Button>
 
         <div className={`${baseClass}_carousel swiper`}>
           <div className={`${baseClass}_wrapper subjects-swiper`}>

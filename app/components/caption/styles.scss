@@ -288,6 +288,7 @@
 
 @mixin caption-theme-style($color-values, $color-name) {
   // Valores para modo claro
+  $color: var(--#{$color-name});
   $color-100: var(--#{$color-name}-100);
   $color-200: var(--#{$color-name}-200);
   $color-300: var(--#{$color-name}-300);
@@ -302,7 +303,7 @@
 
   // Estilo para variante default - solo texto sin contenedor
   &.caption-default {
-    color: $color-600;
+    color: $color-800;
     background-color: transparent;
     padding: 0;
     border: none;
@@ -326,7 +327,7 @@
 
   // Estilo para variante solid
   &.caption-solid {
-    color: $color-600;
+    color: $color;
     background-color: $color-100;
     padding: rem(4px) rem(8px);
     border-radius: rem(4px);

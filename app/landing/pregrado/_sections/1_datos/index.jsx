@@ -1,6 +1,6 @@
 import { useScript } from '@hooks'
-import { Container, Caption, Title, Paragraph, Button, Modal } from '@/app/components/index.js'
-import ProgramDetail from './components/ProgramDetail.jsx'
+import { Container, Caption, Title, Paragraph, Button, Modal } from '@components'
+import ProgramDetail from '../../_shared/components/ProgramDetail.jsx'
 import info from './info.json'
 import './styles.scss'
 
@@ -180,15 +180,11 @@ const DatosProgramaVideo = () => {
                 Fechas Límite de Inscripción para el primer semestre de 2026:
               </Caption>
               <Paragraph
-                id={`${elementName}-modal-dates-content`}
+                id={`${elementName}-pop-up-date-content`}
                 elementId={`${modalDatesId}-content`}
                 data-modal-content-monitor='dates'
                 data-modal-overlay-id={modalOverlayId}>
-                <ul>
-                  <li>Miércoles, 16 de octubre de 2024</li>
-                  <li>Viernes, 15 de noviembre de 2024</li>
-                  <li>Miércoles, 11 de diciembre de 2024</li>
-                </ul>
+                N/A
               </Paragraph>
             </Modal>
 

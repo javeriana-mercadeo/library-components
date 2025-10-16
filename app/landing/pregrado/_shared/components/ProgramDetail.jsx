@@ -1,6 +1,6 @@
-import { Caption, Paragraph, Button as Btn } from '@/app/components'
 import PropTypes from 'prop-types'
 import { useMemo } from 'react'
+import { Caption, Paragraph, Button, Modal } from '@components'
 
 // Cache para atributos generados
 const attributeCache = new Map()
@@ -29,6 +29,21 @@ const generateDynamicAttributes = id => {
   return result
 }
 
+/**
+ * ProgramDetail - Componente compartido para mostrar detalles de programas
+ * Soporta 4 tipos: normal, modal, editable, doble
+ *
+ * @param {string} id - ID único del detalle
+ * @param {string} icon - Clase del ícono (ej: 'ph-clock')
+ * @param {string} label - Etiqueta del detalle
+ * @param {string} value - Valor principal
+ * @param {string} value2 - Valor secundario (solo para tipo 'doble')
+ * @param {string} prefix - Prefijo para el primer valor (solo para tipo 'doble')
+ * @param {string} prefix2 - Prefijo para el segundo valor (solo para tipo 'doble')
+ * @param {('normal'|'modal'|'editable'|'doble')} type - Tipo de detalle
+ * @param {React.ReactNode} modalContent - Contenido del modal (solo para tipo 'modal')
+ * @param {string} className - Clases CSS adicionales
+ */
 const ProgramDetail = ({ id, icon, label, value, value2, prefix, prefix2, type = 'normal', modalContent = null, className = '' }) => {
   // Memoizar cálculos costosos
   const itemClass = useMemo(
@@ -49,7 +64,7 @@ const ProgramDetail = ({ id, icon, label, value, value2, prefix, prefix2, type =
 
         <div className='program-detail_content'>
           <Caption className='program-detail_label' color='neutral' size='md' isEditable={false}>
-            {label}
+            <span dangerouslySetInnerHTML={{ __html: label }} />
           </Caption>
 
           {/* Tipo normal */}
@@ -59,7 +74,49 @@ const ProgramDetail = ({ id, icon, label, value, value2, prefix, prefix2, type =
             </Paragraph>
           )}
 
-          {/* Tipo doble - Primer elemento desde API, segundo editable */}
+          {/* Tipo modal - Clickeable con Modal reutilizable */}
+          {type === 'modal' && (
+            <div className='program-detail_content--clickable'>
+              <Paragraph className='program-detail_value' color='neutral' size='md' bold={true} isEditable={false} {...dynamicAttributes}>
+                {value}
+              </Paragraph>
+
+              <Modal
+                id={modalId}
+                size='sm'
+                trigger={
+                  <Button
+                    variant='faded'
+                    size='sm'
+                    className='program-detail_value--clickable'
+                    aria-label={`Ver más detalles sobre ${label}`}
+                    isEditable={false}
+                    endIcon={<i className='ph ph-info'></i>}>
+                    Ver detalles
+                  </Button>
+                }>
+                <Caption color='primary' size='lg'>
+                  {label}
+                </Caption>
+                {modalContent}
+              </Modal>
+            </div>
+          )}
+
+          {/* Tipo editable */}
+          {type === 'editable' && (
+            <Paragraph
+              className={`program-detail_value`}
+              color='neutral'
+              size='md'
+              bold={true}
+              id={`editable-${id}`}
+              {...dynamicAttributes}>
+              <span className='lead'>{value}</span>
+            </Paragraph>
+          )}
+
+          {/* Tipo doble - Dos valores con prefijos */}
           {type === 'doble' && (
             <div className='program-detail_content--doble'>
               {/* Primer valor desde API con estructura separada - todo en una línea */}
@@ -88,43 +145,8 @@ const ProgramDetail = ({ id, icon, label, value, value2, prefix, prefix2, type =
               </Paragraph>
             </div>
           )}
-
-          {/* Tipo modal - Clickeable */}
-          {type === 'modal' && (
-            <div className='program-detail_content--clickable'>
-              <Paragraph className='program-detail_value' color='neutral' size='md' bold={true} isEditable={false} {...dynamicAttributes}>
-                {value}
-              </Paragraph>
-
-              <Btn
-                variant='faded'
-                size='sm'
-                className='program-detail_value--clickable'
-                data-modal-target={modalId}
-                aria-label={`Ver más detalles sobre ${label}`}
-                isEditable={false}
-                endIcon={<i className='ph ph-info'></i>}>
-                Ver detalles
-              </Btn>
-            </div>
-          )}
         </div>
       </div>
-
-      {/* Modal pequeño */}
-      {type === 'modal' && (
-        <div id={modalId} className='program-detail-modal'>
-          <div className='program-detail-modal__content'>
-            <div className='program-detail-modal__header'>
-              <h3 className='program-detail-modal__title'>{label}</h3>
-              <button className='program-detail-modal__close' aria-label='Cerrar modal'>
-                <i className='ph ph-x'></i>
-              </button>
-            </div>
-            <div className='program-detail-modal__body'>{modalContent}</div>
-          </div>
-        </div>
-      )}
     </>
   )
 }
@@ -134,10 +156,10 @@ ProgramDetail.propTypes = {
   icon: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string,
-  type: PropTypes.oneOf(['normal', 'modal', 'doble']),
   value2: PropTypes.string,
   prefix: PropTypes.string,
   prefix2: PropTypes.string,
+  type: PropTypes.oneOf(['normal', 'modal', 'editable', 'doble']),
   modalContent: PropTypes.node,
   className: PropTypes.string
 }

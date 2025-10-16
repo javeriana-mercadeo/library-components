@@ -1,33 +1,14 @@
-'use client'
+import { useScript } from '@hooks'
+import { Button, Container, Title, Paragraph } from '@components'
 
-import { useEffect, useState } from 'react'
-import { Button, Container, Title, Paragraph } from '@/app/components'
 import InfoItem from './components/InfoItem'
 import info from './info.json'
-import script from './script.js'
 import './styles.scss'
 
-const Video = ({ staticMode = false }) => {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    // Solo ejecutar el script si NO estamos en modo estático
-    if (mounted && !staticMode) {
-      script()
-    }
-  }, [mounted, staticMode])
-
-  // En modo estático, siempre renderizar (para ViewComponent)
-  // En modo normal, esperar a que esté montado (para evitar hydration errors)
-  if (!staticMode && !mounted) {
-    return null
-  }
-
+const Video = () => {
   const elementName = info.id || 'video-doctorado'
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // Configuración de items del programa
   const programItems = [

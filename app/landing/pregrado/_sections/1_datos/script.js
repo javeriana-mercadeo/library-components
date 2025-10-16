@@ -44,7 +44,6 @@ class ProgramDataSystem {
     this.modalSystem = new ModalSystem()
     this.periodicityObserver = new PeriodicityObserver()
     this.programFormatter = programFormatter
-    this.modalContentObservers = []
 
     this.initialized = false
   }
@@ -124,44 +123,22 @@ class ProgramDataSystem {
   }
 
   /**
-   * Programar verificación de contenido para controlar visibilidad de triggers de modal
+   * Verificar contenido para controlar visibilidad de triggers de modal
    */
   scheduleModalContentVisibilityCheck() {
-    runWhenIdle(() => {
-      this.teardownModalContentObservers()
+    const contentElements = document.querySelectorAll('[data-modal-content-monitor]')
+    if (!contentElements.length) return
 
-      const contentElements = document.querySelectorAll('[data-modal-content-monitor]')
-      if (!contentElements.length) return
+    contentElements.forEach(contentElement => {
+      const overlayId = contentElement.dataset.modalOverlayId
+      if (!overlayId) return
 
-      contentElements.forEach(contentElement => {
-        const overlayId = contentElement.dataset.modalOverlayId
-        if (!overlayId) return
+      const triggerWrapper = document.querySelector(`[data-puj-modal-trigger="${overlayId}"]`)
+      if (!triggerWrapper) return
 
-        const evaluateVisibility = () => {
-          const triggerWrapper = document.querySelector(`[data-puj-modal-trigger="${overlayId}"]`)
-          if (!triggerWrapper) return
-
-          const shouldDisplay = this.hasMeaningfulContent(contentElement)
-          triggerWrapper.classList.toggle('program-data_modal-trigger--hidden', !shouldDisplay)
-        }
-
-        evaluateVisibility()
-
-        if (typeof MutationObserver !== 'undefined') {
-          const observer = new MutationObserver(() => {
-            evaluateVisibility()
-          })
-
-          observer.observe(contentElement, {
-            childList: true,
-            subtree: true,
-            characterData: true
-          })
-
-          this.modalContentObservers.push(observer)
-        }
-      })
-    }, 300)
+      const shouldDisplay = this.hasMeaningfulContent(contentElement)
+      triggerWrapper.classList.toggle('program-data_modal-trigger--hidden', !shouldDisplay)
+    })
   }
 
   /**
@@ -173,27 +150,17 @@ class ProgramDataSystem {
     if (!element) return false
 
     const text = element.textContent?.replace(/\u00a0/g, ' ').trim()
-    if (text) return true
+
+    // Textos que se consideran como "sin contenido"
+    const emptyTextPatterns = ['N/A', 'No disponible', 'Sin contenido']
+    const normalizedText = text.toLowerCase()
+
+    if (!text || emptyTextPatterns.some(pattern => normalizedText === pattern.toLowerCase())) {
+      return false
+    }
 
     const mediaSelector = 'img, video, iframe, audio, object, embed, picture, svg, table, ul, ol, li, blockquote'
     return Boolean(element.querySelector(mediaSelector))
-  }
-
-  /**
-   * Desconectar observadores de contenido de modal
-   */
-  teardownModalContentObservers() {
-    if (this.modalContentObservers.length === 0) return
-
-    this.modalContentObservers.forEach(observer => {
-      try {
-        observer.disconnect()
-      } catch (error) {
-        Logger.warning('[ProgramDataSystem] Error desconectando observer de modal:', error)
-      }
-    })
-
-    this.modalContentObservers = []
   }
 
   /**
@@ -216,8 +183,6 @@ class ProgramDataSystem {
     if (this.programFormatter) {
       this.programFormatter.destroy()
     }
-
-    this.teardownModalContentObservers()
 
     this.initialized = false
   }
@@ -341,8 +306,7 @@ function initSystem() {
 
   // Inicializar cuando el DOM esté listo
   onDOMReady(() => {
-    // Usar requestIdleCallback si está disponible para no bloquear recursos críticos
-    runWhenIdle(initProgramDataVideo, 2000)
+    initProgramDataVideo()
   })
 }
 

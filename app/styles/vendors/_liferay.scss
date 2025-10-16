@@ -16,3 +16,7 @@ html:not(#__):not(#___) .page-editor__layout-viewport {
 .portlet {
   width: 100%;
 }
+
+.ae-toolbar-styles {
+  z-index: 9999 !important;
+}

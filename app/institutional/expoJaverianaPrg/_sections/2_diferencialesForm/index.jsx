@@ -1,21 +1,14 @@
-'use client'
+import { useScript } from '@hooks'
+import { Container, Button } from '@components'
 
-import { useEffect } from 'react'
-
-import Container from '@/app/components/container/index.jsx'
-import Btn from '@/app/components/button/index.jsx'
-import script from './script.js'
 import info from './info.json'
 import './styles.scss'
 
 const DiferencialesForm = () => {
   const elementName = info.id || 'diferenciales-form'
   const baseClass = 'diferenciales-form'
-
-  // Inicializar script cuando el componente se monta
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   return (
     <div className={baseClass} id={elementName}>
@@ -124,9 +117,9 @@ const DiferencialesForm = () => {
 
             {/* Botón de inscripción */}
             <div className={`${baseClass}__cta-container`}>
-              <Btn color='tertiary' variant='solid' size='lg'>
+              <Button color='tertiary' variant='solid' size='lg'>
                 Inscribe tu colegio ahora
-              </Btn>
+              </Button>
             </div>
           </div>
         </div>

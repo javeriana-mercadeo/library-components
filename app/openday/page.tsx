@@ -1,13 +1,8 @@
-'use client'
+import { HeaderSimple, Footer } from '@common'
 
-import dynamic from 'next/dynamic'
+import Banner_1 from './_sections/banner_1'
 
-import ViewComponent from '@/components/viewComponent/viewComponent'
-import Load from '@/components/load/load'
-
-const Header = dynamic(() => import('@/app/common/headerSimple'), { ssr: false, loading: () => <Load /> })
-const Banner_1 = dynamic(() => import('./_sections/banner_1'), { ssr: false, loading: () => <Load /> })
-const Footer = dynamic(() => import('@/app/common/footer'), { ssr: false, loading: () => <Load /> })
+import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 
 export default function Profesional() {
   const basePath = '/openday'
@@ -17,7 +12,7 @@ export default function Profesional() {
     <>
       {/* <Encabezado /> */}
       <ViewComponent path={`${libraryPath}/header_simple`}>
-        <Header />
+        <HeaderSimple />
       </ViewComponent>
 
       {/* <Banner 1 /> */}

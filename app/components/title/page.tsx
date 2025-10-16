@@ -1,16 +1,13 @@
-'use client'
+import { Container, Title } from '@components'
+import { Splash } from '@common'
 
-import Container from '@/app/components/container'
-import Title from '@/app/components/title'
-
-import ViewComponent from '@/components/viewComponent/viewComponent'
-import Splash from '@/app/common/splash'
+import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 
 /**
  * Componente que muestra las diferentes variantes de un título por color
  * Incluye todas las jerarquías, tamaños y configuraciones disponibles
  */
-const VariantTitle = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'neutral' }) => {
+const VariantTitle = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' }) => {
   return (
     <div className='space-y-6 mt-8 border p-4 rounded-lg bg-[var(--background-100)]'>
       <div>
@@ -146,14 +143,13 @@ const VariantTitle = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' |
   )
 }
 
-const variantColorsTitle: Array<'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger' | 'neutral'> = [
+const variantColorsTitle: Array<'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger'> = [
   'primary',
   'secondary',
   'tertiary',
   'success',
   'warning',
-  'danger',
-  'neutral'
+  'danger'
 ]
 
 export default function TitleShowcase() {
@@ -174,7 +170,7 @@ export default function TitleShowcase() {
 
         {/* Showcase de tamaños principales */}
         <div className='mb-12 p-6 bg-[var(--background-200)] rounded-xl border border-[var(--neutral-800)]'>
-          <Title className='mb-6' color='neutral' hierarchy='h2' size='xl' weight='semibold'>
+          <Title className='mb-6' color='primary' hierarchy='h2' size='xl' weight='semibold'>
             📏 Escala de tamaños (Primary)
           </Title>
           <div className='space-y-4'>
@@ -204,7 +200,7 @@ export default function TitleShowcase() {
 
         {/* Showcase de casos de uso */}
         <div className='mb-12 p-6 bg-[var(--background-200)] rounded-xl border border-[var(--neutral-800)]'>
-          <Title className='mb-6' color='neutral' hierarchy='h2' size='xl' weight='semibold'>
+          <Title className='mb-6' color='primary' hierarchy='h2' size='xl' weight='semibold'>
             🎯 Casos de uso común
           </Title>
           <div className='grid md:grid-cols-2 gap-6'>
@@ -234,7 +230,7 @@ export default function TitleShowcase() {
         </div>
 
         {/* Títulos por color */}
-        <Title className='mb-8' color='neutral' hierarchy='h2' size='2xl' weight='bold'>
+        <Title className='mb-8' color='primary' hierarchy='h2' size='2xl' weight='bold'>
           🌈 Variantes por color
         </Title>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
@@ -245,7 +241,7 @@ export default function TitleShowcase() {
 
         {/* Sección de mejores prácticas */}
         <div className='mt-16 p-6 bg-[var(--background-200)] rounded-xl border border-[var(--neutral-800)]'>
-          <Title className='mb-6' color='neutral' hierarchy='h2' size='xl' weight='semibold'>
+          <Title className='mb-6' color='primary' hierarchy='h2' size='xl' weight='semibold'>
             📋 Mejores prácticas
           </Title>
           <div className='grid md:grid-cols-2 gap-8'>
@@ -300,7 +296,7 @@ export default function TitleShowcase() {
 
         {/* Código de ejemplo */}
         <div className='mt-16 p-6 bg-[var(--background-200)] rounded-xl border border-[var(--neutral-800)]'>
-          <Title className='mb-6' color='neutral' hierarchy='h2' size='xl' weight='semibold'>
+          <Title className='mb-6' color='primary' hierarchy='h2' size='xl' weight='semibold'>
             💻 Ejemplos de código
           </Title>
           <div className='bg-[var(--neutral-900)] p-4 rounded-lg overflow-x-auto'>

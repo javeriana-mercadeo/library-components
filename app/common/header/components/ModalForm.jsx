@@ -1,4 +1,4 @@
-import { Button as Btn, Paragraph, Image, Caption } from '@/app/components'
+import { Button, Paragraph, Image, Caption } from '@components'
 
 const ModalForm = () => {
   return (
@@ -26,7 +26,7 @@ const ModalForm = () => {
               ¿Tienes dudas?
             </Caption>
 
-            <Btn
+            <Button
               variant='light'
               id='modal-close'
               aria-label='Cerrar modal'
@@ -35,7 +35,7 @@ const ModalForm = () => {
               startIcon={<i className='ph ph-x'></i>}
               iconOnly>
               botón de cerrar
-            </Btn>
+            </Button>
           </div>
 
           {/* Contenido del Modal */}

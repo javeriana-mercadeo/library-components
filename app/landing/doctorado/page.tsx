@@ -1,15 +1,10 @@
 'use client'
 
-import Header from '@/app/common/header'
+import { Header, Footer } from '@common'
 
 import Proyectos from '../../institutional/secciones-opcionales/sections/proyectos'
 
 import Video from './_sections/video'
-import DocentesDoctorado from './_sections/docentesDoctorado'
-import QueAprenderas from './_sections/queAprenderas'
-import Investigaciones from './_sections/investigaciones'
-import RedesSociales from './_sections/redesSociales'
-import Snies from './_sections/Snies'
 
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 
@@ -29,10 +24,10 @@ export default function Doctorado() {
         <Video />
       </ViewComponent>
 
-      <Proyectos />
-      {/* <ViewComponent path={`${optionalPath}/sections/proyectos`}>
+      {/* <Proyectos /> */}
+      <ViewComponent path={`${optionalPath}/sections/proyectos`}>
         <Proyectos />
-      </ViewComponent> */}
+      </ViewComponent>
 
       {/* <DocentesDoctorado /> */}
       {/* <ViewComponent path={`${basePath}/sections/docentesDoctorado`}>
@@ -57,6 +52,8 @@ export default function Doctorado() {
       {/* <ViewComponent path={`${basePath}/sections/Snies`}>
         <Snies />
       </ViewComponent> */}
+
+      <Footer />
     </>
   )
 }

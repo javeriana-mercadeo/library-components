@@ -1,5 +1,5 @@
 /* ===== ESTILOS COMPILADOS CON ESBUILD ===== */
-/* Compilado el: 10/09/2025, 12:22:35 p. m. (COT) */
+/* Compilado el: 15/10/2025, 08:46:17 a. m. (COT) */
 /* Archivo fuente: styles.scss */
 
 .program-details {
@@ -224,7 +224,12 @@
 }
 
 .program-detail[data-loading='true'] .program-detail_value {
-  background: linear-gradient(90deg, var(--neutral-800) 25%, var(--neutral-700) 50%, var(--neutral-800) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--neutral-800) 25%,
+    var(--neutral-700) 50%,
+    var(--neutral-800) 75%
+  );
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
   border-radius: 0.25rem;
@@ -246,6 +251,7 @@
   background-color: var(--background-200);
 }
 .program-data_container {
+  position: relative;
   display: grid;
   padding-top: var(--spacing-2xl);
   padding-bottom: var(--spacing-md);
