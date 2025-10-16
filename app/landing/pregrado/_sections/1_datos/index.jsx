@@ -1,5 +1,5 @@
 import { useScript } from '@hooks'
-import { Container, Caption, Title, Paragraph, Button as Btn } from '@/app/components/index.js'
+import { Container, Caption, Title, Paragraph, Button, Modal } from '@/app/components/index.js'
 import ProgramDetail from './components/ProgramDetail.jsx'
 import info from './info.json'
 import './styles.scss'
@@ -9,6 +9,8 @@ const DatosProgramaVideo = () => {
   const baseClass = 'program-data'
   const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
   useScript(() => import('./script.js'), { staticMode })
+  const modalDatesId = `${elementName}-modal-dates`
+  const modalOverlayId = `modal-${modalDatesId}-overlay`
 
   // Configuración de todos los detalles del programa
   const details = [
@@ -160,16 +162,47 @@ const DatosProgramaVideo = () => {
             </div>
           </div>
 
-          <Btn
-            id={`${elementName}-enrollment-link-1`}
-            className='program-data_enrollment-link mt-6'
-            href='https://www.javeriana.edu.co/info-prg/proceso_de_inscripcion'
-            target='_blank'
-            variant='flat'
-            startIcon={<i className='ph ph-hand-pointing'></i>}
-            size='sm'>
-            Conoce el proceso de inscripción
-          </Btn>
+          <div className={`${baseClass}_dates-actions`}>
+            <Modal
+              id={modalDatesId}
+              size='sm'
+              trigger={
+                <Button
+                  size='sm'
+                  className='program-data_enrollment-link program-data_enrollment-link--modal'
+                  aria-label='Ver más detalles sobre las fechas de inscripción'
+                  isEditable={false}
+                  startIcon={<i className='ph ph-info'></i>}>
+                  Ver las fechas límite de inscripción
+                </Button>
+              }>
+              <Caption id={`${elementName}-modal-dates-title`} color='primary' size='lg'>
+                Fechas Límite de Inscripción para el primer semestre de 2026:
+              </Caption>
+              <Paragraph
+                id={`${elementName}-modal-dates-content`}
+                elementId={`${modalDatesId}-content`}
+                data-modal-content-monitor='dates'
+                data-modal-overlay-id={modalOverlayId}>
+                <ul>
+                  <li>Miércoles, 16 de octubre de 2024</li>
+                  <li>Viernes, 15 de noviembre de 2024</li>
+                  <li>Miércoles, 11 de diciembre de 2024</li>
+                </ul>
+              </Paragraph>
+            </Modal>
+
+            <Button
+              id={`${elementName}-enrollment-link-1`}
+              className='program-data_enrollment-link'
+              href='https://www.javeriana.edu.co/info-prg/proceso_de_inscripcion'
+              target='_blank'
+              variant='flat'
+              startIcon={<i className='ph ph-hand-pointing'></i>}
+              size='sm'>
+              Conoce el proceso de inscripción
+            </Button>
+          </div>
 
           <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
             *Aspirantes a ingresar a la Universidad en 2026: Aprovecha este valor hasta el 03 de octubre de 2025. Después, habrá incrementos

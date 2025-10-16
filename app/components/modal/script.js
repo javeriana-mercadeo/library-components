@@ -59,6 +59,9 @@ class ModalSystem {
   _openModal(modalOverlay) {
     if (!modalOverlay) return
 
+    // Mover el modal al body justo antes de abrirlo para evitar problemas de stacking
+    this._moveModalToBody(modalOverlay)
+
     // Prevenir scroll del body
     document.body.style.overflow = 'hidden'
 
@@ -93,7 +96,14 @@ class ModalSystem {
 
     // Ocultar modal después de la animación
     setTimeout(() => {
+      if (this.activeModals.has(modalOverlay)) {
+        return
+      }
+
       modalOverlay.style.display = 'none'
+
+      // Restaurar modal a su posición original cuando ya está oculto
+      this._restoreModalPosition(modalOverlay)
 
       // Restaurar scroll si no hay más modales abiertos
       if (this.activeModals.size === 0) {
@@ -129,10 +139,12 @@ class ModalSystem {
     if (this.processedModals.has(modalOverlay)) return
     this.processedModals.set(modalOverlay, true)
 
-    const modalId = modalOverlay.id || modalOverlay.dataset.modalId
+    if (!modalOverlay._originalParent) {
+      modalOverlay._originalParent = modalOverlay.parentElement
+      modalOverlay._originalNextSibling = modalOverlay.nextSibling
+    }
 
-    // Mover modal al body para evitar problemas de contexto de apilamiento
-    this._moveModalToBody(modalOverlay)
+    const modalId = modalOverlay.id || modalOverlay.dataset.modalId
 
     // Configurar auto-apertura si está habilitada
     this._setupAutoOpen(modalOverlay)
@@ -150,9 +162,33 @@ class ModalSystem {
    * @private
    */
   _moveModalToBody(modalOverlay) {
+    if (!modalOverlay._originalParent) {
+      modalOverlay._originalParent = modalOverlay.parentElement
+      modalOverlay._originalNextSibling = modalOverlay.nextSibling
+    }
+
     if (modalOverlay.parentElement !== document.body) {
       document.body.appendChild(modalOverlay)
     }
+  }
+
+  /**
+   * Restaura el modal a su posición original en el DOM
+   * @param {HTMLElement} modalOverlay - Elemento del modal
+   * @private
+   */
+  _restoreModalPosition(modalOverlay) {
+    const originalParent = modalOverlay._originalParent
+    if (!originalParent) return
+
+    const referenceNode = modalOverlay._originalNextSibling
+    if (referenceNode && referenceNode.parentNode === originalParent) {
+      originalParent.insertBefore(modalOverlay, referenceNode)
+    } else {
+      originalParent.appendChild(modalOverlay)
+    }
+
+    modalOverlay._originalNextSibling = modalOverlay.nextSibling
   }
 
   /**

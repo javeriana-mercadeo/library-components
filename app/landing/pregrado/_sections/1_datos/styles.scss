@@ -133,6 +133,31 @@
     grid-area: dates;
     align-self: start;
 
+    .program-data_dates-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      align-items: flex-start;
+      margin-left: var(--spacing-2xl);
+
+      [data-puj-modal-trigger] {
+        display: inline-flex;
+        width: auto;
+      }
+
+      .program-data_enrollment-link {
+        margin-left: 0;
+      }
+
+      @include responsive {
+        margin-left: 0;
+
+        [data-puj-modal-trigger] {
+          width: auto;
+        }
+      }
+    }
+
     .program-dates {
       display: flex;
       align-items: start;
@@ -243,6 +268,16 @@
 
   &_enrollment-link {
     margin-left: var(--spacing-2xl);
+  }
+
+  &_modal-trigger--hidden {
+    display: none !important;
+  }
+
+  @include liferay-edit-mode {
+    &_modal-trigger--hidden {
+      display: inline-flex !important;
+    }
   }
 
   &_enrollment-note {

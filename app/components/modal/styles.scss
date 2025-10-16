@@ -159,9 +159,8 @@ $modal-width-xl: 1200px;
     box-sizing: border-box;
     width: 100%;
     flex: 1;
-    overflow-y: scroll;
-    padding: var(--spacing-lg);
-    padding-right: var(--spacing-lg);
+    padding: var(--spacing-sm);
+    padding-right: var(--spacing-md);
     margin-right: var(--spacing-xs);
 
     // Estilos de scrollbar personalizados
