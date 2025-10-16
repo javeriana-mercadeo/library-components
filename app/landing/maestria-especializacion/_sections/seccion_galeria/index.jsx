@@ -1,223 +1,169 @@
-// ==========================================
-// COMPONENTE REACT CON DATOS DINÁMICOS
-// ==========================================
 'use client'
-import { Container, Title, Paragraph, Button as Btn } from '@library/components'
-
 import { useEffect } from 'react'
 
 import info from './info.json'
 import script from './script.js'
 import './styles.scss'
 
-const DoblePlanEstudio = () => {
-  const elementName = info.id || 'DoblePlanEstudio'
-  const baseClass = 'plan-estudio'
+const MaestriaGallery = () => {
+  const elementName = info.id || 'MaestriaGallery'
+  const baseClass = 'maestria-gallery'
 
   useEffect(() => {
     script()
   }, [])
 
-  // ==========================================
-  // DATOS DINÁMICOS DE LOS SEMESTRES POR JORNADA
-  // ==========================================
-  const planEstudios = {
-    diurna: {
-      title: 'Jornada Diurna',
-      downloadUrl: '#diurna',
-      semesters: [
+  const imagenes = [
+    'https://www.javeriana.edu.co/recursosdb/659410/668610/deparatamentos-e-institutos.jpg',
+    'https://www.javeriana.edu.co/recursosdb/923889/5844303/Inducciones%202%20(1).jpg/fa9c6109-9852-854a-147c-116cc657b2e5',
+    'https://www.javeriana.edu.co/recursosdb/20125/3664582/estudiantes-extranjeros.JPG/a532f776-6f0b-7c52-bd07-729329986345',
+    'https://www.javeriana.edu.co/repositorio-hoy-en-la-javeriana/wp-content/uploads/2021/12/211027-Rector-ViceAca-Estudiantes-24.jpg'
+  ]
+
+  const categoriasData = {
+    laboratorios: {
+      title: 'Laboratorios',
+      items: [
         {
-          year: 'Año 1',
-          semester: 'Semestre 1',
-          credits: 18,
-          subjects: [
-            'Matemáticas I',
-            'Introducción a la Ingeniería',
-            'Física I',
-            'Química General',
-            'Comunicación Escrita',
-            'Fundamentos de Programación'
-          ]
+          title: 'Contenido 1',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[0]
         },
         {
-          year: 'Año 1',
-          semester: 'Semestre 2',
-          credits: 18,
-          subjects: [
-            'Matemáticas II',
-            'Física II',
-            'Algoritmos y Estructuras de Datos',
-            'Química Orgánica',
-            'Historia de la Tecnología',
-            'Expresión Gráfica'
-          ]
+          title: 'Contenido 2',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[1]
         },
         {
-          year: 'Año 2',
-          semester: 'Semestre 3',
-          credits: 19,
-          subjects: [
-            'Cálculo Multivariable',
-            'Programación Orientada a Objetos',
-            'Física Moderna',
-            'Probabilidad y Estadística',
-            'Ingeniería de Software I',
-            'Sistemas Digitales'
-          ]
+          title: 'Contenido 3',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[2]
         },
         {
-          year: 'Año 2',
-          semester: 'Semestre 4',
-          credits: 20,
-          subjects: [
-            'Ecuaciones Diferenciales',
-            'Bases de Datos',
-            'Arquitectura de Computadores',
-            'Ingeniería de Software II',
-            'Ética Profesional',
-            'Electiva I'
-          ]
-        },
-        {
-          year: 'Año 3',
-          semester: 'Semestre 5',
-          credits: 20,
-          subjects: [
-            'Análisis Numérico',
-            'Redes de Computadores',
-            'Desarrollo Web',
-            'Sistemas Operativos',
-            'Gestión de Proyectos',
-            'Electiva II'
-          ]
+          title: 'Contenido 4',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[3]
         }
       ]
     },
-    nocturna: {
-      title: 'Jornada Nocturna',
-      downloadUrl: '#nocturna',
-      semesters: [
+    recursos: {
+      title: 'Recursos',
+      items: [
         {
-          year: 'Año 1',
-          semester: 'Semestre 1',
-          credits: 15,
-          subjects: [
-            'Matemáticas Básicas',
-            'Introducción a la Ingeniería',
-            'Física Aplicada',
-            'Comunicación Profesional',
-            'Fundamentos de Programación'
-          ]
+          title: 'Contenido 1',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[0]
         },
         {
-          year: 'Año 1',
-          semester: 'Semestre 2',
-          credits: 16,
-          subjects: ['Matemáticas Avanzadas', 'Física Moderna', 'Estructuras de Datos', 'Química Industrial', 'Expresión Gráfica Digital']
+          title: 'Contenido 2',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[1]
         },
         {
-          year: 'Año 2',
-          semester: 'Semestre 3',
-          credits: 17,
-          subjects: ['Cálculo Diferencial', 'Programación Avanzada', 'Análisis de Sistemas', 'Estadística Aplicada', 'Sistemas Digitales']
+          title: 'Contenido 3',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[2]
         },
         {
-          year: 'Año 2',
-          semester: 'Semestre 4',
-          credits: 18,
-          subjects: [
-            'Cálculo Integral',
-            'Bases de Datos Avanzadas',
-            'Arquitectura de Software',
-            'Gestión de Proyectos',
-            'Electiva Técnica I'
-          ]
+          title: 'Contenido 4',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[3]
+        }
+      ]
+    },
+    salidas: {
+      title: 'Salidas de Campo',
+      items: [
+        {
+          title: 'Contenido 1',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[0]
         },
         {
-          year: 'Año 3',
-          semester: 'Semestre 5',
-          credits: 18,
-          subjects: [
-            'Matemáticas Discretas',
-            'Desarrollo de Aplicaciones',
-            'Sistemas Distribuidos',
-            'Ingeniería de Software',
-            'Electiva Técnica II'
-          ]
+          title: 'Contenido 2',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[1]
+        },
+        {
+          title: 'Contenido 3',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[2]
+        },
+        {
+          title: 'Contenido 4',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[3]
+        }
+      ]
+    },
+    biblioteca: {
+      title: 'Biblioteca',
+      items: [
+        {
+          title: 'Contenido 1',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[0]
+        },
+        {
+          title: 'Contenido 2',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[1]
+        },
+        {
+          title: 'Contenido 3',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[2]
+        },
+        {
+          title: 'Contenido 4',
+          description: 'Lorem ipsum dolor sit amet consectetur. Enim nec arcu gravida clas mi tincidunt. Curabitur vitae urna quis sed metus lacinia aenean non interdum',
+          image: imagenes[3]
         }
       ]
     }
   }
 
-  // Array con la información de las tabs de jornadas
-  const jornadaTabs = [
-    {
-      id: 'diurna',
-      label: 'Jornada Diurna',
-      data: planEstudios.diurna
-    },
-    {
-      id: 'nocturna',
-      label: 'Jornada Nocturna',
-      data: planEstudios.nocturna
-    }
+  const categoriaTabs = [
+    { id: 'laboratorios', label: 'Laboratorios', data: categoriasData.laboratorios },
+    { id: 'recursos', label: 'Recursos', data: categoriasData.recursos },
+    { id: 'salidas', label: 'Salidas de Campo', data: categoriasData.salidas },
+    { id: 'biblioteca', label: 'Biblioteca', data: categoriasData.biblioteca }
   ]
 
-  // ==========================================
-  // FUNCIÓN PARA RENDERIZAR UNA CARD
-  // ==========================================
-  const renderSemesterCard = (semesterData, index, jornadaId) => {
-    const { year, semester, credits, subjects } = semesterData
+  const renderItemCard = (itemData, index, categoriaId) => {
+    const { title, description, image } = itemData
 
     return (
-      <div key={`${jornadaId}-${index}`} className={`${baseClass}_slide swiper-slide`} role='listitem'>
-        <div className={`${baseClass}_card`}>
-          <div className={`${baseClass}_card-header`}>
-            <span className={`${baseClass}_badge ${baseClass}_badge`}>{year}</span>
+      <div key={`${categoriaId}-${index}`} className={`${baseClass}__slide swiper-slide`} role='listitem'>
+        <div className={`${baseClass}__card`}>
+          <div className={`${baseClass}__image-container`}>
+            <img src={image} alt={title} className={`${baseClass}__image`} loading="lazy" />
           </div>
-
-          <Title hierarchy='span' className={`${baseClass}_semester-title`} size='lg' weight='bold' isEditable={false}>
-            {semester}
-          </Title>
-
-          <ul className={`${baseClass}_subjects`}>
-            {subjects.map((subject, subjectIndex) => (
-              <li key={`${jornadaId}-${index}-subject-${subjectIndex}`}>
-                <i className='ph ph-check' aria-hidden='true'></i>
-                {subject}
-              </li>
-            ))}
-          </ul>
-
-          <div className={`${baseClass}_credits`}>
-            <strong>{credits}</strong> Crédito{credits !== 1 ? 's' : ''}
+          
+          <div className={`${baseClass}__content`}>
+            <h3 className={`${baseClass}__card-title`}>{title}</h3>
+            <p className={`${baseClass}__card-description`}>{description}</p>
           </div>
         </div>
       </div>
     )
   }
 
-  // ==========================================
-  // FUNCIÓN PARA RENDERIZAR UN CARRUSEL POR JORNADA
-  // ==========================================
-  const renderCarousel = (jornadaData, jornadaId) => {
+  const renderCarousel = (categoriaData, categoriaId) => {
     return (
-      <div className={`${baseClass}_jornada-content`}>
-
-        <div className={`${baseClass}_carousel swiper`}>
-          <div className={`${baseClass}_wrapper subjects-swiper`}>
-            <div className={`${baseClass}_slides swiper-wrapper`} role='list'>
-              {jornadaData.semesters.map((semesterData, index) => renderSemesterCard(semesterData, index, jornadaId))}
+      <div className={`${baseClass}__category-content`}>
+        <div className={`${baseClass}__carousel swiper`}>
+          <div className={`${baseClass}__wrapper gallery-swiper`}>
+            <div className={`${baseClass}__slides swiper-wrapper`} role='list'>
+              {categoriaData.items.map((itemData, index) => renderItemCard(itemData, index, categoriaId))}
             </div>
 
-            {/* Paginación */}
-            <div className={`swiper-pagination ${baseClass}_pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
+            <div className={`swiper-pagination ${baseClass}__pagination`} role='tablist' aria-label='Control de páginas del carrusel'></div>
 
-            {/* Botones de navegación */}
-            <button className={`swiper-slide-button ${baseClass}_prev`} aria-label='Ir al slide anterior' type='button'>
+            <button className={`swiper-slide-button ${baseClass}__prev`} aria-label='Ir al slide anterior' type='button'>
               <i className='ph ph-arrow-circle-left' aria-hidden='true'></i>
             </button>
-            <button className={`swiper-slide-button ${baseClass}_next`} aria-label='Ir al siguiente slide' type='button'>
+            <button className={`swiper-slide-button ${baseClass}__next`} aria-label='Ir al siguiente slide' type='button'>
               <i className='ph ph-arrow-circle-right' aria-hidden='true'></i>
             </button>
           </div>
@@ -227,15 +173,12 @@ const DoblePlanEstudio = () => {
   }
 
   return (
-    <section className={`${baseClass}_container`}>
-      <Container id={elementName} className={baseClass}>
-
-        {/* Sistema de pestañas para jornadas */}
+    <section className={`${baseClass}__container`}>
+      <div id={elementName} className={baseClass}>
         <div className={`${baseClass}__tabs-container`}>
-          {/* Navegación de tabs */}
-          <div className={`${baseClass}__tabs-nav`} role='tablist' aria-label='Modalidades del programa'>
+          <div className={`${baseClass}__tabs-nav`} role='tablist' aria-label='Categorías'>
             <div className={`${baseClass}__tabs-wrapper`}>
-              {jornadaTabs.map((tab, index) => (
+              {categoriaTabs.map((tab, index) => (
                 <button
                   key={tab.id}
                   className={`${baseClass}__tab-button ${index === 0 ? 'active' : ''}`}
@@ -246,20 +189,19 @@ const DoblePlanEstudio = () => {
                   aria-controls={`${tab.id}-panel`}
                   aria-selected={index === 0 ? 'true' : 'false'}
                   tabIndex={index === 0 ? 0 : -1}>
-                  <i className={`ph ${index === 0 ? 'ph-sun' : 'ph-moon'}`} aria-hidden='true'></i>
                   <span>{tab.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Contenido de las tabs */}
           <div className={`${baseClass}__tabs-content`}>
-            {jornadaTabs.map((tab, index) => (
+            {categoriaTabs.map((tab, index) => (
               <div
                 key={tab.id}
                 className={`${baseClass}__tab-panel ${index !== 0 ? 'hidden' : ''}`}
                 id={`${tab.id}-panel`}
+                data-categoria-id={tab.id}
                 role='tabpanel'
                 aria-labelledby={`${tab.id}-tab`}
                 aria-hidden={index !== 0 ? 'true' : 'false'}>
@@ -268,9 +210,9 @@ const DoblePlanEstudio = () => {
             ))}
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   )
 }
 
-export default DoblePlanEstudio
+export default MaestriaGallery

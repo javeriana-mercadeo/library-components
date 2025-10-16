@@ -1,37 +1,30 @@
 export default () => {
-  // Variables globales para las instancias de Swiper
-  window.planEstudioSwipers = window.planEstudioSwipers || {}
+  window.maestriaGallerySwipers = window.maestriaGallerySwipers || {}
 
-  // ==========================================
-  // INICIALIZACIÓN DE PESTAÑAS
-  // ==========================================
   const initializeTabs = () => {
-    const tabsContainer = document.querySelector('.plan-estudio__tabs-container')
+    const tabsContainer = document.querySelector('.maestria-gallery__tabs-container')
     if (!tabsContainer) {
       return
     }
 
-    const tabButtons = tabsContainer.querySelectorAll('.plan-estudio__tab-button')
-    const tabPanels = tabsContainer.querySelectorAll('.plan-estudio__tab-panel')
+    const tabButtons = tabsContainer.querySelectorAll('.maestria-gallery__tab-button')
+    const tabPanels = tabsContainer.querySelectorAll('.maestria-gallery__tab-panel')
 
     if (!tabButtons.length || !tabPanels.length) {
       return
     }
 
-    // Limpiar eventos existentes
     tabButtons.forEach(button => {
       if (button.hasAttribute('data-tabs-initialized')) return
       button.setAttribute('data-tabs-initialized', 'true')
     })
 
-    // Agregar eventos a cada botón
     tabButtons.forEach((button, buttonIndex) => {
       button.addEventListener('click', function (event) {
         event.preventDefault()
         handleTabClick(tabsContainer, buttonIndex)
       })
 
-      // Soporte para navegación con teclado
       button.addEventListener('keydown', function (event) {
         handleTabKeydown(event, tabsContainer, buttonIndex)
       })
@@ -39,30 +32,23 @@ export default () => {
   }
 
   const handleTabClick = (container, clickedIndex) => {
-    const tabButtons = container.querySelectorAll('.plan-estudio__tab-button')
+    const tabButtons = container.querySelectorAll('.maestria-gallery__tab-button')
     const clickedButton = tabButtons[clickedIndex]
 
-    // Solo proceder si la tab clickeada no está ya activa
     if (!clickedButton.classList.contains('active')) {
       setActiveTab(container, clickedIndex)
 
-      // Actualizar el swiper activo si es necesario
       setTimeout(() => {
-        const activePanel = document.querySelector('.plan-estudio__tab-panel:not(.hidden)')
+        const activePanel = document.querySelector('.maestria-gallery__tab-panel:not(.hidden)')
         if (activePanel) {
-          const swiperContainer = activePanel.querySelector('.subjects-swiper')
+          const swiperContainer = activePanel.querySelector('.gallery-swiper')
           if (swiperContainer) {
-            let jornadaId = 'diurna'
-            if (activePanel.id.includes('nocturna')) {
-              jornadaId = 'nocturna'
-            }
+            const categoriaId = activePanel.getAttribute('data-categoria-id')
 
-            // Si no existe el swiper para esta jornada, crearlo
-            if (!window.planEstudioSwipers[jornadaId]) {
-              initializeSwiper(jornadaId, swiperContainer)
+            if (!window.maestriaGallerySwipers[categoriaId]) {
+              initializeSwiper(categoriaId, swiperContainer)
             } else {
-              // Si existe, solo actualizarlo
-              window.planEstudioSwipers[jornadaId].update()
+              window.maestriaGallerySwipers[categoriaId].update()
             }
           }
         }
@@ -71,7 +57,7 @@ export default () => {
   }
 
   const handleTabKeydown = (event, container, currentIndex) => {
-    const tabButtons = container.querySelectorAll('.plan-estudio__tab-button')
+    const tabButtons = container.querySelectorAll('.maestria-gallery__tab-button')
     let newIndex = currentIndex
 
     switch (event.key) {
@@ -100,19 +86,16 @@ export default () => {
     tabButtons[newIndex].focus()
     setActiveTab(container, newIndex)
     setTimeout(() => {
-      const activePanel = document.querySelector('.plan-estudio__tab-panel:not(.hidden)')
+      const activePanel = document.querySelector('.maestria-gallery__tab-panel:not(.hidden)')
       if (activePanel) {
-        const swiperContainer = activePanel.querySelector('.subjects-swiper')
+        const swiperContainer = activePanel.querySelector('.gallery-swiper')
         if (swiperContainer) {
-          let jornadaId = 'diurna'
-          if (activePanel.id.includes('nocturna')) {
-            jornadaId = 'nocturna'
-          }
+          const categoriaId = activePanel.getAttribute('data-categoria-id')
 
-          if (!window.planEstudioSwipers[jornadaId]) {
-            initializeSwiper(jornadaId, swiperContainer)
+          if (!window.maestriaGallerySwipers[categoriaId]) {
+            initializeSwiper(categoriaId, swiperContainer)
           } else {
-            window.planEstudioSwipers[jornadaId].update()
+            window.maestriaGallerySwipers[categoriaId].update()
           }
         }
       }
@@ -120,10 +103,9 @@ export default () => {
   }
 
   const setActiveTab = (container, activeIndex) => {
-    const tabButtons = container.querySelectorAll('.plan-estudio__tab-button')
-    const tabPanels = container.querySelectorAll('.plan-estudio__tab-panel')
+    const tabButtons = container.querySelectorAll('.maestria-gallery__tab-button')
+    const tabPanels = container.querySelectorAll('.maestria-gallery__tab-panel')
 
-    // Actualizar estados de botones
     tabButtons.forEach((button, index) => {
       const isActive = index === activeIndex
       button.classList.toggle('active', isActive)
@@ -131,7 +113,6 @@ export default () => {
       button.setAttribute('tabindex', isActive ? '0' : '-1')
     })
 
-    // Actualizar paneles
     tabPanels.forEach((panel, index) => {
       const isActive = index === activeIndex
       panel.classList.toggle('hidden', !isActive)
@@ -139,42 +120,29 @@ export default () => {
     })
   }
 
-  // ==========================================
-  // INICIALIZACIÓN DE SWIPERS
-  // ==========================================
   const initializeSwiperForActiveTab = () => {
-    const activePanel = document.querySelector('.plan-estudio__tab-panel:not(.hidden)')
+    const activePanel = document.querySelector('.maestria-gallery__tab-panel:not(.hidden)')
     if (!activePanel) {
       return
     }
 
-    const swiperContainer = activePanel.querySelector('.subjects-swiper')
+    const swiperContainer = activePanel.querySelector('.gallery-swiper')
     if (!swiperContainer) {
       return
     }
 
-    // Obtener el ID de la jornada del panel
-    const panelId = activePanel.id
-    let jornadaId = 'diurna' // default
-    if (panelId.includes('nocturna')) {
-      jornadaId = 'nocturna'
-    } else if (panelId.includes('diurna')) {
-      jornadaId = 'diurna'
+    const categoriaId = activePanel.getAttribute('data-categoria-id')
+
+    if (window.maestriaGallerySwipers[categoriaId] && typeof window.maestriaGallerySwipers[categoriaId].destroy === 'function') {
+      window.maestriaGallerySwipers[categoriaId].destroy(true, true)
+      delete window.maestriaGallerySwipers[categoriaId]
     }
 
-    // Destruir instancia existente si existe
-    if (window.planEstudioSwipers[jornadaId] && typeof window.planEstudioSwipers[jornadaId].destroy === 'function') {
-      window.planEstudioSwipers[jornadaId].destroy(true, true)
-      delete window.planEstudioSwipers[jornadaId]
-    }
-
-    // Inicializar nuevo swiper
-    initializeSwiper(jornadaId, swiperContainer)
+    initializeSwiper(categoriaId, swiperContainer)
   }
 
-  const initializeSwiper = (jornadaId, container) => {
-    // Contar slides
-    const slides = container.querySelectorAll('.plan-estudio_slide')
+  const initializeSwiper = (categoriaId, container) => {
+    const slides = container.querySelectorAll('.maestria-gallery__slide')
     const totalSlides = slides.length
 
     if (!window.Swiper) {
@@ -194,7 +162,7 @@ export default () => {
       allowTouchMove: totalSlides > 1,
 
       pagination: {
-        el: container.querySelector('.plan-estudio_pagination'),
+        el: container.querySelector('.maestria-gallery__pagination'),
         clickable: true,
         dynamicBullets: false,
         renderBullet: function (index, className) {
@@ -203,8 +171,8 @@ export default () => {
       },
 
       navigation: {
-        nextEl: container.querySelector('.plan-estudio_next'),
-        prevEl: container.querySelector('.plan-estudio_prev'),
+        nextEl: container.querySelector('.maestria-gallery__next'),
+        prevEl: container.querySelector('.maestria-gallery__prev'),
         disabledClass: 'swiper-button-disabled',
         hiddenClass: 'swiper-button-hidden'
       },
@@ -215,7 +183,7 @@ export default () => {
           spaceBetween: 20
         },
         576: {
-          slidesPerView: Math.min(1, totalSlides),
+          slidesPerView: Math.min(2, totalSlides),
           spaceBetween: 20
         },
         768: {
@@ -269,20 +237,16 @@ export default () => {
       }
     }
 
-    // Crear nueva instancia
     try {
-      window.planEstudioSwipers[jornadaId] = new window.Swiper(container, swiperConfig)
+      window.maestriaGallerySwipers[categoriaId] = new window.Swiper(container, swiperConfig)
     } catch (error) {
       console.error('Error creando swiper:', error)
     }
   }
 
-  // ==========================================
-  // FUNCIONES DE NAVEGACIÓN Y PAGINACIÓN
-  // ==========================================
   const updateNavigationVisibility = (swiper, totalSlides, container) => {
-    const nextBtn = container.querySelector('.plan-estudio_next')
-    const prevBtn = container.querySelector('.plan-estudio_prev')
+    const nextBtn = container.querySelector('.maestria-gallery__next')
+    const prevBtn = container.querySelector('.maestria-gallery__prev')
 
     if (!nextBtn || !prevBtn) return
 
@@ -316,8 +280,8 @@ export default () => {
   }
 
   const updateButtonStates = (swiper, container) => {
-    const nextBtn = container.querySelector('.plan-estudio_next')
-    const prevBtn = container.querySelector('.plan-estudio_prev')
+    const nextBtn = container.querySelector('.maestria-gallery__next')
+    const prevBtn = container.querySelector('.maestria-gallery__prev')
 
     if (!nextBtn || !prevBtn) return
 
@@ -326,7 +290,6 @@ export default () => {
     const allowSlideNext = swiper.allowSlideNext
     const allowSlidePrev = swiper.allowSlidePrev
 
-    // Botón anterior
     if (isBeginning || !allowSlidePrev) {
       prevBtn.classList.add('swiper-button-disabled')
       prevBtn.style.opacity = '0.3'
@@ -339,7 +302,6 @@ export default () => {
       prevBtn.setAttribute('aria-disabled', 'false')
     }
 
-    // Botón siguiente
     if (isEnd || !allowSlideNext) {
       nextBtn.classList.add('swiper-button-disabled')
       nextBtn.style.opacity = '0.3'
@@ -352,7 +314,6 @@ export default () => {
       nextBtn.setAttribute('aria-disabled', 'false')
     }
 
-    // Asegurar visibilidad si la navegación está habilitada
     if (nextBtn.classList.contains('show-navigation')) {
       nextBtn.style.visibility = 'visible'
       nextBtn.style.display = 'flex'
@@ -364,10 +325,9 @@ export default () => {
   }
 
   const updatePaginationVisibility = (swiper, totalSlides, container) => {
-    const pagination = container.querySelector('.plan-estudio_pagination')
+    const pagination = container.querySelector('.maestria-gallery__pagination')
     if (!pagination) return
 
-    // Simple show/hide como en experiencia
     if (totalSlides > 1) {
       pagination.style.display = 'flex'
     } else {
@@ -375,36 +335,25 @@ export default () => {
     }
   }
 
-  // ==========================================
-  // INICIALIZACIÓN PRINCIPAL
-  // ==========================================
   const initializeAllSwipers = () => {
-    // Buscar todos los contenedores de swiper con la clase original
-    const swiperContainers = document.querySelectorAll('.subjects-swiper')
+    const swiperContainers = document.querySelectorAll('.gallery-swiper')
 
     swiperContainers.forEach(container => {
-      // Determinar la jornada basándose en el panel padre
-      const panel = container.closest('.plan-estudio__tab-panel')
+      const panel = container.closest('.maestria-gallery__tab-panel')
       if (!panel) return
 
-      let jornadaId = 'diurna'
-      if (panel.id.includes('nocturna')) {
-        jornadaId = 'nocturna'
-      }
+      const categoriaId = panel.getAttribute('data-categoria-id')
 
-      // Solo inicializar si no existe ya
-      if (!window.planEstudioSwipers[jornadaId]) {
-        initializeSwiper(jornadaId, container)
+      if (!window.maestriaGallerySwipers[categoriaId]) {
+        initializeSwiper(categoriaId, container)
       }
     })
   }
 
   const checkAndInit = () => {
     if (typeof window !== 'undefined') {
-      // Inicializar pestañas
       initializeTabs()
 
-      // Si Swiper está disponible, inicializar todos los swipers
       if (window.Swiper) {
         setTimeout(() => {
           initializeAllSwipers()
@@ -417,7 +366,6 @@ export default () => {
     }
   }
 
-  // Manejar cambios de tamaño de ventana
   let resizeTimeout
   window.addEventListener('resize', () => {
     if (resizeTimeout) {
@@ -425,9 +373,8 @@ export default () => {
     }
 
     resizeTimeout = setTimeout(() => {
-      // Actualizar todas las instancias de swiper activas
-      Object.keys(window.planEstudioSwipers).forEach(jornadaId => {
-        const swiper = window.planEstudioSwipers[jornadaId]
+      Object.keys(window.maestriaGallerySwipers).forEach(categoriaId => {
+        const swiper = window.maestriaGallerySwipers[categoriaId]
         if (swiper && typeof swiper.update === 'function') {
           swiper.update()
         }
@@ -435,7 +382,6 @@ export default () => {
     }, 250)
   })
 
-  // Inicializar cuando el DOM esté listo
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', checkAndInit)
   } else {
