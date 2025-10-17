@@ -35,21 +35,21 @@ const InsigniasSwiper = () => {
       srcFallback: '/assets/insignias/merco.webp',
       alt: 'MERCO',
       description: '1er en el sector educativo de Colombia (2023).'
-    },
-    {
-      id: 'the-impact',
-      src: 'https://www.javeriana.edu.co/recursosdb/1372208/12527648/THE+Impact+Rankings+2024_COL_RGB.jpg',
-      srcFallback: '/assets/insignias/impact-rankings.webp',
-      alt: 'THE Impact Rankings',
-      description: '1er en Colombia por nuestro compromiso con los ODS (2023).'
-    },
-    {
-      id: 'qs-by-subject',
-      src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-qs-by-subject-lp',
-      srcFallback: '/assets/insignias/obet.webp',
-      alt: 'QS by Subject - ABET',
-      description: 'Acreditados en ABET.'
     }
+    // {
+    //   id: 'the-impact',
+    //   src: 'https://www.javeriana.edu.co/recursosdb/1372208/12527648/THE+Impact+Rankings+2024_COL_RGB.jpg',
+    //   srcFallback: '/assets/insignias/impact-rankings.webp',
+    //   alt: 'THE Impact Rankings',
+    //   description: '1er en Colombia por nuestro compromiso con los ODS (2023).'
+    // },
+    // {
+    //   id: 'qs-by-subject',
+    //   src: 'https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-qs-by-subject-lp',
+    //   srcFallback: '/assets/insignias/obet.webp',
+    //   alt: 'QS by Subject - ABET',
+    //   description: 'Acreditados en ABET.'
+    // }
   ]
 
   // Handler para fallback de imágenes

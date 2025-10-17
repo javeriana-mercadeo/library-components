@@ -103,6 +103,14 @@ $fade-width: rem(100px);            // Ancho del gradiente lateral
       opacity: 0.5;
     }
   }
+
+  // 🚫 Ocultar gradientes en modo grid
+  &:has(.swiper-wrapper.use-grid) {
+    &::before,
+    &::after {
+      opacity: 0;
+    }
+  }
 }
 
 // ==========================================
@@ -110,17 +118,45 @@ $fade-width: rem(100px);            // Ancho del gradiente lateral
 // ==========================================
 .swiper-wrapper {
   position: relative;
-  z-index: 1; // ✅ Asegurar que esté debajo de los gradientes
-  // display: flex se aplica por Swiper
+  z-index: 1;
+
+  &.use-grid {
+    display: grid !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: rem(30px) !important;
+    transform: none !important;
+    margin: 0 auto !important;
+
+    grid-template-columns: rem(180px) !important;
+
+    @media (min-width: 428px) {
+      grid-template-columns: rem(200px) !important;
+    }
+
+    @include responsive($breakpoint-sm) {
+      grid-template-columns: repeat(2, rem(220px)) !important;
+    }
+
+    @include responsive($breakpoint-md) {
+      grid-template-columns: repeat(3, rem(240px)) !important;
+    }
+
+    @include responsive($breakpoint-lg) {
+      grid-template-columns: repeat(4, rem(260px)) !important;
+    }
+
+    .swiper-slide {
+      width: auto !important;
+      margin: 0 !important;
+    }
+  }
 }
 
 // ==========================================
 // SWIPER SLIDE
 // ==========================================
 .swiper-slide {
-  // ✅ Width controlado por Swiper via breakpoints en script.js
-  // No necesitamos definir width aquí - Swiper lo calcula automáticamente
-  // basado en slidesPerView y spaceBetween de cada breakpoint
   flex-shrink: 0;
 }
 
@@ -151,7 +187,7 @@ $fade-width: rem(100px);            // Ancho del gradiente lateral
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: auto;
+  height: rem(65px);
   padding: var(--spacing-sm);
   border-radius: rem(12px);
   transition: background-color 0.3s ease;
@@ -256,10 +292,6 @@ $fade-width: rem(100px);            // Ancho del gradiente lateral
   position: relative;
   margin-top: var(--spacing-md);
   text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: rem(8px);
   z-index: 10;
 
   // Bullets individuales (clases globales de Swiper)
