@@ -1,3 +1,5 @@
+'use client'
+
 // hooks/useTheme.js
 import { useState, useEffect, useCallback } from 'react'
 
@@ -219,3 +221,5 @@ export const useTheme = () => {
     DEFAULT_THEMES
   }
 }
+
+export default useTheme

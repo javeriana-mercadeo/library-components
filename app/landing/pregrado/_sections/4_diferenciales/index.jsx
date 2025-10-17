@@ -1,19 +1,15 @@
 'use client'
-import { Container, Title, Paragraph, Button as Btn, Icon, Image, Caption } from '@library/components'
+import { useScript } from '@hooks'
+import { Container, Title, Paragraph, Button, Icon, Image, Caption } from '@components'
 
-import { useEffect } from 'react'
-
-import script from './script.js'
 import info from './info.json'
 import './styles.scss'
 
 const Diferenciales = () => {
   const elementName = info.id || 'diferenciales'
   const baseClass = 'why-javeriana'
-
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // Configuración de todos los diferenciales
   const diferencialesData = [
@@ -98,7 +94,7 @@ const Diferenciales = () => {
           </div>
 
           {/* Botón toggle - solo visible en móvil */}
-          <Btn
+          <Button
             className={`${baseClass}__accordion-toggle`}
             variant='light'
             size='sm'
@@ -108,7 +104,7 @@ const Diferenciales = () => {
             isEditable={false}
             endIcon={<i className='ph ph-plus toggle-icon' aria-hidden='true'></i>}>
             <span className='toggle-text'>Leer Más</span>
-          </Btn>
+          </Button>
         </div>
 
         {/* Contenido del acordeón */}

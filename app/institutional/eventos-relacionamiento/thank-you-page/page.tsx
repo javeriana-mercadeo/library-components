@@ -1,9 +1,8 @@
-import Header from '@library/components/header_simple'
-import Footer from '@library/components/footer'
+import { Header, Footer } from '@common'
 
 import Contenido from './contenido'
 
-import ViewComponent from '@/components/viewComponent/viewComponent'
+import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 
 export default function ThankYouPage() {
   const basePath = '/institutional/thank-you-page'

@@ -1,0 +1,343 @@
+@use '@styles/autoload' as *;
+
+@mixin programDetail {
+  // Variables del componente
+  $detail-gap: var(--spacing-md);
+  $detail-icon-size: var(--icon-size-xl);
+  $modal-z-index: 9999;
+  $modal-backdrop: rgba(0, 0, 0, 0.5);
+  $modal-border-radius: var(--border-radius-lg);
+
+  // Contenedor principal
+  .program-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    width: 100%;
+
+    @include responsive {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    // Item individual
+    .program-detail,
+    .program-dates {
+      display: flex;
+      align-items: start;
+      gap: var(--spacing-sm);
+
+      // Ícono del detalle
+      &_icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $detail-icon-size;
+        height: $detail-icon-size;
+        font-size: var(--icon-size-md);
+        border-radius: 50%;
+        background-color: var(--primary);
+        color: var(--neutral);
+        flex-shrink: 0;
+      }
+
+      // Contenido del detalle
+      &_content {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: rem(2px);
+      }
+
+      // Label del detalle
+      &_label {
+        color: var(--neutral-400);
+        font-size: var(--font-size-paragraph);
+        margin: 0;
+      }
+
+      // Valor del detalle
+      &_value {
+        font-size: var(--font-size-paragraph);
+        margin: 0;
+      }
+
+      // Ícono de información
+      &__info-icon {
+        font-size: var(--icon-size-sm);
+        opacity: 0.7;
+      }
+
+      // Item contenedor para el elemento clickable
+      &_content--clickable {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+        gap: rem(4px);
+      }
+
+      // Valor del detalle clickable
+      &_value--clickable {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        text-align: left;
+        padding: rem(4px) rem(8px);
+        min-height: fit-content;
+        margin: 0;
+
+        .btn-text {
+          font-size: var(--font-size-small);
+        }
+
+        .btn-icon {
+          font-size: var(--icon-size-xs);
+        }
+      }
+
+      // Item contenedor para el elemento doble
+      &_content--doble {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+        gap: rem(6px);
+      }
+
+      // Valores para tipo doble - ambos con los mismos estilos
+      &_value--primary,
+      &_value--secondary {
+        opacity: 1;
+
+        // Hacer que todos los elementos hijos se vean inline
+        > * {
+          display: inline;
+          margin: 0;
+        }
+
+        // También intentar con selectores más específicos
+        .caption,
+        [class*='caption'],
+        span,
+        p {
+          font-weight: var(--font-weight-bold) !important;
+          color: var(--neutral-500) !important;
+          display: inline !important;
+          margin: 0 !important;
+        }
+      }
+    }
+  }
+
+  // Modal customizado (legacy - ahora se usa el componente Modal reutilizable)
+  // Se mantiene por compatibilidad pero ya no se genera HTML para esto
+  .program-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $modal-backdrop;
+    z-index: $modal-z-index;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+
+    // Estados
+    opacity: 0;
+    visibility: hidden;
+    backdrop-filter: blur(0px);
+    transition: all 0.3s ease;
+
+    &--active {
+      opacity: 1;
+      visibility: visible;
+      backdrop-filter: blur(rem(4px));
+    }
+
+    // Contenido del modal
+    &__content {
+      background-color: var(--background-100);
+      border-radius: $modal-border-radius;
+      box-shadow: 0 rem(10px) rem(30px) rgba(0, 0, 0, 0.3);
+      max-width: rem(500px);
+      width: 100%;
+      max-height: 80vh;
+      overflow: hidden;
+      border: rem(1px) solid var(--neutral-700);
+
+      // Animación de entrada
+      transform: scale(0.9) translateY(rem(20px));
+      transition: transform 0.3s ease;
+
+      .program-detail-modal--active & {
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    // Header del modal
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-lg);
+      border-bottom: rem(1px) solid var(--neutral-700);
+      background-color: var(--background-200);
+    }
+
+    // Título del modal
+    &__title {
+      margin: 0;
+      font-size: var(--font-size-title);
+      font-weight: var(--font-weight-bold);
+      color: var(--neutral-200);
+    }
+
+    // Botón de cerrar
+    &__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: rem(32px);
+      height: rem(32px);
+      border: none;
+      background-color: var(--neutral-700);
+      color: var(--neutral-400);
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: var(--danger-600);
+        color: var(--neutral-1000);
+      }
+
+      &:focus {
+        outline: rem(2px) solid var(--primary-400);
+        outline-offset: rem(2px);
+      }
+
+      i {
+        font-size: var(--icon-size-sm);
+      }
+    }
+
+    // Cuerpo del modal
+    &__body {
+      padding: var(--spacing-lg);
+      overflow-y: auto;
+      max-height: calc(80vh - rem(100px));
+
+      // Scrollbar personalizado
+      &::-webkit-scrollbar {
+        width: rem(6px);
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--neutral-800);
+        border-radius: rem(3px);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--primary-500);
+        border-radius: rem(3px);
+
+        &:hover {
+          background: var(--primary-400);
+        }
+      }
+
+      // Estilos para el contenido
+      ul {
+        margin: var(--spacing-sm) 0;
+        padding-left: var(--spacing-lg);
+
+        li {
+          margin-bottom: rem(4px);
+          color: var(--neutral-300);
+        }
+      }
+
+      p {
+        margin-bottom: var(--spacing-sm);
+        color: var(--neutral-300);
+        line-height: 1.6;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      strong {
+        color: var(--neutral-200);
+        font-weight: var(--font-weight-bold);
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: $breakpoint-sm) {
+    .program-detail-modal {
+      padding: var(--spacing-sm);
+
+      &__content {
+        max-height: 90vh;
+        border-radius: rem(8px);
+      }
+
+      &__header,
+      &__body {
+        padding: var(--spacing-md);
+      }
+
+      &__title {
+        font-size: var(--font-size-subtitle);
+      }
+    }
+
+    .program-details {
+      .program-detail,
+      .program-dates {
+        // En móvil, hacer los íconos un poco más pequeños
+        &_icon {
+          width: rem(36px);
+          height: rem(36px);
+          font-size: rem(20px);
+        }
+      }
+    }
+  }
+
+  // Modo oscuro
+  .program-detail-modal {
+    @include dark-theme {
+      &__content {
+        box-shadow: 0 rem(10px) rem(30px) rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+
+  // Estados de carga
+  .program-detail {
+    &[data-loading='true'] {
+      .program-detail_value {
+        background: linear-gradient(90deg, var(--neutral-800) 25%, var(--neutral-700) 50%, var(--neutral-800) 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        border-radius: rem(4px);
+        color: transparent;
+      }
+    }
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+}

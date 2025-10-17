@@ -1,15 +1,15 @@
 'use client'
-import { Container, Title, Paragraph, Button, Image } from '@library/components'
-
-import { useEffect } from 'react'
+import { useScript } from '@hooks'
+import { Container, Image } from '@/app/components'
 
 import info from './info.json'
-import script from './script.js'
 import './styles.scss'
 
 const Perfiles = () => {
   const elementName = info.id || 'perfiles'
   const baseClass = 'program-profile'
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // Array con la información de las tabs
   const profileTabs = [
@@ -87,10 +87,6 @@ const Perfiles = () => {
       )
     }
   ]
-
-  useEffect(() => {
-    script()
-  }, [])
 
   return (
     <section className={`${baseClass}-section`}>

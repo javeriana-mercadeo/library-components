@@ -2,11 +2,9 @@
 // COMPONENTE REACT - CARRUSEL DE REDES SOCIALES
 // ==========================================
 'use client'
-import { UniversalComponent as UC, Container } from '@library/components'
+import { Container, Title } from '@/app/components'
 
 import { useEffect, useState } from 'react'
-import Title from '@library/components/contain/title'
-import Paragraph from '@library/components/contain/paragraph'
 
 import info from './info.json'
 import script from './script.js'

@@ -1,32 +1,25 @@
 'use client'
 
-import dynamic from 'next/dynamic'
+import { Header, Footer } from '@common'
+
+import Datos from './_sections/1_datos'
+import DobleDatos from './_sections/1-1_dobleDatos'
+import DoblePlanEstudio from './_sections/2-1_doblePlanEstudio'
+import Perfiles from './_sections/3_perfiles'
+import Diferenciales from './_sections/4_diferenciales'
+import Insignias from './_sections/5-1_insignias'
+import InsigniasSwiper from './_sections/5-2_insignias'
+import Docentes from './_sections/6_docentes'
+import Experiencia from './_sections/7_experiencia'
+import Cita from './_sections/8_cita'
+import PreguntasFrecuentes from './_sections/9_preguntasFrecuentes'
+import Relacionados from './_sections/10_relacionados'
+import EducacionEstrella from './_sections/_educacionEstrella'
+import Becas from './_sections/_becas'
+import Requisitos from './_sections/_requisitos'
+import PlanEstudio from './_sections/2_planEstudio'
 
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
-import { Load } from '@/components/utils'
-
-const Header = dynamic(() => import('@library/components/header'), { ssr: false, loading: () => <Load /> })
-const Datos = dynamic(() => import('./_sections/1_datos'), { ssr: false, loading: () => <Load /> })
-const DobleDatos = dynamic(() => import('./_sections/1-1_dobleDatos'), { ssr: false, loading: () => <Load /> })
-const PlanEstudio = dynamic(() => import('./_sections/2_planEstudio'), { ssr: false, loading: () => <Load /> })
-const DoblePlanEstudio = dynamic(() => import('./_sections/2-1_doblePlanEstudio'), { ssr: false, loading: () => <Load /> })
-const Perfiles = dynamic(() => import('./_sections/3_perfiles'), { ssr: false, loading: () => <Load /> })
-const Diferenciales = dynamic(() => import('./_sections/4_diferenciales'), { ssr: false, loading: () => <Load /> })
-// Versión original con useEffect (deprecada - no compatible Liferay)
-// const Insignias = dynamic(() => import('./_sections/5_insignias'), { ssr: false, loading: () => <Load /> })
-// Versión 2.0 - 100% compatible con Liferay (sin hooks) - con bugs de drag
-// const Insignias = dynamic(() => import('./_sections/5-1_insignias'), { ssr: false, loading: () => <Load /> })
-// Versión 3.0 - Con Swiper.js - Drag robusto y sin bugs
-const InsigniasSwiper = dynamic(() => import('./_sections/5-2_insignias'), { ssr: false, loading: () => <Load /> })
-const Docentes = dynamic(() => import('./_sections/6_docentes'), { ssr: false, loading: () => <Load /> })
-const Experiencia = dynamic(() => import('./_sections/7_experiencia'), { ssr: false, loading: () => <Load /> })
-const Cita = dynamic(() => import('./_sections/8_cita'), { ssr: false, loading: () => <Load /> })
-const PreguntasFrecuentes = dynamic(() => import('./_sections/9_preguntasFrecuentes'), { ssr: false, loading: () => <Load /> })
-const Relacionados = dynamic(() => import('./_sections/10_relacionados'), { ssr: false, loading: () => <Load /> })
-const EducacionEstrella = dynamic(() => import('./_sections/_educacionEstrella'), { ssr: false, loading: () => <Load /> })
-const Becas = dynamic(() => import('./_sections/_becas'), { ssr: false, loading: () => <Load /> })
-const Requisitos = dynamic(() => import('./_sections/_requisitos'), { ssr: false, loading: () => <Load /> })
-const Footer = dynamic(() => import('@library/components/footer'), { ssr: false, loading: () => <Load /> })
 
 export default function Profesional() {
   const basePath = '/landing/pregrado'
@@ -67,6 +60,10 @@ export default function Profesional() {
       {/* <Diferenciales /> */}
       <ViewComponent path={`${basePath}/_sections/4_diferenciales`}>
         <Diferenciales />
+      </ViewComponent>
+
+      <ViewComponent path={`${basePath}/_sections/5-1_insignias`}>
+        <Insignias />
       </ViewComponent>
 
       {/* <InsigniasSwiper /> - Versión 3.0 con Swiper.js */}

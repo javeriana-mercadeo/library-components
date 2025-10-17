@@ -1,23 +1,15 @@
 'use client'
-import { Title, Paragraph, Container, Image, Icon } from '@library/components'
+import { useScript } from '@hooks'
+import { Title, Paragraph, Container, Image, Icon } from '@/app/components'
 
-import script from './script.js'
 import info from './info.json'
 import './styles.scss'
 
 const Experiencia = () => {
   const elementName = info.id || 'experiencia'
   const baseClass = 'experience-carousel'
-
-  // Inicializar script manualmente cuando el componente se monta
-  if (typeof window !== 'undefined') {
-    // Usar setTimeout para asegurar que el DOM esté completamente renderizado
-    setTimeout(() => {
-      if (typeof script === 'function') {
-        script()
-      }
-    }, 100)
-  }
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // Datos del carrusel - estos vendrán de Liferay
   const carouselData = [

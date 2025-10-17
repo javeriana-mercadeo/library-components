@@ -1,0 +1,425 @@
+@use '@styles/autoload' as *;
+@use './components/infoItem.scss' as *;
+
+// ============================================
+// COMPONENTE PRINCIPAL
+// ============================================
+#video-doctorado,
+.video-doctorado {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
+  background-color: var(--background-100);
+
+  @include dark-theme {
+    background-color: var(--background-200);
+  }
+
+  // ============================================
+  // BACKGROUND (contiene video y overlay)
+  // ============================================
+  &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    z-index: 1;
+
+    @include responsive {
+      height: 50%;
+    }
+
+    @include responsive($breakpoint-xl) {
+      height: 65%;
+      max-height: rem(500px);
+    }
+  }
+
+  // ============================================
+  // MEDIA (contenedor de video)
+  // ============================================
+  &__media {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  // ============================================
+  // VIDEO CONTAINER
+  // ============================================
+  &__video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out;
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  // ============================================
+  // OVERLAY (capa oscura sobre el video)
+  // ============================================
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.8) 100%);
+    z-index: 2;
+  }
+
+  // ============================================
+  // CONTAINER (contenedor principal de contenido)
+  // ============================================
+  &__container {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  // ============================================
+  // CONTENT (wrapper de contenido)
+  // ============================================
+  &__content {
+    color: var(--neutral);
+    display: flex;
+    flex-direction: column;
+  }
+
+  // ============================================
+  // HEADER (título y descripción)
+  // ============================================
+  &__header {
+    position: relative;
+    text-align: left;
+    padding: 0 var(--spacing-md);
+    margin-top: var(--spacing-4xl);
+    margin-bottom: var(--spacing-xl);
+    order: 1;
+
+    @include responsive {
+      text-align: center;
+      padding: 0 var(--spacing-lg);
+      margin-top: var(--spacing-4xl);
+      margin-bottom: var(--spacing-3xl);
+      order: 0;
+    }
+  }
+
+  // ============================================
+  // TITLE
+  // ============================================
+  &__title {
+    font-size: var(--font-size-subtitle);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+    margin-bottom: var(--spacing-md);
+    text-shadow:
+      0 rem(2px) rem(8px) rgba(0, 0, 0, 0.6),
+      0 rem(1px) rem(3px) rgba(0, 0, 0, 0.8);
+    color: var(--neutral);
+
+    @include responsive {
+      font-size: var(--font-size-principal-title);
+      margin-bottom: var(--spacing-md);
+    }
+  }
+
+  // ============================================
+  // DESCRIPTION
+  // ============================================
+  &__description {
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-base);
+    opacity: 0.95;
+    margin-bottom: 0;
+    color: var(--neutral);
+    text-shadow:
+      0 rem(1px) rem(4px) rgba(0, 0, 0, 0.5),
+      0 rem(1px) rem(2px) rgba(0, 0, 0, 0.7);
+  }
+
+  // ============================================
+  // INFO (tarjeta con datos del programa)
+  // ============================================
+  &__info {
+    background-color: var(--primary);
+    backdrop-filter: none;
+    padding: var(--spacing-lg);
+    border: rem(1px) solid rgba(255, 255, 255, 0.2);
+    margin: 0;
+    position: relative;
+    z-index: 100;
+    order: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: var(--border-radius-md);
+
+    @include responsive {
+      padding: var(--spacing-2xl);
+      max-width: var(--max-width);
+      border-radius: var(--border-radius-lg);
+      order: 1;
+    }
+
+    // Botón de inscripción dentro de info
+    .enrollment-button {
+      margin: 0;
+    }
+  }
+
+  // ============================================
+  // INFO GRID (grid de items de información)
+  // ============================================
+  &__info-grid {
+    display: grid;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    width: 90%;
+
+    @include responsive {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-lg);
+    }
+
+    @include responsive($breakpoint-lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include responsive($breakpoint-xl) {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    // Animación de los info-items
+    .info-item {
+      opacity: 0;
+      transform: translateY(rem(30px));
+      animation: slideInUp 0.6s ease-out forwards;
+
+      @for $i from 1 through 6 {
+        &--order-#{$i} {
+          animation-delay: #{0.3 + ($i - 1) * 0.1}s;
+        }
+      }
+    }
+  }
+
+  // Incluir estilos de info-item
+  @include info-item;
+
+  // ============================================
+  // MEDIA PRINT (estilos para impresión)
+  // ============================================
+  @media print {
+    &__background {
+      display: none;
+    }
+
+    &__overlay {
+      display: none;
+    }
+
+    &__title,
+    &__description {
+      color: #000;
+      text-shadow: none;
+    }
+
+    &__info {
+      background: #fff;
+      border: rem(1px) solid #ccc;
+    }
+
+    .info-item__label,
+    .info-item__value,
+    .info-item__code {
+      color: #000;
+    }
+  }
+}
+
+// ============================================
+// ENROLLMENT NOTE CONTAINER
+// ============================================
+.program-data_enrollment-note-container {
+  color: var(--neutral, #fff);
+  display: block;
+  line-height: 1.2;
+  margin-top: rem(20px);
+  padding-top: rem(20px);
+  border-top: rem(1px) solid rgba(255, 255, 255, 0.2);
+
+  .paragraph {
+    color: var(--neutral, #fff);
+  }
+
+  @include responsive {
+    text-align: center;
+  }
+}
+
+// ============================================
+// ENROLLMENT NOTE (texto legal/SNIES)
+// ============================================
+.program-data_enrollment-note {
+  font-size: var(--font-size-small);
+  opacity: 0.8;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--neutral);
+
+  span {
+    display: inline;
+  }
+}
+
+// ============================================
+// MODAL (modal de detalles del programa)
+// ============================================
+.program-detail-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(rem(4px));
+
+  &--active {
+    display: flex;
+  }
+
+  &__content {
+    background: var(--background-100);
+    border-radius: var(--border-radius-lg);
+    padding: rem(30px);
+    max-width: rem(600px);
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+
+    @include dark-theme {
+      background: var(--background-200);
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: rem(20px);
+    padding-bottom: rem(15px);
+    border-bottom: rem(1px) solid var(--neutral-900);
+  }
+
+  &__title {
+    font-size: var(--font-size-subtitle);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+    color: var(--primary);
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    font-size: rem(24px);
+    cursor: pointer;
+    padding: rem(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--neutral-200);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--primary);
+    }
+
+    &:focus {
+      outline: rem(2px) solid var(--primary);
+      outline-offset: rem(2px);
+      border-radius: var(--border-radius-sm);
+    }
+
+    i {
+      font-size: inherit;
+    }
+  }
+
+  &__body {
+    color: var(--neutral-200);
+  }
+}
+
+// ============================================
+// MODAL CONTENT (contenido dentro del modal)
+// ============================================
+.program-data__modal-content {
+  font-size: var(--font-size-paragraph);
+  line-height: 1.6;
+
+  p {
+    margin-bottom: rem(15px);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  strong {
+    font-weight: var(--font-weight-bold);
+    color: var(--primary);
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: rem(15px) 0;
+  }
+
+  li {
+    padding: rem(8px) 0;
+    padding-left: rem(20px);
+    position: relative;
+
+    &::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: bold;
+    }
+  }
+}
+
+// ============================================
+// KEYFRAMES (animaciones)
+// ============================================
+@keyframes slideInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(rem(30px));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

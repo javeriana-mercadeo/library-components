@@ -7,12 +7,10 @@
  * Gestiona la apertura, cierre y navegación por modales
  */
 
-import { EventManager } from './utils.js'
-
 class ModalSystem {
   constructor() {
-    this.events = new EventManager()
-    this.logger = Logger // Global Logger
+    this.eventListeners = new Set()
+    this.logger = Logger
     this.activeModal = null
   }
 
@@ -20,8 +18,11 @@ class ModalSystem {
    * Inicializar sistema de modales
    */
   init() {
-    this.events.addEventListener(document, 'click', this.handleModalClick.bind(this))
-    this.events.addEventListener(document, 'keydown', this.handleModalKeydown.bind(this))
+    const clickKey = EventManager.add(document, 'click', this.handleModalClick.bind(this))
+    const keydownKey = EventManager.add(document, 'keydown', this.handleModalKeydown.bind(this))
+
+    this.eventListeners.add(clickKey)
+    this.eventListeners.add(keydownKey)
   }
 
   /**
@@ -272,7 +273,8 @@ class ModalSystem {
     document.body.style.overflow = ''
 
     // Limpiar event listeners
-    this.events.destroy()
+    this.eventListeners.forEach(key => EventManager.remove(key))
+    this.eventListeners.clear()
 
     this.activeModal = null
   }

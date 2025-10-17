@@ -1,9 +1,9 @@
 'use client'
 import React, { useEffect } from 'react'
 import './styles.scss'
-import Title from '@library/components/contain/title'
-import Paragraph from '@library/components/contain/paragraph'
-import Container from '@library/components/container'
+import Title from '@/app/components/title'
+import Paragraph from '@/app/components/paragraph'
+import Container from '@/app/components/container'
 
 const Laboratorios = () => {
   useEffect(() => {
@@ -78,38 +78,39 @@ const Laboratorios = () => {
               </button>
               <button
                 onClick={handleNextSlide}
-                aria-label="Siguiente imagen"
-                className="nav-button next"
-                type="button"
-                data-action="next"
-                data-testid="next-button"
-              >
-                <span><i className="ph ph-arrow-circle-right"></i></span>
+                aria-label='Siguiente imagen'
+                className='nav-button next'
+                type='button'
+                data-action='next'
+                data-testid='next-button'>
+                <span>
+                  <i className='ph ph-arrow-circle-right'></i>
+                </span>
               </button>
             </div>
           </div>
 
-          <div className="lab-slider-images">
-            <div className="image-container">
+          <div className='lab-slider-images'>
+            <div className='image-container'>
               <img
                 src={initialImages.firstImage.imageSrc}
                 alt={initialImages.firstImage.label}
-                className="lab-image"
-                data-testid="first-image"
+                className='lab-image'
+                data-testid='first-image'
               />
-              <div className="image-label" data-testid="first-label">
+              <div className='image-label' data-testid='first-label'>
                 {initialImages.firstImage.label}
               </div>
             </div>
 
-            <div className="image-container desktop-only">
+            <div className='image-container desktop-only'>
               <img
                 src={initialImages.secondImage.imageSrc}
                 alt={initialImages.secondImage.label}
-                className="lab-image"
-                data-testid="second-image"
+                className='lab-image'
+                data-testid='second-image'
               />
-              <div className="image-label" data-testid="second-label">
+              <div className='image-label' data-testid='second-label'>
                 {initialImages.secondImage.label}
               </div>
             </div>

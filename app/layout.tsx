@@ -1,6 +1,6 @@
 // Styles
-import '@/styles/vendors/_tailwind.css'
-import '@/styles/global.scss'
+import '@styles/vendors/_tailwind.css'
+import '@styles/global.scss'
 
 // Next.js
 import { Metadata, Viewport } from 'next'
@@ -104,7 +104,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <BtnReturn />
 
             {/* Main Content */}
-            <main className='global-container flex-1'>{children}</main>
+            <main suppressHydrationWarning className='global-container flex-1'>
+              {children}
+            </main>
           </div>
         </Providers>
 

@@ -21,10 +21,16 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@common": ["./app/common/index"],
+      "@common/*": ["./app/common/*"],
+      "@components": ["./app/components/index"],
+      "@components/*": ["./app/components/*"],
       "@library/*": ["./app/_library/*"],
-      "@styles/*": ["./styles/*"]
+      "@styles/*": ["./app/styles/*"],
+      "@hooks": ["./hooks/index"],
+      "@hooks/*": ["./hooks/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts", "hooks/useScript.js"],
   "exclude": ["node_modules"]
 }

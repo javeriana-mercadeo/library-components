@@ -1,59 +1,59 @@
 'use client'
 
-import dynamic from 'next/dynamic'
+import { Header, Footer } from '@common'
+
+import Proyectos from '../../institutional/secciones-opcionales/sections/proyectos'
+
+import Video from './_sections/video'
 
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
-import Load from '@/components/utils/Load'
-
-// Lazy load heavy sections with client-side loading
-
-const Header = dynamic(() => import('@library/components/header'), { ssr: false, loading: () => <Load /> })
-const VideoDoctorado = dynamic(() => import('./sections/videoDoctorado'), { ssr: false, loading: () => <Load /> })
-const DocentesDoctorado = dynamic(() => import('./sections/docentesDoctorado'), { ssr: false, loading: () => <Load /> })
-const QueAprenderas = dynamic(() => import('./sections/queAprenderas'), { ssr: false, loading: () => <Load /> })
-const Investigaciones = dynamic(() => import('./sections/investigaciones'), { ssr: false, loading: () => <Load /> })
-const RedesSociales = dynamic(() => import('./sections/redesSociales'), { ssr: false, loading: () => <Load /> })
-const Snies = dynamic(() => import('./sections/Snies'), { ssr: false, loading: () => <Load /> })
 
 export default function Doctorado() {
   const basePath = '/landing/doctorado'
-  const libraryPath = '/_library/components/'
+  const optionalPath = '/institutional/secciones-opcionales'
 
   return (
     <>
-      {/* <Encabezado /> */}
-      <ViewComponent path={`${libraryPath}/header`}>
+      <Header />
+      {/* <ViewComponent path={`${libraryPath}/header`}>
         <Header />
+      </ViewComponent> */}
+
+      {/* <Video /> */}
+      <ViewComponent path={`${basePath}/_sections/video`}>
+        <Video />
       </ViewComponent>
 
-      {/* <VideoDoctorado /> */}
-      <ViewComponent path={`${basePath}/sections/videoDoctorado`}>
-        <VideoDoctorado />
+      {/* <Proyectos /> */}
+      <ViewComponent path={`${optionalPath}/sections/proyectos`}>
+        <Proyectos />
       </ViewComponent>
 
       {/* <DocentesDoctorado /> */}
-      <ViewComponent path={`${basePath}/sections/docentesDoctorado`}>
+      {/* <ViewComponent path={`${basePath}/sections/docentesDoctorado`}>
         <DocentesDoctorado />
-      </ViewComponent>
+      </ViewComponent> */}
 
-      <ViewComponent path={`${basePath}/sections/queAprenderas`}>
+      {/* <ViewComponent path={`${basePath}/sections/queAprenderas`}>
         <QueAprenderas />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Investigaciones /> */}
-      <ViewComponent path={`${basePath}/sections/investigaciones`}>
+      {/* <ViewComponent path={`${basePath}/sections/investigaciones`}>
         <Investigaciones />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <RedesSociales /> */}
-      <ViewComponent path={`${basePath}/sections/redesSociales`}>
+      {/* <ViewComponent path={`${basePath}/sections/redesSociales`}>
         <RedesSociales />
-      </ViewComponent>
+      </ViewComponent> */}
 
       {/* <Snies /> */}
-      <ViewComponent path={`${basePath}/sections/Snies`}>
+      {/* <ViewComponent path={`${basePath}/sections/Snies`}>
         <Snies />
-      </ViewComponent>
+      </ViewComponent> */}
+
+      <Footer />
     </>
   )
 }

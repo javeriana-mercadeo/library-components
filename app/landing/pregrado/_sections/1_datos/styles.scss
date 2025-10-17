@@ -1,5 +1,5 @@
 @use '@styles/autoload' as *;
-@use './components/programDetail.scss' as *;
+@use '../../_shared/components/programDetail.scss' as *;
 
 @include programDetail;
 
@@ -133,6 +133,31 @@
     grid-area: dates;
     align-self: start;
 
+    .program-data_dates-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      align-items: flex-start;
+      margin-left: var(--spacing-2xl);
+
+      [data-puj-modal-trigger] {
+        display: inline-flex;
+        width: auto;
+      }
+
+      .program-data_enrollment-link {
+        margin-left: 0;
+      }
+
+      @include responsive {
+        margin-left: rem(50px);
+
+        [data-puj-modal-trigger] {
+          width: auto;
+        }
+      }
+    }
+
     .program-dates {
       display: flex;
       align-items: start;
@@ -160,6 +185,7 @@
 
       // Label del detalle
       &_label {
+        color: var(--neutral-400);
         font-size: var(--font-size-paragraph);
         margin-bottom: rem(0px);
         margin-left: var(--spacing-sm);
@@ -243,6 +269,16 @@
 
   &_enrollment-link {
     margin-left: var(--spacing-2xl);
+  }
+
+  &_modal-trigger--hidden {
+    display: none !important;
+  }
+
+  @include liferay-edit-mode {
+    &_modal-trigger--hidden {
+      display: inline-flex !important;
+    }
   }
 
   &_enrollment-note {

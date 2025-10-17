@@ -1,0 +1,108 @@
+@use '@styles/autoload' as *;
+
+@mixin info-item {
+  .info-item {
+    display: flex;
+    gap: var(--spacing-xs);
+
+    @include responsive {
+      display: block;
+      text-align: center;
+    }
+
+    &__icon {
+      flex-shrink: 0;
+      width: var(--icon-size-md);
+      height: var(--icon-size-md);
+      color: var(--neutral);
+      align-self: flex-start;
+      font-size: var(--icon-size-md);
+
+      @include responsive {
+        width: 100%;
+        height: auto;
+        margin-bottom: rem(5px);
+        font-size: rem(28px);
+      }
+
+      i {
+        font-size: inherit;
+      }
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2xs);
+      min-width: 0;
+      flex: 1;
+    }
+
+    // Label: Caption ya tiene sus estilos, solo ajustar específicos
+    &__label {
+      // Los estilos base vienen de .caption
+      text-transform: uppercase;
+      letter-spacing: rem(0.5px);
+      color: var(--neutral);
+    }
+
+    // Value: Paragraph ya tiene sus estilos, solo ajustar específicos
+    &__value {
+      // Los estilos base vienen de .paragraph
+      // No necesitamos sobrescribir font-size, font-weight, color
+      color: var(--neutral, #992727);
+      margin-bottom: rem(0px);
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+        transition: opacity 0.2s ease;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    // Code: Paragraph con estilos específicos
+    &__code {
+      // Los estilos base vienen de .paragraph
+      opacity: 0.9;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    // Link: Paragraph con estilos específicos
+    &__link {
+      // Los estilos base vienen de .paragraph
+      a {
+        color: inherit;
+        text-decoration: underline;
+        transition: opacity 0.2s ease;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    // Content clickable: contenedor para tipo modal
+    &__content--clickable {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: start;
+      gap: var(--spacing-2xs);
+
+      @include responsive {
+        align-items: center;
+      }
+    }
+
+    // Action button: botón para mostrar modal
+    &__action-button {
+      // Los estilos base vienen del componente Button
+      // Solo ajustes específicos si son necesarios
+      min-height: fit-content;
+    }
+  }
+}

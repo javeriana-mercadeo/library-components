@@ -1,19 +1,15 @@
 'use client'
-import { Container, Title, Paragraph, Button as Btn, Image } from '@library/components'
+import { useScript } from '@hooks'
+import { Container, Title, Paragraph, Button, Image } from '@/app/components'
 
-import { useEffect } from 'react'
-
-import script from './script.js'
 import info from './info.json'
 import './styles.scss'
 
 const Docentes = () => {
   const elementName = info.id || 'docentes'
   const baseClass = 'expert-carousel'
-
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // Datos de los docentes
   const docentes = [
@@ -96,7 +92,7 @@ const Docentes = () => {
               {docente.title}
             </Paragraph>
 
-            <Btn
+            <Button
               href={docente.profileUrl}
               target='_blank'
               variant='link'
@@ -106,7 +102,7 @@ const Docentes = () => {
               color='neutral'
               isEditable={false}>
               Ver Perfil
-            </Btn>
+            </Button>
           </div>
         </div>
       </div>

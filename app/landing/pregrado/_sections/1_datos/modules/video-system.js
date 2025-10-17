@@ -8,7 +8,22 @@
  */
 
 import { detectPlatform } from './platform-detection.js'
-import { TimerManager, EventManager, isElementVisible, getVideoUrl } from './utils.js'
+
+/**
+ * Obtener URL de video desde contenedor
+ */
+function getVideoUrl(container, type) {
+  // Intentar desde configuración global
+  if (typeof configuration !== 'undefined') {
+    const configUrl = type === 'mobile' ? configuration.urlVideoMobile : configuration.urlVideoDesktop
+    if (configUrl?.trim()) return configUrl
+  }
+
+  // Obtener desde data attributes
+  const dataAttr = type === 'mobile' ? 'data-video-mobile-url' : 'data-video-desktop-url'
+  const url = container.getAttribute(dataAttr)
+  return url?.trim() || null
+}
 
 class VideoSystem {
   constructor() {
@@ -24,8 +39,8 @@ class VideoSystem {
     }
 
     this.platform = null
-    this.timers = new TimerManager()
-    this.events = new EventManager()
+    this.scheduler = TimingUtils.createScheduler()
+    this.eventListeners = new Set()
     this.logger = Logger
   }
 
@@ -204,7 +219,7 @@ class VideoSystem {
         }
 
         // Intentar reproducir si está visible
-        if (isElementVisible(container, this.platform.config.intersectionThreshold)) {
+        if (DOMUtils.isElementVisible(container, this.platform.config.intersectionThreshold)) {
           this.playVideoSafely(video)
         }
 
@@ -294,10 +309,13 @@ class VideoSystem {
       this.handleVisibilityCheck()
     }, 100)
 
-    this.events.addEventListener(window, 'scroll', checkVisibility, { passive: true })
-    this.events.addEventListener(window, 'resize', checkVisibility, { passive: true })
+    const scrollKey = EventManager.add(window, 'scroll', checkVisibility, { passive: true })
+    const resizeKey = EventManager.add(window, 'resize', checkVisibility, { passive: true })
 
-    this.timers.setTimeout(checkVisibility, 100)
+    this.eventListeners.add(scrollKey)
+    this.eventListeners.add(resizeKey)
+
+    this.scheduler.schedule(checkVisibility, 100)
   }
 
   /**
@@ -307,7 +325,7 @@ class VideoSystem {
     const containers = document.querySelectorAll('[data-component="video-player"]')
 
     containers.forEach(container => {
-      const visible = isElementVisible(container, this.platform.config.intersectionThreshold)
+      const visible = DOMUtils.isElementVisible(container, this.platform.config.intersectionThreshold)
 
       if (visible && container.hasAttribute('data-lazy') && !container.classList.contains('video-loaded')) {
         // Si es visible y lazy, cargar video
@@ -477,7 +495,7 @@ class VideoSystem {
    * Configurar manejadores táctiles específicos para iOS
    */
   setupIOSTouchHandlers() {
-    this.events.addEventListener(
+    const touchKey = EventManager.add(
       document,
       'touchstart',
       e => {
@@ -485,7 +503,7 @@ class VideoSystem {
         if (container) {
           const videos = container.querySelectorAll('video')
           videos.forEach(video => {
-            if (video.paused && isElementVisible(container, 0.3)) {
+            if (video.paused && DOMUtils.isElementVisible(container, 0.3)) {
               this.playVideoSafely(video, 1, false)
             }
           })
@@ -493,6 +511,8 @@ class VideoSystem {
       },
       { passive: true }
     )
+
+    this.eventListeners.add(touchKey)
   }
 
   /**
@@ -504,7 +524,7 @@ class VideoSystem {
 
       const handleCanPlay = () => {
         if (loader) this.hideVideoLoader(loader)
-        if (isElementVisible(container, this.platform.config.intersectionThreshold)) {
+        if (DOMUtils.isElementVisible(container, this.platform.config.intersectionThreshold)) {
           this.playVideoSafely(video)
         }
         video.removeEventListener('canplay', handleCanPlay)
@@ -670,7 +690,7 @@ class VideoSystem {
     this.state.currentRetryCount++
     this.logger.info(`[VideoSystem] Programando reintento ${this.state.currentRetryCount}/${this.state.maxRetryAttempts}`)
 
-    this.timers.setTimeout(() => {
+    this.scheduler.schedule(() => {
       this.setupLazyVideoContainers()
     }, 2000 * this.state.currentRetryCount) // Backoff exponencial
   }
@@ -741,11 +761,12 @@ class VideoSystem {
       })
 
       // Limpiar timers y eventos
-      if (this.timers) {
-        this.timers.destroy()
+      if (this.scheduler) {
+        this.scheduler.cancelAll()
       }
-      if (this.events) {
-        this.events.destroy()
+      if (this.eventListeners) {
+        this.eventListeners.forEach(key => EventManager.remove(key))
+        this.eventListeners.clear()
       }
 
       // Reset estado completo

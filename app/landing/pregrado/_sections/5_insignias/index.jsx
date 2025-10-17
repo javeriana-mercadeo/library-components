@@ -1,17 +1,13 @@
 'use client'
-import { Container, Title } from '@library/components'
+import { useScript } from '@hooks'
+import { Container, Title } from '@/app/components'
 
-import { useEffect } from 'react'
-
-import script from './script.js'
 import './styles.scss'
 
 const Insignias = () => {
   const elementName = 'insignias'
-
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   const reconocimientos = [
     {

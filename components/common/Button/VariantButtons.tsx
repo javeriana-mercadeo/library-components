@@ -1,4 +1,4 @@
-import Btn from '@/app/_library/components/contain/btn'
+import { Button } from '@components'
 
 /**
  * Componente que muestra las diferentes variantes de un botón por color
@@ -15,16 +15,16 @@ const VariantButton = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' 
           <div>
             <p className='text-sm text-[var(--neutral-500)]'>Estilos</p>
             <div className='flex flex-wrap gap-2'>
-              <Btn color={color}>Botón normal</Btn>
-              <Btn color={color} variant='outline'>
-                Botón Outline
-              </Btn>
-              <Btn color={color} variant='ghost'>
+              <Button color={color}>Botón normal</Button>
+              <Button color={color} variant='bordered'>
+                Botón Bordered
+              </Button>
+              <Button color={color} variant='ghost'>
                 Botón Ghost
-              </Btn>
-              <Btn color={color} variant='link'>
+              </Button>
+              <Button color={color} variant='link'>
                 Botón Link
-              </Btn>
+              </Button>
             </div>
           </div>
 
@@ -32,15 +32,15 @@ const VariantButton = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' 
           <div>
             <p className='text-sm text-[var(--neutral-500)] mb-2'>Tamaños</p>
             <div className='flex flex-wrap items-center gap-2'>
-              <Btn color={color} size='sm'>
+              <Button color={color} size='sm'>
                 Pequeño
-              </Btn>
-              <Btn color={color} size='md'>
+              </Button>
+              <Button color={color} size='md'>
                 Mediano
-              </Btn>
-              <Btn color={color} size='lg'>
+              </Button>
+              <Button color={color} size='lg'>
                 Grande
-              </Btn>
+              </Button>
             </div>
           </div>
 
@@ -48,15 +48,15 @@ const VariantButton = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' 
           <div>
             <p className='text-sm text-[var(--neutral-500)] mb-2'>Con íconos</p>
             <div className='flex flex-wrap gap-2'>
-              <Btn color={color} startIcon={<i className='ph ph-plus' />}>
+              <Button color={color} startIcon={<i className='ph ph-plus' />}>
                 Con ícono inicial
-              </Btn>
-              <Btn color={color} endIcon={<i className='ph ph-arrow-right' />}>
+              </Button>
+              <Button color={color} endIcon={<i className='ph ph-arrow-right' />}>
                 Con ícono final
-              </Btn>
-              <Btn color={color} endIcon={<i className='ph ph-arrow-right' />} startIcon={<i className='ph ph-plus' />}>
+              </Button>
+              <Button color={color} endIcon={<i className='ph ph-arrow-right' />} startIcon={<i className='ph ph-plus' />}>
                 Con íconos inicial y final
-              </Btn>
+              </Button>
             </div>
           </div>
 
@@ -64,27 +64,27 @@ const VariantButton = ({ color }: { color: 'primary' | 'secondary' | 'tertiary' 
           <div>
             <p className='text-sm text-[var(--neutral-500)] mb-2'>Deshabilitados</p>
             <div className='flex flex-wrap gap-2'>
-              <Btn disabled color={color}>
+              <Button disabled color={color}>
                 Normal deshabilitado
-              </Btn>
-              <Btn disabled color={color} variant='outline'>
-                Outline deshabilitado
-              </Btn>
-              <Btn disabled color={color} variant='ghost'>
+              </Button>
+              <Button disabled color={color} variant='bordered'>
+                Bordered deshabilitado
+              </Button>
+              <Button disabled color={color} variant='ghost'>
                 Ghost deshabilitado
-              </Btn>
-              <Btn disabled color={color} variant='link'>
+              </Button>
+              <Button disabled color={color} variant='link'>
                 Link deshabilitado
-              </Btn>
+              </Button>
             </div>
           </div>
 
           {/* Variante de ancho completo */}
           <div>
             <p className='text-sm text-[var(--neutral-500)] mb-2'>Ancho completo</p>
-            <Btn fullWidth color={color}>
+            <Button fullWidth color={color}>
               Botón de ancho completo
-            </Btn>
+            </Button>
           </div>
         </div>
       </div>

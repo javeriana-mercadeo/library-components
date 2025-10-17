@@ -113,68 +113,38 @@ export default function DemosPage() {
             </div>
           </div>
 
-          {/* Componentes UI */}
+          {/* Secciones y Fragmentos */}
           <div>
-            <h3 className='text-2xl font-bold text-slate-800 mb-2'>Componentes UI</h3>
-            <p className='text-slate-600 mb-6'>Biblioteca de componentes reutilizables para interfaces de usuario</p>
+            <h3 className='text-2xl font-bold text-slate-800 mb-2'>Secciones y Fragmentos</h3>
+            <p className='text-slate-600 mb-6'>Secciones reutilizables y fragmentos de páginas</p>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
               <DemoCard
-                chips={[{ label: 'Botones', color: 'primary' }]}
-                description='Botones y acciones'
-                icon='cursor-click'
-                route='/components/buttons'
-                title='Buttons'
+                chips={[{ label: 'Hero', color: 'primary' }]}
+                description='Secciones hero y banners principales'
+                icon='image-square'
+                route='/fragments/heroes'
+                title='Heroes'
               />
               <DemoCard
-                chips={[{ label: 'Modales', color: 'secondary' }]}
-                description='Modales y pop-ups'
-                icon='window'
-                route='/components/modals'
-                title='Modals'
+                chips={[{ label: 'Features', color: 'secondary' }]}
+                description='Secciones de características y beneficios'
+                icon='star'
+                route='/fragments/features'
+                title='Features'
               />
               <DemoCard
-                chips={[{ label: 'Acordeones', color: 'success' }]}
-                description='Acordeones y desplegables'
-                icon='list-dashes'
-                route='/components/accordions'
-                title='Accordions'
+                chips={[{ label: 'CTA', color: 'success' }]}
+                description='Call to actions y conversión'
+                icon='megaphone'
+                route='/fragments/cta'
+                title='Call to Actions'
               />
               <DemoCard
-                chips={[{ label: 'Formularios', color: 'warning' }]}
-                description='Formularios y inputs'
-                icon='text-aa'
-                route='/components/forms'
-                title='Forms'
-              />
-            </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6'>
-              <DemoCard
-                chips={[{ label: 'Tarjetas', color: 'danger' }]}
-                description='Tarjetas y contenedores'
-                icon='squares-four'
-                route='/components/cards'
-                title='Cards'
-              />
-              <DemoCard
-                chips={[{ label: 'Navegación', color: 'primary' }]}
-                description='Navegación y menús'
-                icon='compass'
-                route='/components/navigation'
-                title='Navigation'
-              />
-              <DemoCard
-                chips={[{ label: 'Tablas', color: 'secondary' }]}
-                description='Tablas y listas'
-                icon='table'
-                route='/components/tables'
-                title='Tables'
-              />
-              <DemoCard
-                chips={[{ label: 'Multimedia', color: 'success' }]}
-                description='Imágenes y multimedia'
-                icon='image'
-                route='/components/media'
-                title='Media'
+                chips={[{ label: 'Testimonials', color: 'warning' }]}
+                description='Testimonios y reseñas'
+                icon='chat-circle'
+                route='/fragments/testimonials'
+                title='Testimonials'
               />
             </div>
           </div>

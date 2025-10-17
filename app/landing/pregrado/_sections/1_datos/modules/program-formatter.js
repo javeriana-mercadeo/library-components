@@ -16,6 +16,9 @@ class ProgramFormatter {
   init() {
     if (this.initialized) return
 
+    // Solo inicializar en el cliente
+    if (typeof document === 'undefined') return
+
     // Escuchar el evento de carga de data
     document.addEventListener('data_load-program', this.handleDataLoad.bind(this))
     this.initialized = true
@@ -33,6 +36,9 @@ class ProgramFormatter {
   }
 
   addColonsToElements() {
+    // Solo ejecutar en el cliente
+    if (typeof document === 'undefined') return
+
     // Buscar todos los elementos con data-puj-name="true"
     const context = document.getElementById('datos')
     const elements = context ? context.querySelectorAll('[data-puj-name="true"]') : []
@@ -69,20 +75,22 @@ class ProgramFormatter {
   }
 
   destroy() {
+    if (typeof document === 'undefined') return
+
     document.removeEventListener('data_load-program', this.handleDataLoad.bind(this))
     this.initialized = false
     Logger?.info?.('ProgramFormatter: Module destroyed')
   }
 }
 
-// Crear instancia única del formateador
-const programFormatter = new ProgramFormatter()
+// Crear instancia única del formateador (solo en el cliente)
+const programFormatter = typeof window !== 'undefined' ? new ProgramFormatter() : null
 
 // Exportar funciones públicas
 export { programFormatter, ProgramFormatter }
 
 // También disponible globalmente para compatibilidad
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && programFormatter) {
   window.ProgramFormatter = ProgramFormatter
   window.programFormatter = programFormatter
 }

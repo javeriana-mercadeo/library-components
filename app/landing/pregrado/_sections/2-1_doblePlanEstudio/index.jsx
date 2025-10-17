@@ -1,22 +1,15 @@
-// ==========================================
-// COMPONENTE REACT CON DATOS DINÁMICOS
-// ==========================================
 'use client'
-import { Container, Title, Paragraph, Button as Btn } from '@library/components'
-
-import { useEffect } from 'react'
+import { useScript } from '@hooks'
+import { Container, Title, Paragraph, Button } from '@/app/components'
 
 import info from './info.json'
-import script from './script.js'
 import './styles.scss'
 
 const DoblePlanEstudio = () => {
   const elementName = info.id || 'DoblePlanEstudio'
   const baseClass = 'plan-estudio'
-
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // ==========================================
   // DATOS DINÁMICOS DE LOS SEMESTRES POR JORNADA
@@ -203,14 +196,14 @@ const DoblePlanEstudio = () => {
   const renderCarousel = (jornadaData, jornadaId) => {
     return (
       <div className={`${baseClass}_jornada-content`}>
-        <Btn
+        <Button
           href={jornadaData.downloadUrl}
           target='_blank'
           variant='bordered'
           className={`${baseClass}_download-btn`}
           endIcon={<i className='ph ph-download' aria-hidden='true'></i>}>
           Descargar Plan de estudios - {jornadaData.title}
-        </Btn>
+        </Button>
 
         <div className={`${baseClass}_carousel swiper`}>
           <div className={`${baseClass}_wrapper subjects-swiper`}>

@@ -22,6 +22,10 @@ const FAQAccordionSystem = {
       return false
     }
 
+    // Inicializar gestión de recursos
+    this.scheduler = TimingUtils.createScheduler()
+    this.eventListeners = new Set()
+
     this.processRichContent()
     this.setupInitialState()
     this.attachEventListeners()
@@ -122,7 +126,7 @@ const FAQAccordionSystem = {
       answer.style.paddingBottom = ''
     })
 
-    setTimeout(() => {
+    this.scheduler.schedule(() => {
       answer.style.transition = ''
       answer.style.height = 'auto'
       answer.style.maxHeight = 'none'
@@ -164,7 +168,7 @@ const FAQAccordionSystem = {
       answer.style.paddingBottom = '0px'
     })
 
-    setTimeout(() => {
+    this.scheduler.schedule(() => {
       answer.style.display = 'none'
       answer.classList.add(this.config.hiddenClass)
 
@@ -201,7 +205,7 @@ const FAQAccordionSystem = {
       const answer = clickedItem.querySelector(this.config.answerSelector)
       const icon = clickedItem.querySelector(this.config.iconSelector)
 
-      setTimeout(
+      this.scheduler.schedule(
         () => {
           this.openAccordionItem(clickedItem, answer, icon)
         },
@@ -214,27 +218,26 @@ const FAQAccordionSystem = {
   attachEventListeners() {
     const faqItems = document.querySelectorAll(this.config.itemSelector)
 
-    faqItems.forEach((item, index) => {
+    faqItems.forEach(item => {
       const question = item.querySelector(this.config.questionSelector)
 
       if (!question) {
         return
       }
 
-      const newQuestion = question.cloneNode(true)
-      question.parentNode.replaceChild(newQuestion, question)
-
-      newQuestion.addEventListener('click', e => {
+      const clickKey = EventManager.add(question, 'click', e => {
         e.preventDefault()
         this.toggleAccordion(item)
       })
+      this.eventListeners.add(clickKey)
 
-      newQuestion.addEventListener('keydown', e => {
+      const keydownKey = EventManager.add(question, 'keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           this.toggleAccordion(item)
         }
       })
+      this.eventListeners.add(keydownKey)
     })
   },
 
@@ -243,10 +246,23 @@ const FAQAccordionSystem = {
     const subQuestions = document.querySelectorAll(this.config.subQuestionSelector)
 
     subQuestions.forEach(subQuestion => {
-      subQuestion.addEventListener('click', function (e) {
+      const eventKey = EventManager.add(subQuestion, 'click', e => {
         e.stopPropagation()
       })
+      this.eventListeners.add(eventKey)
     })
+  },
+
+  // Limpiar recursos
+  destroy() {
+    if (this.scheduler) {
+      this.scheduler.cancelAll()
+    }
+
+    if (this.eventListeners) {
+      this.eventListeners.forEach(key => EventManager.remove(key))
+      this.eventListeners.clear()
+    }
   }
 }
 
@@ -256,7 +272,14 @@ const FAQAccordionSystem = {
 const RequirementsSystem = {
   config: {
     apiBaseUrl: 'https://www.javeriana.edu.co/JaveMovil/ValoresMatricula-1/rs/psujsfvaportals/getrequisitos',
-    containerSelector: '[data-puj-requirements]'
+    containerSelector: '[puj-data-requirements]'
+  },
+
+  init() {
+    // Configurar listeners de eventos
+    this.setupEventListeners()
+
+    return true
   },
 
   async fetchRequirements(programCode) {
@@ -276,6 +299,7 @@ const RequirementsSystem = {
       const data = await response.json()
       return data
     } catch (error) {
+      Logger.error('[RequirementsSystem] Error fetching requirements:', error)
       throw error
     }
   },
@@ -305,11 +329,14 @@ const RequirementsSystem = {
         })
       }
 
-      categoriesMap.get(category).criteria.push({
+      const criterionObj = {
         name: item.ujGrupoCriterios,
         weight: item.descr,
-        maxScore: item.descr1
-      })
+        maxScore: item.descr1,
+        activityDescription: item.activityDescr
+      }
+
+      categoriesMap.get(category).criteria.push(criterionObj)
     })
 
     const categories = Array.from(categoriesMap.values())
@@ -333,7 +360,6 @@ const RequirementsSystem = {
                 <th>Criterio general</th>
                 <th>Criterio interno</th>
                 <th style="display: none;">Puntaje</th>
-                <!-- <th>Puntaje total</th> -->
                 <th>Porcentaje (%)</th>
               </tr>
             </thead>
@@ -342,7 +368,6 @@ const RequirementsSystem = {
     categories.forEach(category => {
       const criteriaCount = category.criteria.length
       const categoryWeight = category.criteria[0].weight
-      const totalMaxScore = category.criteria.reduce((sum, criterion) => sum + criterion.maxScore, 0)
 
       category.criteria.forEach((criterion, index) => {
         html += `
@@ -351,11 +376,10 @@ const RequirementsSystem = {
               <td>
                 <div class="requirements-table__criterio-interno">
                   <strong>${criterion.name}</strong>
-                  <small>${programInfo.activityDescription}</small>
+                  <small>${criterion.activityDescription}</small>
                 </div>
               </td>
               <td class="requirements-table__cell-center" style="display: none;">${criterion.maxScore}</td>
-              <!-- ${index === 0 ? `<td rowSpan="${criteriaCount}" class="requirements-table__cell-center">${totalMaxScore}</td>` : ''} -->
               ${index === 0 ? `<td rowSpan="${criteriaCount}" class="requirements-table__cell-center">${categoryWeight}%</td>` : ''}
             </tr>`
       })
@@ -384,15 +408,14 @@ const RequirementsSystem = {
 
     try {
       const data = await this.fetchRequirements(programCode)
-
       const processedData = this.processRequirementsData(data)
-
       const html = this.generateRequirementsHTML(processedData)
 
       container.innerHTML = html
 
       return true
     } catch (error) {
+      Logger.error('[RequirementsSystem] Error rendering requirements:', error)
       container.innerHTML =
         '<div class="overflow-auto portlet-msg-error">No se pudieron cargar los criterios de evaluación para este programa. Verifique su conexión e intente nuevamente.</div>'
       return false
@@ -434,20 +457,11 @@ const RequirementsSystem = {
     this.mutationObserver = observer
   },
 
-  init() {
-    // Configurar listeners de eventos
-    this.setupEventListeners()
-
-    return true
-  },
-
+  // Limpiar recursos
   destroy() {
-    // Limpiar recursos
     if (this.mutationObserver) {
       this.mutationObserver.disconnect()
     }
-
-    document.removeEventListener('data_load-program', this.handleProgramEvent)
   }
 }
 
@@ -462,6 +476,11 @@ const FAQSystem = {
     }
 
     return systems
+  },
+
+  destroy() {
+    FAQAccordionSystem.destroy()
+    RequirementsSystem.destroy()
   }
 }
 

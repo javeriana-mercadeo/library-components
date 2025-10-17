@@ -1,22 +1,15 @@
-// ==========================================
-// COMPONENTE REACT CON DATOS DINÁMICOS
-// ==========================================
 'use client'
-import { Container, Title, Paragraph, Button as Btn } from '@library/components'
-
-import { useEffect } from 'react'
+import { useScript } from '@hooks'
+import { Container, Title, Paragraph, Button } from '@components'
 
 import info from './info.json'
-import script from './script.js'
 import './styles.scss'
 
 const PlanEstudio = () => {
   const elementName = info.id || 'planEstudio'
   const baseClass = 'plan-estudio'
-
-  useEffect(() => {
-    script()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   // ==========================================
   // DATOS DINÁMICOS DE LOS SEMESTRES
@@ -191,14 +184,14 @@ const PlanEstudio = () => {
           El plan de estudios profundiza en asignaturas en las áreas de: edificaciones, infraestructura vial e hidrotecnia.
         </Paragraph>
 
-        <Btn
+        <Button
           id={`${elementName}-btn`}
           href='#'
           target='_blank'
           variant='bordered'
           endIcon={<i className='ph ph-download' aria-hidden='true'></i>}>
           Descargar Plan de estudios
-        </Btn>
+        </Button>
 
         <div className={`${baseClass}_carousel swiper`}>
           <div className={`${baseClass}_wrapper subjects-swiper`}>

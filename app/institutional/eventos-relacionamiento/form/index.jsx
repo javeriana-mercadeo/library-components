@@ -1,15 +1,12 @@
 'use client'
 
-import { useEffect } from 'react'
-import { Container, Logo, Title, Btn, Paragraph } from '@library/components'
-import initEventosForm from './script.js'
+import { useScript } from '@hooks'
+import { Container, Image, Title, Button, Paragraph } from '@components'
 import './styles.scss'
 
 export default function EventosForm() {
-  useEffect(() => {
-    // Inicializar el formulario de eventos
-    initEventosForm()
-  }, [])
+  const staticMode = false // Cambiar a true para modo estático (evitar la carga del script en desarrollo [local])
+  useScript(() => import('./script.js'), { staticMode })
 
   return (
     <section className='eventos-page'>
@@ -17,7 +14,11 @@ export default function EventosForm() {
         <div className='eventos-page__content'>
           {/* Sección Izquierda */}
           <div className='eventos-page__left'>
-            <Logo className='eventos-page__logo' />
+            <Image
+              className='eventos-page__logo'
+              src='https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-javeriana'
+              alt='Logo Universidad Javeriana'
+            />
             <Title hierarchy='h1' className='eventos-page__title' isEditable={false}>
               Formamos
               <br />a los mejores
@@ -155,9 +156,9 @@ export default function EventosForm() {
 
               {/* FOOTER: Solo botón fijo */}
               <div className='form-footer'>
-                <Btn type='submit' variant='solid' isEditable={false} size='lg' fullWidth>
+                <Button type='submit' variant='solid' isEditable={false} size='lg' fullWidth>
                   Enviar ahora
-                </Btn>
+                </Button>
               </div>
             </form>
           </div>

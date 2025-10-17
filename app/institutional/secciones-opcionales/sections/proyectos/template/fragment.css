@@ -1,0 +1,789 @@
+/*css compilado completo modal y y slider para liferay  */
+
+.container .hero-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+.slide-title {
+  color: var(--neutral);
+  font-weight: 700;
+  font-size: var(--font-size-caption);
+}
+
+.hero-carousel .carousel-title {
+  display: flex;
+  justify-content: center;
+  color: var(--neutral-100);
+  font-weight: 700;
+  text-align: center;
+  font-size: var(--font-size-title);
+  padding-bottom: 1.25rem;
+  margin: 0;
+  padding-top: 1rem;
+}
+
+.paragraph-neutral {
+  color: var(--neutral);
+}
+
+/* ========================================
+   CONTENEDORES PRINCIPALES - TAMAÑO FIJO COMO DESKTOP
+   ======================================== */
+
+.hero-carousel .main-container {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+@media (max-width: 767px) {
+  .hero-carousel .main-container {
+    height: 280px !important;
+    min-height: 280px !important;
+  }
+}
+
+.hero-carousel .carousel-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 15px;
+  touch-action: pan-x;
+}
+
+/* ========================================
+   WRAPPER Y SLIDES FUNCIONALES
+   ======================================== */
+
+.hero-carousel .swiper-wrapper {
+  display: flex !important;
+  align-items: center;
+  height: 100%;
+  gap: 10px !important;
+  width: calc(100% - 30px) !important;
+  justify-content: flex-start;
+  margin: 0 auto;
+  max-width: fit-content;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: transform;
+  touch-action: pan-x;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.hero-carousel .swiper-wrapper.centered-slides {
+  justify-content: center !important;
+}
+
+.hero-carousel .swiper-wrapper.no-transition {
+  transition: none !important;
+}
+
+.hero-carousel .swiper-wrapper.dragging {
+  transition: none !important;
+  cursor: grabbing;
+}
+
+/* ========================================
+   SLIDES CUADRADOS - TAMAÑO FIJO CONSISTENTE
+   ======================================== */
+
+.hero-carousel .swiper-slide {
+  flex-shrink: 0;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-drag: none;
+  width: 260px !important;
+  flex: 0 0 260px !important;
+  height: 260px !important;
+  aspect-ratio: 1 / 1;
+}
+
+@media (max-width: 767px) {
+  .hero-carousel .swiper-slide {
+    width: 260px !important;
+    flex: 0 0 260px !important;
+    height: 260px !important;
+    margin: 0 !important;
+  }
+}
+
+/* ========================================
+   CENTRADO INTELIGENTE
+   ======================================== */
+
+.hero-carousel[data-slides-count='1'] .swiper-wrapper,
+.hero-carousel[data-slides-count='2'] .swiper-wrapper {
+  justify-content: center !important;
+}
+
+@media (min-width: 900px) {
+  .hero-carousel[data-slides-count='3'] .swiper-wrapper {
+    justify-content: center !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero-carousel[data-slides-count='4'] .swiper-wrapper {
+    justify-content: center !important;
+  }
+}
+
+/* ========================================
+   SLIDE INDIVIDUAL Y CONTENIDO
+   ======================================== */
+
+.hero-carousel .carousel-slide {
+  width: 100%;
+  height: 100%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden;
+  border-radius: 8px;
+  touch-action: manipulation;
+}
+
+.hero-carousel .carousel-slide:hover {
+  transform: scale(1.02);
+  z-index: 2;
+}
+
+.hero-carousel .carousel-slide .slide-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.hero-carousel .carousel-slide .slide-image:hover {
+  transform: scale(0.95);
+}
+
+.hero-carousel .slide-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: var(--neutral);
+  padding: 16px;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.hero-carousel .carousel-slide:hover .slide-content {
+  transform: scale(0.95);
+}
+.hero-carousel .slide-content .slide-title {
+  margin: 0 0 0.5rem 0;
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-carousel .slide-content .description {
+  font-size: var(--font-size-paragraph);
+  line-height: 1.3;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /*genera error aqui pero liferay lo toma bien */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ========================================
+   CONTROLES DE NAVEGACIÓN
+   ======================================== */
+
+.hero-carousel .carousel-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: none;
+  justify-content: space-between;
+  padding: 0 25px;
+  z-index: 100;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .hero-carousel .carousel-controls {
+    display: flex;
+  }
+}
+
+.hero-carousel .carousel-control {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+}
+
+.hero-carousel .carousel-control:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.hero-carousel .carousel-control:active {
+  transform: scale(0.95);
+}
+
+.hero-carousel .carousel-control:disabled {
+  opacity: 0.3 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+.hero-carousel .carousel-control i {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* ========================================
+   FUNCIONALIDAD TOUCH MOBILE
+   ======================================== */
+
+@media (max-width: 767px) {
+  .hero-carousel .carousel-container {
+    padding: 0 5px;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+  }
+
+  .hero-carousel .swiper-wrapper {
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px !important;
+    width: calc(100% - 10px) !important;
+    justify-content: flex-start !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+  }
+
+  .hero-carousel .swiper-slide {
+    width: 260px !important;
+    flex: 0 0 260px !important;
+    height: 260px !important;
+    margin: 0 !important;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .hero-carousel .carousel-slide {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .hero-carousel .carousel-controls {
+    display: none !important;
+  }
+
+  .hero-carousel .indicator {
+    width: 12px;
+    height: 12px;
+  }
+
+  .hero-carousel .swiper-wrapper.centered-slides {
+    justify-content: flex-start !important;
+  }
+
+  .hero-carousel .carousel-slide .slide-image {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+/* ========================================
+   MODAL COMPLETO CON SCROLL CORREGIDO
+   ======================================== */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.modal-backdrop.show {
+  display: flex;
+}
+
+.modal-content {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  overflow: hidden;
+  background-color: var(--background-100);
+}
+
+.modal-backdrop.show .modal-content {
+  transform: translateY(0);
+  background-color: var(--background-100);
+}
+
+@media (min-width: 769px) {
+  .modal-backdrop {
+    padding: 2rem !important;
+  }
+
+  .modal-content {
+    width: 90vw;
+    max-width: 1200px;
+    height: 80vh;
+    border-radius: 12px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+    transform: scale(0.9);
+    background-color: var(--background-100);
+  }
+
+  .modal-backdrop.show .modal-content {
+    transform: scale(1);
+  }
+}
+
+.modal-body {
+  flex: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+@media (min-width: 769px) {
+  .modal-body {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+}
+
+.project-details {
+  flex: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+.project-layout {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  min-height: 0 !important;
+  flex: 1 !important;
+}
+
+.project-info {
+  flex: 0 0 40% !important;
+  width: 40% !important;
+  padding: 2rem 1.5rem !important;
+  border-left: 1px solid #eee !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  position: relative !important;
+  z-index: 10 !important;
+  height: 100% !important;
+}
+
+.project-gallery {
+  flex: 0 0 60% !important;
+  width: 60% !important;
+  min-width: 0 !important;
+  padding: 1.5rem !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: 100% !important;
+  position: relative !important;
+  contain: layout style !important;
+}
+
+.project-gallery::-webkit-scrollbar {
+  width: 8px;
+}
+
+.project-gallery::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.project-gallery::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.project-gallery::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.project-info .project-title {
+  position: relative;
+  top: 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  z-index: 5;
+  color: var(--neutral-100);
+  font-size: var(--font-size-subtitle);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.project-info .info-row {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.project-info .info-row strong {
+  color: #333;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.project-info .info-row span,
+.project-info .info-row p {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ========================================
+   CONTENEDOR DE VIDEO - ALTURA CONSISTENTE
+   ======================================== */
+
+.project-gallery .video-container {
+  width: 100% !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  height: auto !important;
+}
+
+.project-gallery .video-container iframe,
+.project-gallery .gallery-video-container iframe {
+  width: 100% !important;
+  height: 400px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  display: block !important;
+  background: #000 !important;
+  margin-bottom: 0 !important;
+  object-fit: cover !important;
+}
+
+/* ========================================
+   GALERÍA DE IMÁGENES - ALTURA CONSISTENTE
+   ======================================== */
+
+.project-gallery .gallery-items {
+  width: 100% !important;
+  padding: 1rem 0 !important;
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important;
+}
+
+.project-gallery .gallery-items img {
+  width: 100% !important;
+  height: 400px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  display: block !important;
+  object-fit: cover !important;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease !important;
+  flex-shrink: 0 !important;
+}
+
+.project-gallery .gallery-items img:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ========================================
+   RESPONSIVE MODAL - MOBILE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .modal-backdrop.show {
+    padding: 1.5rem !important;
+  }
+
+  .modal-content {
+    width: 90% !important;
+    height: 80vh !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    transform: scale(0.8) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .modal-backdrop.show .modal-content {
+    transform: scale(1) !important;
+  }
+
+  .modal-body {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .project-details {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    display: block !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .project-layout {
+    display: block !important;
+    height: auto !important;
+    width: 100% !important;
+    overflow: visible !important;
+    min-height: auto !important;
+  }
+
+  .project-info {
+    display: block !important;
+    width: 100% !important;
+    border-left: none !important;
+    border-bottom: 1px solid #ddd !important;
+    padding: 1.5rem !important;
+    box-shadow: none !important;
+    background: #fafafa !important;
+    margin-bottom: 0 !important;
+  }
+
+  .project-gallery {
+    display: block !important;
+    width: 100% !important;
+    padding: 1.5rem !important;
+    background: #fff !important;
+  }
+
+  .project-gallery .video-container {
+    width: 100% !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .project-gallery .video-container iframe {
+    width: 100% !important;
+    height: 250px !important;
+    border-radius: 8px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .project-gallery .gallery-items {
+    width: 100% !important;
+    padding: 0 !important;
+    gap: 1.5rem !important;
+  }
+
+  .project-gallery .gallery-items img {
+    width: 100% !important;
+    height: 250px !important;
+    margin-bottom: 0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    display: block !important;
+    object-fit: cover !important;
+  }
+}
+
+/* ========================================
+   FIXES PARA LIFERAY
+   ======================================== */
+
+.modal-backdrop {
+  z-index: 999999 !important;
+}
+
+.hero-carousel * {
+  box-sizing: border-box;
+}
+
+/* ========================================
+   ACCESIBILIDAD Y UX
+   ======================================== */
+
+.hero-carousel .carousel-slide:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel .swiper-wrapper {
+    transition: none !important;
+  }
+
+  .hero-carousel .carousel-slide,
+  .hero-carousel .carousel-control,
+  .hero-carousel .indicator {
+    transition: none !important;
+  }
+}
+
+/* ========================================
+   MEJORAS DE RENDIMIENTO
+   ======================================== */
+
+.hero-carousel .swiper-wrapper {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.hero-carousel .carousel-slide {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.hero-carousel .swiper-wrapper.transitioning {
+  pointer-events: none;
+}
+
+.hero-carousel .carousel-slide.active {
+  z-index: 1;
+}
+
+.hero-carousel .carousel-slide:active {
+  transform: scale(0.98);
+}
+
+.hero-carousel {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.modal-content > .btn,
+.modal-content .btn[aria-label='Cerrar modal'],
+.modal-content button[onclick*='closeCarouselModal'] {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  z-index: 999999 !important;
+  display: flex !important;
+  visibility: visible !important;
+}
+
+/* Ajuste para móvil */
+@media (max-width: 768px) {
+  .modal-content > .btn,
+  .modal-content .btn[aria-label='Cerrar modal'],
+  .modal-content button[onclick*='closeCarouselModal'] {
+    top: 0.75rem !important;
+    right: 0.75rem !important;
+  }
+}
+
+/* Estilos personalizados para AMBOS scrollbars */
+.project-gallery::-webkit-scrollbar-track,
+.project-info::-webkit-scrollbar-track {
+  background: transparent !important;
+  border-radius: 5px !important;
+  margin-top: 10px !important;
+}
+
+.project-gallery::-webkit-scrollbar-thumb,
+.project-info::-webkit-scrollbar-thumb {
+  background: var(--primary-400) !important;
+  border-radius: 5px !important;
+  transition: background 0.3s ease !important;
+}
+
+.project-gallery::-webkit-scrollbar-thumb:hover,
+.project-info::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-500) !important;
+}
+
+/* Para navegadores Firefox - ambos scrollbars */
+.project-gallery,
+.project-info {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--primary-400) transparent !important;
+}

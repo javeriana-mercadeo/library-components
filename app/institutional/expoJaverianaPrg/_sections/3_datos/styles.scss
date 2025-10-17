@@ -8,15 +8,15 @@
   width: 100%;
   padding: var(--spacing-4xl) 0;
   top: -150px;
-  margin-bottom: -2300px;
+  margin-bottom: -230px;
 
   // ===========================================
   // SECCIÓN SUPERIOR - RECTÁNGULO NARANJA CON ESTADÍSTICAS
   // ===========================================
+  // Container ya aplica padding horizontal y centrado
   &__stats-container {
     display: flex;
     justify-content: center;
-    padding: 0 var(--spacing-xl);
     margin-bottom: var(--spacing-2xl);
   }
 
@@ -36,6 +36,14 @@
       gap: var(--spacing-xl);
       padding: var(--spacing-xl) var(--spacing-lg);
     }
+
+    @media (max-width: $breakpoint-sm - 1px) {
+      border-radius: 0 50px 50px 0;
+      width: 100vw;
+      max-width: none;
+      margin-left: calc(-50vw + 50%);
+      padding: var(--spacing-xl) var(--spacing-md);
+    }
   }
 
   &__stat-item {
@@ -51,18 +59,19 @@
     }
 
     @media (max-width: $breakpoint-sm - 1px) {
-      font-size: var(--font-size-caption);
+      font-size: var(--font-size-subtitle);
       white-space: normal;
+      line-height: 0.85;
     }
   }
 
   // ===========================================
   // TÍTULO AZUL CENTRAL
   // ===========================================
+  // Container ya aplica padding horizontal y centrado
   &__main-title-container {
     display: flex;
     justify-content: center;
-    padding: 0 var(--spacing-xl);
   }
 
   &__main-title {
@@ -97,6 +106,10 @@
     @media (max-width: $breakpoint-md - 1px) {
       min-height: auto;
     }
+
+    @media (max-width: $breakpoint-sm - 1px) {
+      min-height: 600px;
+    }
   }
 
   // Franja Naranja de Fondo (60% de altura)
@@ -114,17 +127,25 @@
       height: auto;
       min-height: 200px;
     }
+
+    @media (max-width: $breakpoint-sm - 1px) {
+      position: absolute;
+      height: 60%;
+      top: 0;
+      width: 100vw;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 
   // Contenedor de 2 Columnas (Sobrepuesto - 50% vertical offset)
+  // Container ya aplica max-width, padding y margin
   &__content-wrapper {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    max-width: 1400px;
-    padding: 0 var(--spacing-xl);
     z-index: 2;
 
     @media (max-width: $breakpoint-md - 1px) {
@@ -132,7 +153,15 @@
       top: auto;
       left: auto;
       transform: none;
-      padding: var(--spacing-2xl) var(--spacing-xl);
+      padding-top: var(--spacing-2xl);
+      padding-bottom: var(--spacing-2xl);
+    }
+
+    @media (max-width: $breakpoint-sm - 1px) {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   }
 
@@ -163,6 +192,16 @@
     @media (max-width: $breakpoint-md - 1px) {
       z-index: auto;
     }
+
+    @media (max-width: $breakpoint-sm - 1px) {
+      position: absolute;
+      top: var(--spacing-xl);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 400px;
+      z-index: 3;
+    }
   }
 
   &__image {
@@ -189,22 +228,33 @@
     @media (max-width: $breakpoint-md - 1px) {
       z-index: auto;
     }
+
+    @media (max-width: $breakpoint-sm - 1px) {
+      width: 100%;
+      margin-top: 250px;
+    }
   }
 
   &__yellow-box {
     background-color: var(--secondary);
     padding: var(--spacing-2xl) var(--spacing-xl);
     padding-left: calc(var(--spacing-xl) + 80px);
-    border-radius: 0 50px 50px 0;
+    border-radius: 50px;
     width: 100%;
     margin-left: -80px;
     box-shadow: var(--shadow-lg);
 
     @media (max-width: $breakpoint-md - 1px) {
-      border-radius: 50px 50px 0 0;
       padding: var(--spacing-xl) var(--spacing-lg);
       margin-left: 0;
       padding-left: var(--spacing-lg);
+    }
+
+    @media (max-width: $breakpoint-sm - 1px) {
+      border-radius: 0 50px 50px 0;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      padding: var(--spacing-xl) var(--spacing-md);
     }
   }
 

@@ -1,0 +1,11 @@
+// Direct component exports (clear naming)
+export { default as Button } from './button'
+export { default as Caption } from './caption'
+export { default as Container } from './container'
+export { default as DropZone } from './dropZone'
+export { default as Icon } from './icon'
+export { default as Image } from './image'
+export { default as ImageBackground } from './imageBackground'
+export { default as Modal } from './modal'
+export { default as Paragraph } from './paragraph'
+export { default as Title } from './title'

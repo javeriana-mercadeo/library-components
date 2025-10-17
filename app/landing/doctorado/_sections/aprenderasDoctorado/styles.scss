@@ -1,0 +1,225 @@
+/* Variables CSS */
+:root {
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+}
+
+/* Contenedor principal */
+.color-containerA {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.875rem 0;
+}
+
+.expert-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Grid principal */
+.contentGeneralA {
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.75rem;
+  padding: 1rem;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .contentGeneralA {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Imagen */
+.imgDoctoradoA {
+  width: 490px;
+  height: 295px;
+  min-width: auto;
+  border-radius: 20px;
+  object-fit: cover;
+  min-height: 200px;
+  justify-self: center;
+}
+
+.doctoradoGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  height: fit-content;
+  text-align: left;
+}
+
+/* Contenedor de texto expandible */
+.text-container-expandible {
+  position: relative;
+}
+
+/* Descripción principal */
+.descriptionDoctoradoA {
+  font-size: var(--font-size-paragraph);
+  color: var(--neutral-100);
+  line-height: 1.6;
+  margin: 0;
+  text-align: left;
+  margin-bottom: 0;
+  transition: all 0.3s ease;
+}
+
+/* Estado contraído por defecto */
+.descriptionDoctoradoA {
+  max-height: 17em; /* Aumentado significativamente para más palabras y altura similar a imagen */
+  overflow: hidden;
+  position: relative;
+}
+
+.descriptionDoctoradoA::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1.2em;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* Estado expandido */
+.descriptionDoctoradoA.expanded {
+  max-height: none;
+}
+
+.descriptionDoctoradoA.expanded::after {
+  display: none;
+}
+
+/* Estilos para texto enriquecido */
+.descriptionDoctoradoA strong,
+.descriptionDoctoradoA b {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.descriptionDoctoradoA em,
+.descriptionDoctoradoA i {
+  font-style: italic;
+  color: var(--primary);
+}
+
+.descriptionDoctoradoA a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.descriptionDoctoradoA a:hover {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+/* Estilos para listas con viñetas (discos) */
+.descriptionDoctoradoA ul {
+  margin: 10px 0;
+  padding-left: 20px;
+  list-style: disc !important;
+}
+
+.descriptionDoctoradoA ul li {
+  margin: 5px 0;
+  position: relative;
+  display: list-item !important;
+  list-style: disc !important;
+  list-style-position: outside !important;
+}
+
+.descriptionDoctoradoA ul li::marker {
+  color: var(--primary) !important;
+  font-size: 1.2em;
+}
+
+/* Estilos para listas numeradas */
+.descriptionDoctoradoA ol {
+  margin: 10px 0;
+  padding-left: 20px;
+  list-style: decimal !important;
+}
+
+.descriptionDoctoradoA ol li {
+  margin: 5px 0;
+  position: relative;
+  display: list-item !important;
+  list-style: decimal !important;
+  list-style-position: outside !important;
+}
+
+.descriptionDoctoradoA ol li::marker {
+  color: var(--primary) !important;
+  font-weight: 600;
+}
+
+/* Botón de leer más/menos */
+.read-more-toggle {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding-left: 0.3rem;
+  padding-top: 0.5rem;
+}
+
+.read-more-toggle:hover {
+  color: var(--primary-900);
+  text-decoration: underline;
+}
+
+.read-more-toggle:focus {
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.read-more-toggle:active {
+  transform: translateY(1px);
+}
+
+/* Ocultar botón si el contenido es corto */
+.text-container-expandible.short-content .read-more-toggle {
+  display: none;
+}
+
+.title-neutral {
+  color: var(--neutral-100);
+}
+
+.title-2xl {
+  font-size: var(--font-size-title);
+  line-height: 1.2;
+  color: var(--neutral-100);
+}
+
+.title-center {
+  text-align: center;
+}
+
+.title-bold {
+  font-weight: bold;
+}

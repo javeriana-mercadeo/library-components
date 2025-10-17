@@ -65,3 +65,5 @@ export function useNavigationLoading() {
 
   return { isLoading }
 }
+
+export default useNavigationLoading

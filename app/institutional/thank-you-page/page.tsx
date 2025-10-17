@@ -1,9 +1,8 @@
-import Header from '@library/components/header_partial'
-import Footer from '@library/components/footer'
+import { HeaderPartial, Footer } from '@common'
 
 import Contenido from './contenido'
 
-import ViewComponent from '@/components/viewComponent/viewComponent'
+import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 
 export default function ThankYouPage() {
   const basePath = '/institutional/thank-you-page'
@@ -12,7 +11,7 @@ export default function ThankYouPage() {
   return (
     <>
       <ViewComponent path={`${libraryPath}/header`}>
-        <Header />
+        <HeaderPartial />
       </ViewComponent>
 
       <ViewComponent path={`${basePath}/contenido`}>

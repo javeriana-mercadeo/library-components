@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Test Event Listeners</title>
+  </head>
+  <body>
+    <h1>Event Monitor</h1>
+    <div id="log"></div>
+
+    <script>
+      const log = document.getElementById('log')
+
+      function addLog(message, color = 'black') {
+        const entry = document.createElement('div')
+        entry.style.color = color
+        entry.style.padding = '5px'
+        entry.style.borderBottom = '1px solid #eee'
+        entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`
+        log.appendChild(entry)
+        console.log(message)
+      }
+
+      // Listener nativo para data_load-program
+      document.addEventListener('data_load-program', function (event) {
+        addLog('✅ NATIVE: data_load-program event received!', 'green')
+        addLog('   - Detail: ' + JSON.stringify(Object.keys(event.detail || {})), 'green')
+        if (event.detail?.dataProgram) {
+          addLog('   - Program: ' + event.detail.dataProgram.programa, 'green')
+        }
+      })
+
+      // Listener nativo para data_load-program-all
+      document.addEventListener('data_load-program-all', function (event) {
+        addLog('✅ NATIVE: data_load-program-all event received!', 'blue')
+        addLog('   - Detail: ' + JSON.stringify(Object.keys(event.detail || {})), 'blue')
+        if (event.detail?.allPrograms) {
+          addLog('   - Programs count: ' + event.detail.allPrograms.length, 'blue')
+        }
+      })
+
+      // Listener nativo para data_load-program-whatsapp
+      document.addEventListener('data_load-program-whatsapp', function (event) {
+        addLog('✅ NATIVE: data_load-program-whatsapp event received!', 'purple')
+        addLog('   - Detail: ' + JSON.stringify(Object.keys(event.detail || {})), 'purple')
+      })
+
+      addLog('👂 Native event listeners registered', 'orange')
+    </script>
+  </body>
+</html>
