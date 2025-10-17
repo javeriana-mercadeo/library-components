@@ -263,13 +263,17 @@
       margin-left: calc(-1 * var(--spacing-4xl));
     }
 
-    // Móvil: breakout centrado con técnica estándar
+    // Móvil: breakout a borde izquierdo con position relative
     @media (max-width: $breakpoint-md - 1px) {
+      position: relative;
       padding: var(--spacing-xl) var(--spacing-lg);
       padding-left: var(--spacing-lg);
       border-radius: 0 50px 50px 0;
       width: 100vw;
-      margin-left: calc(-50vw + 50%);
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
     }
 
     // Móvil pequeño: padding más compacto
