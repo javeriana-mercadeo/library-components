@@ -31,16 +31,16 @@ const generateDynamicAttributes = id => {
 
 /**
  * ProgramDetail - Componente compartido para mostrar detalles de programas
- * Soporta 4 tipos: normal, modal, editable, doble
+ * Soporta 5 tipos: normal, modal, editable, doble, doble-editable
  *
  * @param {string} id - ID único del detalle
  * @param {string} icon - Clase del ícono (ej: 'ph-clock')
  * @param {string} label - Etiqueta del detalle
  * @param {string} value - Valor principal
- * @param {string} value2 - Valor secundario (solo para tipo 'doble')
- * @param {string} prefix - Prefijo para el primer valor (solo para tipo 'doble')
- * @param {string} prefix2 - Prefijo para el segundo valor (solo para tipo 'doble')
- * @param {('normal'|'modal'|'editable'|'doble')} type - Tipo de detalle
+ * @param {string} value2 - Valor secundario (solo para tipo 'doble' y 'doble-editable')
+ * @param {string} prefix - Prefijo para el primer valor (solo para tipo 'doble' y 'doble-editable')
+ * @param {string} prefix2 - Prefijo para el segundo valor (solo para tipo 'doble' y 'doble-editable')
+ * @param {('normal'|'modal'|'editable'|'doble'|'doble-editable')} type - Tipo de detalle
  * @param {React.ReactNode} modalContent - Contenido del modal (solo para tipo 'modal')
  * @param {string} className - Clases CSS adicionales
  */
@@ -145,6 +145,36 @@ const ProgramDetail = ({ id, icon, label, value, value2, prefix, prefix2, type =
               </Paragraph>
             </div>
           )}
+
+          {/* Tipo doble-editable - Primer valor desde API (con atributo dinámico), segundo valor editable */}
+          {type === 'doble-editable' && (
+            <div className='program-detail_content--doble'>
+              {/* Primer valor desde API con atributo dinámico - todo en una línea */}
+              <Paragraph
+                className='program-detail_value program-detail_value--primary'
+                color='neutral'
+                size='md'
+                bold={true}
+                isEditable={false}>
+                <Caption id={`${modalId}-prefix1`}>{prefix || 'Diurna'}: </Caption>
+
+                <Caption size='md' bold={true} isEditable={false} {...dynamicAttributes}>
+                  <span className='lead'>{value}</span>
+                </Caption>
+              </Paragraph>
+
+              {/* Segundo valor editable con estructura separada - todo en una línea */}
+              <Paragraph
+                className='program-detail_value program-detail_value--primary'
+                color='neutral'
+                size='md'
+                bold={true}
+                isEditable={false}>
+                <Caption id={`${modalId}-prefix2`}>{prefix2 || 'Nocturna'}: </Caption>
+                <Caption id={`${modalId}-value2`}>{value2}</Caption>
+              </Paragraph>
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -159,7 +189,7 @@ ProgramDetail.propTypes = {
   value2: PropTypes.string,
   prefix: PropTypes.string,
   prefix2: PropTypes.string,
-  type: PropTypes.oneOf(['normal', 'modal', 'editable', 'doble']),
+  type: PropTypes.oneOf(['normal', 'modal', 'editable', 'doble', 'doble-editable']),
   modalContent: PropTypes.node,
   className: PropTypes.string
 }

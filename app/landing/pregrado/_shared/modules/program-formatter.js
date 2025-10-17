@@ -1,14 +1,20 @@
 // ===========================================
-// PROGRAM FORMATTER MODULE
+// PROGRAM FORMATTER MODULE - MÓDULO COMPARTIDO
 // ===========================================
 
 /**
  * Módulo que agrega dos puntos ":" al final del texto de elementos con data-puj-name="true"
  * cuando se carga la data del programa
+ * Este módulo es compartido entre múltiples componentes (1_datos, 1-1_dobleDatos, etc.)
  */
 
-class ProgramFormatter {
-  constructor() {
+export class ProgramFormatter {
+  /**
+   * @param {Object} options - Opciones de configuración
+   * @param {string} options.scope - ID del contenedor donde buscar elementos (ej: 'datos', 'doble-datos')
+   */
+  constructor(options = {}) {
+    this.scope = options.scope || null
     this.initialized = false
     this.init()
   }
@@ -40,7 +46,7 @@ class ProgramFormatter {
     if (typeof document === 'undefined') return
 
     // Buscar todos los elementos con data-puj-name="true"
-    const context = document.getElementById('datos')
+    const context = this.scope ? document.getElementById(this.scope) : document
     const elements = context ? context.querySelectorAll('[data-puj-name="true"]') : []
 
     Logger?.info?.(`ProgramFormatter: Found ${elements.length} elements to process`)
@@ -83,14 +89,13 @@ class ProgramFormatter {
   }
 }
 
-// Crear instancia única del formateador (solo en el cliente)
-const programFormatter = typeof window !== 'undefined' ? new ProgramFormatter() : null
-
-// Exportar funciones públicas
-export { programFormatter, ProgramFormatter }
-
-// También disponible globalmente para compatibilidad
-if (typeof window !== 'undefined' && programFormatter) {
-  window.ProgramFormatter = ProgramFormatter
-  window.programFormatter = programFormatter
+/**
+ * Factory function para crear instancias con configuración específica
+ * @param {Object} options - Opciones de configuración
+ * @returns {ProgramFormatter}
+ */
+export function createProgramFormatter(options = {}) {
+  return typeof window !== 'undefined' ? new ProgramFormatter(options) : null
 }
+
+export default ProgramFormatter

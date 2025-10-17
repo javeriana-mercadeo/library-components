@@ -129,6 +129,10 @@
     }
   }
 
+  .btn-primary.btn-faded {
+    margin-left: var(--spacing-sm);
+  }
+
   .program-dates-container {
     grid-area: dates;
     align-self: start;

@@ -139,6 +139,19 @@ const DOMUtils = {
     )
   },
 
+  isElementVisible(element, threshold = 0.1) {
+    if (!element) return false
+
+    const rect = element.getBoundingClientRect()
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight
+    const windowWidth = window.innerWidth || document.documentElement.clientWidth
+
+    const verticalVisible = rect.top + rect.height * threshold < windowHeight && rect.bottom - rect.height * threshold > 0
+    const horizontalVisible = rect.left + rect.width * threshold < windowWidth && rect.right - rect.width * threshold > 0
+
+    return verticalVisible && horizontalVisible
+  },
+
   scrollTo(element, options = {}) {
     if (!element) return
 

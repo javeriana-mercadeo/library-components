@@ -73,10 +73,8 @@ class ModalSystem {
     // Registrar modal activo
     this.activeModals.add(modalOverlay)
 
-    // Disparar evento personalizado si está configurado
-    if (modalOverlay.dataset.modalOnOpen === 'callback') {
-      this._dispatchEvent('modal:opened', { modalId: modalOverlay.id })
-    }
+    // Disparar evento personalizado
+    this._dispatchEvent('modal:opened', { modalId: modalOverlay.id })
 
     // Gestionar focus para accesibilidad
     this._setFocusToModal(modalOverlay)
@@ -94,6 +92,9 @@ class ModalSystem {
     modalOverlay.classList.remove('active')
     this.activeModals.delete(modalOverlay)
 
+    // Disparar evento personalizado
+    this._dispatchEvent('modal:closed', { modalId: modalOverlay.id })
+
     // Ocultar modal después de la animación
     setTimeout(() => {
       if (this.activeModals.has(modalOverlay)) {
@@ -110,11 +111,6 @@ class ModalSystem {
         document.body.style.overflow = ''
       }
     }, CONFIG.animationDuration)
-
-    // Disparar evento personalizado si está configurado
-    if (modalOverlay.dataset.modalOnClose === 'callback') {
-      this._dispatchEvent('modal:closed', { modalId: modalOverlay.id })
-    }
   }
 
   /**
@@ -250,6 +246,18 @@ class ModalSystem {
     const closeButtons = modalOverlay.querySelectorAll(`[data-puj-modal-close="${modalId}"], [data-puj-modal-close]`)
     closeButtons.forEach(button => {
       button.addEventListener('click', () => this._closeModal(modalOverlay))
+    })
+
+    // Configurar botones del footer
+    const footerButtons = modalOverlay.querySelectorAll(`[data-puj-modal-footer-btn="${modalId}"]`)
+    footerButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Disparar evento de acción del footer
+        this._dispatchEvent('modal:footer-action', { modalId: modalId })
+
+        // Por defecto, cerrar el modal
+        this._closeModal(modalOverlay)
+      })
     })
 
     // Cerrar con tecla Escape

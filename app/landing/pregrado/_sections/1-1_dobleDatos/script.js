@@ -7,11 +7,11 @@
  * Sistema modular optimizado para producción
  */
 
-import { detectPlatform } from './modules/platform-detection.js'
-import { VideoSystem } from './modules/video-system.js'
-import { ModalSystem } from './modules/modal-system.js'
-import { PeriodicityObserver } from './modules/periodicity-observer.js'
-import { programFormatter } from './modules/program-formatter.js'
+import { detectPlatform } from '../../_shared/modules/platform-detection.js'
+import { VideoSystem } from '../../_shared/modules/video-system.js'
+import { PeriodicityObserver } from '../../_shared/modules/periodicity-observer.js'
+import { createProgramFormatter } from '../../_shared/modules/program-formatter.js'
+import { createDatesModalHandler } from '../../_shared/modules/dates-modal-handler.js'
 
 /**
  * Ejecutar función cuando el DOM esté listo
@@ -24,26 +24,15 @@ function onDOMReady(callback) {
   }
 }
 
-/**
- * Ejecutar función cuando sea idle o después de timeout
- */
-function runWhenIdle(callback, timeout = 2000) {
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(callback, { timeout })
-  } else {
-    setTimeout(callback, 100)
-  }
-}
-
 class ProgramDataSystem {
   constructor() {
     this.platform = null
 
     // Instanciar subsistemas
     this.videoSystem = new VideoSystem()
-    this.modalSystem = new ModalSystem()
     this.periodicityObserver = new PeriodicityObserver()
-    this.programFormatter = programFormatter
+    this.programFormatter = createProgramFormatter({ scope: 'doble-datos' })
+    this.datesModalHandler = createDatesModalHandler({ scope: '#doble-datos' })
 
     this.initialized = false
   }
@@ -57,8 +46,6 @@ class ProgramDataSystem {
     }
 
     try {
-      Logger.info('[ProgramDataSystem] Iniciando inicialización del sistema')
-
       // Detectar plataforma
       this.platform = detectPlatform()
 
@@ -67,38 +54,29 @@ class ProgramDataSystem {
 
       // Inicializar subsistemas uno por uno
       try {
-        this.modalSystem.init()
-        Logger.info('[ProgramDataSystem] ModalSystem inicializado')
-      } catch (error) {
-        Logger.error('[ProgramDataSystem] Error inicializando ModalSystem:', error)
-      }
-
-      try {
         this.periodicityObserver.init()
-        Logger.info('[ProgramDataSystem] PeriodicityObserver inicializado')
       } catch (error) {
         Logger.error('[ProgramDataSystem] Error inicializando PeriodicityObserver:', error)
       }
 
       try {
         this.videoSystem.init()
-        Logger.info('[ProgramDataSystem] VideoSystem inicializado')
       } catch (error) {
         Logger.error('[ProgramDataSystem] Error inicializando VideoSystem:', error)
-        // VideoSystem es crítico, pero no debe romper todo el sistema
       }
 
-      // ProgramFormatter no necesita inicialización explícita ya que se auto-inicializa
-      Logger.info('[ProgramDataSystem] ProgramFormatter inicializado')
+      try {
+        this.datesModalHandler.init()
+      } catch (error) {
+        Logger.error('[ProgramDataSystem] Error inicializando DatesModalHandler:', error)
+      }
 
       // Configurar visibilidad de triggers de modal basados en contenido
       this.scheduleModalContentVisibilityCheck()
 
       this.initialized = true
-      Logger.info('[ProgramDataSystem] Sistema inicializado exitosamente')
     } catch (error) {
       Logger.error('[ProgramDataSystem] Error crítico durante inicialización:', error)
-      // NO marcar como initialized si hay error crítico
       this.initialized = false
     }
   }
@@ -132,6 +110,14 @@ class ProgramDataSystem {
     contentElements.forEach(contentElement => {
       const overlayId = contentElement.dataset.modalOverlayId
       if (!overlayId) return
+
+      // Caso especial para modal de fechas - delegar al handler compartido
+      if (contentElement.dataset.modalContentMonitor === 'dates') {
+        if (this.datesModalHandler) {
+          this.datesModalHandler.checkModalVisibility()
+        }
+        return
+      }
 
       const triggerWrapper = document.querySelector(`[data-puj-modal-trigger="${overlayId}"]`)
       if (!triggerWrapper) return
@@ -172,16 +158,16 @@ class ProgramDataSystem {
       this.videoSystem.destroy()
     }
 
-    if (this.modalSystem) {
-      this.modalSystem.destroy()
-    }
-
     if (this.periodicityObserver) {
       this.periodicityObserver.destroy()
     }
 
     if (this.programFormatter) {
       this.programFormatter.destroy()
+    }
+
+    if (this.datesModalHandler) {
+      this.datesModalHandler.destroy()
     }
 
     this.initialized = false
@@ -197,10 +183,6 @@ class ProgramDataSystem {
       videoSystem: {
         initialized: this.videoSystem?.state.initialized || false,
         loadedVideos: this.videoSystem?.state.loadedVideos.size || 0
-      },
-      modalSystem: {
-        hasActiveModal: this.modalSystem?.hasOpenModal() || false,
-        activeModal: this.modalSystem?.getActiveModal()?.id || null
       },
       periodicityObserver: {
         isActive: this.periodicityObserver?.isActive() || false,

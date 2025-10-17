@@ -65,7 +65,7 @@ const DatosProgramaVideo = () => {
       value2: '',
       prefix: '',
       prefix2: 'Nocturno',
-      type: 'doble'
+      type: 'doble-editable'
     }
     /* {
       id: 'horarios-programa',
@@ -176,45 +176,42 @@ const DatosProgramaVideo = () => {
                   </Paragraph>
                 </div>
               </div>
+
+              {/* Modal con fechas automatizadas y contenido editable */}
+              <Modal
+                id={modalDatesId}
+                size='sm'
+                title='Fechas de cierre de inscripciones'
+                trigger={
+                  <Button
+                    variant='faded'
+                    size='sm'
+                    className='program-dates_modal-trigger btn-sm'
+                    aria-label='Ver más detalles sobre las fechas de inscripción'
+                    isEditable={false}
+                    endIcon={<i className='ph ph-info'></i>}>
+                    Ver detalles
+                  </Button>
+                }>
+                {/* Fechas automatizadas dentro del modal */}
+                <div data-puj-registration-dates-modal className='program-dates_dates program-dates_dates--modal'>
+                  <div className='program-dates_date-item'>
+                    <Paragraph className='program-dates_date-period' color='neutral' size='md' bold={true} isEditable={false}>
+                      Cargando fechas...
+                    </Paragraph>
+                  </div>
+                </div>
+
+                {/* Contenido editable */}
+                <Paragraph
+                  id={`${elementName}-pop-up-date-content`}
+                  elementId={`${modalDatesId}-content`}
+                  data-modal-content-monitor='dates'
+                  data-modal-overlay-id={modalOverlayId}>
+                  N/A
+                </Paragraph>
+              </Modal>
             </div>
-          </div>
-
-          <div className={`${baseClass}_dates-actions`}>
-            <Modal
-              id={modalDatesId}
-              size='sm'
-              trigger={
-                <Button
-                  size='sm'
-                  className='program-data_enrollment-link program-data_enrollment-link--modal'
-                  aria-label='Ver más detalles sobre las fechas de inscripción'
-                  isEditable={false}
-                  startIcon={<i className='ph ph-info'></i>}>
-                  Ver las fechas límite de inscripción
-                </Button>
-              }>
-              <Caption id={`${elementName}-modal-dates-title`} color='primary' size='lg'>
-                Fechas Límite de Inscripción para el primer semestre de 2026:
-              </Caption>
-              <Paragraph
-                id={`${elementName}-pop-up-date-content`}
-                elementId={`${modalDatesId}-content`}
-                data-modal-content-monitor='dates'
-                data-modal-overlay-id={modalOverlayId}>
-                N/A
-              </Paragraph>
-            </Modal>
-
-            <Button
-              id={`${elementName}-enrollment-link-1`}
-              className='program-data_enrollment-link'
-              href='https://www.javeriana.edu.co/info-prg/proceso_de_inscripcion'
-              target='_blank'
-              variant='flat'
-              startIcon={<i className='ph ph-hand-pointing'></i>}
-              size='sm'>
-              Conoce el proceso de inscripción
-            </Button>
           </div>
 
           <Paragraph className={`${baseClass}_enrollment-note`} size='sm' isEditable={false}>
