@@ -26,17 +26,44 @@ function initInsigniasSwiper() {
 
   console.log('🚀 Inicializando Swiper de insignias...')
 
-  // 🎯 Configuración SIMPLE Y NATIVA de Swiper
+  // 🎯 Configuración RESPONSIVE de Swiper
   window.insigniasSwiper = new window.Swiper('.insignias-swiper', {
     // Loop infinito - Swiper maneja todo
     loop: true,
 
-    // Slides visibles
-    slidesPerView: 'auto',
-    spaceBetween: 30,
+    // 📱 CONFIGURACIÓN RESPONSIVE (Mobile-First)
+    // Por defecto: móviles pequeños
+    slidesPerView: 1,
+    spaceBetween: 16,
+    centeredSlides: true,
 
-    // Centrado para mejor efecto visual
-    centeredSlides: false,
+    // 🎚️ Breakpoints para diferentes tamaños de pantalla
+    breakpoints: {
+      // Móvil pequeño (≥428px)
+      428: {
+        slidesPerView: 1.5,
+        spaceBetween: 20,
+        centeredSlides: true
+      },
+      // Móvil grande / Tablet pequeña (≥576px)
+      576: {
+        slidesPerView: 2,
+        spaceBetween: 24,
+        centeredSlides: false
+      },
+      // Tablet (≥768px)
+      768: {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        centeredSlides: false
+      },
+      // Desktop (≥992px)
+      992: {
+        slidesPerView: 4,
+        spaceBetween: 30,
+        centeredSlides: false
+      }
+    },
 
     // Autoplay
     autoplay: {
@@ -71,9 +98,10 @@ function initInsigniasSwiper() {
 
     // Eventos
     on: {
-      init: function() {
+      init: function () {
         console.log('✅ Swiper inicializado correctamente')
         console.log(`📊 Total slides: ${this.slides.length}`)
+        console.log(`📱 Slides visibles: ${this.params.slidesPerView}`)
         console.log(`🎬 Autoplay: ${this.autoplay.running ? 'Running ✓' : 'Stopped ✗'}`)
       }
     }

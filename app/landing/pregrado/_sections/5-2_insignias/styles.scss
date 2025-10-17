@@ -3,16 +3,11 @@
 // ==========================================
 // VARIABLES DEL COMPONENTE
 // ==========================================
-// Con slidesPerView: 'auto', calculamos width para mostrar ~4 slides
-// Fórmula: (container-width - (gaps * 3)) / 4
-// Asumiendo container ~1200px: (1200 - 90) / 4 = ~277px por slide
-$slide-width-desktop: rem(270px);      // Desktop: ~4.2 slides visibles
-$slide-width-tablet: rem(220px);       // Tablet: ~3.2 slides visibles
-$slide-width-mobile: rem(180px);       // Móvil: ~2 slides visibles
-$image-width-desktop: rem(200px);
-$image-width-tablet: rem(160px);
-$image-width-mobile: rem(140px);
-$fade-width: rem(100px);
+// Tamaños de imagen responsivos (Swiper maneja el width de slides via breakpoints JS)
+$image-width-mobile: rem(140px);    // Móvil: 1 slide visible
+$image-width-tablet: rem(160px);    // Tablet: 3 slides visibles
+$image-width-desktop: rem(200px);   // Desktop: 4 slides visibles
+$fade-width: rem(100px);            // Ancho del gradiente lateral
 
 // ==========================================
 // SECCIÓN PRINCIPAL
@@ -123,20 +118,10 @@ $fade-width: rem(100px);
 // SWIPER SLIDE
 // ==========================================
 .swiper-slide {
-  // ✅ Con slidesPerView: 'auto', definir width explícito
-  // Width calculado para mostrar ~4 slides en desktop
-  width: $slide-width-desktop;
+  // ✅ Width controlado por Swiper via breakpoints en script.js
+  // No necesitamos definir width aquí - Swiper lo calcula automáticamente
+  // basado en slidesPerView y spaceBetween de cada breakpoint
   flex-shrink: 0;
-
-  // Tablet (768px - 991px)
-  @include responsive($breakpoint-md) {
-    width: $slide-width-tablet;
-  }
-
-  // Móvil (< 768px)
-  @media (max-width: $breakpoint-sm) {
-    width: $slide-width-mobile;
-  }
 }
 
 // ==========================================
@@ -181,12 +166,13 @@ $fade-width: rem(100px);
 // IMAGEN DEL LOGO
 // ==========================================
 .slide-content__image {
-  // ✅ NO usar width fijo - dejar que Swiper controle el tamaño
   width: 100%;
-  max-width: $image-width-desktop;
   height: auto;
   object-fit: contain;
   border-radius: rem(8px);
+
+  // 📱 Tamaños responsivos (Mobile-First)
+  max-width: $image-width-mobile; // Por defecto móvil: 140px
 
   // 🎨 Estado inicial: escala de grises
   filter: grayscale(100%) brightness(0.8);
@@ -212,14 +198,14 @@ $fade-width: rem(100px);
     filter: grayscale(100%);
   }
 
-  // Tablet
+  // Tablet (≥768px) - 3 slides visibles
   @include responsive($breakpoint-md) {
-    max-width: $image-width-tablet;
+    max-width: $image-width-tablet; // 160px
   }
 
-  // Móvil
-  @media (max-width: $breakpoint-sm) {
-    max-width: $image-width-mobile;
+  // Desktop (≥992px) - 4 slides visibles
+  @include responsive($breakpoint-lg) {
+    max-width: $image-width-desktop; // 200px
   }
 }
 

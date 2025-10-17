@@ -2,7 +2,7 @@
   "name": "5-2 insignias SWIPER | PREGRADO",
   "type": "section",
   "description": "Carrusel infinito de reconocimientos académicos con Swiper.js - 100% compatible con Liferay",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "library": "Swiper.js",
   "compatibility": {
     "liferay": true,
@@ -38,6 +38,17 @@
     "Sin memory leaks"
   ],
   "improvements": {
+    "v3.3.0": [
+      "CRÍTICO: Implementados breakpoints responsive de Swiper",
+      "Mobile: 1 slide visible centrado (<428px)",
+      "Mobile L: 1.5 slides (≥428px)",
+      "Tablet S: 2 slides (≥576px)",
+      "Tablet: 3 slides (≥768px)",
+      "Desktop: 4 slides (≥992px)",
+      "Removido width fijo en SCSS (ahora controlado por Swiper)",
+      "Espaciado adaptativo: 16px móvil → 30px desktop",
+      "Centrado inteligente: true en móvil, false en desktop"
+    ],
     "v3.2.0": [
       "CRÍTICO: Removido freeMode (incompatible con loop)",
       "CRÍTICO: Agregados estilos de paginación completos",
@@ -68,5 +79,12 @@
   },
   "author": "Pontificia Universidad Javeriana",
   "created": "2025-01-07",
-  "updated": "2025-10-16"
+  "updated": "2025-10-16",
+  "responsive_breakpoints": {
+    "mobile_s": "1 slide visible, centrado (<428px)",
+    "mobile_l": "1.5 slides visibles, centrado (≥428px)",
+    "tablet_s": "2 slides visibles (≥576px)",
+    "tablet": "3 slides visibles (≥768px)",
+    "desktop": "4 slides visibles (≥992px)"
+  }
 }

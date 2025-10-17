@@ -6,6 +6,176 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ---
 
+## [3.3.0] - 2025-10-16
+
+### 🎯 MEJORA CRÍTICA: Responsive Breakpoints
+
+Esta versión implementa **breakpoints responsive nativos de Swiper** para controlar la cantidad de slides visibles en cada dispositivo.
+
+#### ✅ Problema Resuelto
+
+**Antes (v3.2.0)**:
+- Móviles mostraban ~2 slides visibles (180px cada uno)
+- No había control granular por tamaño de pantalla
+- Width de slides controlado por CSS (conflicto con Swiper)
+- `slidesPerView: 'auto'` causaba comportamiento inconsistente
+
+**Ahora (v3.3.0)**:
+- ✅ **Móvil pequeño (<428px)**: 1 slide centrado
+- ✅ **Móvil grande (≥428px)**: 1.5 slides con peek
+- ✅ **Tablet pequeña (≥576px)**: 2 slides
+- ✅ **Tablet (≥768px)**: 3 slides
+- ✅ **Desktop (≥992px)**: 4 slides
+
+---
+
+### 🔧 Cambios Técnicos
+
+#### 1. Configuración Swiper con Breakpoints
+
+```javascript
+// script.js - Nueva configuración responsive
+window.insigniasSwiper = new window.Swiper('.insignias-swiper', {
+  loop: true,
+
+  // Mobile-First: configuración base para móviles
+  slidesPerView: 1,
+  spaceBetween: 16,
+  centeredSlides: true,
+
+  // Breakpoints progresivos
+  breakpoints: {
+    428: {  // Móvil grande
+      slidesPerView: 1.5,
+      spaceBetween: 20,
+      centeredSlides: true
+    },
+    576: {  // Tablet pequeña
+      slidesPerView: 2,
+      spaceBetween: 24,
+      centeredSlides: false
+    },
+    768: {  // Tablet
+      slidesPerView: 3,
+      spaceBetween: 30
+    },
+    992: {  // Desktop
+      slidesPerView: 4,
+      spaceBetween: 30
+    }
+  }
+})
+```
+
+#### 2. Simplificación de SCSS
+
+**Removido**:
+```scss
+// ❌ Ya no necesario
+$slide-width-desktop: rem(270px);
+$slide-width-tablet: rem(220px);
+$slide-width-mobile: rem(180px);
+
+.swiper-slide {
+  width: $slide-width-desktop;
+  @media (max-width: ...) { ... }
+}
+```
+
+**Nuevo**:
+```scss
+// ✅ Swiper controla el width automáticamente
+.swiper-slide {
+  flex-shrink: 0;
+  // Width calculado por Swiper según breakpoints
+}
+```
+
+#### 3. Espaciado Adaptativo
+
+| Breakpoint | spaceBetween | Razón |
+|------------|--------------|-------|
+| <428px | 16px | Menos espacio en móviles pequeños |
+| ≥428px | 20px | Transición suave |
+| ≥576px | 24px | Más espacio en tablets |
+| ≥768px | 30px | Espaciado completo desktop |
+
+#### 4. Centrado Inteligente
+
+- **Móviles (<576px)**: `centeredSlides: true` para mejor UX con 1-1.5 slides
+- **Tablet/Desktop (≥576px)**: `centeredSlides: false` para alineación izquierda
+
+---
+
+### 📊 Comparación Visual
+
+```
+📱 Móvil (<428px)
+┌─────────────────────────────────┐
+│         [  SLIDE 1  ]           │
+│  [partial]         [partial]    │
+└─────────────────────────────────┘
+    ↑ 1 slide centrado
+
+📱 Móvil Grande (≥428px)
+┌─────────────────────────────────┐
+│     [  SLIDE 1  ] [SLI...       │
+│  [partial]              partial]│
+└─────────────────────────────────┘
+    ↑ 1.5 slides con peek
+
+💻 Tablet (≥768px)
+┌─────────────────────────────────┐
+│ [SLIDE 1] [SLIDE 2] [SLIDE 3]  │
+└─────────────────────────────────┘
+    ↑ 3 slides completos
+
+🖥️ Desktop (≥992px)
+┌──────────────────────────────────────────┐
+│ [SLIDE 1] [SLIDE 2] [SLIDE 3] [SLIDE 4] │
+└──────────────────────────────────────────┘
+    ↑ 4 slides completos
+```
+
+---
+
+### 📈 Métricas v3.3.0
+
+| Métrica | v3.2.0 | v3.3.0 | Cambio |
+|---------|--------|--------|--------|
+| **Líneas script.js** | 93 | 108 | +15 (breakpoints) |
+| **Líneas styles.scss** | 360 | 340 | -20 (menos CSS) |
+| **Código SCSS simplificado** | - | ✅ | Mejor mantenibilidad |
+| **Control responsive** | ⚠️ CSS | ✅ JS | Más preciso |
+| **Slides móvil** | ~2 | 1 | ✅ Correcto |
+
+---
+
+### 🎨 Beneficios UX
+
+1. **Móvil mejorado**: 1 slide grande y legible vs 2 pequeños
+2. **Peek effect**: En móvil grande se ve un "preview" del siguiente slide
+3. **Transición suave**: Cada breakpoint adapta cantidad de slides progresivamente
+4. **Centrado inteligente**: Solo en móvil para mejor enfoque
+5. **Espaciado adaptativo**: Más compacto en móvil, amplio en desktop
+
+---
+
+### 🔄 Migración de v3.2.0 a v3.3.0
+
+**Sin breaking changes** - Actualización automática:
+
+1. El componente funciona inmediatamente sin cambios en JSX
+2. Los estilos se actualizan automáticamente
+3. Swiper ahora controla el responsive completamente
+
+**Mejoras visibles**:
+- Móviles verán 1 slide en lugar de 2
+- Desktop mantiene 4 slides (sin cambios)
+- Tablets tienen transición progresiva (2→3 slides)
+
+---
+
 ## [3.2.0] - 2025-10-16
 
 ### 🔴 BUGFIXES CRÍTICOS

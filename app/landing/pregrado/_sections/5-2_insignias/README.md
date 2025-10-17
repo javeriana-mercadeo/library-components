@@ -1,4 +1,4 @@
-# 5-2 Insignias SWIPER - Carrusel con Swiper.js (Versión 3.2.0)
+# 5-2 Insignias SWIPER - Carrusel con Swiper.js (Versión 3.3.0)
 
 ## 🎯 Descripción
 
@@ -17,7 +17,7 @@ Carrusel infinito de reconocimientos académicos implementado con **Swiper.js**,
 - ✅ **Fallback de Imágenes** - Manejo de errores integrado (WebP optimizado)
 - ✅ **Accesibilidad Completa** - a11y module incluido
 - ✅ **Prefers-reduced-motion** - Respeta preferencias del usuario
-- ✅ **100% Responsive** - Adaptativo con slidesPerView: 'auto'
+- ✅ **100% Responsive** - Breakpoints nativos de Swiper (móvil: 1 slide → desktop: 4 slides)
 
 ## 📁 Estructura de Archivos
 
@@ -68,50 +68,79 @@ import InsigniasSwiper from './_sections/5-2_insignias'
 </ViewComponent>
 ```
 
-## 🎨 Configuración de Swiper (v3.2.0)
+## 🎨 Configuración de Swiper (v3.3.0)
 
-### Configuración Actual (Simplificada y Funcional)
+### Configuración Responsive con Breakpoints
 
 ```javascript
 new window.Swiper('.insignias-swiper', {
-  // 🔄 Loop infinito bidireccional
   loop: true,
 
-  // 📏 Slides con ancho automático (controlado por CSS)
-  slidesPerView: 'auto',  // Swiper calcula automáticamente
-  spaceBetween: 30,
-  centeredSlides: false,
+  // 📱 Mobile-First: configuración base
+  slidesPerView: 1,
+  spaceBetween: 16,
+  centeredSlides: true,
+
+  // 🎚️ Breakpoints responsive
+  breakpoints: {
+    428: {  // Móvil grande
+      slidesPerView: 1.5,
+      spaceBetween: 20,
+      centeredSlides: true
+    },
+    576: {  // Tablet pequeña
+      slidesPerView: 2,
+      spaceBetween: 24,
+      centeredSlides: false
+    },
+    768: {  // Tablet
+      slidesPerView: 3,
+      spaceBetween: 30
+    },
+    992: {  // Desktop
+      slidesPerView: 4,
+      spaceBetween: 30
+    }
+  },
 
   // ⚡ Autoplay funcional
   autoplay: {
-    delay: 3000,  // 3 segundos entre transiciones
+    delay: 3000,
     disableOnInteraction: false,
     pauseOnMouseEnter: true
   },
 
-  // 🎯 Transiciones suaves
+  // 🎯 Otras configuraciones
   speed: 800,
   grabCursor: true,
 
-  // 📍 Paginación clickeable
   pagination: {
     el: '.swiper-pagination',
     clickable: true,
     dynamicBullets: true
   },
 
-  // ♿ Accesibilidad
   a11y: { enabled: true }
 })
 ```
 
+### 📱 Comportamiento Responsive
+
+| Dispositivo | Breakpoint | Slides Visibles | Espaciado | Centrado |
+|-------------|-----------|-----------------|-----------|----------|
+| Móvil S | <428px | 1 | 16px | ✅ Sí |
+| Móvil L | ≥428px | 1.5 (peek) | 20px | ✅ Sí |
+| Tablet S | ≥576px | 2 | 24px | ❌ No |
+| Tablet | ≥768px | 3 | 30px | ❌ No |
+| Desktop | ≥992px | 4 | 30px | ❌ No |
+
 ### Modificar Velocidad del Autoplay
 
-En [script.js](script.js#L27):
+En [script.js](script.js#L69):
 
 ```javascript
 autoplay: {
-  delay: 3000,  // Cambiar a 5000 para 5 segundos
+  delay: 5000,  // Cambiar a 5 segundos
   disableOnInteraction: false,
   pauseOnMouseEnter: true
 }
@@ -119,42 +148,51 @@ autoplay: {
 
 ### Ajustar Cantidad de Slides Visibles
 
-En [styles.scss](styles.scss#L8-L20) - Modificar ancho de slides:
+En [script.js](script.js#L41-L66) - Modificar breakpoints:
 
-```scss
-$slide-width-desktop: rem(270px);  // Muestra ~4.2 slides en 1200px
-$slide-width-tablet: rem(220px);   // Muestra ~3.2 slides en 768px
-$slide-width-mobile: rem(180px);   // Muestra ~2 slides en móvil
-
-.swiper-slide {
-  width: $slide-width-desktop;  // Ajustar aquí
+```javascript
+breakpoints: {
+  768: {
+    slidesPerView: 4,  // Cambiar de 3 a 4 en tablets
+    spaceBetween: 30
+  }
 }
 ```
 
-### Cambiar Espaciado
+### Cambiar Espaciado por Breakpoint
 
-En [script.js](script.js#L24):
+En [script.js](script.js#L37):
 
 ```javascript
-spaceBetween: 30  // Cambiar a 40 para más separación
+// Base móvil
+spaceBetween: 20,  // Cambiar de 16 a 20
+
+breakpoints: {
+  992: {
+    slidesPerView: 4,
+    spaceBetween: 40  // Cambiar de 30 a 40 en desktop
+  }
+}
 ```
 
 ## 🎯 Ventajas vs Versiones Anteriores
 
-| Aspecto            | v1.0 (5_insignias) | v2.0 (5-1_insignias) | v3.2.0 (5-2_insignias) ✅ |
-| ------------------ | ------------------ | -------------------- | ------------------------- |
-| **Drag-to-scroll** | ❌ No              | ⚠️ Custom buggy      | ✅ Nativo Swiper funcional |
-| **Loop infinito**  | ⚠️ 3 grupos JSX    | ⚠️ 3 grupos JSX      | ✅ Bidireccional (nativo)  |
-| **Paginación**     | ❌ No              | ❌ No                | ✅ Clickeable con estilos  |
-| **Código script**  | ~150 líneas        | ~400 líneas          | ✅ 93 líneas (-57%)        |
-| **Mantenibilidad** | Media              | Baja                 | ✅ Alta                    |
-| **Bugs conocidos** | -                  | Fades, drag          | ✅ Ninguno (v3.2.0)        |
-| **Touch gestures** | ❌ No              | ⚠️ Custom            | ✅ Optimizado              |
-| **Autoplay**       | ⚠️ CSS only        | ⚠️ Buggy             | ✅ Funcional 100%          |
-| **Assets**         | PNG (79KB)         | PNG (79KB)           | ✅ WebP (30KB, -62%)       |
-| **Compatibilidad** | ❌ usa hooks       | ✅ Liferay           | ✅ Liferay 100%            |
+| Aspecto | v1.0 | v2.0 | v3.2.0 | **v3.3.0** ✅ |
+|---------|------|------|--------|--------------|
+| **Drag-to-scroll** | ❌ No | ⚠️ Custom buggy | ✅ Funcional | ✅ Funcional |
+| **Loop infinito** | ⚠️ 3 grupos JSX | ⚠️ 3 grupos JSX | ✅ Nativo | ✅ Nativo |
+| **Paginación** | ❌ No | ❌ No | ✅ Clickeable | ✅ Clickeable |
+| **Responsive** | ❌ No | ⚠️ CSS básico | ⚠️ CSS width fijo | ✅ Breakpoints JS |
+| **Móvil** | - | ~2 slides | ~2 slides | ✅ 1 slide |
+| **Desktop** | - | ~4 slides | ~4 slides | ✅ 4 slides |
+| **Código script** | ~150 líneas | ~400 líneas | 93 líneas | ✅ 108 líneas |
+| **Código SCSS** | - | ~400 líneas | 360 líneas | ✅ 340 líneas |
+| **Control responsive** | ❌ No | ⚠️ CSS | ⚠️ CSS | ✅ Swiper JS |
+| **Mantenibilidad** | Media | Baja | Alta | ✅ Muy Alta |
+| **Bugs conocidos** | - | Fades, drag | ✅ Ninguno | ✅ Ninguno |
+| **Compatibilidad** | ❌ usa hooks | ✅ Liferay | ✅ Liferay | ✅ Liferay |
 
-## 🚀 Funcionalidades Implementadas (v3.2.0)
+## 🚀 Funcionalidades Implementadas (v3.3.0)
 
 ### 1. ✅ Autoplay Funcional
 
@@ -203,23 +241,36 @@ Bullets clickeables con estilos completos:
 - Navegación por teclado
 - a11y module de Swiper activado
 
-### 6. ✅ Responsive Nativo
+### 6. ✅ Responsive con Breakpoints (NUEVO en v3.3.0)
 
-`slidesPerView: 'auto'` + CSS width-based:
-- Desktop (1200px): ~4.2 slides visibles (270px/slide)
-- Tablet (768px): ~3.2 slides visibles (220px/slide)
-- Mobile (375px): ~2 slides visibles (180px/slide)
+Breakpoints nativos de Swiper con control granular:
+- **Móvil pequeño (<428px)**: 1 slide centrado, 16px espaciado
+- **Móvil grande (≥428px)**: 1.5 slides con "peek effect", 20px espaciado
+- **Tablet pequeña (≥576px)**: 2 slides, 24px espaciado
+- **Tablet (≥768px)**: 3 slides, 30px espaciado
+- **Desktop (≥992px)**: 4 slides, 30px espaciado
+
+**Ventajas**:
+- Control JavaScript (más preciso que CSS)
+- Espaciado adaptativo por breakpoint
+- Centrado inteligente (solo en móvil)
+- Transición suave entre breakpoints
 
 ## 🎨 Personalización de Estilos
 
-### Cambiar Ancho de Slides
+### Cambiar Cantidad de Slides Visibles
 
-En [styles.scss](styles.scss#L8-L10):
+**ACTUALIZADO v3.3.0**: Ahora se controla desde JavaScript, no CSS.
 
-```scss
-$slide-width-desktop: rem(270px);  // Ajustar para más/menos slides visibles
-$slide-width-tablet: rem(220px);
-$slide-width-mobile: rem(180px);
+En [script.js](script.js#L41-L66):
+
+```javascript
+breakpoints: {
+  992: {
+    slidesPerView: 5,  // Cambiar de 4 a 5 en desktop
+    spaceBetween: 30
+  }
+}
 ```
 
 ### Modificar Efectos de Hover
