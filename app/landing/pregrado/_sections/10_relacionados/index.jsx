@@ -1,3 +1,4 @@
+'use client'
 import { useScript } from '@hooks'
 import { LiferayDevBanner } from '@common'
 import { Title, Paragraph, Container } from '@components'

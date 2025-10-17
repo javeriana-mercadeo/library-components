@@ -1,7 +1,3 @@
 {
-  "recommendations": [
-    "esbenp.prettier-vscode",
-    "christian-kohler.path-intellisense",
-    "mrmlnc.vscode-scss"
-  ]
+  "recommendations": ["esbenp.prettier-vscode", "christian-kohler.path-intellisense", "mrmlnc.vscode-scss"]
 }

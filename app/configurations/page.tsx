@@ -4,6 +4,14 @@
 import { Chip } from '@heroui/react'
 import { Splash } from '@common'
 
+// Configuration Components - Real imports
+import GlobalAssets from './globalAssets'
+import StateProgram from './stateProgram'
+import LoadTheme from './loadTheme'
+import LoadProgram from './loadProgram'
+import LoadProgramV2 from './loadProgram-v2'
+import SelectWhatsapp from './selectWhatsapp'
+
 // UI Components
 import { SectionTitle, CodeBlock, FeatureList } from '@/components/ui'
 import { InlineCode } from '@/components/ui/CodeBlock'
@@ -14,13 +22,6 @@ import { ResourceCard, SectionCard, InfoCard } from '@/components/common/Card'
 import ViewComponent from '@/components/utils/ViewComponent/viewComponent'
 // Features Components
 import { PhaseCard } from '@/components/features'
-// Configuration Components - Real imports
-import GlobalAssets from './globalAssets'
-import StateProgram from './stateProgram'
-import LoadTheme from './loadTheme'
-import LoadProgram from './loadProgram'
-import LoadProgramV2 from './loadProgram-v2'
-import SelectWhatsapp from './selectWhatsapp'
 
 export default function DocsPage() {
   return (

@@ -1,3 +1,4 @@
+'use client'
 import { useScript } from '@hooks'
 import { Container, Title } from '@components'
 import ProjectCard from './components/ProjectCard'

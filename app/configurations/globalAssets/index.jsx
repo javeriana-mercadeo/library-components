@@ -41,8 +41,7 @@ export default function () {
         <button
           onClick={handleCompileStyles}
           disabled={loading}
-          className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors'
-        >
+          className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors'>
           {loading ? 'Compilando...' : 'Compilar Estilos (SCSS + Tailwind)'}
         </button>
 
@@ -56,12 +55,24 @@ export default function () {
           <div className='mt-4 p-4 bg-green-50 border border-green-200 rounded'>
             <h3 className='text-green-800 font-bold mb-2'>✅ Compilación exitosa</h3>
             <ul className='text-sm text-green-700 space-y-1'>
-              <li><strong>Archivo:</strong> {result.output.file}</li>
-              <li><strong>Ruta:</strong> {result.output.path}</li>
-              <li><strong>Tamaño:</strong> {result.output.sizeKB} KB</li>
-              <li><strong>Tiempo:</strong> {result.compilation.time}</li>
-              <li><strong>SCSS:</strong> {result.compilation.scss ? '✓' : '✗'}</li>
-              <li><strong>Tailwind:</strong> {result.compilation.tailwind ? '✓' : '✗'}</li>
+              <li>
+                <strong>Archivo:</strong> {result.output.file}
+              </li>
+              <li>
+                <strong>Ruta:</strong> {result.output.path}
+              </li>
+              <li>
+                <strong>Tamaño:</strong> {result.output.sizeKB} KB
+              </li>
+              <li>
+                <strong>Tiempo:</strong> {result.compilation.time}
+              </li>
+              <li>
+                <strong>SCSS:</strong> {result.compilation.scss ? '✓' : '✗'}
+              </li>
+              <li>
+                <strong>Tailwind:</strong> {result.compilation.tailwind ? '✓' : '✗'}
+              </li>
             </ul>
           </div>
         )}

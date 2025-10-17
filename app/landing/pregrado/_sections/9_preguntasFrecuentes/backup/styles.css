@@ -419,9 +419,7 @@ h4 + #section-eleven .faq__sub-questions p {
 #section-eleven .faq__sub-questions a:active {
   transform: translateY(1px) !important;
 }
-#section-eleven
-  .faq__sub-questions
-  a[href*='http']:not([href*='localhost']):not([href*='127.0.0.1'])::after {
+#section-eleven .faq__sub-questions a[href*='http']:not([href*='localhost']):not([href*='127.0.0.1'])::after {
   content: ' 🔗' !important;
   font-size: 0.8em !important;
   opacity: 0.7 !important;

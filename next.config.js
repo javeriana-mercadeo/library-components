@@ -14,7 +14,7 @@ const nextConfig = {
       path.join(__dirname, 'app/_library'),
       path.join(__dirname, 'app/common'),
       path.join(__dirname, 'app/components')
-    ],
+    ]
   },
 
   // Configuración básica para Turbopack

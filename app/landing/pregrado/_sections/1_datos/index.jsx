@@ -1,3 +1,4 @@
+'use client'
 import { useScript } from '@hooks'
 import { Container, Caption, Title, Paragraph, Button, Modal } from '@components'
 import ProgramDetail from '../../_shared/components/ProgramDetail.jsx'

@@ -1,3 +1,4 @@
+'use client'
 import { useScript } from '@hooks'
 import { Button, Container, Title, Paragraph } from '@components'
 

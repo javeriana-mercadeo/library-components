@@ -15,14 +15,14 @@
 Logger.info('mensaje')
 EventManager.add(el, 'click', fn)
 TimingUtils.createScheduler()
-const res = await fetch('/api')  // Para HTTP simple
+const res = await fetch('/api') // Para HTTP simple
 
 // ❌ INCORRECTO
-console.log()                    // Usa Logger
-setTimeout()                      // Usa scheduler
-addEventListener()                // Usa EventManager
-await HTTPClient.get()            // HTTPClient es clase, usa fetch()
-if (Logger) Logger.info()         // NUNCA valides existencia
+console.log() // Usa Logger
+setTimeout() // Usa scheduler
+addEventListener() // Usa EventManager
+await HTTPClient.get() // HTTPClient es clase, usa fetch()
+if (Logger) Logger.info() // NUNCA valides existencia
 ```
 
 ---
@@ -32,6 +32,7 @@ if (Logger) Logger.info()         // NUNCA valides existencia
 ## 🔑 Tipos de Utilidades
 
 ### 9 Objetos Directos (NO uses `new`)
+
 ```javascript
 Logger.info()           EventManager.add()      TimingUtils.sleep()
 DOMUtils.findElement()  ValidatorUtils.isEmail() FormManager.validate()
@@ -39,6 +40,7 @@ DataUtils.isEmpty()     StringUtils.capitalize() StorageUtils.set()
 ```
 
 ### 1 Clase (HTTPClient)
+
 ```javascript
 // ❌ ERROR: HTTPClient.get()  → "is not a function"
 
@@ -315,7 +317,7 @@ const isValid = DataUtils.validate(data, schema)
 ```javascript
 // Crear instancia
 const apiClient = new HTTPClient('https://api.example.com', {
-  headers: { 'Authorization': 'Bearer token' },
+  headers: { Authorization: 'Bearer token' },
   timeout: 5000
 })
 
@@ -345,6 +347,7 @@ const response = await fetch('/api/endpoint', {
 ```
 
 **❌ ERROR COMÚN:**
+
 ```javascript
 // ❌ INCORRECTO - HTTPClient.get is not a function
 const data = await HTTPClient.get('/api/endpoint')
@@ -578,18 +581,21 @@ Logger.debug('[MyModule] Estado:', { initialized: true })
 ## ❌ Top 3 Errores
 
 ### 1. HTTPClient como objeto
+
 ```javascript
 ❌ await HTTPClient.get('/api')  // TypeError
 ✅ await fetch('/api')            // Correcto
 ```
 
 ### 2. Validaciones innecesarias
+
 ```javascript
 ❌ if (Logger) Logger.info()     // NUNCA valides
 ✅ Logger.info()                 // Usa directo
 ```
 
 ### 3. console.log / setTimeout / addEventListener
+
 ```javascript
 ❌ console.log() / setTimeout() / addEventListener()
 ✅ Logger.info() / scheduler.schedule() / EventManager.add()
@@ -599,17 +605,13 @@ Logger.debug('[MyModule] Estado:', { initialized: true })
 
 ## FAQ
 
-**P: ¿Por qué `HTTPClient.get()` da error?**
-R: Es clase, no objeto. Usa `fetch()` o `new HTTPClient()`
+**P: ¿Por qué `HTTPClient.get()` da error?** R: Es clase, no objeto. Usa `fetch()` o `new HTTPClient()`
 
-**P: ¿Cuándo crear funciones helper locales?**
-R: Solo si son específicas del módulo (ej: `getVideoUrl()` para sistema de videos)
+**P: ¿Cuándo crear funciones helper locales?** R: Solo si son específicas del módulo (ej: `getVideoUrl()` para sistema de videos)
 
-**P: ¿Validar si existe utilidad?**
-R: NUNCA. Siempre están disponibles.
+**P: ¿Validar si existe utilidad?** R: NUNCA. Siempre están disponibles.
 
-**P: ¿setTimeout o scheduler?**
-R: Scheduler. Permite limpieza fácil en `destroy()`
+**P: ¿setTimeout o scheduler?** R: Scheduler. Permite limpieza fácil en `destroy()`
 
 ---
 
@@ -628,6 +630,7 @@ R: Scheduler. Permite limpieza fácil en `destroy()`
 ## 🚨 TL;DR para IAs
 
 **Antes de escribir código:**
+
 1. HTTP → `fetch()`
 2. Logger, EventManager, etc. → directo (ej: `Logger.info()`)
 3. NUNCA: validar, crear wrappers, usar `console/setTimeout/addEventListener`

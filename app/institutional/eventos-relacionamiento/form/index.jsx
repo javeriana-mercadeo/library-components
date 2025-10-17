@@ -1,3 +1,5 @@
+'use client'
+
 import { useScript } from '@hooks'
 import { Container, Image, Title, Button, Paragraph } from '@components'
 import './styles.scss'
@@ -12,7 +14,11 @@ export default function EventosForm() {
         <div className='eventos-page__content'>
           {/* Sección Izquierda */}
           <div className='eventos-page__left'>
-            <Image className='eventos-page__logo' src='https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-javeriana' alt='Logo Universidad Javeriana' />
+            <Image
+              className='eventos-page__logo'
+              src='https://www.javeriana.edu.co/recursosdb/d/info-prg/logo-javeriana'
+              alt='Logo Universidad Javeriana'
+            />
             <Title hierarchy='h1' className='eventos-page__title' isEditable={false}>
               Formamos
               <br />a los mejores

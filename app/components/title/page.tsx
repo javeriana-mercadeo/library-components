@@ -1,3 +1,5 @@
+'use client'
+
 import { Container, Title } from '@components'
 import { Splash } from '@common'
 
